@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
-                this.machineData.MessageData.NumberCycles == 0
+                this.machineData.MessageData.RequiredCycles == 0
                     ? $"{this.machineData.MessageData.AxisMovement} Positioning Started"
                     : "Burnishing Started",
                 MessageActor.Any,

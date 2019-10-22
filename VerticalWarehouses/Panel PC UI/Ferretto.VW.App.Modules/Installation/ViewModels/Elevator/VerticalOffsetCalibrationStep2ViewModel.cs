@@ -167,10 +167,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
 
-            if (this.Data is Cell cell)
-            {
-                this.Cell = cell;
-            }
+            this.Cell = this.Data as Cell ?? this.Cell;
 
             this.InputStepValue = this.ProcedureParameters.Step;
 

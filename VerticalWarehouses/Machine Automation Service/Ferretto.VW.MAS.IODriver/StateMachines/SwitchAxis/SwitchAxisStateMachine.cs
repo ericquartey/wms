@@ -43,11 +43,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.pulseOneTime = false;
             this.index = index;

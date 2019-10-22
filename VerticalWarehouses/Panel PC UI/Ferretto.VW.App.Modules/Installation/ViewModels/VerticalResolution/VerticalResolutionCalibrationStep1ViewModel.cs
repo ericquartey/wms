@@ -146,18 +146,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            var wizardData = new VerticalResolutionWizardData
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1))
             {
-                CurrentResolution = this.CurrentResolution.Value,
-                FinalPosition = this.ProcedureParameters.FinalPosition,
-                InitialPosition = this.InputInitialPosition.Value,
-            };
+                var wizardData = new VerticalResolutionWizardData
+                {
+                    CurrentResolution = this.CurrentResolution.Value,
+                    FinalPosition = this.ProcedureParameters.FinalPosition,
+                    InitialPosition = this.InputInitialPosition.Value,
+                };
 
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
-                wizardData,
-                trackCurrentView: false);
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
+                    wizardData,
+                    trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()

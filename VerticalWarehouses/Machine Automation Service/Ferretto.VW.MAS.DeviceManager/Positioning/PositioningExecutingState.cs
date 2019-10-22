@@ -493,7 +493,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BeltBurnishing:
                     this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
-                    if (this.performedCycles >= this.machineData.MessageData.NumberCycles)
+                    if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
                     {
                         this.Logger.LogDebug("FSM Finished Executing State");
                         this.machineData.ExecutedSteps = this.performedCycles;
@@ -561,10 +561,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     speed,
                     this.machineData.MessageData.TargetAcceleration,
                     this.machineData.MessageData.TargetDeceleration,
-                    0,
-                    0,
-                    0,
-                    0,
                     switchPosition,
                     HorizontalMovementDirection.Backwards);
                 this.machineData.MessageData = newPositioningMessageData;

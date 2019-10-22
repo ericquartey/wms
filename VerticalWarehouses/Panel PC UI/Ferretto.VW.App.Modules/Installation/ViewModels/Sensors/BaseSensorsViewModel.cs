@@ -98,14 +98,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
@@ -114,12 +113,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(
                     this.OnSensorsChanged,
-                    ThreadOption.UIThread,
-                    false);
+                    m => m.Data?.SensorsStates != null);
 
             try
             {
@@ -149,7 +147,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.sensors.Update(sensorsStates.ToArray());
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -199,12 +197,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            if (message is null)
-            {
-                throw new System.ArgumentNullException(nameof(message));
-            }
-
-            this.sensors.Update(message.Data?.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStates);
         }
 
         #endregion
