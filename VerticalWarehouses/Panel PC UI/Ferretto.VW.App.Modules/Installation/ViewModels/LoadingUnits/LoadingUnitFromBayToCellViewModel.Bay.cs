@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isPosition2Selected;
 
+        private bool isPosition3Selected;
+
         private LoadingUnit loadingUnitInBay;
 
         private DelegateCommand selectBayPosition1Command;
@@ -50,9 +52,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.isPosition1Selected;
             set
             {
-                if (this.SetProperty(ref this.isPosition1Selected, value))
+                if (this.SetProperty(ref this.isPosition1Selected, value) && value)
                 {
-                    this.IsPosition2Selected = !this.IsPosition1Selected;
+                    this.IsPosition2Selected = false;
+                    this.IsPosition3Selected = false;
                 }
             }
         }
@@ -62,9 +65,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.isPosition2Selected;
             set
             {
-                if (this.SetProperty(ref this.isPosition2Selected, value))
+                if (this.SetProperty(ref this.isPosition2Selected, value) && value)
                 {
-                    this.IsPosition1Selected = !this.IsPosition2Selected;
+                    this.IsPosition1Selected = false;
+                    this.IsPosition3Selected = false;
+                }
+            }
+        }
+
+        public bool IsPosition3Selected
+        {
+            get => this.isPosition3Selected;
+            set
+            {
+                if (this.SetProperty(ref this.isPosition3Selected, value)
+                    &&
+                    value)
+                {
+                    this.IsPosition1Selected = false;
+                    this.IsPosition2Selected = false;
                 }
             }
         }

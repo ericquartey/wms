@@ -7,7 +7,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;cells
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
@@ -15,11 +15,13 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public partial class LoadingUnitFromBayToCellViewModel : BaseMainViewModel
+    public partial class BaseMovementsViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IMachineCellsWebService machineCellsWebService;
+        private readonly IBayManager bayManagerService;
+
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
@@ -27,9 +29,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
-        private int? cellId;
+        private bool bayIsMultiPosition;
 
         private IEnumerable<Cell> cells;
+
+        private double? elevatorHorizontalPosition;
+
+        private double? elevatorVerticalPosition;
 
         private bool isExecutingProcedure;
 
@@ -43,7 +49,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private int? loadingUnitId;
 
-        private IEnumerable<LoadingUnit> loadingUnits;
+        private LoadingUnit loadingUnitInBay;
 
         private SubscriptionToken sensorsToken;
 
@@ -59,12 +65,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public LoadingUnitFromBayToCellViewModel(
+        public BaseMovementsViewModel(
                 IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
                 IMachineElevatorWebService machineElevatorWebService,
                 IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                 IMachineSensorsWebService machineSensorsWebService,
-                IMachineCellsWebService machineCellsWebService,
                 IBayManager bayManagerService)
                 : base(PresentationMode.Installer)
         {
@@ -93,13 +98,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 throw new ArgumentNullException(nameof(machineSensorsWebService));
             }
 
-            if (machineCellsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineCellsWebService));
-            }
-
             this.machineSensorsWebService = machineSensorsWebService;
-            this.machineCellsWebService = machineCellsWebService;
             this.machineElevatorWebService = machineElevatorWebService;
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
             this.bayManagerService = bayManagerService;
@@ -109,48 +108,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
-        public int? CellId
+        public Bay Bay { get; private set; }
+
+        public bool BayIsMultiPosition
         {
-            get => this.cellId;
-            set
-            {
-                if (this.SetProperty(ref this.cellId, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public bool IsCellFree
+        public double? ElevatorHorizontalPosition
         {
-            get
-            {
-                if (!this.cellId.HasValue)
-                {
-                    return false;
-                }
-
-                var cellFound = this.cells.FirstOrDefault(l => l.Id == this.cellId.Value);
-                if (!(cellFound is null))
-                {
-                    return cellFound.Status == CellStatus.Free;
-                }
-
-                return false;
-            }
+            get => this.elevatorHorizontalPosition;
+            set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
-        public bool IsCellIdValid
+        public double? ElevatorVerticalPosition
         {
-            get
-            {
-                if (!this.cellId.HasValue)
-                {
-                    return false;
-                }
-
-                return this.cells.Any(l => l.Id == this.cellId.Value);
-            }
+            get => this.elevatorVerticalPosition;
+            set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
         public bool IsExecutingProcedure
@@ -165,37 +140,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public bool IsLoadingUnitIdValid
-        {
-            get
-            {
-                if (!this.loadingUnitId.HasValue)
-                {
-                    return false;
-                }
-
-                return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
-            }
-        }
-
         public bool IsLoadingUnitInBay
         {
             get
             {
-                if (this.bay is null)
+                if (this.Bay is null)
                 {
                     return false;
                 }
 
-                if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+                if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
                     return this.Sensors.LUPresentInBay1;
                 }
-                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                else if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
                     return this.Sensors.LUPresentInBay2;
                 }
-                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+                else if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
                     return this.Sensors.LUPresentInBay3;
                 }
@@ -237,6 +199,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public bool IsZeroChain
+        {
+            get => this.isZeroChain;
+            set => this.SetProperty(ref this.isZeroChain, value);
+        }
+
         public int? LoadingUnitId
         {
             get => this.loadingUnitId;
@@ -249,23 +217,31 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public LoadingUnit LoadingUnitInBay
+        {
+            get => this.loadingUnitInBay;
+            set => this.SetProperty(ref this.loadingUnitInBay, value);
+        }
+
+        public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
+
         public Sensors Sensors => this.sensors;
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
         public ICommand StartCommand =>
-           this.startCommand
-           ??
-           (this.startCommand = new DelegateCommand(
-               async () => await this.StartAsync(),
-               this.CanExecuteStartCommand));
+               this.startCommand
+               ??
+               (this.startCommand = new DelegateCommand(
+                   async () => await this.StartAsync(),
+                   this.CanExecuteStartCommand));
 
         public ICommand StopCommand =>
-            this.stopCommand
-            ??
-            (this.stopCommand = new DelegateCommand(
-                async () => await this.StartStop(),
-                this.CanExecuteStopCommand));
+                this.stopCommand
+                ??
+                (this.stopCommand = new DelegateCommand(
+                    async () => await this.StartStop(),
+                    this.CanExecuteStopCommand));
 
         protected IEnumerable<Cell> Cells
         {
@@ -282,6 +258,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        #region Methods
+
+        public virtual bool CanExecuteStartCommand()
+        {
+            return false;
+        }
 
         public override void Disappear()
         {
@@ -341,24 +324,26 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             await this.RetrieveLoadingUnitsAsync();
 
-            await this.RetrieveCellsAsync();
+            this.Bay = await this.bayManagerService.GetBayAsync();
 
-            this.bay = await this.bayManagerService.GetBayAsync();
+            this.BayIsMultiPosition = this.Bay.IsDouble;
 
-            this.BayIsMultiPosition = this.bay.IsDouble;
+            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
 
-            this.IsShutterTwoSensors = this.bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
-
-            this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
 
             await this.InitializeSensors();
-
-            this.SelectBayPosition1();
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.ShutterSensors));
 
             this.RaiseCanExecuteChanged();
+        }
+
+        public void RaiseCanExecuteChanged()
+        {
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -378,6 +363,33 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public virtual Task StartAsync()
+        {
+            return Task.CompletedTask;
+        }
+
+        public virtual async Task StartStop()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineLoadingUnitsWebService.StopAsync(this.Bay.Number);
+
+                this.IsStopping = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            this.RestoreStates();
+        }
+
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             base.OnMachineModeChanged(e);
@@ -387,20 +399,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.RestoreStates();
             }
-        }
-
-        private bool CanExecuteStartCommand()
-        {
-            return
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                this.IsLoadingUnitInBay
-                &&
-                !this.IsLoadingUnitOnElevator
-                &&
-                this.shutterSensors.Open;
         }
 
         private bool CanExecuteStopCommand()
@@ -420,47 +418,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.ShowNotification(
                 VW.App.Resources.InstallationApp.ProcedureCompleted,
                 Services.Models.NotificationSeverity.Success);
-        }
-
-        private MAS.AutomationService.Contracts.LoadingUnitDestination GetLoadingUnitSource()
-        {
-            if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
-            {
-                if (this.IsPosition1Selected)
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Up;
-                }
-                else
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Down;
-                }
-            }
-
-            if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
-            {
-                if (this.IsPosition2Selected)
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Up;
-                }
-                else
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Down;
-                }
-            }
-
-            if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
-            {
-                if (this.IsPosition3Selected)
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Up;
-                }
-                else
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Down;
-                }
-            }
-
-            return MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination;
         }
 
         private async Task InitializeSensors()
@@ -535,12 +492,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
-        }
-
         private void RestoreStates()
         {
             this.IsExecutingProcedure = false;
@@ -548,51 +499,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private async Task RetrieveCellsAsync()
+        private async Task RetrieveElevatorPositionAsync()
         {
             try
             {
-                this.Cells = await this.machineCellsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task StartAsync()
-        {
-            try
-            {
-                if (!this.IsLoadingUnitIdValid)
-                {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (!this.IsCellIdValid)
-                {
-                    this.ShowNotification("Id cella inserito non valido", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (!this.IsCellFree)
-                {
-                    this.ShowNotification("la cella inserita non è libera", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                var source = this.GetLoadingUnitSource();
-
-                if (source == MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination)
-                {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, MAS.AutomationService.Contracts.LoadingUnitDestination.Cell, null, this.CellId.Value);
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -602,28 +516,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private async Task StartStop()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineLoadingUnitsWebService.StopAsync(this.bay.Number);
-
-                this.IsStopping = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-
-            this.RestoreStates();
         }
 
         private void Stopped()
