@@ -56,6 +56,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             double[] deceleration,
             double[] switchPosition,
             HorizontalMovementDirection direction,
+            bool waitContinue = false,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : this(
                   axisMovement,
@@ -71,6 +72,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
                   delay: 0,
                   switchPosition,
                   direction,
+                  waitContinue,
                   verbosity)
         {
         }
