@@ -4,12 +4,14 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
@@ -20,13 +22,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private readonly CommandEvent commandEvent;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue =
+            new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly NotificationEvent notificationEvent;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-        private readonly IServiceScope serviceScope;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue =
+            new BlockingConcurrentQueue<NotificationMessage>();
 
         private IState activeState;
 
@@ -47,23 +49,19 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private BayNumber requestingBay;
 
+        private IServiceProvider serviceProvider;
+
         #endregion
 
         #region Constructors
 
         protected FiniteStateMachine(
-            IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
+        IEventAggregator eventAggregator,
+        ILogger<StateBase> logger)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
 
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -72,7 +70,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
-            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -101,19 +98,31 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     this.activeState = value;
 
-                    this.activeState?.Enter(this.StartData);
+                    try
+                    {
+                        this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
+                    }
+                    catch (StateMachineException ex)
+                    {
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        this.RaiseCompleted(eventArgs);
+                    }
                 }
 
                 // These code lines MUST be the last in the Setter
                 if (this.activeState is IEndState endState && endState.IsCompleted)
                 {
-                    var eventArgs = new FiniteStateMachinesEventArgs { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
                     this.RaiseCompleted(eventArgs);
                 }
             }
         }
 
         public Guid InstanceId { get; }
+
+        public IFiniteStateMachineData MachineData { get; protected set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -122,6 +131,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         #endregion
 
         #region Methods
+
+        public virtual bool AllowMultipleInstances(CommandMessage command)
+        {
+            return true;
+        }
 
         /// <summary>
         /// This code added is to correctly implement the disposable pattern.
@@ -136,15 +150,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 this.notificationEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken = null;
 
-                this.serviceScope.Dispose();
-
                 this.OnDisposing();
 
                 this.isDisposed = true;
             }
         }
 
-        public void Start(CommandMessage commandMessage, CancellationToken cancellationToken)
+        public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
@@ -152,6 +164,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
 
             this.isStarted = true;
+
+            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
             this.StartData = commandMessage;
 
@@ -187,7 +201,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         protected IState GetState<TState>()
             where TState : IState
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
+            return this.serviceProvider.GetRequiredService<TState>();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)
@@ -251,8 +265,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            }
-            while (!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -281,8 +294,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            }
-            while (!cancellationToken.IsCancellationRequested);
+            } while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
@@ -310,7 +322,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 new FsmExceptionMessageData(ex, string.Empty, 0),
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
                 this.requestingBay,
                 BayNumber.None,

@@ -147,7 +147,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDownAsync()));
 
         public ICommand MoveForwardsCommand =>
-                    this.moveForwardsCommand
+            this.moveForwardsCommand
             ??
             (this.moveForwardsCommand = new DelegateCommand(async () => await this.MoveForwardsAsync()));
 

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -89,8 +90,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override void Disappear()
         {
             base.Disappear();
-            this.EventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Unsubscribe(this.updateMachneStateActive);
-            this.EventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Unsubscribe(this.updateStateActive);
+
+            this.updateMachneStateActive?.Dispose();
+            this.updateMachneStateActive = null;
+
+            this.updateStateActive?.Dispose();
+            this.updateStateActive = null;
+
             this.IsOpen = false;
         }
 
@@ -119,17 +125,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.updateMachneStateActive = this.EventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
-                .Subscribe(
-                    message => this.OnMachineStatusChanged(message.Data.MessageActor, message.Data.MessageType),
-                    ThreadOption.UIThread,
-                    false);
+            this.updateMachneStateActive = this.updateMachneStateActive
+                ??
+                this.EventAggregator.SubscribeToEvent<MachineStatusActiveMessageData>(
+                    this.OnMachineStatusChanged,
+                    m => m.Data != null);
 
-            this.updateStateActive = this.EventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
-                .Subscribe(
-                    message => this.OnMachineStateChanged(message.Data.MessageActor, message.Data.CurrentState),
-                    ThreadOption.UIThread,
-                    false);
+            this.updateStateActive = this.updateStateActive
+                ??
+                this.EventAggregator.SubscribeToEvent<MachineStateActiveMessageData>(
+                    this.OnMachineStateChanged,
+                    m => m.Data != null);
 
             await this.GetDataAsync();
         }
@@ -139,20 +145,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.isBusy;
         }
 
-        private void OnMachineStateChanged(MessageActor messageActor, string currentState)
+        private void OnMachineStateChanged(NotificationMessageUI<MachineStateActiveMessageData> message)
         {
-            switch (messageActor)
+            switch (message.Data.MessageActor)
             {
                 case MessageActor.FiniteStateMachines:
-                    this.CurrentStateFSM = currentState;
+                    this.CurrentStateFSM = message.Data.CurrentState;
                     break;
 
                 case MessageActor.InverterDriver:
-                    this.CurrentStateInverter = currentState;
+                    this.CurrentStateInverter = message.Data.CurrentState;
                     break;
 
                 case MessageActor.IoDriver:
-                    this.CurrentStateIODriver = currentState;
+                    this.CurrentStateIODriver = message.Data.CurrentState;
                     break;
 
                 default:
@@ -160,20 +166,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void OnMachineStatusChanged(MessageActor messageActor, string messageType)
+        private void OnMachineStatusChanged(NotificationMessageUI<MachineStatusActiveMessageData> message)
         {
-            switch (messageActor)
+            switch (message.Data.MessageActor)
             {
                 case MessageActor.FiniteStateMachines:
-                    this.CurrentMachineStatusFSM = messageType.ToString();
+                    this.CurrentMachineStatusFSM = message.Type.ToString();
                     break;
 
                 case MessageActor.InverterDriver:
-                    this.CurrentMachineStatusInverter = messageType.ToString();
+                    this.CurrentMachineStatusInverter = message.Type.ToString();
                     break;
 
                 case MessageActor.IoDriver:
-                    this.CurrentMachineStatusIODriver = messageType.ToString();
+                    this.CurrentMachineStatusIODriver = message.Type.ToString();
                     break;
 
                 default:

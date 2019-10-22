@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 notificationData.Data,
                 "DL Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
                 BayNumber.None,
                 BayNumber.None,

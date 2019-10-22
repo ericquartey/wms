@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -67,6 +68,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Continue Positioning Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.ContinueMovement,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         /// <summary>
         ///   This code added to correctly implement the disposable pattern.
         /// </summary>
@@ -83,17 +96,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
+        /// <summary>
+        /// Moves the horizontal chain of the elevator to load or unload a LoadUnit.
+        /// It uses a Table target movement, mapped by 4 Profiles sets of parameters selected by direction and loading status
+        /// </summary>
+        /// <param name="direction">Forwards: from elevator to Bay 1 side</param>
+        /// <param name="isStartedOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
+        /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
+        /// <param name="loadingUnitNetWeight">This weight is stored in LoadingUnits table before the movement.</param>
+        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
+        /// <param name="requestingBay"></param>
+        /// <param name="sender"></param>
         public void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
+            bool waitContinue,
             bool measure,
             BayNumber requestingBay,
             MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
-            this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
 
             if (loadingUnitId.HasValue
                 &&
@@ -148,12 +172,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
-                direction);
+                direction,
+                waitContinue);
 
             this.PublishCommand(
                 messageData,
@@ -192,10 +213,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 direction);
 
@@ -227,6 +244,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
 
+            // TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
@@ -273,10 +291,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 HorizontalMovementDirection.Forwards);
 
@@ -337,10 +351,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 HorizontalMovementDirection.Forwards);
 
@@ -388,10 +398,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 direction);
 
@@ -402,83 +408,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sender,
                 MessageType.Positioning,
                 requestingBay,
-                BayNumber.ElevatorBay);
-        }
-
-        public void RepeatVerticalMovement(
-            double upperBoundPosition,
-            double lowerBoundPosition,
-            int totalTestCycleCount,
-            int delayStart,
-            BayNumber bayNumber,
-            MessageActor sender)
-        {
-            if (totalTestCycleCount <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(totalTestCycleCount),
-                    Resources.BeltBurnishingProcedure.TheNumberOfTestCyclesMustBeStrictlyPositive);
-            }
-
-            if (upperBoundPosition <= 0)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
-            }
-
-            if (upperBoundPosition <= lowerBoundPosition)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
-            }
-
-            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
-
-            if (upperBoundPosition > verticalAxis.UpperBound)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(upperBoundPosition),
-                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
-            }
-
-            if (lowerBoundPosition < verticalAxis.LowerBound)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(lowerBoundPosition),
-                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
-            }
-
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
-
-            var speed = new[] { movementParameters.Speed };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
-            var switchPosition = new[] { 0.0 };
-
-            var data = new PositioningMessageData(
-                Axis.Vertical,
-                MovementType.Absolute,
-                MovementMode.BeltBurnishing,
-                upperBoundPosition,
-                speed,
-                acceleration,
-                deceleration,
-                totalTestCycleCount,
-                lowerBoundPosition,
-                upperBoundPosition,
-                delayStart,
-                switchPosition,
-                HorizontalMovementDirection.Forwards);
-
-            this.PublishCommand(
-                data,
-                "Execute Belt Burnishing Command",
-                MessageActor.FiniteStateMachines,
-                sender,
-                MessageType.Positioning,
-                bayNumber,
                 BayNumber.ElevatorBay);
         }
 
@@ -519,10 +448,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 HorizontalMovementDirection.Forwards)
             {
@@ -533,6 +458,77 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
+        public void StartBeltBurnishing(
+                    double upperBoundPosition,
+            double lowerBoundPosition,
+            int delayStart,
+            BayNumber requestingBay,
+            MessageActor sender)
+        {
+            if (upperBoundPosition <= 0)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyPositive);
+            }
+
+            if (upperBoundPosition <= lowerBoundPosition)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionMustBeStrictlyGreaterThanLowerBoundPosition);
+            }
+
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+
+            if (upperBoundPosition > verticalAxis.UpperBound)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(upperBoundPosition),
+                    Resources.BeltBurnishingProcedure.UpperBoundPositionOutOfRange);
+            }
+
+            if (lowerBoundPosition < verticalAxis.LowerBound)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(lowerBoundPosition),
+                    Resources.BeltBurnishingProcedure.LowerBoundPositionOutOfRange);
+            }
+
+            var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
+
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+
+            var speed = new[] { movementParameters.Speed };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var data = new PositioningMessageData(
+                Axis.Vertical,
+                MovementType.Absolute,
+                MovementMode.BeltBurnishing,
+                upperBoundPosition,
+                speed,
+                acceleration,
+                deceleration,
+                procedureParameters.RequiredCycles,
+                lowerBoundPosition,
+                upperBoundPosition,
+                delayStart,
+                switchPosition,
+                HorizontalMovementDirection.Forwards);
+
+            this.PublishCommand(
+                data,
+                "Execute Belt Burnishing Command",
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,

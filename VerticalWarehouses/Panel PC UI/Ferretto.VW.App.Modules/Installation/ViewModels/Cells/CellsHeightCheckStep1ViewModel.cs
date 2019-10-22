@@ -193,11 +193,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP1))
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.CellsHeightCheck.STEP2,
+                    this.SelectedCell,
+                    trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()

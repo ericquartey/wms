@@ -15,6 +15,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         void ChangeState(IInverterState newState);
 
         /// <summary>
+        /// wake up a sleeping state machine
+        /// </summary>
+        void Continue();
+
+        /// <summary>
         /// Enqueue message.
         /// </summary>
         /// <param name="message">A <see cref="InverterMessage"/> message to enqueue.</param>

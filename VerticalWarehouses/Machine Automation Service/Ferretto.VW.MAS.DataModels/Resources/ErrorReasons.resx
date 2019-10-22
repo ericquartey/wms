@@ -186,4 +186,16 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
   </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>ZeroSensorErrorAfterDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>ZeroSensorErrorAfterPickup</value>
+  </data>
 </root>

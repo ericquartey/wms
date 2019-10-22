@@ -30,10 +30,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.templateData = templateData;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
         }

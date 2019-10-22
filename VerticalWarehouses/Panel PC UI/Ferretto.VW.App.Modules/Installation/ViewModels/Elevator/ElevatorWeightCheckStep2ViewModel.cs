@@ -47,9 +47,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ElevatorWeightCheckStep2ViewModel(
             IMachineElevatorWebService machineElevatorWebService,
-            INavigationService navigationService,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            INavigationService navigationService)
+            : base()
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
@@ -198,14 +197,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
@@ -228,12 +226,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ShowSteps();
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
-                .Subscribe(
-                    message => this.ElevatorWeightCheckChanged(message),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator.SubscribeToEvent<ElevatorWeightCheckMessageData>(
+                    this.ElevatorWeightCheckChanged);
 
             this.RaiseCanExecuteChanged();
         }
@@ -267,11 +263,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ElevatorWeightCheckChanged(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
             if (message.IsErrored())
             {
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
@@ -281,10 +272,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureCompleted);
             }
 
-            if (message.Data != null)
-            {
-                this.MeasuredWeight = message.Data.Weight;
-            }
+            this.MeasuredWeight = message.Data?.Weight ?? this.MeasuredWeight;
         }
 
         private void ShowSteps()

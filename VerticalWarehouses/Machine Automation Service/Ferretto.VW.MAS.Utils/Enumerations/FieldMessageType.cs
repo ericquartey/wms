@@ -57,5 +57,7 @@
         InverterStatusWord,
 
         InverterSetTimer,
+
+        ContinueMovement,
     }
 }

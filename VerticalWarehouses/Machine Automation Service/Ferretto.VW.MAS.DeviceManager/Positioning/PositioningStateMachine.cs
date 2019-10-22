@@ -95,7 +95,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 //INFO Check the Horizontal and Vertical conditions for Positioning
                 if (this.CheckConditions(out string errorText))
                 {
-                    if (this.machineData.MessageData.MovementMode == MovementMode.FindZero && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    if (this.machineData.MessageData.MovementMode == MovementMode.FindZero
+                        &&
+                        this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     {
                         this.CurrentState = new PositioningEndState(stateData);
                     }

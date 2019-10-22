@@ -49,9 +49,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Start(double upperPosition, double lowerPosition, int totalTestCycleCount, int delayStart)
+        public IActionResult Start(double upperPosition, double lowerPosition, int delayStart)
         {
-            this.elevatorProvider.RepeatVerticalMovement(upperPosition, lowerPosition, totalTestCycleCount, delayStart, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.StartBeltBurnishing(upperPosition, lowerPosition, delayStart, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

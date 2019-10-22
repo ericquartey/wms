@@ -20,7 +20,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public LoadingUnitDestination Destination { get; set; }
+        public LoadingUnitLocation Destination { get; set; }
 
         public double DestinationHorizontalPosition { get; set; }
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public DrawerOperation Operation { get; set; }
 
-        public LoadingUnitDestination Source { get; set; }
+        public LoadingUnitLocation Source { get; set; }
 
         public double SourceHorizontalPosition { get; set; }
 

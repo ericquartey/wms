@@ -128,8 +128,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-          Environment.NewLine,
-          this[nameof(this.InputDisplacement)]);
+            Environment.NewLine,
+            this[nameof(this.InputDisplacement)]);
 
         public double? InputDisplacement
         {
@@ -228,11 +228,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.CanMoveToBay));
 
         public ICommand StartCommand =>
-                  this.startCommand
-          ??
-          (this.startCommand = new DelegateCommand(
-              async () => await this.StartAsync(),
-              this.CanStart));
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(
+                async () => await this.StartAsync(),
+                this.CanStart));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -290,14 +290,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
@@ -305,12 +304,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-            this.subscriptionToken = this.eventAggregator
-             .GetEvent<NotificationEventUI<PositioningMessageData>>()
-             .Subscribe(
-                 message => this.OnAutomationMessageReceived(message),
-                 ThreadOption.UIThread,
-                 false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.eventAggregator.SubscribeToEvent<PositioningMessageData>(
+                    this.OnAutomationMessageReceived,
+                    m => m.Data?.AxisMovement == Axis.Vertical);
 
             this.bay = await this.bayManager.GetBayAsync();
 
@@ -323,15 +321,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            System.Diagnostics.Debug.WriteLine($"Positioning notification: mode={message?.Data?.MovementMode}, axis={message.Data.AxisMovement}, status={message?.Status}, position={message?.Data.CurrentPosition}, sample={message?.Data?.TorqueCurrentSample?.Value}");
-
-            if (message is null
-                || message.Data is null
-                || message.Data.AxisMovement != Axis.Vertical)
-            {
-                return;
-            }
-
             this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
 
             if (message.Status == MessageStatus.OperationExecuting
@@ -373,6 +362,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.ProcedureCompleted,
                     Services.Models.NotificationSeverity.Success);
             }
+
         }
 
         protected virtual void RaiseCanExecuteChanged()

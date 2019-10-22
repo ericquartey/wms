@@ -88,10 +88,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 direction);
 
@@ -132,10 +128,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 speed,
                 acceleration,
                 deceleration,
-                0,
-                0,
-                0,
-                0,
                 switchPosition,
                 direction);
 

@@ -15,13 +15,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
+
         AxisBounds GetVerticalBounds();
 
         void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
+                    HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
+            bool waitContinue,
             bool measure,
             BayNumber requestingBay,
             MessageActor sender);
@@ -34,15 +37,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveVerticalOfDistance(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 
-        void RepeatVerticalMovement(
-            double upperBoundPosition,
+        void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
+        void StartBeltBurnishing(
+                    double upperBoundPosition,
             double lowerBoundPosition,
-            int totalTestCycleCount,
             int delayStart, BayNumber
             requestingBay,
             MessageActor sender);
-
-        void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void Stop(BayNumber requestingBay, MessageActor sender);
 

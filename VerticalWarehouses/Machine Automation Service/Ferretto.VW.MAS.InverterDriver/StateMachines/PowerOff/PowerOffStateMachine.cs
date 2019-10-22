@@ -40,6 +40,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         #region Methods
 
+        public override void Continue()
+        {
+        }
+
         public override void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
             if (this.CurrentState is PowerOffEndState)

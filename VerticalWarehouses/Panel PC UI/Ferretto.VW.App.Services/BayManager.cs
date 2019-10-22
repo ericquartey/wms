@@ -133,6 +133,7 @@ namespace Ferretto.VW.App.Services
         public async Task<Bay> GetBayAsync()
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
             return await this.machineBaysWebService.GetByNumberAsync((BayNumber)bayNumber);
         }
 
@@ -144,7 +145,7 @@ namespace Ferretto.VW.App.Services
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
             var bay = await this.GetBayAsync();
-            if (bay != null && bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
+            if (bay != null && bay.Number == (BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -154,19 +155,19 @@ namespace Ferretto.VW.App.Services
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
             //TODO Review Implementation avoid using numbers to identify bays
-            var bayNumber = MAS.AutomationService.Contracts.BayNumber.None;
+            var bayNumber = BayNumber.None;
             switch (e.BayNumber)
             {
                 case 1:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    bayNumber = BayNumber.BayOne;
                     break;
 
                 case 2:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    bayNumber = BayNumber.BayTwo;
                     break;
 
                 case 3:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    bayNumber = BayNumber.BayThree;
                     break;
             }
 

@@ -9,7 +9,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Cell> GetAll();
 
+        Cell GetCellById(int cellId);
+
+        Cell GetCellByLoadingUnit(int loadingUnitId);
+
         CellStatisticsSummary GetStatistics();
+
+        void LoadLoadingUnit(int loadingUnitId, int cellId);
+
+        void UnloadLoadingUnit(int cellId);
 
         Cell UpdateHeight(int cellId, double height);
 

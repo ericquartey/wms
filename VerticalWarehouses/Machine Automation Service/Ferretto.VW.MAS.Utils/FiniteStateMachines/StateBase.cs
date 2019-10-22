@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class StateBase : IState, IDisposable
@@ -15,8 +16,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
-
-        private readonly IServiceScope serviceScope;
 
         private bool hasEntered;
 
@@ -26,25 +25,19 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private bool isDisposed;
 
+        private IServiceProvider serviceProvider;
+
         #endregion
 
         #region Constructors
 
         protected StateBase(
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            ILogger<StateBase> logger)
         {
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -71,8 +64,15 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
         }
 
-        public void Enter(CommandMessage message)
+        public void Enter(CommandMessage message, IServiceProvider serviceProvider, IFiniteStateMachineData machineData)
         {
+            if (serviceProvider == null)
+            {
+                throw new ArgumentNullException(nameof(serviceProvider));
+            }
+
+            this.serviceProvider = serviceProvider;
+
             if (this.hasEntered)
             {
                 throw new InvalidOperationException($"FSM State {this.GetType().Name} was already entered.");
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.Logger.LogDebug($"Entering state {this.GetType().Name}.");
 
-            this.OnEnter(message);
+            this.OnEnter(message, machineData);
         }
 
         public void Exit()
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         protected IState GetState<TState>()
             where TState : IState
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TState>();
+            return this.serviceProvider.GetRequiredService<TState>();
         }
 
         protected void NotifyCommandError(CommandMessage commandMessage, string description)
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 commandMessage.Data,
                 description,
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.MissionManagerException,
                 commandMessage.RequestingBay,
                 commandMessage.TargetBay,
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             // derived classes can customize the behaviour of this method
         }
 
-        protected abstract void OnEnter(CommandMessage commandMessage);
+        protected abstract void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData);
 
         protected virtual void OnExit()
         {

@@ -279,7 +279,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (messageCurrentStateMachine != null
                 && receivedMessage.Type != MessageType.Stop
                 && receivedMessage.Type != MessageType.SensorsChanged
-                && receivedMessage.Type != MessageType.PowerEnable)
+                && receivedMessage.Type != MessageType.PowerEnable
+                && receivedMessage.Type != MessageType.ContinueMovement)
             {
                 var errorNotification = new NotificationMessage(
                     receivedMessage.Data,
@@ -302,6 +303,10 @@ namespace Ferretto.VW.MAS.DeviceManager
             this.logger.LogInformation($"Processing command [{receivedMessage.Type}] by {receivedMessage.RequestingBay} for {receivedMessage.TargetBay}");
             switch (receivedMessage.Type)
             {
+                case MessageType.ContinueMovement:
+                    this.ProcessContinueMessage(receivedMessage, serviceProvider);
+                    break;
+
                 case MessageType.Homing:
                     this.ProcessHomingMessage(receivedMessage, serviceProvider);
                     break;

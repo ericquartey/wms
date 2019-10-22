@@ -74,8 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.PositionTargetPosition:
-                        if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical
-                            )
+                        if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         {
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (short)this.verticalParams.BrakeReleaseTime));
                             this.Logger.LogDebug($"Set Brake Release Time: {(int)this.verticalParams.BrakeReleaseTime}");

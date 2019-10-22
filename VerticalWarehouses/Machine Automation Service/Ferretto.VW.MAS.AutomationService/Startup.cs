@@ -6,7 +6,8 @@ using Ferretto.VW.MAS.DataLayer.Extensions;
 using Ferretto.VW.MAS.DeviceManager.Extensions;
 using Ferretto.VW.MAS.InverterDriver.Extensions;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.MissionsManager.Extensions;
+using Ferretto.VW.MAS.MachineManager.Extensions;
+using Ferretto.VW.MAS.MissionManager.Extensions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -154,7 +155,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddIODriver()
                 .AddInverterDriver()
                 .AddFiniteStateMachines()
-                .AddMissionsManager();
+                .AddMachineManager()
+                .AddMissionManager();
 
             services.AddHostedService<AutomationService>();
 
