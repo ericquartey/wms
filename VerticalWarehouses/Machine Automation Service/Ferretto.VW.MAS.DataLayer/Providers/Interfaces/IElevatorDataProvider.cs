@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetAxis(Orientation orientation);
 
+        IDbContextTransaction GetContextTransaction();
+
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
@@ -16,7 +19,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetVerticalAxis();
 
-        void SetLoadingUnitOnBoard(int? loadingUnitId);
+        void LoadLoadingUnit(int loadingUnitId);
+
+        void UnloadLoadingUnit();
 
         void UpdateVerticalOffset(double newOffset);
 

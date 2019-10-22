@@ -35,19 +35,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IEventAggregator eventAggregator,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
         #endregion
 
         #region Methods
+
+        // Interrupts operation finishing current movement leaving machine in a safe state
+        [HttpGet("abort-moving")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Abort(BayNumber targetBay)
+        {
+            this.moveLoadingUnitProvider.AbortMove(this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
 
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
@@ -78,7 +86,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -104,7 +112,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -117,14 +125,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitDestination destination)
+        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            if (destination == LoadingUnitDestination.Cell)
+            if (destination == LoadingUnitLocation.Cell)
             {
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -134,7 +142,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -143,34 +151,35 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMovingSourceDestination(LoadingUnitDestination source, LoadingUnitDestination destination, int? sourceCellId, int? destinationCellId)
+        public IActionResult StartMovingSourceDestination(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId)
         {
-            if (source == LoadingUnitDestination.Cell && destination == LoadingUnitDestination.Cell)
+            if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
-            else if (source != LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber, MessageActor.AutomationService);
             }
-            else if (source == LoadingUnitDestination.Cell && destination != LoadingUnitDestination.Cell)
+            else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else
             {
-                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber);
+                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
 
             return this.Accepted();
         }
 
+        // Instantaneously interrupts current operation leaving machine in a potentially unsafe condition
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult Stop(BayNumber targetBay)
         {
-            // this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.StopMove(this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

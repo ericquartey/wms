@@ -47,6 +47,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     return Task.CompletedTask;
                 }
+                if (receivedMessage.Type == FieldMessageType.ContinueMovement)
+                {
+                    messageCurrentStateMachine.Continue();
+
+                    return Task.CompletedTask;
+                }
 
                 if (receivedMessage.Type != FieldMessageType.InverterSetTimer)
                 {

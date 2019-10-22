@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,9 +26,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         public ChangeRunningStateResetSecurity(
             IMachineControlProvider machineControlProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.machineControlProvider = machineControlProvider ??
                 throw new ArgumentNullException(nameof(machineControlProvider));
@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #region Methods
 
-        protected override void OnEnter(CommandMessage commandMessage)
+        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
@@ -47,14 +47,16 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
                 }
                 else
                 {
-                    // TODO Define a cleanup pattern for State Machine after this error
-                    this.NotifyCommandError(commandMessage, "Power Enable Reset Fault State started during machine power down");
+                    var description = "Power Enable Reset Fault State started during machine power down";
+
+                    throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
                 }
             }
             else
             {
-                // TODO Define a cleanup pattern for State Machine after this error
-                this.NotifyCommandError(commandMessage, $"Power Enable Reset Fault State received wrong initialization data ({commandMessage.Data.GetType().Name})");
+                var description = $"Power Enable Reset Fault State received wrong initialization data ({commandMessage.Data.GetType().Name})";
+
+                throw new StateMachineException(description, commandMessage, MessageActor.MissionsManager);
             }
         }
 

@@ -26,9 +26,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         public ChangeRunningStateStateMachine(
             IMachineControlProvider machineControlProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
         }
@@ -36,6 +35,11 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
         #endregion
 
         #region Methods
+
+        public override bool AllowMultipleInstances(CommandMessage command)
+        {
+            return false;
+        }
 
         protected override bool FilterCommand(CommandMessage command)
         {

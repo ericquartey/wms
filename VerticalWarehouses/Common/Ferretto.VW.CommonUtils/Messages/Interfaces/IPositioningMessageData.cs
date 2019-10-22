@@ -49,6 +49,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double UpperBound { get; }
 
+        bool WaitContinue { get; set; }
+
         #endregion
     }
 }
