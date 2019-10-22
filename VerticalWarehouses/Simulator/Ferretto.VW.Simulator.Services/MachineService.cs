@@ -411,6 +411,11 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(torqueMessage);
                     break;
 
+                case InverterParameterId.ProfileInput:
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
+                    result = client.Client.Send(profileMessage);
+                    break;
+
                 case InverterParameterId.PositionTargetPosition:
                     inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)message.UIntPayload);
                     inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;

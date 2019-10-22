@@ -130,6 +130,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 isStartedOnBoard,
                 loadingUnitId,
                 loadingUnitGrossWeight,
+                false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

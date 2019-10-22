@@ -10,7 +10,7 @@
 
         CradleMotor = 2,
 
-        MeasureBarrier = 3,
+        MeasureProfile = 3,
 
         BayLight = 4,
 

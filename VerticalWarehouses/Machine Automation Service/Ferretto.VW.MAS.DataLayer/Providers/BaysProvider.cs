@@ -419,6 +419,28 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public InverterIndex GetInverterIndexByProfile(BayNumber bayNumber)
+        {
+            var returnValue = InverterIndex.None;
+
+            switch (bayNumber)
+            {
+                case BayNumber.BayOne:
+                    returnValue = InverterIndex.MainInverter;
+                    break;
+
+                case BayNumber.BayTwo:
+                case BayNumber.BayThree:
+                    returnValue = this.GetByNumber(bayNumber).Shutter.Inverter.Index;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return returnValue;
+        }
+
         public IoIndex GetIoDevice(BayNumber bayNumber)
         {
             var returnValue = IoIndex.None;

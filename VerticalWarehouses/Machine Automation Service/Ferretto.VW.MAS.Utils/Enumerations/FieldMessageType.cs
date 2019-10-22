@@ -12,6 +12,8 @@
 
         IoPowerUp,
 
+        MeasureProfile,
+
         CalibrateAxis,
 
         InverterPowerOff,

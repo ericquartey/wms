@@ -22,6 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
+            bool measure,
             BayNumber requestingBay,
             MessageActor sender);
 

@@ -88,6 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
+            bool measure,
             BayNumber requestingBay,
             MessageActor sender)
         {
@@ -142,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.TableTarget,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,
