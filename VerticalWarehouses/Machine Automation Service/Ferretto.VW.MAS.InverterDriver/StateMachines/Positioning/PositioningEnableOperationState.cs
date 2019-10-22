@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     (short)InverterParameterId.ControlWord,
                     this.Inverter.PositionControlWord.Value,
                     InverterDataset.ActualDataset,
-                    500));
+                    100));
         }
 
         /// <inheritdoc />
