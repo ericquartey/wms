@@ -41,6 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Logger.LogDebug($"Positioning Disable Operation. StopRequested = {this.stopRequested}");
             this.Inverter.PositionControlWord.NewSetPoint = false;
+            this.Inverter.PositionControlWord.ImmediateChangeSet = false;
             this.Inverter.PositionControlWord.RelativeMovement = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(

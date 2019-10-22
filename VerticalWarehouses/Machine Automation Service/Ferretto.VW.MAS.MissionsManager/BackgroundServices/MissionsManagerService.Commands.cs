@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -26,17 +27,13 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         {
             switch (command.Type)
             {
-                case MessageType.WeightAcquisitionCommand:
-                    {
-                        this.OnWeightAcquisitionProcedureCommandReceived(command);
-                        break;
-                    }
-
                 case MessageType.ChangeRunningState:
-                    {
-                        this.OnChangeRunningStateCommandReceived(command);
-                        break;
-                    }
+                    this.OnChangeRunningStateCommandReceived(command);
+                    break;
+
+                case MessageType.MoveLoadingUnit:
+                    this.OnMoveLoadingUnit(command);
+                    break;
             }
 
             return Task.CompletedTask;
@@ -49,44 +46,82 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                 return;
             }
 
-            switch (((ChangeRunningStateMessageData)command.Data).CommandAction)
+            if (command.Data is ChangeRunningStateMessageData messageData)
             {
-                case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId))
-                    {
-                        this.missionsProvider.StartMachineMission(missionId, command);
-                    }
-                    else
-                    {
-                        this.Logger.LogError("Failed to create Change Running State machine mission");
-                        this.NotifyCommandError(command);
-                    }
+                switch (messageData.CommandAction)
+                {
+                    case CommandAction.Start:
+                        if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
+                        {
+                            try
+                            {
+                                this.missionsProvider.StartMachineMission(missionId, command);
+                            }
+                            catch
+                            {
+                                this.Logger.LogDebug("Failed to start Change Running State machine mission");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                            this.NotifyCommandError(command);
+                        }
 
-                    break;
+                        break;
+                }
+            }
+            else
+            {
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Change Running State Command");
+                this.NotifyCommandError(command);
             }
         }
 
-        private void OnWeightAcquisitionProcedureCommandReceived(CommandMessage command)
+        private void OnMoveLoadingUnit(CommandMessage command)
         {
             if (command is null)
             {
                 return;
             }
 
-            switch (((WeightAcquisitionCommandMessageData)command.Data).CommandAction)
+            if (command.Data is MoveLoadingUnitMessageData messageData)
             {
-                case CommandAction.Start:
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.WeightAcquisition, out var missionId))
-                    {
-                        this.missionsProvider.StartMachineMission(missionId, command);
-                    }
-                    else
-                    {
-                        this.Logger.LogDebug("Failed to create Change Running State machine mission");
-                        this.NotifyCommandError(command);
-                    }
+                switch (messageData.CommandAction)
+                {
+                    case CommandAction.Start:
+                        if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
+                        {
+                            try
+                            {
+                                this.missionsProvider.StartMachineMission(missionId, command);
+                            }
+                            catch
+                            {
+                                this.Logger.LogDebug("Failed to start Move Loading UNit State machine mission");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            this.Logger.LogDebug("Failed to create Move Loading Unit State machine mission");
+                            this.NotifyCommandError(command);
+                        }
 
-                    break;
+                        break;
+
+                    case CommandAction.Abort:
+                        break;
+
+                    case CommandAction.Stop:
+                        break;
+                }
+            }
+            else
+            {
+                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Move Loading Unit Command");
+                this.NotifyCommandError(command);
             }
         }
 

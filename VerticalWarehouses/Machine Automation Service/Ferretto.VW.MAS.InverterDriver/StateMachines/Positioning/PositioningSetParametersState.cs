@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData data;
 
-        private readonly VerticalManualMovementsProcedure verticalParams;
+        private readonly ElevatorAxis verticalParams;
 
         #endregion
 
@@ -28,9 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.data = data;
-            this.verticalParams = this.ParentStateMachine
-                .GetRequiredService<ISetupProceduresDataProvider>()
-                .GetVerticalManualMovements(); // NO! these are not manual movements. This needs to be removed!!!!!!!!!!!
+            this.verticalParams = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
 
             logger.LogDebug("1:Method Start");
         }
@@ -76,8 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.PositionTargetPosition:
-                        if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical
-                            )
+                        if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         {
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (short)this.verticalParams.BrakeReleaseTime));
                             this.Logger.LogDebug($"Set Brake Release Time: {(int)this.verticalParams.BrakeReleaseTime}");

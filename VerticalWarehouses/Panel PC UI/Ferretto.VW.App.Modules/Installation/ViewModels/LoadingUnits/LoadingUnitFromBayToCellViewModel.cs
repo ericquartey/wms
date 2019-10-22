@@ -360,17 +360,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 Services.Models.NotificationSeverity.Success);
         }
 
-        private MAS.AutomationService.Contracts.LoadingUnitDestination GetLoadingUnitSource()
+        private MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
         {
             if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
             {
                 if (this.IsPosition1Selected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
                 }
             }
 
@@ -378,11 +378,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.IsPosition1Selected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
                 }
             }
 
@@ -390,15 +390,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.IsPosition1Selected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
                 }
             }
 
-            return MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination;
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
         }
 
         private async Task InitializeSensors()
@@ -532,7 +532,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var source = this.GetLoadingUnitSource();
 
-                if (source == MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination)
+                if (source == MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation)
                 {
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
@@ -540,7 +540,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, MAS.AutomationService.Contracts.LoadingUnitDestination.Cell, null, this.CellId.Value);
+                await this.machineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, MAS.AutomationService.Contracts.LoadingUnitLocation.Cell, null, this.CellId.Value);
             }
             catch (Exception ex)
             {

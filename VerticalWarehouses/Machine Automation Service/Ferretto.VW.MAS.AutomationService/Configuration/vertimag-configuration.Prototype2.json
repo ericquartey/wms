@@ -33,7 +33,12 @@
         "IsExternal": false,
         "ChainOffset": -5,
         "Number": 1,
-        "Positions": [ { "Height": 741 } ],
+        "Positions": [
+          {
+            "Height": 741,
+            "Location": "InternalBay1Down"
+          }
+        ],
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
@@ -56,6 +61,8 @@
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 99.177657,
           "Offset": 350,
@@ -71,7 +78,11 @@
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 420
-          }
+          },
+          "WeightMeasureMultiply": 0.005759,
+          "WeightMeasureSum": 6.157686,
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Inverter": {
@@ -283,13 +294,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 351,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 355,
             "priority": 3,
             "status": "Free"
           },
@@ -1512,7 +1523,7 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 360,
             "priority": 2,
             "status": "Free"
           },
@@ -2789,8 +2800,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test

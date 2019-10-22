@@ -169,7 +169,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
                 this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
                 this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
-                (this.machineData.MessageData.MovementMode == MovementMode.Position || this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                (this.machineData.MessageData.MovementMode == MovementMode.Position ||
+                    this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure ||
+                    this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
                 )
             {
                 ok = false;

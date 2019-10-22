@@ -6,7 +6,7 @@
 
         Position,
 
-        Profile,
+        PositionAndMeasure,
 
         BeltBurnishing,
 

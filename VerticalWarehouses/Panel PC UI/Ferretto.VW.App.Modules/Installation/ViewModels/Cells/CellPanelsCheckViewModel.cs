@@ -397,7 +397,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.CurrentCell.Position,
-                    this.procedureParameters.FeedRate);
+                    this.procedureParameters.FeedRate,
+                    false);
 
                 this.HasReachedCellPosition = true;
             }

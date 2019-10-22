@@ -295,11 +295,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction);
@@ -401,6 +401,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -422,11 +429,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitDestination destination);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitDestination destination, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId);
@@ -436,11 +443,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingLoadingUnitToCellAsync(int loadingUnitId, int destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitDestination source, LoadingUnitDestination destination, int? sourceCellId, int? destinationCellId);
+        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitDestination source, LoadingUnitDestination destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync(BayNumber targetBay);
@@ -760,9 +767,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("isExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LoadingUnit LoadingUnit { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
     
@@ -1053,6 +1057,64 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
+    /// <summary>0 = None
+    /// 1 = BayOne
+    /// 2 = BayTwo
+    /// 3 = BayThree
+    /// 4 = ElevatorBay
+    /// 10 = All</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayNumber
+    {
+        None = 0,
+    
+        BayOne = 1,
+    
+        BayTwo = 2,
+    
+        BayThree = 3,
+    
+        ElevatorBay = 4,
+    
+        All = 10,
+    
+    }
+    
+    /// <summary>0 = Idle
+    /// 1 = ExecutingMission</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayOperation
+    {
+        Idle = 0,
+    
+        ExecutingMission = 1,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class BayPosition : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
+        public double Height { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public LoadingUnit LoadingUnit { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("location", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation Location { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static BayPosition FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class LoadingUnit : DataModel
     {
@@ -1185,55 +1247,71 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
-    /// 1 = BayOne
-    /// 2 = BayTwo
-    /// 3 = BayThree
-    /// 4 = ElevatorBay
-    /// 10 = All</summary>
+    /// <summary>0 = NoLocation
+    /// 1 = InternalBay1Up
+    /// 2 = InternalBay1Down
+    /// 3 = InternalBay2Up
+    /// 4 = InternalBay2Down
+    /// 5 = InternalBay3Up
+    /// 6 = InternalBay3Down
+    /// 7 = ExternalBay1Up
+    /// 8 = ExternalBay1Down
+    /// 9 = ExternalBay2Up
+    /// 10 = ExternalBay2Down
+    /// 11 = ExternalBay3Up
+    /// 12 = ExternalBay3Down
+    /// 13 = CarouselBay1Up
+    /// 14 = CarouselBay1Down
+    /// 15 = CarouselBay2Up
+    /// 16 = CarouselBay2Down
+    /// 17 = CarouselBay3Up
+    /// 18 = CarouselBay3Down
+    /// 19 = Cell
+    /// 20 = LoadingUnit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayNumber
+    public enum LoadingUnitLocation
     {
-        None = 0,
+        NoLocation = 0,
     
-        BayOne = 1,
+        InternalBay1Up = 1,
     
-        BayTwo = 2,
+        InternalBay1Down = 2,
     
-        BayThree = 3,
+        InternalBay2Up = 3,
     
-        ElevatorBay = 4,
+        InternalBay2Down = 4,
     
-        All = 10,
+        InternalBay3Up = 5,
     
-    }
+        InternalBay3Down = 6,
     
-    /// <summary>0 = Idle
-    /// 1 = ExecutingMission</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayOperation
-    {
-        Idle = 0,
+        ExternalBay1Up = 7,
     
-        ExecutingMission = 1,
+        ExternalBay1Down = 8,
     
-    }
+        ExternalBay2Up = 9,
     
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class BayPosition : DataModel
-    {
-        [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
-        public double Height { get; set; }
+        ExternalBay2Down = 10,
     
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
+        ExternalBay3Up = 11,
     
-        public static BayPosition FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<BayPosition>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
+        ExternalBay3Down = 12,
+    
+        CarouselBay1Up = 13,
+    
+        CarouselBay1Down = 14,
+    
+        CarouselBay2Up = 15,
+    
+        CarouselBay2Down = 16,
+    
+        CarouselBay3Up = 17,
+    
+        CarouselBay3Down = 18,
+    
+        Cell = 19,
+    
+        LoadingUnit = 20,
     
     }
     
@@ -1552,6 +1630,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorAxis : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeActivatePercent { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
+        public double BrakeReleaseTime { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
@@ -1584,6 +1668,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureMultiply", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureMultiply { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureSum", Required = Newtonsoft.Json.Required.Always)]
+        public double WeightMeasureSum { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("weightMeasureTime", Required = Newtonsoft.Json.Required.Always)]
+        public int WeightMeasureTime { get; set; }
     
         public string ToJson() 
         {
@@ -1871,12 +1967,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class VerticalManualMovementsProcedure : SetupProcedure
     {
-        [Newtonsoft.Json.JsonProperty("brakeActivatePercent", Required = Newtonsoft.Json.Required.Always)]
-        public double BrakeActivatePercent { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("brakeReleaseTime", Required = Newtonsoft.Json.Required.Always)]
-        public double BrakeReleaseTime { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("feedRateAfterZero", Required = Newtonsoft.Json.Required.Always)]
         public double FeedRateAfterZero { get; set; }
     
@@ -2494,71 +2584,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitWeightStatistics>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
-    
-    }
-    
-    /// <summary>0 = NoDestination
-    /// 1 = InternalBay1Up
-    /// 2 = InternalBay1Down
-    /// 3 = InternalBay2Up
-    /// 4 = InternalBay2Down
-    /// 5 = InternalBay3Up
-    /// 6 = InternalBay3Down
-    /// 7 = ExternalBay1Up
-    /// 8 = ExternalBay1Down
-    /// 9 = ExternalBay2Up
-    /// 10 = ExternalBay2Down
-    /// 11 = ExternalBay3Up
-    /// 12 = ExternalBay3Down
-    /// 13 = CarouselBay1Up
-    /// 14 = CarouselBay1Down
-    /// 15 = CarouselBay2Up
-    /// 16 = CarouselBay2Down
-    /// 17 = CarouselBay3Up
-    /// 18 = CarouselBay3Down
-    /// 19 = Cell</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum LoadingUnitDestination
-    {
-        NoDestination = 0,
-    
-        InternalBay1Up = 1,
-    
-        InternalBay1Down = 2,
-    
-        InternalBay2Up = 3,
-    
-        InternalBay2Down = 4,
-    
-        InternalBay3Up = 5,
-    
-        InternalBay3Down = 6,
-    
-        ExternalBay1Up = 7,
-    
-        ExternalBay1Down = 8,
-    
-        ExternalBay2Up = 9,
-    
-        ExternalBay2Down = 10,
-    
-        ExternalBay3Up = 11,
-    
-        ExternalBay3Down = 12,
-    
-        CarouselBay1Up = 13,
-    
-        CarouselBay1Down = 14,
-    
-        CarouselBay2Up = 15,
-    
-        CarouselBay2Down = 16,
-    
-        CarouselBay3Up = 17,
-    
-        CarouselBay3Down = 18,
-    
-        Cell = 19,
     
     }
     

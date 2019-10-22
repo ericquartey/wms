@@ -15,19 +15,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
+
         AxisBounds GetVerticalBounds();
 
         void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
+                    HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
+            bool waitContinue,
             BayNumber requestingBay,
             MessageActor sender);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber requestingBay, MessageActor sender);
+        void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender);
 
         void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 

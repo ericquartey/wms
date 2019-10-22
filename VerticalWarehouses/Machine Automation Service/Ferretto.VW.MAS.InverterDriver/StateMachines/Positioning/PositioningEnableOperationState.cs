@@ -12,8 +12,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private const int CheckDelayTime = 100;
-
         private readonly IInverterPositioningFieldMessageData data;
 
         private DateTime startTime;
@@ -57,7 +55,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWord,
-                    this.Inverter.PositionControlWord.Value));
+                    this.Inverter.PositionControlWord.Value,
+                    InverterDataset.ActualDataset,
+                    100));
         }
 
         /// <inheritdoc />
@@ -101,36 +101,34 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    // we must wait 100ms between EnableOperation and start moving
-                    if (this.startTime == DateTime.MinValue)
+                    if (this.data.IsTorqueCurrentSamplingEnabled)
                     {
-                        this.startTime = DateTime.UtcNow;
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningStartSamplingWhileMovingState(
+                                this.data,
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
+                    }
+                    else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
+                    {
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningMeasureStartMovingState(
+                                this.data,
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
                     }
                     else
                     {
-                        if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime)
-                        {
-                            if (this.data.IsTorqueCurrentSamplingEnabled)
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningStartSamplingWhileMovingState(
-                                        this.data,
-                                        this.ParentStateMachine,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-                            else
-                            {
-                                this.ParentStateMachine.ChangeState(
-                                    new PositioningStartMovingState(
-                                        this.ParentStateMachine,
-                                        this.Inverter,
-                                        this.Logger));
-                            }
-
-                            returnValue = true;
-                        }
+                        this.ParentStateMachine.ChangeState(
+                            new PositioningStartMovingState(
+                                this.ParentStateMachine,
+                                this.Inverter,
+                                this.Logger));
                     }
+
+                    returnValue = true;
                 }
             }
             return returnValue;

@@ -266,5 +266,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
             }
         }
+        
     }
 }

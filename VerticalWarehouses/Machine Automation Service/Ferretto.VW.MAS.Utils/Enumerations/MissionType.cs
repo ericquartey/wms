@@ -6,6 +6,6 @@
 
         ChangeRunningType,
 
-        WeightAcquisition,
+        MoveLoadingUnit
     }
 }

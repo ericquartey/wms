@@ -238,7 +238,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.LoadingUnit)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
 
                 if (bay is null)
@@ -248,6 +247,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay;
             }
+        }
+
+        public Bay GetByLoadingUnitLocation(LoadingUnitLocation location)
+        {
+            return this.dataContext.Bays.FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)
@@ -262,6 +266,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                     switch (data.AxisMovement)
                     {
                         case Axis.Horizontal:
@@ -295,7 +300,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.LoadingUnit)
                     .SingleOrDefault(b => b.Number == bayNumber);
 
                 if (bay is null)
@@ -356,6 +360,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     switch (data.MovementMode)
                     {
                         case MovementMode.Position:
+                        case MovementMode.PositionAndMeasure:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:
@@ -378,7 +383,6 @@ namespace Ferretto.VW.MAS.DataLayer
                             break;
 
                         case MovementMode.FindZero:
-                        case MovementMode.Profile:
                             returnValue = this.machineProvider.IsOneTonMachine() ? InverterIndex.Slave1 : InverterIndex.MainInverter;
                             break;
 
@@ -441,17 +445,48 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
+        {
+            return this.dataContext.BayPositions
+                       .Where(p => p.Location == location)
+                       .Select(p => p.LoadingUnit).SingleOrDefault();
+        }
+
+        public double GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
+        {
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.Height ?? 0;
+        }
+
+        public LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId)
+        {
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+        }
+
         public double GetResolution(InverterIndex inverterIndex)
         {
-            var bay = this.dataContext.Bays
-                .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
-
-            if (bay is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(inverterIndex.ToString());
-            }
+                var bay = this.dataContext.Bays
+                              .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
 
-            return bay.Resolution;
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(inverterIndex.ToString());
+                }
+
+                return bay.Resolution;
+            }
+        }
+
+        public void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation destination)
+        {
+            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
+            var loadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
+
+            position.LoadingUnit = loadingUnit;
+
+            this.dataContext.BayPositions.Update(position);
+            this.dataContext.SaveChanges();
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
@@ -470,6 +505,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay;
             }
+        }
+
+        public void UnloadLoadingUnit(LoadingUnitLocation destination)
+        {
+            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
+            position.LoadingUnit = null;
+
+            this.dataContext.BayPositions.Update(position);
+            this.dataContext.SaveChanges();
         }
 
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)

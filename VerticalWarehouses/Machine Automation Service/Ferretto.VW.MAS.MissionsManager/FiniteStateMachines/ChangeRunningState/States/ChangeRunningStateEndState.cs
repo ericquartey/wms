@@ -39,9 +39,8 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
             IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(eventAggregator, logger, serviceScopeFactory)
+            ILogger<StateBase> logger)
+            : base(eventAggregator, logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
@@ -64,7 +63,7 @@ namespace Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState
 
         #region Methods
 
-        protected override void OnEnter(CommandMessage commandMessage)
+        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,

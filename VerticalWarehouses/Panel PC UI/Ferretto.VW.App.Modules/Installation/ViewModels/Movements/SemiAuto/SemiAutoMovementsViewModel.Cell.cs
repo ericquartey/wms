@@ -267,7 +267,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
-                    this.procedureParameters.FeedRateAfterZero);
+                    this.procedureParameters.FeedRateAfterZero,
+                    true);
 
                 this.IsElevatorMovingToCell = true;
             }
@@ -291,7 +292,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
-                    this.procedureParameters.FeedRateAfterZero);
+                    this.procedureParameters.FeedRateAfterZero,
+                    false);
 
                 this.IsElevatorMovingToHeight = true;
             }
@@ -315,7 +317,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedLoadingUnit.Cell?.Position ?? 0,
-                    this.procedureParameters.FeedRateAfterZero);
+                    this.procedureParameters.FeedRateAfterZero,
+                    false);
 
                 this.IsElevatorMovingToLoadingUnit = true;
             }

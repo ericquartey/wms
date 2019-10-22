@@ -1,6 +1,10 @@
 ﻿using System;
+using Ferretto.VW.MAS.MissionsManager.BackgroundServices;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState;
 using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.ChangeRunningState.States;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States;
+using Ferretto.VW.MAS.MissionsManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.MissionsManager.Providers;
 using Ferretto.VW.MAS.MissionsManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
@@ -19,7 +23,7 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<BackgroundServices.MissionsManagerService>();
+            services.AddHostedService<MissionsManagerService>();
 
             services
                 .AddTransient<IRunningStateProvider, RunningStateProvider>()
@@ -27,11 +31,21 @@ namespace Ferretto.VW.MAS.MissionsManager.Extensions
 
             services
                 .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()
+                .AddTransient<IMoveLoadingUnitStateMachine, MoveLoadingUnitStateMachine>();
+
+            services
                 .AddTransient<IChangeRunningStateStartState, ChangeRunningStateStartState>()
                 .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
                 .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
                 .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
-                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
+                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>()
+
+                .AddTransient<IMoveLoadingUnitStartState, MoveLoadingUnitStartState>()
+                .AddTransient<IMoveLoadingUnitLoadElevatorState, MoveLoadingUnitLoadElevatorState>()
+                .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()
+                .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
+                .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
+                .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>();
 
             return services;
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -67,6 +68,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
+        {
+            this.PublishCommand(
+                null,
+                $"Continue Positioning Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.ContinueMovement,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         /// <summary>
         ///   This code added to correctly implement the disposable pattern.
         /// </summary>
@@ -83,16 +96,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
+        /// <summary>
+        /// Moves the horizontal chain of the elevator to load or unload a LoadUnit.
+        /// It uses a Table target movement, mapped by 4 Profiles sets of parameters selected by direction and loading status
+        /// </summary>
+        /// <param name="direction">Forwards: from elevator to Bay 1 side</param>
+        /// <param name="isStartedOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
+        /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
+        /// <param name="loadingUnitNetWeight">This weight is stored in LoadingUnits table before the movement.</param>
+        /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
+        /// <param name="requestingBay"></param>
+        /// <param name="sender"></param>
         public void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
+            bool waitContinue,
             BayNumber requestingBay,
             MessageActor sender)
         {
             var sensors = this.sensorsProvider.GetAll();
-            this.elevatorDataProvider.SetLoadingUnitOnBoard(loadingUnitId);
 
             if (loadingUnitId.HasValue
                 &&
@@ -116,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? IOMachineSensors.ZeroPawlSensorOneK
                 : IOMachineSensors.ZeroPawlSensor;
 
-            if ((!isStartedOnBoard && !sensors[(int)zeroSensor]) || (isStartedOnBoard && sensors[(int)zeroSensor]))
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
             {
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
@@ -148,7 +172,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction,
+                waitContinue);
 
             this.PublishCommand(
                 messageData,
@@ -200,7 +225,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, double feedRate, BayNumber bayNumber, MessageActor sender)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -218,11 +243,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
 
+            // TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
             var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
             if (!homingDone)
             {
                 throw new InvalidOperationException(
                    Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+            }
+
+            var sensors = this.sensorsProvider.GetAll();
+            var isLoadingUnitOnBoard =
+                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                &&
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+            if (measure && !isLoadingUnitOnBoard)
+            {
+                this.logger.LogDebug($"Do not measure weight on empty elevator!");
+                measure = false;
+            }
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
+                ? IOMachineSensors.ZeroPawlSensorOneK
+                : IOMachineSensors.ZeroPawlSensor;
+
+            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
+            {
+                throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
             var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
@@ -231,11 +276,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
+            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]} ");
 
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,
@@ -249,11 +299,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVertical(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
         {
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             var movementType = MovementType.Relative;
@@ -309,11 +359,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveVerticalOfDistance(double distance, BayNumber bayNumber, MessageActor sender, double feedRate = 1)
+        public void MoveVerticalOfDistance(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1)
         {
             if (distance == 0)
             {
@@ -356,7 +406,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
@@ -418,7 +468,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     double upperBoundPosition,
             double lowerBoundPosition,
             int delayStart,
-            BayNumber bayNumber,
+            BayNumber requestingBay,
             MessageActor sender)
         {
             if (upperBoundPosition <= 0)
@@ -481,11 +531,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Positioning,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 
-        public void Stop(BayNumber bayNumber, MessageActor sender)
+        public void Stop(BayNumber requestingBay, MessageActor sender)
         {
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
@@ -494,7 +544,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageActor.FiniteStateMachines,
                 sender,
                 MessageType.Stop,
-                bayNumber,
+                requestingBay,
                 BayNumber.ElevatorBay);
         }
 

@@ -1033,7 +1033,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                         }
                         if (this.AxisPosition > this.SwitchPositions[this.currentAxis][3])
                         {
-                            this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
+                            //this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value = true;
                             if (this.InverterType == InverterType.Ang)
                             {
                                 this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;

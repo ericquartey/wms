@@ -1,6 +1,10 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier

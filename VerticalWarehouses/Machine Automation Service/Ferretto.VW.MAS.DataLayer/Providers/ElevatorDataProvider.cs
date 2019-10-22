@@ -4,6 +4,7 @@ using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -58,6 +59,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IDbContextTransaction GetContextTransaction()
+        {
+            return this.dataContext.Database.BeginTransaction();
+        }
+
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
@@ -103,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetLoadingUnitOnBoard(int? id)
+        public void LoadLoadingUnit(int id)
         {
             lock (this.dataContext)
             {
@@ -115,6 +121,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void UnloadLoadingUnit()
+        {
+            var elevator = this.dataContext.Elevators
+                               .Include(e => e.LoadingUnit)
+                               .Single();
+
+            elevator.LoadingUnitId = null;
+
+            this.dataContext.SaveChanges();
         }
 
         public void UpdateVerticalOffset(double newOffset)

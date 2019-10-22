@@ -44,6 +44,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #region Methods
 
+        public override void Continue()
+        {
+        }
+
         /// <inheritdoc />
         public override void Start()
         {
