@@ -66,6 +66,32 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
         }
 
+        private void ProcessContinueMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
+        {
+            this.logger.LogTrace("1:Method Start");
+            if (this.currentStateMachines.Any(x => x.Key == receivedMessage.TargetBay))
+            {
+                var digitalDevicesDataProvider = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>();
+                var inverterList = digitalDevicesDataProvider.GetAllInvertersByBay(receivedMessage.TargetBay);
+                foreach (var inverter in inverterList)
+                {
+                    var inverterMessage = new FieldCommandMessage(
+                        null,
+                        "Continue Message Command",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageType.ContinueMovement,
+                        (byte)inverter.Index);
+                    this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+                    this.logger.LogDebug($"Continue Message send to inverter {inverter.Index}");
+                }
+            }
+            else
+            {
+                this.logger.LogDebug($"Continue Message ignored, no active state machine for bay {receivedMessage.TargetBay}");
+            }
+        }
+
         private void ProcessHomingMessage(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
             this.logger.LogTrace("1:Method Start");

@@ -1,8 +1,8 @@
 ﻿namespace Ferretto.VW.CommonUtils.Messages.Enumerations
 {
-    public enum LoadingUnitDestination
+    public enum LoadingUnitLocation
     {
-        NoDestination = 0,
+        NoLocation = 0,
 
         InternalBay1Up,
 
@@ -41,5 +41,7 @@
         CarouselBay3Down,
 
         Cell,
+
+        LoadingUnit,
     }
 }

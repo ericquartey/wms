@@ -59,11 +59,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
-                    new LoadingUnitSpaceStatistics
-                    {
-                        MissionsCount = l.MissionsCount,
-                        Code = l.Code,
-                    }).ToArray();
+                                                                            new LoadingUnitSpaceStatistics
+                                                                            {
+                                                                                MissionsCount = l.MissionsCount,
+                                                                                Code = l.Code,
+                                                                            }).ToArray();
 
                 return loadingUnits;
             }

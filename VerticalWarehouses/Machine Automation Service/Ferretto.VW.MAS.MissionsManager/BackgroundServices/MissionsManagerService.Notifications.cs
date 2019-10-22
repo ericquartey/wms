@@ -100,7 +100,8 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, out var missionId, true))
+                    // TODO Handle state change while starting / stopping machine
+                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged
                             ? DataModels.MachineErrorCode.InverterFaultStateDetected

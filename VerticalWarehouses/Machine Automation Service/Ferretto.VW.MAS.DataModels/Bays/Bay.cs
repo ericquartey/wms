@@ -26,8 +26,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsExternal { get; set; }
 
-        public LoadingUnit LoadingUnit { get; set; }
-
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }

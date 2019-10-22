@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191021134543_initialcreation")]
-    partial class initialcreation
+    [Migration("20191022095457_InitialCreation")]
+    partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
-                    b.Property<int?>("LoadingUnitId");
-
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -63,8 +61,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("IoDeviceId");
 
-                    b.HasIndex("LoadingUnitId");
-
                     b.HasIndex("MachineId");
 
                     b.HasIndex("Number")
@@ -84,11 +80,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
 
-                    b.ToTable("BayPosition");
+                    b.HasIndex("LoadingUnitId");
+
+                    b.ToTable("BayPositions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
@@ -301,38 +305,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 100037,
-                            Code = 100037,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100038,
-                            Code = 100038,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100039,
-                            Code = 100039,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100040,
-                            Code = 100040,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -450,6 +422,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Errore di sintassi del messaggio inviato all'inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 100037,
+                            Code = 100037,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100038,
+                            Code = 100038,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100039,
+                            Code = 100039,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100040,
+                            Code = 100040,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
                         });
                 });
 
@@ -860,7 +864,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 21, 15, 45, 42, 852, DateTimeKind.Local).AddTicks(3128),
+                            InstallationDate = new DateTime(2016, 12, 22, 11, 54, 56, 776, DateTimeKind.Local).AddTicks(3224),
                             ServiceStatus = 86
                         });
                 });
@@ -1229,10 +1233,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("IoDeviceId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany()
-                        .HasForeignKey("LoadingUnitId");
-
                     b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
                         .WithMany("Bays")
                         .HasForeignKey("MachineId");
@@ -1247,6 +1247,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
                         .WithMany("Positions")
                         .HasForeignKey("BayId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany()
+                        .HasForeignKey("LoadingUnitId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>

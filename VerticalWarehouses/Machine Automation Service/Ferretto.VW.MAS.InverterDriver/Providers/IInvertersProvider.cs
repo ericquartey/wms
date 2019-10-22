@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         IInverterStatusBase GetByIndex(InverterIndex index);
 
         IAngInverterStatus GetMainInverter();
+
+        IInverterStatusBase GetShutterInverter(BayNumber bayNumber);
 
         #endregion
     }

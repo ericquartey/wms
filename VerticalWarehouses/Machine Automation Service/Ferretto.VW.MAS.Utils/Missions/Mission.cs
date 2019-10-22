@@ -4,46 +4,53 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Missions
 {
-    public abstract class Mission : IDisposable
+    public abstract class Mission<TMachine> : IMission
+        where TMachine : class, IFiniteStateMachine
     {
         #region Fields
 
-        private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+        protected readonly TMachine CurrentStateMachine;
+
+        private readonly CancellationTokenSource cancellationTokenSource;
+
+        private readonly IServiceScope serviceScope;
 
         private bool disposed;
-
-        private MissionType type;
 
         #endregion
 
         #region Constructors
 
-        protected Mission()
-            : this(Guid.NewGuid(), null)
+        protected Mission(IServiceScopeFactory serviceScopeFactory)
         {
-        }
+            this.serviceScope = serviceScopeFactory.CreateScope();
 
-        protected Mission(Guid id, IFiniteStateMachine currentStateMachine)
-        {
-            this.Id = id;
-            this.CurrentStateMachine = currentStateMachine;
+            this.cancellationTokenSource = new CancellationTokenSource();
+            this.CurrentStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<TMachine>();
+            this.Id = this.CurrentStateMachine.InstanceId;
         }
 
         #endregion
 
         #region Properties
 
-        public IFiniteStateMachine CurrentStateMachine { get; private set; }
+        public Guid Id { get; }
 
-        public Guid Id { get; private set; }
+        public MissionType Type { get; }
 
         #endregion
 
         #region Methods
+
+        public bool AllowMultipleInstances(CommandMessage command)
+        {
+            throw new NotImplementedException();
+        }
 
         public void Dispose()
         {
@@ -55,9 +62,14 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.cancellationTokenSource.Cancel();
         }
 
-        public virtual void StartMachine(CommandMessage command)
+        public void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler)
         {
-            this.CurrentStateMachine.Start(command, this.cancellationTokenSource.Token);
+            this.CurrentStateMachine.Completed -= endHandler;
+        }
+
+        public void StartMachine(CommandMessage command)
+        {
+            this.CurrentStateMachine.Start(command, this.serviceScope.ServiceProvider, this.cancellationTokenSource.Token);
         }
 
         public virtual void StopMachine(StopRequestReason reason)
@@ -75,6 +87,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
             if (disposing)
             {
                 this.cancellationTokenSource?.Dispose();
+                this.serviceScope.Dispose();
             }
 
             this.disposed = true;

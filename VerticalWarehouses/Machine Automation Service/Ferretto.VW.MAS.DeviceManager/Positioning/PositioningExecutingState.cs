@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.TorqueCurrentSampling:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -172,14 +172,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             new PositioningMessageData(this.machineData.MessageData)
                             {
                                 TargetPosition = this.machineData.MessageData.UpperBound
-                            });
+                            }, this.machineData.RequestingBay);
 
                         // downwards movement message
                         this.positioningDownFieldMessageData = new PositioningFieldMessageData(
                             new PositioningMessageData(this.machineData.MessageData)
                             {
                                 TargetPosition = this.machineData.MessageData.LowerBound
-                            });
+                            }, this.machineData.RequestingBay);
 
                         var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
                         this.performedCycles = procedure.PerformedCycles;
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.FindZero:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
