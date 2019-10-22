@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
 
             switch (source)
             {
-                case MessageActor.MissionsManager:
+                case MessageActor.MachineManager:
                     notificationType = MessageType.MissionManagerException;
                     break;
             }

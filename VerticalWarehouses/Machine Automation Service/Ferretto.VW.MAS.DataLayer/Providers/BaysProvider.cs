@@ -561,7 +561,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         BayStatus = bay.Status,
                     },
                     $"Bay #{bay.Number} status changed to {bay.Status}",
-                    MessageActor.MissionsManager,
+                    MessageActor.MachineManager,
                     MessageActor.WebApi,
                     MessageType.BayOperationalStatusChanged,
                     bay.Number));
