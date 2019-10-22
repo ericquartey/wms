@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191022071119_InitialCreation")]
+    [Migration("20191022095457_InitialCreation")]
     partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -170,6 +170,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
@@ -191,6 +195,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("TotalCycles");
 
                     b.Property<double>("UpperBound");
+
+                    b.Property<double>("WeightMeasureMultiply");
+
+                    b.Property<double>("WeightMeasureSpeed");
+
+                    b.Property<double>("WeightMeasureSum");
+
+                    b.Property<int>("WeightMeasureTime");
 
                     b.HasKey("Id");
 
@@ -852,7 +864,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 22, 9, 11, 19, 99, DateTimeKind.Local).AddTicks(6978),
+                            InstallationDate = new DateTime(2016, 12, 22, 11, 54, 56, 776, DateTimeKind.Local).AddTicks(3224),
                             ServiceStatus = 86
                         });
                 });
@@ -1177,10 +1189,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.VerticalManualMovementsProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
-
-                    b.Property<double>("BrakeActivatePercent");
-
-                    b.Property<double>("BrakeReleaseTime");
 
                     b.Property<double>("FeedRateAfterZero");
 
