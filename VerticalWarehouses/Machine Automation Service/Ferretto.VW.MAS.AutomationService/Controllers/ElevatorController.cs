@@ -131,6 +131,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 loadingUnitId,
                 loadingUnitGrossWeight,
                 false,
+                false,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

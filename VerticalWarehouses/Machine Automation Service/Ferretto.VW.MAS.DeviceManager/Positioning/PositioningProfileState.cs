@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 this.Stop(StopRequestReason.Stop);
                                 break;
                             }
-                            else if (this.machineData.MessageData.LoadingUnitId.HasValue)
+                            if (this.machineData.MessageData.LoadingUnitId.HasValue)
                             {
                                 this.loadingUnitProvider.SetHeight(this.machineData.MessageData.LoadingUnitId.Value, profileHeight);
                             }
@@ -123,6 +123,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
+
+            this.Logger.LogDebug("Request MeasureProfile");
         }
 
         public override void Stop(StopRequestReason reason)

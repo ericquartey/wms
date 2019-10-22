@@ -117,6 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             BayNumber requestingBay,
             MessageActor sender)
         {
+            measure = true;
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
@@ -144,6 +145,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
             {
                 throw new InvalidOperationException("Invalid Zero Chain position");
+            }
+
+            if (measure && isLoadingUnitOnBoard)
+            {
+                this.logger.LogDebug($"Do not measure profile on full elevator!");
+                measure = false;
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);

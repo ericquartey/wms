@@ -510,7 +510,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.Position:
                 case MovementMode.PositionAndMeasure:
-                    this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
+                    this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
                     {

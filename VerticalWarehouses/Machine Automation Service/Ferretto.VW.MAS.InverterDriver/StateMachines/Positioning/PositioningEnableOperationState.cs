@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
+        private const int CheckDelayTime = 100;
+
         private readonly IInverterPositioningFieldMessageData data;
 
         private DateTime startTime;
@@ -56,8 +58,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWord,
                     this.Inverter.PositionControlWord.Value,
-                    InverterDataset.ActualDataset,
-                    100));
+                    InverterDataset.ActualDataset));
         }
 
         /// <inheritdoc />
@@ -101,34 +102,45 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    if (this.data.IsTorqueCurrentSamplingEnabled)
+                    // we must wait 100ms between EnableOperation and start moving
+                    if (this.startTime == DateTime.MinValue)
                     {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningStartSamplingWhileMovingState(
-                                this.data,
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
-                    }
-                    else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
-                    {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningMeasureStartMovingState(
-                                this.data,
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
+                        this.startTime = DateTime.UtcNow;
                     }
                     else
                     {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningStartMovingState(
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
-                    }
+                        if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > CheckDelayTime)
+                        {
+                            if (this.data.IsTorqueCurrentSamplingEnabled)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningStartSamplingWhileMovingState(
+                                        this.data,
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningMeasureStartMovingState(
+                                        this.data,
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningStartMovingState(
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
 
-                    returnValue = true;
+                            returnValue = true;
+                        }
+                    }
                 }
             }
             return returnValue;
