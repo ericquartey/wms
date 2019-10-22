@@ -5,7 +5,6 @@ using Ferretto.VW.App.Modules.Operator.Resources;
 using Ferretto.VW.App.Modules.Operator.Resources.Enumerations;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -21,7 +20,7 @@ namespace Ferretto.VW.App.Modules.Operator
     {
         #region Fields
 
-        private readonly IMachineBaysService baysService;
+        private readonly IMachineBaysWebService baysService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -56,7 +55,7 @@ namespace Ferretto.VW.App.Modules.Operator
             IMainWindowNavigationButtonsViewModel navigationButtonsViewModel,
             IIdleViewModel idleViewModel,
             IAuthenticationService authenticationService,
-            IMachineBaysService baysService)
+            IMachineBaysWebService baysService)
         {
             if (eventAggregator == null)
             {
@@ -87,7 +86,7 @@ namespace Ferretto.VW.App.Modules.Operator
             this.baysService = baysService;
 
             // Hack: should be done on view model initialized
-            this.baysService.ActivateAsync(2); // TODO retrieve real bay Id
+            this.baysService.ActivateAsync(); // TODO retrieve real bay Id
             // Hack: end
 
             this.NavigationRegionCurrentViewModel = navigationButtonsViewModel as MainWindowNavigationButtonsViewModel;

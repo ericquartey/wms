@@ -10,9 +10,9 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">
-    <Window.Resources>
+    <!--<Window.Resources>
         <ResourceDictionary Source="Resources/Views.xaml" />
-    </Window.Resources>
+    </Window.Resources>-->
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.RowDefinitions>
@@ -44,34 +44,38 @@
                 <StackPanel FlowDirection="RightToLeft"
                             Orientation="Horizontal"
                             ScrollViewer.CanContentScroll="True">
-                    <controls:PpcButton  Width="60"
-                            Height="60"
-                            Margin="10,0,10,0"
-                            VerticalContentAlignment="Center"
-                            Background="{DynamicResource VWAPP_BACKGROUND}"
-                            BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
-                            BorderThickness="1"
-                            Command="{Binding OpenHelpWindow}">
+                    <controls:PpcButton Width="60"
+                                        Height="60"
+                                        Margin="10,0,10,0"
+                                        VerticalContentAlignment="Center"
+                                        Background="{DynamicResource VWAPP_BACKGROUND}"
+                                        BorderBrush="{DynamicResource VWAPP_CustomMachineModeToggleButton_BorderBrush_Normal}"
+                                        BorderThickness="1"
+                                        Command="{Binding OpenHelpWindow}">
                         <TextBlock FontSize="25"
                                    Foreground="{DynamicResource FerrettoPureWhite}"
                                    TextAlignment="Center">
                             ?
                         </TextBlock>
                     </controls:PpcButton>
-                    <controls:CustomControlLoggedUser Margin="20,0,20,0"
-                                                    IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    LogOffCommand="{Binding LogOffCommand}"
-                                                    OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
-                                                    UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <controls:CustomControlLoggedUser Margin="20,0,20,0" />
+
+                    <!--
+                        IsPopupOpen="{Binding IsPopupOpen, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        LogOffCommand="{Binding LogOffCommand}"
+                        OpenClosePopupCommand="{Binding OpenClosePopupCommand}"
+                        UserText="{Binding LoggedUser, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                    -->
+
                     <controls:CustomMachineModeToggleButton Name="MachineModeControl" />
                     <controls:CustomMachineOnMarchToggleButton Name="MachineOnMarchControl"
-                                                             Margin="10,0,0,0" />
+                                                               Margin="10,0,0,0" />
                     <controls:CustomMainWindowErrorButton Margin="10,0,0,0"
-                                                        Visibility="Collapsed" />
-                    <controls:CustomMainWindowServiceButton Margin="10,0,0,0"
-                                                          ContentText="Service"
-                                                          CustomCommand="{Binding ErrorButtonCommand}"
                                                           Visibility="Collapsed" />
+                    <!--<controls:CustomMainWindowServiceButton Margin="10,0,0,0"
+                                                            ContentText="Service"
+                                                            CustomCommand="{Binding ErrorButtonCommand}"
+                                                            Visibility="Collapsed" />-->
                 </StackPanel>
             </Border>
         </Grid>

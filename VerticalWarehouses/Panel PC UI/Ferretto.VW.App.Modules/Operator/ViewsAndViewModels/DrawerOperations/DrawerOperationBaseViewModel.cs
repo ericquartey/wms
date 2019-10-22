@@ -7,7 +7,6 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -36,11 +35,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
         public DrawerOperationBaseViewModel(
             IEventAggregator eventAggregator,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
-            IStatusMessageService statusMessageService,
+            //IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsService missionOperationsService,
+            IMachineMissionOperationsWebService missionOperationsService,
             IBayManager bayManager)
         {
             if (eventAggregator == null)
@@ -53,10 +52,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            if (statusMessageService == null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
+            //if (statusMessageService == null)
+            //{
+            //    throw new ArgumentNullException(nameof(statusMessageService));
+            //}
 
             if (mainWindowViewModel == null)
             {
@@ -86,7 +85,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
             this.CompartmentColoringFunction = new EditFilter().ColorFunc;
             this.EventAggregator = eventAggregator;
             this.NavigationService = navigationService;
-            this.StatusMessageService = statusMessageService;
+            //this.StatusMessageService = statusMessageService;
             this.MainWindowViewModel = mainWindowViewModel;
             this.WmsDataProvider = wmsDataProvider;
             this.WmsImagesProvider = wmsImagesProvider;
@@ -139,11 +138,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 
         protected IMainWindowViewModel MainWindowViewModel { get; }
 
-        protected IMachineMissionOperationsService MissionOperationsService { get; }
+        protected IMachineMissionOperationsWebService MissionOperationsService { get; }
 
         protected Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService NavigationService { get; }
 
-        protected IStatusMessageService StatusMessageService { get; }
+        //protected IStatusMessageService StatusMessageService { get; }
 
         protected IWmsDataProvider WmsDataProvider { get; }
 
@@ -170,7 +169,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
                 }
                 catch (Exception ex)
                 {
-                    this.StatusMessageService.Notify(ex);
+                    //this.StatusMessageService.Notify(ex);
                 }
             }
         }

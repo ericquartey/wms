@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -19,7 +18,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         private readonly IAreasDataService areasDataService;
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -37,9 +36,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         private IList<ItemList> lists;
 
-        private int machineId;
-
         private ItemList selectedList;
+
+        private string serialNumber;
 
         private ICommand upDataGridButtonCommand;
 
@@ -48,17 +47,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
         #region Constructors
 
         public ListsInWaitViewModel(
-            IStatusMessageService statusMessageService,
-            IMachineIdentityService identityService,
+            //IStatusMessageService statusMessageService,
+            IMachineIdentityWebService identityService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IItemListsDataService itemListsDataService,
             IAreasDataService areasDataService
             )
         {
-            if (statusMessageService == null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
+            //if (statusMessageService == null)
+            //{
+            //    throw new ArgumentNullException(nameof(statusMessageService));
+            //}
 
             if (identityService == null)
             {
@@ -80,7 +79,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
                 throw new ArgumentNullException(nameof(areasDataService));
             }
 
-            this.StatusMessageService = statusMessageService;
+            //this.StatusMessageService = statusMessageService;
             this.identityService = identityService;
             this.navigationService = navigationService;
             this.itemListsDataService = itemListsDataService;
@@ -126,7 +125,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             }
         }
 
-        public IStatusMessageService StatusMessageService { get; }
+        //public IStatusMessageService StatusMessageService { get; }
 
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
 
@@ -162,7 +161,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             }
             catch (Exception ex)
             {
-                this.StatusMessageService.Notify(ex, $"Cannot execute List.");
+                //this.StatusMessageService.Notify(ex, $"Cannot execute List.");
             }
         }
 
@@ -179,7 +178,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
                 return;
             }
 
-            this.machineId = machineIdentity.Id;
+            this.serialNumber = machineIdentity.SerialNumber;
             this.areaId = machineIdentity.AreaId;
             await this.LoadListsAsync();
         }
@@ -191,7 +190,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
                 return false;
             }
 
-            if (this.selectedList.Machines.Any(m => m.Id == this.machineId))
+            if (this.selectedList.Machines.Any(m => m.Id.ToString() == this.serialNumber))
             {
                 return true;
             }

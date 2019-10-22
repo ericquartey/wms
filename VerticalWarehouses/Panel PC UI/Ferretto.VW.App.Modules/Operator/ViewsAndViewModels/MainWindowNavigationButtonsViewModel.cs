@@ -9,6 +9,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
+using INavigationService = Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 {

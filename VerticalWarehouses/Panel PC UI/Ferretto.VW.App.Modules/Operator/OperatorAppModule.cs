@@ -13,7 +13,6 @@ using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -67,7 +66,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
+            //containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
             containerRegistry.RegisterSingleton<Interfaces.INavigationService, NavigationService>();
 
             containerRegistry.RegisterSingleton<IIdleViewModel, IdleViewModel>();

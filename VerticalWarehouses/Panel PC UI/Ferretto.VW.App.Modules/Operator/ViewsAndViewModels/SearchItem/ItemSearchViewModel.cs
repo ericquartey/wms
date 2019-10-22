@@ -8,7 +8,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -25,13 +24,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IBayManager bayManager;
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IItemsDataService itemsDataService;
 
         private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
-        private readonly IStatusMessageService statusMessageService;
+        //private readonly IStatusMessageService statusMessageService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -66,17 +65,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
         #region Constructors
 
         public ItemSearchViewModel(
-            IStatusMessageService statusMessageService,
+            //IStatusMessageService statusMessageService,
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
             Operator.Interfaces.INavigationService navigationService,
-            IMachineIdentityService identityService,
+            IMachineIdentityWebService identityService,
             IItemsDataService itemsDataService)
         {
-            if (statusMessageService == null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
+            //if (statusMessageService == null)
+            //{
+            //    throw new ArgumentNullException(nameof(statusMessageService));
+            //}
 
             if (wmsDataProvider == null)
             {
@@ -99,7 +98,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             }
 
             this.identityService = identityService;
-            this.statusMessageService = statusMessageService;
+            //this.statusMessageService = statusMessageService;
             this.wmsDataProvider = wmsDataProvider;
             this.bayManager = bayManager;
             this.itemsDataService = itemsDataService;
@@ -219,23 +218,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
                 return;
             }
 
+            var bayId = (int)(await this.bayManager.GetBayAsync()).Number;
+
             var success = await this.wmsDataProvider.PickAsync(
                 itemToPick.Id,
                 2, // TODO remove this hardcoded value
-                this.bayManager.BayNumber,
+                bayId,
                 qty);
 
             if (success)
             {
-                this.statusMessageService.Notify(
-                    $"Successfully called {qty} pieces of item {itemToPick.Id}.",
-                    StatusMessageLevel.Success);
+                //this.statusMessageService.Notify(
+                //    $"Successfully called {qty} pieces of item {itemToPick.Id}.",
+                //    StatusMessageLevel.Success);
             }
             else
             {
-                this.statusMessageService.Notify(
-                    $"Couldn't get {qty} pieces of item {itemToPick.Id}.",
-                    StatusMessageLevel.Error);
+                //this.statusMessageService.Notify(
+                //    $"Couldn't get {qty} pieces of item {itemToPick.Id}.",
+                //    StatusMessageLevel.Error);
             }
 
             this.RequestedQuantity = "0";
@@ -288,7 +289,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             }
             catch (Exception ex)
             {
-                this.statusMessageService.Notify(ex);
+                //this.statusMessageService.Notify(ex);
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;

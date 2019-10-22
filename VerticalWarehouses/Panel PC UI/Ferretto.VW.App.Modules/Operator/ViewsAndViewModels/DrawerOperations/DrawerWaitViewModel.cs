@@ -3,6 +3,7 @@ using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using INavigationService = Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
 {

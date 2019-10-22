@@ -1,7 +1,6 @@
 ﻿using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -17,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
     {
         #region Fields
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineIdentityWebService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
 
@@ -35,7 +34,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
 
         private IList<ItemListRow> listRows;
 
-        private int machineId;
+        private string machineId;
 
         private ItemListRow selectedListRow;
 
@@ -46,15 +45,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
         #region Constructors
 
         public DetailListInWaitViewModel(
-            IStatusMessageService statusMessageService,
+            //IStatusMessageService statusMessageService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
-            IMachineIdentityService identityService,
+            IMachineIdentityWebService identityService,
             IItemListsDataService itemListsDataService)
         {
-            if (statusMessageService == null)
-            {
-                throw new ArgumentNullException(nameof(statusMessageService));
-            }
+            //if (statusMessageService == null)
+            //{
+            //    throw new ArgumentNullException(nameof(statusMessageService));
+            //}
 
             if (itemListsDataService == null)
             {
@@ -71,7 +70,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
                 throw new ArgumentNullException(nameof(navigationService));
             }
 
-            this.StatusMessageService = statusMessageService;
+            //this.StatusMessageService = statusMessageService;
             this.navigationService = navigationService;
             this.identityService = identityService;
             this.itemListsDataService = itemListsDataService;
@@ -98,7 +97,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
 
         public IList<ItemListRow> ListRows => new List<ItemListRow>(this.listRows);
 
-        public int MachineId => this.machineId;
+        public string MachineId => this.machineId;
 
         public ItemListRow SelectedListRow
         {
@@ -106,7 +105,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             set => this.SetProperty(ref this.selectedListRow, value);
         }
 
-        public IStatusMessageService StatusMessageService { get; }
+        //public IStatusMessageService StatusMessageService { get; }
 
         public ICommand UpDataGridButtonCommand =>
             this.upDataGridButtonCommand
@@ -145,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             }
             catch (Exception ex)
             {
-                this.StatusMessageService.Notify(ex, "Cannot execute List.");
+                //this.StatusMessageService.Notify(ex, "Cannot execute List.");
             }
         }
 
@@ -167,7 +166,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             this.list = listInWaitViewModel.SelectedList;
             this.RaisePropertyChanged(nameof(this.List));
 
-            this.machineId = machineIdentity.Id;
+            this.machineId = machineIdentity.SerialNumber;
             this.areaId = machineIdentity.AreaId;
 
             await this.LoadListRowsAsync();
@@ -182,7 +181,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
                 return false;
             }
 
-            if (this.ListRows.Any(r => r.Machines.Any(m => m.Id == this.machineId)))
+            if (this.ListRows.Any(r => r.Machines.Any(m => m.Id.ToString() == this.machineId)))
             {
                 return true;
             }

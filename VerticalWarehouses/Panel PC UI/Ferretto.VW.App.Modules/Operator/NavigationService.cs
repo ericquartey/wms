@@ -10,6 +10,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using System.Collections.Generic;
 using Unity;
+using INavigationService = Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService;
 
 namespace Ferretto.VW.App.Modules.Operator
 {

@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Prism.Commands;
 using Prism.Events;
@@ -18,7 +17,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IStatusMessageService statusMessageService;
+        //private readonly IStatusMessageService statusMessageService;
 
         private ICommand navigateBackCommand;
 
@@ -32,7 +31,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
 
         public FooterViewModel(
             IEventAggregator eventAggregator,
-            IStatusMessageService statusMessageService,
+            //IStatusMessageService statusMessageService,
             IUnityContainer container)
         {
             if (eventAggregator == null)
@@ -40,10 +39,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
                 throw new System.ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (statusMessageService == null)
-            {
-                throw new System.ArgumentNullException(nameof(statusMessageService));
-            }
+            //if (statusMessageService == null)
+            //{
+            //    throw new System.ArgumentNullException(nameof(statusMessageService));
+            //}
 
             if (container == null)
             {
@@ -54,8 +53,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
             this.container = container;
             this.NavigationViewModel = null;
 
-            this.statusMessageService = statusMessageService;
-            this.statusMessageService.StatusMessageNotified += this.StatusMessageService_StatusMessageNotified;
+            //this.statusMessageService = statusMessageService;
+            //this.statusMessageService.StatusMessageNotified += this.StatusMessageService_StatusMessageNotified;
         }
 
         #endregion
@@ -85,30 +84,30 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels
             this.navigateBackCommand = null;
         }
 
-        private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
-        {
-            this.Note = e.Message;
-
-            switch (e.Level)
-            {
-                case StatusMessageLevel.Error:
-                    this.NoteBrush = Brushes.DarkRed;
-                    break;
-
-                case StatusMessageLevel.Success:
-                    this.NoteBrush = Brushes.Green;
-                    break;
-
-                case StatusMessageLevel.Warning:
-                    this.NoteBrush = Brushes.Gold;
-                    break;
-
-                default:
-                    this.NoteBrush = Brushes.White;
-                    break;
-            }
-        }
-
         #endregion
+
+        //private void StatusMessageService_StatusMessageNotified(object sender, StatusMessageEventArgs e)
+        //{
+        //    this.Note = e.Message;
+
+        //    switch (e.Level)
+        //    {
+        //        case StatusMessageLevel.Error:
+        //            this.NoteBrush = Brushes.DarkRed;
+        //            break;
+
+        //        case StatusMessageLevel.Success:
+        //            this.NoteBrush = Brushes.Green;
+        //            break;
+
+        //        case StatusMessageLevel.Warning:
+        //            this.NoteBrush = Brushes.Gold;
+        //            break;
+
+        //        default:
+        //            this.NoteBrush = Brushes.White;
+        //            break;
+        //    }
+        //}
     }
 }

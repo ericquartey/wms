@@ -3,7 +3,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -25,15 +24,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
         public DrawerActivityRefillingViewModel(
             IEventAggregator eventAggregator,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
-            IStatusMessageService statusMessageService,
+            //IStatusMessageService statusMessageService,
             IMainWindowViewModel mainWindowViewModel,
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsService missionOperationsService,
+            IMachineMissionOperationsWebService missionOperationsService,
             IBayManager bayManager)
             : base(eventAggregator,
                     navigationService,
-                    statusMessageService,
+                    //statusMessageService,
                     mainWindowViewModel,
                     wmsDataProvider,
                     wmsImagesProvider,
@@ -63,7 +62,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations
 
         public override async Task OnEnterViewAsync()
         {
-            this.StatusMessageService.Notify($"Current mission ID: {this.BayManager.CurrentMission.Id}");
+            //this.StatusMessageService.Notify($"Current mission ID: {this.BayManager.CurrentMission.Id}");
             await this.GetViewDataAsync(this.BayManager);
             await this.GetTrayControlDataAsync(this.BayManager);
         }
