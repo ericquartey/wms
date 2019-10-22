@@ -89,7 +89,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 if (message.ParameterId == InverterParameterId.SetOperatingMode)
                 {
-                    this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                    if (this.data.IsWeightMeasure)
+                    {
+                        this.ParentStateMachine.ChangeState(new PositioningMeasureSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new PositioningSetParametersState(this.ParentStateMachine, this.data, this.InverterStatus, this.Logger));
+                    }
                 }
             }
             return false;

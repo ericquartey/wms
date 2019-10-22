@@ -354,7 +354,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
-                        else if (message.Data.MovementMode >= CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
                         {
                             this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
                         }
@@ -372,7 +372,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         {
                             this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
-                        else if (message.Data.MovementMode >= CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
                         {
                             this.BayChainHorizontalPosition = message?.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
                         }

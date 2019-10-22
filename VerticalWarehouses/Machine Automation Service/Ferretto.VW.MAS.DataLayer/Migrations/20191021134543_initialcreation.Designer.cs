@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191021094732_Initial")]
-    partial class Initial
+    [Migration("20191021134543_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -166,6 +166,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
@@ -187,6 +191,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("TotalCycles");
 
                     b.Property<double>("UpperBound");
+
+                    b.Property<double>("WeightMeasureMultiply");
+
+                    b.Property<double>("WeightMeasureSpeed");
+
+                    b.Property<double>("WeightMeasureSum");
+
+                    b.Property<int>("WeightMeasureTime");
 
                     b.HasKey("Id");
 
@@ -848,7 +860,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 21, 11, 47, 32, 126, DateTimeKind.Local).AddTicks(2140),
+                            InstallationDate = new DateTime(2016, 12, 21, 15, 45, 42, 852, DateTimeKind.Local).AddTicks(3128),
                             ServiceStatus = 86
                         });
                 });
@@ -1173,10 +1185,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.VerticalManualMovementsProcedure", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
-
-                    b.Property<double>("BrakeActivatePercent");
-
-                    b.Property<double>("BrakeReleaseTime");
 
                     b.Property<double>("FeedRateAfterZero");
 

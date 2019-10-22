@@ -135,6 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
@@ -428,14 +429,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                     this.Logger.LogError("Cradle not correctly loaded during pickup");
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    this.Stop(StopRequestReason.Stop);
                 }
                 else if (this.IsUnloadingErrorDuringDeposit())
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                     this.Logger.LogError("Cradle not correctly unloaded during deposit");
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    this.Stop(StopRequestReason.Stop);
                 }
             }
 
@@ -466,6 +467,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                     this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
@@ -480,7 +482,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after deposit");
                         }
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.Stop(StopRequestReason.Stop);
                     }
                     else
                     {
@@ -519,7 +521,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     if (this.IsBracketSensorError())
                     {
                         this.Logger.LogError($"Bracket sensor error");
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.Stop(StopRequestReason.Stop);
                     }
                     else
                     {

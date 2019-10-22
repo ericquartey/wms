@@ -211,6 +211,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:
                     break;
 
+                case CommonUtils.Messages.Enumerations.Axis.BayChain:
+                    this.CurrentBayChainPosition = message?.Data?.CurrentPosition ?? this.CurrentBayChainPosition;
+                    break;
+
                 default:
                     break;
             }
