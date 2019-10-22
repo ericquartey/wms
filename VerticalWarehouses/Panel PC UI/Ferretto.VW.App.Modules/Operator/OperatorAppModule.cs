@@ -12,7 +12,9 @@ using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists;
 using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Operator.Views;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -20,7 +22,11 @@ using Unity;
 
 namespace Ferretto.VW.App.Modules.Operator
 {
-    [Module(ModuleName = nameof(Utils.Modules.Operator), OnDemand = true)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage(
+    "Major Code Smell",
+    "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
+    Justification = "This is a container initialization class, so it is ok to be coupled to many types.")]
+    [Module(ModuleName = nameof(Utils.Modules.Installation), OnDemand = true)]
     [ModuleDependency(nameof(Utils.Modules.Errors))]
     public class OperatorAppModule : IModule
     {
@@ -52,17 +58,22 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void OnInitialized(IContainerProvider containerProvider)
         {
-            BindViewModelToView<IMainWindowViewModel, MainWindow>(containerProvider);
+            containerProvider.UseMachineAutomationHubs();
 
-            var mainWindow = (MainWindow)containerProvider.Resolve<IMainWindow>();
-            mainWindow.DataContext = containerProvider.Resolve<IMainWindowViewModel>();
+            //BindViewModelToView<IMainWindowViewModel, MainWindow>(containerProvider);
 
-            var mainWindowProperty = Application.Current.GetType().GetProperty("OperatorAppMainWindowInstance");
-            mainWindowProperty.SetValue(Application.Current, mainWindow);
+            //var mainWindow = (MainWindow)containerProvider.Resolve<IMainWindow>();
+            //mainWindow.DataContext = containerProvider.Resolve<IMainWindowViewModel>();
+
+            //var mainWindowProperty = Application.Current.GetType().GetProperty("OperatorAppMainWindowInstance");
+            //mainWindowProperty.SetValue(Application.Current, mainWindow);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterForNavigation<OperatorMenuView>();
+
+            /*
             containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
             containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
             containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
@@ -107,6 +118,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
+            */
         }
 
         #endregion

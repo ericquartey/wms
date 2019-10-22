@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Modules.Operator
+﻿namespace Ferretto.VW.App.Operator
 {
     public partial class App : System.Windows.Application
     {

@@ -10,9 +10,9 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         mc:Ignorable="d">
-    <!--<Window.Resources>
+    <Window.Resources>
         <ResourceDictionary Source="Resources/Views.xaml" />
-    </Window.Resources>-->
+    </Window.Resources>
 
     <Grid Background="{DynamicResource VWAPP_BACKGROUND}">
         <Grid.RowDefinitions>
