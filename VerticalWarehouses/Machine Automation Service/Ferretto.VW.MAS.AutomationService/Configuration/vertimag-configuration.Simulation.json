@@ -34,7 +34,6 @@
         "IsExternal": false,
         "ChainOffset": -5,
         "Number": 1,
-        "Shutter": {
         "Positions": [
           {
             "Height": 645,
@@ -42,6 +41,7 @@
           }
         ],
         "Resolution": 369.8453,
+        "Shutter": {
           "Inverter": {
             "Type": "Agl",
             "Index": 2

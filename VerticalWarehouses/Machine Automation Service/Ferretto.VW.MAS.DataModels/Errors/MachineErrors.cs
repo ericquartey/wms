@@ -68,15 +68,15 @@ namespace Ferretto.VW.MAS.DataModels
         InverterErrorSyntaxError2 = InverterErrorBaseCode + 30,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
-        CradleNotCorrectlyLoadedDuringPickup = 100035,
+        CradleNotCorrectlyLoadedDuringPickup = 100037,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
-        CradleNotCorrectlyUnloadedDuringDeposit = 100036,
+        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
-        ZeroSensorErrorAfterPickup = 100037,
+        ZeroSensorErrorAfterPickup = 100039,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
-        ZeroSensorErrorAfterDeposit = 100038,
+        ZeroSensorErrorAfterDeposit = 100040,
     }
 }
