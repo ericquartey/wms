@@ -56,6 +56,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
         #region Methods
 
+        public virtual void Continue()
+        {
+        }
+
         public void Dispose()
         {
             this.Dispose(true);

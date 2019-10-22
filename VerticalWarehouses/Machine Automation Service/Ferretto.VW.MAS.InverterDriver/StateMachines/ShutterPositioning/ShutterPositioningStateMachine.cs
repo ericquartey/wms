@@ -47,6 +47,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         #region Methods
 
+        public override void Continue()
+        {
+        }
+
         /// <inheritdoc/>
         public override void Start()
         {

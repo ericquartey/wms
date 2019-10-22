@@ -43,12 +43,12 @@ namespace Ferretto.VW.MAS.MissionsManager.BackgroundServices
         #region Constructors
 
         public MissionsManagerService(
-            IEventAggregator eventAggregator,
-            ILogger<MissionsManagerService> logger,
-            IMachinesDataService machinesDataService,
             IMissionsProvider missionsProvider,
+            IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService,
             IConfiguration configuration,
+            IEventAggregator eventAggregator,
+            ILogger<MissionsManagerService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {

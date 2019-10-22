@@ -88,6 +88,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             this.CurrentState.Start();
         }
 
+        public abstract void Continue();
+
         public void Dispose()
         {
             this.Dispose(true);

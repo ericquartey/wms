@@ -34,7 +34,13 @@
         "IsExternal": true,
         "ChainOffset": 0,
         "Number": 1,
-        "Positions": [ { "Height": 645 } ],
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay1Down"
+          }
+        ],
+        "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -57,8 +63,14 @@
         },
         "Number": 2,
         "Positions": [
-          { "Height": 645 },
-          { "Height": 1143 }
+          {
+            "Height": 645,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay2Up"
+          }
         ],
         "Shutter": {
           "Type": "TwoSensors",
@@ -308,13 +320,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 375,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 380,
             "priority": 3,
             "status": "Free"
           },
@@ -1537,13 +1549,13 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 1889,
             "priority": 2,
             "status": "Free"
           },
           {
             "id": 4,
-            "position": 367,
+            "position": 2139,
             "priority": 4,
             "status": "Free"
           },

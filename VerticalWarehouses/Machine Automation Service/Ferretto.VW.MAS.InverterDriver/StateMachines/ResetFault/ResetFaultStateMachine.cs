@@ -42,6 +42,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         #region Methods
 
+        public override void Continue()
+        {
+        }
+
         /// <inheritdoc />
         public override void Start()
         {

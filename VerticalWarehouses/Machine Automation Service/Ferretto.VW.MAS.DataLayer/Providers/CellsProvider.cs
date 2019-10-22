@@ -40,6 +40,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Cell GetCellById(int cellId)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.Panel)
+                .Include(c => c.LoadingUnit)
+                .SingleOrDefault(c => c.Id == cellId);
+        }
+
+        public Cell GetCellByLoadingUnit(int loadingUnitId)
+        {
+            return this.dataContext.Cells
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.LoadingUnit.Id == loadingUnitId);
+        }
+
         public CellStatisticsSummary GetStatistics()
         {
             lock (this.dataContext)
@@ -74,6 +90,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return cellStatistics;
             }
+        }
+
+        public void LoadLoadingUnit(int loadingUnitId, int cellId)
+        {
+            var cell = this.GetCellById(cellId);
+            cell.LoadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
+
+            cell.Status = CellStatus.Occupied;
+
+            this.dataContext.Cells.Update(cell);
+            this.dataContext.SaveChanges();
+        }
+
+        public void UnloadLoadingUnit(int cellId)
+        {
+            var cell = this.GetCellById(cellId);
+            cell.LoadingUnit = null;
+            cell.Status = CellStatus.Free;
+
+            this.dataContext.Cells.Update(cell);
+            this.dataContext.SaveChanges();
         }
 
         public Cell UpdateHeight(int cellId, double height)

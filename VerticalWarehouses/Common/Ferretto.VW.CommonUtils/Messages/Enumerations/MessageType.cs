@@ -70,8 +70,6 @@
 
         ElevatorWeightCheck,
 
-        PositioningTable,
-
         InverterFaultReset,
 
         ResetSecurity,
@@ -83,5 +81,9 @@
         ChangeRunningState,
 
         InverterPowerEnable,
+
+        MoveLoadingUnit,
+
+        ContinueMovement,
     }
 }
