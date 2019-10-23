@@ -692,11 +692,14 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             this.Logger.LogTrace("1:Method Start");
 
-            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.ProfileInput);
+            if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.ProfileInput) < 2)
+            {
+                var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.ProfileInput);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.inverterCommandQueue.Enqueue(inverterMessage);
+                this.inverterCommandQueue.Enqueue(inverterMessage);
+            }
         }
 
         private void ProcessPositioningMessage(
