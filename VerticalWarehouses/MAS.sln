@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{DCBB7A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.CommonUtils", "Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj", "{A0095F7D-7CC6-4E7F-9695-8645EAD02E37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionsManager", "Machine Automation Service\Ferretto.VW.MAS.MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionManager", "Machine Automation Service\Ferretto.VW.MAS.MissionManager\Ferretto.VW.MAS.MissionManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Utils", "Machine Automation Service\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj", "{73086AC9-1316-4FFC-AA5D-0A50C132456A}"
 EndProject
@@ -37,6 +37,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Resources", "Machine Automation Service\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj", "{4ED0A06B-6350-4445-AE64-FE366B29AF7E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver.Contracts", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj", "{F47E5D62-3834-4002-B0C4-EEF9EC20EE69}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MachineManager", "Machine Automation Service\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj", "{9B83671D-551C-4AB4-B0EC-30A31180BA7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -303,6 +305,24 @@ Global
 		{F47E5D62-3834-4002-B0C4-EEF9EC20EE69}.Release|x64.Build.0 = Release|Any CPU
 		{F47E5D62-3834-4002-B0C4-EEF9EC20EE69}.Release|x86.ActiveCfg = Release|Any CPU
 		{F47E5D62-3834-4002-B0C4-EEF9EC20EE69}.Release|x86.Build.0 = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|Any CPU.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|x64.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|x64.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|x86.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug_no_autogen|x86.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|x64.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|x64.ActiveCfg = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|x64.Build.0 = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -322,6 +342,7 @@ Global
 		{65FCE6C6-6072-4072-9D50-9082121273D7} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{4ED0A06B-6350-4445-AE64-FE366B29AF7E} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{F47E5D62-3834-4002-B0C4-EEF9EC20EE69} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{9B83671D-551C-4AB4-B0EC-30A31180BA7C} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

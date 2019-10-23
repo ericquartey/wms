@@ -14,8 +14,6 @@ namespace Ferretto.VW.MAS.Utils.Missions
     {
         #region Fields
 
-        protected readonly TMachine CurrentStateMachine;
-
         private readonly CancellationTokenSource cancellationTokenSource;
 
         private readonly IServiceScope serviceScope;
@@ -42,6 +40,8 @@ namespace Ferretto.VW.MAS.Utils.Missions
         public Guid Id { get; }
 
         public MissionType Type { get; }
+
+        protected TMachine CurrentStateMachine { get; }
 
         #endregion
 

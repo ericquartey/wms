@@ -268,8 +268,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnCurrentPositionChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.IsBackNavigationAllowed = true;
 

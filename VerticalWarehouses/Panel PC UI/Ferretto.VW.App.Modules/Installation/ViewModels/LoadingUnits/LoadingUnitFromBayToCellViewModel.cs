@@ -266,14 +266,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(// ok
-                    this.OnElevatorPositionChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.sensorsToken = this.sensorsToken
                 ??
-                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(// ok
-                    this.OnSensorsChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             await this.RetrieveElevatorPositionAsync();
 
@@ -427,39 +435,39 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationExecuting:
-                {
-                    if (message.Data.AxisMovement == Axis.Vertical)
                     {
-                        this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                    }
-                    else if (message.Data.AxisMovement == Axis.Horizontal)
-                    {
-                        this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                    }
+                        if (message.Data.AxisMovement == Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                        }
 
-                    break;
-                }
-
-                case MessageStatus.OperationEnd:
-                {
-                    if (!this.IsExecutingProcedure)
-                    {
                         break;
                     }
 
-                    this.Ended();
+                case MessageStatus.OperationEnd:
+                    {
+                        if (!this.IsExecutingProcedure)
+                        {
+                            break;
+                        }
 
-                    break;
-                }
+                        this.Ended();
+
+                        break;
+                    }
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                {
-                    this.Stopped();
+                    {
+                        this.Stopped();
 
-                    break;
-                }
+                        break;
+                    }
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;
