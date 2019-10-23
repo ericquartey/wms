@@ -116,6 +116,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     case FieldMessageType.InverterDisable:
                         this.ProcessDisableMessage(inverter);
                         break;
+
+                    case FieldMessageType.MeasureProfile:
+                        this.ProcessMeasureProfileMessage(inverter);
+                        break;
                 }
             }
             catch (Exception ex)

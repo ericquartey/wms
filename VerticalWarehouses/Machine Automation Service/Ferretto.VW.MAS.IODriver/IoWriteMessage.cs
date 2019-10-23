@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
 
-        public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool MeasureProfileOn => this.outputs?[(int)IoPorts.MeasureProfile] ?? false;
 
         public bool[] Outputs => this.outputs;
 
@@ -250,6 +250,18 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.outputs[(int)IoPorts.ElevatorMotor] = false;
             }
+
+            return true;
+        }
+
+        public bool SwitchMeasureProfile(bool switchOn)
+        {
+            if (this.outputs == null)
+            {
+                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
+            }
+
+            this.outputs[(int)IoPorts.MeasureProfile] = switchOn;
 
             return true;
         }

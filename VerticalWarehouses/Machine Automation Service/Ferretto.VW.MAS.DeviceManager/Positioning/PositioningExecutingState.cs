@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IErrorsProvider errorsProvider;
@@ -53,6 +55,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
+        private bool profileStarted;
+
         #endregion
 
         #region Constructors
@@ -76,6 +80,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
         }
 
         #endregion
@@ -109,6 +114,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         case FieldMessageType.InverterStop:
                             this.ProcessEndStop();
+                            break;
+
+                        case FieldMessageType.MeasureProfile:
+                            this.profileStarted = true;
                             break;
                     }
                     break;
@@ -148,6 +157,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
                             (byte)this.machineData.CurrentInverterIndex);
+
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        {
+                            var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
+                            var ioCommandMessage = new FieldCommandMessage(
+                                ioCommandMessageData,
+                                $"Measure Profile Start ",
+                                FieldMessageActor.IoDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.MeasureProfile,
+                                (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+                        }
                     }
                     break;
 
@@ -240,6 +266,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
+            if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+            {
+                var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
+                var ioCommandMessage = new FieldCommandMessage(
+                    ioCommandMessageData,
+                    $"Measure Profile Stop ",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.MeasureProfile,
+                    (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+            }
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
@@ -468,7 +510,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case MovementMode.Position:
                 case MovementMode.PositionAndMeasure:
-                    this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
+                    this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
                     {
@@ -486,7 +528,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     else
                     {
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        {
+                            var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
+                            var ioCommandMessage = new FieldCommandMessage(
+                                ioCommandMessageData,
+                                $"Measure Profile Stop ",
+                                FieldMessageActor.IoDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.MeasureProfile,
+                                (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+                            this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData));
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                        }
                     }
                     break;
 

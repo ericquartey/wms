@@ -113,9 +113,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             int? loadingUnitId,
             double? loadingUnitNetWeight,
             bool waitContinue,
+            bool measure,
             BayNumber requestingBay,
             MessageActor sender)
         {
+            //measure = true;     // TEST
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
@@ -145,8 +147,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
+            if (measure && isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not measure profile on full elevator!");
+                measure = false;
+            }
+
             var profileType = SelectProfileType(direction, isStartedOnBoard);
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}");
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
                 .Single(p => p.Name == profileType)
@@ -166,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.TableTarget,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,
@@ -258,7 +266,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
             if (measure && !isLoadingUnitOnBoard)
             {
-                this.logger.LogDebug($"Do not measure weight on empty elevator!");
+                this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 measure = false;
             }
             var zeroSensor = this.machineProvider.IsOneTonMachine()

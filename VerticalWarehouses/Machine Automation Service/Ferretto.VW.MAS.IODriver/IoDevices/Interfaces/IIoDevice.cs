@@ -14,6 +14,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices.Interfaces
 
         void ExecuteIoReset();
 
+        void ExecuteMeasureProfile(FieldCommandMessage receivedMessage);
+
         void ExecutePowerEnable(FieldCommandMessage receivedMessage);
 
         void ExecuteResetSecurity();
