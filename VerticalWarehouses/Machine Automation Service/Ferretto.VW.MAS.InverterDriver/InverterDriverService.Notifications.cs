@@ -242,17 +242,20 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
             }
 
-            if (receivedMessage.Source == FieldMessageActor.InverterDriver)
+            if (receivedMessage.Source == FieldMessageActor.InverterDriver
+                &&
+                (receivedMessage.Status == MessageStatus.OperationEnd
+                ||
+                receivedMessage.Status == MessageStatus.OperationStop))
             {
-                if (receivedMessage.Status == MessageStatus.OperationEnd ||
-                    receivedMessage.Status == MessageStatus.OperationStop)
-                {
-                    var notificationMessageToFsm = receivedMessage;
-                    //TEMP Set the destination of message to FSM
-                    notificationMessageToFsm.Destination = FieldMessageActor.FiniteStateMachines;
+                var notificationMessageToFsm = receivedMessage;
 
-                    this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessageToFsm);
-                }
+                // forward the message to upper level
+                notificationMessageToFsm.Destination = FieldMessageActor.DeviceManager;
+
+                this.eventAggregator?
+                    .GetEvent<FieldNotificationEvent>()
+                    .Publish(notificationMessageToFsm);
             }
         }
 

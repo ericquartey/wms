@@ -66,7 +66,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
                 null,
                 $"Template Start State Field Command",
                 FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.NoType,
                 (byte)InverterIndex.None);
 

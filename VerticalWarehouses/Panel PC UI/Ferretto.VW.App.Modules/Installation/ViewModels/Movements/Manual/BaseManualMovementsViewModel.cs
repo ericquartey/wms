@@ -123,9 +123,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.notificationUIsubscriptionToken = this.notificationUIsubscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnElevatorPositionChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             this.movementsSubscriptionToken = this.movementsSubscriptionToken
                 ??

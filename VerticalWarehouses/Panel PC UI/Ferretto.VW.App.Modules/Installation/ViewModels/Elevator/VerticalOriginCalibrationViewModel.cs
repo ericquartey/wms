@@ -377,27 +377,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.receivedSwitchAxisUpdateToken = this.receivedSwitchAxisUpdateToken
                 ??
-                this.EventAggregator.SubscribeToEvent<SwitchAxisMessageData>(
-                    this.OnAxisSwitched);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+                    .Subscribe(
+                        this.OnAxisSwitched,
+                        ThreadOption.UIThread,
+                        false);
 
             this.receivedCalibrateAxisUpdateToken = this.receivedCalibrateAxisUpdateToken
                 ??
-                this.EventAggregator.SubscribeToEvent<CalibrateAxisMessageData>(
-                    this.OnCalibrationStepCompleted);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+                    .Subscribe(
+                        this.OnCalibrationStepCompleted,
+                        ThreadOption.UIThread,
+                        false);
 
             this.receiveHomingUpdateToken = this.receiveHomingUpdateToken
                 ??
-                this.EventAggregator.SubscribeToEvent<HomingMessageData>(
-                    this.OnHomingProcedureStatusChanged);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                        this.OnHomingProcedureStatusChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.updateCurrentPositionToken = this.updateCurrentPositionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.UpdatePositions,
-                    m =>
-                    {
-                        return m.Data != null;
-                    });
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.UpdatePositions,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)

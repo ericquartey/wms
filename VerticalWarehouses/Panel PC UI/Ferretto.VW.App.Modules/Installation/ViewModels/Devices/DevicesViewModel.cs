@@ -37,9 +37,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private ICommand refreshCommand;
 
-        private SubscriptionToken updateMachneStateActive;
+        private SubscriptionToken updateMachneStateActiveToken;
 
-        private SubscriptionToken updateStateActive;
+        private SubscriptionToken updateStateActiveToken;
 
         #endregion
 
@@ -91,11 +91,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Disappear();
 
-            this.updateMachneStateActive?.Dispose();
-            this.updateMachneStateActive = null;
+            this.updateMachneStateActiveToken?.Dispose();
+            this.updateMachneStateActiveToken = null;
 
-            this.updateStateActive?.Dispose();
-            this.updateStateActive = null;
+            this.updateStateActiveToken?.Dispose();
+            this.updateStateActiveToken = null;
 
             this.IsOpen = false;
         }
@@ -125,17 +125,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.updateMachneStateActive = this.updateMachneStateActive
+            this.updateMachneStateActiveToken = this.updateMachneStateActiveToken
                 ??
-                this.EventAggregator.SubscribeToEvent<MachineStatusActiveMessageData>(
-                    this.OnMachineStatusChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
+                    .Subscribe(
+                        this.OnMachineStatusChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
-            this.updateStateActive = this.updateStateActive
+            this.updateStateActiveToken = this.updateStateActiveToken
                 ??
-                this.EventAggregator.SubscribeToEvent<MachineStateActiveMessageData>(
-                    this.OnMachineStateChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
+                    .Subscribe(
+                        this.OnMachineStateChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             await this.GetDataAsync();
         }

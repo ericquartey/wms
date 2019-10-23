@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                         commandData,
                                         $"Shutter to {shutterPositionTarget}",
                                         FieldMessageActor.InverterDriver,
-                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.DeviceManager,
                                         FieldMessageType.ShutterPositioning,
                                         (byte)this.machineData.InverterIndex);
 
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                                         commandData,
                                         $"Shutter to {shutterPositionTarget}",
                                         FieldMessageActor.InverterDriver,
-                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.DeviceManager,
                                         FieldMessageType.ShutterPositioning,
                                         (byte)this.machineData.InverterIndex);
 
@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 inverterDataMessage,
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 (byte)this.machineData.InverterIndex);
             this.Logger.LogTrace($"3:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 messageData,
                 $"Start shutter positioning",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.ShutterPositioning,
                 (byte)this.machineData.InverterIndex);
 

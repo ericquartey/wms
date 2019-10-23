@@ -45,10 +45,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             switch (message.Type)
             {
+                case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
+                        case MessageStatus.OperationEnd:
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
                                 this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
@@ -86,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     null,
                     this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterStop,
                     (byte)inverterIndex);
 
@@ -112,7 +114,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
@@ -124,7 +126,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 inverterDataMessage,
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 (byte)inverterIndex);
             this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");

@@ -306,9 +306,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.eventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnAutomationMessageReceived,
-                    m => m.Data?.AxisMovement == Axis.Vertical);
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnAutomationMessageReceived,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.AxisMovement == Axis.Vertical);
 
             this.bay = await this.bayManager.GetBayAsync();
 
@@ -362,7 +366,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     VW.App.Resources.InstallationApp.ProcedureCompleted,
                     Services.Models.NotificationSeverity.Success);
             }
-
         }
 
         protected virtual void RaiseCanExecuteChanged()

@@ -52,8 +52,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public override void Start()
         {
-            this.CurrentState = new SetConfigurationStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new SetConfigurationStartState(this, this.status, this.index, this.Logger));
         }
 
         #endregion

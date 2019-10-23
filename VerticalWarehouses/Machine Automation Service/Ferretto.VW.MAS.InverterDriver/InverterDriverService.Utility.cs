@@ -163,7 +163,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     var msgNotification = new FieldNotificationMessage(
                         new InverterStatusWordFieldMessageData(message.UShortPayload),
                         "Inverter Status Word update",
-                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.DeviceManager,
                         FieldMessageActor.InverterDriver,
                         FieldMessageType.InverterStatusWord,
                         MessageStatus.OperationExecuting,
@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
                                     "Inverter Inputs update",
-                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.DeviceManager,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.InverterStatusUpdate,
                                     MessageStatus.OperationExecuting,
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
                                     "Inverter Inputs update",
-                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.DeviceManager,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.InverterStatusUpdate,
                                     MessageStatus.OperationExecuting,
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
                                     "Inverter Inputs update",
-                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.DeviceManager,
                                     FieldMessageActor.InverterDriver,
                                     FieldMessageType.InverterStatusUpdate,
                                     MessageStatus.OperationExecuting,
@@ -317,7 +317,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var msgNotification = new FieldNotificationMessage(
                             notificationData,
                             "Inverter encoder value update",
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageActor.InverterDriver,
                             FieldMessageType.InverterStatusUpdate,
                             MessageStatus.OperationExecuting,
@@ -329,10 +329,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                 }
             }
-
-            if (message.ParameterId == InverterParameterId.TorqueCurrent)
+            else if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 currentStateMachine?.ValidateCommandResponse(message);
+            }
+            else if (message.ParameterId == InverterParameterId.ProfileInput)
+            {
+                var notificationData = new MeasureProfileFieldMessageData(profile: message.UShortPayload);
+                var msgNotification = new FieldNotificationMessage(
+                    notificationData,
+                    "Inverter measure profile",
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.MeasureProfile,
+                    MessageStatus.OperationEnd,
+                    (byte)message.SystemIndex);
+
+                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                this.Logger.LogDebug($"ProfileInput inverter={message.SystemIndex}; value={message.UShortPayload}");
             }
         }
 
@@ -602,7 +617,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             var notificationMessage = new FieldNotificationMessage(
                                 notificationMessageData,
                                 $"Inverter Switch On on axis {switchOnData.AxisToSwitchOn} End",
-                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.DeviceManager,
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageType.InverterSwitchOn,
                                 MessageStatus.OperationEnd,
@@ -671,6 +686,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Invalid message data for InverterStop message Type", 0), FieldMessageType.InverterSwitchOn);
             }
+        }
+
+        private void ProcessMeasureProfileMessage(IInverterStatusBase inverter)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.ProfileInput);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.inverterCommandQueue.Enqueue(inverterMessage);
         }
 
         private void ProcessPositioningMessage(
@@ -791,7 +817,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     var msgNotification = new FieldNotificationMessage(
                                         null,
                                         "Axis already in position",
-                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.DeviceManager,
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.Positioning,
                                         MessageStatus.OperationEnd,
@@ -822,7 +848,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                                     var msgNotification = new FieldNotificationMessage(
                                         null,
                                         "Axis already in position",
-                                        FieldMessageActor.FiniteStateMachines,
+                                        FieldMessageActor.DeviceManager,
                                         FieldMessageActor.InverterDriver,
                                         FieldMessageType.Positioning,
                                         MessageStatus.OperationEnd,

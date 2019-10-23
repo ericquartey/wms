@@ -239,7 +239,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public string IpAddress => this.ipAddress;
 
-        public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool MeasureProfileOn => this.outputs?[(int)IoPorts.MeasureProfile] ?? false;
 
         public bool[] Outputs => this.outputs;
 

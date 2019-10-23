@@ -8,9 +8,11 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public class ResetSecurityEndState : IoStateBase
+    public sealed class ResetSecurityEndState : IoStateBase
     {
         #region Fields
+
+        private readonly bool hasError;
 
         private readonly IoIndex index;
 
@@ -24,11 +26,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             IIoStateMachine parentStateMachine,
             IoStatus status,
             IoIndex index,
+            bool hasError,
             ILogger logger)
             : base(parentStateMachine, logger)
         {
             this.status = status;
             this.index = index;
+            this.hasError = hasError;
 
             logger.LogTrace("1:Method Start");
         }
@@ -52,11 +56,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
             var endNotification = new FieldNotificationMessage(
                 null,
                 "Reset Security complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.ResetSecurity,
-                MessageStatus.OperationEnd,
-                (byte)this.index);
+                this.hasError ? MessageStatus.OperationError : MessageStatus.OperationEnd,
+                (byte)this.index,
+                this.hasError ? ErrorLevel.Error : ErrorLevel.NoError);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
                                 "Switch to Horizontal axis completed",
-                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
                                 MessageStatus.OperationEnd,
@@ -44,7 +44,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(endNotification);
                         }
                         else
                         {
@@ -70,7 +72,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
                                 "Switch to Vertical axis completed",
-                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
                                 MessageStatus.OperationEnd,
@@ -78,7 +80,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(endNotification);
                         }
                         else
                         {
@@ -113,7 +117,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(errorNotification);
                         }
 
                         break;

@@ -168,9 +168,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<ShutterPositioningMessageData>(
-                    this.OnShutterPositionChanged,
-                    m => m.Data != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
             try
             {
                 this.CurrentPosition = await this.shuttersWebService.GetShutterPositionAsync();

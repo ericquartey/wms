@@ -411,6 +411,11 @@ namespace Ferretto.VW.Simulator.Services
                     result = client.Client.Send(torqueMessage);
                     break;
 
+                case InverterParameterId.ProfileInput:
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
+                    result = client.Client.Send(profileMessage);
+                    break;
+
                 case InverterParameterId.PositionTargetPosition:
                     inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)message.UIntPayload);
                     inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
@@ -593,7 +598,10 @@ namespace Ferretto.VW.Simulator.Services
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value && this.remoteIOs.All(x => x.Inputs[(int)IoPorts.MushroomEmergency].Value))
             {
                 // Set run status
-                this.remoteIOs.ToList().ForEach(x => x.Inputs[(int)IoPorts.NormalState].Value = true);
+                this.remoteIOs
+                     .Single(io => io.Id == 0)
+                     .Inputs[(int)IoPorts.NormalState]
+                     .Value = true;
 
                 // Power up inverters
                 this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);

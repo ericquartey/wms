@@ -2,7 +2,7 @@
 {
     public enum FieldMessageActor
     {
-        FiniteStateMachines,
+        DeviceManager,
 
         InverterDriver,
 

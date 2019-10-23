@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.IODriver
         [Column(Order = (int)IoPorts.LoadingUnitInBay)]
         public bool LoadingUnitExistenceInBay => this.inputs[(int)IoPorts.LoadingUnitInBay];
 
-        public bool MeasureBarrierOn => this.outputs[(int)IoPorts.ResetSecurity];
+        public bool MeasureProfileOn => this.outputs[(int)IoPorts.MeasureProfile];
 
         [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
         public bool MicroCarterLeftSideBay => this.inputs[(int)IoPorts.MicroCarterLeftSideBay];

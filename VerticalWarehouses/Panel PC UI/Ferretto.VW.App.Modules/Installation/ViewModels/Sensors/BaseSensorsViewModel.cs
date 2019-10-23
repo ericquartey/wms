@@ -115,9 +115,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<SensorsChangedMessageData>(
-                    this.OnSensorsChanged,
-                    m => m.Data?.SensorsStates != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.SensorsStates != null);
 
             try
             {
@@ -156,19 +160,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void CheckZeroChainOnBays(IEnumerable<Bay> bays)
         {
             this.Bay1ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayOne)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault();
+                .Where(b => b.Number == BayNumber.BayOne)
+                .Select(b => b.Carousel != null || b.IsExternal)
+                .SingleOrDefault();
 
             this.Bay2ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayTwo)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault();
+                .Where(b => b.Number == BayNumber.BayTwo)
+                .Select(b => b.Carousel != null || b.IsExternal)
+                .SingleOrDefault();
 
             this.Bay3ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayThree)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault();
+                .Where(b => b.Number == BayNumber.BayThree)
+                .Select(b => b.Carousel != null || b.IsExternal)
+                .SingleOrDefault();
         }
 
         private void InitializeNavigationMenu()

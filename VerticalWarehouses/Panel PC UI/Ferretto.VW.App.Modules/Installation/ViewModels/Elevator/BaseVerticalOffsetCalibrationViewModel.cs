@@ -129,9 +129,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.EventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnCurrentPositionChanged,
-                    m => m.Data?.CurrentPosition != null);
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.CurrentPosition != null);
 
             await this.RetrieveCurrentPositionAsync();
 

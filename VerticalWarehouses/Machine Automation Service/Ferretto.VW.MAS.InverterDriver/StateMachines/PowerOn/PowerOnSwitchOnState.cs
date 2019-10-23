@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -55,7 +56,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var returnValue = false;
+            var responseReceived = false;
 
             if (message.IsError)
             {
@@ -68,10 +69,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(new PowerOnEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+
+                    responseReceived = true;
                 }
             }
-            return returnValue;
+
+            return responseReceived;
         }
 
         #endregion

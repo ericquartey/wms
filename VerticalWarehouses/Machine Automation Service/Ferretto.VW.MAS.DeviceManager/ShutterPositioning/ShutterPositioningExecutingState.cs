@@ -253,7 +253,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 messageData,
                 $"Shutter to {shutterPositionTarget}",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.ShutterPositioning,
                 (byte)this.machineData.InverterIndex);
 

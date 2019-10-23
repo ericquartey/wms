@@ -343,8 +343,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
                 ??
-                this.eventAggregator.SubscribeToEvent<PositioningMessageData>(
-                    this.OnPositioningMessageReceived);
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private bool CanStartTest()

@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #region Properties
 
-        protected IIoState CurrentState { get; set; }
+        protected IIoState CurrentState { get; private set; }
 
         protected IEventAggregator EventAggregator { get; }
 

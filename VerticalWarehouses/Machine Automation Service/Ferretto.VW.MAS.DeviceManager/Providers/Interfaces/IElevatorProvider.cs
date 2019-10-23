@@ -25,6 +25,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
             bool waitContinue,
+            bool measure,
             BayNumber requestingBay,
             MessageActor sender);
 

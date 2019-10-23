@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = false };
+            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = true };
         }
 
         private void InitializeData()

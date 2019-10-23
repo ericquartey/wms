@@ -87,6 +87,20 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void SetHeight(int loadingUnitId, double height)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == loadingUnitId);
+
+                loadingUnit.Height = height;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
         {
             lock (this.dataContext)
