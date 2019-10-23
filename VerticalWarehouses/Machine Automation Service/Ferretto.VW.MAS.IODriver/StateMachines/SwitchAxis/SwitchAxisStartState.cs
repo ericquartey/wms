@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
-            var switchOffAxisIoMessage = new IoWriteMessage();
+            var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true };
 
             this.Logger.LogTrace($"1:Switch off axis IO={switchOffAxisIoMessage}");
 
@@ -93,8 +93,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
-
-            switchOffAxisIoMessage.SwitchPowerEnable(true);
 
             lock (this.status)
             {

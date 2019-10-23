@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
             this.Logger.LogTrace($"1:Power Enable ={powerEnableIoMessage}");
 
-            powerEnableIoMessage.SwitchPowerEnable(this.enable);
+            powerEnableIoMessage.PowerEnable = this.enable;
 
             lock (this.status)
             {

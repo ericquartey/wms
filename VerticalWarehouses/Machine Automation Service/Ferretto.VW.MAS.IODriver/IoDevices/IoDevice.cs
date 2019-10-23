@@ -51,6 +51,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private readonly ILogger logger;
 
+        private readonly IoStatus mainIoDevice;
+
         private readonly int port;
 
         private readonly CancellationToken stoppingToken;
@@ -82,8 +84,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             ILogger logger,
             CancellationToken cancellationToken)
         {
-            logger.LogTrace("1:Method Start");
-
             this.eventAggregator = eventAggregator;
             this.ipAddress = ipAddress;
             this.port = port;
@@ -100,6 +100,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
+            this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
             this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
         }
 
@@ -333,7 +334,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 var notificationMessage = new FieldNotificationMessage(
                                     data,
                                     "Update IO sensors",
-                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.DeviceManager,
                                     FieldMessageActor.IoDriver,
                                     FieldMessageType.SensorsChanged,
                                     MessageStatus.OperationExecuting,
@@ -406,29 +407,27 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                         try
                         {
-                            byte[] telegram;
                             switch (shdMessage.CodeOperation)
                             {
                                 case ShdCodeOperation.Data:
-                                    if (shdMessage.ValidOutputs)
                                     {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
                                         result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                         this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
-                                    }
 
-                                    break;
+                                        break;
+                                    }
 
                                 case ShdCodeOperation.Configuration:
                                     {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
                                         result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                         this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
-                                    }
 
-                                    break;
+                                        break;
+                                    }
 
                                 case ShdCodeOperation.SetIP:
                                     throw new NotImplementedException();

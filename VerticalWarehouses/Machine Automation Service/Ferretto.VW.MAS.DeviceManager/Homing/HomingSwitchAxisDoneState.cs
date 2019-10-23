@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 calibrateAxisData,
                 $"Homing {this.machineData.AxisToCalibrate} State Started",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.CalibrateAxis,
                 (byte)inverterIndex);
 

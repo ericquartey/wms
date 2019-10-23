@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 commandMessageData,
                 $"Power Enable IO digital input",
                 FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.PowerEnable,
                 (byte)IoIndex.IoDevice1);
 

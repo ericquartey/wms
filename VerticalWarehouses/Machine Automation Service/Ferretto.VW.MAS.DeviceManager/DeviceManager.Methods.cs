@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         null,
                         "Continue Message Command",
                         FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.DeviceManager,
                         FieldMessageType.ContinueMovement,
                         (byte)inverter.Index);
                     this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
@@ -232,7 +232,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 null,
                 "Stop Inverter",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterStop,
                 (byte)InverterIndex.All);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
@@ -420,7 +420,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
             this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
@@ -437,7 +437,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     ioDataMessage,
                     "Update IO digital input",
                     FieldMessageActor.IoDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.SensorsChanged,
                     (byte)ioDevice.Index);
 

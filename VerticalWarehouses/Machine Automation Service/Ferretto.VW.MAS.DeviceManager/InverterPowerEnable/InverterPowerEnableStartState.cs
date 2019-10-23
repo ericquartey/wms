@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 null,
                 $"InverterPowerEnable Start State Field Command",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 this.machineData.Enable ? FieldMessageType.InverterPowerOn : FieldMessageType.InverterPowerOff,
                 (byte)InverterIndex.None);
 

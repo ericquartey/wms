@@ -76,8 +76,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new ResetStartState(this, this.status, this.index, this.Logger));
         }
 
         protected override void Dispose(bool disposing)
