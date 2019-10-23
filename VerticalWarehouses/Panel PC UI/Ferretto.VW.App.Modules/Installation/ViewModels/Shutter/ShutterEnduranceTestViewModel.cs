@@ -40,8 +40,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? performedCyclesThisSession;
 
-        private SubscriptionToken receivedActionUpdateErrorToken;
-
         private ShutterSensors sensors;
 
         private SubscriptionToken sensorsChangedToken;
@@ -237,14 +235,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
             this.shutterTestStatusChangedToken?.Dispose();
             this.shutterTestStatusChangedToken = null;
 
             this.sensorsChangedToken?.Dispose();
             this.sensorsChangedToken = null;
-
-            this.receivedActionUpdateErrorToken?.Dispose();
-            this.receivedActionUpdateErrorToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
@@ -253,23 +253,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.shutterTestStatusChangedToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-                .Subscribe(
-                    this.OnShutterTestStatusChanged,
-                    ThreadOption.UIThread,
-                    false,
-                    message =>
-                        message?.Data != null
-                        &&
-                        message.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
+            this.shutterTestStatusChangedToken = this.shutterTestStatusChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterTestStatusChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Type == CommonUtils.Messages.Enumerations.MessageType.ShutterPositioning);
 
-            this.sensorsChangedToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
-                    this.OnSensorsChanged,
-                    ThreadOption.UIThread,
-                    false);
+            this.sensorsChangedToken = this.sensorsChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             try
             {
@@ -321,12 +323,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            if (message is null)
-            {
-                throw new System.ArgumentNullException(nameof(message));
-            }
-
-            this.sensors.Update(message.Data?.SensorsStates);
+            this.sensors.Update(message.Data.SensorsStates);
         }
 
         private void OnShutterTestStatusChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
@@ -341,9 +338,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
             }
-            else
+            else if (message.Data != null)
             {
-                System.Diagnostics.Debug.WriteLine($"{message.Status} {message.Data.PerformedCycles}");
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
             }
         }

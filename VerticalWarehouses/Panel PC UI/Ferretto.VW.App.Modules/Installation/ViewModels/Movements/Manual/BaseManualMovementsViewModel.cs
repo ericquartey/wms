@@ -18,8 +18,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
-
         private Bay bay;
 
         private int bayNumber;
@@ -92,30 +90,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var name = this.GetType().ToString();
             this.EventAggregator
-              .GetEvent<ManualMovementsChangedPubSubEvent>()
-              .Publish(new ManualMovementsChangedMessage(name));
+                .GetEvent<ManualMovementsChangedPubSubEvent>()
+                .Publish(new ManualMovementsChangedMessage(name));
         }
 
         public override void Disappear()
         {
             base.Disappear();
 
-            if (this.notificationUIsubscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.notificationUIsubscriptionToken);
-                this.notificationUIsubscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.notificationUIsubscriptionToken?.Dispose();
+            this.notificationUIsubscriptionToken = null;
 
-            if (this.movementsSubscriptionToken != null)
-            {
-                this.EventAggregator
-                 .GetEvent<ManualMovementsChangedPubSubEvent>()
-                 .Unsubscribe(this.movementsSubscriptionToken);
-
-                this.movementsSubscriptionToken = null;
-            }
+            this.movementsSubscriptionToken?.Dispose();
+            this.movementsSubscriptionToken = null;
+            */
         }
 
         public void EnableAll()
@@ -125,13 +117,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
                .Publish(new ManualMovementsChangedMessage(null));
         }
 
-        public virtual void EnabledChanged(ManualMovementsChangedMessage message)
+        public override async Task OnAppearedAsync()
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
+            this.IsBackNavigationAllowed = true;
 
+            this.notificationUIsubscriptionToken = this.notificationUIsubscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
+
+            this.movementsSubscriptionToken = this.movementsSubscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<ManualMovementsChangedPubSubEvent>()
+                    .Subscribe(
+                        this.EnabledChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        message => message != null);
+
+            this.bay = await this.bayManagerService.GetBayAsync();
+            this.BayNumber = (int)this.bay.Number;
+
+            await this.RetrieveCurrentPositionAsync();
+
+            await base.OnAppearedAsync();
+
+            this.EnableAll();
+        }
+
+        protected virtual void EnabledChanged(ManualMovementsChangedMessage message)
+        {
             if (string.IsNullOrEmpty(message.ViewModelName))
             {
                 this.IsEnabled = true;
@@ -145,70 +166,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsBackNavigationAllowed = true;
-
-            this.notificationUIsubscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  this.OnElevatorPositionChanged,
-                  ThreadOption.UIThread,
-                  false);
-
-            this.movementsSubscriptionToken = this.EventAggregator
-             .GetEvent<ManualMovementsChangedPubSubEvent>()
-             .Subscribe(
-                 this.EnabledChanged,
-                 ThreadOption.UIThread,
-                 false);
-
-            this.bay = await this.bayManagerService.GetBayAsync();
-            this.BayNumber = (int)this.bay.Number;
-
-            await this.RetrieveCurrentPositionAsync();
-
-            await base.OnAppearedAsync();
-
-            this.EnableAll();
-        }
-
         protected abstract Task StopMovementAsync();
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            if (message.Data is null)
-            {
-                throw new ArgumentException();
-            }
-
             switch (message.Data.AxisMovement)
             {
-                case CommonUtils.Messages.Enumerations.Axis.None:
-                    break;
-
                 case CommonUtils.Messages.Enumerations.Axis.Horizontal:
                     if (message.Data.MovementMode < CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                     {
-                        this.CurrentHorizontalPosition = message?.Data?.CurrentPosition ?? this.CurrentHorizontalPosition;
+                        this.CurrentHorizontalPosition = message.Data.CurrentPosition ?? this.CurrentHorizontalPosition;
                     }
                     else
                     {
-                        this.CurrentBayChainPosition = message?.Data?.CurrentPosition ?? this.CurrentBayChainPosition;
+                        this.CurrentBayChainPosition = message.Data.CurrentPosition ?? this.CurrentBayChainPosition;
                     }
 
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.Vertical:
-                    this.CurrentVerticalPosition = message?.Data?.CurrentPosition ?? this.CurrentVerticalPosition;
-                    break;
-
-                case CommonUtils.Messages.Enumerations.Axis.HorizontalAndVertical:
+                    this.CurrentVerticalPosition = message.Data.CurrentPosition ?? this.CurrentVerticalPosition;
                     break;
 
                 case CommonUtils.Messages.Enumerations.Axis.BayChain:

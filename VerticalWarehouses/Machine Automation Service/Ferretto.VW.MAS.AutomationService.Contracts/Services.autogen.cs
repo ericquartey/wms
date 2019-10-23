@@ -5142,23 +5142,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int totalTestCycleCount, int delayStart)
+        public System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart)
         {
-            return StartAsync(upperPosition, lowerPosition, totalTestCycleCount, delayStart, System.Threading.CancellationToken.None);
+            return StartAsync(upperPosition, lowerPosition, delayStart, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int totalTestCycleCount, int delayStart, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task StartAsync(double upperPosition, double lowerPosition, int delayStart, System.Threading.CancellationToken cancellationToken)
         {
             if (upperPosition == null)
                 throw new System.ArgumentNullException("upperPosition");
     
             if (lowerPosition == null)
                 throw new System.ArgumentNullException("lowerPosition");
-    
-            if (totalTestCycleCount == null)
-                throw new System.ArgumentNullException("totalTestCycleCount");
     
             if (delayStart == null)
                 throw new System.ArgumentNullException("delayStart");
@@ -5167,7 +5164,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/belt-burnishing-procedure/start?");
             urlBuilder_.Append(System.Uri.EscapeDataString("upperPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(upperPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("lowerPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(lowerPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("totalTestCycleCount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(totalTestCycleCount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("delayStart") + "=").Append(System.Uri.EscapeDataString(ConvertToString(delayStart, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     

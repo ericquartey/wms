@@ -32,10 +32,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             IoIndex deviceIndex,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.enable = enable;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.deviceIndex = deviceIndex;
 

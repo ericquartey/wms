@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -70,18 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineCellPanelsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineCellPanelsWebService));
-            }
-
-            if (machineElevatorWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorWebService));
-            }
-
-            this.machineCellPanelsWebService = machineCellPanelsWebService;
-            this.machineElevatorWebService = machineElevatorWebService;
+            this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
         }
 
         #endregion
@@ -147,7 +138,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand GoToCellHeightCommand =>
-                           this.goToCellHeightCommand
+           this.goToCellHeightCommand
            ??
            (this.goToCellHeightCommand = new DelegateCommand(
                this.GoToCellHeight,
@@ -262,33 +253,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-             .GetEvent<NotificationEventUI<PositioningMessageData>>()
-             .Subscribe(
-                 message => this.OnCurrentPositionChanged(message),
-                 ThreadOption.UIThread,
-                 false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.IsBackNavigationAllowed = true;
 
             try
             {
-                this.Panels = await this.machineCellPanelsWebService
-                    .GetAllAsync();
+                this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
                 this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
 
@@ -499,17 +490,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            if (message.Data is null)
-            {
-                throw new ArgumentException();
-            }
-
-            this.CurrentHeight = message.Data.CurrentPosition ?? this.CurrentHeight;
+            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
 
             if (message.IsErrored())
             {

@@ -133,14 +133,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public async Task MoveDownAsync()
@@ -167,12 +166,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-              .Subscribe(
-                  this.OnShutterPositionChanged,
-                  ThreadOption.UIThread,
-                  false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
             try
             {
                 this.CurrentPosition = await this.shuttersWebService.GetShutterPositionAsync();
@@ -206,12 +208,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new System.ArgumentNullException(nameof(message));
-            }
-
-            this.CurrentPosition = (ShutterPosition?)message.Data?.ShutterPosition;
+            this.CurrentPosition = (ShutterPosition)message.Data.ShutterPosition;
         }
 
         private void RefreshCanExecuteCommands()

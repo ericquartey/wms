@@ -106,19 +106,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
         {
             return this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
-            //var returnValue = true;
+            /*
+            var returnValue = true;
 
-            //if (this.machineMissions.Any(mm => mm.Type == requestedMission))
-            //{
-            //    returnValue = this.machineMissions.All(mm => mm.AllowMultipleInstances(command));
-            //}
+            if (this.machineMissions.Any(mm => mm.Type == requestedMission))
+            {
+                returnValue = this.machineMissions.All(mm => mm.AllowMultipleInstances(command));
+            }
 
-            //if (returnValue)
-            //{
-            //    returnValue = this.EvaluateMissionPolicies(requestedMission, command);
-            //}
+            if (returnValue)
+            {
+                returnValue = this.EvaluateMissionPolicies(requestedMission, command);
+            }
 
-            //return returnValue;
+            return returnValue;
+            */
         }
 
         private bool EvaluateMissionPolicies(MissionType moveRequestedMission, CommandMessage command)

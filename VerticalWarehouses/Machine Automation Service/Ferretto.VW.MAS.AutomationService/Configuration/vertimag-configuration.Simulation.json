@@ -2786,7 +2786,7 @@
       "FeedRate": 0.2
     },
     "BeltBurnishingTest": {
-      "RequiredCycles": 5
+      "RequiredCycles": 200
     },
     "BeltBurnishing": {
       "CycleQuantity": 5

@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningErrorState : StateBase
@@ -68,7 +67,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Start()
         {
             var inverterIndex = this.machineData.CurrentInverterIndex;
-            var description = this.machineData.MessageData.NumberCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
+            var description = this.machineData.MessageData.RequiredCycles == 0 ? $"Reset Inverter Axis {this.machineData.MessageData.AxisMovement}" : $"Reset Inverter Belt Burninshing";
             var stopMessage = new FieldCommandMessage(
                 null,
                 description,

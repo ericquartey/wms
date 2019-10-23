@@ -50,13 +50,12 @@
                                  ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                           Grid.Column="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputRequiredCycles}"
+                                 LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
@@ -90,7 +89,8 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{x:Static res:InstallationApp.Start}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"

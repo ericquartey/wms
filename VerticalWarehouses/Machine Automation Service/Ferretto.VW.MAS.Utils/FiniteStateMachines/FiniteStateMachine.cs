@@ -265,7 +265,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -294,7 +295,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                     return;
                 }
-            } while (!cancellationToken.IsCancellationRequested);
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
@@ -322,7 +324,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 new FsmExceptionMessageData(ex, string.Empty, 0),
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
                 this.requestingBay,
                 BayNumber.None,

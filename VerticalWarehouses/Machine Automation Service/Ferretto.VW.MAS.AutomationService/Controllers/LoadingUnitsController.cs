@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.MissionsManager.Providers.Interfaces;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         private readonly IMachinesDataService machinesDataService;
 
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 

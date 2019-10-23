@@ -47,36 +47,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (shutterWebService == null)
-            {
-                throw new System.ArgumentNullException(nameof(shutterWebService));
-            }
-
-            if (machineCarouselWebService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineCarouselWebService));
-            }
-
-            if (machineElevatorWebService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineElevatorWebService));
-            }
-
-            if (machineBayWebService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineBayWebService));
-            }
-
-            if (bayManager == null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
-            this.machineShutterWebService = shutterWebService;
-            this.machineCarouselWebService = machineCarouselWebService;
-            this.machineElevatorWebService = machineElevatorWebService;
-            this.machineBayWebService = machineBayWebService;
-            this.bayManager = bayManager;
+            this.machineShutterWebService = shutterWebService ?? throw new System.ArgumentNullException(nameof(shutterWebService));
+            this.machineCarouselWebService = machineCarouselWebService ?? throw new System.ArgumentNullException(nameof(machineCarouselWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new System.ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineBayWebService = machineBayWebService ?? throw new System.ArgumentNullException(nameof(machineBayWebService));
+            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
 
             this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.bayManager);
             this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);

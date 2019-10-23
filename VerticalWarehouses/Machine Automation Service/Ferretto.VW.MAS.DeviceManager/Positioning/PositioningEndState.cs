@@ -1,17 +1,14 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
-
 namespace Ferretto.VW.MAS.DeviceManager.Positioning
 {
     internal class PositioningEndState : StateBase
@@ -54,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
-                                this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                                this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                                 MessageActor.FiniteStateMachines,
                                 MessageActor.FiniteStateMachines,
                                 MessageType.Positioning,
@@ -87,7 +84,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stopMessage = new FieldCommandMessage(
                     null,
-                    this.machineData.MessageData.NumberCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.InverterStop,
@@ -99,7 +96,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
-                    this.machineData.MessageData.NumberCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
+                    this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
                     MessageActor.FiniteStateMachines,
                     MessageActor.FiniteStateMachines,
                     MessageType.Positioning,

@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 notificationData.Data,
                 "AS Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
                 BayNumber.None,
                 BayNumber.None,

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -36,18 +37,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineCellsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineCellsWebService));
-            }
-
-            if (machineElevatorWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorWebService));
-            }
-
-            this.MachineCellsWebService = machineCellsWebService;
-            this.MachineElevatorWebService = machineElevatorWebService;
+            this.MachineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
 
             this.InitializeNavigationMenu();
         }
@@ -119,26 +110,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    message => this.OnCurrentPositionChanged(message),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.CurrentPosition != null);
 
             await this.RetrieveCurrentPositionAsync();
 
@@ -158,12 +151,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
-            this.CurrentPosition = message.Data?.CurrentPosition ?? this.CurrentPosition;
+            this.CurrentPosition = message.Data.CurrentPosition;
         }
 
         protected abstract void RaiseCanExecuteChanged();
