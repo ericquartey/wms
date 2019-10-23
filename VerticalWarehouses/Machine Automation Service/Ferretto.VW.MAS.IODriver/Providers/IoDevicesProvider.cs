@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    internal class IoDevicesProvider : IIoDevicesProvider
+    internal sealed class IoDevicesProvider : IIoDevicesProvider
     {
         #region Constructors
 

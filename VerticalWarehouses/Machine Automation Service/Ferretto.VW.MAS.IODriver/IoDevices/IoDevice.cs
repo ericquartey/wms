@@ -10,8 +10,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -25,7 +23,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice : IIoDevice
+    internal sealed partial class IoDevice : IIoDevice
     {
         #region Fields
 
@@ -145,7 +143,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void DestroyStateMachine()
         {
-            this.CurrentStateMachine?.Dispose();
+            if (this.CurrentStateMachine is IDisposable disposableCurrentStateMachine)
+            {
+                disposableCurrentStateMachine.Dispose();
+            }
+
             this.CurrentStateMachine = null;
         }
 

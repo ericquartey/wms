@@ -2,13 +2,12 @@
 using System.Linq;
 using System.Timers;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public sealed class ResetSecurityStartState : IoStateBase, IDisposable
+    internal sealed class ResetSecurityStartState : IoStateBase, IDisposable
     {
         #region Fields
 
