@@ -82,16 +82,16 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Puntatore Laser")]
         BayLaser,
 
-        [View(Utils.Modules.Installation.Movements.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Inserimento cassetti da baia a cella")]
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Inserimento cassetti da baia in cella")]
         MovementsFromBayToCell,
 
-        [View(Utils.Modules.Installation.Movements.LOADINGUNITFROMCELLTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Spostamento cassetti da cella a cella")]
         MovemetsFromCellToCell,
 
-        [View(Utils.Modules.Installation.Movements.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Estrazione cassetti da cella a baia")]
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Estrazione cassetti da cella in baia")]
         MovemetsFromCellToBay,
 
         None,
