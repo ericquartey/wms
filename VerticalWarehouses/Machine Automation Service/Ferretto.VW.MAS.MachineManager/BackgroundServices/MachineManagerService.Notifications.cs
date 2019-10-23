@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
 
                 if (reason != StopRequestReason.NoReason)
                 {
-                    var newMessageData = new ChangeRunningStateMessageData(false, CommandAction.Start, reason);
+                    var newMessageData = new ChangeRunningStateMessageData(false, null, CommandAction.Start, reason);
                     var command = new CommandMessage(
                         newMessageData,
                         message.Description,

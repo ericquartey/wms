@@ -21,7 +21,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Methods
 
+        void Abort();
+
         bool AllowMultipleInstances(CommandMessage command);
+
+        void Pause();
+
+        void Resume();
 
         void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 

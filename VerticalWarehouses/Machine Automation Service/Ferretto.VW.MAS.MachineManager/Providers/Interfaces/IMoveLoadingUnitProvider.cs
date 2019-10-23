@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 {
@@ -6,7 +7,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
     {
         #region Methods
 
-        void AbortMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
+        void AbortMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
         void EjectFromCell(LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
@@ -24,7 +25,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void MoveLoadingUnitToCell(int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender);
 
-        void StopMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
+        void PauseMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
+
+        void ResumeMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
+
+        void StopMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
         #endregion
     }

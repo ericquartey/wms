@@ -401,11 +401,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId);
@@ -443,6 +443,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -464,11 +478,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(BayNumber targetBay);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
     

@@ -18,11 +18,17 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #region Methods
 
+        void AbortMachineMission();
+
         bool AllowMultipleInstances(CommandMessage command);
 
         void EndMachine();
 
+        void PauseMachineMission();
+
         void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler);
+
+        void ResumeMachineMission();
 
         void StartMachine(CommandMessage command);
 

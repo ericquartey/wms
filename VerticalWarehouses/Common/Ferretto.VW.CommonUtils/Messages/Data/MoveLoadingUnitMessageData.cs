@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
@@ -15,6 +16,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? loadingUnitId,
             bool insertLoadingUnit = false,
             bool ejectLoadingUnit = false,
+            Guid? missionId = null,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -26,6 +28,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.LoadingUnitId = loadingUnitId;
             this.InsertLoadingUnit = insertLoadingUnit;
             this.EjectLoadingUnit = ejectLoadingUnit;
+            this.MissionId = missionId;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
             this.Verbosity = verbosity;
@@ -46,6 +49,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public bool InsertLoadingUnit { get; }
 
         public int? LoadingUnitId { get; }
+
+        public Guid? MissionId { get; }
 
         public LoadingUnitLocation Source { get; }
 

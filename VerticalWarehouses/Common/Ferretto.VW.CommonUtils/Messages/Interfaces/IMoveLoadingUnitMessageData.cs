@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -17,6 +18,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         bool InsertLoadingUnit { get; }
 
         int? LoadingUnitId { get; }
+
+        Guid? MissionId { get; }
 
         LoadingUnitLocation Source { get; }
 

@@ -69,6 +69,29 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         }
 
                         break;
+
+                    case CommandAction.Abort:
+                    case CommandAction.Pause:
+                    case CommandAction.Resume:
+                        this.Logger.LogDebug($"Invalid command action {messageData.CommandAction} for Change Running State Mission");
+                        this.NotifyCommandError(command);
+
+                        break;
+
+                    case CommandAction.Stop:
+                        if (messageData.MissionId != null)
+                        {
+                            this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
+                            {
+                                mission.StopMachine(StopRequestReason.Stop);
+                            }
+                        }
+
+                        break;
                 }
             }
             else
@@ -111,9 +134,79 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         break;
 
                     case CommandAction.Abort:
+                        if (messageData.MissionId != null)
+                        {
+                            if (this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
+                            {
+                                this.Logger.LogDebug("Supplied mission Id to be aborted is no longer valid");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            {
+                                mission.AbortMachineMission();
+                            }
+                        }
+
                         break;
 
                     case CommandAction.Stop:
+                        if (messageData.MissionId != null)
+                        {
+                            if (this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
+                            {
+                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            {
+                                mission.StopMachine(StopRequestReason.Stop);
+                            }
+                        }
+
+                        break;
+
+                    case CommandAction.Pause:
+                        if (messageData.MissionId != null)
+                        {
+                            if (this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
+                            {
+                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            {
+                                mission.PauseMachineMission();
+                            }
+                        }
+
+                        break;
+
+                    case CommandAction.Resume:
+                        if (messageData.MissionId != null)
+                        {
+                            if (this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
+                            {
+                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.NotifyCommandError(command);
+                            }
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            {
+                                mission.ResumeMachineMission();
+                            }
+                        }
+
                         break;
                 }
             }

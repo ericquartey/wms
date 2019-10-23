@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils;
+﻿using System;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
@@ -19,7 +20,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Methods
 
-        public void AbortMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void AbortMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
@@ -30,6 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     null,
                     false,
                     false,
+                    missionId,
                     CommandAction.Abort),
                 $"Bay {requestingBay} requested to abort move Loading unit on Bay {targetBay}",
                 sender,
@@ -161,7 +163,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void StopMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void PauseMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
@@ -172,6 +174,47 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     null,
                     false,
                     false,
+                    missionId,
+                    CommandAction.Pause),
+                $"Bay {requestingBay} requested to pause move Loading unit on Bay {targetBay}",
+                sender,
+                MessageType.MoveLoadingUnit,
+                requestingBay,
+                targetBay);
+        }
+
+        public void ResumeMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        {
+            this.SendCommandToMissionManager(
+                new MoveLoadingUnitMessageData(
+                    LoadingUnitLocation.NoLocation,
+                    LoadingUnitLocation.NoLocation,
+                    null,
+                    null,
+                    null,
+                    false,
+                    false,
+                    missionId,
+                    CommandAction.Resume),
+                $"Bay {requestingBay} requested to resume move Loading unit on Bay {targetBay}",
+                sender,
+                MessageType.MoveLoadingUnit,
+                requestingBay,
+                targetBay);
+        }
+
+        public void StopMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        {
+            this.SendCommandToMissionManager(
+                new MoveLoadingUnitMessageData(
+                    LoadingUnitLocation.NoLocation,
+                    LoadingUnitLocation.NoLocation,
+                    null,
+                    null,
+                    null,
+                    false,
+                    false,
+                    missionId,
                     CommandAction.Stop),
                 $"Bay {requestingBay} requested to stop move Loading unit on Bay {targetBay}",
                 sender,

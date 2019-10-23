@@ -42,6 +42,52 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
+        public bool AbortMachineMission(Guid missionId)
+        {
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            if (mission is null)
+            {
+                return false;
+            }
+
+            mission.AbortMachineMission();
+            return true;
+        }
+
+        public IMission GetMissionById(Guid missionId)
+        {
+            return this.machineMissions.FirstOrDefault(m => m.Id == missionId);
+        }
+
+        public List<IMission> GetMissionsByType(MissionType type)
+        {
+            return this.machineMissions.Where(m => m.Type == type).ToList();
+        }
+
+        public bool PauseMachineMission(Guid missionId)
+        {
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            if (mission is null)
+            {
+                return false;
+            }
+
+            mission.PauseMachineMission();
+            return true;
+        }
+
+        public bool ResumeMachineMission(Guid missionId)
+        {
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            if (mission is null)
+            {
+                return false;
+            }
+
+            mission.ResumeMachineMission();
+            return true;
+        }
+
         public bool StartMachineMission(Guid missionId, CommandMessage command)
         {
             var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
@@ -105,14 +151,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         /// <returns>True if the mission type can be created, false otherwise</returns>
         private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
         {
-            return this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
-            /*
-            var returnValue = true;
-
-            if (this.machineMissions.Any(mm => mm.Type == requestedMission))
-            {
-                returnValue = this.machineMissions.All(mm => mm.AllowMultipleInstances(command));
-            }
+            var returnValue = this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
 
             if (returnValue)
             {
@@ -120,7 +159,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             return returnValue;
-            */
         }
 
         private bool EvaluateMissionPolicies(MissionType moveRequestedMission, CommandMessage command)

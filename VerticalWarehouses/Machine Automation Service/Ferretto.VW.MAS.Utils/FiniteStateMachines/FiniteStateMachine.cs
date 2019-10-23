@@ -132,6 +132,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Methods
 
+        public void Abort()
+        {
+            this.OnAbort();
+        }
+
         public virtual bool AllowMultipleInstances(CommandMessage command)
         {
             return true;
@@ -154,6 +159,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                 this.isDisposed = true;
             }
+        }
+
+        public void Pause()
+        {
+            this.OnPause();
+        }
+
+        public void Resume()
+        {
+            this.OnResume();
         }
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
@@ -204,6 +219,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.serviceProvider.GetRequiredService<TState>();
         }
 
+        protected virtual void OnAbort()
+        {
+        }
+
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type}, {command.Description}");
@@ -222,6 +241,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.Logger.LogDebug($"{this.GetType().Name}: received notification {notification.Type}, {notification.Description}");
 
             return this.ActiveState;
+        }
+
+        protected virtual void OnPause()
+        {
+        }
+
+        protected virtual void OnResume()
+        {
         }
 
         protected virtual void OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)

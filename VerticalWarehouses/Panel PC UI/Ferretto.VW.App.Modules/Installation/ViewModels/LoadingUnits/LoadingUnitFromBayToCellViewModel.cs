@@ -558,7 +558,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StopAsync(this.bay.Number);
+                await this.machineLoadingUnitsWebService.StopAsync(null, this.bay.Number);
 
                 this.IsStopping = true;
             }

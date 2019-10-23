@@ -50,6 +50,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Methods
 
+        public IState Abort()
+        {
+            this.Logger.LogDebug($"Aborting state {this.GetType().Name}.");
+
+            return this.OnAbort();
+        }
+
         public IState CommandReceived(CommandMessage commandMessage)
         {
             return this.OnCommandReceived(commandMessage);
@@ -104,6 +111,19 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.OnNotificationReceived(notificationMessage);
         }
 
+        public IState Pause()
+        {
+            this.Logger.LogDebug($"Pausing state {this.GetType().Name}.");
+
+            return this.OnPause();
+        }
+
+        public IState Resume()
+        {
+            this.Logger.LogDebug($"Resuming state {this.GetType().Name}.");
+            return this.OnResume();
+        }
+
         public IState Stop(StopRequestReason reason)
         {
             if (this.hasStopped)
@@ -147,6 +167,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(message);
         }
 
+        protected virtual IState OnAbort()
+        {
+            return this;
+        }
+
         protected virtual IState OnCommandReceived(CommandMessage commandMessage)
         {
             return this;
@@ -166,6 +191,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         }
 
         protected virtual IState OnNotificationReceived(NotificationMessage notificationMessage)
+        {
+            return this;
+        }
+
+        protected virtual IState OnPause()
+        {
+            return this;
+        }
+
+        protected virtual IState OnResume()
         {
             return this;
         }
