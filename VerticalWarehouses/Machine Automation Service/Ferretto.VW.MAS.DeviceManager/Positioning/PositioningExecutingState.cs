@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     FieldMessageActor.IoDriver,
                     FieldMessageActor.FiniteStateMachines,
                     FieldMessageType.MeasureProfile,
-                    (byte)this.baysProvider.GetIoDevice(this.machineData.TargetBay));
+                    (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 
                 this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
@@ -538,7 +538,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 FieldMessageActor.IoDriver,
                                 FieldMessageActor.FiniteStateMachines,
                                 FieldMessageType.MeasureProfile,
-                                (byte)this.baysProvider.GetIoDevice(this.machineData.TargetBay));
+                                (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 
                             this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 

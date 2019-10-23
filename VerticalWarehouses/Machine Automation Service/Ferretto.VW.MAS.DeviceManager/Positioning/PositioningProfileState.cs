@@ -25,12 +25,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         /// <summary>
         /// profile = 200   ==> height = 0
-        /// profile = 10000 ==> height = 75mm
+        /// profile = 10000 ==> height = 725mm
         /// height = kMul * profile + kSum;
         /// </summary>
-        private readonly double kMul = 0.007653;
+        private readonly double kMul = 0.0739795918367347;
 
-        private readonly double kSum = -1.530612;
+        private readonly double kSum = -14.79591836734694;
 
         private readonly ILoadingUnitsProvider loadingUnitProvider;
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         /// <summary>
         /// TODO make minHeight a configuration parameter?
         /// </summary>
-        private readonly double minHeight = 5.0;
+        private readonly double minHeight = 25.0;
 
         private readonly IServiceScope scope;
 
