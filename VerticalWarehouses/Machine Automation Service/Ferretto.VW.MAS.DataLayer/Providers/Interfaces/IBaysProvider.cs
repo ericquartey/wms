@@ -43,6 +43,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
 
+        InverterIndex GetInverterIndexByProfile(BayNumber bayNumber);
+
         IoIndex GetIoDevice(BayNumber bayNumber);
 
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);

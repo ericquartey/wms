@@ -56,6 +56,8 @@
 
         TorqueCurrent = 211,
 
+        ProfileInput = 251,
+
         BrakeReleaseTime = 625,
 
         BrakeActivatePercent = 637,

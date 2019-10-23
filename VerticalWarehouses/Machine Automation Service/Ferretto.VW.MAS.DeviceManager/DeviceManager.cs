@@ -570,6 +570,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 ErrorLevel.Critical));
 
                     break;
+
+                case FieldMessageType.MeasureProfile:
+                    messageBayBayIndex = BayNumber.ElevatorBay;
+                    break;
             }
 
             this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);

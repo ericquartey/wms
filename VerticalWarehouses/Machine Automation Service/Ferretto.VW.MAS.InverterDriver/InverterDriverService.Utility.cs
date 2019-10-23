@@ -329,10 +329,25 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                 }
             }
-
-            if (message.ParameterId == InverterParameterId.TorqueCurrent)
+            else if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 currentStateMachine?.ValidateCommandResponse(message);
+            }
+            else if (message.ParameterId == InverterParameterId.ProfileInput)
+            {
+                var notificationData = new MeasureProfileFieldMessageData(profile: message.UShortPayload);
+                var msgNotification = new FieldNotificationMessage(
+                    notificationData,
+                    "Inverter measure profile",
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.MeasureProfile,
+                    MessageStatus.OperationEnd,
+                    (byte)message.SystemIndex);
+
+                this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+
+                this.Logger.LogDebug($"ProfileInput inverter={message.SystemIndex}; value={message.UShortPayload}");
             }
         }
 
@@ -671,6 +686,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.SendOperationErrorMessage(currentInverter, new InverterExceptionFieldMessageData(null, "Invalid message data for InverterStop message Type", 0), FieldMessageType.InverterSwitchOn);
             }
+        }
+
+        private void ProcessMeasureProfileMessage(IInverterStatusBase inverter)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.ProfileInput);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.inverterCommandQueue.Enqueue(inverterMessage);
         }
 
         private void ProcessPositioningMessage(
