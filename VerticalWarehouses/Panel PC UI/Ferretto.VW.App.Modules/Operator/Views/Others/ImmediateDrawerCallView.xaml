@@ -39,6 +39,7 @@
                    Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
 
         <ContentControl Grid.Row="1"
+                        Margin="0,0,0,15"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Top"
                         Content="{Binding DataGridViewModel}" />

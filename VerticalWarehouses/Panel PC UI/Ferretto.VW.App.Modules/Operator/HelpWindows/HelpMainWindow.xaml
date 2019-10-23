@@ -11,8 +11,7 @@
         xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations"
         xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details"
         xmlns:viewmodelswaitinglistslistdetail="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail"
-        xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
-        xmlns:viewsAndViewModels="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels"
+        xmlns:viewsmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
         xmlns:waitingLists="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists"
         Width="1024"
         Height="768"
@@ -22,7 +21,7 @@
         mc:Ignorable="d">
     <Window.Resources>
 
-        <DataTemplate DataType="{x:Type views:OperatorMenuView}">
+        <DataTemplate DataType="{x:Type viewsmodels:OperatorMenuViewModel}">
             <helpWindows:HelpInitialPage />
         </DataTemplate>
 
@@ -70,11 +69,11 @@
             <helpWindows:HelpItemSearchDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:ImmediateDrawerCallViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:ImmediateDrawerCallViewModel}">
             <helpWindows:HelpImmediateDrawerCall />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:DrawerCompactingViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerCompactingViewModel}">
             <helpWindows:HelpDrawerCompacting />
         </DataTemplate>
 
@@ -106,7 +105,7 @@
             <helpWindows:HelpErrorsStatistics />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:MaintenanceMainPageViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:MaintenanceViewModel}">
             <helpWindows:HelpMaintenanceMainPage />
         </DataTemplate>
 
@@ -114,7 +113,7 @@
             <helpWindows:HelpMaintenanceDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:GeneralInfoViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:OthersNavigationViewModel}">
             <helpWindows:HelpGeneralInfo />
         </DataTemplate>
 

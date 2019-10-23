@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly CustomControlDrawerDataGridViewModel dataGridViewModelRef;
+        private readonly ICustomControlDrawerDataGridViewModel drawerDataGridViewModel;
 
         private readonly ObservableCollection<DataGridDrawer> drawers = new ObservableCollection<DataGridDrawer>();
 
@@ -29,16 +29,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ImmediateDrawerCallViewModel(ICustomControlDrawerDataGridViewModel drawerDataGridViewModel)
             : base(PresentationMode.Operator)
         {
-            this.DrawerDataGridViewModel = drawerDataGridViewModel ?? throw new ArgumentNullException(nameof(drawerDataGridViewModel));
+            this.drawerDataGridViewModel = drawerDataGridViewModel ?? throw new ArgumentNullException(nameof(drawerDataGridViewModel));
+        }
 
-            this.dataGridViewModelRef = drawerDataGridViewModel as CustomControlDrawerDataGridViewModel;
+        #endregion
 
-            this.dataGridViewModelRef.Drawers = this.drawers;
-            this.dataGridViewModelRef.SelectedDrawer = this.drawers.FirstOrDefault();
-            this.dataGridViewModel = this.dataGridViewModelRef;
+        #region Properties
+
+        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
+
+        #endregion
+
+        #region Methods
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
 
             var random = new Random();
-            for (var i = 0; i < random.Next(4, 20); i++)
+            for (var i = 0; i < random.Next(4, 30); i++)
             {
                 this.drawers.Add(new DataGridDrawer
                 {
@@ -50,23 +59,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     State = "State",
                 });
             }
-        }
 
-        #endregion
+            var dataGridViewModelRef = this.drawerDataGridViewModel as CustomControlDrawerDataGridViewModel;
 
-        #region Properties
+            dataGridViewModelRef.Drawers = this.drawers;
+            dataGridViewModelRef.SelectedDrawer = this.drawers.FirstOrDefault();
+            this.dataGridViewModel = dataGridViewModelRef;
 
-        public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
-
-        public ICustomControlDrawerDataGridViewModel DrawerDataGridViewModel { get; }
-
-        #endregion
-
-        #region Methods
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
+            this.RaisePropertyChanged(nameof(this.DataGridViewModel));
 
             this.IsBackNavigationAllowed = true;
         }
