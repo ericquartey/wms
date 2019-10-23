@@ -109,6 +109,19 @@
             #endregion
         }
 
+        public static class Movements
+        {
+            #region Fields
+
+            public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
+
+            public const string LOADINGUNITFROMCELLTOBAY = "LoadingUnitFromCellToBayViewModel";
+
+            public const string LOADINGUNITFROMCELLTOCELL = "LoadingUnitFromCellToCellViewModel";
+
+            #endregion
+        }
+
         public static class Parameters
         {
             #region Fields

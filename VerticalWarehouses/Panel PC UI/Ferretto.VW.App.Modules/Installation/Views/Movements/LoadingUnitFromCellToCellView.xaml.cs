@@ -1,13 +1,12 @@
-﻿using System.Windows.Controls;
-using Ferretto.VW.App.Controls;
+﻿using Ferretto.VW.App.Controls;
 
 namespace Ferretto.VW.App.Modules.Installation.Views
 {
-    public partial class FromBayToCellView : View
+    public partial class LoadingUnitFromCellToCellView : View
     {
         #region Constructors
 
-        public FromBayToCellView()
+        public LoadingUnitFromCellToCellView()
         {
             this.InitializeComponent();
         }

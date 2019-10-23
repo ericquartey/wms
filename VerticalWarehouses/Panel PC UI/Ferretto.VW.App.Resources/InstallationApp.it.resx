@@ -1086,4 +1086,10 @@
   <data name="ZeroChain" xml:space="preserve">
     <value>Catena a zero</value>
   </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Spostamento cassetto da cella a cella</value>
+  </data>
+  <data name="EjectLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Spostamento cassetto da cella a baia</value>
+  </data>
 </root>

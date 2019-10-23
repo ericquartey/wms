@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool bayIsMultiPosition;
 
-        private IEnumerable<Cell> cells;
-
         private double? elevatorHorizontalPosition;
 
         private double? elevatorVerticalPosition;
@@ -50,6 +48,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private int? loadingUnitId;
 
         private LoadingUnit loadingUnitInBay;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken sensorsToken;
 
@@ -116,6 +116,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
+        public IBayManager BayManagerService => this.bayManagerService;
+
         public double? ElevatorHorizontalPosition
         {
             get => this.elevatorHorizontalPosition;
@@ -137,6 +139,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     this.RaiseCanExecuteChanged();
                 }
+            }
+        }
+
+        public bool IsLoadingUnitIdValid
+        {
+            get
+            {
+                if (!this.loadingUnitId.HasValue)
+                {
+                    return false;
+                }
+
+                return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
             }
         }
 
@@ -205,6 +220,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.isZeroChain, value);
         }
 
+        public int? LoadingUnitCellId
+        {
+            get
+            {
+                if (!this.loadingUnitId.HasValue)
+                {
+                    return null;
+                }
+
+                return this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId.Value)?.CellId;
+            }
+        }
+
         public int? LoadingUnitId
         {
             get => this.loadingUnitId;
@@ -243,27 +271,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     async () => await this.StartStop(),
                     this.CanExecuteStopCommand));
 
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         #endregion
-
-        #region Methods
 
         #region Methods
 
         public virtual bool CanExecuteStartCommand()
         {
-            return false;
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
         }
 
         public override void Disappear()
@@ -297,12 +314,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
+            await this.RetrieveElevatorPositionAsync();
+
+            await this.RetrieveLoadingUnitsAsync();
+
+            this.Bay = await this.bayManagerService.GetBayAsync();
+
+            this.BayIsMultiPosition = this.Bay.IsDouble;
+
+            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
+
+            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+
+            await this.InitializeSensors();
             this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  async message => await this.OnElevatorPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
+                      .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                      .Subscribe(
+                          async message => await this.OnElevatorPositionChanged(message),
+                          ThreadOption.UIThread,
+                          false);
 
             this.sensorsToken = this.EventAggregator
                 .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
@@ -319,20 +349,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     },
                     ThreadOption.UIThread,
                     false);
-
-            await this.RetrieveElevatorPositionAsync();
-
-            await this.RetrieveLoadingUnitsAsync();
-
-            this.Bay = await this.bayManagerService.GetBayAsync();
-
-            this.BayIsMultiPosition = this.Bay.IsDouble;
-
-            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
-
-            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
-
-            await this.InitializeSensors();
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.ShutterSensors));
@@ -394,7 +410,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.OnMachineModeChanged(e);
 
-            // reset all status if stop machine
             if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
             {
                 this.RestoreStates();
