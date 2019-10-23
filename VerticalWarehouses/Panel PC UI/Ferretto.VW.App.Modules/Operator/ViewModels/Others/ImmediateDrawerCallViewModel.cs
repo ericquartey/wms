@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
+        public override EnableMask EnableMask => EnableMask.None;
+
         #endregion
 
         #region Methods
@@ -45,6 +47,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.drawers.Clear();
 
             var random = new Random();
             for (var i = 0; i < random.Next(4, 30); i++)

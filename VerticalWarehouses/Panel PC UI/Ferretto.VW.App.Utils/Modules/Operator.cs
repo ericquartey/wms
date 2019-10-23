@@ -18,6 +18,8 @@
 
             public const string DRAWERCOMPACTING = "DrawerCompactingViewModel";
 
+            public const string DRAWERCOMPACTINGDETAIL = "DrawerCompactingDetailViewModel";
+
             public const string IMMEDIATEDRAWERCALL = "ImmediateDrawerCallViewModel";
 
             public const string MAINTENANCE = "MaintenanceViewModel";

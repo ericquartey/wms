@@ -77,7 +77,7 @@
             <helpWindows:HelpDrawerCompacting />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:DrawerCompactingDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerCompactingDetailViewModel}">
             <helpWindows:HelpDrawerCompactingDetail />
         </DataTemplate>
 

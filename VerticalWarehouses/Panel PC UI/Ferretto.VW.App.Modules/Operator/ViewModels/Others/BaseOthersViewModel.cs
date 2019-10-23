@@ -58,21 +58,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     Utils.Modules.Operator.Others.DRAWERCOMPACTING,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationCompaction,
-                    trackCurrentView: false));
+                    trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.Statistics.NAVIGATION,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationStatistics,
-                    trackCurrentView: false));
+                    trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
                     Utils.Modules.Operator.Others.MAINTENANCE,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationMaintenance,
-                    trackCurrentView: false));
+                    trackCurrentView: true));
         }
 
         #endregion

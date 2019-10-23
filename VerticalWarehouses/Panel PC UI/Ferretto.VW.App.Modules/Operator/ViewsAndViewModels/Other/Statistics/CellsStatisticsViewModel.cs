@@ -88,11 +88,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             set => this.SetProperty(ref this.dataGridViewModel, value);
         }
 
-        public ICommand DrawerCompactingButtonCommand =>
-            this.drawerCompactingButtonCommand
-            ??
-            (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
-                this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
+        //public ICommand DrawerCompactingButtonCommand =>
+        //    this.drawerCompactingButtonCommand
+        //    ??
+        //    (this.drawerCompactingButtonCommand = new DelegateCommand(() =>
+        //        this.navigationService.NavigateToView<DrawerCompactingViewModel, IDrawerCompactingViewModel>()));
 
         public CellStatusStatistics SelectedCell
         {

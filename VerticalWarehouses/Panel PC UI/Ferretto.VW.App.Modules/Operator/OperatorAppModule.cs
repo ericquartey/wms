@@ -58,7 +58,9 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();
+
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
+            containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
 
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
 

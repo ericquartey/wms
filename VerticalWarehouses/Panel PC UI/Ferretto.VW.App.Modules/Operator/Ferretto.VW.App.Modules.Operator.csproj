@@ -45,6 +45,7 @@
   <ItemGroup>
     <None Remove="Views\EmptyView.xaml" />
     <None Remove="Views\OperatorMenuView.xaml" />
+    <None Remove="Views\Others\DrawerCompactingDetailView.xaml" />
     <None Remove="Views\Others\DrawerCompactingView.xaml" />
     <None Remove="Views\Others\ImmediateDrawerCallView.xaml" />
     <None Remove="Views\Others\MaintenanceView.xaml" />
@@ -69,13 +70,16 @@
     <Compile Update="Views\OperatorMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Views\Others\DrawerCompacting\DrawerCompactingDetailView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\Others\ImmediateDrawerCallView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\MaintenanceView.xaml.cs">
       <DependentUpon>MaintenanceView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Others\DrawerCompactingView.xaml.cs">
+    <Compile Update="Views\Others\DrawerCompacting\DrawerCompactingView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\MenuNavigationView.xaml.cs">

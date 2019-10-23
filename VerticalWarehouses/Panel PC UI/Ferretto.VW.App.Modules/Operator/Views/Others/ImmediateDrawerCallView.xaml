@@ -29,7 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="80" />
+            <RowDefinition Height="90" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
