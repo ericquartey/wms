@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
@@ -24,14 +25,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                    IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
                     IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                     IMachineSensorsWebService machineSensorsWebService,
                     IMachineCellsWebService machineCellsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineDepositPickupProcedure,
                 machineElevatorWebService,
                 machineLoadingUnitsWebService,
                 machineSensorsWebService,
@@ -87,7 +86,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.LoadingUnitId = this.Bay?.LoadingUnit?.Id;
+            this.LoadingUnitId = null;
+
+            this.SelectBayPosition1();
         }
 
         public override async Task StartAsync()
@@ -114,7 +115,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var source = this.GetLoadingUnitSource();
 
-                if (source == MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination)
+                if (source == LoadingUnitLocation.NoLocation)
                 {
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
@@ -122,7 +123,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
+                // await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
             }
             catch (Exception ex)
             {
@@ -134,55 +135,63 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private MAS.AutomationService.Contracts.LoadingUnitDestination GetLoadingUnitSource()
+        private MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
         {
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            if (this.Bay.Number == BayNumber.BayOne)
             {
                 if (this.IsPosition1Selected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Up;
+                    return LoadingUnitLocation.InternalBay1Up;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay1Down;
+                    return LoadingUnitLocation.InternalBay1Down;
                 }
             }
 
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
-            {
-                if (this.IsPosition2Selected)
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Up;
-                }
-                else
-                {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay2Down;
-                }
-            }
-
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            if (this.Bay.Number == BayNumber.BayTwo)
             {
                 if (this.IsPosition1Selected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Up;
+                    return LoadingUnitLocation.InternalBay2Up;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitDestination.InternalBay3Down;
+                    return LoadingUnitLocation.InternalBay2Down;
                 }
             }
 
-            return MAS.AutomationService.Contracts.LoadingUnitDestination.NoDestination;
+            if (this.Bay.Number == BayNumber.BayThree)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return LoadingUnitLocation.InternalBay3Up;
+                }
+                else
+                {
+                    return LoadingUnitLocation.InternalBay3Down;
+                }
+            }
+
+            return LoadingUnitLocation.NoLocation;
         }
 
         private void SelectBayPosition1()
         {
             this.IsPosition1Selected = true;
+            if (this.Bay.Positions.FirstOrDefault() is BayPosition bayPosition)
+            {
+                this.LoadingUnitId = bayPosition.LoadingUnit?.Id;
+            }
         }
 
         private void SelectBayPosition2()
         {
             this.IsPosition2Selected = true;
+            if (this.Bay.Positions.LastOrDefault() is BayPosition bayPosition)
+            {
+                this.LoadingUnitId = bayPosition.LoadingUnit?.Id;
+            }
         }
 
         #endregion

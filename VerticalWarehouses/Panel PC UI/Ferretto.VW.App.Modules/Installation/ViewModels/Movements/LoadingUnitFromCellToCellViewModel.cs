@@ -10,14 +10,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToCellViewModel(
-                    IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
                     IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                     IMachineSensorsWebService machineSensorsWebService,
                     IMachineCellsWebService machineCellsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineDepositPickupProcedure,
                 machineElevatorWebService,
                 machineLoadingUnitsWebService,
                 machineSensorsWebService,
@@ -66,7 +64,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(LoadingUnitDestination.Cell, LoadingUnitDestination.Cell, this.LoadingUnitCellId, this.DestinationCellId);
+                await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(LoadingUnitLocation.Cell, LoadingUnitLocation.Cell, this.LoadingUnitCellId, this.DestinationCellId);
             }
             catch (Exception ex)
             {
