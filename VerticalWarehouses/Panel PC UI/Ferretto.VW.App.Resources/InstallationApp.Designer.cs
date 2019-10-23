@@ -817,6 +817,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move loading unit from cell to bay.
+        /// </summary>
+        public static string EjectLoadingUnitFromCellToBay {
+            get {
+                return ResourceManager.GetString("EjectLoadingUnitFromCellToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Elevator.
         /// </summary>
         public static string Elevator {
@@ -1375,7 +1384,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Insert loading unit fromq bay to cell.
+        ///   Looks up a localized string similar to Insert loading unit from bay to cell.
         /// </summary>
         public static string InsertLoadingUnitFromBayToCell {
             get {
@@ -1614,6 +1623,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingDrawersTotalDrawers {
             get {
                 return ResourceManager.GetString("LoadingDrawersTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Move loading unit from cell to cell.
+        /// </summary>
+        public static string LoadingUnitFromCellToCell {
+            get {
+                return ResourceManager.GetString("LoadingUnitFromCellToCell", resourceCulture);
             }
         }
         
