@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             positioningFieldMessageData,
                             $"Start profile calibration",
                             FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
 
@@ -237,7 +237,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             ioCommandMessageData,
                             $"Measure Profile Start ",
                             FieldMessageActor.IoDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.MeasureProfile,
                             (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 
@@ -709,7 +709,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 inverterCommandMessageData,
                 $"Measure Profile",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.MeasureProfile,
                 (byte)this.profileInverterIndex);
 
