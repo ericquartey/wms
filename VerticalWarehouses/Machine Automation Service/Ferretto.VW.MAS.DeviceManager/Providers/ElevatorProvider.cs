@@ -117,7 +117,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             BayNumber requestingBay,
             MessageActor sender)
         {
-            measure = true;
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
@@ -149,12 +148,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             if (measure && isLoadingUnitOnBoard)
             {
-                this.logger.LogDebug($"Do not measure profile on full elevator!");
+                this.logger.LogWarning($"Do not measure profile on full elevator!");
                 measure = false;
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}");
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
                 .Single(p => p.Name == profileType)
@@ -266,7 +265,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
             if (measure && !isLoadingUnitOnBoard)
             {
-                this.logger.LogDebug($"Do not measure weight on empty elevator!");
+                this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 measure = false;
             }
             var zeroSensor = this.machineProvider.IsOneTonMachine()
