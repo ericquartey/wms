@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
+        private readonly ISensorsProvider sensorsProvider;
+
         #endregion
 
         #region Constructors
@@ -39,6 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             IElevatorDataProvider elevatorDataProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             ICellsProvider cellsProvider,
+            ISensorsProvider sensorsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
@@ -49,6 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
 
             this.MachineData = new MoveLoadingUnitMachineData();
         }
@@ -126,7 +130,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
-                returnValue = this.IsSourceOk(messageData);
+                returnValue = this.IsMachineOk(messageData);
+
+                if (returnValue)
+                {
+                    returnValue = this.IsSourceOk(messageData);
+                }
 
                 if (returnValue)
                 {
@@ -169,7 +178,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     throw new StateMachineException(description, null, MessageActor.MachineManager);
 
                 default:
-                    returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Source) == null;
+                    if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
+                    {
+                        returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
+                    }
+
                     break;
             }
 
@@ -179,6 +192,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         private bool IsElevatorOk()
         {
             return this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+        }
+
+        private bool IsMachineOk(IMoveLoadingUnitMessageData messageData)
+        {
+            var returnValue = this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source);
+
+            return returnValue;
         }
 
         private bool IsSourceOk(IMoveLoadingUnitMessageData messageData)

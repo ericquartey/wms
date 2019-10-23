@@ -221,6 +221,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual void OnAbort()
         {
+            this.activeState = this.ActiveState.Abort();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)
@@ -245,10 +246,12 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual void OnPause()
         {
+            this.activeState = this.ActiveState.Pause();
         }
 
         protected virtual void OnResume()
         {
+            this.activeState = this.ActiveState.Resume();
         }
 
         protected virtual void OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)

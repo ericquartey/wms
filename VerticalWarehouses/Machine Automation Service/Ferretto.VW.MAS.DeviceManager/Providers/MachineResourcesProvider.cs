@@ -153,6 +153,41 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
+        public bool IsLoadingUnitInLocation(LoadingUnitLocation location)
+        {
+            var returnValue = false;
+
+            // TODO Update with missing information
+            switch (location)
+            {
+                case LoadingUnitLocation.InternalBay1Down:
+                    returnValue = this.IsDrawerInBay1Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay1Up:
+                    returnValue = this.IsDrawerInBay1Top;
+                    break;
+
+                case LoadingUnitLocation.InternalBay2Down:
+                    returnValue = this.IsDrawerInBay2Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay2Up:
+                    returnValue = this.IsDrawerInBay2Top;
+                    break;
+
+                case LoadingUnitLocation.InternalBay3Down:
+                    returnValue = this.IsDrawerInBay3Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay3Up:
+                    returnValue = this.IsDrawerInBay3Top;
+                    break;
+            }
+
+            return returnValue;
+        }
+
         public bool IsSensorZeroOnBay(BayNumber bayNumber)
         {
             switch (bayNumber)

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         ShutterPosition GetShutterPosition(BayNumber bayNumber);
 
+        bool IsLoadingUnitInLocation(LoadingUnitLocation location);
+
         #endregion
     }
 }
