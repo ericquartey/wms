@@ -45,10 +45,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             switch (message.Type)
             {
+                case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
+                        case MessageStatus.OperationEnd:
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
                                 this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",

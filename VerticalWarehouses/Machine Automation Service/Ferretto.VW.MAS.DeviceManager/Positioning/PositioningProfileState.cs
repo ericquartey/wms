@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
+        private const int MAX_RETRIES = 3;
+
         private readonly IBaysProvider baysProvider;
 
         /// <summary>
@@ -42,6 +44,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
+
+        private InverterIndex inverterIndex;
+
+        private int retry;
 
         #endregion
 
@@ -81,8 +87,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if (profileHeight < this.minHeight)
                             {
-                                this.Logger.LogError($"Measure Profile error!");
-                                this.Stop(StopRequestReason.Stop);
+                                this.Logger.LogError($"Measure Profile error {profileHeight}!");
+                                if (++this.retry >= MAX_RETRIES)
+                                {
+                                    this.Stop(StopRequestReason.Stop);
+                                }
+                                else
+                                {
+                                    this.RequestMeasureProfile();
+                                }
                                 break;
                             }
                             if (this.machineData.MessageData.LoadingUnitId.HasValue)
@@ -109,22 +122,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            var inverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+            this.inverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
 
-            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
-            var inverterCommandMessage = new FieldCommandMessage(
-                inverterCommandMessageData,
-                $"Measure Profile",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
-                FieldMessageType.MeasureProfile,
-                (byte)inverterIndex);
-
-            this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
-
-            this.Logger.LogDebug("Request MeasureProfile");
+            this.RequestMeasureProfile();
         }
 
         public override void Stop(StopRequestReason reason)
@@ -133,6 +133,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+        }
+
+        private void RequestMeasureProfile()
+        {
+            this.Logger.LogDebug($"Request MeasureProfile {this.retry + 1}");
+
+            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Measure Profile",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.FiniteStateMachines,
+                FieldMessageType.MeasureProfile,
+                (byte)this.inverterIndex);
+
+            this.Logger.LogTrace($"5:Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
         }
 
         #endregion

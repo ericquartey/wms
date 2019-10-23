@@ -117,6 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             BayNumber requestingBay,
             MessageActor sender)
         {
+            //measure = true;     // TEST
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
