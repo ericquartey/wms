@@ -1,18 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Operator.Attributes;
-using Ferretto.VW.App.Operator.Models;
-using Ferretto.VW.App.Operator.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.Utils;
-using Ferretto.VW.Utils.Extensions;
-using Prism.Regions;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -22,37 +15,35 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IBayManager bayManager;
 
-        private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
+        private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineModeService machineModeService;
-
-        private readonly BindingList<MainNavigationMenuItem> operatorItems = new BindingList<MainNavigationMenuItem>();
-
-        private readonly IMachineSetupStatusWebService setupStatusWebService;
+        private readonly INavigationService navigationService;
 
         private bool areItemsEnabled;
 
-        private int bayNumber;
+        private DelegateCommand drawerActivityButtonCommand;
+
+        private bool isWaitingForResponse;
+
+        private DelegateCommand itemSearchButtonCommand;
+
+        private DelegateCommand listsInWaitButtonCommand;
+
+        private DelegateCommand otherButtonCommand;
 
         #endregion
 
         #region Constructors
 
         public OperatorMenuViewModel(
-            IMachineSetupStatusWebService setupStatusWebService,
-            IMachineModeService machineModeService,
-            IBayManager bayManager)
+            IEventAggregator eventAggregator,
+            IBayManager bayManager,
+            INavigationService navigationService)
             : base(PresentationMode.Operator)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
-            this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.bayManager = bayManager;
-            this.InitializeData();
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -65,27 +56,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
             private set => this.SetProperty(ref this.areItemsEnabled, value);
         }
 
+        public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() => this.DrawerActivityButtonMethod(), this.CanDrawerActivityButtonMethod));
+
         public override EnableMask EnableMask => EnableMask.None;
 
-        public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
 
-        public BindingList<MainNavigationMenuItem> OperatorItems => this.operatorItems;
+        public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() => this.ItemSearch(), this.CanItemSearchCommand));
+
+        public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() => this.ListInWait(), this.CanListInWaitCommand));
+
+        public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() => this.Other(), this.CanOtherCommand));
 
         #endregion
 
         #region Methods
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = false;
-
-            var bay = await this.bayManager.GetBayAsync();
-            this.bayNumber = (int)bay.Number;
-
-            await this.UpdateMenuItemsStatus();
-        }
 
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
@@ -94,112 +83,148 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.AreItemsEnabled = e.MachinePower != Services.Models.MachinePowerState.Unpowered;
         }
 
-        private void AddMenuItem(OperatorMenuTypes menuType, MainNavigationMenuItem menuItem)
+        private bool CanDrawerActivityButtonMethod()
         {
-            switch (menuType)
-            {
-                case OperatorMenuTypes.Installer:
-                    this.installatorItems.Add(menuItem);
-                    break;
-
-                case OperatorMenuTypes.Operator:
-                    this.operatorItems.Add(menuItem);
-                    break;
-            }
+            return !this.IsWaitingForResponse;
         }
 
-        private void EnableMenuItem(IEnumerable<MainNavigationMenuItem> menuItems, OperatorMenus menuItemType, bool isEnabled)
+        private bool CanItemSearchCommand()
         {
-            if (menuItems.FirstOrDefault(i => i.MenuItemType == menuItemType) is MainNavigationMenuItem menuItem)
-            {
-                menuItem.IsEnabled = isEnabled;
-            }
+            return !this.IsWaitingForResponse;
         }
 
-        private SetupStepStatus GetItemStatus(MainNavigationMenuItem menuItem, SetupStatusCapabilities setupStatus)
+        private bool CanListInWaitCommand()
         {
-            SetupStepStatus setupStepStatus = null;
-
-            var dictionary = setupStatus.ToDictionary();
-
-            var propertyName = menuItem.MenuItemType.ToString();
-
-            if (dictionary.ContainsKey(propertyName))
-            {
-                setupStepStatus = dictionary[propertyName] as SetupStepStatus;
-            }
-            else
-            {
-                var bayName = $"Bay{this.bayNumber}";
-                if (dictionary.ContainsKey(bayName))
-                {
-                    var baySetupStatus = dictionary[bayName] as BaySetupStatus;
-                    var bayDictionary = baySetupStatus.ToDictionary();
-
-                    var bayPropertyName = propertyName.Replace("Bay", string.Empty);
-
-                    if (bayDictionary.ContainsKey(bayPropertyName))
-                    {
-                        setupStepStatus = bayDictionary[bayPropertyName] as SetupStepStatus;
-                    }
-                }
-            }
-
-            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = false };
+            return !this.IsWaitingForResponse;
         }
 
-        private void InitializeData()
+        private bool CanOtherCommand()
         {
-            this.InstallatorItems.Clear();
-            this.OperatorItems.Clear();
-
-            var values = Enum.GetValues(typeof(OperatorMenus));
-            foreach (OperatorMenus enumValue in values)
-            {
-                var viewAttribute = enumValue.GetAttributeOfType<OperatorMenus, ViewAttribute>();
-                var dispAttribute = enumValue.GetAttributeOfType<OperatorMenus, DisplayAttribute>();
-
-                if (viewAttribute != null
-                    &&
-                    dispAttribute != null)
-                {
-                    this.AddMenuItem(
-                        viewAttribute.OperatorMenuType,
-                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, trackCurrentView: true));
-                }
-            }
-
-            this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
-
-            this.RaisePropertyChanged(nameof(this.InstallatorItems));
-            this.RaisePropertyChanged(nameof(this.OperatorItems));
+            return !this.IsWaitingForResponse;
         }
 
-        private async Task UpdateMenuItemsStatus()
+        private void DrawerActivityButtonMethod()
         {
+            this.IsWaitingForResponse = true;
+
             try
             {
-                var setupStatus = await this.setupStatusWebService.GetAsync();
-
-                foreach (var menuItem in this.operatorItems)
+                var missionOperation = this.bayManager.CurrentMissionOperation;
+                if (missionOperation != null)
                 {
-                    var itemStatus = this.GetItemStatus(menuItem, setupStatus);
-                    menuItem.IsEnabled = itemStatus.CanBePerformed;
-                    menuItem.IsActive = itemStatus.IsCompleted;
-                }
+                    switch (missionOperation.Type)
+                    {
+                        case MissionOperationType.Inventory:
+                            this.NavigationService.Appear(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.EMPTY,
+                                null,
+                                trackCurrentView: true);
+                            //this.navigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
+                            break;
 
-                foreach (var menuItem in this.installatorItems)
+                        case MissionOperationType.Pick:
+                            this.NavigationService.Appear(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.EMPTY,
+                                null,
+                                trackCurrentView: true);
+                            //this.navigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
+                            break;
+
+                        case MissionOperationType.Put:
+                            this.NavigationService.Appear(
+                                nameof(Utils.Modules.Operator),
+                                Utils.Modules.Operator.EMPTY,
+                                null,
+                                trackCurrentView: true);
+                            //this.navigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
+                            break;
+                    }
+                }
+                else
                 {
-                    var itemStatus = this.GetItemStatus(menuItem, setupStatus);
-                    menuItem.IsEnabled = itemStatus.CanBePerformed;
-                    menuItem.IsActive = itemStatus.IsCompleted;
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.EMPTY,
+                        null,
+                        trackCurrentView: true);
+                    //this.navigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
-
-                this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void ItemSearch()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.EMPTY,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void ListInWait()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.EMPTY,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void Other()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.EMPTY,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

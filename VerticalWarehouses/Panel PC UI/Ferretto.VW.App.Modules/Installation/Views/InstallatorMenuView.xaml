@@ -9,23 +9,41 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="110,30,110,0">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <ctrls:PpcMenuWrap IsEnabled="{Binding AreItemsEnabled}"
-                           ItemsSource="{Binding InstallatorItems}" />
+    <Grid>
+        <Image Grid.Column="1"
+               Margin="0,80,100,30"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Opacity="0.3"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
+               Stretch="Uniform" />
 
-        <ctrls:PpcMenuWrap Grid.Row="2"
-                           ItemsSource="{Binding SensorsItems}" />
+        <Grid Margin="100,30">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <ctrls:PpcMenuWrap Grid.Row="4"
-                           IsEnabled="{Binding AreItemsEnabled}"
-                           ItemsSource="{Binding OtherItems}" />
+            <ctrls:PpcMenuWrap Grid.ColumnSpan="2"
+                               IsEnabled="{Binding AreItemsEnabled}"
+                               ItemsSource="{Binding InstallatorItems}" />
 
+            <ctrls:PpcMenuWrap Grid.Row="2"
+                               Grid.ColumnSpan="2"
+                               ItemsSource="{Binding SensorsItems}" />
+
+            <ctrls:PpcMenuWrap Grid.Row="4"
+                               Grid.ColumnSpan="2"
+                               IsEnabled="{Binding AreItemsEnabled}"
+                               ItemsSource="{Binding OtherItems}" />
+        </Grid>
     </Grid>
 </ctrls:View>

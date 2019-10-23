@@ -4,9 +4,9 @@
     {
         #region Fields
 
-        public const string OPERATORMENU = "OperatorMenuViewModel";
+        public const string EMPTY = "EmptyViewModel";
 
-        public const string TEST = "TESTViewModel";
+        public const string OPERATORMENU = "OperatorMenuViewModel";
 
         #endregion
     }
