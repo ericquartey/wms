@@ -191,7 +191,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
-                    this.ProcedureParameters.FeedRate);
+                    this.ProcedureParameters.FeedRate,
+                    false);
 
                 this.IsElevatorMoving = true;
             }
@@ -209,11 +210,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalOffsetCalibration.STEP1))
+            {
+                this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
                 this.SelectedCell,
                 trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()

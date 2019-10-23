@@ -12,6 +12,8 @@
 
         IoPowerUp,
 
+        MeasureProfile,
+
         CalibrateAxis,
 
         InverterPowerOff,
@@ -55,5 +57,7 @@
         InverterStatusWord,
 
         InverterSetTimer,
+
+        ContinueMovement,
     }
 }

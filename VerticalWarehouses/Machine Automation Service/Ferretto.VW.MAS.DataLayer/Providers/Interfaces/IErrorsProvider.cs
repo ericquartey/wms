@@ -8,15 +8,15 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        Error GetCurrent();
+        MachineError GetCurrent();
 
         ErrorStatisticsSummary GetStatistics();
 
-        Error RecordNew(MachineErrors code, BayNumber bayNumber = BayNumber.None);
+        MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None);
 
-        Error Resolve(int id);
+        MachineError Resolve(int id);
 
-        IEnumerable<Error> ResolveAll();
+        IEnumerable<MachineError> ResolveAll();
 
         #endregion
     }

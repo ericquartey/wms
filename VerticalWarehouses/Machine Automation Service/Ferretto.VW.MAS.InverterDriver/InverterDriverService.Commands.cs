@@ -47,6 +47,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     return Task.CompletedTask;
                 }
+                if (receivedMessage.Type == FieldMessageType.ContinueMovement)
+                {
+                    messageCurrentStateMachine.Continue();
+
+                    return Task.CompletedTask;
+                }
 
                 if (receivedMessage.Type != FieldMessageType.InverterSetTimer)
                 {
@@ -109,6 +115,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     case FieldMessageType.InverterDisable:
                         this.ProcessDisableMessage(inverter);
+                        break;
+
+                    case FieldMessageType.MeasureProfile:
+                        this.ProcessMeasureProfileMessage(inverter);
                         break;
                 }
             }

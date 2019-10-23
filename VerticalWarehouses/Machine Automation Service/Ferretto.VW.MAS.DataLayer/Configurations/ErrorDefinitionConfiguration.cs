@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasForeignKey<ErrorStatistic>(s => s.Code)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            foreach (var enumValue in typeof(MachineErrors).GetFields())
+            foreach (var enumValue in typeof(MachineErrorCode).GetFields())
             {
                 var attribute = enumValue.GetCustomAttributes(typeof(ErrorDescriptionAttribute), false).FirstOrDefault()
                     as ErrorDescriptionAttribute;

@@ -33,7 +33,12 @@
         "IsExternal": false,
         "ChainOffset": -5,
         "Number": 1,
-        "Positions": [ { "Height": 741 } ],
+        "Positions": [
+          {
+            "Height": 741,
+            "Location": "InternalBay1Down"
+          }
+        ],
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
@@ -56,6 +61,8 @@
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 99.177657,
           "Offset": 350,
@@ -67,11 +74,15 @@
             "Deceleration": 1000,
             "Speed": 600
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 420
-          }
+          },
+          "WeightMeasureMultiply": 152.61,
+          "WeightMeasureSum": -901.32,
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Inverter": {
@@ -82,7 +93,7 @@
           "Resolution": 77.6722,
           "Offset": 0,
           "ChainOffset": -10.3,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,
             "Speed": 550
@@ -283,13 +294,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 351,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 355,
             "priority": 3,
             "status": "Free"
           },
@@ -1512,7 +1523,7 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 360,
             "priority": 2,
             "status": "Free"
           },
@@ -2746,8 +2757,7 @@
       "FeedRate": 0.2
     },
     "BeltBurnishingTest": {
-      //"RequestedCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-      "RequiredCycles": 5
+      "RequiredCycles": 200
     },
     "CarouselManualMovements": {
       "FeedRate": 0.04
@@ -2790,8 +2800,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test

@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly IErrorsProvider errorsProvider;
@@ -53,6 +55,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
+        private bool profileStarted;
+
         #endregion
 
         #region Constructors
@@ -76,6 +80,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+            this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
         }
 
         #endregion
@@ -110,6 +115,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case FieldMessageType.InverterStop:
                             this.ProcessEndStop();
                             break;
+
+                        case FieldMessageType.MeasureProfile:
+                            this.profileStarted = true;
+                            break;
                     }
                     break;
 
@@ -135,10 +144,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
+                case MovementMode.PositionAndMeasure:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -147,12 +157,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageActor.FiniteStateMachines,
                             FieldMessageType.Positioning,
                             (byte)this.machineData.CurrentInverterIndex);
+
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        {
+                            var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
+                            var ioCommandMessage = new FieldCommandMessage(
+                                ioCommandMessageData,
+                                $"Measure Profile Start ",
+                                FieldMessageActor.IoDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.MeasureProfile,
+                                (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+                        }
                     }
                     break;
 
                 case MovementMode.TorqueCurrentSampling:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
                         statusWordPollingInterval = 500;
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -171,14 +198,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             new PositioningMessageData(this.machineData.MessageData)
                             {
                                 TargetPosition = this.machineData.MessageData.UpperBound
-                            });
+                            }, this.machineData.RequestingBay);
 
                         // downwards movement message
                         this.positioningDownFieldMessageData = new PositioningFieldMessageData(
                             new PositioningMessageData(this.machineData.MessageData)
                             {
                                 TargetPosition = this.machineData.MessageData.LowerBound
-                            });
+                            }, this.machineData.RequestingBay);
 
                         var procedure = this.setupProceduresDataProvider.GetBeltBurnishingTest();
                         this.performedCycles = procedure.PerformedCycles;
@@ -197,7 +224,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.FindZero:
                     {
-                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData);
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
 
                         commandMessage = new FieldCommandMessage(
                             positioningFieldMessageData,
@@ -239,6 +266,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
+            if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+            {
+                var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
+                var ioCommandMessage = new FieldCommandMessage(
+                    ioCommandMessageData,
+                    $"Measure Profile Stop ",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageType.MeasureProfile,
+                    (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+            }
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
@@ -424,18 +467,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.IsLoadingErrorDuringPickup())
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
                     this.Logger.LogError("Cradle not correctly loaded during pickup");
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    this.Stop(StopRequestReason.Stop);
                 }
                 else if (this.IsUnloadingErrorDuringDeposit())
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrors.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
                     this.Logger.LogError("Cradle not correctly unloaded during deposit");
                     this.stateData.FieldMessage = message;
-                    this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                    this.Stop(StopRequestReason.Stop);
                 }
             }
 
@@ -466,32 +509,54 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
-                    this.Logger.LogDebug("FSM Finished Executing State in Position Mode");
+                case MovementMode.PositionAndMeasure:
+                    this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
                     {
                         if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after pickup");
                         }
                         else
                         {
-                            this.errorsProvider.RecordNew(DataModels.MachineErrors.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after deposit");
                         }
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.Stop(StopRequestReason.Stop);
                     }
                     else
                     {
-                        this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
+                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        {
+                            var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
+                            var ioCommandMessage = new FieldCommandMessage(
+                                ioCommandMessageData,
+                                $"Measure Profile Stop ",
+                                FieldMessageActor.IoDriver,
+                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageType.MeasureProfile,
+                                (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                            this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                            this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+                            this.ParentStateMachine.ChangeState(new PositioningProfileState(this.stateData));
+                        }
+                        else
+                        {
+                            this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
+                        }
                     }
                     break;
 
                 case MovementMode.BeltBurnishing:
                     this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
-                    if (this.performedCycles >= this.machineData.MessageData.NumberCycles)
+                    if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)
                     {
                         this.Logger.LogDebug("FSM Finished Executing State");
                         this.machineData.ExecutedSteps = this.performedCycles;
@@ -519,7 +584,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     if (this.IsBracketSensorError())
                     {
                         this.Logger.LogError($"Bracket sensor error");
-                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        this.Stop(StopRequestReason.Stop);
                     }
                     else
                     {
@@ -559,10 +624,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     speed,
                     this.machineData.MessageData.TargetAcceleration,
                     this.machineData.MessageData.TargetDeceleration,
-                    0,
-                    0,
-                    0,
-                    0,
                     switchPosition,
                     HorizontalMovementDirection.Backwards);
                 this.machineData.MessageData = newPositioningMessageData;

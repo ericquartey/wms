@@ -2,10 +2,10 @@
 {
     public enum MissionType
     {
-        NoType = 0,
+        NoType,
 
         ChangeRunningType,
 
-        WeightAcquisition,
+        MoveLoadingUnit,
     }
 }

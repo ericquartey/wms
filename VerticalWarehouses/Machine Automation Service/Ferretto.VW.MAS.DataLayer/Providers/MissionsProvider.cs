@@ -21,9 +21,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly List<MachineMission> machineMissions;
+        private readonly List<IMission> machineMissions;
 
-        private readonly IServiceScope serviceScope;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         #endregion
 
@@ -34,8 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             IServiceScopeFactory serviceScopeFactory)
         {
             this.eventAggregator = eventAggregator;
-            this.serviceScope = serviceScopeFactory.CreateScope();
-            this.machineMissions = new List<MachineMission>();
+            this.serviceScopeFactory = serviceScopeFactory;
+            this.machineMissions = new List<IMission>();
         }
 
         #endregion
@@ -51,7 +51,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             mission.StartMachine(command);
-
             return true;
         }
 
@@ -68,27 +67,21 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(MissionType missionType, out Guid missionId, bool forceClose = false)
+        public bool TryCreateMachineMission(MissionType missionType, CommandMessage command, out Guid missionId)
         {
             missionId = Guid.Empty;
 
-            if (forceClose)
+            if (this.CanCreateStateMachine(missionType, command))
             {
-                missionId = this.machineMissions.FirstOrDefault(mm => mm.MissionMachine is IChangeRunningStateStateMachine _)?.Id ?? missionId;
-                if (missionId != Guid.Empty)
-                {
-                    this.StopMachineMission(missionId, StopRequestReason.NoReason);
-                }
-            }
-
-            if (this.CanCreateStateMachine(missionType))
-            {
-                MachineMission newMission = null;
-
+                IMission newMission = null;
                 switch (missionType)
                 {
                     case MissionType.ChangeRunningType:
-                        newMission = new MachineMission(this.serviceScope.ServiceProvider.GetRequiredService<IChangeRunningStateStateMachine>(), this.OnActiveStateMachineCompleted);
+                        newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
+                        break;
+
+                    case MissionType.MoveLoadingUnit:
+                        newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
                 }
 
@@ -107,19 +100,32 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         /// <summary>
         /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
-        /// <param name="requestedMission">TYpe of mission to be created.</param>
-        /// <returns>True if the mission type can be created, false otherwise.</returns>
-        private bool CanCreateStateMachine(MissionType requestedMission)
+        /// <param name="requestedMission">TYpe of mission to be created</param>
+        /// <param name="command">Command received to create mission. Provides information useful to decide id mission two or more missions of the same type are allowed or not</param>
+        /// <returns>True if the mission type can be created, false otherwise</returns>
+        private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
         {
+            return this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
+            /*
             var returnValue = true;
-            switch (requestedMission)
+
+            if (this.machineMissions.Any(mm => mm.Type == requestedMission))
             {
-                case MissionType.ChangeRunningType:
-                    returnValue = !this.machineMissions.Any(mm => mm.MissionMachine is IChangeRunningStateStateMachine _);
-                    break;
+                returnValue = this.machineMissions.All(mm => mm.AllowMultipleInstances(command));
+            }
+
+            if (returnValue)
+            {
+                returnValue = this.EvaluateMissionPolicies(requestedMission, command);
             }
 
             return returnValue;
+            */
+        }
+
+        private bool EvaluateMissionPolicies(MissionType moveRequestedMission, CommandMessage command)
+        {
+            return true;
         }
 
         private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)
@@ -131,7 +137,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 this.machineMissions.Remove(mission);
 
-                mission.MissionMachine.Completed -= this.OnActiveStateMachineCompleted;
+                mission.RemoveHandler(this.OnActiveStateMachineCompleted);
 
                 mission.Dispose();
 

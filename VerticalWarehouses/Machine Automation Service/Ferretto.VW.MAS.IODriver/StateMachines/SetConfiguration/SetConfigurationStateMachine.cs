@@ -24,9 +24,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
 

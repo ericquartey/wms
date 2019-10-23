@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 
@@ -10,7 +11,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         IState CommandReceived(CommandMessage commandMessage);
 
-        void Enter(CommandMessage commandMessage);
+        void Enter(CommandMessage commandMessage, IServiceProvider serviceProvider, IFiniteStateMachineData stateData);
 
         void Exit();
 

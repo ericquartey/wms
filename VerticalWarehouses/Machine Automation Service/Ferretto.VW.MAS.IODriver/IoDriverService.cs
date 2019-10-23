@@ -150,6 +150,10 @@ namespace Ferretto.VW.MAS.IODriver
                     case FieldMessageType.PowerEnable:
                         this.ioDevices[currentDevice].ExecutePowerEnable(receivedMessage);
                         break;
+
+                    case FieldMessageType.MeasureProfile:
+                        this.ioDevices[currentDevice].ExecuteMeasureProfile(receivedMessage);
+                        break;
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
@@ -242,6 +246,7 @@ namespace Ferretto.VW.MAS.IODriver
                     case FieldMessageType.PowerEnable:
                     case FieldMessageType.IoReset:
                     case FieldMessageType.ResetSecurity:
+                    case FieldMessageType.MeasureProfile:
                         if (receivedMessage.Status == MessageStatus.OperationEnd &&
                             receivedMessage.ErrorLevel == ErrorLevel.NoError)
                         {

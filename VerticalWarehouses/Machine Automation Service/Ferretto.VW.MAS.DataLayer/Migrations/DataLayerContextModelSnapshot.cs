@@ -37,8 +37,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
-                    b.Property<int?>("LoadingUnitId");
-
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -61,8 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("IoDeviceId");
 
-                    b.HasIndex("LoadingUnitId");
-
                     b.HasIndex("MachineId");
 
                     b.HasIndex("Number")
@@ -82,11 +78,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<int?>("LoadingUnitId");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BayId");
 
-                    b.ToTable("BayPosition");
+                    b.HasIndex("LoadingUnitId");
+
+                    b.ToTable("BayPositions");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
@@ -164,17 +168,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<double>("BrakeActivatePercent");
+
+                    b.Property<double>("BrakeReleaseTime");
+
                     b.Property<double>("ChainOffset");
 
                     b.Property<int?>("ElevatorId");
 
                     b.Property<int?>("EmptyLoadMovementId");
 
+                    b.Property<int?>("FullLoadMovementId");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<double>("LowerBound");
-
-                    b.Property<int?>("MaximumLoadMovementId");
 
                     b.Property<double>("Offset");
 
@@ -186,15 +194,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
+                    b.Property<double>("WeightMeasureMultiply");
+
+                    b.Property<double>("WeightMeasureSpeed");
+
+                    b.Property<double>("WeightMeasureSum");
+
+                    b.Property<int>("WeightMeasureTime");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ElevatorId");
 
                     b.HasIndex("EmptyLoadMovementId");
 
-                    b.HasIndex("InverterId");
+                    b.HasIndex("FullLoadMovementId");
 
-                    b.HasIndex("MaximumLoadMovementId");
+                    b.HasIndex("InverterId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -221,26 +237,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ElevatorStructuralProperties");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("BayNumber");
-
-                    b.Property<int>("Code");
-
-                    b.Property<DateTime>("OccurrenceDate");
-
-                    b.Property<DateTime?>("ResolutionDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Code");
-
-                    b.ToTable("Errors");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorDefinition", b =>
@@ -303,38 +299,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Code = 100036,
                             Description = "È stato rilevato un errore in uno degli inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100037,
-                            Code = 100037,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100038,
-                            Code = 100038,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100039,
-                            Code = 100039,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100040,
-                            Code = 100040,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
                             Severity = 0
                         },
                         new
@@ -443,46 +407,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 200015,
-                            Code = 200015,
-                            Description = "Errore sconosciuto 15 dell'inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200016,
-                            Code = 200016,
-                            Description = "InverterErrorUnknown16",
-                            Reason = "InverterErrorUnknown16",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200017,
-                            Code = 200017,
-                            Description = "InverterErrorUnknown17",
-                            Reason = "InverterErrorUnknown17",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200018,
-                            Code = 200018,
-                            Description = "InverterErrorUnknown18",
-                            Reason = "InverterErrorUnknown18",
-                            Severity = 1
-                        },
-                        new
-                        {
-                            Id = 200019,
-                            Code = 200019,
-                            Description = "InverterErrorUnknown19",
-                            Reason = "InverterErrorUnknown19",
-                            Severity = 1
-                        },
-                        new
-                        {
                             Id = 200020,
                             Code = 200020,
                             Description = "Il nodo specificato non è disponibile.",
@@ -496,6 +420,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Errore di sintassi del messaggio inviato all'inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 100037,
+                            Code = 100037,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100038,
+                            Code = 100038,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100039,
+                            Code = 100039,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100040,
+                            Code = 100040,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
                         });
                 });
 
@@ -618,31 +574,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200014,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200015,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200016,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200017,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200018,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 200019,
                             TotalErrors = 0
                         },
                         new
@@ -795,6 +726,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("Machines");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("BayNumber");
+
+                    b.Property<int>("Code");
+
+                    b.Property<DateTime>("OccurrenceDate");
+
+                    b.Property<DateTime?>("ResolutionDate");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Code");
+
+                    b.ToTable("Errors");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineStatistics", b =>
                 {
                     b.Property<int>("Id")
@@ -911,7 +862,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 17, 19, 24, 45, 21, DateTimeKind.Local).AddTicks(4314),
+                            InstallationDate = new DateTime(2016, 12, 22, 11, 54, 56, 776, DateTimeKind.Local).AddTicks(3224),
                             ServiceStatus = 86
                         });
                 });
@@ -1237,10 +1188,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.SetupProcedure");
 
-                    b.Property<double>("BrakeActivatePercent");
-
-                    b.Property<double>("BrakeReleaseTime");
-
                     b.Property<double>("FeedRateAfterZero");
 
                     b.Property<double>("NegativeTargetDirection");
@@ -1284,10 +1231,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("IoDeviceId");
 
-                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
-                        .WithMany()
-                        .HasForeignKey("LoadingUnitId");
-
                     b.HasOne("Ferretto.VW.MAS.DataModels.Machine")
                         .WithMany("Bays")
                         .HasForeignKey("MachineId");
@@ -1302,6 +1245,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
                         .WithMany("Positions")
                         .HasForeignKey("BayId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany()
+                        .HasForeignKey("LoadingUnitId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
@@ -1340,20 +1287,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("EmptyLoadMovementId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("FullLoadMovementId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "MaximumLoadMovement")
-                        .WithMany()
-                        .HasForeignKey("MaximumLoadMovementId");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Error", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
-                        .WithMany("Occurrences")
-                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>
@@ -1375,6 +1315,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Elevator", "Elevator")
                         .WithMany()
                         .HasForeignKey("ElevatorId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MachineError", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Definition")
+                        .WithMany("Occurrences")
+                        .HasForeignKey("Code");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementProfile", b =>

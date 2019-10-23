@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 var notificationMessage = new NotificationMessage(
                     messageData,
                     "Mission Operation Completed",
-                    MessageActor.MissionsManager,
+                    MessageActor.MachineManager,
                     MessageActor.WebApi,
                     MessageType.MissionOperationCompleted,
                     BayNumber.None);

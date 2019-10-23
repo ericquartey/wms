@@ -59,11 +59,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var loadingUnits = this.dataContext.LoadingUnits.Select(l =>
-                    new LoadingUnitSpaceStatistics
-                    {
-                        MissionsCount = l.MissionsCount,
-                        Code = l.Code,
-                    }).ToArray();
+                                                                            new LoadingUnitSpaceStatistics
+                                                                            {
+                                                                                MissionsCount = l.MissionsCount,
+                                                                                Code = l.Code,
+                                                                            }).ToArray();
 
                 return loadingUnits;
             }
@@ -87,6 +87,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ToArray();
 
                 return loadingUnits;
+            }
+        }
+
+        public void SetHeight(int loadingUnitId, double height)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == loadingUnitId);
+
+                loadingUnit.Height = height;
+
+                this.dataContext.SaveChanges();
             }
         }
 

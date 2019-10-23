@@ -57,7 +57,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
                     (short)InverterParameterId.ControlWord,
-                    this.Inverter.PositionControlWord.Value));
+                    this.Inverter.PositionControlWord.Value,
+                    InverterDataset.ActualDataset));
         }
 
         /// <inheritdoc />
@@ -114,6 +115,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                             {
                                 this.ParentStateMachine.ChangeState(
                                     new PositioningStartSamplingWhileMovingState(
+                                        this.data,
+                                        this.ParentStateMachine,
+                                        this.Inverter,
+                                        this.Logger));
+                            }
+                            else if (this.data.IsWeightMeasure && !this.data.IsWeightMeasureDone)
+                            {
+                                this.ParentStateMachine.ChangeState(
+                                    new PositioningMeasureStartMovingState(
                                         this.data,
                                         this.ParentStateMachine,
                                         this.Inverter,

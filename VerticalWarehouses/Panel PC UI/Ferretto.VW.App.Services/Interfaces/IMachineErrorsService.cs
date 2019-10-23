@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -10,7 +6,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        MAS.AutomationService.Contracts.Error ActiveError { get; set; }
+        MachineError ActiveError { get; set; }
 
         bool AutoNavigateOnError { get; set; }
 

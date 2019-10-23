@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
     {
         #region Fields
 
-        protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue;
-
         private bool isDisposed;
 
         #endregion
@@ -26,10 +24,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         public IoStateMachineBase(
             IEventAggregator eventAggregator,
-            ILogger logger)
+            ILogger logger,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue)
         {
-            this.EventAggregator = eventAggregator;
-            this.Logger = logger;
+            this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.IoCommandQueue = ioCommandQueue ?? throw new ArgumentNullException(nameof(ioCommandQueue));
         }
 
         #endregion
@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
         protected IIoState CurrentState { get; set; }
 
         protected IEventAggregator EventAggregator { get; }
+
+        protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue { get; }
 
         protected ILogger Logger { get; }
 
@@ -115,6 +117,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             {
             }
 
+            // This is wrong: this code must not be here.
+            // Do not make improper use of disposal methods, please.
             var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,

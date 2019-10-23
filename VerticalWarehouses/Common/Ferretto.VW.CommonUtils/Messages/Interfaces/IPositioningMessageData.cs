@@ -33,7 +33,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         MovementType MovementType { get; }
 
-        int NumberCycles { get; }
+        int RequiredCycles { get; }
 
         double[] SwitchPosition { get; set; }
 
@@ -48,6 +48,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         DataSample TorqueCurrentSample { get; set; }
 
         double UpperBound { get; }
+
+        bool WaitContinue { get; set; }
 
         #endregion
     }

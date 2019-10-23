@@ -34,7 +34,13 @@
         "IsExternal": true,
         "ChainOffset": 0,
         "Number": 1,
-        "Positions": [ { "Height": 645 } ],
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay1Down"
+          }
+        ],
+        "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -57,8 +63,14 @@
         },
         "Number": 2,
         "Positions": [
-          { "Height": 645 },
-          { "Height": 1143 }
+          {
+            "Height": 645,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay2Up"
+          }
         ],
         "Shutter": {
           "Type": "TwoSensors",
@@ -78,6 +90,8 @@
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
@@ -89,11 +103,15 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
-          }
+          },
+          "WeightMeasureMultiply": 121.46,
+          "WeightMeasureSum": -746.12,
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Orientation": "Horizontal",
@@ -101,7 +119,7 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55
@@ -302,13 +320,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 375,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 380,
             "priority": 3,
             "status": "Free"
           },
@@ -1531,13 +1549,13 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 1889,
             "priority": 2,
             "status": "Free"
           },
           {
             "id": 4,
-            "position": 367,
+            "position": 2139,
             "priority": 4,
             "status": "Free"
           },
@@ -2765,8 +2783,7 @@
       "Step": 0.5
     },
     "BeltBurnishingTest": {
-      //"RequiredCycles": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-      "RequiredCycles": 5
+      "RequiredCycles": 200
     },
     "CarouselManualMovements": {
       "FeedRate": 0.04
@@ -2809,8 +2826,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test

@@ -90,7 +90,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ApplyCorrectionAsync(),
                 this.CanApplyCorrectionCommand));
 
-        public Bay Bay { get => this.bay; private set => this.SetProperty(ref this.bay, value); }
+        public Bay Bay
+        {
+            get => this.bay;
+            private set => this.SetProperty(ref this.bay, value);
+        }
 
         public ICommand ChangeToLowerBayPositionCommand =>
             this.changeToLowerBayPositionCommand
@@ -100,7 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanChangeCurrentPosition2));
 
         public ICommand ChangeToUpperBayPositionCommand =>
-                    this.changeToUpperBayPositionCommand
+            this.changeToUpperBayPositionCommand
             ??
             (this.changeToUpperBayPositionCommand = new DelegateCommand(
                 this.ToggleBayPosition,
@@ -217,18 +221,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand MoveDownCommand =>
-                    this.moveDownCommand
+            this.moveDownCommand
             ??
             (this.moveDownCommand = new DelegateCommand(
                 async () => await this.MoveDownAsync(),
                 this.CanExecuteMoveDownCommand));
 
         public ICommand MoveToBayHeightCommand =>
-          this.moveToBayHeightCommand
-          ??
-          (this.moveToBayHeightCommand = new DelegateCommand(
-              async () => await this.MoveToBayHeightAsync(),
-              this.CanExecuteMoveToBayHeight));
+            this.moveToBayHeightCommand
+            ??
+            (this.moveToBayHeightCommand = new DelegateCommand(
+                async () => await this.MoveToBayHeightAsync(),
+                this.CanExecuteMoveToBayHeight));
 
         public ICommand MoveUpCommand =>
             this.moveUpCommand
@@ -285,26 +289,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    message => this.OnAutomationMessageReceived(message),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnAutomationMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
 
             this.IsBackNavigationAllowed = true;
 
@@ -499,7 +504,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.PositionHeight,
-                    this.procedureParameters.FeedRate);
+                    this.procedureParameters.FeedRate,
+                    false);
 
                 this.Displacement = null;
             }
@@ -537,11 +543,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null)
-            {
-                throw new ArgumentNullException(nameof(message));
-            }
-
             if (message.IsNotRunning())
             {
                 this.IsElevatorMovingUp = false;
@@ -554,10 +555,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            if (message?.Data?.CurrentPosition != null)
-            {
-                this.CurrentHeight = message.Data.CurrentPosition;
-            }
+            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
         }
 
         private void ToggleBayPosition()

@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
-        public IEnumerable<Error> Occurrences { get; set; }
+        public IEnumerable<MachineError> Occurrences { get; set; }
 
         public string Reason { get; set; }
 

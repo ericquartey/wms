@@ -47,14 +47,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
             this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.bayManager = bayManager;
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+
             this.InitializeData();
         }
 

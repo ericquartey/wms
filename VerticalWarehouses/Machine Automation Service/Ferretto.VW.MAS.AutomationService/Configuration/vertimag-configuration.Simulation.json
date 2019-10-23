@@ -34,7 +34,12 @@
         "IsExternal": false,
         "ChainOffset": -5,
         "Number": 1,
-        "Positions": [ { "Height": 741 } ],
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay1Down"
+          }
+        ],
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
@@ -61,8 +66,14 @@
         },
         "Number": 2,
         "Positions": [
-          { "Height": 645 },
-          { "Height": 1143 }
+          {
+            "Height": 645,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay2Up"
+          }
         ],
         "Shutter": {
           "Type": "TwoSensors",
@@ -82,6 +93,8 @@
             "IpAddress": "127.0.0.1",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
@@ -93,11 +106,15 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
-          }
+          },
+          "WeightMeasureMultiply": 121.46,
+          "WeightMeasureSum": -746.12,
+          "WeightMeasureSpeed": 50,
+          "WeightMeasureTime": 15
         },
         {
           "Orientation": "Horizontal",
@@ -105,7 +122,7 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55
@@ -306,25 +323,25 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 375,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 425,
             "priority": 3,
             "status": "Free"
           },
           {
             "id": 5,
-            "position": 368,
+            "position": 475,
             "priority": 5,
             "status": "Free"
           },
           {
             "id": 7,
-            "position": 418,
+            "position": 450,
             "priority": 7,
             "status": "Free"
           },
@@ -1535,7 +1552,7 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 355,
             "priority": 2,
             "status": "Free"
           },
@@ -2769,7 +2786,7 @@
       "FeedRate": 0.2
     },
     "BeltBurnishingTest": {
-      "RequiredCycles": 5
+      "RequiredCycles": 200
     },
     "BeltBurnishing": {
       "CycleQuantity": 5
@@ -2815,8 +2832,6 @@
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
       "FeedRateAfterZero": 0.15,
-      "BrakeReleaseTime": 150,
-      "BrakeActivatePercent": 10
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
