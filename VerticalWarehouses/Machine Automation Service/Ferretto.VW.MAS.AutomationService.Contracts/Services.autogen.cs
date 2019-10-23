@@ -4468,18 +4468,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task EjectLoadingUnitAsync(int sourceCellId, LoadingUnitLocation destination, int loadingUnitId)
+        public System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId)
         {
-            return EjectLoadingUnitAsync(sourceCellId, destination, loadingUnitId, System.Threading.CancellationToken.None);
+            return EjectLoadingUnitAsync(destination, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task EjectLoadingUnitAsync(int sourceCellId, LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
-            if (sourceCellId == null)
-                throw new System.ArgumentNullException("sourceCellId");
-    
             if (destination == null)
                 throw new System.ArgumentNullException("destination");
     
@@ -4488,7 +4485,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/eject-loading-unit?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("sourceCellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(sourceCellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("destination") + "=").Append(System.Uri.EscapeDataString(ConvertToString(destination, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;

@@ -38,18 +38,18 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void EjectFromCell(int sourceCellId, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void EjectFromCell(LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                  new MoveLoadingUnitMessageData(
                     LoadingUnitLocation.Cell,
                     destinationBay,
-                    sourceCellId,
+                    null,
                     null,
                     loadingUnitId,
                     false,
                     true),
-                 $"Bay {requestingBay} requested to move Loading unit to Bay {destinationBay} from Cell {sourceCellId}",
+                 $"Bay {requestingBay} requested to eject Loading unit {loadingUnitId} to Bay {destinationBay}",
                  sender,
                  MessageType.MoveLoadingUnit,
                  requestingBay);

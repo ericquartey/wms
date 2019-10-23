@@ -59,14 +59,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult EjectLoadingUnit(int sourceCellId, LoadingUnitLocation destination, int loadingUnitId)
+        public IActionResult EjectLoadingUnit(LoadingUnitLocation destination, int loadingUnitId)
         {
             if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadingUnit)
             {
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.EjectFromCell(sourceCellId, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.EjectFromCell(destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
