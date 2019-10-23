@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == FieldMessageActor.FiniteStateMachines || message.Destination == FieldMessageActor.Any);
+                message => message.Destination == FieldMessageActor.DeviceManager || message.Destination == FieldMessageActor.Any);
         }
 
         private void MachineSensorsStatusOnFaultStateChanged(object sender, StatusUpdateEventArgs e)
@@ -628,7 +628,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         null,
                         "Data Layer Ready",
                         FieldMessageActor.Any,
-                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.DeviceManager,
                         FieldMessageType.DataLayerReady,
                         MessageStatus.NoStatus,
                         (byte)InverterIndex.None);

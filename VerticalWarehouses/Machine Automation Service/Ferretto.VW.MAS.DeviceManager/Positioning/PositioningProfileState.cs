@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 inverterCommandMessageData,
                 $"Measure Profile",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.MeasureProfile,
                 (byte)this.inverterIndex);
 

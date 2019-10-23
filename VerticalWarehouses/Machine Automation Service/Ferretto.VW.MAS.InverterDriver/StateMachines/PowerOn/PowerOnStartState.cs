@@ -74,26 +74,28 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var returnValue = false;
+            var responseReceived = false;
 
             if (message.IsError)
             {
                 this.Logger.LogError($"1:PowerOnStartState, message={message}");
-                this.ParentStateMachine.ChangeState(new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(
+                    new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+
                 if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
                     this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
-                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
-                    )
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn)
                 {
-                    this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+                    this.ParentStateMachine.ChangeState(
+                        new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    responseReceived = true;
                 }
             }
-            return returnValue;
+            return responseReceived;
         }
 
         #endregion

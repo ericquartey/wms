@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
                 commandMessageData,
                 $"Reset Security",
                 FieldMessageActor.IoDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.ResetSecurity,
                 (byte)IoIndex.IoDevice1);
 

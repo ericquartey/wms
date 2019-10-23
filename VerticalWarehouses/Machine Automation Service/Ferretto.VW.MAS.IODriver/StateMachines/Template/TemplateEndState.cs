@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
             var endNotification = new FieldNotificationMessage(
                 null,
                 "Template End State",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.NoType,
                 MessageStatus.OperationEnd,

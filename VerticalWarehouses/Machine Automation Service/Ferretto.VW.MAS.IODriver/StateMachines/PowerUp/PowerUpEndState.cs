@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             var endNotification = new FieldNotificationMessage(
                 null,
                 "I/O power up complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.IoPowerUp,
                 MessageStatus.OperationEnd,

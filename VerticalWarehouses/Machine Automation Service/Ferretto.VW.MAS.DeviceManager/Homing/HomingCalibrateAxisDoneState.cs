@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     ioCommandMessageData,
                     $"Switch Axis {this.machineData.AxisToCalibrate}",
                     FieldMessageActor.IoDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 inverterCommandMessageData,
                 $"Switch Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSwitchOn,
                 (byte)inverterIndex);
 

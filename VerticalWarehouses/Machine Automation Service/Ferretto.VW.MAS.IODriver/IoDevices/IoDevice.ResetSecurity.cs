@@ -23,6 +23,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 this.CurrentStateMachine = new ResetSecurityStateMachine(
                     this.ioCommandQueue,
                     this.ioStatus,
+                    this.mainIoDevice,
                     this.deviceIndex,
                     this.eventAggregator,
                     this.logger);

@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 var endNotification = new FieldNotificationMessage(
                     null,
                     "IO Reset complete",
-                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
                     MessageStatus.OperationEnd,
@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 var endNotification = new FieldNotificationMessage(
                     null,
                     "IO Reset complete",
-                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
                     MessageStatus.OperationEnd,
@@ -84,10 +84,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         public override void Start()
         {
-            var resetSecurityIoMessage = new IoWriteMessage();
+            var resetSecurityIoMessage = new IoWriteMessage { PowerEnable = true };
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
-            resetSecurityIoMessage.SwitchPowerEnable(true);
 
             this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
             lock (this.status)

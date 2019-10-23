@@ -79,6 +79,8 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
             containerRegistry.RegisterForNavigation<Shutter1HeightControlView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitFromCellToBayView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitFromCellToCellView>();
             containerRegistry.RegisterForNavigation<SaveRestoreConfigView>();
             containerRegistry.RegisterForNavigation<DrawerLoadingUnloadingTestView>();
             containerRegistry.RegisterForNavigation<CellsSideControlView>();

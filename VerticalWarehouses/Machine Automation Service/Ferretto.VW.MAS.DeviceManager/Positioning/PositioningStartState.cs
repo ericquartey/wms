@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     ioCommandMessageData,
                     $"Switch Axis {this.machineData.MessageData.AxisMovement}",
                     FieldMessageActor.IoDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.SwitchAxis,
                     (byte)IoIndex.IoDevice1);
 
@@ -124,7 +124,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     inverterDataMessage,
                     "Update Inverter digital input status",
                     FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterSetTimer,
                     (byte)InverterIndex.MainInverter);
 
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 inverterCommandMessageData,
                 $"Switch Axis {this.machineData.MessageData.AxisMovement}",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSwitchOn,
                 (byte)inverterIndex);
 

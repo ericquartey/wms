@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             positioningFieldMessageData,
                             $"{this.machineData.MessageData.AxisMovement} Positioning State Started",
                             FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
 
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 ioCommandMessageData,
                                 $"Measure Profile Start ",
                                 FieldMessageActor.IoDriver,
-                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.DeviceManager,
                                 FieldMessageType.MeasureProfile,
                                 (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             positioningFieldMessageData,
                             $"Start torque current sampling",
                             FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
                     }
@@ -276,7 +276,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.positioningDownFieldMessageData,
                             "Belt Burninshing Started",
                             FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
                     }
@@ -290,7 +290,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             positioningFieldMessageData,
                             $"{this.machineData.MessageData.AxisMovement} Positioning Find Zero Started",
                             FieldMessageActor.InverterDriver,
-                            FieldMessageActor.FiniteStateMachines,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
                     }
@@ -312,7 +312,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     new InverterSetTimerFieldMessageData(InverterTimer.StatusWord, true, statusWordPollingInterval),
                 "Update Inverter status word status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 inverterIndex));
         }
@@ -335,7 +335,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     ioCommandMessageData,
                     $"Measure Profile Stop ",
                     FieldMessageActor.IoDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.MeasureProfile,
                     (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 
@@ -374,7 +374,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     : this.positioningUpFieldMessageData,
                 $"Belt Burninshing moving cycle N° {this.performedCycles}",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.Positioning,
                 (byte)InverterIndex.MainInverter);
 
@@ -515,7 +515,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         null,
                         $"Stop Operation due to zero position reached",
                         FieldMessageActor.InverterDriver,
-                        FieldMessageActor.FiniteStateMachines,
+                        FieldMessageActor.DeviceManager,
                         FieldMessageType.InverterStop,
                         (byte)inverterIndex);
 
@@ -602,7 +602,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 ioCommandMessageData,
                                 $"Measure Profile Stop ",
                                 FieldMessageActor.IoDriver,
-                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.DeviceManager,
                                 FieldMessageType.MeasureProfile,
                                 (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
 

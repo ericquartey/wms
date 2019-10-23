@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 null,
                 $"Reset Inverter Axis {this.machineData.AxisToCalibrate}",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterStop,
                 (byte)currentInverterIndex);
 
