@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             var endNotification = new FieldNotificationMessage(
                                 messageData,
                                 "Shutter Positioning executing",
-                                FieldMessageActor.FiniteStateMachines,
+                                FieldMessageActor.DeviceManager,
                                 FieldMessageActor.InverterDriver,
                                 FieldMessageType.ShutterPositioning,
                                 MessageStatus.OperationExecuting,

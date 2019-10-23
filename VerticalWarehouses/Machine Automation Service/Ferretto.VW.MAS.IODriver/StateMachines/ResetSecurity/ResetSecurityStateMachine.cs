@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private readonly IoIndex index;
 
+        private readonly IoStatus mainIoDevice;
+
         private readonly IoStatus status;
 
         private Timer delayTimer;
@@ -30,15 +32,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
         public ResetSecurityStateMachine(
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
+            IoStatus mainIoDevice,
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
             : base(eventAggregator, logger, ioCommandQueue)
         {
-            this.status = status;
-            this.index = index;
+            this.status = status ?? throw new System.ArgumentNullException(nameof(status));
+            this.mainIoDevice = mainIoDevice ?? throw new System.ArgumentNullException(nameof(mainIoDevice));
 
-            logger.LogTrace("1:Method Start");
+            this.index = index;
         }
 
         #endregion
@@ -76,8 +79,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetSecurityStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new ResetSecurityStartState(this, this.status, this.mainIoDevice, this.index, this.Logger));
         }
 
         protected override void Dispose(bool disposing)
@@ -104,9 +106,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private void DelayElapsed(object state)
         {
-            var pulseIoMessage = new IoWriteMessage();
-            pulseIoMessage.SwitchResetSecurity(false);
-            pulseIoMessage.SwitchPowerEnable(true);
+            var pulseIoMessage = new IoWriteMessage
+            {
+                ResetSecurity = false,
+                PowerEnable = true,
+            };
 
             this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);

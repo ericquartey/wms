@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 inverterDataMessage,
                 "Update Inverter digital input status",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterSetTimer,
                 (byte)InverterIndex.MainInverter);
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     null,
                     "Reset Inverter ShutterPositioning",
                     FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterStop,
                     (byte)this.machineData.InverterIndex);
 

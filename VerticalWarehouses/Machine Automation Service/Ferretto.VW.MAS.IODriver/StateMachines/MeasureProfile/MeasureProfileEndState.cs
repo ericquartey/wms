@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
             var endNotification = new FieldNotificationMessage(
                 null,
                 "Measure Profile complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.MeasureProfile,
                 MessageStatus.OperationEnd,

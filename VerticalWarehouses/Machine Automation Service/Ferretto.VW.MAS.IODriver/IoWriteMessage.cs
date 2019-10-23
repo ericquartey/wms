@@ -109,13 +109,21 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool OutputsCleared => !this.outputs?.Any(o => o) ?? false;
 
-        public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool PowerEnable
+        {
+            get => this.outputs[(int)IoPorts.PowerEnable];
+            set => this.outputs[(int)IoPorts.PowerEnable] = value;
+        }
+
+        public bool ResetSecurity
+        {
+            get => this.outputs[(int)IoPorts.ResetSecurity];
+            set => this.outputs[(int)IoPorts.ResetSecurity] = value;
+        }
 
         public byte SetupOutputLines => this.setupOutputLines;
 
         public bool UseSetupOutputLines => this.useSetupOutputLines;
-
-        public bool ValidOutputs => this.outputs != null;
 
         #endregion
 
@@ -208,11 +216,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchCradleMotor(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
-
             if (switchOn)
             {
                 if (this.outputs[(int)IoPorts.ElevatorMotor])
@@ -232,11 +235,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchElevatorMotor(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
-
             if (switchOn)
             {
                 if (this.outputs[(int)IoPorts.CradleMotor])
@@ -256,24 +254,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchMeasureProfile(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
-
             this.outputs[(int)IoPorts.MeasureProfile] = switchOn;
-
-            return true;
-        }
-
-        public bool SwitchPowerEnable(bool switchOn)
-        {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
-
-            this.outputs[(int)IoPorts.PowerEnable] = switchOn;
 
             return true;
         }

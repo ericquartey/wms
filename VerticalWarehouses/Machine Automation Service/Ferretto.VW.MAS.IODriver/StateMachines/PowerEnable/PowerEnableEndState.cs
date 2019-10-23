@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             var endNotification = new FieldNotificationMessage(
                 null,
                 "Power Enable complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.PowerEnable,
                 MessageStatus.OperationEnd,

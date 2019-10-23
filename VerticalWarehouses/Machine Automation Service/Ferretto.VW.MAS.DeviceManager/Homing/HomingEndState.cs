@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     null,
                     "Homing Stopped",
                     FieldMessageActor.InverterDriver,
-                    FieldMessageActor.FiniteStateMachines,
+                    FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterStop,
                     (byte)targetInverter);
 
