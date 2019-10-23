@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
 
             services
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
-                .AddSingleton<IMissionsProvider, MissionsProvider>();
+                .AddSingleton<IMachineMissionsProvider, MachineMissionsProvider>();
 
             return services;
         }

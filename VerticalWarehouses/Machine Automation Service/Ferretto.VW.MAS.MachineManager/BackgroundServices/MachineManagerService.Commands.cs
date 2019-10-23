@@ -50,11 +50,11 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
+                        if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                         {
                             try
                             {
-                                this.missionsProvider.StartMachineMission(missionId, command);
+                                this.machineMissionsProvider.StartMachineMission(missionId, command);
                             }
                             catch (Exception ex)
                             {
@@ -90,11 +90,11 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.missionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
+                        if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
                         {
                             try
                             {
-                                this.missionsProvider.StartMachineMission(missionId, command);
+                                this.machineMissionsProvider.StartMachineMission(missionId, command);
                             }
                             catch (Exception ex)
                             {

@@ -15,7 +15,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public class MissionsProvider : IMissionsProvider
+    public class MachineMissionsProvider : IMachineMissionsProvider
     {
         #region Fields
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Constructors
 
-        public MissionsProvider(
+        public MachineMissionsProvider(
             IEventAggregator eventAggregator,
             IServiceScopeFactory serviceScopeFactory)
         {

@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
@@ -7,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.MachineManager.Extensions;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -32,22 +30,6 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
         {
             switch (message.Type)
             {
-                case MessageType.MissionOperationCompleted:
-                    this.OnMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
-                    break;
-
-                case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged();
-                    break;
-
-                case MessageType.NewMissionAvailable:
-                    this.OnNewMissionAvailable();
-                    break;
-
-                case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
-                    break;
-
                 case MessageType.FaultStateChanged:
                 case MessageType.RunningStateChanged:
                     this.OnMachineRunningStatusChange(message);
@@ -55,19 +37,6 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
             }
 
             return Task.CompletedTask;
-        }
-
-        private void OnBayOperationalStatusChanged()
-        {
-            this.bayStatusChangedEvent.Set();
-        }
-
-        private void OnDataLayerReady()
-        {
-            if (this.configuration.IsWmsEnabled())
-            {
-                this.missionManagementTask.Start();
-            }
         }
 
         private void OnMachineRunningStatusChange(NotificationMessage message)
@@ -102,7 +71,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         message.RequestingBay);
 
                     // TODO Handle state change while starting / stopping machine
-                    if (this.missionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
+                    if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged
                             ? DataModels.MachineErrorCode.InverterFaultStateDetected
@@ -112,7 +81,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                             .GetRequiredService<IErrorsProvider>()
                             .RecordNew(errorCode);
 
-                        this.missionsProvider.StartMachineMission(missionId, command);
+                        this.machineMissionsProvider.StartMachineMission(missionId, command);
                     }
                     else
                     {
@@ -121,41 +90,6 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     }
                 }
             }
-        }
-
-        private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)
-        {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
-
-                var bay = bayProvider.GetAll()
-                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                    .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
-
-                if (bay != null && bay.CurrentMissionId != null)
-                {
-                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
-
-                    LoggerExtensions.LogDebug(this.Logger, $"Bay#{bay.Number}: operation competed.");
-
-                    this.bayStatusChangedEvent.Set();
-                }
-                else
-                {
-                    LoggerExtensions.LogWarning(this.Logger, $"No bay with mission operation id={e.MissionOperationId} was found.");
-                }
-            }
-        }
-
-        private void OnNewMissionAvailable()
-        {
-            this.newMissionArrivedResetEvent.Set();
         }
 
         #endregion

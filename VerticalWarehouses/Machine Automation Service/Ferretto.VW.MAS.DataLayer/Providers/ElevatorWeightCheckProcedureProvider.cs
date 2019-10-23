@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 
 namespace Ferretto.VW.MAS.DataLayer
