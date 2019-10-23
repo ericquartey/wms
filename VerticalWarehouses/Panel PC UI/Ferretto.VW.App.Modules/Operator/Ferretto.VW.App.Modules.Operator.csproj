@@ -45,6 +45,12 @@
   <ItemGroup>
     <None Remove="Views\EmptyView.xaml" />
     <None Remove="Views\OperatorMenuView.xaml" />
+    <None Remove="Views\Others\DrawerCompactingView.xaml" />
+    <None Remove="Views\Others\ImmediateDrawerCallView.xaml" />
+    <None Remove="Views\Others\MaintenanceView.xaml" />
+    <None Remove="Views\Others\MenuNavigationView.xaml" />
+    <None Remove="Views\Others\OthersNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsNavigationView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,11 +69,24 @@
     <Compile Update="Views\OperatorMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\Others\" />
-    <Folder Include="Views\Others\" />
+    <Compile Update="Views\Others\ImmediateDrawerCallView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\MaintenanceView.xaml.cs">
+      <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\DrawerCompactingView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\MenuNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\OthersNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Statistics\StatisticsNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

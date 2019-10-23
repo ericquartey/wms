@@ -1,17 +1,6 @@
 ﻿using System.Configuration;
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Modules.Operator.HelpWindows;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
 using Ferretto.VW.App.Operator.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -59,14 +48,6 @@ namespace Ferretto.VW.App.Modules.Operator
         public void OnInitialized(IContainerProvider containerProvider)
         {
             containerProvider.UseMachineAutomationHubs();
-
-            //BindViewModelToView<IMainWindowViewModel, MainWindow>(containerProvider);
-
-            //var mainWindow = (MainWindow)containerProvider.Resolve<IMainWindow>();
-            //mainWindow.DataContext = containerProvider.Resolve<IMainWindowViewModel>();
-
-            //var mainWindowProperty = Application.Current.GetType().GetProperty("OperatorAppMainWindowInstance");
-            //mainWindowProperty.SetValue(Application.Current, mainWindow);
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -74,52 +55,13 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
 
-            /*
-            containerRegistry.RegisterSingleton<IMainWindowViewModel, MainWindowViewModel>();
-            containerRegistry.RegisterSingleton<IMainWindow, MainWindow>();
-            containerRegistry.RegisterSingleton<IHelpMainWindow, HelpMainWindow>();
-            //containerRegistry.RegisterSingleton<IStatusMessageService, StatusMessageService>();
-            containerRegistry.RegisterSingleton<Interfaces.INavigationService, NavigationService>();
+            containerRegistry.RegisterForNavigation<OthersNavigationView>();
+            containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();
+            containerRegistry.RegisterForNavigation<DrawerCompactingView>();
 
-            containerRegistry.RegisterSingleton<IIdleViewModel, IdleViewModel>();
-            containerRegistry.RegisterSingleton<IFooterViewModel, FooterViewModel>();
-            containerRegistry.RegisterSingleton<IMainWindowNavigationButtonsViewModel, MainWindowNavigationButtonsViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityPickingViewModel, DrawerActivityPickingViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityPickingDetailViewModel, DrawerActivityPickingDetailViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerWaitViewModel, DrawerWaitViewModel>();
-            containerRegistry.RegisterSingleton<IListsInWaitViewModel, ListsInWaitViewModel>();
-            containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
-            containerRegistry.RegisterSingleton<IItemDetailViewModel, ItemDetailViewModel>();
-            containerRegistry.RegisterSingleton<IImmediateDrawerCallViewModel, ImmediateDrawerCallViewModel>();
-            containerRegistry.RegisterSingleton<IGeneralInfoViewModel, GeneralInfoViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerCompactingViewModel, DrawerCompactingViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerCompactingDetailViewModel, DrawerCompactingDetailViewModel>();
-            containerRegistry.RegisterSingleton<IOtherNavigationViewModel, OtherNavigationViewModel>();
-            containerRegistry.RegisterSingleton<IStatisticsGeneralDataViewModel, StatisticsGeneralDataViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerSpaceSaturationViewModel, DrawerSpaceSaturationViewModel>();
-            containerRegistry.RegisterSingleton<IDetailListInWaitViewModel, DetailListInWaitViewModel>();
-            containerRegistry.RegisterSingleton<ICellsStatisticsViewModel, CellsStatisticsViewModel>();
-            containerRegistry.RegisterSingleton<IErrorsStatisticsViewModel, ErrorsStatisticsViewModel>();
-            containerRegistry.RegisterSingleton<IMaintenanceDetailViewModel, MaintenanceDetailViewModel>();
-            containerRegistry.RegisterSingleton<IMaintenanceMainPageViewModel, MaintenanceMainPageViewModel>();
-            containerRegistry.RegisterSingleton<IStatisticsNavigationViewModel, StatisticsNavigationViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityRefillingViewModel, DrawerActivityRefillingViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityRefillingDetailViewModel, DrawerActivityRefillingDetailViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerWeightSaturationViewModel, DrawerWeightSaturationViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityInventoryViewModel, DrawerActivityInventoryViewModel>();
-            containerRegistry.RegisterSingleton<IDrawerActivityInventoryDetailViewModel, DrawerActivityInventoryDetailViewModel>();
-            containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
-            containerRegistry.RegisterSingleton<IMachineStatisticsViewModel, MachineStatisticsViewModel>();
+            containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
 
-            containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
-            containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
-            containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
-            containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
-            containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
-            containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
-            containerRegistry.Register<ICustomControlListDetailDataGridViewModel, CustomControlListDetailDataGridViewModel>();
-            containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
-            */
+            containerRegistry.RegisterForNavigation<MaintenanceView>();
         }
 
         #endregion

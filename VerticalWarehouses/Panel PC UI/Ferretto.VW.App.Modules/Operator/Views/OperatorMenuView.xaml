@@ -11,7 +11,7 @@
             d:DesignWidth="800"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="100,30">
+    <Grid Margin="85,30,100,30">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -33,31 +33,29 @@
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
-                                Width="170"
-                                Height="70"
-                                Margin="0,0,15,15"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
                                 Command="{Binding DrawerActivityButtonCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Width="170"
-                                Height="70"
-                                Margin="0,0,15,15"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
                                 Command="{Binding ItemSearchButtonCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuItems}" />
 
             <controls:PpcButton Grid.Row="2"
-                                Width="170"
-                                Height="70"
-                                Margin="0,0,15,15"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
                                 Command="{Binding ListsInWaitButtonCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuLists}" />
 
-            <!--  Template="{StaticResource VWAPP_NavigationButton_ControlTemplate}"  -->
-
             <controls:PpcButton Grid.Row="4"
-                                Width="170"
-                                Height="70"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,15,15,0"
                                 Command="{Binding OtherButtonCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuOther}" />
