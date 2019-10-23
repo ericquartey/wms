@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Operator.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -62,6 +63,8 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
 
             containerRegistry.RegisterForNavigation<MaintenanceView>();
+
+            containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
         }
 
         #endregion

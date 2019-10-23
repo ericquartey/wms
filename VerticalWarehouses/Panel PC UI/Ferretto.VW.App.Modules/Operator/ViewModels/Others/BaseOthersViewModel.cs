@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     Utils.Modules.Operator.Others.IMMEDIATEDRAWERCALL,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationImmediateDrawerCall,
-                    trackCurrentView: false));
+                    trackCurrentView: true));
 
             this.menuItems.Add(
                 new NavigationMenuItem(
