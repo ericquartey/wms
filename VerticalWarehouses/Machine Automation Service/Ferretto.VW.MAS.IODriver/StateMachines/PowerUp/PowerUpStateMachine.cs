@@ -80,8 +80,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new PowerUpStartState(this, this.status, this.index, this.Logger));
         }
 
         protected override void Dispose(bool disposing)

@@ -50,7 +50,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
             this.Logger.LogTrace($"1:Enable={this.enable}");
 
             this.Logger.LogTrace("2:Change State to MeasureProfileStartState");
-            this.CurrentState = new MeasureProfileStartState(this.enable, this.status, this.Logger, this, this.deviceIndex);
 
             var notificationMessage = new FieldNotificationMessage(
                 null,
@@ -63,7 +62,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
             this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.PublishNotificationEvent(notificationMessage);
 
-            this.CurrentState?.Start();
+            this.ChangeState(new MeasureProfileStartState(this.enable, this.status, this.Logger, this, this.deviceIndex));
         }
 
         protected override void Dispose(bool disposing)

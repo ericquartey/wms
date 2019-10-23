@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
                 var endNotification = new FieldNotificationMessage(
                     null,
                     "Set configuration IO complete",
-                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.SetConfigurationIo,
                     MessageStatus.OperationEnd,

@@ -43,9 +43,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public override void Start()
         {
-            this.CurrentState = new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this);
-
-            this.CurrentState?.Start();
+            this.ChangeState(new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this));
         }
 
         protected override void Dispose(bool disposing)

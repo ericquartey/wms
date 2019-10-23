@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                              TimeStamp = sample.TimeStamp
                          }),
                  "Inverter Inputs update",
-                 FieldMessageActor.FiniteStateMachines,
+                 FieldMessageActor.DeviceManager,
                  FieldMessageActor.InverterDriver,
                  FieldMessageType.InverterStatusUpdate,
                  MessageStatus.OperationExecuting,

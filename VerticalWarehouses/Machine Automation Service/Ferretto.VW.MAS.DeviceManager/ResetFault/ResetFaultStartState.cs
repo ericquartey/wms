@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
                 null,
                 $"Reset Inverter Fault",
                 FieldMessageActor.InverterDriver,
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterFaultReset,
                 (byte)InverterIndex.None);
 
