@@ -8,6 +8,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void AbortMove(BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
+        void EjectFromCell(LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
+        void InsertToCell(LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
         void MoveFromBayToBay(LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender);
 
         void MoveFromBayToCell(LoadingUnitLocation sourceBay, int? destinationCellId, BayNumber requestingBay, MessageActor sender);

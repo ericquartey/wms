@@ -13,6 +13,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             int? sourceCellId,
             int? destinationCellId,
             int? loadingUnitId,
+            bool insertLoadingUnit = false,
+            bool ejectLoadingUnit = false,
             CommandAction commandAction = CommandAction.Start,
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -22,6 +24,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.SourceCellId = sourceCellId;
             this.DestinationCellId = destinationCellId;
             this.LoadingUnitId = loadingUnitId;
+            this.InsertLoadingUnit = insertLoadingUnit;
+            this.EjectLoadingUnit = ejectLoadingUnit;
             this.CommandAction = commandAction;
             this.StopReason = stopReason;
             this.Verbosity = verbosity;
@@ -36,6 +40,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public LoadingUnitLocation Destination { get; }
 
         public int? DestinationCellId { get; }
+
+        public bool EjectLoadingUnit { get; }
+
+        public bool InsertLoadingUnit { get; }
 
         public int? LoadingUnitId { get; }
 

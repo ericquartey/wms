@@ -12,6 +12,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int? DestinationCellId { get; }
 
+        bool EjectLoadingUnit { get; }
+
+        bool InsertLoadingUnit { get; }
+
         int? LoadingUnitId { get; }
 
         LoadingUnitLocation Source { get; }

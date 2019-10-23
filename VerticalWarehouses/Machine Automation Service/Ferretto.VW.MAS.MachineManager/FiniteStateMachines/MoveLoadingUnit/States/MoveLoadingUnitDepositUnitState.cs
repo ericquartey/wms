@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly bool ejectLoadingUnit;
+
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
@@ -57,6 +59,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
             this.openShutter = false;
+            this.ejectLoadingUnit = false;
         }
 
         #endregion
@@ -145,7 +148,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     else
                     {
-                        this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        if (!this.ejectLoadingUnit)
+                        {
+                            this.baysProvider.LoadLoadingUnit(this.loadingUnitId, this.destination);
+                        }
                     }
 
                     transaction.Commit();

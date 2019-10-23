@@ -28,12 +28,47 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     null,
                     null,
                     null,
+                    false,
+                    false,
                     CommandAction.Abort),
                 $"Bay {requestingBay} requested to abort move Loading unit on Bay {targetBay}",
                 sender,
                 MessageType.MoveLoadingUnit,
                 requestingBay,
                 targetBay);
+        }
+
+        public void EjectFromCell(LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        {
+            this.SendCommandToMissionManager(
+                 new MoveLoadingUnitMessageData(
+                    LoadingUnitLocation.Cell,
+                    destinationBay,
+                    null,
+                    null,
+                    loadingUnitId,
+                    false,
+                    true),
+                 $"Bay {requestingBay} requested to eject Loading unit {loadingUnitId} to Bay {destinationBay}",
+                 sender,
+                 MessageType.MoveLoadingUnit,
+                 requestingBay);
+        }
+
+        public void InsertToCell(LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        {
+            this.SendCommandToMissionManager(
+                new MoveLoadingUnitMessageData(
+                    sourceBay,
+                    LoadingUnitLocation.Cell,
+                    null,
+                    destinationCellId,
+                    loadingUnitId,
+                    true),
+                $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to destination Cell {destinationCellId}",
+                sender,
+                MessageType.MoveLoadingUnit,
+                requestingBay);
         }
 
         public void MoveFromBayToBay(LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
@@ -135,6 +170,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     null,
                     null,
                     null,
+                    false,
+                    false,
                     CommandAction.Stop),
                 $"Bay {requestingBay} requested to stop move Loading unit on Bay {targetBay}",
                 sender,
