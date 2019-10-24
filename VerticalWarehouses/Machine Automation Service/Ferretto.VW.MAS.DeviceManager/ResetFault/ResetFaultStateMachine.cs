@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new ResetFaultMachineData(
                 receivedMessage.RequestingBay,
                 receivedMessage.TargetBay,

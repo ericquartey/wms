@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.Logger.LogTrace("1:Method Start");
 
             this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");

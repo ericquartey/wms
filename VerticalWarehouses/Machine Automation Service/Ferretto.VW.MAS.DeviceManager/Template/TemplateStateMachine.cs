@@ -23,14 +23,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         #region Constructors
 
         public TemplateStateMachine(
-                    CommandMessage receivedMessage,
+            CommandMessage receivedMessage,
             IEventAggregator eventAggregator,
             ILogger<DeviceManager> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new TemplateMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
         }
 

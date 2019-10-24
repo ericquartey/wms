@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+
+            this.CurrentState = new EmptyState(this.Logger);
         }
 
         #endregion

@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new InverterPowerEnableMachineData(
                 ((InverterPowerEnableMessageData)receivedMessage.Data).Enable,
                 receivedMessage.RequestingBay,

@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             )
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.baysProvider = baysProvider;
 
             if (receivedMessage.Data is IPowerEnableMessageData data)

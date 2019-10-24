@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new ShutterPositioningMachineData(
                 positioningMessageData,
                 requestingBay,

@@ -43,8 +43,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
 

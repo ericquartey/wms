@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new ResetSecurityMachineData(requestingBay, targetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
