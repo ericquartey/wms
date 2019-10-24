@@ -130,15 +130,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task TuningBay()
+        private async Task TuneBayAsync()
         {
             try
             {
+                this.IsWaitingForResponse = true;
+
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
                 var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
-                    this.IsWaitingForResponse = true;
                     await this.machineCarouselWebService.FindZeroAsync();
                     this.IsTuningBay = true;
                 }

@@ -211,27 +211,24 @@
                            VerticalAlignment="Center"
                            Foreground="White"
                            Text="{x:Static res:InstallationApp.ZeroChain}" />
-                <controls:PpcSensorControl
-                           Grid.Row="17"
-                           Grid.Column="1"
-                           Margin="0,5,0,0"
-                           SensorState="{Binding Sensors.ACUBay1S3IND}"
-                           Template="{StaticResource PpcSensorControlSmallTemplate}"
-                           Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                <controls:PpcSensorControl
-                           Grid.Row="17"
-                           Grid.Column="1"
-                           Margin="0,5,0,0"
-                           SensorState="{Binding Sensors.ACUBay2S3IND}"
-                           Template="{StaticResource PpcSensorControlSmallTemplate}"
-                           Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                <controls:PpcSensorControl
-                           Grid.Row="17"
-                           Grid.Column="1"
-                           Margin="0,5,0,0"
-                           SensorState="{Binding Sensors.ACUBay3S3IND}"
-                           Template="{StaticResource PpcSensorControlSmallTemplate}"
-                           Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                <controls:PpcSensorControl Grid.Row="17"
+                                           Grid.Column="1"
+                                           Margin="0,5,0,0"
+                                           SensorState="{Binding Sensors.ACUBay1S3IND}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                           Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                <controls:PpcSensorControl Grid.Row="17"
+                                           Grid.Column="1"
+                                           Margin="0,5,0,0"
+                                           SensorState="{Binding Sensors.ACUBay2S3IND}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                           Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                <controls:PpcSensorControl Grid.Row="17"
+                                           Grid.Column="1"
+                                           Margin="0,5,0,0"
+                                           SensorState="{Binding Sensors.ACUBay3S3IND}"
+                                           Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                           Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
                 <TextBlock Grid.Row="18"
                            Grid.ColumnSpan="2"
                            Margin="0,20,0,0"

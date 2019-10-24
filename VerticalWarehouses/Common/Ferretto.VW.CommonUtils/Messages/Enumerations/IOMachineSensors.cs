@@ -8,9 +8,9 @@
 
         MushroomEmergencyButtonBay1 = 1,
 
-        MicroCarterLeftSideBay1 = 2,
+        MicroCarterLeftSide = 2,
 
-        MicroCarterRightSideBay1 = 3,
+        MicroCarterRightSide = 3,
 
         AntiIntrusionBarrierBay1 = 4,
 

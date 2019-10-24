@@ -181,6 +181,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
+                this.IsWaitingForResponse = true;
+
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
                 this.HasCarousel = this.bay.Carousel != null;
@@ -191,8 +193,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.InitializeSensorsAsync();
 
                 this.SelectBayPosition1();
-
-                this.IsWaitingForResponse = true;
 
                 this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
                 this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
@@ -431,23 +431,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.CanInputCellId = this.Cells != null
-               &&
-               !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputCellId =
+                this.Cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
-            this.CanInputHeight = !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputHeight =
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
-            this.CanInputLoadingUnitId = this.LoadingUnits != null
-               &&
-               this.Cells != null
-               &&
-               !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputLoadingUnitId =
+                this.LoadingUnits != null
+                &&
+                this.Cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
             this.moveToHeightCommand?.RaiseCanExecuteChanged();

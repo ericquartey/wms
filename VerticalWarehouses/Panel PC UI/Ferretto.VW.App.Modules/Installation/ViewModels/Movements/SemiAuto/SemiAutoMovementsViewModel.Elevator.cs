@@ -158,11 +158,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand TuningBayCommand =>
-                    this.tuningBayCommand
+            this.tuningBayCommand
             ??
             (this.tuningBayCommand = new DelegateCommand(
-                async () => await this.TuningBay(),
-                this.CanTuningBay));
+                async () => await this.TuneBayAsync(),
+                this.CanTuneBay));
 
         public ICommand TuningChainCommand =>
             this.tuningChainCommand
@@ -178,9 +178,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 this.Sensors.LuPresentInMachineSideBay1
@@ -191,9 +190,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
@@ -203,7 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsZeroChain;
         }
 
-        private bool CanTuningBay()
+        private bool CanTuneBay()
         {
             return !this.IsWaitingForResponse
                 &&
@@ -243,11 +241,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsWaitingForResponse = true;
                 await this.machineElevatorWebService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
