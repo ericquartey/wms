@@ -186,16 +186,19 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
   </data>
-  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
-  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
+    <value>Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata</value>
   </data>
-  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
+  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+    <value />
   </data>
-  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+    <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
+  </data>
+  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+    <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
   </data>
 </root>

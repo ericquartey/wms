@@ -78,5 +78,20 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
         ZeroSensorErrorAfterDeposit = 100040,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorBaseCode), 1)]
+        MachineManagerErrorBaseCode = 300000,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorNoLoadingUnitInSource), 1)]
+        MachineManagerErrorNoLoadingUnitInSource = MachineManagerErrorBaseCode + 1,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceDb), 1)]
+        MachineManagerErrorLoadingUnitSourceDb = MachineManagerErrorBaseCode + 2,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationDb), 1)]
+        MachineManagerErrorLoadingUnitDestinationDb = MachineManagerErrorBaseCode + 3,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitElevator), 1)]
+        MachineManagerErrorLoadingUnitElevator = MachineManagerErrorBaseCode + 3,
     }
 }

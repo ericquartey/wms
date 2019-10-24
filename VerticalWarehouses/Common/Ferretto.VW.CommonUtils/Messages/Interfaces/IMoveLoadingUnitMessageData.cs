@@ -19,7 +19,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int? LoadingUnitId { get; }
 
-        Guid? MissionId { get; }
+        Guid? MissionId { get; set; }
 
         LoadingUnitLocation Source { get; }
 

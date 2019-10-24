@@ -2369,7 +2369,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 200013 = InverterErrorSyntaxError
     /// 200014 = InverterErrorWrongPayloadLength
     /// 200020 = InverterErrorNodeNotAvailable
-    /// 200030 = InverterErrorSyntaxError2</summary>
+    /// 200030 = InverterErrorSyntaxError2
+    /// 300000 = MachineManagerErrorBaseCode
+    /// 300001 = MachineManagerErrorNoLoadingUnitInSource
+    /// 300002 = MachineManagerErrorLoadingUnitSourceDb
+    /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
+    /// 300003 = MachineManagerErrorLoadingUnitElevator</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
@@ -2420,6 +2425,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorNodeNotAvailable = 200020,
     
         InverterErrorSyntaxError2 = 200030,
+    
+        MachineManagerErrorBaseCode = 300000,
+    
+        MachineManagerErrorNoLoadingUnitInSource = 300001,
+    
+        MachineManagerErrorLoadingUnitSourceDb = 300002,
+    
+        MachineManagerErrorLoadingUnitDestinationDb = 300003,
+    
+        MachineManagerErrorLoadingUnitElevator = 300003,
     
     }
     

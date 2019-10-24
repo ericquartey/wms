@@ -356,7 +356,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StopAsync(this.Bay.Number);
+                await this.machineLoadingUnitsWebService.StopAsync(null, this.Bay.Number);
 
                 this.IsStopping = true;
             }
@@ -427,39 +427,39 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationExecuting:
+                {
+                    if (message.Data.AxisMovement == Axis.Vertical)
                     {
-                        if (message.Data.AxisMovement == Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data.AxisMovement == Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
-
-                        break;
+                        this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                     }
+                    else if (message.Data.AxisMovement == Axis.Horizontal)
+                    {
+                        this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                    }
+
+                    break;
+                }
 
                 case MessageStatus.OperationEnd:
+                {
+                    if (!this.IsExecutingProcedure)
                     {
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
-
-                        this.Ended();
-
                         break;
                     }
+
+                    this.Ended();
+
+                    break;
+                }
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                    {
-                        this.Stopped();
+                {
+                    this.Stopped();
 
-                        break;
-                    }
+                    break;
+                }
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;

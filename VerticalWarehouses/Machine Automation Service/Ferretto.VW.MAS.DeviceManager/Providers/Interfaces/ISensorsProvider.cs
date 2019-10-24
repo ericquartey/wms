@@ -18,6 +18,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsLoadingUnitInLocation(LoadingUnitLocation location);
 
+        /// <summary>
+        /// CHecks if all security sensors are set to allow running state
+        /// </summary>
+        /// <returns></returns>
+        bool IsMachineSecureForRun();
+
         #endregion
     }
 }

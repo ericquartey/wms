@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
@@ -43,6 +45,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             ICellsProvider cellsProvider,
             ISensorsProvider sensorsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IErrorsProvider errorsProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
             : base(eventAggregator, logger)
@@ -53,6 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
 
             this.MachineData = new MoveLoadingUnitMachineData();
         }
@@ -64,20 +68,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         public override bool AllowMultipleInstances(CommandMessage command)
         {
             return true;
-        }
-
-        public override void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
-        {
-            if (this.CheckStartConditions(commandMessage))
-            {
-                base.Start(commandMessage, serviceProvider, cancellationToken);
-            }
-            else
-            {
-                var description = $"Attempting to start {this.GetType().Name} Finite state machine with wrong conditions";
-
-                throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
-            }
         }
 
         protected override bool FilterCommand(CommandMessage command)
@@ -122,6 +112,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
 
             return newState;
+        }
+
+        protected override bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
+        {
+            var returnValue = this.CheckStartConditions(commandMessage);
+
+            return returnValue;
         }
 
         private bool CheckStartConditions(CommandMessage commandMessage)
@@ -186,17 +183,34 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     break;
             }
 
+            if (!returnValue)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationDb);
+            }
+
             return returnValue;
         }
 
         private bool IsElevatorOk()
         {
-            return this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+            var returnValue = this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+
+            if (!returnValue)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
+            }
+
+            return returnValue;
         }
 
         private bool IsMachineOk(IMoveLoadingUnitMessageData messageData)
         {
             var returnValue = this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source);
+
+            if (!returnValue)
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource);
+            }
 
             return returnValue;
         }
@@ -273,6 +287,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             if (unitToMove != null)
             {
                 machineData.LoadingUnitId = unitToMove.Id;
+            }
+            else
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
             }
 
             return unitToMove != null;

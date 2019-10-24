@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsLoadingUnitInLocation(LoadingUnitLocation location)
         {
-            var returnValue = false;
+            bool returnValue;
 
             // TODO Update with missing information
             switch (location)
@@ -183,6 +183,63 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case LoadingUnitLocation.InternalBay3Up:
                     returnValue = this.IsDrawerInBay3Top;
                     break;
+
+                // If location can't be idientifies simply become a "no operation" function
+                default:
+                    returnValue = true;
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public bool IsMachineSecureForRun()
+        {
+            var returnValue = true;
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3])
+            {
+                returnValue = false;
             }
 
             return returnValue;

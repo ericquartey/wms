@@ -23,5 +23,7 @@
         OperationStepEnd,
 
         OperationStepStop,
+
+        OperationWaitResume,
     }
 }
