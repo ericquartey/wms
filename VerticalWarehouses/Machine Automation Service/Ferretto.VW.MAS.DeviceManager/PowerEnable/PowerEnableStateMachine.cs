@@ -182,16 +182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                             isMarchPossible = false;
                             reason.Append("Emergency Active Bay2; ");
                         }
-                        if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSideBay2])
-                        {
-                            isMarchPossible = false;
-                            reason.Append("Micro Carter Active Bay2 Left; ");
-                        }
-                        if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSideBay2])
-                        {
-                            isMarchPossible = false;
-                            reason.Append("Micro Carter Active Bay2 Right; ");
-                        }
+
                         break;
 
                     case BayNumber.BayThree:
@@ -200,16 +191,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                             isMarchPossible = false;
                             reason.Append("Emergency Active Bay3; ");
                         }
-                        if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSideBay3])
-                        {
-                            isMarchPossible = false;
-                            reason.Append("Micro Carter Active Bay3 Left; ");
-                        }
-                        if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSideBay3])
-                        {
-                            isMarchPossible = false;
-                            reason.Append("Micro Carter Active Bay3 Right; ");
-                        }
+
                         break;
 
                     default:
