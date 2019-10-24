@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.App.Modules.Installation.Views
 {
-    public partial class LoadingUnitFromBayToCellView : View
+    public partial class LoadingUnitFromCellToCellView : View
     {
         #region Constructors
 
-        public LoadingUnitFromBayToCellView()
+        public LoadingUnitFromCellToCellView()
         {
             this.InitializeComponent();
         }
