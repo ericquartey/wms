@@ -44,8 +44,8 @@
 
   <ItemGroup>
     <None Remove="Views\EmptyView.xaml" />
-    <None Remove="Views\ItemSearch\ItemSearchDetailView.xaml" />
-    <None Remove="Views\ItemSearch\ItemSearchMainView.xaml" />
+    <None Remove="Views\ItemSearch\WaitingListDetailView.xaml" />
+    <None Remove="Views\ItemSearch\WaitingListsView.xaml" />
     <None Remove="Views\OperatorMenuView.xaml" />
     <None Remove="Views\Others\DrawerCompactingDetailView.xaml" />
     <None Remove="Views\Others\DrawerCompactingView.xaml" />
@@ -54,6 +54,9 @@
     <None Remove="Views\Others\MenuNavigationView.xaml" />
     <None Remove="Views\Others\OthersNavigationView.xaml" />
     <None Remove="Views\Others\Statistics\StatisticsNavigationView.xaml" />
+    <None Remove="Views\WaitingLists\ItemSearchDetailView.xaml" />
+    <None Remove="Views\WaitingLists\ItemSearchMainView.xaml" />
+    <None Remove="Views\WaitingLists\WaitingListsView - Copy.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -69,11 +72,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\ItemSearch\ItemSearchDetailView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Views\WaitingLists\WaitingListsView - Copy.xaml.cs">
+      <DependentUpon>WaitingListsView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\ItemSearch\ItemSearchMainView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Views\WaitingLists\WaitingListsView.xaml.cs">
+      <DependentUpon>WaitingListsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\OperatorMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
@@ -97,6 +100,12 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\Statistics\StatisticsNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchDetailView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchMainView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>

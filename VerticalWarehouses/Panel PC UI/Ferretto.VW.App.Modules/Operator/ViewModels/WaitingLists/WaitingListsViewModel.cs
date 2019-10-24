@@ -1,18 +1,22 @@
-﻿using Ferretto.VW.App.Controls.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Prism.Events;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ListsInWaitViewModel : BaseViewModel, IListsInWaitViewModel
+    public class WaitingListsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -24,13 +28,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
+        private readonly IWaitListSelectedModel waitListSelectedModel;
+
         private int areaId;
 
         private int currentItemIndex;
 
         private ICommand downDataGridButtonCommand;
 
-        private ICommand itemDetailButtonCommand;
+        private bool isWaitingForResponse;
+
+        private ICommand listDetailButtonCommand;
 
         private ICommand listExecuteCommand;
 
@@ -46,45 +54,19 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         #region Constructors
 
-        public ListsInWaitViewModel(
-            //IStatusMessageService statusMessageService,
+        public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
-            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             IItemListsDataService itemListsDataService,
-            IAreasDataService areasDataService
-            )
+            IAreasDataService areasDataService,
+            IWaitListSelectedModel waitListSelectedModel)
+            : base(PresentationMode.Operator)
         {
-            //if (statusMessageService == null)
-            //{
-            //    throw new ArgumentNullException(nameof(statusMessageService));
-            //}
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
+            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.waitListSelectedModel = waitListSelectedModel ?? throw new ArgumentNullException(nameof(waitListSelectedModel));
 
-            if (identityService == null)
-            {
-                throw new ArgumentNullException(nameof(identityService));
-            }
-
-            if (navigationService == null)
-            {
-                throw new ArgumentNullException(nameof(navigationService));
-            }
-
-            if (itemListsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(itemListsDataService));
-            }
-
-            if (areasDataService == null)
-            {
-                throw new ArgumentNullException(nameof(areasDataService));
-            }
-
-            //this.StatusMessageService = statusMessageService;
-            this.identityService = identityService;
-            this.navigationService = navigationService;
-            this.itemListsDataService = itemListsDataService;
-            this.areasDataService = areasDataService;
-            this.NavigationViewModel = null;
+            this.lists = new List<ItemList>();
         }
 
         #endregion
@@ -93,20 +75,18 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
 
-        public ICommand ItemDetailButtonCommand =>
-            this.itemDetailButtonCommand
-            ??
-            (this.itemDetailButtonCommand = new DelegateCommand(() =>
-            {
-                if (this.SelectedList != null)
-                {
-                    this.navigationService.NavigateToView<DetailListInWaitViewModel, IDetailListInWaitViewModel>(this.selectedList);
-                }
-            },
-            this.CanShowDetails));
+        public override EnableMask EnableMask => EnableMask.None;
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
+
+        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
         public ICommand ListExecuteCommand =>
-            this.listExecuteCommand
+                    this.listExecuteCommand
             ??
             (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
@@ -119,13 +99,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             {
                 if (this.SetProperty(ref this.selectedList, value))
                 {
+                    this.waitListSelectedModel.SelectedList = this.selectedList;
+
                     ((DelegateCommand)this.ListExecuteCommand).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.ItemDetailButtonCommand).RaiseCanExecuteChanged();
+                    ((DelegateCommand)this.ListDetailButtonCommand).RaiseCanExecuteChanged();
                 }
             }
         }
-
-        //public IStatusMessageService StatusMessageService { get; }
 
         public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
 
@@ -161,12 +141,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             }
             catch (Exception ex)
             {
-                //this.StatusMessageService.Notify(ex, $"Cannot execute List.");
+                this.ShowNotification($"Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
         }
 
-        public override async Task OnEnterViewAsync()
+        public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
             if (this.selectedList != null)
             {
                 return;
@@ -181,6 +164,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             this.serialNumber = machineIdentity.SerialNumber;
             this.areaId = machineIdentity.AreaId;
             await this.LoadListsAsync();
+        }
+
+        private bool CanDetailCommand()
+        {
+            return !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null;
         }
 
         private bool CanExecuteList()
@@ -198,9 +188,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists
             return false;
         }
 
-        private bool CanShowDetails()
+        private void Detail()
         {
-            return this.SelectedList != null;
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.WaitingLists.DETAIL,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task LoadListsAsync()

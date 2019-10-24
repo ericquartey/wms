@@ -56,12 +56,15 @@ namespace Ferretto.VW.App.Modules.Operator
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterSingleton<IItemSearchedModel, ItemSearchedModel>();
+            containerRegistry.RegisterSingleton<IWaitListSelectedModel, WaitListSelectedModel>();
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
 
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
+            containerRegistry.RegisterForNavigation<WaitingListsView>();
+            containerRegistry.RegisterForNavigation<WaitingListDetailView>();
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();

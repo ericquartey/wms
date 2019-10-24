@@ -71,14 +71,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IBayManager bayManager,
             IMachineIdentityWebService identityService,
             IItemsDataService itemsDataService,
-            IItemSearchedModel itemSearchViewModel)
+            IItemSearchedModel itemSearchedModel)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemsDataService = itemsDataService ?? throw new ArgumentNullException(nameof(itemsDataService));
-            this.itemSearchViewModel = itemSearchViewModel ?? throw new ArgumentNullException(nameof(itemSearchViewModel));
+            this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
 
             this.currentItemIndex = 0;
             this.requestedQuantity = "0";

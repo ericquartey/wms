@@ -192,7 +192,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.EMPTY,
+                    Utils.Modules.Operator.WaitingLists.MAIN,
                     null,
                     trackCurrentView: true);
             }

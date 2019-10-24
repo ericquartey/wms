@@ -53,6 +53,17 @@
             #endregion
         }
 
+        public static class WaitingLists
+        {
+            #region Fields
+
+            public const string DETAIL = "WaitingListDetailViewModel";
+
+            public const string MAIN = "WaitingListsViewModel";
+
+            #endregion
+        }
+
         #endregion
     }
 }

@@ -1,18 +1,23 @@
-﻿using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Controls;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Input;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using Prism.Events;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListDetail
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DetailListInWaitViewModel : BaseViewModel, IDetailListInWaitViewModel
+    public class WaitingListDetailViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -20,7 +25,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
 
         private readonly IItemListsDataService itemListsDataService;
 
-        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
+        private readonly IWaitListSelectedModel waitListSelectedModel;
 
         private int areaId;
 
@@ -44,37 +49,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
 
         #region Constructors
 
-        public DetailListInWaitViewModel(
-            //IStatusMessageService statusMessageService,
-            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
+        public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsDataService itemListsDataService)
+            IItemListsDataService itemListsDataService,
+            IWaitListSelectedModel waitListSelectedModel)
+            : base(PresentationMode.Operator)
         {
-            //if (statusMessageService == null)
-            //{
-            //    throw new ArgumentNullException(nameof(statusMessageService));
-            //}
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
+            this.waitListSelectedModel = waitListSelectedModel ?? throw new ArgumentNullException(nameof(waitListSelectedModel));
 
-            if (itemListsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(itemListsDataService));
-            }
-
-            if (identityService == null)
-            {
-                throw new ArgumentNullException(nameof(identityService));
-            }
-
-            if (navigationService == null)
-            {
-                throw new ArgumentNullException(nameof(navigationService));
-            }
-
-            //this.StatusMessageService = statusMessageService;
-            this.navigationService = navigationService;
-            this.identityService = identityService;
-            this.itemListsDataService = itemListsDataService;
-            this.NavigationViewModel = null;
+            this.listRows = new List<ItemListRow>();
         }
 
         #endregion
@@ -85,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             this.downDataGridButtonCommand
             ??
             (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
+
+        public override EnableMask EnableMask => EnableMask.None;
 
         public IItemListsDataService ItemListsDataService { get; }
 
@@ -104,8 +91,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             get => this.selectedListRow;
             set => this.SetProperty(ref this.selectedListRow, value);
         }
-
-        //public IStatusMessageService StatusMessageService { get; }
 
         public ICommand UpDataGridButtonCommand =>
             this.upDataGridButtonCommand
@@ -144,26 +129,29 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
             }
             catch (Exception ex)
             {
-                //this.StatusMessageService.Notify(ex, "Cannot execute List.");
+                this.ShowNotification("Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }
         }
 
-        public override async Task OnEnterViewAsync()
+        public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity == null)
             {
                 return;
             }
 
-            var listInWaitViewModel = ServiceLocator.Current.GetInstance<IListsInWaitViewModel>();
-            if (listInWaitViewModel == null &&
-                listInWaitViewModel.SelectedList == null)
+            if (this.waitListSelectedModel == null &&
+                this.waitListSelectedModel.SelectedList == null)
             {
                 return;
             }
 
-            this.list = listInWaitViewModel.SelectedList;
+            this.list = this.waitListSelectedModel.SelectedList;
             this.RaisePropertyChanged(nameof(this.List));
 
             this.machineId = machineIdentity.SerialNumber;
@@ -191,10 +179,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.WaitingLists.ListD
 
         private async Task LoadListRowsAsync()
         {
-            this.listRows = await this.itemListsDataService.GetRowsAsync(this.list.Id);
-            this.RaisePropertyChanged(nameof(this.ListRows));
-            this.currentItemIndex = 0;
-            this.SelectedListRow = this.listRows.FirstOrDefault();
+            try
+            {
+                this.listRows = await this.itemListsDataService.GetRowsAsync(this.list.Id);
+                this.RaisePropertyChanged(nameof(this.ListRows));
+                this.currentItemIndex = 0;
+                this.SelectedListRow = this.listRows.FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex.ToString(), Services.Models.NotificationSeverity.Error);
+            }
         }
 
         #endregion
