@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IMemoryCache cache;
 
-        // private readonly IDictionary<Orientation, ElevatorAxis> cachedAxes = new Dictionary<Orientation, ElevatorAxis>();
-
         private readonly DataLayerContext dataContext;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
