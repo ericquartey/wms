@@ -23,14 +23,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         #region Constructors
 
         public TemplateStateMachine(
-                    CommandMessage receivedMessage,
+            CommandMessage receivedMessage,
             IEventAggregator eventAggregator,
             ILogger<DeviceManager> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new TemplateMachineData(receivedMessage.RequestingBay, receivedMessage.TargetBay, eventAggregator, logger, serviceScopeFactory);
         }
 
@@ -58,12 +56,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
-            {
-                var stateData = new TemplateStateData(this, this.machineData);
-                this.CurrentState = new TemplateStartState(stateData);
-                this.CurrentState?.Start();
-            }
+            var stateData = new TemplateStateData(this, this.machineData);
+            this.ChangeState(new TemplateStartState(stateData));
         }
 
         public override void Stop(StopRequestReason reason)

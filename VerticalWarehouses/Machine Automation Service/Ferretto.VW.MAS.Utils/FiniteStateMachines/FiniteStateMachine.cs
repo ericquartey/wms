@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received notification {notification.Type}, {notification.Description}");
+            this.Logger.LogTrace($"{this.GetType().Name}: received notification {notification.Type}, {notification.Description}");
 
             return this.ActiveState;
         }

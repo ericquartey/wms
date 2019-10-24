@@ -8,7 +8,7 @@ using Prism.Regions;
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
     [Obsolete]
-    public class ShutterHeightControlViewModel : BaseMainViewModel
+    internal sealed class ShutterHeightControlViewModel : BaseMainViewModel
     {
         #region Fields
 

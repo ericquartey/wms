@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,7 +12,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly IDictionary<Orientation, ElevatorAxis> cachedAxes = new Dictionary<Orientation, ElevatorAxis>();
+        private static readonly MemoryCacheEntryOptions CacheOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+        private readonly IMemoryCache cache;
 
         private readonly DataLayerContext dataContext;
 
@@ -24,9 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorDataProvider(
             DataLayerContext dataContext,
+            IMemoryCache memoryCache,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -38,24 +43,25 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (!this.cachedAxes.ContainsKey(orientation))
+                var cacheKey = GetAxisCacheKey(orientation);
+                if (!this.cache.TryGetValue(cacheKey, out ElevatorAxis cacheEntry))
                 {
-                    var axis = this.dataContext.ElevatorAxes
+                    cacheEntry = this.dataContext.ElevatorAxes
                         .Include(a => a.Profiles)
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
                         .SingleOrDefault(a => a.Orientation == orientation);
 
-                    if (axis is null)
+                    if (cacheEntry is null)
                     {
                         throw new EntityNotFoundException(orientation.ToString());
                     }
 
-                    this.cachedAxes.Add(orientation, axis);
+                    this.cache.Set(cacheKey, cacheEntry, CacheOptions);
                 }
 
-                return this.cachedAxes[orientation];
+                return cacheEntry;
             }
         }
 
@@ -113,7 +119,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
+                var elevator = this.dataContext
+                    .Elevators
                     .Include(e => e.LoadingUnit)
                     .Single();
 
@@ -125,13 +132,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UnloadLoadingUnit()
         {
-            var elevator = this.dataContext.Elevators
-                               .Include(e => e.LoadingUnit)
-                               .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext
+                    .Elevators
+                    .Include(e => e.LoadingUnit)
+                    .Single();
 
-            elevator.LoadingUnitId = null;
+                elevator.LoadingUnitId = null;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void UpdateVerticalOffset(double newOffset)
@@ -139,7 +150,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-                this.cachedAxes[Orientation.Vertical] = verticalAxis;
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
@@ -155,7 +168,9 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-                this.cachedAxes[Orientation.Vertical] = verticalAxis;
+
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
 
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
@@ -165,6 +180,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
             }
         }
+
+        private static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
 
         #endregion
     }

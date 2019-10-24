@@ -1,21 +1,15 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
-    internal interface IState : IDisposable
+    internal interface IState
     {
         #region Properties
 
         ILogger<DeviceManager> Logger { get; }
-
-        /// <summary>
-        /// Get the type of state (string description).
-        /// </summary>
-        string Type { get; }
 
         #endregion
 

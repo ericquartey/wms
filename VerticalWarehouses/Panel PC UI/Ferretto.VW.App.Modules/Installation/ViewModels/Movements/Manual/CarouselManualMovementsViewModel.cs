@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CarouselManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class CarouselManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
@@ -141,21 +141,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
-        protected async Task StartMovementAsync(HorizontalMovementDirection direction)
-        {
-            try
-            {
-                await this.machineCarouselWebService.MoveManualAsync(direction);
-            }
-            catch (System.Exception ex)
-            {
-                this.IsClosing = false;
-                this.IsOpening = false;
-
-                this.ShowNotification(ex);
-            }
-        }
-
         protected override async Task StopMovementAsync()
         {
             try
@@ -181,6 +166,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.CanExecuteCloseCommand = !this.IsOpening && !this.IsStopping;
             this.CanExecuteOpenCommand = !this.IsClosing && !this.IsStopping;
+        }
+
+        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                await this.machineCarouselWebService.MoveManualAsync(direction);
+            }
+            catch (System.Exception ex)
+            {
+                this.IsClosing = false;
+                this.IsOpening = false;
+
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

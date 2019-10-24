@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
-    public class LoginViewModel : BaseMainViewModel
+    internal sealed class LoginViewModel : BaseMainViewModel
     {
         #region Fields
 

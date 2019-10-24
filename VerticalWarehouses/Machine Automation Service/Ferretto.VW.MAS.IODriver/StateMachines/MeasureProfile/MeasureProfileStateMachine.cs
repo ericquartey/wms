@@ -9,7 +9,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
 {
-    public class MeasureProfileStateMachine : IoStateMachineBase
+    internal sealed class MeasureProfileStateMachine : IoStateMachineBase
     {
         #region Fields
 

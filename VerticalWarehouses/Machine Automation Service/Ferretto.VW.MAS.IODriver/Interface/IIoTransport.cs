@@ -4,9 +4,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Exceptions;
 
-namespace Ferretto.VW.MAS.IODriver.Interface
+namespace Ferretto.VW.MAS.IODriver
 {
-    public interface IIoTransport
+    internal interface IIoTransport
     {
         #region Properties
 

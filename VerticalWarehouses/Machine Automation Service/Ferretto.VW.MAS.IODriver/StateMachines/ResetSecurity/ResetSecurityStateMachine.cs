@@ -7,7 +7,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public class ResetSecurityStateMachine : IoStateMachineBase
+    internal sealed class ResetSecurityStateMachine : IoStateMachineBase
     {
         #region Fields
 

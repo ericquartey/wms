@@ -2,9 +2,9 @@
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 
-namespace Ferretto.VW.MAS.IODriver.IoDevices.Interfaces
+namespace Ferretto.VW.MAS.IODriver
 {
-    public interface IIoDevice
+    internal interface IIoDevice
     {
         #region Methods
 

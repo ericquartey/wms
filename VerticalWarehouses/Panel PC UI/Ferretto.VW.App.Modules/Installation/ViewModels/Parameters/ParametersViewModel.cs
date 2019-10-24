@@ -7,7 +7,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class ParametersViewModel : BaseMainViewModel
+    internal sealed class ParametersViewModel : BaseMainViewModel
     {
         #region Fields
 

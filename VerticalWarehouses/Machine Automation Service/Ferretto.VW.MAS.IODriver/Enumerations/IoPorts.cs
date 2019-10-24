@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.IODriver.Enumerations
 {
-    public enum IoPorts
+    internal enum IoPorts
     {
         #region Outputs
 

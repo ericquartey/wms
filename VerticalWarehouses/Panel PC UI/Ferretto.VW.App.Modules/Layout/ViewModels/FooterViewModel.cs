@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class FooterViewModel : BasePresentationViewModel
+    internal sealed class FooterViewModel : BasePresentationViewModel
     {
         #region Fields
 

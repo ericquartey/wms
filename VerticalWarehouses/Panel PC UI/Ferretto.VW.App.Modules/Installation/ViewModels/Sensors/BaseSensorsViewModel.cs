@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BaseSensorsViewModel : BaseMainViewModel
+    internal class BaseSensorsViewModel : BaseMainViewModel
     {
         #region Fields
 

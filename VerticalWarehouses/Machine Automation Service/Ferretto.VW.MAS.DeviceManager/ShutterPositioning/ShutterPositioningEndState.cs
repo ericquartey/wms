@@ -36,21 +36,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Destructors
-
-        ~ShutterPositioningEndState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -96,12 +87,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         public override void Start()
         {
-            this.Logger?.LogTrace("1:Method Start");
+            this.Logger.LogTrace("1:Method Start");
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
             var inverterMessage = new FieldCommandMessage(
@@ -118,7 +109,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
-            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
@@ -152,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            // do nothing
         }
 
         #endregion

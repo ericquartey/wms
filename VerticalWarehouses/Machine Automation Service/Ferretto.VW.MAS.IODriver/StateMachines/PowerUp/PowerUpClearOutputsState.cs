@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class PowerUpClearOutputsState : IoStateBase
+    internal sealed class PowerUpClearOutputsState : IoStateBase
     {
         #region Fields
 

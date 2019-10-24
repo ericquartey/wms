@@ -2,14 +2,13 @@
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.IODriver.Interface;
 
 namespace Ferretto.VW.MAS.IODriver
 {
     /// <summary>
     /// Handles socket data for fictitious device with firmware release 0x10.
     /// </summary>
-    public class IoTransportMock : IIoTransport
+    internal class IoTransportMock : IIoTransport
     {
         #region Fields
 

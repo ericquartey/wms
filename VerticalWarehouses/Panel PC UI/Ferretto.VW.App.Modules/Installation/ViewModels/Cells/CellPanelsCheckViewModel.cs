@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellPanelsCheckViewModel : BaseMainViewModel
+    internal sealed class CellPanelsCheckViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -185,7 +185,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -504,7 +504,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsElevatorMoving = false;
 
-                if (message.Data.MovementType == CommonUtils.Messages.Enumerations.MovementType.Absolute)
+                if (message.Data.MovementType == CommonUtils.Messages.Enumerations.MovementType.Absolute
+                    &&
+                    message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStop
+                    &&
+                    message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationRunningStop)
                 {
                     this.HasReachedCellPosition = true;
 

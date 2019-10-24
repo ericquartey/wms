@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
+            services.AddMemoryCache();
+
             services
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)

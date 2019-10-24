@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
-                this.CanExecuteClosedCommand));
+                this.CanCloseShutter));
 
         public ICommand IntermediateShutterCommand =>
             this.intermediateShutterCommand
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.openShutterCommand = new DelegateCommand(
                 async () => await this.OpenShutterAsync(),
-                this.CanExecuteOpenCommand));
+                this.CanOpenShutter));
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
@@ -64,15 +64,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected void RaiseCanExecuteChanged1()
+        private bool CanCloseShutter()
         {
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteClosedCommand()
-        {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
@@ -81,16 +78,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteIntermediateCommand()
         {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
                 (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.Closed));
         }
 
-        private bool CanExecuteOpenCommand()
+        private bool CanOpenShutter()
         {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
@@ -152,6 +155,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void RaiseCanExecuteChanged1()
+        {
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

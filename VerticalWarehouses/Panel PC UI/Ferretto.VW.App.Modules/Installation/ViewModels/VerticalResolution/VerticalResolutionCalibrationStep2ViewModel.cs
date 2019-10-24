@@ -12,7 +12,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalResolutionCalibrationStep2ViewModel : BaseVerticalResolutionCalibrationViewModel, IDataErrorInfo
+    internal sealed class VerticalResolutionCalibrationStep2ViewModel : BaseVerticalResolutionCalibrationViewModel, IDataErrorInfo
     {
         #region Fields
 

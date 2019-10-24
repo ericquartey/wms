@@ -1,8 +1,6 @@
 ﻿using System.Diagnostics;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
-
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -78,6 +76,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 FieldMessageType.ShutterPositioning,
                 MessageStatus.OperationStart,
                 this.InverterStatus.SystemIndex);
+
             this.Logger.LogDebug("Inverter Shutter Positioning Start State Start");
 
             this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
@@ -106,15 +105,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             var returnValue = false;
 
-            //this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-            //this.Logger.LogTrace($"2:message={message}:Parameter ID={message.ParameterId}");
-
             switch (message.ParameterId)
             {
                 case InverterParameterId.ShutterTargetPosition:
                     {
                         var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterTargetVelocity, this.shutterPositionData.SpeedRate, this.dataset);
-                        var byteData = data.ToBytes();
+                        _ = data.ToBytes();
 
                         this.ParentStateMachine.EnqueueCommandMessage(data);
                         this.Logger.LogDebug($"Set high velocity: {this.shutterPositionData.SpeedRate}; dataset: {(int)this.dataset}");
@@ -130,10 +126,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         //}
                         //else
                         {
-                            var byteDataReceived = message.ToBytes();
                             var speed = (this.shutterPositionData.MovementType == MovementType.Absolute) ? this.shutterPositionData.LowerSpeed : this.shutterPositionData.SpeedRate;
                             var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterLowVelocity, speed, this.dataset);
-                            var byteData = data.ToBytes();
 
                             this.ParentStateMachine.EnqueueCommandMessage(data);
                             this.Logger.LogDebug($"Set low velocity: {speed}; dataset: {(int)this.dataset}");
@@ -145,11 +139,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                 case InverterParameterId.ShutterLowVelocity:
                     {
-                        var byteDataReceived = message.ToBytes();
                         if (this.duration > 0)
                         {
                             var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration);
-                            var byteData = data.ToBytes();
 
                             this.ParentStateMachine.EnqueueCommandMessage(data);
                             this.Logger.LogDebug($"Set duration: {this.duration}");
@@ -179,7 +171,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
+            // do nothing
 
             return false;
         }

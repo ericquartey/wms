@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisSetParametersState : InverterStateBase
+    internal sealed class CalibrateAxisSetParametersState : InverterStateBase
     {
         //private const int HORIZONTAL_OFFSET = -500;
 

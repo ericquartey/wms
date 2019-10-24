@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class CommandListener<TDbContext>
+    internal class CommandListener<TDbContext>
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
     {
         #region Fields

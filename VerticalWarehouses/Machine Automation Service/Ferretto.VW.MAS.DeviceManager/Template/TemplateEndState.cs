@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
 
         private readonly ITemplateStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -64,21 +62,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug("1:Stop Method Empty");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -83,7 +82,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             if (message.IsError)
             {
                 this.Logger.LogError($"1:message={message}");
-                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
+                this.ParentStateMachine.ChangeState(
+                    new ShutterPositioningErrorState(
+                        this.ParentStateMachine,
+                        this.InverterStatus,
+                        this.shutterPositionData,
+                        this.Logger));
             }
             else
             {
@@ -104,10 +108,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         else if (this.oldShutterPosition != currentStatus.CurrentShutterPosition)
                         {
                             this.oldShutterPosition = currentStatus.CurrentShutterPosition;
-                            var messageData = this.shutterPositionData;
-                            messageData.ShutterPosition = this.oldShutterPosition;
+
+                            this.shutterPositionData.ShutterPosition = this.oldShutterPosition;
+
                             var endNotification = new FieldNotificationMessage(
-                                messageData,
+                                this.shutterPositionData,
                                 "Shutter Positioning executing",
                                 FieldMessageActor.DeviceManager,
                                 FieldMessageActor.InverterDriver,

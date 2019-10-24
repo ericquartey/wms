@@ -33,8 +33,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new InverterPowerEnableMachineData(
                 ((InverterPowerEnableMessageData)receivedMessage.Data).Enable,
                 receivedMessage.RequestingBay,
@@ -71,12 +69,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
         {
             this.Logger.LogDebug($"Start with requested state: {this.machineData?.Enable}");
 
-            lock (this.CurrentState)
-            {
-                var stateData = new InverterPowerEnableStateData(this, this.machineData);
-                this.CurrentState = new InverterPowerEnableStartState(stateData);
-                this.CurrentState?.Start();
-            }
+            var stateData = new InverterPowerEnableStateData(this, this.machineData);
+            this.ChangeState(new InverterPowerEnableStartState(stateData));
         }
 
         public override void Stop(StopRequestReason reason)

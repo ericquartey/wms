@@ -43,8 +43,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
 
@@ -57,15 +55,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~HomingStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -215,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 var stateData = new HomingStateData(this, this.machineData);
 
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions(out string errorText);
+                checkConditions = this.CheckConditions(out var errorText);
                 if (!checkConditions)
                 {
                     var notificationMessage = new NotificationMessage(
@@ -239,16 +228,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
 
-                    this.CurrentState = new HomingErrorState(stateData);
+                    this.ChangeState(new HomingErrorState(stateData));
                 }
                 else
                 {
-                    this.CurrentState = new HomingStartState(stateData);
+                    this.ChangeState(new HomingStartState(stateData));
                 }
-                this.CurrentState.Start();
             }
-
-            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)
@@ -265,7 +251,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            bool ok = true;
+            var ok = true;
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {

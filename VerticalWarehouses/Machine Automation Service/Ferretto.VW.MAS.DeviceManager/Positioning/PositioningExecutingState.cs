@@ -95,9 +95,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -346,7 +351,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (this.isDisposed)
             {
@@ -361,8 +366,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
 
             this.isDisposed = true;
-
-            base.Dispose(disposing);
         }
 
         private void DelayElapsed(object state)

@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         private readonly IInverterPowerEnableStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -45,7 +43,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogDebug($"{this.GetType().Name} ProcessFieldNotificationMessage: type: {message.Type}, status: {message.Status}, inverter {message.DeviceIndex}");
+            this.Logger.LogTrace($"{this.GetType().Name} ProcessFieldNotificationMessage: type: {message.Type}, status: {message.Status}, inverter {message.DeviceIndex}");
 
             if (message.Type != FieldMessageType.InverterPowerOn &&
                 message.Type != FieldMessageType.InverterPowerOff &&
@@ -127,22 +125,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion
