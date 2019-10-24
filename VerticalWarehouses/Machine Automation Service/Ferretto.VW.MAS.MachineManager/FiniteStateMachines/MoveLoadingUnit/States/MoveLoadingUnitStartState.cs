@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
@@ -26,9 +25,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitStartState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
         }

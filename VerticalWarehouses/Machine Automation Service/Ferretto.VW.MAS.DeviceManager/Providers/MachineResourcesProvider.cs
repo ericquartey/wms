@@ -212,32 +212,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 returnValue = false;
             }
 
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay1])
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
             {
                 returnValue = false;
             }
 
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay2])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSideBay3])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay1])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay2])
-            {
-                returnValue = false;
-            }
-
-            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSideBay3])
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
             {
                 returnValue = false;
             }

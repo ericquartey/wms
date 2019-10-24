@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
@@ -34,9 +33,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         public ChangeRunningStateInverterPowerSwitch(
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
