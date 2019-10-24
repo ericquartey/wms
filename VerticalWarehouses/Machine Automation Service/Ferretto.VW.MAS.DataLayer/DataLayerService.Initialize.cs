@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService
+    internal partial class DataLayerService
     {
         #region Methods
 

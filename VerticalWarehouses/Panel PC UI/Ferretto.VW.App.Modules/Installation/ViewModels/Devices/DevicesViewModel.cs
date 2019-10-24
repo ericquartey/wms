@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class DevicesViewModel : BaseNavigationViewModel
+    internal sealed class DevicesViewModel : BaseNavigationViewModel
     {
         #region Fields
 

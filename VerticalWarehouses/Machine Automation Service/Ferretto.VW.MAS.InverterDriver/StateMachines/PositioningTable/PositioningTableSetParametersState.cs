@@ -274,7 +274,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             while (++step < this.data.SwitchPosition.Length)
             {
-                for (int iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
+                for (var iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
                 {
                     if (this.data.TargetSpeed[iStep] != (this.dataOld?.TargetSpeed[iStep] ?? 0) ||
                         this.data.TargetAcceleration[iStep] != (this.dataOld?.TargetAcceleration[iStep] ?? 0)

@@ -9,7 +9,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightCheckStep1ViewModel : BaseElevatorWeightCheckViewModel
+    internal sealed class ElevatorWeightCheckStep1ViewModel : BaseElevatorWeightCheckViewModel
     {
         #region Fields
 

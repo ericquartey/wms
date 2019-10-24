@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ExternalBayManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class ExternalBayManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 

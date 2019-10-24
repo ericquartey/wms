@@ -15,7 +15,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class DepositAndPickUpTestViewModel : BaseMainViewModel
+    internal sealed partial class DepositAndPickUpTestViewModel : BaseMainViewModel
     {
         #region Fields
 

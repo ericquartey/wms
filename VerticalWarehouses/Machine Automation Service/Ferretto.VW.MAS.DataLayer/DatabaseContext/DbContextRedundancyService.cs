@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 {
-    public class DbContextRedundancyService<TDbContext> : IDbContextRedundancyService<TDbContext>
+    internal class DbContextRedundancyService<TDbContext> : IDbContextRedundancyService<TDbContext>
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
     {
         #region Fields

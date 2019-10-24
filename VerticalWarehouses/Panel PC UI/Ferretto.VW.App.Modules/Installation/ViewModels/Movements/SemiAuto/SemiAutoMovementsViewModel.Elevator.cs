@@ -10,7 +10,7 @@ using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -59,13 +59,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? ElevatorHorizontalPosition
         {
             get => this.elevatorHorizontalPosition;
-            protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+            private set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
         public double? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
-            protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+            private set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
         public ICommand EmbarkBackwardsCommand =>
@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return this.embarkedLoadingUnit;
             }
 
-            protected set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public ICommand EmbarkForwardsCommand =>

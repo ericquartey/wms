@@ -15,7 +15,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public abstract class BaseVerticalResolutionCalibrationViewModel : BaseMainViewModel
+    internal abstract class BaseVerticalResolutionCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 

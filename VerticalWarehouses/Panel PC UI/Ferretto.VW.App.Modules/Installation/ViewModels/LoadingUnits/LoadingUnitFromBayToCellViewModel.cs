@@ -8,7 +8,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
+    internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
         #region Constructors
 

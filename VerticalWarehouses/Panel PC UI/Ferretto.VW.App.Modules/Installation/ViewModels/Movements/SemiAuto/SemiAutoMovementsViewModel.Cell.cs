@@ -8,7 +8,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -66,6 +66,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
+        }
+
+        public IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
         }
 
         public int? InputCellId
@@ -162,7 +174,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit LoadingUnitInCell
         {
             get => this.loadingUnitInCell;
-            protected set => this.SetProperty(ref this.loadingUnitInCell, value);
+            private set => this.SetProperty(ref this.loadingUnitInCell, value);
         }
 
         public ICommand MoveToCellHeightCommand =>
@@ -189,7 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public Cell SelectedCell
         {
             get => this.selectedCell;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.selectedCell, value))
                 {
@@ -206,21 +218,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit SelectedLoadingUnit
         {
             get => this.selectedLoadingUnit;
-            protected set
-            {
-                if (this.SetProperty(ref this.selectedLoadingUnit, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
             private set
             {
-                if (this.SetProperty(ref this.cells, value))
+                if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }

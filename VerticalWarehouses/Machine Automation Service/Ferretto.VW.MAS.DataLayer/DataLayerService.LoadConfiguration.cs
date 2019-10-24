@@ -12,7 +12,7 @@ using Newtonsoft.Json.Schema;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService
+    internal partial class DataLayerService
     {
         #region Methods
 
