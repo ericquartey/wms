@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -13,7 +12,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.Homing
 {
-    internal class HomingEndState : StateBase
+    internal class HomingEndState : StateBase, System.IDisposable
     {
         #region Fields
 
@@ -42,9 +41,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -88,7 +92,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         /// <inheritdoc/>
@@ -139,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.Logger.LogDebug("1:Stop Method Empty");
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (this.isDisposed)
             {
@@ -150,8 +154,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             {
                 this.scope.Dispose();
             }
-
-            base.Dispose(disposing);
 
             this.isDisposed = true;
         }

@@ -10,7 +10,7 @@ using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -59,13 +59,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? ElevatorHorizontalPosition
         {
             get => this.elevatorHorizontalPosition;
-            protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+            private set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
         public double? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
-            protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+            private set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
         public ICommand EmbarkBackwardsCommand =>
@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return this.embarkedLoadingUnit;
             }
 
-            protected set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public ICommand EmbarkForwardsCommand =>
@@ -158,11 +158,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand TuningBayCommand =>
-                    this.tuningBayCommand
+            this.tuningBayCommand
             ??
             (this.tuningBayCommand = new DelegateCommand(
-                async () => await this.TuningBay(),
-                this.CanTuningBay));
+                async () => await this.TuneBayAsync(),
+                this.CanTuneBay));
 
         public ICommand TuningChainCommand =>
             this.tuningChainCommand
@@ -178,9 +178,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 this.Sensors.LuPresentInMachineSideBay1
@@ -191,9 +190,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
@@ -203,13 +201,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsZeroChain;
         }
 
-        private bool CanTuningBay()
+        private bool CanTuneBay()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&
-                !this.IsTuningBay;
+                !this.IsTuningBay
+                &&
+                this.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()
@@ -243,11 +244,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsWaitingForResponse = true;
                 await this.machineElevatorWebService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

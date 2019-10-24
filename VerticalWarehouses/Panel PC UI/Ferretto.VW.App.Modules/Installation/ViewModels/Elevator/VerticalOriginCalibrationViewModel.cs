@@ -14,7 +14,7 @@ using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalOriginCalibrationViewModel : BaseMainViewModel
+    internal sealed class VerticalOriginCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 

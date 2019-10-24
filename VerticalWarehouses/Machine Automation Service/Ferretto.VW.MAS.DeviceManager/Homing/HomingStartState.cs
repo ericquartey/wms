@@ -37,25 +37,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #endregion
 
-        #region Destructors
-
-        ~HomingStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogDebug($"{this.GetType().Name} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
+            this.Logger.LogTrace($"{this.GetType().Name} ProcessFieldNotificationMessage: type: {message.Type}, status{message.Status}");
 
             this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
 
@@ -97,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         /// <inheritdoc/>

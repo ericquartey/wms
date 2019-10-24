@@ -1,5 +1,4 @@
-﻿using System;
-using Ferretto.VW.CommonUtils.Messages;
+﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
-    internal interface IStateMachine : IDisposable
+    internal interface IStateMachine
     {
         #region Properties
 

@@ -13,7 +13,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightCheckStep2ViewModel : BaseElevatorWeightCheckViewModel, IDataErrorInfo
+    internal sealed class ElevatorWeightCheckStep2ViewModel : BaseElevatorWeightCheckViewModel, IDataErrorInfo
     {
         #region Fields
 

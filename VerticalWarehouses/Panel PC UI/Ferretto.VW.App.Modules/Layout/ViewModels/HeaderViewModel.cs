@@ -4,7 +4,7 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class HeaderViewModel : BasePresentationViewModel
+    internal sealed class HeaderViewModel : BasePresentationViewModel
     {
         #region Fields
 

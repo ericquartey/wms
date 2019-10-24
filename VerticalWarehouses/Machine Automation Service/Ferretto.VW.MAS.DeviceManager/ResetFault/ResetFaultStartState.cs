@@ -39,6 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -80,6 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            // do nothing
         }
 
         public override void Start()

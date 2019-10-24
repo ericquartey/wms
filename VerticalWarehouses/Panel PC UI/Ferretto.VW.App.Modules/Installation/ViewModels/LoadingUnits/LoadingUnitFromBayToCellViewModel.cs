@@ -8,20 +8,8 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
+    internal sealed class LoadingUnitFromBayToCellViewModel : BaseCellMovementsViewModel
     {
-        #region Fields
-
-        private bool isPosition1Selected;
-
-        private bool isPosition2Selected;
-
-        private DelegateCommand selectBayPosition1Command;
-
-        private DelegateCommand selectBayPosition2Command;
-
-        #endregion
-
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
@@ -39,44 +27,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         {
         }
-
-        #endregion
-
-        #region Properties
-
-        public bool IsPosition1Selected
-        {
-            get => this.isPosition1Selected;
-            set
-            {
-                if (this.SetProperty(ref this.isPosition1Selected, value))
-                {
-                    this.IsPosition2Selected = !this.isPosition1Selected;
-                }
-            }
-        }
-
-        public bool IsPosition2Selected
-        {
-            get => this.isPosition2Selected;
-            set
-            {
-                if (this.SetProperty(ref this.isPosition2Selected, value) && value)
-                {
-                    this.IsPosition2Selected = !this.isPosition1Selected;
-                }
-            }
-        }
-
-        public ICommand SelectBayPosition1Command =>
-                        this.selectBayPosition1Command
-                        ??
-                        (this.selectBayPosition1Command = new DelegateCommand(this.SelectBayPosition1));
-
-        public ICommand SelectBayPosition2Command =>
-                        this.selectBayPosition2Command
-                        ??
-                        (this.selectBayPosition2Command = new DelegateCommand(this.SelectBayPosition2));
 
         #endregion
 
@@ -132,65 +82,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-            }
-        }
-
-        private MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
-        {
-            if (this.Bay.Number == BayNumber.BayOne)
-            {
-                if (this.IsPosition1Selected)
-                {
-                    return LoadingUnitLocation.InternalBay1Up;
-                }
-                else
-                {
-                    return LoadingUnitLocation.InternalBay1Down;
-                }
-            }
-
-            if (this.Bay.Number == BayNumber.BayTwo)
-            {
-                if (this.IsPosition1Selected)
-                {
-                    return LoadingUnitLocation.InternalBay2Up;
-                }
-                else
-                {
-                    return LoadingUnitLocation.InternalBay2Down;
-                }
-            }
-
-            if (this.Bay.Number == BayNumber.BayThree)
-            {
-                if (this.IsPosition1Selected)
-                {
-                    return LoadingUnitLocation.InternalBay3Up;
-                }
-                else
-                {
-                    return LoadingUnitLocation.InternalBay3Down;
-                }
-            }
-
-            return LoadingUnitLocation.NoLocation;
-        }
-
-        private void SelectBayPosition1()
-        {
-            this.IsPosition1Selected = true;
-            if (this.Bay.Positions.FirstOrDefault() is BayPosition bayPosition)
-            {
-                this.LoadingUnitId = bayPosition.LoadingUnit?.Id;
-            }
-        }
-
-        private void SelectBayPosition2()
-        {
-            this.IsPosition2Selected = true;
-            if (this.Bay.Positions.LastOrDefault() is BayPosition bayPosition)
-            {
-                this.LoadingUnitId = bayPosition.LoadingUnit?.Id;
             }
         }
 

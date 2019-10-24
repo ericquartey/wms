@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         private readonly IResetFaultMachineData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -32,8 +30,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new ResetFaultMachineData(
                 receivedMessage.RequestingBay,
                 receivedMessage.TargetBay,
@@ -41,15 +37,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetFaultStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -76,12 +63,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
-            {
-                var stateData = new ResetFaultStateData(this, this.machineData);
-                this.CurrentState = new ResetFaultStartState(stateData);
-                this.CurrentState.Start();
-            }
+            var stateData = new ResetFaultStateData(this, this.machineData);
+            this.ChangeState(new ResetFaultStartState(stateData));
         }
 
         public override void Stop(StopRequestReason reason)
@@ -90,21 +73,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             {
                 this.CurrentState.Stop(reason);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

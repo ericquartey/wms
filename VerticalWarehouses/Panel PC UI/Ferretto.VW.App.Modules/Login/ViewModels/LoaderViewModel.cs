@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
-    public class LoaderViewModel : BaseMainViewModel
+    internal sealed class LoaderViewModel : BaseMainViewModel
     {
         #region Fields
 

@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.IODriver.Enumerations;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class IoMessage
+    internal class IoMessage
     {
         #region Fields
 

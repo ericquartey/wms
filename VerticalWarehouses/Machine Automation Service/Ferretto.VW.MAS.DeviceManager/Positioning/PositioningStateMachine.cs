@@ -34,8 +34,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.Logger.LogTrace("1:Method Start");
 
             this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
@@ -93,17 +91,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stateData = new PositioningStateData(this, this.machineData);
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                if (this.CheckConditions(out string errorText))
+                if (this.CheckConditions(out var errorText))
                 {
                     if (this.machineData.MessageData.MovementMode == MovementMode.FindZero
                         &&
                         this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     {
-                        this.CurrentState = new PositioningEndState(stateData);
+                        this.ChangeState(new PositioningEndState(stateData));
                     }
                     else
                     {
-                        this.CurrentState = new PositioningStartState(stateData);
+                        this.ChangeState(new PositioningStartState(stateData));
                     }
                 }
                 else
@@ -128,14 +126,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.Logger.LogError(errorText);
 
                     this.PublishNotificationMessage(notificationMessage);
-                    this.CurrentState = new PositioningErrorState(stateData);
+                    this.ChangeState(new PositioningErrorState(stateData));
                 }
-
-                this.CurrentState?.Start();
             }
-            //INFO End check the pre conditions to start the positioning
-
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)
@@ -151,7 +144,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         // return false in case of error
         private bool CheckConditions(out string errorText)
         {
-            bool ok = true;
+            var ok = true;
             errorText = string.Empty;
             if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
                !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&

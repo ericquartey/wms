@@ -230,16 +230,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     throw new InvalidOperationException("Timeout reading data from Transport Stream");
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                //throw new InverterDriverException(
-                //    "Error reading data from Transport Stream",
-                //    InverterDriverExceptionCode.NetworkStreamReadFailure,
-                //    ex);
                 this.Disconnect();
-                throw new InvalidOperationException(
-                    "Error reading data from Transport Stream",
-                    ex);
+                throw;
             }
 
             return receivedData;

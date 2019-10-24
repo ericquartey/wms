@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
+    internal sealed class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
 

@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    internal class SecurityIsClearedConditionEvaluator : ISecurityIsClearedConditionEvaluator
+    internal sealed class SecurityIsClearedConditionEvaluator : ISecurityIsClearedConditionEvaluator
     {
         #region Fields
 

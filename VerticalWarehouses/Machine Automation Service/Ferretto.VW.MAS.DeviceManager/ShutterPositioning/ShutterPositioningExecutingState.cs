@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
-    internal class ShutterPositioningExecutingState : StateBase
+    internal class ShutterPositioningExecutingState : StateBase, IDisposable
     {
         #region Fields
 
@@ -25,10 +25,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         private readonly Timer delayTimerUp;
 
         private readonly IShutterPositioningMachineData machineData;
-
-        private readonly IServiceScope scope;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly IShutterPositioningStateData stateData;
 
@@ -47,18 +43,20 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
             this.delayTimerDown = new Timer(this.DelayTimerMethodDown, null, -1, Timeout.Infinite);
             this.delayTimerUp = new Timer(this.DelayTimerMethodUp, null, -1, Timeout.Infinite);
-
-            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
-            this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
         }
 
         #endregion
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -92,7 +90,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         public override void Start()
@@ -131,7 +129,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -142,12 +140,9 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 this.delayTimerDown?.Dispose();
                 this.delayTimerUp?.Dispose();
-                this.scope.Dispose();
             }
 
             this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         private void DelayTimerMethodDown(object state)
@@ -173,8 +168,15 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             switch (messageData.ShutterPosition)
             {
                 case ShutterPosition.Opened:
-                    var testParameters = this.setupProceduresDataProvider.IncreasePerformedCycles(
-                        this.setupProceduresDataProvider.GetShutterTest());
+
+                    var setupProceduresDataProvider = this.ParentStateMachine.ServiceScopeFactory
+                        .CreateScope()
+                        .ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>();
+
+                    var testParameters = setupProceduresDataProvider.IncreasePerformedCycles(
+                        setupProceduresDataProvider.GetShutterTest());
+
                     this.machineData.PositioningMessageData.PerformedCycles = testParameters.PerformedCycles;
 
                     if (testParameters.PerformedCycles >= testParameters.RequiredCycles)
@@ -225,7 +227,9 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             if (direction == ShutterMovementDirection.Down)
             {
                 shutterPositionTarget = ShutterPosition.Closed;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && position == ShutterPosition.Opened)
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                    &&
+                    position == ShutterPosition.Opened)
                 {
                     shutterPositionTarget = ShutterPosition.Half;
                 }
@@ -233,20 +237,25 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             else
             {
                 shutterPositionTarget = ShutterPosition.Opened;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && position == ShutterPosition.Closed)
+                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors
+                    &&
+                    position == ShutterPosition.Closed)
                 {
                     shutterPositionTarget = ShutterPosition.Half;
                 }
             }
+
             // speed is negative to go up
+            var directionMultiplier = direction == ShutterMovementDirection.Up ? -1 : 1;
+
             var messageData = new ShutterPositioningFieldMessageData(
                 shutterPositionTarget,
                 direction,
                 this.machineData.PositioningMessageData.ShutterType,
-                this.machineData.PositioningMessageData.SpeedRate * ((direction == ShutterMovementDirection.Up) ? -1 : 1),
+                this.machineData.PositioningMessageData.SpeedRate * directionMultiplier,
                 this.machineData.PositioningMessageData.HighSpeedDurationOpen,
                 this.machineData.PositioningMessageData.HighSpeedDurationClose,
-                this.machineData.PositioningMessageData.LowerSpeed * ((direction == ShutterMovementDirection.Up) ? -1 : 1),
+                this.machineData.PositioningMessageData.LowerSpeed * directionMultiplier,
                 this.machineData.PositioningMessageData.MovementType);
 
             var commandMessage = new FieldCommandMessage(

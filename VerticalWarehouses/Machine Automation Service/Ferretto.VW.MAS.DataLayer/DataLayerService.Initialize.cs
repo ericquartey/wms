@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public partial class DataLayerService
+    internal partial class DataLayerService
     {
         #region Methods
 
@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .GetEvent<NotificationEvent>()
                         .Publish(message);
 
-                    this.Logger.LogDebug("Data layer service initialized.");
+                    this.Logger.LogInformation("Data layer service initialized.");
                 }
                 catch (Exception ex)
                 {

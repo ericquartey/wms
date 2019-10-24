@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private readonly IShutterPositioningStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -37,21 +35,12 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #endregion
 
-        #region Destructors
-
-        ~ShutterPositioningErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc/>
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -62,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
                 var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
-                int sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
+                var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
                 Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                 notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
@@ -84,7 +73,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         public override void Start()
@@ -121,17 +110,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             this.stateData.StopRequestReason = StopRequestReason.Stop;
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

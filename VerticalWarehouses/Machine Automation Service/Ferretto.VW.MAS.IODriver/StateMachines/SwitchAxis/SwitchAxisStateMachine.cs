@@ -11,7 +11,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisStateMachine : IoStateMachineBase
+    internal sealed class SwitchAxisStateMachine : IoStateMachineBase
     {
         #region Fields
 
