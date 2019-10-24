@@ -54,7 +54,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                     return Task.CompletedTask;
                 }
 
-                if (receivedMessage.Type != FieldMessageType.InverterSetTimer)
+                if (receivedMessage.Type != FieldMessageType.InverterSetTimer &&
+                    receivedMessage.Type != FieldMessageType.MeasureProfile)
                 {
                     this.Logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType().Name}");
                     this.Logger.LogError($"5a: Message {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source} will be discarded!");
