@@ -60,16 +60,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineSensorsWebService machineSensorsWebService)
             : base(PresentationMode.Installer)
         {
-            if (bayManager is null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
             this.machineSensorsWebService = machineSensorsWebService ?? throw new System.ArgumentNullException(nameof(machineSensorsWebService));
-
             this.shuttersWebService = shuttersWebService ?? throw new System.ArgumentNullException(nameof(shuttersWebService));
-
-            this.bayManager = bayManager;
+            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
@@ -278,7 +271,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var bay = await this.bayManager.GetBayAsync();
-                var bayNumber = (int)bay.Number;
+                this.BayNumber = (int)bay.Number;
 
                 var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
@@ -286,7 +279,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
                 this.CumulativePerformedCyclesBeforeStart = this.CumulativePerformedCycles;
 
-                this.sensors = new ShutterSensors(bayNumber);
+                this.sensors = new ShutterSensors(this.BayNumber);
 
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
                 this.sensors.Update(sensorsStates.ToArray());
