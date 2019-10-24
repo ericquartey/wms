@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
 {
-    public class MeasureProfileStartState : IoStateBase
+    internal sealed class MeasureProfileStartState : IoStateBase
     {
         #region Fields
 

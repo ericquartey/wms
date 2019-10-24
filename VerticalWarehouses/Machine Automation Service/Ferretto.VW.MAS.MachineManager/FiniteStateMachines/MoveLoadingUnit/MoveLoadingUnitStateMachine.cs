@@ -231,6 +231,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                             unitToMove = null;
                         }
                     }
+
                     break;
 
                 default:

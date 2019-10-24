@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice
+    internal partial class IoDevice
     {
         #region Methods
 
@@ -16,8 +16,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             {
                 this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType().Name}");
 
-                var ex = new Exception();
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+                this.SendMessage(new IoExceptionFieldMessageData(null, "Io Driver already executing operation", 0));
             }
             else
             {
