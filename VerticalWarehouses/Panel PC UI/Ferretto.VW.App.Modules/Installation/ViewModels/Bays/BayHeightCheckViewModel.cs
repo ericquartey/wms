@@ -331,16 +331,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected void RaiseCanExecuteChanged()
-        {
-            this.moveDownCommand?.RaiseCanExecuteChanged();
-            this.moveUpCommand?.RaiseCanExecuteChanged();
-            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
-            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
-            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
-            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
-        }
-
         private async Task ApplyCorrectionAsync()
         {
             try
@@ -556,6 +546,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.moveDownCommand?.RaiseCanExecuteChanged();
+            this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
+            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private void ToggleBayPosition()

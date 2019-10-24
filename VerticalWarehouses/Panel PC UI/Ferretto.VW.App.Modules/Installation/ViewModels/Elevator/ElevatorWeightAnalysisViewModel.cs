@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? CurrentPosition
         {
             get => this.currentPosition;
-            protected set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public string Error => string.Join(
@@ -192,7 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -323,59 +323,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.procedureParameters = await this.weightAnalysisProcedureWebService.GetParametersAsync();
         }
 
-        protected void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
-        {
-            this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
-
-            if (message.Status == MessageStatus.OperationExecuting
-                &&
-                message.Data.TorqueCurrentSample != null)
-            {
-                this.measuredSamples.Add(message.Data.TorqueCurrentSample);
-                this.measuredSamplesInCurrentSession.Add(message.Data.TorqueCurrentSample);
-            }
-
-            if (message.Status == MessageStatus.OperationStop)
-            {
-                this.IsExecutingProcedure = false;
-
-                this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                    Services.Models.NotificationSeverity.Warning);
-            }
-            else if (message.Status == MessageStatus.OperationError)
-            {
-                this.IsExecutingProcedure = false;
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                    Services.Models.NotificationSeverity.Error);
-            }
-            else if (message.Status == MessageStatus.OperationEnd)
-            {
-                this.IsExecutingProcedure = false;
-
-                if (this.measuredSamplesInCurrentSession.Any())
-                {
-                    this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
-                }
-
-                this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureCompleted,
-                    Services.Models.NotificationSeverity.Success);
-            }
-        }
-
-        protected void RaiseCanExecuteChanged()
-        {
-            this.stopCommand?.RaiseCanExecuteChanged();
-            this.startCommand?.RaiseCanExecuteChanged();
-
-            this.CanInputNetWeight = this.loadingUnit != null;
-        }
-
         private bool CanMoveToBay()
         {
             return
@@ -425,6 +372,59 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
+            this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
+
+            if (message.Status == MessageStatus.OperationExecuting
+                &&
+                message.Data.TorqueCurrentSample != null)
+            {
+                this.measuredSamples.Add(message.Data.TorqueCurrentSample);
+                this.measuredSamplesInCurrentSession.Add(message.Data.TorqueCurrentSample);
+            }
+
+            if (message.Status == MessageStatus.OperationStop)
+            {
+                this.IsExecutingProcedure = false;
+
+                this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            else if (message.Status == MessageStatus.OperationError)
+            {
+                this.IsExecutingProcedure = false;
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Error);
+            }
+            else if (message.Status == MessageStatus.OperationEnd)
+            {
+                this.IsExecutingProcedure = false;
+
+                if (this.measuredSamplesInCurrentSession.Any())
+                {
+                    this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
+                }
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureCompleted,
+                    Services.Models.NotificationSeverity.Success);
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.stopCommand?.RaiseCanExecuteChanged();
+            this.startCommand?.RaiseCanExecuteChanged();
+
+            this.CanInputNetWeight = this.loadingUnit != null;
         }
 
         private async Task RetrieveCurrentPositionAsync()

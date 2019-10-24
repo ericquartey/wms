@@ -1140,7 +1140,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!encodedWord.Equals("\0"))
                 {
-                    if (short.TryParse(encodedWord, out short values))
+                    if (short.TryParse(encodedWord, out var values))
                     {
                         var dataByte = inverterIndex % 2;
 

@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? BayPositionHeight
         {
             get => this.bayPositionHeight;
-            protected set => this.SetProperty(ref this.bayPositionHeight, value);
+            private set => this.SetProperty(ref this.bayPositionHeight, value);
         }
 
         public bool IsElevatorMovingToBay

@@ -64,12 +64,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected void RaiseCanExecuteChanged1()
-        {
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-        }
-
         private bool CanCloseShutter()
         {
             return
@@ -161,6 +155,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void RaiseCanExecuteChanged1()
+        {
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

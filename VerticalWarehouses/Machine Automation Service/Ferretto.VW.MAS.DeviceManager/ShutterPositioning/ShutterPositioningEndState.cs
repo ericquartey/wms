@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
-            int sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
+            var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            // do nothing
         }
 
         #endregion

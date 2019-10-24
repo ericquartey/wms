@@ -68,6 +68,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
         }
 
+        public IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int? InputCellId
         {
             get => this.inputCellId;
@@ -189,7 +201,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public Cell SelectedCell
         {
             get => this.selectedCell;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.selectedCell, value))
                 {
@@ -209,18 +221,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
                 {
                     this.RaiseCanExecuteChanged();
                 }

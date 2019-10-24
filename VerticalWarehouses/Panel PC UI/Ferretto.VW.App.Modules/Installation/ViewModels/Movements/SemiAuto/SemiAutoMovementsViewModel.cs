@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {

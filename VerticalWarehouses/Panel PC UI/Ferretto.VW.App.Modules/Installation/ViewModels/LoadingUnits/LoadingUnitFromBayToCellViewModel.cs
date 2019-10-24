@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private IEnumerable<Cell> Cells
+        public IEnumerable<Cell> Cells
         {
             get => this.cells;
             private set

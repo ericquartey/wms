@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
                 var inverterStatus = new AglInverterStatus((InverterIndex)message.DeviceIndex);
-                int sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
+                var sensorStart = (int)(IOMachineSensors.PowerOnOff + message.DeviceIndex * inverterStatus.Inputs.Length);
                 Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                 notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
