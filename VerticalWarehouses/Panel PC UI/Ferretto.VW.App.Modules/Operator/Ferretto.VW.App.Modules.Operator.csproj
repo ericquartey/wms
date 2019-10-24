@@ -72,6 +72,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\Others\Maintenance\MaintenanceView - Copy.xaml.cs">
+      <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\WaitingLists\WaitingListsView - Copy.xaml.cs">
       <DependentUpon>WaitingListsView.xaml</DependentUpon>
     </Compile>
@@ -87,7 +90,7 @@
     <Compile Update="Views\Others\ImmediateDrawerCallView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\Others\MaintenanceView.xaml.cs">
+    <Compile Update="Views\Others\Maintenance\MaintenanceView.xaml.cs">
       <DependentUpon>MaintenanceView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\DrawerCompacting\DrawerCompactingView.xaml.cs">

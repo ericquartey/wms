@@ -106,7 +106,7 @@
             <helpWindows:HelpMaintenanceMainPage />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type other:MaintenanceDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:MaintenanceDetailViewModel}">
             <helpWindows:HelpMaintenanceDetail />
         </DataTemplate>
 

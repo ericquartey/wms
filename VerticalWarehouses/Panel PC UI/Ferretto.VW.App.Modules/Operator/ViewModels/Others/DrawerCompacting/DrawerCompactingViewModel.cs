@@ -16,10 +16,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly INavigationService navigationService;
-
         private ICommand drawerCompactingDetailButtonCommand;
 
         private bool isWaitingForResponse;
@@ -28,11 +24,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public DrawerCompactingViewModel(IEventAggregator eventAggregator, INavigationService navigationService)
+        public DrawerCompactingViewModel()
             : base(PresentationMode.Operator)
         {
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -73,7 +67,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.Others.DRAWERCOMPACTINGDETAIL,
+                    Utils.Modules.Operator.Others.DrawerCompacting.DETAIL,
                     null,
                     trackCurrentView: true);
             }

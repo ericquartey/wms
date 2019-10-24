@@ -4,7 +4,6 @@
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:customviewsandviewmodels="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
@@ -14,8 +13,8 @@
             mc:Ignorable="d">
     <ctrls:View.Resources>
         <ResourceDictionary>
-            <DataTemplate DataType="{x:Type customviewsandviewmodels:CustomControlDrawerDataGridViewModel}">
-                <customviewsandviewmodels:CustomControlDrawerDataGrid />
+            <DataTemplate DataType="{x:Type controls:CustomControlDrawerDataGridViewModel}">
+                <controls:CustomControlDrawerDataGrid />
             </DataTemplate>
         </ResourceDictionary>
     </ctrls:View.Resources>
@@ -34,32 +33,32 @@
 
         <TextBlock Grid.ColumnSpan="2"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Stretch"
+                   VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
 
         <ContentControl Grid.Row="1"
                         Margin="0,0,0,15"
                         HorizontalAlignment="Left"
-                        VerticalAlignment="Top"
+                        VerticalAlignment="Stretch"
                         Content="{Binding DataGridViewModel}" />
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Vertical">
-            <customviewsandviewmodels:PpcButton Margin="15,0,20,15"
+            <controls:PpcButton Margin="15,0,20,15"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Top"
                                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
-            <customviewsandviewmodels:PpcButton Margin="15,15,20,15"
+            <controls:PpcButton Margin="15,0,20,15"
                                                 HorizontalAlignment="Right"
                                                 VerticalAlignment="Top"
                                                 Content="{x:Static Resources:OperatorApp.CommonDown}" />
         </StackPanel>
 
 
-        <customviewsandviewmodels:PpcButton Grid.Row="2"
+        <controls:PpcButton Grid.Row="2"
                                             Grid.Column="1"
                                             Margin="15,0,20,15"
                                             HorizontalAlignment="Right"
@@ -73,12 +72,12 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <customviewsandviewmodels:PpcLabeledText HorizontalAlignment="Left"
+            <controls:PpcLabeledText HorizontalAlignment="Left"
                                                      VerticalAlignment="Top"
                                                      ContentText="Cassetto bloccato."
                                                      LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
-            <customviewsandviewmodels:PpcTextBox Grid.Column="1"
+            <controls:PpcTextBox Grid.Column="1"
                                                  HorizontalAlignment="Left"
                                                  VerticalAlignment="Top"
                                                  LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}" />

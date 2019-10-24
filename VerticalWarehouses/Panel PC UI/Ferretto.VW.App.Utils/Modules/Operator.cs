@@ -27,19 +27,35 @@
         {
             #region Fields
 
-            public const string DRAWERCOMPACTING = "DrawerCompactingViewModel";
-
-            public const string DRAWERCOMPACTINGDETAIL = "DrawerCompactingDetailViewModel";
-
             public const string IMMEDIATEDRAWERCALL = "ImmediateDrawerCallViewModel";
-
-            public const string MAINTENANCE = "MaintenanceViewModel";
 
             public const string NAVIGATION = "OthersNavigationViewModel";
 
             #endregion
 
             #region Classes
+
+            public static class DrawerCompacting
+            {
+                #region Fields
+
+                public const string DETAIL = "DrawerCompactingDetailViewModel";
+
+                public const string MAIN = "DrawerCompactingViewModel";
+
+                #endregion
+            }
+
+            public static class Maintenance
+            {
+                #region Fields
+
+                public const string DETAIL = "MaintenanceDetailViewModel";
+
+                public const string MAIN = "MaintenanceViewModel";
+
+                #endregion
+            }
 
             public static class Statistics
             {

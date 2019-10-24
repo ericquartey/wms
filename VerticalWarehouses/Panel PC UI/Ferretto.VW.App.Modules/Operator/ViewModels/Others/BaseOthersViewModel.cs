@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.menuItems.Add(
                 new NavigationMenuItem(
-                    Utils.Modules.Operator.Others.DRAWERCOMPACTING,
+                    Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationCompaction,
                     trackCurrentView: true));
@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.menuItems.Add(
                 new NavigationMenuItem(
-                    Utils.Modules.Operator.Others.MAINTENANCE,
+                    Utils.Modules.Operator.Others.Maintenance.MAIN,
                     nameof(Utils.Modules.Operator),
                     VW.App.Resources.OperatorApp.OtherNavigationMaintenance,
                     trackCurrentView: true));
