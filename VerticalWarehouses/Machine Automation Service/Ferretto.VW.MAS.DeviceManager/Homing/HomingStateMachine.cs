@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 var stateData = new HomingStateData(this, this.machineData);
 
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                checkConditions = this.CheckConditions(out string errorText);
+                checkConditions = this.CheckConditions(out var errorText);
                 if (!checkConditions)
                 {
                     var notificationMessage = new NotificationMessage(
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             //HACK The condition must be handled by the Bug #3711
             //INFO For the Belt Burnishing the positioning is allowed only without a drawer.
-            bool ok = true;
+            var ok = true;
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {

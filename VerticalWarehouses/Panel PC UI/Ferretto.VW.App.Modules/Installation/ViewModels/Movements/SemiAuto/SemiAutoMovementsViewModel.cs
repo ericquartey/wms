@@ -13,7 +13,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel : BaseMainViewModel
+    internal sealed partial class SemiAutoMovementsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {

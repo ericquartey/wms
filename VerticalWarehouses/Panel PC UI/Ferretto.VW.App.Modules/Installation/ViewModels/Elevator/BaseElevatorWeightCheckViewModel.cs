@@ -5,7 +5,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public abstract class BaseElevatorWeightCheckViewModel : BaseMainViewModel
+    internal abstract class BaseElevatorWeightCheckViewModel : BaseMainViewModel
     {
         #region Fields
 

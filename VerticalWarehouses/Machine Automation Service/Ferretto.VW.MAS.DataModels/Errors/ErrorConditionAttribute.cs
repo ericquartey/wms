@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.DataModels
 {

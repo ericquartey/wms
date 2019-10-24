@@ -23,7 +23,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    internal sealed partial class IoDevice : IIoDevice
+    internal sealed partial class IoDevice : IIoDevice, IDisposable
     {
         #region Fields
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue;
+        private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
         private readonly Task ioReceiveTask;
 
@@ -91,8 +91,6 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.stoppingToken = cancellationToken;
             this.isCarousel = isCarousel;
 
-            this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
-
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
@@ -133,7 +131,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
         }
 
@@ -143,12 +141,17 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void DestroyStateMachine()
         {
-            if (this.CurrentStateMachine is IDisposable disposableCurrentStateMachine)
+            if (this.CurrentStateMachine is IDisposable stateMachine)
             {
-                disposableCurrentStateMachine.Dispose();
+                stateMachine.Dispose();
             }
 
             this.CurrentStateMachine = null;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
         }
 
         public async Task ReceiveIoDataTaskFunction()
@@ -487,16 +490,16 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         public void SendMessage(IFieldMessageData messageData)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
-            messageData,
-            "Io Driver Error",
-            FieldMessageActor.Any,
-            FieldMessageActor.IoDriver,
-            FieldMessageType.IoDriverException,
-            MessageStatus.OperationError,
-            (byte)this.deviceIndex,
-            ErrorLevel.Critical);
+                messageData,
+                "Io Driver Error",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.IoDriverException,
+                MessageStatus.OperationError,
+                (byte)this.deviceIndex,
+                ErrorLevel.Critical);
 
-            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
         public async Task StartHardwareCommunications()
@@ -573,7 +576,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
         }
 
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -582,6 +585,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             if (disposing)
             {
+                this.DestroyStateMachine();
+
                 this.pollIoTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }

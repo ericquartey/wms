@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? BayChainHorizontalPosition
         {
             get => this.bayChainHorizontalPosition;
-            protected set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
+            private set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
         }
 
         public ICommand CarouselDownCommand =>

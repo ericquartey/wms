@@ -1167,7 +1167,13 @@
   <data name="LoadingUnitFromCellToCell" xml:space="preserve">
     <value>Move loading unit from cell to cell</value>
   </data>
-  <data name="EjectLoadingUnitFromCellToBay" xml:space="preserve">
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
     <value>Move loading unit from cell to bay</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Confirm eject loading unit</value>
+  </data>
+  <data name="SelectDestinationBay" xml:space="preserve">
+    <value>Select destination bay</value>
   </data>
 </root>

@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
-using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -173,8 +172,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 // Absolute positioning: not all starting positions are allowed
                 if (this.machineData.PositioningMessageData.MovementType == MovementType.Absolute &&
-                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate)
-                    )
+                    (inverterStatus.CurrentShutterPosition == ShutterPosition.Intermediate))
                 {
                     this.Logger.LogError($"Shutter in Intermediate position before absolute positioning");
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
@@ -193,12 +191,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     this.Logger.LogError($"Shutter in Intermediate position before Test Loop");
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
                     return;
-                }
-
-                var destination = ShutterPosition.Opened;
-                if (this.machineData.PositioningMessageData.ShutterType == ShutterType.ThreeSensors && inverterStatus.CurrentShutterPosition == ShutterPosition.Closed)
-                {
-                    destination = ShutterPosition.Half;
                 }
 
                 // first move the shutter in Open position
@@ -227,7 +219,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             var notificationMessageData1 = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus1 = new AglInverterStatus(this.machineData.InverterIndex);
-            int sensorStart1 = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus1.Inputs.Length);
+            var sensorStart1 = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus1.Inputs.Length);
             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart1, inverterStatus1.Inputs, 0, inverterStatus1.Inputs.Length);
             notificationMessageData1.ShutterPosition = inverterStatus1.CurrentShutterPosition;
             var notificationMessage = new NotificationMessage(

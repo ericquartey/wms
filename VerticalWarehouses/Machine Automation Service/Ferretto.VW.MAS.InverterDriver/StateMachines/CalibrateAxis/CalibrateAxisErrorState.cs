@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisErrorState : InverterStateBase
+    internal sealed class CalibrateAxisErrorState : InverterStateBase
     {
         #region Fields
 

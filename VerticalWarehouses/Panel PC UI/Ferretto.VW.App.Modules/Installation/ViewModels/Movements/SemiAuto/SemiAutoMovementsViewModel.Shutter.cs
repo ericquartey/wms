@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -63,12 +63,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
-
-        protected void RaiseCanExecuteChanged1()
-        {
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-        }
 
         private bool CanCloseShutter()
         {
@@ -161,6 +155,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void RaiseCanExecuteChanged1()
+        {
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

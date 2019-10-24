@@ -12,7 +12,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public abstract class BaseVerticalOffsetCalibrationViewModel : BaseMainViewModel
+    internal abstract class BaseVerticalOffsetCalibrationViewModel : BaseMainViewModel
     {
         #region Fields
 

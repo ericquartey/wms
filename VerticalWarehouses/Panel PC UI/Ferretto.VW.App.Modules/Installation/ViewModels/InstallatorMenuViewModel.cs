@@ -17,7 +17,7 @@ using Prism.Regions;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class InstallatorMenuViewModel : BaseMainViewModel
+    internal sealed class InstallatorMenuViewModel : BaseMainViewModel
     {
         #region Fields
 

@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using DevExpress.Mvvm.UI;
-using DevExpress.Xpf.Editors;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
-using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {

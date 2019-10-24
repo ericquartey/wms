@@ -9,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsHeightCheckStep1ViewModel : BaseCellsHeightCheckViewModel
+    internal sealed class CellsHeightCheckStep1ViewModel : BaseCellsHeightCheckViewModel
     {
         #region Fields
 

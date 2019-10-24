@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BayHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class BayHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsElevatorMovingToHeight
         {
             get => this.isElevatorMovingToHeight;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {
@@ -329,16 +329,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        protected void RaiseCanExecuteChanged()
-        {
-            this.moveDownCommand?.RaiseCanExecuteChanged();
-            this.moveUpCommand?.RaiseCanExecuteChanged();
-            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
-            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
-            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
-            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task ApplyCorrectionAsync()
@@ -556,6 +546,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.moveDownCommand?.RaiseCanExecuteChanged();
+            this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
+            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private void ToggleBayPosition()

@@ -1,8 +1,5 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DeviceManager.Providers;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 
 namespace Ferretto.VW.MAS.DeviceManager

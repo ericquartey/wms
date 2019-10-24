@@ -8,7 +8,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class DepositAndPickUpTestViewModel
+    internal sealed partial class DepositAndPickUpTestViewModel
     {
         #region Fields
 
