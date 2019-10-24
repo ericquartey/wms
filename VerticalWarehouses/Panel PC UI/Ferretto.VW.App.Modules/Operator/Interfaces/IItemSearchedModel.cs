@@ -3,7 +3,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.Interfaces
 {
-    public interface IItemSearchViewModel
+    public interface IItemSearchedModel
     {
         #region Properties
 

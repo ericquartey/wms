@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IItemsDataService itemsDataService;
 
-        private readonly IItemSearchViewModel itemSearchViewModel;
+        private readonly IItemSearchedModel itemSearchViewModel;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IBayManager bayManager,
             IMachineIdentityWebService identityService,
             IItemsDataService itemsDataService,
-            IItemSearchViewModel itemSearchViewModel)
+            IItemSearchedModel itemSearchViewModel)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));

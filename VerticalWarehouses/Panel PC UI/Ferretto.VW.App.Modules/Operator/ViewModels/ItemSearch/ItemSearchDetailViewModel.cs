@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        public readonly IItemSearchedModel itemSearchedModel;
+
         private readonly IWmsImagesProvider wmsImagesProvider;
 
         private Image image;
@@ -30,10 +32,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider)
+        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider, IItemSearchedModel itemSearchedModel)
             : base(PresentationMode.Operator)
         {
             this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
+            this.itemSearchedModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
         }
 
         #endregion
@@ -71,11 +74,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             // Sistema di cache, potenzialmente errato!
-            var searchViewModel = ServiceLocator.Current.GetInstance<IItemSearchViewModel>();
-            if (searchViewModel != null &&
-                searchViewModel.SelectedItem != null)
+            if (this.itemSearchedModel != null &&
+                this.itemSearchedModel.SelectedItem != null)
             {
-                this.Item = searchViewModel.SelectedItem;
+                this.Item = this.itemSearchedModel.SelectedItem;
                 // await this.LoadImage(this.item.Code);
                 this.RaisePropertyChanged(nameof(this.Item));
             }

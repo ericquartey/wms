@@ -9,7 +9,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Modules.Operator.Models
 {
-    public class ItemSearchViewModel : IItemSearchViewModel
+    public class ItemSearchedModel : IItemSearchedModel
     {
         #region Properties
 
