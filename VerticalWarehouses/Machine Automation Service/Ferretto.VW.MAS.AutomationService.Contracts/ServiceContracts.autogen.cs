@@ -1657,6 +1657,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("orientation", Required = Newtonsoft.Json.Required.Always)]
         public Orientation Orientation { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("profileCalibrateHeight", Required = Newtonsoft.Json.Required.Always)]
+        public int ProfileCalibrateHeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("profileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileCalibrateLength { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("profileCalibratePosition", Required = Newtonsoft.Json.Required.Always)]
+        public int ProfileCalibratePosition { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("profileCalibrateSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double ProfileCalibrateSpeed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
     

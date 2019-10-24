@@ -24,6 +24,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly double kMul = 0.0739795918367347;
+
+        private readonly double kSum = -14.79591836734694;
+
         private readonly IMachineProvider machineProvider;
 
         private readonly NotificationEvent notificationEvent;
@@ -103,6 +107,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay;
             }
+        }
+
+        /// <summary>
+        /// <param name="profile">value read from inverter</param>
+        /// profile = 200   ==> height = 0
+        /// profile = 10000 ==> height = 725mm
+        /// height = kMul * profile + kSum;
+        /// </summary>
+        public double ConvertProfileToHeight(ushort profile)
+        {
+            return profile * this.kMul + this.kSum;
         }
 
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
@@ -262,6 +277,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 case MovementMode.BeltBurnishing:
                 case MovementMode.FindZero:
                 case MovementMode.TorqueCurrentSampling:
+                case MovementMode.ProfileCalibration:
                     targetBay = BayNumber.ElevatorBay;
                     break;
 
@@ -361,6 +377,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         case MovementMode.Position:
                         case MovementMode.PositionAndMeasure:
+                        case MovementMode.ProfileCalibration:
                             switch (data.AxisMovement)
                             {
                                 case Axis.Horizontal:

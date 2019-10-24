@@ -14,6 +14,8 @@
 
         TorqueCurrentSampling,
 
+        ProfileCalibration,
+
         ShutterPosition,
 
         ShutterTest,

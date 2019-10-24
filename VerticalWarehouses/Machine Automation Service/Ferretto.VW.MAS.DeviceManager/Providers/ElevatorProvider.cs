@@ -232,6 +232,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        {
+            var procedureParameters = this.elevatorDataProvider.GetHorizontalAxis();
+
+            var targetPosition = procedureParameters.ProfileCalibrateLength;
+
+            targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+
+            var movementParameters = this.ScaleMovementsByWeight(Orientation.Horizontal);
+
+            var speed = new[] { procedureParameters.ProfileCalibrateSpeed };
+            var acceleration = new[] { movementParameters.Acceleration };
+            var deceleration = new[] { movementParameters.Deceleration };
+            var switchPosition = new[] { 0.0 };
+
+            var messageData = new PositioningMessageData(
+                Axis.Horizontal,
+                MovementType.Relative,
+                MovementMode.ProfileCalibration,
+                targetPosition,
+                speed,
+                acceleration,
+                deceleration,
+                switchPosition,
+                direction);
+
+            this.PublishCommand(
+                messageData,
+                $"Execute {Axis.Horizontal} Profile Calibration Command",
+                MessageActor.FiniteStateMachines,
+                sender,
+                MessageType.Positioning,
+                requestingBay,
+                BayNumber.ElevatorBay);
+        }
+
         public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)

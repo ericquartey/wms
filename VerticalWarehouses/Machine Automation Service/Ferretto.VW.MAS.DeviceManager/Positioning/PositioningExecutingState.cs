@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -33,6 +34,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly double fullPosition;
 
+        private readonly ElevatorAxis horizontalParams;
+
         private readonly IPositioningMachineData machineData;
 
         private readonly IServiceScope scope;
@@ -55,7 +58,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private IPositioningFieldMessageData positioningUpFieldMessageData;
 
-        private bool profileStarted;
+        private InverterIndex profileInverterIndex;
+
+        private double? profileStartPosition = null;
+
+        private Timer profileTimer;
 
         #endregion
 
@@ -81,6 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
             this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+            this.horizontalParams = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Horizontal);
         }
 
         #endregion
@@ -122,7 +130,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             break;
 
                         case FieldMessageType.MeasureProfile:
-                            this.profileStarted = true;
+                            if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
+                            {
+                                if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
+                                {
+                                    var profileHeight = this.baysProvider.ConvertProfileToHeight(data.Profile);
+                                    this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
+                                    if (profileHeight > 25.0 &&
+                                        this.profileStartPosition == null &&
+                                        this.machineData.MessageData.CurrentPosition.HasValue)
+                                    {
+                                        this.profileStartPosition = this.machineData.MessageData.CurrentPosition.Value;
+                                    }
+                                    else if (this.profileStartPosition.HasValue &&
+                                        Math.Abs(profileHeight - this.horizontalParams.ProfileCalibrateHeight) < 2.5)
+                                    {
+                                        this.Logger.LogDebug($"ProfileCalibratePosition = {this.machineData.MessageData.CurrentPosition.Value}");
+                                        this.Logger.LogInformation($"ProfileCalibrateHeight Reached!");
+                                        this.Stop(StopRequestReason.Stop);
+                                        break;
+                                    }
+                                }
+                            }
                             break;
                     }
                     break;
@@ -161,7 +190,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageActor.InverterDriver,
                             FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
-                            (byte)this.machineData.CurrentInverterIndex);
+                            inverterIndex);
 
                         if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
                             this.machineData.MessageData.AxisMovement == Axis.Horizontal)
@@ -193,6 +222,37 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageActor.DeviceManager,
                             FieldMessageType.Positioning,
                             inverterIndex);
+                    }
+                    break;
+
+                case MovementMode.ProfileCalibration:
+                    {
+                        var positioningFieldMessageData = new PositioningFieldMessageData(this.machineData.MessageData, this.machineData.RequestingBay);
+                        statusWordPollingInterval = 500;
+                        commandMessage = new FieldCommandMessage(
+                            positioningFieldMessageData,
+                            $"Start profile calibration",
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageType.Positioning,
+                            inverterIndex);
+
+                        var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
+                        var ioCommandMessage = new FieldCommandMessage(
+                            ioCommandMessageData,
+                            $"Measure Profile Start ",
+                            FieldMessageActor.IoDriver,
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageType.MeasureProfile,
+                            (byte)this.baysProvider.GetIoDevice(this.machineData.RequestingBay));
+
+                        this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
+
+                        this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
+
+                        this.profileInverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+
+                        this.profileTimer = new Timer(this.ProfileElapsed, null, 250, 250);
                     }
                     break;
 
@@ -266,8 +326,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug("1:Stop Method Start");
 
-            // stop timer
+            // stop timers
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
+            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
@@ -300,6 +361,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             if (disposing)
             {
                 this.delayTimer?.Dispose();
+                this.profileTimer?.Dispose();
                 this.scope.Dispose();
             }
 
@@ -484,6 +546,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.Stop(StopRequestReason.Stop);
                 }
             }
+            else if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
+            {
+                this.RequestMeasureProfile();
+            }
 
             if (message.Data is InverterStatusUpdateFieldMessageData data)
             {
@@ -632,6 +698,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.machineData.MessageData = newPositioningMessageData;
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
             }
+        }
+
+        private void ProfileElapsed(object state)
+        {
+            this.RequestMeasureProfile();
+        }
+
+        private void RequestMeasureProfile()
+        {
+            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
+            var inverterCommandMessage = new FieldCommandMessage(
+                inverterCommandMessageData,
+                $"Measure Profile",
+                FieldMessageActor.InverterDriver,
+                FieldMessageActor.DeviceManager,
+                FieldMessageType.MeasureProfile,
+                (byte)this.profileInverterIndex);
+
+            this.Logger.LogTrace($"Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
+
+            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
         }
 
         #endregion

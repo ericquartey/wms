@@ -85,6 +85,10 @@
 
             public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
 
+            public const string LOADINGUNITFROMCELLTOBAY = "LoadingUnitFromCellToBayViewModel";
+
+            public const string LOADINGUNITFROMCELLTOCELL = "LoadingUnitFromCellToCellViewModel";
+
             #endregion
         }
 
