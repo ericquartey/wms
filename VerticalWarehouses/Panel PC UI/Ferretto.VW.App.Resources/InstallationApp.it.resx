@@ -1089,7 +1089,13 @@
   <data name="LoadingUnitFromCellToCell" xml:space="preserve">
     <value>Spostamento cassetto da cella a cella</value>
   </data>
-  <data name="EjectLoadingUnitFromCellToBay" xml:space="preserve">
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
     <value>Spostamento cassetto da cella in baia</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Conferma estrazione cassetto</value>
+  </data>
+  <data name="SelectDestinationBay" xml:space="preserve">
+    <value>Seleziona baia di destinazione</value>
   </data>
 </root>

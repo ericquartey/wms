@@ -538,6 +538,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm eject loading unit.
+        /// </summary>
+        public static string ConfirmEjectLoadingUnit {
+            get {
+                return ResourceManager.GetString("ConfirmEjectLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
@@ -813,15 +822,6 @@ namespace Ferretto.VW.App.Resources {
         public static string DrawerStoreAndRecall {
             get {
                 return ResourceManager.GetString("DrawerStoreAndRecall", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Move loading unit from cell to bay.
-        /// </summary>
-        public static string EjectLoadingUnitFromCellToBay {
-            get {
-                return ResourceManager.GetString("EjectLoadingUnitFromCellToBay", resourceCulture);
             }
         }
         
@@ -1942,6 +1942,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Move loading unit from cell to bay.
+        /// </summary>
+        public static string MoveLoadingUnitFromCellToBay {
+            get {
+                return ResourceManager.GetString("MoveLoadingUnitFromCellToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move to cell height.
         /// </summary>
         public static string MoveToCellHeight {
@@ -2379,6 +2388,15 @@ namespace Ferretto.VW.App.Resources {
         public static string SecurityFunctionActive {
             get {
                 return ResourceManager.GetString("SecurityFunctionActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select destination bay.
+        /// </summary>
+        public static string SelectDestinationBay {
+            get {
+                return ResourceManager.GetString("SelectDestinationBay", resourceCulture);
             }
         }
         

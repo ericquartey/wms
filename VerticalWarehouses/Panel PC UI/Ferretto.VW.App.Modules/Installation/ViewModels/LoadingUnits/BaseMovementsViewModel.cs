@@ -37,6 +37,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isPosition1Selected;
+
+        private bool isPosition2Selected;
+
         private bool isShutterTwoSensors;
 
         private bool isStopping;
@@ -50,6 +54,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private LoadingUnit loadingUnitInBay;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private DelegateCommand selectBayPosition1Command;
+
+        private DelegateCommand selectBayPosition2Command;
 
         private SubscriptionToken sensorsToken;
 
@@ -159,6 +167,30 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
+        public bool IsPosition1Selected
+        {
+            get => this.isPosition1Selected;
+            set
+            {
+                if (this.SetProperty(ref this.isPosition1Selected, value))
+                {
+                    this.IsPosition2Selected = !this.isPosition1Selected;
+                }
+            }
+        }
+
+        public bool IsPosition2Selected
+        {
+            get => this.isPosition2Selected;
+            set
+            {
+                if (this.SetProperty(ref this.isPosition2Selected, value) && value)
+                {
+                    this.IsPosition1Selected = !this.isPosition1Selected;
+                }
+            }
+        }
+
         public bool IsShutterTwoSensors
         {
             get => this.isShutterTwoSensors;
@@ -227,6 +259,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
 
+        public ICommand SelectBayPosition1Command =>
+                        this.selectBayPosition1Command
+                        ??
+                        (this.selectBayPosition1Command = new DelegateCommand(this.SelectBayPosition1));
+
+        public ICommand SelectBayPosition2Command =>
+                        this.selectBayPosition2Command
+                        ??
+                        (this.selectBayPosition2Command = new DelegateCommand(this.SelectBayPosition2));
+
         public Sensors Sensors => this.sensors;
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
@@ -271,6 +313,47 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
             */
+        }
+
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
+        {
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
+                }
+            }
+
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
+                }
+            }
+
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
+                }
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
         }
 
         public override async Task OnAppearedAsync()
@@ -343,6 +426,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        public virtual void SelectBayPosition1()
+        {
+            this.IsPosition1Selected = true;
+        }
+
+        public virtual void SelectBayPosition2()
+        {
+            this.IsPosition2Selected = true;
         }
 
         public virtual Task StartAsync()
