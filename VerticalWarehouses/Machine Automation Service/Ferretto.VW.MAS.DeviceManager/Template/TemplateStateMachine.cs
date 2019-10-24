@@ -56,12 +56,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
-            {
-                var stateData = new TemplateStateData(this, this.machineData);
-                this.CurrentState = new TemplateStartState(stateData);
-                this.CurrentState?.Start();
-            }
+            var stateData = new TemplateStateData(this, this.machineData);
+            this.ChangeState(new TemplateStartState(stateData));
         }
 
         public override void Stop(StopRequestReason reason)

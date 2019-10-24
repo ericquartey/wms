@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         private readonly IResetSecurityStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -33,20 +31,11 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         #endregion
 
-        #region Destructors
-
-        ~ResetSecurityStartState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -115,22 +104,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
             this.stateData.StopRequestReason = reason;
             this.ParentStateMachine.ChangeState(new ResetSecurityEndState(this.stateData));
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         #endregion

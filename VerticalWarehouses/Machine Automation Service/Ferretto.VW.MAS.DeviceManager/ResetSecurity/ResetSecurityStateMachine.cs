@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         private readonly IResetSecurityMachineData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -31,15 +29,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machineData = new ResetSecurityMachineData(requestingBay, targetBay, eventAggregator, logger, serviceScopeFactory);
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~ResetSecurityStateMachine()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -70,14 +59,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
-            {
-                var stateData = new ResetSecurityStateData(this, this.machineData);
-                this.CurrentState = new ResetSecurityStartState(stateData);
-                this.CurrentState?.Start();
-            }
-
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
+            var stateData = new ResetSecurityStateData(this, this.machineData);
+            this.ChangeState(new ResetSecurityStartState(stateData));
         }
 
         public override void Stop(StopRequestReason reason)
@@ -88,21 +71,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
             {
                 this.CurrentState.Stop(reason);
             }
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion

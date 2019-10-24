@@ -16,7 +16,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 {
-    internal class ShutterPositioningExecutingState : StateBase
+    internal class ShutterPositioningExecutingState : StateBase, IDisposable
     {
         #region Fields
 
@@ -56,9 +56,14 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -92,7 +97,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         public override void Start()
@@ -131,7 +136,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             this.ParentStateMachine.ChangeState(new ShutterPositioningEndState(this.stateData));
         }
 
-        protected override void Dispose(bool disposing)
+        protected void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -146,8 +151,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             }
 
             this.disposed = true;
-
-            base.Dispose(disposing);
         }
 
         private void DelayTimerMethodDown(object state)

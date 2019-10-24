@@ -59,15 +59,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         #endregion
 
-        #region Destructors
-
-        ~HomingStateMachine()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         /// <inheritdoc/>
@@ -237,16 +228,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                     this.Logger.LogError($"Conditions not verified for homing: {errorText}");
 
-                    this.CurrentState = new HomingErrorState(stateData);
+                    this.ChangeState(new HomingErrorState(stateData));
                 }
                 else
                 {
-                    this.CurrentState = new HomingStartState(stateData);
+                    this.ChangeState(new HomingStartState(stateData));
                 }
-                this.CurrentState.Start();
             }
-
-            this.Logger.LogTrace($"2:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)

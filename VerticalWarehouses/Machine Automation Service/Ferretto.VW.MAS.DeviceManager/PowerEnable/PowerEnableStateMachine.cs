@@ -23,8 +23,6 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         private readonly IPowerEnableMachineData machineData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -35,8 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             IBaysProvider baysProvider,
             IEventAggregator eventAggregator,
             ILogger<DeviceManager> logger,
-            IServiceScopeFactory serviceScopeFactory
-            )
+            IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.baysProvider = baysProvider;
@@ -86,7 +83,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 var stateData = new PowerEnableStateData(this, this.machineData);
                 if (this.machineData.Enable)
                 {
-                    if (!this.IsMarchPossible(out string errorText))
+                    if (!this.IsMarchPossible(out var errorText))
                     {
                         //TODO This will be double notification either remove this publish or do no enter in error state
                         //var notificationMessage = new NotificationMessage(
@@ -103,21 +100,18 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
                         this.Logger.LogError(errorText);
 
-                        this.CurrentState = new PowerEnableErrorState(stateData);
+                        this.ChangeState(new PowerEnableErrorState(stateData));
                     }
                     else
                     {
-                        this.CurrentState = new PowerEnableStartState(stateData);
+                        this.ChangeState(new PowerEnableStartState(stateData));
                     }
                 }
                 else
                 {
-                    this.CurrentState = new PowerEnableStartState(stateData);
+                    this.ChangeState(new PowerEnableStartState(stateData));
                 }
-                this.CurrentState?.Start();
             }
-
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState.GetType().Name}");
         }
 
         public override void Stop(StopRequestReason reason)
@@ -130,24 +124,9 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             }
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
-        }
-
         private bool IsMarchPossible(out string errorText)
         {
-            bool isMarchPossible = true;
+            var isMarchPossible = true;
             var reason = new StringBuilder();
 
             if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSide])

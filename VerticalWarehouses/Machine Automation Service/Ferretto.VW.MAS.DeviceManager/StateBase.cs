@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public const int SENSOR_UPDATE_SLOW = 500;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -27,16 +25,8 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.ParentStateMachine = parentStateMachine;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
             this.Logger.LogTrace($"State '{this.GetType().Name}' initialized.");
-        }
-
-        #endregion
-
-        #region Destructors
-
-        ~StateBase()
-        {
-            this.Dispose(false);
         }
 
         #endregion
@@ -45,19 +35,11 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public ILogger<DeviceManager> Logger { get; }
 
-        public virtual string Type => this.GetType().ToString();
-
         protected IStateMachine ParentStateMachine { get; }
 
         #endregion
 
         #region Methods
-
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
-        }
 
         /// <inheritdoc />
         public abstract void ProcessCommandMessage(CommandMessage message);
@@ -74,20 +56,6 @@ namespace Ferretto.VW.MAS.DeviceManager
         /// <param name="reason"></param>
         /// <inheritdoc />
         public abstract void Stop(StopRequestReason reason);
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-        }
 
         #endregion
     }

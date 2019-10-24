@@ -35,15 +35,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         #endregion
 
-        #region Destructors
-
-        ~StateMachineBase()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Properties
 
         public IEventAggregator EventAggregator { get; }
@@ -52,7 +43,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 
-        protected IState CurrentState { get; set; }
+        protected IState CurrentState { get; private set; }
 
         #endregion
 
@@ -91,7 +82,6 @@ namespace Ferretto.VW.MAS.DeviceManager
         public void Dispose()
         {
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -107,28 +97,40 @@ namespace Ferretto.VW.MAS.DeviceManager
         public virtual void PublishCommandMessage(CommandMessage message)
         {
             this.Logger.LogTrace($"1:Publish Command: {message.Type}, destination: {message.Destination}, source: {message.Source}");
-            this.EventAggregator.GetEvent<CommandEvent>().Publish(message);
+
+            this.EventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(message);
         }
 
         /// <inheritdoc />
         public virtual void PublishFieldCommandMessage(FieldCommandMessage message)
         {
             this.Logger.LogTrace($"1:Publish Field Command: {message.Type}, destination: {message.Destination}, source: {message.Source}");
-            this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(message);
+
+            this.EventAggregator
+                .GetEvent<FieldCommandEvent>()
+                .Publish(message);
         }
 
         /// <inheritdoc />
         public virtual void PublishFieldNotificationMessage(FieldNotificationMessage message)
         {
             this.Logger.LogTrace($"1:Publish Field Notification: {message.Type}, destination: {message.Destination}, source: {message.Source}");
-            this.EventAggregator.GetEvent<FieldNotificationEvent>().Publish(message);
+
+            this.EventAggregator
+                .GetEvent<FieldNotificationEvent>()
+                .Publish(message);
         }
 
         /// <inheritdoc />
         public virtual void PublishNotificationMessage(NotificationMessage message)
         {
             this.Logger.LogTrace($"1:Publish Notification: {message.Type}, destination: {message.Destination}, source: {message.Source}");
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(message);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(message);
         }
 
         /// <inheritdoc />
@@ -145,36 +147,37 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (disposing)
             {
-            }
+                // This is very bad. this code should not be here.
+                // Avoid improper use of disposal routines.
+                {
+                    var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"FSM current status null",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.MachineStatusActive,
+                        BayNumber.None,
+                        BayNumber.None,
+                        MessageStatus.OperationStart);
 
-            {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"FSM current status null",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.MachineStatusActive,
-                    BayNumber.None,
-                    BayNumber.None,
-                    MessageStatus.OperationStart);
+                    this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
 
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-            }
+                {
+                    var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                    var notificationMessage = new NotificationMessage(
+                        notificationMessageData,
+                        $"FSM current state null",
+                        MessageActor.Any,
+                        MessageActor.FiniteStateMachines,
+                        MessageType.MachineStateActive,
+                        BayNumber.None,
+                        BayNumber.None,
+                        MessageStatus.OperationStart);
 
-            {
-                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    $"FSM current state null",
-                    MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
-                    MessageType.MachineStateActive,
-                    BayNumber.None,
-                    BayNumber.None,
-                    MessageStatus.OperationStart);
-
-                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                    this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                }
             }
 
             this.disposed = true;
