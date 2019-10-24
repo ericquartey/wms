@@ -89,7 +89,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .GetEvent<NotificationEvent>()
                         .Publish(message);
 
-                    this.Logger.LogDebug("Data layer service initialized.");
+                    this.Logger.LogInformation("Data layer service initialized.");
                 }
                 catch (Exception ex)
                 {

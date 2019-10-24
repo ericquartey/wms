@@ -103,35 +103,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.OnCurrentPositionChanged(message);
 
-            switch (message?.Status)
+            if (message.IsErrored())
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.IsElevatorMoving = false;
+                this.IsElevatorMoving = false;
+                this.ShowSteps();
+            }
+            else if (message.IsNotRunning())
+            {
+                this.IsElevatorMoving = false;
+                this.isElevatorOperationCompleted = true;
+                this.ShowSteps();
 
-                        this.isElevatorOperationCompleted = true;
+                switch (message.Status)
+                {
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                        {
+                            this.NavigateToNextStep();
 
-                        this.ShowSteps();
+                            break;
+                        }
 
-                        this.NavigateToNextStep();
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                        {
+                            this.IsElevatorMoving = false;
 
-                        break;
-                    }
+                            this.ShowNotification(
+                                "Procedura di posizionamento interrotta.",
+                                Services.Models.NotificationSeverity.Warning);
 
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        this.IsElevatorMoving = false;
-
-                        this.isElevatorOperationCompleted = false;
-
-                        this.ShowSteps();
-
-                        this.ShowNotification(
-                            "Procedura di posizionamento interrotta.",
-                            Services.Models.NotificationSeverity.Warning);
-
-                        break;
-                    }
+                            break;
+                        }
+                }
             }
         }
 

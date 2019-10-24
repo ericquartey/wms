@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         private readonly IInverterPowerEnableStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -66,21 +64,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug($"Stop with reason: {reason}");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
         }
 
         #endregion
