@@ -203,11 +203,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuneBay()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&
-                !this.IsTuningBay;
+                !this.IsTuningBay
+                &&
+                this.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()

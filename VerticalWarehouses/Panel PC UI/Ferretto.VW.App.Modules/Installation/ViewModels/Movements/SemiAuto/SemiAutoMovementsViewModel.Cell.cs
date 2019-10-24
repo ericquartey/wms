@@ -210,7 +210,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
-                    //this.LoadingUnitInCell = this.selectedLoadingUnit;
                     this.RaiseCanExecuteChanged();
                 }
             }
