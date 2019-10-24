@@ -34,7 +34,7 @@
 
         <TextBlock Grid.ColumnSpan="2"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Stretch"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
 

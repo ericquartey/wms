@@ -6,7 +6,6 @@
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:other="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other"
-        xmlns:searchItem="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem"
         xmlns:statistics="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics"
         xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations"
         xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details"
@@ -61,11 +60,11 @@
             <helpWindows:HelpListsInWait />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type searchItem:ItemSearchViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:ItemSearchMainViewModel}">
             <helpWindows:HelpItemSearch />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type searchItem:ItemDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:ItemSearchDetailViewModel}">
             <helpWindows:HelpItemSearchDetail />
         </DataTemplate>
 

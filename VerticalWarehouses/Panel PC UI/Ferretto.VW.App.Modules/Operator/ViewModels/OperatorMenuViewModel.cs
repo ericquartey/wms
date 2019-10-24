@@ -170,7 +170,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.EMPTY,
+                    Utils.Modules.Operator.ItemSearch.MAIN,
                     null,
                     trackCurrentView: true);
             }

@@ -1,14 +1,22 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
+using Prism.Events;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemDetailViewModel : BaseViewModel, IItemDetailViewModel
+    public class ItemSearchDetailViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -22,22 +30,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         #region Constructors
 
-        public ItemDetailViewModel(
-            IWmsImagesProvider wmsImagesProvider)
+        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider)
+            : base(PresentationMode.Operator)
         {
-            if (wmsImagesProvider == null)
-            {
-                throw new System.ArgumentNullException(nameof(wmsImagesProvider));
-            }
-
-            this.wmsImagesProvider = wmsImagesProvider;
-
-            this.NavigationViewModel = null;
+            this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
         }
 
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.None;
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
@@ -54,20 +57,31 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         #region Methods
 
-        public override void ExitFromViewMethod()
+        public override void Disappear()
         {
+            base.Disappear();
+
             this.Image?.Dispose();
         }
 
-        public override async Task OnEnterViewAsync()
+        public override async Task OnAppearedAsync()
         {
-            var searchViewModel = ServiceLocator.Current.GetInstance<IItemSearchViewModel>();
+            await base.OnAppearedAsync();
 
+            this.IsBackNavigationAllowed = true;
+
+            // Sistema di cache, potenzialmente errato!
+            var searchViewModel = ServiceLocator.Current.GetInstance<IItemSearchViewModel>();
             if (searchViewModel != null &&
                 searchViewModel.SelectedItem != null)
             {
                 this.Item = searchViewModel.SelectedItem;
-                await this.LoadImage(this.item.Code);
+                // await this.LoadImage(this.item.Code);
+                this.RaisePropertyChanged(nameof(this.Item));
+            }
+            else
+            {
+                // effettuare la chiamata?
             }
         }
 

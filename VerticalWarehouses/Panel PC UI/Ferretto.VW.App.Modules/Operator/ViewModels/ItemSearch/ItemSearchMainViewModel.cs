@@ -2,19 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
-namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemSearchViewModel : BaseViewModel, IItemSearchViewModel
+    public class ItemSearchMainViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -28,9 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         private readonly IItemsDataService itemsDataService;
 
-        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
-
-        //private readonly IStatusMessageService statusMessageService;
+        private readonly IItemSearchViewModel itemSearchViewModel;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -43,6 +43,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
         private ICommand downDataGridButtonCommand;
 
         private bool isSearching;
+
+        private bool isWaitingForResponse;
 
         private ICommand itemCallCommand;
 
@@ -64,48 +66,23 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         #region Constructors
 
-        public ItemSearchViewModel(
-            //IStatusMessageService statusMessageService,
+        public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IBayManager bayManager,
-            Operator.Interfaces.INavigationService navigationService,
             IMachineIdentityWebService identityService,
-            IItemsDataService itemsDataService)
+            IItemsDataService itemsDataService,
+            IItemSearchViewModel itemSearchViewModel)
+            : base(PresentationMode.Operator)
         {
-            //if (statusMessageService == null)
-            //{
-            //    throw new ArgumentNullException(nameof(statusMessageService));
-            //}
+            this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
+            this.itemsDataService = itemsDataService ?? throw new ArgumentNullException(nameof(itemsDataService));
+            this.itemSearchViewModel = itemSearchViewModel ?? throw new ArgumentNullException(nameof(itemSearchViewModel));
 
-            if (wmsDataProvider == null)
-            {
-                throw new ArgumentNullException(nameof(wmsDataProvider));
-            }
-
-            if (bayManager == null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            if (itemsDataService == null)
-            {
-                throw new ArgumentNullException(nameof(itemsDataService));
-            }
-
-            if (navigationService == null)
-            {
-                throw new ArgumentNullException(nameof(navigationService));
-            }
-
-            this.identityService = identityService;
-            //this.statusMessageService = statusMessageService;
-            this.wmsDataProvider = wmsDataProvider;
-            this.bayManager = bayManager;
-            this.itemsDataService = itemsDataService;
-            this.navigationService = navigationService;
-            this.NavigationViewModel = null;
             this.currentItemIndex = 0;
             this.requestedQuantity = "0";
+            this.items = new List<Item>();
         }
 
         #endregion
@@ -114,23 +91,21 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
         public string AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(async () => await this.ChangeSelectedItemAsync(false)));
+
+        public override EnableMask EnableMask => EnableMask.None;
 
         public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
 
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
+
         public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => this.ItemCallMethodAsync(), this.CanItemCall));
 
-        public ICommand ItemDetailButtonCommand =>
-            this.itemDetailButtonCommand
-            ??
-            (this.itemDetailButtonCommand = new DelegateCommand(() =>
-                {
-                    if (this.SelectedItem != null)
-                    {
-                        this.navigationService.NavigateToView<ItemDetailViewModel, IItemDetailViewModel>(this.SelectedItem);
-                    }
-                },
-                this.CanShowDetails));
+        public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
         public BindingList<Item> Items => new BindingList<Item>(this.items);
 
@@ -166,6 +141,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             {
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
+                    this.itemSearchViewModel.SelectedItem = this.selectedItem;
+
                     ((DelegateCommand)this.ItemCallCommand).RaiseCanExecuteChanged();
                     ((DelegateCommand)this.ItemDetailButtonCommand).RaiseCanExecuteChanged();
                 }
@@ -228,25 +205,25 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
 
             if (success)
             {
-                //this.statusMessageService.Notify(
-                //    $"Successfully called {qty} pieces of item {itemToPick.Id}.",
-                //    StatusMessageLevel.Success);
+                this.ShowNotification($"Successfully called {qty} pieces of item {itemToPick.Id}.", Services.Models.NotificationSeverity.Success);
             }
             else
             {
-                //this.statusMessageService.Notify(
-                //    $"Couldn't get {qty} pieces of item {itemToPick.Id}.",
-                //    StatusMessageLevel.Error);
+                this.ShowNotification($"Couldn't get {qty} pieces of item {itemToPick.Id}.", Services.Models.NotificationSeverity.Error);
             }
 
             this.RequestedQuantity = "0";
         }
 
-        public override async Task OnEnterViewAsync()
+        public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
             if (this.items != null
-                &&
-                this.selectedItem != null)
+               &&
+               this.selectedItem != null)
             {
                 return;
             }
@@ -289,7 +266,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             }
             catch (Exception ex)
             {
-                //this.statusMessageService.Notify(ex);
+                this.ShowNotification(ex);
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
@@ -301,6 +278,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
                 this.SelectedItem = this.items?.FirstOrDefault();
             }
             this.IsSearching = false;
+        }
+
+        private bool CanDetailCommand()
+        {
+            return !this.IsWaitingForResponse
+                &&
+                this.SelectedItem != null;
         }
 
         private bool CanItemCall()
@@ -323,9 +307,26 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.SearchItem
             return false;
         }
 
-        private bool CanShowDetails()
+        private void Detail()
         {
-            return this.SelectedItem != null;
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.ItemSearch.DETAIL,
+                    null,
+                    trackCurrentView: true);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private async Task TriggerSearchAsync()

@@ -44,6 +44,8 @@
 
   <ItemGroup>
     <None Remove="Views\EmptyView.xaml" />
+    <None Remove="Views\ItemSearch\ItemSearchDetailView.xaml" />
+    <None Remove="Views\ItemSearch\ItemSearchMainView.xaml" />
     <None Remove="Views\OperatorMenuView.xaml" />
     <None Remove="Views\Others\DrawerCompactingDetailView.xaml" />
     <None Remove="Views\Others\DrawerCompactingView.xaml" />
@@ -67,6 +69,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\ItemSearch\ItemSearchDetailView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchMainView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Views\OperatorMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>

@@ -2,6 +2,8 @@
 using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Operator.Views;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -53,8 +55,13 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
+            containerRegistry.RegisterSingleton<IItemSearchViewModel, ItemSearchViewModel>();
+
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
+
+            containerRegistry.RegisterForNavigation<ItemSearchMainView>();
+            containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();

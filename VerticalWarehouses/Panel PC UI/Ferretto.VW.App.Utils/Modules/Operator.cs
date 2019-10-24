@@ -12,6 +12,17 @@
 
         #region Classes
 
+        public static class ItemSearch
+        {
+            #region Fields
+
+            public const string DETAIL = "ItemSearchDetailViewModel";
+
+            public const string MAIN = "ItemSearchMainViewModel";
+
+            #endregion
+        }
+
         public static class Others
         {
             #region Fields
