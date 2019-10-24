@@ -1,9 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -22,15 +20,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private const int MAX_RETRIES = 3;
 
         private readonly IBaysProvider baysProvider;
-
-        /// <summary>
-        /// profile = 200   ==> height = 0
-        /// profile = 10000 ==> height = 725mm
-        /// height = kMul * profile + kSum;
-        /// </summary>
-        private readonly double kMul = 0.0739795918367347;
-
-        private readonly double kSum = -14.79591836734694;
 
         private readonly ILoadingUnitsProvider loadingUnitProvider;
 
@@ -69,7 +58,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
-            this.Logger.LogTrace($"1:Process Command Message {message.Type} Source {message.Source}");
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
@@ -81,9 +70,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        if (message.Data is MeasureProfileFieldMessageData data)
+                        if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
-                            var profileHeight = data.Profile * this.kMul + this.kSum;
+                            var profileHeight = this.baysProvider.ConvertProfileToHeight(data.Profile);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if (profileHeight < this.minHeight)
                             {
@@ -104,6 +93,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             }
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                         }
+                        else if (message.Source == FieldMessageActor.IoDriver)
+                        {
+                            // we send the first request to read the height only after IoDriver has reset the reading enable signal
+                            this.RequestMeasureProfile();
+                        }
                         break;
 
                     case MessageStatus.OperationError:
@@ -117,14 +111,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process Notification Message {message.Type} Source {message.Source} Status {message.Status}");
+            // do nothing
         }
 
         public override void Start()
         {
             this.inverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
-
-            this.RequestMeasureProfile();
         }
 
         public override void Stop(StopRequestReason reason)

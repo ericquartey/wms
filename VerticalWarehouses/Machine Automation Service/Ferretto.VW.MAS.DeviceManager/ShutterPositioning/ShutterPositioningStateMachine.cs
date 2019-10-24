@@ -35,8 +35,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.CurrentState = new EmptyState(this.Logger);
-
             this.machineData = new ShutterPositioningMachineData(
                 positioningMessageData,
                 requestingBay,
@@ -95,35 +93,28 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         /// <inheritdoc/>
         public override void Start()
         {
-            lock (this.CurrentState)
+            using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                using (var scope = this.ServiceScopeFactory.CreateScope())
-                {
-                    var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                    this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest().PerformedCycles;
-                }
-
-                var stateData = new ShutterPositioningStateData(this, this.machineData);
-
-                if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState
-                    ||
-                    this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1
-                    ||
-                    !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
-                    )
-                {
-                    this.Logger.LogError($"Invalid conditions before moving shutter");
-                    this.CurrentState = new ShutterPositioningErrorState(stateData);
-                }
-                else
-                {
-                    this.CurrentState = new ShutterPositioningStartState(stateData);
-                }
-
-                this.CurrentState.Start();
+                var setupProceduresProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                this.machineData.PositioningMessageData.PerformedCycles = setupProceduresProvider.GetShutterTest().PerformedCycles;
             }
 
-            this.Logger.LogTrace($"1:CurrentState{this.CurrentState?.GetType().Name}");
+            var stateData = new ShutterPositioningStateData(this, this.machineData);
+
+            if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState
+                ||
+                this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 // why only bay 1 ???
+                ||
+                !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+                )
+            {
+                this.Logger.LogError($"Invalid conditions before moving shutter");
+                this.ChangeState(new ShutterPositioningErrorState(stateData));
+            }
+            else
+            {
+                this.ChangeState(new ShutterPositioningStartState(stateData));
+            }
         }
 
         public override void Stop(StopRequestReason reason)

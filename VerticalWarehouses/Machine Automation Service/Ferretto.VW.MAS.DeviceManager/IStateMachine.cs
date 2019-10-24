@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
-    internal interface IStateMachine : IDisposable
+    internal interface IStateMachine
     {
         #region Properties
 

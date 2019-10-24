@@ -114,7 +114,7 @@
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
           "WeightMeasureSpeed": 50,
-          "WeightMeasureTime": 15
+          "WeightMeasureTime": 15,
         },
         {
           "Orientation": "Horizontal",
@@ -122,6 +122,10 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
+          "ProfileCalibrateHeight": 150,
+          "ProfileCalibratePosition": 300,
+          "ProfileCalibrateSpeed": 50,
+          "ProfileCalibrateLength": 900,
           "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,

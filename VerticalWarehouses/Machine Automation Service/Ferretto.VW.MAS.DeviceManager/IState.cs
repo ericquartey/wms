@@ -6,16 +6,11 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
-    internal interface IState : IDisposable
+    internal interface IState
     {
         #region Properties
 
         ILogger<DeviceManager> Logger { get; }
-
-        /// <summary>
-        /// Get the type of state (string description).
-        /// </summary>
-        string Type { get; }
 
         #endregion
 

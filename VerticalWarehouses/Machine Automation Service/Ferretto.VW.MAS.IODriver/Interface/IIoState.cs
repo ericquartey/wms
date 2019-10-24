@@ -1,6 +1,6 @@
-﻿namespace Ferretto.VW.MAS.IODriver.Interface
+﻿namespace Ferretto.VW.MAS.IODriver
 {
-    public interface IIoState
+    internal interface IIoState
     {
         #region Properties
 

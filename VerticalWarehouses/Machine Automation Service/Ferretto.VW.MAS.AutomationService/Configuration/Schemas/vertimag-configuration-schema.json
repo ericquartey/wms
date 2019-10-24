@@ -438,6 +438,30 @@
                     "title": "The WeightMeasureTime Schema",
                     "default": 0
                   },
+                  "ProfileCalibrateHeight": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateHeight",
+                    "type": "integer",
+                    "title": "The ProfileCalibrateHeight Schema",
+                    "default": 0
+                  },
+                  "ProfileCalibrateLength": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",
+                    "type": "integer",
+                    "title": "The ProfileCalibrateLength Schema",
+                    "default": 0
+                  },
+                  "ProfileCalibratePosition": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibratePosition",
+                    "type": "integer",
+                    "title": "The ProfileCalibratePosition Schema",
+                    "default": 0
+                  },
+                  "ProfileCalibrateSpeed": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateSpeed",
+                    "type": "integer",
+                    "title": "The ProfileCalibrateSpeed Schema",
+                    "default": 0
+                  },
                   "FullLoadMovement": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
                     "type": "object",

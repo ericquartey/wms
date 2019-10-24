@@ -210,7 +210,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {
-                    this.LoadingUnitInCell = this.selectedLoadingUnit;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -253,6 +252,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             return this.SelectedLoadingUnit != null
+                &&
+                this.SelectedLoadingUnit.CellId != null
                 &&
                 !this.IsWaitingForResponse
                 &&

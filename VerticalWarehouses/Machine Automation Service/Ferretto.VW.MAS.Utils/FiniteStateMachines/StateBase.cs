@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.hasEntered = true;
 
-            this.Logger.LogDebug($"Entering state {this.GetType().Name}.");
+            this.Logger.LogTrace($"Entering state {this.GetType().Name}.");
 
             this.OnEnter(message, machineData);
         }
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.hasExited = true;
 
-            this.Logger.LogDebug($"Exiting state {this.GetType().Name}.");
+            this.Logger.LogTrace($"Exiting state {this.GetType().Name}.");
 
             this.OnExit();
         }
@@ -133,7 +133,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.hasStopped = true;
 
-            this.Logger.LogDebug($"Stopping state {this.GetType().Name}.");
+            this.Logger.LogTrace($"Stopping state {this.GetType().Name}.");
 
             return this.OnStop(reason);
         }

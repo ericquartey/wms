@@ -8,9 +8,9 @@
 
         MushroomEmergencyButtonBay1 = 1,
 
-        MicroCarterLeftSideBay1 = 2,
+        MicroCarterLeftSide = 2,
 
-        MicroCarterRightSideBay1 = 3,
+        MicroCarterRightSide = 3,
 
         AntiIntrusionBarrierBay1 = 4,
 
@@ -44,10 +44,6 @@
 
         MushroomEmergencyButtonBay2 = 17,
 
-        MicroCarterLeftSideBay2 = 18,
-
-        MicroCarterRightSideBay2 = 19,
-
         AntiIntrusionBarrierBay2 = 20,
 
         LUPresentInBay2 = 21,
@@ -79,10 +75,6 @@
         Free1Bay3 = 32,
 
         MushroomEmergencyButtonBay3 = 33,
-
-        MicroCarterLeftSideBay3 = 34,
-
-        MicroCarterRightSideBay3 = 35,
 
         AntiIntrusionBarrierBay3 = 36,
 

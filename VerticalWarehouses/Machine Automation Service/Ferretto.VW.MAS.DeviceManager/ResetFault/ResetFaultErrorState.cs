@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         private readonly IResetFaultStateData stateData;
 
-        private bool disposed;
-
         #endregion
 
         #region Constructors
@@ -30,28 +28,22 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         #endregion
 
-        #region Destructors
-
-        ~ResetFaultErrorState()
-        {
-            this.Dispose(false);
-        }
-
-        #endregion
-
         #region Methods
 
         public override void ProcessCommandMessage(CommandMessage message)
         {
+            // do nothing
         }
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
+            // do nothing
         }
 
         /// <inheritdoc/>
         public override void ProcessNotificationMessage(NotificationMessage message)
         {
+            // do nothing
         }
 
         public override void Start()
@@ -72,22 +64,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-            }
-
-            this.disposed = true;
-            base.Dispose(disposing);
+            // do nothing
         }
 
         #endregion
