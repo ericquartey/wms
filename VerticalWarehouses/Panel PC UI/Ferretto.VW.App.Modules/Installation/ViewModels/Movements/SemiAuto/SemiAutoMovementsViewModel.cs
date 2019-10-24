@@ -13,7 +13,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel : BaseMainViewModel
+    internal sealed partial class SemiAutoMovementsViewModel : BaseMainViewModel
     {
         #region Fields
 

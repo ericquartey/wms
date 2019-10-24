@@ -8,7 +8,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
@@ -162,7 +162,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit LoadingUnitInCell
         {
             get => this.loadingUnitInCell;
-            protected set => this.SetProperty(ref this.loadingUnitInCell, value);
+            private set => this.SetProperty(ref this.loadingUnitInCell, value);
         }
 
         public ICommand MoveToCellHeightCommand =>
@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit SelectedLoadingUnit
         {
             get => this.selectedLoadingUnit;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.selectedLoadingUnit, value))
                 {

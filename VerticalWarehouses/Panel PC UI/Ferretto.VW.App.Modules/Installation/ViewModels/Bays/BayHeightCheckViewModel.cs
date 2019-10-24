@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BayHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class BayHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -177,7 +177,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsElevatorMovingToHeight
         {
             get => this.isElevatorMovingToHeight;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isElevatorMovingToHeight, value))
                 {

@@ -12,7 +12,7 @@ using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosit
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 

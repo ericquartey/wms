@@ -44,10 +44,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         #region Methods
 
-        public override void Continue()
-        {
-        }
-
         public override void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
             if (this.CurrentState is SwitchOffEndState)

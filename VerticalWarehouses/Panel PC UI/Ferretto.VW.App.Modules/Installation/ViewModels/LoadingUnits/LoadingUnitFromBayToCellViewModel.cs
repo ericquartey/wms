@@ -15,7 +15,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public partial class LoadingUnitFromBayToCellViewModel : BaseMainViewModel
+    internal sealed partial class LoadingUnitFromBayToCellViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -90,8 +90,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private IEnumerable<Cell> Cells
+        {
+            get => this.cells;
+            private set
+            {
+                if (this.SetProperty(ref this.cells, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsCellFree =>
-            this.cellId.HasValue
+                    this.cellId.HasValue
             &&
             this.cells.Any(c => c.Id == this.cellId.Value && c.Status == CellStatus.Free);
 
@@ -221,18 +233,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StartStop(),
                 this.CanExecuteStopCommand));
-
-        protected IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         #endregion
 

@@ -13,7 +13,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BeltBurnishingViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class BeltBurnishingViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 

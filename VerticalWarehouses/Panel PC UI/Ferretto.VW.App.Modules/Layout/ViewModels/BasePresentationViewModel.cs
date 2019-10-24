@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class BasePresentationViewModel : BaseNavigationViewModel
+    internal class BasePresentationViewModel : BaseNavigationViewModel
     {
         #region Fields
 

@@ -14,7 +14,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class ShutterEnduranceTestViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 

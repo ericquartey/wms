@@ -12,7 +12,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public abstract class BaseCellsHeightCheckViewModel : BaseMainViewModel
+    internal abstract class BaseCellsHeightCheckViewModel : BaseMainViewModel
     {
         #region Fields
 

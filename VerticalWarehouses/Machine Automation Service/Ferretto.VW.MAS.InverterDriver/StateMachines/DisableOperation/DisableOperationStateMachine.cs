@@ -8,7 +8,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    internal class DisableOperationStateMachine : InverterStateMachineBase
+    internal sealed class DisableOperationStateMachine : InverterStateMachineBase
     {
         #region Fields
 
@@ -32,10 +32,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
         #endregion
 
         #region Methods
-
-        public override void Continue()
-        {
-        }
 
         /// <inheritdoc />
         public override void Start()

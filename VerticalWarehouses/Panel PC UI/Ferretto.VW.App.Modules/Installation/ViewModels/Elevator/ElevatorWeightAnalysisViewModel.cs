@@ -16,7 +16,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightAnalysisViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class ElevatorWeightAnalysisViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
@@ -323,7 +323,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.procedureParameters = await this.weightAnalysisProcedureWebService.GetParametersAsync();
         }
 
-        protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
 
@@ -368,7 +368,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected virtual void RaiseCanExecuteChanged()
+        protected void RaiseCanExecuteChanged()
         {
             this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();

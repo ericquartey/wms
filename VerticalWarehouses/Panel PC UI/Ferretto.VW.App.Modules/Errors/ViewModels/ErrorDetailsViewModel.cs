@@ -8,7 +8,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
-    public class ErrorDetailsViewModel : BaseMainViewModel
+    internal sealed class ErrorDetailsViewModel : BaseMainViewModel
     {
         #region Fields
 

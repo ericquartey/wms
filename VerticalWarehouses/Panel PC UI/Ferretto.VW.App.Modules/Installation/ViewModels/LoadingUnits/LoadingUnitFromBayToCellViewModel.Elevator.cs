@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public partial class LoadingUnitFromBayToCellViewModel
+    internal sealed partial class LoadingUnitFromBayToCellViewModel
     {
         #region Fields
 
