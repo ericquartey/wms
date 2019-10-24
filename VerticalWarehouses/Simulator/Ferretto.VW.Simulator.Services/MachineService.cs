@@ -222,6 +222,7 @@ namespace Ferretto.VW.Simulator.Services
         {
             using (client)
             {
+                var lastReceivedMessage = DateTime.UtcNow;
                 var buffer = new byte[1024];
                 var socket = client.Client;
                 try
@@ -232,6 +233,7 @@ namespace Ferretto.VW.Simulator.Services
                         {
                             if (socket.Poll(50000, SelectMode.SelectRead))
                             {
+                                lastReceivedMessage = DateTime.UtcNow;
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
                                 {
@@ -243,6 +245,11 @@ namespace Ferretto.VW.Simulator.Services
                                 {
                                     break;
                                 }
+                            }
+                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
+                            {
+                                client.Close();
+                                break;
                             }
                         }
                         else
