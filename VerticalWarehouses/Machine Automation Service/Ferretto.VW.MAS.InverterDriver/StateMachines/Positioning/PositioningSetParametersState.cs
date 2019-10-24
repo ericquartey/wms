@@ -74,27 +74,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.PositionTargetPosition:
-                        if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
-                        {
-                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (short)this.verticalParams.BrakeReleaseTime));
-                            this.Logger.LogDebug($"Set Brake Release Time: {(int)this.verticalParams.BrakeReleaseTime}");
-                        }
-                        else
+                        //if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        //{
+                        //    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeReleaseTime, (short)this.verticalParams.BrakeReleaseTime));
+                        //    this.Logger.LogDebug($"Set Brake Release Time: {(int)this.verticalParams.BrakeReleaseTime}");
+                        //}
+                        //else
                         {
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, this.data.TargetSpeed[0]));
                             this.Logger.LogDebug($"Set target Speed: {this.data.TargetSpeed[0]}");
                         }
                         break;
 
-                    case InverterParameterId.BrakeReleaseTime:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeActivatePercent, (short)this.verticalParams.BrakeActivatePercent));
-                        this.Logger.LogDebug($"Set Brake Activate Percent: {(int)this.verticalParams.BrakeActivatePercent}");
-                        break;
+                    //case InverterParameterId.BrakeReleaseTime:
+                    //    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BrakeActivatePercent, (short)this.verticalParams.BrakeActivatePercent));
+                    //    this.Logger.LogDebug($"Set Brake Activate Percent: {(int)this.verticalParams.BrakeActivatePercent}");
+                    //    break;
 
-                    case InverterParameterId.BrakeActivatePercent:
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, this.data.TargetSpeed[0]));
-                        this.Logger.LogDebug($"Set target Speed: {this.data.TargetSpeed[0]}");
-                        break;
+                    //case InverterParameterId.BrakeActivatePercent:
+                    //    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, this.data.TargetSpeed[0]));
+                    //    this.Logger.LogDebug($"Set target Speed: {this.data.TargetSpeed[0]}");
+                    //    break;
 
                     case InverterParameterId.PositionTargetSpeed:
                         this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionAcceleration, this.data.TargetAcceleration[0]));

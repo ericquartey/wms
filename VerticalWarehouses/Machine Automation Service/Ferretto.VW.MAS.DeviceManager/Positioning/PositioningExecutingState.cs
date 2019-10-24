@@ -483,7 +483,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         return true;
                     }
                     if (this.elevatorProvider.HorizontalPosition < this.fullPosition
-                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
+                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
+                        )
                     {
                         return true;
                     }

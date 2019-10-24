@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.SwitchOn = false;
+            this.InverterStatus.CommonControlWord.EnableOperation = false;
 
             var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
@@ -82,10 +82,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             }
             else
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsSwitchedOn)
+                this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new PowerOffDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }

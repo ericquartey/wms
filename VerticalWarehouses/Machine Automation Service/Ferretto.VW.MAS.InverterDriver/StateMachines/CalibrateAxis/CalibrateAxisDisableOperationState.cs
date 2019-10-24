@@ -94,14 +94,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 }
                 else
                 {
-                    if (this.stopRequested)
-                    {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                    }
+                    this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger, this.stopRequested));
                     returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                 }
             }
