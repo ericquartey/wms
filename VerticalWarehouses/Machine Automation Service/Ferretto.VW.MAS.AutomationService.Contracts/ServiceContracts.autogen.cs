@@ -1685,9 +1685,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("orientation", Required = Newtonsoft.Json.Required.Always)]
         public Orientation Orientation { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("profileCalibrateHeight", Required = Newtonsoft.Json.Required.Always)]
-        public int ProfileCalibrateHeight { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("profileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
         public double ProfileCalibrateLength { get; set; }
     
