@@ -64,17 +64,12 @@ namespace Ferretto.VW.MAS.DataModels
         public Orientation Orientation { get; set; }
 
         /// <summary>
-        /// Gets or sets the height that must match the ProfileCalibratePosition in the profile calibration procedure.
-        /// </summary>
-        public int ProfileCalibrateHeight { get; set; }
-
-        /// <summary>
         /// Gets or sets the target position for the horizontal movement in the profile calibration procedure.
         /// </summary>
         public double ProfileCalibrateLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the position that must match the ProfileCalibrateHeight in the profile calibration procedure.
+        /// Gets or sets the position that must match the raise of ProfileCalibrationBay signal in the profile calibration procedure.
         /// </summary>
         public int ProfileCalibratePosition { get; set; }
 

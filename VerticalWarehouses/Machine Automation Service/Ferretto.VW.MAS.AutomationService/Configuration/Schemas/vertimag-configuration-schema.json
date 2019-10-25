@@ -438,12 +438,6 @@
                     "title": "The WeightMeasureTime Schema",
                     "default": 0
                   },
-                  "ProfileCalibrateHeight": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateHeight",
-                    "type": "integer",
-                    "title": "The ProfileCalibrateHeight Schema",
-                    "default": 0
-                  },
                   "ProfileCalibrateLength": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",
                     "type": "integer",
