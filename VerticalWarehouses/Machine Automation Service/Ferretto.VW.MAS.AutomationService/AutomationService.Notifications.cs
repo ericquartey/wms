@@ -95,6 +95,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.ChangeRunningState:
                     this.OnChangeRunningState(receivedMessage);
                     break;
+
+                case MessageType.MoveLoadingUnit:
+                    this.OnMoveLoadingUnit(receivedMessage);
+
+                    break;
             }
         }
 

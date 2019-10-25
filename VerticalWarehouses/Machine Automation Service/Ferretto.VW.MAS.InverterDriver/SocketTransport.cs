@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -236,6 +237,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Disconnect();
                     throw new InvalidOperationException("Timeout reading data from Transport Stream");
                 }
+            }
+            catch (IOException ex)
+            {
+                this.Disconnect();
+                throw new InvalidOperationException(ex.Message);
             }
             catch
             {

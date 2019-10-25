@@ -241,6 +241,51 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errore Machine Manager.
+        /// </summary>
+        public static string MachineManagerErrorBaseCode {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database posizione destinazione cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database posizione sorgente cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nessun cassetto presente nella baia indicata.
+        /// </summary>
+        public static string MachineManagerErrorNoLoadingUnitInSource {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to È scattata la funzione di sicurezza..
         /// </summary>
         public static string SecurityWasTriggered {

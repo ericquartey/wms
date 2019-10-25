@@ -28,7 +28,7 @@
 
         LuPresentInMachineSideBay1 = 11,
 
-        BarrierCalibrationBay1 = 12,
+        ProfileCalibrationBay1 = 12,
 
         Free2Bay1 = 13,
 
@@ -60,7 +60,7 @@
 
         Free6Bay2 = 27,
 
-        BarrierCalibrationBay2 = 28,
+        ProfileCalibrationBay2 = 28,
 
         Free7Bay2 = 29,
 
@@ -92,7 +92,7 @@
 
         Free6Bay3 = 43,
 
-        BarrierCalibrationBay3 = 44,
+        ProfileCalibrationBay3 = 44,
 
         Free7Bay3 = 45,
 

@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.MachineManager.Extensions
                 .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()
                 .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
                 .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
+                .AddTransient<IMoveLoadingUnitWaitEjectConfirm, MoveLoadingUnitWaitEjectConfirm>()
                 .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>();
 
             return services;

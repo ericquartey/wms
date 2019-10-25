@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 {
@@ -9,6 +10,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         CommandAction CommandAction { get; }
 
         bool Enable { get; }
+
+        Guid? MissionId { get; }
 
         StopRequestReason StopReason { get; }
 

@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.Resources
         MovemetsFromCellToCell,
 
         [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Estrazione cassetti da cella in baia")]
+        [Display(Description = "Spostamento cassetti da cella in baia")]
         MovemetsFromCellToBay,
 
         None,

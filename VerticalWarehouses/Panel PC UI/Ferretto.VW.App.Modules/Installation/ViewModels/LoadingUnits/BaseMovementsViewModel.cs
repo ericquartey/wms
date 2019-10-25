@@ -37,6 +37,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isPosition1Selected;
+
+        private bool isPosition2Selected;
+
         private bool isShutterTwoSensors;
 
         private bool isStopping;
@@ -50,6 +54,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private LoadingUnit loadingUnitInBay;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken moveLoadingUnitToken;
+
+        private DelegateCommand selectBayPosition1Command;
+
+        private DelegateCommand selectBayPosition2Command;
 
         private SubscriptionToken sensorsToken;
 
@@ -91,6 +101,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public IBayManager BayManagerService => this.bayManagerService;
+
+        public Guid? CurrentMissionId { get; private set; }
 
         public double? ElevatorHorizontalPosition
         {
@@ -158,6 +170,30 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1;
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
+
+        public bool IsPosition1Selected
+        {
+            get => this.isPosition1Selected;
+            set
+            {
+                if (this.SetProperty(ref this.isPosition1Selected, value))
+                {
+                    this.IsPosition2Selected = !this.isPosition1Selected;
+                }
+            }
+        }
+
+        public bool IsPosition2Selected
+        {
+            get => this.isPosition2Selected;
+            set
+            {
+                if (this.SetProperty(ref this.isPosition2Selected, value) && value)
+                {
+                    this.IsPosition1Selected = !this.isPosition1Selected;
+                }
+            }
+        }
 
         public bool IsShutterTwoSensors
         {
@@ -227,6 +263,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
 
+        public ICommand SelectBayPosition1Command =>
+                        this.selectBayPosition1Command
+                        ??
+                        (this.selectBayPosition1Command = new DelegateCommand(this.SelectBayPosition1));
+
+        public ICommand SelectBayPosition2Command =>
+                        this.selectBayPosition2Command
+                        ??
+                        (this.selectBayPosition2Command = new DelegateCommand(this.SelectBayPosition2));
+
         public Sensors Sensors => this.sensors;
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
@@ -273,6 +319,47 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             */
         }
 
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
+        {
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
+                }
+            }
+
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
+                }
+            }
+
+            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                if (this.IsPosition1Selected)
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+                }
+                else
+                {
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
+                }
+            }
+
+            return MAS.AutomationService.Contracts.LoadingUnitLocation.NoLocation;
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -291,6 +378,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(this.OnMoveLoadingUnitChanged,
+                       ThreadOption.UIThread,
+                       false);
 
             this.sensorsToken = this.sensorsToken
                 ??
@@ -345,6 +440,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public virtual void SelectBayPosition1()
+        {
+            this.IsPosition1Selected = true;
+        }
+
+        public virtual void SelectBayPosition2()
+        {
+            this.IsPosition2Selected = true;
+        }
+
         public virtual Task StartAsync()
         {
             return Task.CompletedTask;
@@ -356,7 +461,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineLoadingUnitsWebService.StopAsync(this.Bay.Number);
+                await this.machineLoadingUnitsWebService.StopAsync(null, this.Bay.Number);
 
                 this.IsStopping = true;
             }
@@ -372,6 +477,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
         }
 
+        protected virtual void Ended()
+        {
+            this.RestoreStates();
+
+            this.ShowNotification(
+                VW.App.Resources.InstallationApp.ProcedureCompleted,
+                Services.Models.NotificationSeverity.Success);
+        }
+
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             base.OnMachineModeChanged(e);
@@ -382,6 +496,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected virtual void OnWaitResume()
+        {
+        }
+
         private bool CanExecuteStopCommand()
         {
             return
@@ -390,15 +508,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 !this.IsStopping;
-        }
-
-        private void Ended()
-        {
-            this.RestoreStates();
-
-            this.ShowNotification(
-                VW.App.Resources.InstallationApp.ProcedureCompleted,
-                Services.Models.NotificationSeverity.Success);
         }
 
         private async Task InitializeSensors()
@@ -420,46 +529,58 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             switch (message.Status)
             {
+                case MessageStatus.OperationExecuting:
+                {
+                    if (message.Data.AxisMovement == Axis.Vertical)
+                    {
+                        this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                    }
+                    else if (message.Data.AxisMovement == Axis.Horizontal)
+                    {
+                        this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                    }
+
+                    break;
+                }
+            }
+        }
+
+        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            switch (message.Status)
+            {
                 case MessageStatus.OperationStart:
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
 
+                    this.CurrentMissionId = (message.Data as MoveLoadingUnitMessageData).MissionId;
+
                     break;
 
-                case MessageStatus.OperationExecuting:
-                    {
-                        if (message.Data.AxisMovement == Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data.AxisMovement == Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
-
-                        break;
-                    }
+                case MessageStatus.OperationWaitResume:
+                    this.OnWaitResume();
+                    break;
 
                 case MessageStatus.OperationEnd:
+                {
+                    if (!this.IsExecutingProcedure)
                     {
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
-
-                        this.Ended();
-
                         break;
                     }
+
+                    this.Ended();
+
+                    break;
+                }
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                    {
-                        this.Stopped();
+                {
+                    this.Stopped();
 
-                        break;
-                    }
+                    break;
+                }
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;
