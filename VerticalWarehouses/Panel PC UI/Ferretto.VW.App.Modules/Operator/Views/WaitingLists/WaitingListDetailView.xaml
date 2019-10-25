@@ -16,7 +16,7 @@
         <conv:ItemListTypeEnumConverter x:Key="ILTEC" />
     </ctrls:View.Resources>
 
-    <Grid Margin="100,30,0,30">
+    <Grid Margin="100,30,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -27,7 +27,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
@@ -80,14 +80,14 @@
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
-                                Margin="15,0,20,15"
+                                Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding UpDataGridButtonCommand}"
                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Margin="15,0,20,15"
+                                Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownDataGridButtonCommand}"
@@ -105,7 +105,7 @@
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
-                            Margin="15,15,20,15"
+                            Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding ListExecuteCommand}"

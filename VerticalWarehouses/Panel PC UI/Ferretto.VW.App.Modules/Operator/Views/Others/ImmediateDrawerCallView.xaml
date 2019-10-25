@@ -18,7 +18,7 @@
             </DataTemplate>
         </ResourceDictionary>
     </ctrls:View.Resources>
-    <Grid Margin="100,30,0,30">
+    <Grid Margin="100,30,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -28,7 +28,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
@@ -38,7 +38,6 @@
                    Text="{x:Static Resources:OperatorApp.ImmediateDrawerCallHeader}" />
 
         <ContentControl Grid.Row="1"
-                        Margin="0,0,0,15"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Stretch"
                         Content="{Binding DataGridViewModel}" />
@@ -46,26 +45,27 @@
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
                     Orientation="Vertical">
-            <controls:PpcButton Margin="15,0,20,15"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Content="{x:Static Resources:OperatorApp.CommonUp}" />
+            <controls:PpcButton Margin="15,0,15,15"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
-            <controls:PpcButton Margin="15,0,20,15"
-                                                HorizontalAlignment="Right"
-                                                VerticalAlignment="Top"
-                                                Content="{x:Static Resources:OperatorApp.CommonDown}" />
+            <controls:PpcButton Margin="15,0,15,15"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Content="{x:Static Resources:OperatorApp.CommonDown}" />
         </StackPanel>
 
 
         <controls:PpcButton Grid.Row="2"
-                                            Grid.Column="1"
-                                            Margin="15,0,20,15"
-                                            HorizontalAlignment="Right"
-                                            VerticalAlignment="Bottom"
-                                            Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}" />
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Content="{x:Static Resources:OperatorApp.ImmediateDrawerCallDrawerCall}" />
 
-        <Grid Grid.Row="3">
+        <Grid Grid.Row="3"
+              Margin="0,15,0,0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -73,14 +73,14 @@
             </Grid.ColumnDefinitions>
 
             <controls:PpcLabeledText HorizontalAlignment="Left"
-                                                     VerticalAlignment="Top"
-                                                     ContentText="Cassetto bloccato."
-                                                     LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
+                                     VerticalAlignment="Top"
+                                     ContentText="Cassetto bloccato."
+                                     LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
             <controls:PpcTextBox Grid.Column="1"
-                                                 HorizontalAlignment="Left"
-                                                 VerticalAlignment="Top"
-                                                 LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}" />
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 LabelText="{x:Static Resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}" />
 
         </Grid>
 

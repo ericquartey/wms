@@ -77,12 +77,22 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
+            containerRegistry.RegisterForNavigation<StatisticsCellsView>();
+            containerRegistry.RegisterForNavigation<StatisticsDrawersView>();
+            containerRegistry.RegisterForNavigation<StatisticsErrorsView>();
+            containerRegistry.RegisterForNavigation<StatisticsMachineView>();
+            containerRegistry.RegisterForNavigation<StatisticsSpaceSaturationView>();
+            containerRegistry.RegisterForNavigation<StatisticsWeightSaturationView>();
             containerRegistry.RegisterForNavigation<MaintenanceView>();
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
 
             containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
+            containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();
+            containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
+            containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
+            containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
         }
 
         #endregion

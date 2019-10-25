@@ -61,7 +61,14 @@
     <None Remove="Views\Others\MaintenanceView.xaml" />
     <None Remove="Views\Others\MenuNavigationView.xaml" />
     <None Remove="Views\Others\OthersNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsCellsView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsDrawersView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsErrorsView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsMachineView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsMenuNavigationView.xaml" />
     <None Remove="Views\Others\Statistics\StatisticsNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsSpaceSaturationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsWeightSaturationView.xaml" />
     <None Remove="Views\WaitingLists\ItemSearchDetailView.xaml" />
     <None Remove="Views\WaitingLists\ItemSearchMainView.xaml" />
     <None Remove="Views\WaitingLists\WaitingListsView - Copy.xaml" />
@@ -106,6 +113,9 @@
     </Compile>
     <Compile Update="Views\Others\Maintenance\MaintenanceView - Copy.xaml.cs">
       <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Statistics\StatisticsMenuNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\WaitingLists\WaitingListsView - Copy.xaml.cs">
       <DependentUpon>WaitingListsView.xaml</DependentUpon>

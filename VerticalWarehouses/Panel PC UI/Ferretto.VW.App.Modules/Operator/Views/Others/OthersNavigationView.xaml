@@ -18,7 +18,7 @@
         <converters:MachineServiceStatusEnumConverter x:Key="MSSEC" />
     </ctrls:View.Resources>
 
-    <Grid Margin="85,30,100,30">
+    <Grid Margin="93,30,100,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="190" />

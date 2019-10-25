@@ -17,7 +17,7 @@
                     Command="{Binding LoginCommand}" />
     </view:View.InputBindings>
 
-    <Grid Margin="100,30">
+    <Grid Margin="100,30,100,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -61,6 +61,7 @@
 
         <StackPanel Name="LoginForm"
                     Grid.Row="4"
+                    Margin="0"
                     IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
 
             <ctrls:PpcTextBox Width="200"
@@ -75,7 +76,7 @@
                               InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                               LabelText="{x:Static res:VWApp.UserLogin_Password}" />
 
-            <ctrls:PpcButton Margin="0,20"
+            <ctrls:PpcButton Margin="0,20,0,0"
                              HorizontalAlignment="Left"
                              Command="{Binding LoginCommand}"
                              Content="{x:Static res:General.Login}"

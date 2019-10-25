@@ -20,7 +20,7 @@
         </ResourceDictionary>
     </ctrls:View.Resources>
 
-    <Grid Margin="100,30,0,30">
+    <Grid Margin="100,30,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -31,7 +31,7 @@
             <RowDefinition Height="50" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
@@ -115,7 +115,6 @@
 
         <ContentControl Grid.Row="2"
                         Grid.RowSpan="2"
-                        Margin="0,0,0,15"
                         HorizontalAlignment="Left"
                         VerticalAlignment="Stretch"
                         Content="{Binding DataGridViewModel}" />
@@ -130,13 +129,13 @@
             </Grid.RowDefinitions>
 
 
-            <controls:PpcButton Margin="15,0,20,15"
+            <controls:PpcButton Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Margin="15,0,20,15"
+                                Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Content="{x:Static Resources:OperatorApp.CommonDown}" />
@@ -144,7 +143,7 @@
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
-                            Margin="15,0,20,15"
+                            Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="top"
                             Content="{x:Static Resources:OperatorApp.MaintenanceDetailContactRequired}" />

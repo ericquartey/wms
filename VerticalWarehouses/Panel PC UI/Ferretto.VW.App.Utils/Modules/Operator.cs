@@ -84,7 +84,30 @@
             {
                 #region Fields
 
+                public const string CELLS = "StatisticsCellsViewModel";
+
+                public const string ERRORS = "StatisticsErrorsViewModel";
+
+                public const string MACHINE = "StatisticsMachineViewModel";
+
                 public const string NAVIGATION = "StatisticsNavigationViewModel";
+
+                #endregion
+
+                #region Classes
+
+                public static class Drawers
+                {
+                    #region Fields
+
+                    public const string MAIN = "StatisticsDrawersViewModel";
+
+                    public const string SPACESATURATION = "StatisticsSpaceSaturationViewModel";
+
+                    public const string WEIGHTSATURATION = "StatisticsWeightSaturationViewModel";
+
+                    #endregion
+                }
 
                 #endregion
             }
