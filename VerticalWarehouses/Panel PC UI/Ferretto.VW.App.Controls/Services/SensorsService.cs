@@ -11,7 +11,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Controls.Services
+namespace Ferretto.VW.App.Services
 {
     public class SensorsService : BindableBase, ISensorsService
     {
@@ -57,6 +57,8 @@ namespace Ferretto.VW.App.Controls.Services
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+
+            this.StartMonitoring();
         }
 
         #endregion
