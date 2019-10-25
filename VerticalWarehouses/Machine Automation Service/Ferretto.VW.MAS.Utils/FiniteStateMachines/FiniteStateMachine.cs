@@ -92,11 +92,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.activeState?.Exit();
 
-                    if (this.activeState is IMessageState messageState)
+                    if (this.activeState is IProgressMessageState progressMessageState)
                     {
-                        if (messageState.Message != null)
+                        if (progressMessageState.Message != null)
                         {
-                            this.notificationEvent.Publish(messageState.Message);
+                            this.notificationEvent.Publish(progressMessageState.Message);
                         }
                     }
 
@@ -116,6 +116,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                         var eventArgs = new FiniteStateMachinesEventArgs
                         { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
                         this.RaiseCompleted(eventArgs);
+                    }
+
+                    if (this.activeState is IStartMessageState startMessageState)
+                    {
+                        this.notificationEvent.Publish(startMessageState.Message);
                     }
                 }
 

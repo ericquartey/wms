@@ -92,6 +92,6 @@ namespace Ferretto.VW.MAS.DataModels
         MachineManagerErrorLoadingUnitDestinationDb = MachineManagerErrorBaseCode + 3,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitElevator), 1)]
-        MachineManagerErrorLoadingUnitElevator = MachineManagerErrorBaseCode + 3,
+        MachineManagerErrorLoadingUnitElevator = MachineManagerErrorBaseCode + 4,
     }
 }

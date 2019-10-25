@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces
 {
-    public interface IMessageState
+    public interface IProgressMessageState
     {
         #region Properties
 

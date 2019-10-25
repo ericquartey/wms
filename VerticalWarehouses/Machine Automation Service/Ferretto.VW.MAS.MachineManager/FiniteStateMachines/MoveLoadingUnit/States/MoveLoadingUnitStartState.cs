@@ -1,11 +1,13 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +15,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitStartState : StateBase, IMoveLoadingUnitStartState
+    internal class MoveLoadingUnitStartState : StateBase, IMoveLoadingUnitStartState, IStartMessageState
     {
         #region Fields
 
@@ -33,11 +35,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         #endregion
 
+        #region Properties
+
+        public NotificationMessage Message { get; set; }
+
+        #endregion
+
         #region Methods
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
             {
                 var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData);
 
@@ -49,6 +57,29 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
 
                 this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, MessageActor.MachineManager, commandMessage.RequestingBay);
+
+                var newMessageData = new MoveLoadingUnitMessageData(
+                                                                    messageData.Source,
+                                                                    messageData.Destination,
+                                                                    messageData.SourceCellId,
+                                                                    messageData.DestinationCellId,
+                                                                    messageData.LoadingUnitId,
+                                                                    messageData.InsertLoadingUnit,
+                                                                    messageData.EjectLoadingUnit,
+                                                                    moveData.MachineId,
+                                                                    messageData.CommandAction,
+                                                                    messageData.StopReason,
+                                                                    messageData.Verbosity);
+
+                this.Message = new NotificationMessage(
+                    newMessageData,
+                    $"Loading Unit {moveData.LoadingUnitId} placed on bay {messageData.Destination}",
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    MessageType.MoveLoadingUnit,
+                    commandMessage.RequestingBay,
+                    commandMessage.TargetBay,
+                    MessageStatus.OperationStart);
             }
             else
             {

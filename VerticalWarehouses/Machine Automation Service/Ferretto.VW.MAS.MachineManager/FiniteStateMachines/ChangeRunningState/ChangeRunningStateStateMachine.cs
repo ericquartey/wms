@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+
+            this.MachineData = new ChangeRunningStateMachineData(this.InstanceId);
         }
 
         #endregion
@@ -106,7 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
             }
             else
             {
-                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForPositioning, commandMessage.RequestingBay);
+                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
             }
 
             return returnValue;

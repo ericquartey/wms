@@ -13,7 +13,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable LocalVariableHidesMember
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState, IMessageState
+    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState, IProgressMessageState
     {
         #region Fields
 
@@ -67,8 +67,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case MessageStatus.OperationEnd:
                     if (this.messageData.EjectLoadingUnit)
                     {
-                        var messageData = new MoveLoadingUnitMessageData(this.messageData);
-                        messageData.MissionId = this.moveData.MachineId;
+                        var messageData = new MoveLoadingUnitMessageData(
+                            this.messageData.Source,
+                            this.messageData.Destination,
+                            this.messageData.SourceCellId,
+                            this.messageData.DestinationCellId,
+                            this.messageData.LoadingUnitId,
+                            this.messageData.InsertLoadingUnit,
+                            this.messageData.EjectLoadingUnit,
+                            this.moveData.MachineId,
+                            this.messageData.CommandAction,
+                            this.messageData.StopReason,
+                            this.messageData.Verbosity);
 
                         this.Message = new NotificationMessage(
                             messageData,

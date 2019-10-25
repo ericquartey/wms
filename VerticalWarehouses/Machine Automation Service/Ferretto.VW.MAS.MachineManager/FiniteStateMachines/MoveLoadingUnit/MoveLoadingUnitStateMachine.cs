@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
 
-            this.MachineData = new MoveLoadingUnitMachineData();
+            this.MachineData = new MoveLoadingUnitMachineData(this.InstanceId);
         }
 
         #endregion

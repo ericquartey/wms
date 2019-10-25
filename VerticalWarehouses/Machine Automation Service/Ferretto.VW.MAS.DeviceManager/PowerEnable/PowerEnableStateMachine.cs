@@ -129,12 +129,12 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             var isMarchPossible = true;
             var reason = new StringBuilder();
 
-            if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSide])
+            if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterLeftSide])
             {
                 isMarchPossible = false;
                 reason.Append("Micro Carter Active Bay1 Left; ");
             }
-            if (!this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSide])
+            if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.MicroCarterRightSide])
             {
                 isMarchPossible = false;
                 reason.Append("Micro Carter Active Bay1 Right; ");

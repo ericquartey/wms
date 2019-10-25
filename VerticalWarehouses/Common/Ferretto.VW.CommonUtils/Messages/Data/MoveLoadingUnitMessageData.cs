@@ -34,21 +34,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             this.Verbosity = verbosity;
         }
 
-        public MoveLoadingUnitMessageData(IMoveLoadingUnitMessageData other)
-        {
-            this.Source = other.Source;
-            this.Destination = other.Destination;
-            this.SourceCellId = other.SourceCellId;
-            this.DestinationCellId = other.DestinationCellId;
-            this.LoadingUnitId = other.LoadingUnitId;
-            this.InsertLoadingUnit = other.InsertLoadingUnit;
-            this.EjectLoadingUnit = other.EjectLoadingUnit;
-            this.MissionId = other.MissionId;
-            this.CommandAction = other.CommandAction;
-            this.StopReason = other.StopReason;
-            this.Verbosity = other.Verbosity;
-        }
-
         #endregion
 
         #region Properties
@@ -65,7 +50,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int? LoadingUnitId { get; }
 
-        public Guid? MissionId { get; set; }
+        public Guid? MissionId { get; }
 
         public LoadingUnitLocation Source { get; }
 

@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             this.SendCommandToMissionManager(
                  new MoveLoadingUnitMessageData(
-                    LoadingUnitLocation.Cell,
+                    LoadingUnitLocation.LoadingUnit,
                     destinationBay,
                     null,
                     null,

@@ -55,6 +55,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private SubscriptionToken moveLoadingUnitToken;
+
         private DelegateCommand selectBayPosition1Command;
 
         private DelegateCommand selectBayPosition2Command;
@@ -99,6 +101,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public IBayManager BayManagerService => this.bayManagerService;
+
+        public Guid? CurrentMissionId { get; private set; }
 
         public double? ElevatorHorizontalPosition
         {
@@ -375,6 +379,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(this.OnMoveLoadingUnitChanged,
+                       ThreadOption.UIThread,
+                       false);
+
             this.sensorsToken = this.sensorsToken
                 ??
                 this.EventAggregator
@@ -475,6 +487,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected virtual void OnWaitResume()
+        {
+        }
+
         private bool CanExecuteStopCommand()
         {
             return
@@ -513,12 +529,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             switch (message.Status)
             {
-                case MessageStatus.OperationStart:
-                    this.IsExecutingProcedure = true;
-                    this.RaiseCanExecuteChanged();
-
-                    break;
-
                 case MessageStatus.OperationExecuting:
                 {
                     if (message.Data.AxisMovement == Axis.Vertical)
@@ -532,6 +542,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                     break;
                 }
+            }
+        }
+
+        private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.IsExecutingProcedure = true;
+                    this.RaiseCanExecuteChanged();
+
+                    this.CurrentMissionId = (message.Data as MoveLoadingUnitMessageData).MissionId;
+
+                    break;
+
+                case MessageStatus.OperationWaitResume:
+                    this.OnWaitResume();
+                    break;
 
                 case MessageStatus.OperationEnd:
                 {

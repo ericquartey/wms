@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public ICommand ConfirmEjectLoadingUnitCommand =>
                 this.confirmEjectLoadingUnitCommand
                 ??
-                (this.confirmEjectLoadingUnitCommand = new DelegateCommand(this.ConfirmEjectLoadingUnit, this.CanConfirmEjectLoadingUnit));
+                (this.confirmEjectLoadingUnitCommand = new DelegateCommand(async () => await this.ConfirmEjectLoadingUnit(), this.CanConfirmEjectLoadingUnit));
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                //await this.machineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, null, null);
+                await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {
@@ -85,14 +85,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override void OnWaitResume()
+        {
+            this.isEjectLoadingUnitConfirmationEnabled = true;
+
+            this.RaiseCanExecuteChanged();
+        }
+
         private bool CanConfirmEjectLoadingUnit()
         {
             return this.isEjectLoadingUnitConfirmationEnabled;
         }
 
-        private void ConfirmEjectLoadingUnit()
+        private async Task ConfirmEjectLoadingUnit()
         {
-            // TODO call resume
+            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.Bay.Number);
         }
 
         #endregion

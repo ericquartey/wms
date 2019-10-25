@@ -67,6 +67,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<ChangeRunningStateMessageData>>(
                 nameof(IInstallationHub.ChangeRunningState), this.OnChangeRunningState);
+
+            connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
+                nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
@@ -105,6 +108,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         }
 
         private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
+        {
+            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMoveLoadingUnit(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
         }

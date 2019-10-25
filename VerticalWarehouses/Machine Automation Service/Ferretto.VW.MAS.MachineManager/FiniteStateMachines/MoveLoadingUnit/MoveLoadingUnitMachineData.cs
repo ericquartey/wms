@@ -6,6 +6,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 {
     internal class MoveLoadingUnitMachineData : IMoveLoadingUnitMachineData
     {
+        #region Constructors
+
+        internal MoveLoadingUnitMachineData(Guid machineId)
+        {
+            this.MachineId = machineId;
+        }
+
+        #endregion
+
         #region Properties
 
         public int? LoadingUnitCellSourceId { get; set; }
