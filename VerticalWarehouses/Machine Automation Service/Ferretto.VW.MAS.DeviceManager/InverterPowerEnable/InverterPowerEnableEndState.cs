@@ -51,8 +51,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             var notificationMessage = new NotificationMessage(
                 null,
                 $"InverterPowerEnable completed for Bay {this.machineData.TargetBay}",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.InverterPowerEnable,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

@@ -401,11 +401,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineLoadingUnitsWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task AbortAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task AbortAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task EjectLoadingUnitAsync(LoadingUnitLocation destination, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnit>> GetAllAsync();
@@ -429,6 +436,27 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<LoadingUnitWeightStatistics>> GetWeightStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task ResumeAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StartMovingLoadingUnitToBayAsync(int loadingUnitId, LoadingUnitLocation destination);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -450,11 +478,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task StartMovingSourceDestinationAsync(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(BayNumber targetBay);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task StopAsync(BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task StopAsync(System.Guid? missionId, BayNumber targetBay, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2350,7 +2378,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 200013 = InverterErrorSyntaxError
     /// 200014 = InverterErrorWrongPayloadLength
     /// 200020 = InverterErrorNodeNotAvailable
-    /// 200030 = InverterErrorSyntaxError2</summary>
+    /// 200030 = InverterErrorSyntaxError2
+    /// 300000 = MachineManagerErrorBaseCode
+    /// 300001 = MachineManagerErrorNoLoadingUnitInSource
+    /// 300002 = MachineManagerErrorLoadingUnitSourceDb
+    /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
+    /// 300004 = MachineManagerErrorLoadingUnitElevator</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
@@ -2401,6 +2434,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         InverterErrorNodeNotAvailable = 200020,
     
         InverterErrorSyntaxError2 = 200030,
+    
+        MachineManagerErrorBaseCode = 300000,
+    
+        MachineManagerErrorNoLoadingUnitInSource = 300001,
+    
+        MachineManagerErrorLoadingUnitSourceDb = 300002,
+    
+        MachineManagerErrorLoadingUnitDestinationDb = 300003,
+    
+        MachineManagerErrorLoadingUnitElevator = 300004,
     
     }
     

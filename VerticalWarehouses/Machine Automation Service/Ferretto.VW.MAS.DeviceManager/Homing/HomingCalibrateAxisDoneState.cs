@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 notificationMessageData,
                 $"{this.machineData.InverterIndexOld} axis calibration completed",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.CalibrateAxis,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

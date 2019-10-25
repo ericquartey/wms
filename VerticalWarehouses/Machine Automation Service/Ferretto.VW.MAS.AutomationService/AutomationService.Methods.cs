@@ -213,6 +213,29 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private void OnMoveLoadingUnit(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                this.Logger.LogTrace($"13:Sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
+
+                this.Logger.LogTrace($"14:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.Logger.LogTrace($"15:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogTrace($"16:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
         private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)
         {
             if (e == null)

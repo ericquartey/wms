@@ -39,13 +39,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
-                BayNumber = command.RequestingBay.ToString(),
+                BayNumber = command.RequestingBay,
                 Data = serializedData,
                 Description = command.Description,
-                Destination = command.Destination.ToString(),
-                Source = command.Source.ToString(),
+                Destination = command.Destination,
+                Source = command.Source,
                 TimeStamp = DateTime.Now,
-                Type = command.Type.ToString(),
+                Type = command.Type,
             };
 
             this.Create(logEntry);
@@ -57,15 +57,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var logEntry = new LogEntry
             {
-                BayNumber = notification.RequestingBay.ToString(),
+                BayNumber = notification.RequestingBay,
                 Data = serializedData,
                 Description = notification.Description,
-                Destination = notification.Destination.ToString(),
-                Source = notification.Source.ToString(),
+                Destination = notification.Destination,
+                Source = notification.Source,
                 TimeStamp = DateTime.Now,
-                Type = notification.Type.ToString(),
-                ErrorLevel = notification.ErrorLevel.ToString(),
-                Status = notification.Status.ToString(),
+                Type = notification.Type,
+                ErrorLevel = notification.ErrorLevel,
+                Status = notification.Status,
             };
 
             this.Create(logEntry);
@@ -89,11 +89,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void Create(LogEntry logEntry)
         {
-            this.logger.LogTrace($"Saving log entry '{logEntry.Description}' (id={logEntry.Id}) to database.");
+            this.logger.LogDebug(logEntry.ToString());
 
-            this.dataContext.LogEntries.Add(logEntry);
+            //this.dataContext.LogEntries.Add(logEntry);
 
-            this.dataContext.SaveChanges();
+            //this.dataContext.SaveChanges();
         }
 
         #endregion

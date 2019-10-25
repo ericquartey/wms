@@ -1098,4 +1098,9 @@
   <data name="SelectDestinationBay" xml:space="preserve">
     <value>Seleziona baia di destinazione</value>
   </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Test Serranda</value>
+  </data>
 </root>
+
+

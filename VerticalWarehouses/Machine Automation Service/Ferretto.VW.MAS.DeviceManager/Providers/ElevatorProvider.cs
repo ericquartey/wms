@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 null,
                 $"Continue Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.ContinueMovement,
                 requestingBay,
@@ -185,7 +185,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -225,7 +225,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -261,7 +261,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Profile Calibration Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -339,7 +339,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -446,7 +446,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -500,7 +500,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -571,7 +571,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 data,
                 "Execute Belt Burnishing Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 requestingBay,
@@ -584,7 +584,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Stop Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,
                 requestingBay,

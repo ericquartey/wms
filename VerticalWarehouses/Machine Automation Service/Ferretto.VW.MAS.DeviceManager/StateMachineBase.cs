@@ -52,12 +52,12 @@ namespace Ferretto.VW.MAS.DeviceManager
         /// <inheritdoc />
         public virtual void ChangeState(IState newState, CommandMessage message = null)
         {
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, newState.GetType().Name, MessageVerbosity.Info);
+            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.DeviceManager, newState.GetType().Name, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,
                 $"FSM current state {newState.GetType().Name}",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.MachineStateActive,
                 BayNumber.None,
                 BayNumber.None,
@@ -150,12 +150,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                 // This is very bad. this code should not be here.
                 // Avoid improper use of disposal routines.
                 {
-                    var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                    var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"FSM current status null",
                         MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         MessageType.MachineStatusActive,
                         BayNumber.None,
                         BayNumber.None,
@@ -165,12 +165,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                 }
 
                 {
-                    var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                    var notificationMessageData = new MachineStateActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
                     var notificationMessage = new NotificationMessage(
                         notificationMessageData,
                         $"FSM current state null",
                         MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         MessageType.MachineStateActive,
                         BayNumber.None,
                         BayNumber.None,

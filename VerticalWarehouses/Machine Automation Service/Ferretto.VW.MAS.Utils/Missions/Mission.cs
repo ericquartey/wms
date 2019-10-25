@@ -39,7 +39,9 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public Guid Id { get; }
 
-        public MissionType Type { get; }
+        public MissionStatus Status { get; protected set; }
+
+        public MissionType Type { get; protected set; }
 
         protected TMachine CurrentStateMachine { get; }
 
@@ -47,10 +49,12 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #region Methods
 
-        public bool AllowMultipleInstances(CommandMessage command)
+        public virtual void AbortMachineMission()
         {
-            throw new NotImplementedException();
+            this.CurrentStateMachine.Abort();
         }
+
+        public abstract bool AllowMultipleInstances(CommandMessage command);
 
         public void Dispose()
         {
@@ -62,9 +66,19 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.cancellationTokenSource.Cancel();
         }
 
+        public void PauseMachineMission()
+        {
+            this.CurrentStateMachine.Pause();
+        }
+
         public void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler)
         {
             this.CurrentStateMachine.Completed -= endHandler;
+        }
+
+        public void ResumeMachineMission()
+        {
+            this.CurrentStateMachine.Resume();
         }
 
         public void StartMachine(CommandMessage command)

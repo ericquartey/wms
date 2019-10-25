@@ -47,8 +47,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Homing Stopped due to an error",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
+                    MessageActor.DeviceManager,
                     MessageType.Homing,
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,
@@ -84,8 +84,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "Homing Error",
-                                MessageActor.FiniteStateMachines,
-                                MessageActor.FiniteStateMachines,
+                                MessageActor.DeviceManager,
+                                MessageActor.DeviceManager,
                                 MessageType.Homing,
                                 this.machineData.RequestingBay,
                                 this.machineData.TargetBay,

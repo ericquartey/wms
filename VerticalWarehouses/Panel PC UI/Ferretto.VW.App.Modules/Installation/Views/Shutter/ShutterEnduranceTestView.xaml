@@ -45,12 +45,12 @@
 
 
         <StackPanel Grid.Row="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
+                    Margin="0,0,0,15"
+                    HorizontalAlignment="Left">
 
             <controls:PpcSensorControl SensorState="{Binding Sensors.Open}"
                                        Text="{x:Static res:InstallationApp.ShutterOpen}" />
-            <!--  - optional sensor  -->
+            <!--  optional sensor  -->
             <controls:PpcSensorControl SensorState="{Binding Sensors.MidWay}"
                                        Text="{x:Static res:InstallationApp.ShutterMidWay}" />
 

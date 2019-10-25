@@ -458,6 +458,46 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "ZeroSensorErrorAfterDeposit",
                             Reason = "ZeroSensorErrorAfterDeposit",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 300000,
+                            Code = 300000,
+                            Description = "Errore Machine Manager",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300001,
+                            Code = 300001,
+                            Description = "Nessun cassetto presente nella baia indicata",
+                            Reason = "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300002,
+                            Code = 300002,
+                            Description = "Inconsistenza database posizione sorgente cassetto",
+                            Reason = "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300003,
+                            Code = 300003,
+                            Description = "Inconsistenza database posizione destinazione cassetto",
+                            Reason = "Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300004,
+                            Code = 300004,
+                            Description = "",
+                            Reason = "",
+                            Severity = 1
                         });
                 });
 
@@ -590,6 +630,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 200030,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300000,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300001,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300002,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300003,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300004,
                             TotalErrors = 0
                         });
                 });
@@ -868,7 +933,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 25, 9, 25, 35, 787, DateTimeKind.Local).AddTicks(4309),
+                            InstallationDate = new DateTime(2016, 12, 25, 15, 23, 58, 905, DateTimeKind.Local).AddTicks(1197),
                             ServiceStatus = 86
                         });
                 });

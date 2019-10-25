@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.PublishCommand(
                         null,
                         description,
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         sender,
                         MessageType.InverterFaultReset,
                         requestingBay,
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.PublishCommand(
                     null,
                     $"Requesting inverter fault reset from bay {requestingBay} to bay {targetBay}",
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     sender,
                     MessageType.InverterFaultReset,
                     requestingBay,
@@ -111,7 +111,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 null,
                 $"Bay {requestingBay} requested Security Reset",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.ResetSecurity,
                 requestingBay,
@@ -135,23 +135,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 new PowerEnableMessageData(messageData.Enable),
                 $"Setting Vertimag power status to {messageData.Enable}",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.PowerEnable,
                 requestingBay,
                 BayNumber.None);
-
-            this.PublishNotification(
-                messageData,
-                $"Setting Vertimag power status to {messageData.Enable}",
-                MessageActor.AutomationService,
-                sender,
-                MessageType.ChangeRunningState,
-                requestingBay,
-                BayNumber.None,
-                MessageStatus.OperationStart,
-                ErrorLevel.NoError
-                );
         }
 
         public void StartInverterPowerChange(IInverterPowerEnableMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
@@ -163,7 +151,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.PublishCommand(
                         messageData,
                         $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {bay.Number}",
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         sender,
                         MessageType.InverterPowerEnable,
                         requestingBay,
@@ -175,7 +163,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.PublishCommand(
                     messageData,
                     $"Requesting Inverter Change power status to {messageData.Enable} from bay {requestingBay} to bay {targetBay}",
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     sender,
                     MessageType.InverterPowerEnable,
                     requestingBay,
@@ -192,7 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.PublishCommand(
                         messageData,
                         $"Requesting operation stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         sender,
                         MessageType.Stop,
                         requestingBay,
@@ -204,7 +192,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.PublishCommand(
                     messageData,
                     $"Requesting operation stop from bay {requestingBay} to bay {targetBay} for reason {messageData.StopReason}",
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     sender,
                     MessageType.Stop,
                     requestingBay,

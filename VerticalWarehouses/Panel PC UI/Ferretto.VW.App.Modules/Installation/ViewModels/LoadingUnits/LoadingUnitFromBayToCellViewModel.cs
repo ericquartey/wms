@@ -73,7 +73,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                // await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
+                //await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
+                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {

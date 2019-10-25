@@ -1,20 +1,27 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
+// ReSharper disable LocalVariableHidesMember
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState
+    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState, IProgressMessageState
     {
         #region Fields
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
+
+        private IMoveLoadingUnitMessageData messageData;
+
+        private IMoveLoadingUnitMachineData moveData;
 
         #endregion
 
@@ -22,12 +29,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitCloseShutterState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public NotificationMessage Message { get; set; }
 
         #endregion
 
@@ -35,6 +47,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
+            {
+                this.messageData = messageData;
+                this.moveData = moveData;
+            }
+
             this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, commandMessage.RequestingBay);
         }
 
@@ -47,7 +65,38 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                    if (this.messageData.EjectLoadingUnit)
+                    {
+                        var messageData = new MoveLoadingUnitMessageData(
+                            this.messageData.Source,
+                            this.messageData.Destination,
+                            this.messageData.SourceCellId,
+                            this.messageData.DestinationCellId,
+                            this.messageData.LoadingUnitId,
+                            this.messageData.InsertLoadingUnit,
+                            this.messageData.EjectLoadingUnit,
+                            this.moveData.MachineId,
+                            this.messageData.CommandAction,
+                            this.messageData.StopReason,
+                            this.messageData.Verbosity);
+
+                        this.Message = new NotificationMessage(
+                            messageData,
+                            $"Loading Unit {this.moveData.LoadingUnitId} placed on bay {this.messageData.Destination}",
+                            MessageActor.AutomationService,
+                            MessageActor.MachineManager,
+                            MessageType.MoveLoadingUnit,
+                            notification.RequestingBay,
+                            notification.TargetBay,
+                            MessageStatus.OperationWaitResume);
+
+                        returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
+                    }
+                    else
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                    }
+
                     break;
 
                 case MessageStatus.OperationError:

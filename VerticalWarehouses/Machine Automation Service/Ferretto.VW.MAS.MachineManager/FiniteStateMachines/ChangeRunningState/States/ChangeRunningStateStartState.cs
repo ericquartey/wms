@@ -12,13 +12,13 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
 {
-    internal class ChangeRunningStateStartState : StateBase, IChangeRunningStateStartState
+    internal class ChangeRunningStateStartState : StateBase, IChangeRunningStateStartState, IStartMessageState
     {
         #region Fields
 
@@ -37,9 +37,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         public ChangeRunningStateStartState(
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
@@ -47,6 +46,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
+
+        #endregion
+
+        #region Properties
+
+        public NotificationMessage Message { get; set; }
 
         #endregion
 
@@ -69,6 +74,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     var newMessageData = new StopMessageData(messageData.StopReason);
                     this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
                 }
+
+                var notificationData = new ChangeRunningStateMessageData(
+                    messageData.Enable,
+                    machineData.MachineId,
+                    messageData.CommandAction,
+                    messageData.StopReason,
+                    messageData.Verbosity);
+
+                this.Message = new NotificationMessage(
+                    notificationData,
+                    $"Started Change Running State to {messageData.Enable}",
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    MessageType.ChangeRunningState,
+                    commandMessage.RequestingBay,
+                    commandMessage.TargetBay,
+                    MessageStatus.OperationStart);
             }
             else
             {

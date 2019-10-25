@@ -38,6 +38,10 @@
           {
             "Height": 645,
             "Location": "InternalBay1Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay1Up"
           }
         ],
         "Resolution": 369.8453,

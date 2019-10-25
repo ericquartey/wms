@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.machineData.MessageData,
                         errorText,
                         MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         MessageType.InverterException,
                         this.machineData.RequestingBay,
                         this.machineData.TargetBay,

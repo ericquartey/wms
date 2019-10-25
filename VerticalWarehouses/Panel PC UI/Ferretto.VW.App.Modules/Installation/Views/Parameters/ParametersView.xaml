@@ -11,7 +11,9 @@
     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
     xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
     xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:dxmvvm="http://schemas.devexpress.com/winfx/2008/xaml/mvvm"
     prism:ViewModelLocator.AutoWireViewModel="True"
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -31,17 +33,21 @@
                                    ExpandCategoriesWhenSelectedObjectChanged="True"
                                    AllowExpanding="Force"
                                    ShowCategories="False"
-                                   ShowToolPanel="False"                               
+                                   ShowToolPanel="False"
                                    ShowMenuButtonInRows="False"
                                    IsEnabled="{Binding IsBusy, Converter={StaticResource BNC}}">
 
-            <dxprg:PropertyDefinition Path="*"                                      
+            <dxprg:PropertyDefinition Path="*"
                                       CellTemplateSelector="{StaticResource PropertyGridCellTemplateSelector}"
                                       InsertDefinitionsFrom="{dxprg:RootPropertyDefinition}"/>
+
+            <dxprg:PropertyDefinition Path="Id" Visibility="Collapsed" />
+
+
         </dxprg:PropertyGridControl>
         <controls:PpcButton HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"                            
-                            Height="60"                            
+                            VerticalAlignment="Bottom"
+                            Height="60"
                             Grid.Column="0"
                             Margin="4,0,15,4"
                             Command="{Binding SaveCommand}"

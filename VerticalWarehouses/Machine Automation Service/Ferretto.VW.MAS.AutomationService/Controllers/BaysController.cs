@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.PublishCommand(
                 homingData,
                 "Execute FindZeroSensor Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Homing);
 
             return this.Accepted();
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.PublishCommand(
                 homingData,
                 "Execute Homing Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Homing);
 
             return this.Accepted();
