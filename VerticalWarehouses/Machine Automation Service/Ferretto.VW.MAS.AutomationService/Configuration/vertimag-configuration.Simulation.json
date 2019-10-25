@@ -113,7 +113,7 @@
           },
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
-          "WeightMeasureSpeed": 50,
+          "WeightMeasureSpeed": 20,
           "WeightMeasureTime": 15,
         },
         {
@@ -123,7 +123,7 @@
           "ChainOffset": -6.4,
           "Inverter": null,
           "ProfileCalibratePosition": 300,
-          "ProfileCalibrateSpeed": 50,
+          "ProfileCalibrateSpeed": 30,
           "ProfileCalibrateLength": 900,
           "FullLoadMovement": {
             "Acceleration": 350,

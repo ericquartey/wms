@@ -249,7 +249,7 @@ namespace Ferretto.VW.Simulator.Services
                             else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
                             {
                                 client.Close();
-                                //break;
+                                break;
                             }
                         }
                         else
