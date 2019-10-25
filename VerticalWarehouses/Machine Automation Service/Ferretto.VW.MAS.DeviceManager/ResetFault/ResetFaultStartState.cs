@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
                 null,
                 $"Starting Fault reset on inverters belonging to bay {this.machineData.TargetBay}",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.InverterFaultReset,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

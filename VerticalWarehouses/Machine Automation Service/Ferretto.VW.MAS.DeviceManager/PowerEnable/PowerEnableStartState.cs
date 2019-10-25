@@ -92,7 +92,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 null,
                 "Reset Security Started",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.PowerEnable,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

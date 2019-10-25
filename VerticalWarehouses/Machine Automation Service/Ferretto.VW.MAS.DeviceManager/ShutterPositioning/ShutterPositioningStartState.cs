@@ -226,7 +226,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 notificationMessageData1,
                 "Get shutter status",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.ShutterPositioning,
                 this.machineData.RequestingBay,
                 this.machineData.RequestingBay,

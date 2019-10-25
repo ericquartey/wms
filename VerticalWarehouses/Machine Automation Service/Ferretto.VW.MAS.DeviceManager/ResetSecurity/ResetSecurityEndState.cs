@@ -52,8 +52,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
             var notificationMessage = new NotificationMessage(
                 null,
                 "Reset Security Completed",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.ResetSecurity,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

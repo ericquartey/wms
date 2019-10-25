@@ -206,7 +206,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     this.PublishCommand(
                         messageData,
                         $"Requesting operation stop from bay {requestingBay} to bay {bay.Number} for reason {messageData.StopReason}",
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         sender,
                         MessageType.Stop,
                         requestingBay,
@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.PublishCommand(
                     messageData,
                     $"Requesting operation stop from bay {requestingBay} to bay {targetBay} for reason {messageData.StopReason}",
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     sender,
                     MessageType.Stop,
                     requestingBay,

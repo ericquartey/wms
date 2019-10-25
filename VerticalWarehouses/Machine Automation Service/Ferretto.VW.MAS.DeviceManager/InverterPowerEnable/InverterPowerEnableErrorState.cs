@@ -50,8 +50,8 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             var notificationMessage = new NotificationMessage(
                 null,
                 $"InverterPowerEnable failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.InverterPowerEnable,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

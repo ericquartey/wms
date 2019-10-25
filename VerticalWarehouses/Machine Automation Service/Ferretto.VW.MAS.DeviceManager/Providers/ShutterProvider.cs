@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Execute Shutter Positioning Move Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.ShutterPositioning,
                 bayNumber,
@@ -141,7 +141,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Execute Shutter Positioning MoveTo Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.ShutterPositioning,
                 bayNumber,
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Execute Shutter Test Loop Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.ShutterPositioning,
                 bayNumber,
@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Stop Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,
                 bayNumber,
