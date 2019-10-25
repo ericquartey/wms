@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<VertimagConfiguration> Get()
         {
-            var configuration = new VertimagConfiguration()
+            var configuration = new VertimagConfiguration
             {
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
