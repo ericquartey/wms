@@ -931,7 +931,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (inverter.IsStarted)
             {
-                this.Logger.LogTrace("3:Starting Power Off FSM");
+                this.Logger.LogDebug("3:Starting Power Off FSM");
                 var currentStateMachine = new PowerOffStateMachine(
                     inverter,
                     this.Logger,

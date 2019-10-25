@@ -70,9 +70,9 @@
                     "UpperBound": 8600, //TEMP temporary commented for test on belt-burnishing,
                     "LowerBound": 350,
                     "EmptyLoadMovement": {
-                        "Acceleration": 1000,
-                        "Deceleration": 1000,
-                        "Speed": 600
+            "Acceleration": 400, //1000,
+            "Deceleration": 400, // 1000
+            "Speed": 420 //600
                     },
                     "FullLoadMovement": {
                         "Acceleration": 400,
@@ -81,7 +81,7 @@
                     },
                     "WeightMeasureMultiply": 152.61,
                     "WeightMeasureSum": -901.32,
-                    "WeightMeasureSpeed": 50,
+          "WeightMeasureSpeed": 30,
                     "WeightMeasureTime": 15
                 },
                 {
@@ -93,6 +93,10 @@
                     "Resolution": 77.6722,
                     "Offset": 0,
                     "ChainOffset": -10.3,
+          "ProfileCalibrateHeight": 150,
+          "ProfileCalibratePosition": 300,
+          "ProfileCalibrateSpeed": 50,
+          "ProfileCalibrateLength": 900,
                     "FullLoadMovement": {
                         "Acceleration": 200,
                         "Deceleration": 200,
