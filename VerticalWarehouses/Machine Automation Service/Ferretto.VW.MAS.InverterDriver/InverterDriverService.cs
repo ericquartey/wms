@@ -369,7 +369,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (Debugger.IsAttached
                     &&
-                    this.inverterCommandQueue.Count > 20)
+                    this.inverterCommandQueue.Count > 200)
                 {
                     Debugger.Break();
                 }

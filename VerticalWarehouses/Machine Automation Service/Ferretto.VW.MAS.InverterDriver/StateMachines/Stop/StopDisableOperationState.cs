@@ -62,8 +62,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    //this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    this.ParentStateMachine.ChangeState(new StopQuickStopState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new StopEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    //this.ParentStateMachine.ChangeState(new StopQuickStopState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }
