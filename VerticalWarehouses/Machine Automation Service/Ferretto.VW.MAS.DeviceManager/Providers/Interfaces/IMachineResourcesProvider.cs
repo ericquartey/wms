@@ -63,6 +63,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBayTop(BayNumber bayNumber);
 
+        bool IsProfileCalibratedBay(BayNumber bayNumber);
+
         bool IsSensorZeroOnBay(BayNumber bayNumber);
 
         bool UpdateInputs(byte ioIndex, bool[] newRawInputs, FieldMessageActor messageActor);

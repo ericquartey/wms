@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+                message => message.Destination == MessageActor.DeviceManager || message.Destination == MessageActor.Any);
 
             var notificationEvent = this.eventAggregator.GetEvent<NotificationEvent>();
             notificationEvent.Subscribe(
@@ -191,7 +191,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 },
                 ThreadOption.PublisherThread,
                 false,
-                message => message.Destination == MessageActor.FiniteStateMachines || message.Destination == MessageActor.Any);
+                message => message.Destination == MessageActor.DeviceManager || message.Destination == MessageActor.Any);
 
             var fieldNotificationEvent = this.eventAggregator.GetEvent<FieldNotificationEvent>();
             fieldNotificationEvent.Subscribe(
@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 messageData,
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.FaultStateChanged,
                 BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 messageData,
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.RunningStateChanged,
                 BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
@@ -286,7 +286,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     receivedMessage.Data,
                     $"Bay {receivedMessage.RequestingBay} is already executing the machine {messageCurrentStateMachine.GetType().Name}",
                     MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     receivedMessage.Type,
                     receivedMessage.RequestingBay,
                     receivedMessage.RequestingBay,
@@ -353,7 +353,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
 
             var notificationMessageData = new MachineStatusActiveMessageData(
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 receivedMessage.Type.ToString(),
                 MessageVerbosity.Info);
 
@@ -361,7 +361,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 notificationMessageData,
                 $"FSM current machine status {receivedMessage.Type}",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.MachineStatusActive,
                 receivedMessage.RequestingBay,
                 receivedMessage.RequestingBay,
@@ -426,7 +426,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                         msgData,
                                         "IO sensors status",
                                         MessageActor.Any,
-                                        MessageActor.FiniteStateMachines,
+                                        MessageActor.DeviceManager,
                                         MessageType.SensorsChanged,
                                         messageBayBayIndex,
                                         messageBayBayIndex,
@@ -479,7 +479,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                     notificationData,
                                     $"Current Encoder position: {notificationData.CurrentPosition}",
                                     MessageActor.AutomationService,
-                                    MessageActor.FiniteStateMachines,
+                                    MessageActor.DeviceManager,
                                     MessageType.Positioning,
                                     messageBayBayIndex,
                                     messageBayBayIndex,
@@ -500,7 +500,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 msgData,
                                 "IO sensors status",
                                 MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
+                                MessageActor.DeviceManager,
                                 MessageType.SensorsChanged,
                                 messageBayBayIndex,
                                 messageBayBayIndex,
@@ -521,7 +521,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         msgData,
                         "Inverter Status Word",
                         MessageActor.Any,
-                        MessageActor.FiniteStateMachines,
+                        MessageActor.DeviceManager,
                         MessageType.InverterStatusWord,
                         messageBayBayIndex,
                         messageBayBayIndex,
@@ -542,7 +542,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 exceptionMessage,
                                 "Inverter Exception",
                                 MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
+                                MessageActor.DeviceManager,
                                 MessageType.InverterException,
                                 messageBayBayIndex,
                                 messageBayBayIndex,
@@ -562,7 +562,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 ioExceptionMessage,
                                 "Io Driver Exception",
                                 MessageActor.Any,
-                                MessageActor.FiniteStateMachines,
+                                MessageActor.DeviceManager,
                                 MessageType.IoDriverException,
                                 messageBayBayIndex,
                                 messageBayBayIndex,
@@ -584,7 +584,7 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var messageCurrentStateMachine);
 
-            if (receivedMessage.Source == MessageActor.FiniteStateMachines && receivedMessage.Destination == MessageActor.FiniteStateMachines)
+            if (receivedMessage.Source == MessageActor.DeviceManager && receivedMessage.Destination == MessageActor.DeviceManager)
             {
                 switch (receivedMessage.Type)
                 {
@@ -605,7 +605,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     receivedMessage.Data,
                     receivedMessage.Description,
                     MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     receivedMessage.Type,
                     receivedMessage.RequestingBay,
                     receivedMessage.TargetBay,
@@ -659,12 +659,12 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void SendCleanDebug()
         {
             {
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     $"FSM current status null",
                     MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     MessageType.MachineStatusActive,
                     BayNumber.None,
                     BayNumber.None,
@@ -674,12 +674,12 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
 
             {
-                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.FiniteStateMachines, string.Empty, MessageVerbosity.Info);
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     $"FSM current state null",
                     MessageActor.Any,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
                     MessageType.MachineStateActive,
                     BayNumber.None,
                     BayNumber.None,
@@ -695,7 +695,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 data,
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.FsmException,
                 BayNumber.None,
                 BayNumber.None,

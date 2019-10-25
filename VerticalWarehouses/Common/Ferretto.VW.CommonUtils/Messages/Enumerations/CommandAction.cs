@@ -4,6 +4,10 @@
     {
         Start,
 
+        Pause,
+
+        Resume,
+
         Abort,
 
         Stop,

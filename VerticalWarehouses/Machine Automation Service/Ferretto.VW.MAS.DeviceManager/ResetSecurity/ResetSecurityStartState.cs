@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
                 null,
                 "Reset Security Started",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.ResetSecurity,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

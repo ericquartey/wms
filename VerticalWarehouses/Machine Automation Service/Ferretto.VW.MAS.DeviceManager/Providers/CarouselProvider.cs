@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 homingData,
                 $"Execute homing {calibration} Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Homing,
                 bayNumber,
@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 bayNumber,
@@ -134,7 +134,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Positioning,
                 bayNumber,
@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.PublishCommand(
                 messageData,
                 "Stop Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,
                 bayNumber,

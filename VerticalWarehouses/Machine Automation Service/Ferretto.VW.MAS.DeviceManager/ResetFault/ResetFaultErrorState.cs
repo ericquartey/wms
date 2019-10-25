@@ -50,8 +50,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Inverter Fault reset failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.InverterFaultReset,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

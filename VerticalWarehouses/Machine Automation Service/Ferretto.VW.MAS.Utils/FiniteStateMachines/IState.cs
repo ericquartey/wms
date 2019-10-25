@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
     {
         #region Methods
 
+        IState Abort();
+
         IState CommandReceived(CommandMessage commandMessage);
 
         void Enter(CommandMessage commandMessage, IServiceProvider serviceProvider, IFiniteStateMachineData stateData);
@@ -16,6 +18,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         void Exit();
 
         IState NotificationReceived(NotificationMessage notificationMessage);
+
+        IState Pause();
+
+        IState Resume();
 
         IState Stop(StopRequestReason reason);
 

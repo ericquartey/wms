@@ -46,8 +46,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
                 var notificationMessage = new NotificationMessage(
                     null,
                     "Reset Security Stopped due to an error",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
+                    MessageActor.DeviceManager,
                     MessageType.ResetSecurity,
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,

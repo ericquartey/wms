@@ -1176,4 +1176,7 @@
   <data name="SelectDestinationBay" xml:space="preserve">
     <value>Select destination bay</value>
   </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Shutter Test</value>
+  </data>
 </root>

@@ -76,6 +76,8 @@
 
         WeightAcquisitionCommand,
 
+        MachineManagerException,
+
         MissionManagerException,
 
         ChangeRunningState,
