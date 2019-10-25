@@ -122,7 +122,6 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "ProfileCalibrateHeight": 150,
           "ProfileCalibratePosition": 300,
           "ProfileCalibrateSpeed": 50,
           "ProfileCalibrateLength": 900,
