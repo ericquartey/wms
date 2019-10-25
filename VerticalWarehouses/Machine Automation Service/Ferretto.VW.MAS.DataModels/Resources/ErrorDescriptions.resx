@@ -186,16 +186,19 @@
   <data name="SecurityWasTriggered" xml:space="preserve">
     <value>È scattata la funzione di sicurezza.</value>
   </data>
-  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
+    <value>Errore Machine Manager</value>
   </data>
-  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
+    <value>Inconsistenza database posizione destinazione cassetto</value>
   </data>
-  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
+  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+    <value />
   </data>
-  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+    <value>Inconsistenza database posizione sorgente cassetto</value>
+  </data>
+  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+    <value>Nessun cassetto presente nella baia indicata</value>
   </data>
 </root>

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
 
 // ReSharper disable ArrangeThisQualifier
@@ -31,6 +32,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
         #endregion
 
         #region Methods
+
+        public override bool AllowMultipleInstances(CommandMessage command)
+        {
+            return true;
+        }
 
         protected override void Dispose(bool disposing)
         {

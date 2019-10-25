@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
@@ -95,6 +96,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             this.connection = new HubConnectionBuilder()
                 .WithUrl(this.endpoint.AbsoluteUri)
+                //.ConfigureLogging(logging =>
+                //                  {
+                //                      // Log to the Output Window
+                //                      logging.AddDebug();
+
+                //                      // This will set ALL logging to Debug level
+                //                      logging.SetMinimumLevel(LogLevel.Debug);
+                //                  })
                 .Build();
 
             this.RegisterEvents(this.connection);

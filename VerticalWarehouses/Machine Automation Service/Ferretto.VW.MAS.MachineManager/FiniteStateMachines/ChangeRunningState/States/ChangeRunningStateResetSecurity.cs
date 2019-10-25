@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
@@ -25,9 +24,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         public ChangeRunningStateResetSecurity(
             IMachineControlProvider machineControlProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.machineControlProvider = machineControlProvider ??
                 throw new ArgumentNullException(nameof(machineControlProvider));

@@ -241,6 +241,51 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
+        /// </summary>
+        public static string MachineManagerErrorBaseCode {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare che la posizione destinazione del cassetto all&apos;interno del database sia correttamente configurata.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare che la posizione sorgente del cassetto all&apos;interno del database sia correttamente configurata.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.
+        /// </summary>
+        public static string MachineManagerErrorNoLoadingUnitInSource {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string SecurityWasTriggered {
@@ -266,6 +311,5 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
                 return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
             }
         }
-        
     }
 }

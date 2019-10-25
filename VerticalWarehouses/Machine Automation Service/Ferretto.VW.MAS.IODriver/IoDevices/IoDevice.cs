@@ -323,6 +323,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     {
                         case ShdFormatDataOperation.Data:
 
+                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay];
+
+                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay];
+
                             // INFO The mushroom signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
 
@@ -415,24 +419,24 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             switch (shdMessage.CodeOperation)
                             {
                                 case ShdCodeOperation.Data:
-                                    {
-                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                {
+                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                        this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
+                                    this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
 
-                                        break;
-                                    }
+                                    break;
+                                }
 
                                 case ShdCodeOperation.Configuration:
-                                    {
-                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                {
+                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                        this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
+                                    this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
 
-                                        break;
-                                    }
+                                    break;
+                                }
 
                                 case ShdCodeOperation.SetIP:
                                     throw new NotImplementedException();

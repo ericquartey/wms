@@ -140,18 +140,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.PowerEnable,
                 requestingBay,
                 BayNumber.None);
-
-            this.PublishNotification(
-                messageData,
-                $"Setting Vertimag power status to {messageData.Enable}",
-                MessageActor.AutomationService,
-                sender,
-                MessageType.ChangeRunningState,
-                requestingBay,
-                BayNumber.None,
-                MessageStatus.OperationStart,
-                ErrorLevel.NoError
-                );
         }
 
         public void StartInverterPowerChange(IInverterPowerEnableMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)

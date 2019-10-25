@@ -236,6 +236,12 @@ namespace Ferretto.VW.App.Services
                         .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
                         .Publish(crm);
                     break;
+
+                case NotificationMessageUI<MoveLoadingUnitMessageData> mld:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                        .Publish(mld);
+                    break;
             }
         }
 
