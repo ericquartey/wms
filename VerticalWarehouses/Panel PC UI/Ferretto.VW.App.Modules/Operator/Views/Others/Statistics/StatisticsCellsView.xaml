@@ -18,7 +18,7 @@
             </DataTemplate>
         </ResourceDictionary>
     </ctrls:View.Resources>
-    <Grid Margin="100,30,100,0">
+    <Grid Margin="100,30,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -38,8 +38,7 @@
                    Text="{x:Static resources:OperatorApp.CellsStatisticsHeader}" />
 
         <Grid Grid.Row="1"
-              Grid.Column="0"
-              Grid.ColumnSpan="2">
+              Grid.Column="0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -85,20 +84,20 @@
                             VerticalAlignment="Stretch"
                             Content="{Binding DataGridViewModel}" />
 
-            <controls:CustomProgressBarControl Grid.Row="3"
-                                               Grid.Column="1"
-                                               Margin="0,15,0,0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Top"
-                                               LabelText="{x:Static resources:OperatorApp.CellsStatisticsTotalUsedCells}"
-                                               ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
 
 
         </Grid>
 
+        <controls:CustomProgressBarControl Grid.Row="3"
+                                               Grid.Column="0"
+                                               Margin="0,15,0,0"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Top"
+                                               LabelText="{x:Static resources:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                               ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
         <controls:PpcButton Grid.Row="3"
-                            Grid.Column="2"
-                            Margin="15,15,0,0"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
                             Command="{Binding DrawerCompactingButtonCommand}"
