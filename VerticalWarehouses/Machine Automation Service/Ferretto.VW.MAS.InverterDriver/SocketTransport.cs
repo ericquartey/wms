@@ -111,6 +111,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     nameof(this.sendPort),
                     $"{nameof(this.sendPort)} value must be between 1204 and 65535");
             }
+
             if (this.transportClient != null || this.transportStream != null)
             {
                 this.transportClient?.Dispose();
@@ -182,7 +183,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
-            if (this.transportStream == null)
+            if (this.transportStream is null)
             {
                 throw new InverterDriverException(
                     "Transport Stream is null",
@@ -194,6 +195,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                 throw new InverterDriverException(
                     "Transport Stream not configured for reading data",
                     InverterDriverExceptionCode.MisconfiguredNetworkStream);
+            }
+
+            if (!this.IsConnected)
+            {
+                throw new InverterDriverException(
+                    "Connection is not open.",
+                    InverterDriverExceptionCode.NetworkStreamWriteFailure);
             }
 
             byte[] receivedData = null;
@@ -219,7 +227,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     else
                     {
-                        //return null;
                         this.Disconnect();
                         throw new InvalidOperationException("Error reading data from Transport Stream");
                     }
@@ -247,7 +254,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
         {
-            if (this.transportStream == null)
+            if (this.transportStream is null)
             {
                 throw new InverterDriverException(
                     "Transport Stream is null",
@@ -264,9 +271,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (!this.IsConnected)
             {
                 throw new InverterDriverException(
-                    "Error writing data to Transport Stream",
+                    "Connection is not open.",
                     InverterDriverExceptionCode.NetworkStreamWriteFailure);
             }
+
             try
             {
                 if (delay > 0)
@@ -275,6 +283,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.roundTripStopwatch.Start();
                     await Task.Delay(delay, stoppingToken);
                 }
+
                 await this.transportStream.WriteAsync(inverterMessage, 0, inverterMessage.Length, stoppingToken);
                 return inverterMessage.Length;
             }
