@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
+        internal static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
 
         #endregion
     }
