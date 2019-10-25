@@ -85,11 +85,22 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        protected override void Ended()
+        {
+            base.Ended();
+
+            this.isEjectLoadingUnitConfirmationEnabled = false;
+
+            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+        }
+
         protected override void OnWaitResume()
         {
+            this.RaiseCanExecuteChanged();
+
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
-            this.RaiseCanExecuteChanged();
+            this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmEjectLoadingUnit()

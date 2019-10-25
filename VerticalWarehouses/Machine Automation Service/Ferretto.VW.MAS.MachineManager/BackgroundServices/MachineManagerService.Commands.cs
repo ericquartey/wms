@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     case CommandAction.Abort:
                         if (messageData.MissionId != null)
                         {
-                            if (this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
+                            if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
                             {
                                 this.Logger.LogDebug("Supplied mission Id to be aborted is no longer valid");
                                 this.NotifyCommandError(command);
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     case CommandAction.Stop:
                         if (messageData.MissionId != null)
                         {
-                            if (this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
+                            if (!this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
                             {
                                 this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     case CommandAction.Pause:
                         if (messageData.MissionId != null)
                         {
-                            if (this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
+                            if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
                             {
                                 this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
@@ -193,7 +193,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     case CommandAction.Resume:
                         if (messageData.MissionId != null)
                         {
-                            if (this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
+                            if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
                             {
                                 this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);

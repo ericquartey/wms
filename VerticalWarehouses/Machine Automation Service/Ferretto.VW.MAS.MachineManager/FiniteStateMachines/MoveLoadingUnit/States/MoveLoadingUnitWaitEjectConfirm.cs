@@ -45,7 +45,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.baysProvider.UnloadLoadingUnit(this.ejectBay);
 
-            return this.GetState<IMoveLoadingUnitEndState>();
+            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
+
+            ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+
+            return returnValue;
         }
 
         protected override IState OnStop(StopRequestReason reason)

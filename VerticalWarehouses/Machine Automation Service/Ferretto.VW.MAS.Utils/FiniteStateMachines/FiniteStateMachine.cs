@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Resume()
         {
-            this.activeState = this.OnResume();
+            this.ActiveState = this.OnResume();
         }
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)

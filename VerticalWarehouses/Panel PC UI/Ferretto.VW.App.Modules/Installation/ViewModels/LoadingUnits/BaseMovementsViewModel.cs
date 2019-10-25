@@ -477,6 +477,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
         }
 
+        protected virtual void Ended()
+        {
+            this.RestoreStates();
+
+            this.ShowNotification(
+                VW.App.Resources.InstallationApp.ProcedureCompleted,
+                Services.Models.NotificationSeverity.Success);
+        }
+
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             base.OnMachineModeChanged(e);
@@ -499,15 +508,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 !this.IsStopping;
-        }
-
-        private void Ended()
-        {
-            this.RestoreStates();
-
-            this.ShowNotification(
-                VW.App.Resources.InstallationApp.ProcedureCompleted,
-                Services.Models.NotificationSeverity.Success);
         }
 
         private async Task InitializeSensors()
