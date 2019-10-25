@@ -596,7 +596,8 @@ namespace Ferretto.VW.Simulator.Services
             if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
                 !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
-                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value
+                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value ||
+                !device.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value
                 )
             {
                 // Reset run status
