@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Modules.Installation.Models
+namespace Ferretto.VW.App.Controls.Controls
 {
     public class ShutterSensors : BindableBase
     {

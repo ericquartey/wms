@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
