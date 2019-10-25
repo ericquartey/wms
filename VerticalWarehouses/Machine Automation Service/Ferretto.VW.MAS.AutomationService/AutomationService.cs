@@ -89,8 +89,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.LogVersion();
-
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
@@ -117,17 +115,6 @@ namespace Ferretto.VW.MAS.AutomationService
         protected override void NotifyError(NotificationMessage notificationData)
         {
             throw new NotImplementedException();
-        }
-
-        private void LogVersion()
-        {
-            var versionAttribute = this.GetType().Assembly
-                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
-                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
-
-            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
-
-            this.Logger.LogInformation($"VertiMag Automation Service version {versionString}");
         }
 
         #endregion

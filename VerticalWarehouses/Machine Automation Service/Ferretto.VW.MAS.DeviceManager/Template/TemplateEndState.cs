@@ -49,8 +49,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Template End State Notification with {this.machineData.Message} and {this.stateData.Message}",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.NoType,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

@@ -157,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             switch (message.Data.MessageActor)
             {
-                case MessageActor.FiniteStateMachines:
+                case MessageActor.DeviceManager:
                     this.CurrentStateFSM = message.Data.CurrentState;
                     break;
 
@@ -178,7 +178,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             switch (message.Data.MessageActor)
             {
-                case MessageActor.FiniteStateMachines:
+                case MessageActor.DeviceManager:
                     this.CurrentMachineStatusFSM = message.Type.ToString();
                     break;
 

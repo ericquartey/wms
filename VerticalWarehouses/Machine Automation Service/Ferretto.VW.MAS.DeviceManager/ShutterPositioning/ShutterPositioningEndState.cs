@@ -65,8 +65,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
                                 "ShutterPositioning Stopped",
-                                MessageActor.FiniteStateMachines,
-                                MessageActor.FiniteStateMachines,
+                                MessageActor.DeviceManager,
+                                MessageActor.DeviceManager,
                                 MessageType.ShutterPositioning,
                                 this.machineData.RequestingBay,
                                 this.machineData.TargetBay,
@@ -129,8 +129,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "ShutterPositioning Completed",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
+                    MessageActor.DeviceManager,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,

@@ -58,8 +58,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     "Shutter Positioning Stopped for an error",
-                    MessageActor.FiniteStateMachines,
-                    MessageActor.FiniteStateMachines,
+                    MessageActor.DeviceManager,
+                    MessageActor.DeviceManager,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
                     this.machineData.RequestingBay,

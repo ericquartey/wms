@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 notificationMessageData,
                 "Homing Started",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Homing,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

@@ -35,7 +35,7 @@
         "Number": 1,
         "Positions": [
           {
-            "Height": 741,
+            "Height": 761,
             "Location": "InternalBay1Down"
           }
         ],
@@ -2108,43 +2108,43 @@
         "cells": [
           {
             "id": 2,
-            "position": 1438,
+            "position": 1443,
             "priority": 2,
             "status": "Free"
           },
           {
             "id": 4,
-            "position": 1463,
+            "position": 1468,
             "priority": 4,
             "status": "Free"
           },
           {
             "id": 6,
-            "position": 1488,
+            "position": 1493,
             "priority": 6,
             "status": "Free"
           },
           {
             "id": 8,
-            "position": 1513,
+            "position": 1518,
             "priority": 8,
             "status": "Free"
           },
           {
             "id": 10,
-            "position": 1538,
+            "position": 1543,
             "priority": 10,
             "status": "Free"
           },
           {
             "id": 12,
-            "position": 1563,
+            "position": 1568,
             "priority": 12,
             "status": "Free"
           },
           {
             "id": 14,
-            "position": 1588,
+            "position": 1593,
             "priority": 14,
             "status": "Free"
           },
