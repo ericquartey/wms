@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
@@ -12,11 +11,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines
 {
-    public abstract class IoStateMachineBase : IIoStateMachine
+    internal abstract class IoStateMachineBase : IIoStateMachine
     {
         #region Fields
-
-        protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue;
 
         private bool isDisposed;
 
@@ -26,19 +23,23 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         public IoStateMachineBase(
             IEventAggregator eventAggregator,
-            ILogger logger)
+            ILogger logger,
+            BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue)
         {
-            this.EventAggregator = eventAggregator;
-            this.Logger = logger;
+            this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.IoCommandQueue = ioCommandQueue ?? throw new ArgumentNullException(nameof(ioCommandQueue));
         }
 
         #endregion
 
         #region Properties
 
-        protected IIoState CurrentState { get; set; }
+        protected IIoState CurrentState { get; private set; }
 
         protected IEventAggregator EventAggregator { get; }
+
+        protected BlockingConcurrentQueue<IoWriteMessage> IoCommandQueue { get; }
 
         protected ILogger Logger { get; }
 
@@ -115,6 +116,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             {
             }
 
+            // This is wrong: this code must not be here.
+            // Do not make improper use of disposal methods, please.
             var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
             var notificationMessage = new NotificationMessage(
                 notificationMessageData,

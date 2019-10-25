@@ -6,15 +6,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
     {
         #region Properties
 
-        decimal HigherDistance { get; }
+        double HighSpeedDurationClose { get; }
 
-        decimal HighSpeedDurationClose { get; }
+        double HighSpeedDurationOpen { get; }
 
-        decimal HighSpeedDurationOpen { get; }
-
-        decimal LowerDistance { get; }
-
-        decimal LowerSpeed { get; }
+        double LowerSpeed { get; }
 
         MovementType MovementType { get; }
 
@@ -24,7 +20,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         ShutterType ShutterType { get; }
 
-        decimal SpeedRate { get; set; }
+        double SpeedRate { get; set; }
 
         #endregion
     }

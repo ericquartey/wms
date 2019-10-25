@@ -3,12 +3,15 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalAxisSensorsViewModel : BaseSensorsViewModel
+    internal sealed class VerticalAxisSensorsViewModel : BaseSensorsViewModel
     {
         #region Constructors
 
-        public VerticalAxisSensorsViewModel(IMachineSensorsService sensorsService, IBayManager bayManager)
-            : base(sensorsService, bayManager)
+        public VerticalAxisSensorsViewModel(
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineBaysWebService machineBaysWebService,
+            IBayManager bayManager)
+            : base(machineSensorsWebService, machineBaysWebService, bayManager)
         {
         }
 

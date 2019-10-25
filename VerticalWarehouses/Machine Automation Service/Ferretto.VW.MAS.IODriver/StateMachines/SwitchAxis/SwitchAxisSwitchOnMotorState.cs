@@ -1,13 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisSwitchOnMotorState : IoStateBase
+    internal sealed class SwitchAxisSwitchOnMotorState : IoStateBase
     {
         #region Fields
 
@@ -95,8 +93,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOnAxisIoMessage.SwitchElevatorMotor(true);
                     break;
             }
-            switchOnAxisIoMessage.SwitchResetSecurity(false);
-            switchOnAxisIoMessage.SwitchPowerEnable(true);
+
+            switchOnAxisIoMessage.ResetSecurity = false;
+            switchOnAxisIoMessage.PowerEnable = true;
 
             this.Logger.LogTrace($"2:{switchOnAxisIoMessage}");
             lock (this.status)

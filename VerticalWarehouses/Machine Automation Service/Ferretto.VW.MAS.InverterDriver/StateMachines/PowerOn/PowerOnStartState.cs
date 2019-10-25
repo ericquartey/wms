@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             this.InverterStatus.CommonControlWord.EnableVoltage = true;
             this.InverterStatus.CommonControlWord.QuickStop = true;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -56,8 +56,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
-            //TEMP Add your implementation code here
+            this.Logger.LogDebug("1:Power On Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new PowerOnEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         public override bool ValidateCommandMessage(InverterMessage message)
@@ -69,26 +74,28 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var returnValue = false;
+            var responseReceived = false;
 
             if (message.IsError)
             {
                 this.Logger.LogError($"1:PowerOnStartState, message={message}");
-                this.ParentStateMachine.ChangeState(new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                this.ParentStateMachine.ChangeState(
+                    new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
             }
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
+
                 if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
                     this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
-                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
-                    )
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn)
                 {
-                    this.ParentStateMachine.ChangeState(new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+                    this.ParentStateMachine.ChangeState(
+                        new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    responseReceived = true;
                 }
             }
-            return returnValue;
+            return responseReceived;
         }
 
         #endregion

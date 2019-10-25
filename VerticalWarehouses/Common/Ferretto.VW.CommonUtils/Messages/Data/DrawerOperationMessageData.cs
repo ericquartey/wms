@@ -1,19 +1,18 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class DrawerOperationMessageData : IDrawerOperationMessageData
     {
         #region Constructors
 
-        public DrawerOperationMessageData(DrawerOperation operation,
-            DrawerOperationStep step,
+        public DrawerOperationMessageData(
+            DrawerOperation operation,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Operation = operation;
-            this.Step = step;
             this.Verbosity = verbosity;
         }
 
@@ -21,11 +20,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public DrawerDestination Destination { get; set; }
+        public LoadingUnitLocation Destination { get; set; }
 
-        public decimal DestinationHorizontalPosition { get; set; }
+        public double DestinationHorizontalPosition { get; set; }
 
-        public decimal DestinationVerticalPosition { get; set; }
+        public double DestinationVerticalPosition { get; set; }
 
         public bool IsDestinationPositive { get; set; }
 
@@ -33,13 +32,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public DrawerOperation Operation { get; set; }
 
-        public DrawerDestination Source { get; set; }
+        public LoadingUnitLocation Source { get; set; }
 
-        public decimal SourceHorizontalPosition { get; set; }
+        public double SourceHorizontalPosition { get; set; }
 
-        public decimal SourceVerticalPosition { get; set; }
-
-        public DrawerOperationStep Step { get; set; }
+        public double SourceVerticalPosition { get; set; }
 
         public MessageVerbosity Verbosity { get; }
 

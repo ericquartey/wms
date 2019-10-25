@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Data;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Controls
 
             if (this.DataContext is INavigableViewModel viewModel)
             {
-                await viewModel.OnNavigatedAsync();
+                await viewModel.OnAppearedAsync();
             }
         }
 

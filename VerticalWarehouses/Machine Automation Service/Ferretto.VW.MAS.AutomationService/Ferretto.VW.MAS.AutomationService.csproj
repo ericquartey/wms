@@ -7,11 +7,11 @@
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configurations>Debug;Release;Debug_no_autogen</Configurations>
     <LangVersion>latest</LangVersion>
+    <ServerGarbageCollection>False</ServerGarbageCollection>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+  <PropertyGroup Condition="'$(Configuration)'!='Release'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,29 +30,35 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="[2.2.0]" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="[2.2.6]" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="[2.2.6]" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.6" />
-    <PackageReference Include="NSwag.AspNetCore" Version="13.1.2" />
     <PackageReference Include="NSwag.MSBuild" Version="13.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="4.0.1" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Ferretto.VW.Common.Logging.SQLiteTarget\Ferretto.VW.Common.Logging.SQLiteTarget.csproj" />
     <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.Utils\Ferretto.VW.MAS.Utils.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.DataLayer\Ferretto.VW.MAS.DataLayer.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.MAS.FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj" />
     <ProjectReference Include="..\Ferretto.VW.MAS.IODriver\Ferretto.VW.MAS.IODriver.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.MAS.MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,9 +69,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.Simulation.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Update="appsettings.Development.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="appsettings.json">
@@ -82,7 +85,5 @@
     <Exec Command="$(NSwagExe_Core22) run nswag.json /variables:Configuration=$(Configuration)" />
     <RemoveDir Directories="$(OutDir)References" />
   </Target>
-
-  <ProjectExtensions><VisualStudio><UserProperties /></VisualStudio></ProjectExtensions>
 
 </Project>

@@ -9,7 +9,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
-    public class PowerEnableStateMachine : IoStateMachineBase
+    internal sealed class PowerEnableStateMachine : IoStateMachineBase
     {
         #region Fields
 
@@ -32,10 +32,9 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             IoIndex deviceIndex,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.enable = enable;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.deviceIndex = deviceIndex;
 
@@ -51,7 +50,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             this.Logger.LogTrace($"1:Enable={this.enable}");
 
             this.Logger.LogTrace("2:Change State to PowerEnableStartState");
-            this.CurrentState = new PowerEnableStartState(this.enable, this.status, this.Logger, this, this.deviceIndex);
 
             var notificationMessage = new FieldNotificationMessage(
                 null,
@@ -64,7 +62,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
             this.PublishNotificationEvent(notificationMessage);
 
-            this.CurrentState?.Start();
+            this.ChangeState(new PowerEnableStartState(this.enable, this.status, this.Logger, this, this.deviceIndex));
         }
 
         protected override void Dispose(bool disposing)

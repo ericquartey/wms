@@ -7,7 +7,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public ResolutionCalibrationMessageData(decimal readInitialPosition, decimal readFinalPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ResolutionCalibrationMessageData(double readInitialPosition, double readFinalPosition, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.MeasuredInitialPosition = readInitialPosition;
             this.ReadFinalPosition = readFinalPosition;
@@ -18,9 +18,9 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #region Properties
 
-        public decimal ReadFinalPosition { get; }
+        public double MeasuredInitialPosition { get; }
 
-        public decimal MeasuredInitialPosition { get; }
+        public double ReadFinalPosition { get; }
 
         public decimal Resolution { get; set; }
 

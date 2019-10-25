@@ -1,6 +1,5 @@
 ﻿using CommonServiceLocator;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 using Prism.Regions;
 

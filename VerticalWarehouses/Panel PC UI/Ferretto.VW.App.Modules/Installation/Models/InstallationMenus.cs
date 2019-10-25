@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.VerticalResolutionCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione risoluzione asse verticale")]
-        VerticalResolution,
+        VerticalResolutionCalibration,
 
         [View(Utils.Modules.Installation.VerticalOffsetCalibration.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Calibrazione offset asse verticale")]
@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.Resources
 
         [View(Utils.Modules.Installation.CELLPANELSCHECK, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Pannelli Mensola")]
-        PanelsCheck,
+        CellPanelsCheck,
 
         [View(Utils.Modules.Installation.SHUTTTER1HEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
@@ -46,15 +46,11 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Inserimento primo cassetto")]
         BayFirstLoadingUnit,
 
-        [View(Utils.Modules.Installation.LOADINGDRAWERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
-        [Display(Description = "Inserimento cassetti")]
-        AllLoadingUnits,
+        [View(Utils.Modules.Installation.Parameters.PARAMETERS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [Display(Description = "Parametri")]
+        Parameters,
 
-        [View(Utils.Modules.Installation.SAVERESTORECONFIG, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
-        [Display(Description = "Salva e ripristina")]
-        SaveRestore,
-
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Sensors)]
+        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Stato sensori")]
         SensorsState,
 
@@ -85,6 +81,18 @@ namespace Ferretto.VW.App.Installation.Resources
         [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Puntatore Laser")]
         BayLaser,
+
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Inserimento cassetti da baia in cella")]
+        MovementsFromBayToCell,
+
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Spostamento cassetti da cella a cella")]
+        MovemetsFromCellToCell,
+
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Spostamento cassetti da cella in baia")]
+        MovemetsFromCellToBay,
 
         None,
     }

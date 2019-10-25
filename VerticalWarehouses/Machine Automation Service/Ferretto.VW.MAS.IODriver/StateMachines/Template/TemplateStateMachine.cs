@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -8,7 +7,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
-    public class TemplateStateMachine : IoStateMachineBase
+    internal sealed class TemplateStateMachine : IoStateMachineBase
     {
         #region Fields
 
@@ -24,16 +23,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #region Constructors
 
-        public TemplateStateMachine(ITemplateData templateData,
+        public TemplateStateMachine(
+            ITemplateData templateData,
             IoStatus status,
             IoIndex index,
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.templateData = templateData;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
         }
@@ -44,9 +43,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public override void Start()
         {
-            this.CurrentState = new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this);
-
-            this.CurrentState?.Start();
+            this.ChangeState(new TemplateStartState(this.templateData, this.status, this.index, this.Logger, this));
         }
 
         protected override void Dispose(bool disposing)

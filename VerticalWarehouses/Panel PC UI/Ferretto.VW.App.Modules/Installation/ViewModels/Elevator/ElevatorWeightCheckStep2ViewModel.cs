@@ -2,23 +2,22 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightCheckStep2ViewModel : BaseElevatorWeightCheckViewModel, IDataErrorInfo
+    internal sealed class ElevatorWeightCheckStep2ViewModel : BaseElevatorWeightCheckViewModel, IDataErrorInfo
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly INavigationService navigationService;
 
@@ -47,18 +46,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ElevatorWeightCheckStep2ViewModel(
-                                                 IMachineElevatorService machineElevatorService,
-                                                 INavigationService navigationService,
-                                                 IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IMachineElevatorWebService machineElevatorWebService,
+            INavigationService navigationService)
+            : base()
         {
-            if (machineElevatorService == null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            this.machineElevatorService = machineElevatorService;
-            this.navigationService = navigationService;
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
         }
 
         #endregion
@@ -66,10 +59,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public string Error => string.Join(
-                        System.Environment.NewLine,
-                        this[nameof(this.TestToRun)],
-                        this[nameof(this.InputWeight)],
-                        this[nameof(this.WeightTolerance)]);
+            Environment.NewLine,
+            this[nameof(this.TestToRun)],
+            this[nameof(this.InputWeight)],
+            this[nameof(this.WeightTolerance)]);
 
         public double? InputWeight
         {
@@ -114,18 +107,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand StartWeightCheckCommand =>
-                        this.startWeightCheckCommand
-                        ??
-                        (this.startWeightCheckCommand = new DelegateCommand(
-                            async () => await this.StartWeightCheckAsync(),
-                            this.CanStartWeightCheck));
+            this.startWeightCheckCommand
+            ??
+            (this.startWeightCheckCommand = new DelegateCommand(
+                async () => await this.StartWeightCheckAsync(),
+                this.CanStartWeightCheck));
 
         public ICommand StopWeightCheckCommand =>
-                this.stopWeightCheckCommand
-                ??
-                (this.stopWeightCheckCommand = new DelegateCommand(
-                    async () => await this.StopWeightCheckAsync(),
-                    this.CanStopWeightCheck));
+            this.stopWeightCheckCommand
+            ??
+            (this.stopWeightCheckCommand = new DelegateCommand(
+                async () => await this.StopWeightCheckAsync(),
+                this.CanStopWeightCheck));
 
         public double TestToRun
         {
@@ -204,14 +197,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
@@ -234,12 +226,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.ShowSteps();
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
-                .Subscribe(
-                    message => this.ElevatorWeightCheckChanged(message),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ElevatorWeightCheckMessageData>>()
+                    .Subscribe(
+                        this.ElevatorWeightCheckChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.RaiseCanExecuteChanged();
         }
@@ -252,17 +246,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStartWeightCheck()
         {
-            return this.loadingUnitId.HasValue
-                   &&
-                   this.testToRun >= 0
-                   &&
-                   this.InputWeight > 0
-                   &&
-                   this.WeightTolerance > 0
-                   &&
-                   !this.isWorking
-                   &&
-                   string.IsNullOrWhiteSpace(this.Error);
+            return
+                this.loadingUnitId.HasValue
+                &&
+                this.testToRun >= 0
+                &&
+                this.InputWeight > 0
+                &&
+                this.WeightTolerance > 0
+                &&
+                !this.isWorking
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
         }
 
         private bool CanStopWeightCheck()
@@ -272,17 +267,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ElevatorWeightCheckChanged(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
-            if (message.Status == MessageStatus.OperationEnd
-                 ||
-                message.Status == MessageStatus.OperationStop)
+            if (message.IsErrored())
             {
-                this.NoteText = "Operation Completed.";
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
+            }
+            else if (message.IsNotRunning())
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureCompleted);
             }
 
-            if (!(message.Data is null))
-            {
-                this.MeasuredWeight = message?.Data?.Weight;
-            }
+            this.MeasuredWeight = message.Data?.Weight ?? this.MeasuredWeight;
         }
 
         private void ShowSteps()
@@ -302,7 +296,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.RaiseCanExecuteChanged();
 
-                await this.machineElevatorService.WeightCheckAsync(this.loadingUnitId.Value, this.testToRun, this.inputWeight.Value);
+                await this.machineElevatorWebService.WeightCheckAsync(this.loadingUnitId.Value, this.testToRun, this.inputWeight.Value);
 
                 this.IsWorking = false;
             }
@@ -321,7 +315,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineElevatorService.StopWeightCheckAsync();
+                await this.machineElevatorWebService.StopWeightCheckAsync();
 
                 this.IsWorking = false;
             }

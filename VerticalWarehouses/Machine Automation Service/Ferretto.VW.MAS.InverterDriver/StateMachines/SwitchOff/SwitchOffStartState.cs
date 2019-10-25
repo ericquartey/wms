@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         {
             this.InverterStatus.CommonControlWord.SwitchOn = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -57,7 +57,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Switch Off Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new SwitchOffEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

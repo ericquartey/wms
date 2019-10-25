@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -7,8 +8,8 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -19,21 +20,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public BaysController(
             IEventAggregator eventAggregator,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IBaysProvider baysProvider)
             : base(eventAggregator)
         {
-            if (baysProvider is null)
-            {
-                throw new ArgumentNullException(nameof(baysProvider));
-            }
-
-            this.baysProvider = baysProvider;
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.PublishCommand(
                 homingData,
                 "Execute FindZeroSensor Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Homing);
 
             return this.Accepted();
@@ -80,13 +80,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        public ActionResult<Bay> GetByNumber()
+        public ActionResult<IEnumerable<Bay>> GetAll()
         {
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
+            var bay = this.baysProvider.GetAll();
 
             return this.Ok(bay);
+        }
+
+        [HttpGet("{bayNumber}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<Bay> GetByNumber(BayNumber bayNumber)
+        {
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+
+            return this.Ok(bay);
+        }
+
+        [HttpGet("height-check-parameters")]
+        public ActionResult<PositioningProcedure> GetHeightCheckParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetBayHeightCheck());
         }
 
         [HttpPost("homing")]
@@ -99,7 +115,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.PublishCommand(
                 homingData,
                 "Execute Homing Command",
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Homing);
 
             return this.Accepted();

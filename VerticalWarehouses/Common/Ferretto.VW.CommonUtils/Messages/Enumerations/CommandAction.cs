@@ -4,8 +4,12 @@
     {
         Start,
 
+        Pause,
+
+        Resume,
+
         Abort,
 
-        Stop
+        Stop,
     }
 }

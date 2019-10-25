@@ -6,11 +6,11 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CarouselManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class CarouselManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private bool canExecuteCloseCommand;
 
@@ -31,12 +31,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CarouselManualMovementsViewModel(
-            IMachineCarouselService machineCarouselService,
-            IMachineElevatorService machineElevatorService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IBayManager bayManagerService)
-            : base(machineElevatorService, bayManagerService)
+            : base(machineElevatorWebService, bayManagerService)
         {
-            this.machineCarouselService = machineCarouselService;
+            this.machineCarouselWebService = machineCarouselWebService;
 
             this.RefreshCanExecuteCommands();
         }
@@ -117,6 +117,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            try
+            {
+                this.CurrentBayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         public async Task OpenCarouselAsync()
         {
             this.IsOpening = true;
@@ -127,28 +141,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
-        protected async Task StartMovementAsync(HorizontalMovementDirection direction)
-        {
-            try
-            {
-                await this.machineCarouselService.MoveManualAsync(direction);
-            }
-            catch (System.Exception ex)
-            {
-                this.IsClosing = false;
-                this.IsOpening = false;
-
-                this.ShowNotification(ex);
-            }
-        }
-
         protected override async Task StopMovementAsync()
         {
             try
             {
                 this.IsStopping = true;
 
-                await this.machineCarouselService.StopAsync();
+                await this.machineCarouselWebService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -167,6 +166,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.CanExecuteCloseCommand = !this.IsOpening && !this.IsStopping;
             this.CanExecuteOpenCommand = !this.IsClosing && !this.IsStopping;
+        }
+
+        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        {
+            try
+            {
+                await this.machineCarouselWebService.MoveManualAsync(direction);
+            }
+            catch (System.Exception ex)
+            {
+                this.IsClosing = false;
+                this.IsOpening = false;
+
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

@@ -7,7 +7,8 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class DrawerLoadingUnloadingTestViewModel : BaseMainViewModel
+    [System.Obsolete]
+    internal sealed class DrawerLoadingUnloadingTestViewModel : BaseMainViewModel
     {
         #region Fields
 

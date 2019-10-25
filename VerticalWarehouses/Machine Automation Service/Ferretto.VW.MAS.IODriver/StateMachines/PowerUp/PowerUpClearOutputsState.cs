@@ -1,12 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class PowerUpClearOutputsState : IoStateBase
+    internal sealed class PowerUpClearOutputsState : IoStateBase
     {
         #region Fields
 
@@ -55,7 +53,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 message.ValidOutputs &&
                 message.OutputsCleared;
 
-            //TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
+            // TEMP Check the matching between the status output flags and the message output flags (i.e. the clear output message has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
                 this.ParentStateMachine.ChangeState(new PowerUpEndState(this.ParentStateMachine, this.status, this.index, this.Logger));

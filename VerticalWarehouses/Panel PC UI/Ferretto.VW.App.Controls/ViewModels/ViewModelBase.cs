@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Mvvm;
 using Prism.Regions;
 
@@ -58,7 +57,7 @@ namespace Ferretto.VW.App.Controls
             return true;
         }
 
-        public virtual Task OnNavigatedAsync()
+        public virtual Task OnAppearedAsync()
         {
             // do nothing
             return Task.CompletedTask;

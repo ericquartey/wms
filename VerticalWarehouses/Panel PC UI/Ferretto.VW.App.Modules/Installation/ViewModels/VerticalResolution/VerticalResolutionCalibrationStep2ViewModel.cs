@@ -3,16 +3,16 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalResolutionCalibrationStep2ViewModel : BaseVerticalResolutionCalibrationViewModel, IDataErrorInfo
+    internal sealed class VerticalResolutionCalibrationStep2ViewModel : BaseVerticalResolutionCalibrationViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToPositionCommand;
 
-        private VerticalResolutionCalibrationData procedureParameters;
+        private VerticalResolutionWizardData wizardData;
 
         #endregion
 
@@ -34,9 +34,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalResolutionCalibrationStep2ViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineResolutionCalibrationProcedureService resolutionCalibrationService)
-            : base(eventAggregator, machineElevatorService, resolutionCalibrationService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationService)
         {
         }
 
@@ -137,20 +137,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
-            this.RetrieveInputData();
+            this.RetrieveWizardData();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
         }
 
-        protected override void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnAutomationMessageReceived(message);
+            base.OnElevatorPositionChanged(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {
@@ -183,9 +183,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = false;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
-                    FeedRateCategory.VerticalResolutionCalibration);
+                    this.ProcedureParameters.FeedRate,
+                    false);
             }
             catch (Exception ex)
             {
@@ -200,25 +201,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.procedureParameters.FinalPosition = this.InputFinalPosition.Value;
-            this.procedureParameters.MeasuredInitialPosition = this.InputMeasuredInitialPosition.Value;
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2))
+            {
+                this.wizardData.FinalPosition = this.InputFinalPosition.Value;
+                this.wizardData.MeasuredInitialPosition = this.InputMeasuredInitialPosition.Value;
 
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
-                this.procedureParameters,
-                trackCurrentView: false);
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
+                    this.wizardData,
+                    trackCurrentView: false);
+            }
         }
 
-        private void RetrieveInputData()
+        private void RetrieveWizardData()
         {
-            if (this.Data is VerticalResolutionCalibrationData data)
+            if (this.Data is VerticalResolutionWizardData data)
             {
-                this.procedureParameters = data;
+                this.wizardData = data;
 
-                this.InputFinalPosition = this.procedureParameters.FinalPosition;
-                this.InitialPosition = this.procedureParameters.InitialPosition;
-                this.CurrentResolution = this.procedureParameters.CurrentResolution;
+                this.InputFinalPosition = this.wizardData.FinalPosition;
+                this.InitialPosition = this.wizardData.InitialPosition;
+                this.CurrentResolution = this.wizardData.CurrentResolution;
             }
         }
 

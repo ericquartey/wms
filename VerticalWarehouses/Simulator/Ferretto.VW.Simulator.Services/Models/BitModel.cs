@@ -2,16 +2,15 @@
 
 namespace Ferretto.VW.Simulator.Services.Models
 {
-
     public class BitModel : BindableBase
     {
         #region Fields
 
+        private string description;
+
         private string name;
 
         private bool value;
-
-        private string description;
 
         #endregion
 
@@ -36,18 +35,17 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #region Properties
 
-        public string Name
-        {
-            get => this.name;
-            set => this.SetProperty(ref this.name, value);
-        }
-
         public string Description
         {
             get => this.description;
             set => this.SetProperty(ref this.description, value);
         }
 
+        public string Name
+        {
+            get => this.name;
+            set => this.SetProperty(ref this.name, value);
+        }
 
         public bool Value
         {
@@ -57,9 +55,13 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         #endregion
 
+        #region Methods
+
         public override string ToString()
         {
             return this.Value.ToString();
         }
+
+        #endregion
     }
 }

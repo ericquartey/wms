@@ -9,7 +9,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Constructors
 
         public InverterExceptionMessageData()
-        { }
+        {
+        }
 
         public InverterExceptionMessageData(Exception innerException, string exceptionDescription, int exceptionCode, MessageVerbosity verbosity = MessageVerbosity.Debug)
         {

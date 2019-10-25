@@ -10,9 +10,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
-using Ferretto.VW.MAS.IODriver.IoDevices.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -26,17 +23,17 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice : IIoDevice
+    internal sealed partial class IoDevice : IIoDevice, IDisposable
     {
         #region Fields
 
-        private const int IO_POLLING_INTERVAL = 50;
+        private const int IoPollingInterval = 50;
 
         private readonly IoIndex deviceIndex;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue;
+        private readonly BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
 
         private readonly Task ioReceiveTask;
 
@@ -48,7 +45,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         private readonly IPAddress ipAddress;
 
+        private readonly bool isCarousel;
+
         private readonly ILogger logger;
+
+        private readonly IoStatus mainIoDevice;
 
         private readonly int port;
 
@@ -77,11 +78,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             IPAddress ipAddress,
             int port,
             IoIndex index,
+            bool isCarousel,
             ILogger logger,
             CancellationToken cancellationToken)
         {
-            logger.LogTrace("1:Method Start");
-
             this.eventAggregator = eventAggregator;
             this.ipAddress = ipAddress;
             this.port = port;
@@ -89,14 +89,14 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.logger = logger;
             this.ioTransport = shdTransport;
             this.stoppingToken = cancellationToken;
-
-            this.ioCommandQueue = new BlockingConcurrentQueue<IoWriteMessage>();
+            this.isCarousel = isCarousel;
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
             this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
+            this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
             this.ioStatus = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == index) ?? throw new ArgumentNullException(nameof(index));
         }
 
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, objectName, MessageVerbosity.Info);
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
-                    (!string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null"),
+                    !string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null",
                     MessageActor.Any,
                     MessageActor.IoDriver,
                     MessageType.MachineStatusActive,
@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.eventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
         }
 
@@ -141,8 +141,17 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
         public void DestroyStateMachine()
         {
-            this.CurrentStateMachine?.Dispose();
+            if (this.CurrentStateMachine is IDisposable stateMachine)
+            {
+                stateMachine.Dispose();
+            }
+
             this.CurrentStateMachine = null;
+        }
+
+        public void Dispose()
+        {
+            this.Dispose(true);
         }
 
         public async Task ReceiveIoDataTaskFunction()
@@ -197,7 +206,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                         this.ioStatus.DebounceInput);
 
                     this.logger.LogDebug(
-                        $"1: ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
+                        $"1:ConfigurationMessage [comTout={this.ioStatus.ComunicationTimeOut} ms - debounceTime={this.ioStatus.DebounceInput} ms]");
 
                     this.ioCommandQueue.Enqueue(message);
                     this.forceIoStatusPublish = true;
@@ -235,9 +244,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                     throw new IoDriverException($"Exception: {ex.Message} while reading async error", IoDriverExceptionCode.CreationFailure, ex);
                 }
+
                 this.receiveBuffer = this.receiveBuffer.AppendArrays(telegram, telegram.Length);
 
-                //INFO: Byte 0 of read data contains packet length
+                // INFO: Byte 0 of read data contains packet length
                 if (!this.IsHeaderValid(this.receiveBuffer[0]))
                 {
                     // message error
@@ -271,7 +281,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 byte[] configurationData;
                 foreach (var extractedMessage in extractedMessages)
                 {
-                    if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))    // length is not valid  for new release
+                    if (this.IsMessageLengthValid(extractedMessage[1], extractedMessage[0]))
                     {
                         // message error
                         this.logger.LogError($"5:IO Driver message error: received {BitConverter.ToString(telegram)}: message {BitConverter.ToString(this.receiveBuffer)}");
@@ -313,12 +323,18 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     {
                         case ShdFormatDataOperation.Data:
 
-                            //INFO The mushroom signal must be inverted
+                            inputData[(int)IoPorts.MicroCarterLeftSideBay] = !inputData[(int)IoPorts.MicroCarterLeftSideBay];
+
+                            inputData[(int)IoPorts.MicroCarterRightSideBay] = !inputData[(int)IoPorts.MicroCarterRightSideBay];
+
+                            // INFO The mushroom signal must be inverted
                             inputData[(int)IoPorts.MushroomEmergency] = !inputData[(int)IoPorts.MushroomEmergency];
-                            //INFO The sensor presence in bay must be inverted
+
+                            // INFO The sensor presence in bay must be inverted
                             inputData[(int)IoPorts.LoadingUnitInBay] = !inputData[(int)IoPorts.LoadingUnitInBay];
-                            //INFO The sensor presence in lower bay must be inverted (NOT for BIG: to do)
-                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = !inputData[(int)IoPorts.LoadingUnitInLowerBay];
+
+                            // INFO The sensor presence in lower bay must be inverted (NOT for carousel)
+                            inputData[(int)IoPorts.LoadingUnitInLowerBay] = this.isCarousel ? inputData[(int)IoPorts.LoadingUnitInLowerBay] : !inputData[(int)IoPorts.LoadingUnitInLowerBay];
 
                             if (this.ioStatus.UpdateInputStates(inputData) || this.forceIoStatusPublish)
                             {
@@ -327,7 +343,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 var notificationMessage = new FieldNotificationMessage(
                                     data,
                                     "Update IO sensors",
-                                    FieldMessageActor.FiniteStateMachines,
+                                    FieldMessageActor.DeviceManager,
                                     FieldMessageActor.IoDriver,
                                     FieldMessageType.SensorsChanged,
                                     MessageStatus.OperationExecuting,
@@ -400,27 +416,27 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                         try
                         {
-                            byte[] telegram;
                             switch (shdMessage.CodeOperation)
                             {
                                 case ShdCodeOperation.Data:
-                                    if (shdMessage.ValidOutputs)
-                                    {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                {
+                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                        this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
-                                    }
+                                    this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
+
                                     break;
+                                }
 
                                 case ShdCodeOperation.Configuration:
-                                    {
-                                        telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                {
+                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                        this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
-                                    }
+                                    this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
+
                                     break;
+                                }
 
                                 case ShdCodeOperation.SetIP:
                                     throw new NotImplementedException();
@@ -430,6 +446,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                     {
                                         Debugger.Break();
                                     }
+
                                     break;
                             }
                         }
@@ -477,16 +494,16 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
         public void SendMessage(IFieldMessageData messageData)
         {
             var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
-            messageData,
-            "Io Driver Error",
-            FieldMessageActor.Any,
-            FieldMessageActor.IoDriver,
-            FieldMessageType.IoDriverException,
-            MessageStatus.OperationError,
-            (byte)this.deviceIndex,
-            ErrorLevel.Critical);
+                messageData,
+                "Io Driver Error",
+                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
+                FieldMessageType.IoDriverException,
+                MessageStatus.OperationError,
+                (byte)this.deviceIndex,
+                ErrorLevel.Critical);
 
-            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
+            this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
         }
 
         public async Task StartHardwareCommunications()
@@ -550,9 +567,10 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             try
             {
-                this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_POLLING_INTERVAL));
+                this.pollIoTimer = new Timer(this.SendIoMessageData, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IoPollingInterval));
 
-                //this.publishIoTimer = new Timer(this.SendIoPublish, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_PUBLISH_INTERVAL));
+                // why is this line commented?
+                // this.publishIoTimer = new Timer(this.SendIoPublish, null, TimeSpan.Zero, TimeSpan.FromMilliseconds(IO_PUBLISH_INTERVAL));
             }
             catch (Exception ex)
             {
@@ -562,7 +580,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             }
         }
 
-        protected void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (this.disposed)
             {
@@ -571,6 +589,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             if (disposing)
             {
+                this.DestroyStateMachine();
+
                 this.pollIoTimer?.Dispose();
                 this.writeEnableEvent?.Dispose();
             }

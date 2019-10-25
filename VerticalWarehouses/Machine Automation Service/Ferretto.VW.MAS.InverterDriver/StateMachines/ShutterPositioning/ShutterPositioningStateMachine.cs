@@ -29,18 +29,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             IServiceScopeFactory serviceScopeFactory)
             : base(logger, eventAggregator, inverterCommandQueue, serviceScopeFactory)
         {
-            if (shutterPositionData is null)
-            {
-                throw new System.ArgumentNullException(nameof(shutterPositionData));
-            }
-
-            if (inverterStatus is null)
-            {
-                throw new System.ArgumentNullException(nameof(inverterStatus));
-            }
-
-            this.shutterPositionData = shutterPositionData;
-            this.inverterStatus = inverterStatus;
+            this.shutterPositionData = shutterPositionData ?? throw new System.ArgumentNullException(nameof(shutterPositionData));
+            this.inverterStatus = inverterStatus ?? throw new System.ArgumentNullException(nameof(inverterStatus));
         }
 
         #endregion

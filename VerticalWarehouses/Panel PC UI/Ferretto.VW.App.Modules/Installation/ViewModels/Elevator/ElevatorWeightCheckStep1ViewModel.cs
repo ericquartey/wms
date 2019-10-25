@@ -9,11 +9,11 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightCheckStep1ViewModel : BaseElevatorWeightCheckViewModel
+    internal sealed class ElevatorWeightCheckStep1ViewModel : BaseElevatorWeightCheckViewModel
     {
         #region Fields
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private DelegateCommand checkLoadingUnitCommand;
 
@@ -28,11 +28,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ElevatorWeightCheckStep1ViewModel(
-            IMachineLoadingUnitsService machineLoadingUnitsService,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService)
+            : base()
         {
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
         }
 
         #endregion
@@ -98,7 +97,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -106,14 +105,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.InputLoadingUnitId = null;
             this.isloadingUnitVerified = false;
 
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             await this.GetLoadingUnitsAsync();
 
@@ -154,11 +153,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.Elevator.WeightCheck.STEP1))
+            {
+                this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Elevator.WeightCheck.STEP2,
                 this.inputLoadingUnitId.Value,
                 trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()

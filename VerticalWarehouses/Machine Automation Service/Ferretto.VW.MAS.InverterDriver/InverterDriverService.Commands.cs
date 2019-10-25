@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -18,6 +17,16 @@ namespace Ferretto.VW.MAS.InverterDriver
     partial class InverterDriverService
     {
         #region Methods
+
+        protected override void NotifyCommandError(FieldCommandMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override void NotifyError(FieldNotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
+        }
 
         protected override Task OnCommandReceivedAsync(FieldCommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
@@ -38,10 +47,17 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     return Task.CompletedTask;
                 }
-
-                if (receivedMessage.Type != FieldMessageType.InverterSetTimer)
+                if (receivedMessage.Type == FieldMessageType.ContinueMovement)
                 {
-                    this.Logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType()}");
+                    messageCurrentStateMachine.Continue();
+
+                    return Task.CompletedTask;
+                }
+
+                if (receivedMessage.Type != FieldMessageType.InverterSetTimer &&
+                    receivedMessage.Type != FieldMessageType.MeasureProfile)
+                {
+                    this.Logger.LogWarning($"5:Inverter Driver already executing operation {messageCurrentStateMachine.GetType().Name}");
                     this.Logger.LogError($"5a: Message {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source} will be discarded!");
                     var ex = new Exception();
                     this.SendOperationErrorMessage(inverterIndex, new InverterExceptionFieldMessageData(ex, "Inverter operation already in progress", 0), FieldMessageType.InverterError);
@@ -100,6 +116,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                     case FieldMessageType.InverterDisable:
                         this.ProcessDisableMessage(inverter);
+                        break;
+
+                    case FieldMessageType.MeasureProfile:
+                        this.ProcessMeasureProfileMessage(inverter);
                         break;
                 }
             }

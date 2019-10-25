@@ -10,12 +10,13 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ElevatorWeightAnalysisViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class ElevatorWeightAnalysisViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -23,17 +24,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly ObservableCollection<DataSample> measuredSamples = new ObservableCollection<DataSample>();
 
         private readonly List<DataSample> measuredSamplesInCurrentSession = new List<DataSample>();
 
-        private readonly IMachineWeightAnalysisProcedureService weightAnalysisProcedureService;
+        private readonly IMachineWeightAnalysisProcedureWebService weightAnalysisProcedureWebService;
 
         private double? averageCurrent;
+
+        private Bay bay;
 
         private bool canInputNetWeight;
 
@@ -55,6 +58,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToBayCommand;
 
+        private SetupProcedure procedureParameters;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -67,9 +72,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ElevatorWeightAnalysisViewModel(
             IEventAggregator eventAggregator,
-            IMachineElevatorService machineElevatorService,
-            IMachineLoadingUnitsService machineLoadingUnitsService,
-            IMachineWeightAnalysisProcedureService weightAnalysisProcedureService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineWeightAnalysisProcedureWebService weightAnalysisProcedureWebService,
             IBayManager bayManager)
             : base(Services.PresentationMode.Installer)
         {
@@ -78,14 +83,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (machineLoadingUnitsService is null)
+            if (machineLoadingUnitsWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
+                throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             }
 
-            if (weightAnalysisProcedureService is null)
+            if (weightAnalysisProcedureWebService is null)
             {
-                throw new ArgumentNullException(nameof(weightAnalysisProcedureService));
+                throw new ArgumentNullException(nameof(weightAnalysisProcedureWebService));
             }
 
             if (bayManager is null)
@@ -94,9 +99,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.eventAggregator = eventAggregator;
-            this.machineElevatorService = machineElevatorService;
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
-            this.weightAnalysisProcedureService = weightAnalysisProcedureService;
+            this.machineElevatorWebService = machineElevatorWebService;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
+            this.weightAnalysisProcedureWebService = weightAnalysisProcedureWebService;
             this.bayManager = bayManager;
         }
 
@@ -119,12 +124,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? CurrentPosition
         {
             get => this.currentPosition;
-            protected set => this.SetProperty(ref this.currentPosition, value);
+            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public string Error => string.Join(
-          Environment.NewLine,
-          this[nameof(this.InputDisplacement)]);
+            Environment.NewLine,
+            this[nameof(this.InputDisplacement)]);
 
         public double? InputDisplacement
         {
@@ -170,7 +175,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsExecutingProcedure
         {
             get => this.isExecutingProcedure;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isExecutingProcedure, value))
                 {
@@ -187,7 +192,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -223,11 +228,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.CanMoveToBay));
 
         public ICommand StartCommand =>
-                  this.startCommand
-          ??
-          (this.startCommand = new DelegateCommand(
-              async () => await this.StartAsync(),
-              this.CanStart));
+            this.startCommand
+            ??
+            (this.startCommand = new DelegateCommand(
+                async () => await this.StartAsync(),
+                this.CanStart));
 
         public ICommand StopCommand =>
             this.stopCommand
@@ -285,44 +290,92 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-            this.subscriptionToken = this.eventAggregator
-             .GetEvent<NotificationEventUI<PositioningMessageData>>()
-             .Subscribe(
-                 message => this.OnAutomationMessageReceived(message),
-                 ThreadOption.UIThread,
-                 false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnAutomationMessageReceived,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.AxisMovement == Axis.Vertical);
+
+            this.bay = await this.bayManager.GetBayAsync();
 
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
+
+            this.procedureParameters = await this.weightAnalysisProcedureWebService.GetParametersAsync();
         }
 
-        protected virtual void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private bool CanMoveToBay()
         {
-            System.Diagnostics.Debug.WriteLine($"Positioning notification: mode={message?.Data?.MovementMode}, axis={message.Data.AxisMovement}, status={message?.Status}, position={message?.Data.CurrentPosition}, sample={message?.Data?.TorqueCurrentSample?.Value}");
+            return
+               !this.IsExecutingProcedure
+               &&
+               !this.IsWaitingForResponse;
+        }
 
-            if (message is null
-                || message.Data is null
-                || message.Data.AxisMovement != Axis.Vertical)
+        private bool CanStart()
+        {
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private bool CanStop()
+        {
+            return
+                this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private async Task MoveToBayAsync()
+        {
+            try
             {
-                return;
-            }
+                this.IsWaitingForResponse = true;
+                this.IsExecutingProcedure = true;
 
+                var bayHeight = this.bay.Positions.First().Height;
+
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
+                    bayHeight,
+                    this.procedureParameters.FeedRate,
+                    false);
+            }
+            catch (Exception ex)
+            {
+                this.IsExecutingProcedure = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        {
             this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
 
             if (message.Status == MessageStatus.OperationExecuting
@@ -366,60 +419,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected virtual void RaiseCanExecuteChanged()
+        private void RaiseCanExecuteChanged()
         {
             this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();
 
             this.CanInputNetWeight = this.loadingUnit != null;
-        }
-
-        private bool CanMoveToBay()
-        {
-            return
-               !this.IsExecutingProcedure
-               &&
-               !this.IsWaitingForResponse;
-        }
-
-        private bool CanStart()
-        {
-            return
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                string.IsNullOrWhiteSpace(this.Error);
-        }
-
-        private bool CanStop()
-        {
-            return
-                this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
-        }
-
-        private async Task MoveToBayAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
-
-                var bayHeight = this.bayManager.Bay.Positions.First().Height;
-
-                await this.machineElevatorService.MoveToVerticalPositionAsync(bayHeight, FeedRateCategory.VerticalManualMovementsAfterZero);
-            }
-            catch (Exception ex)
-            {
-                this.IsExecutingProcedure = false;
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private async Task RetrieveCurrentPositionAsync()
@@ -428,7 +433,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.CurrentPosition = await this.machineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -442,7 +447,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task RetrieveLoadingUnitsAsync()
         {
-            this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+            this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
         }
 
         private async Task StartAsync()
@@ -455,7 +460,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.measuredSamplesInCurrentSession.Clear();
                 this.AverageCurrent = null;
 
-                await this.weightAnalysisProcedureService.StartAsync(
+                await this.weightAnalysisProcedureWebService.StartAsync(
                     this.InputDisplacement.Value,
                     this.InputNetWeight.Value,
                     this.loadingUnit?.Id);
@@ -477,7 +482,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineElevatorService.StopAsync();
+                await this.machineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {

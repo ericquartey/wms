@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Notify Inverter Stop End {this.InverterStatus.SystemIndex}");
             Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
 
             var notificationMessage = new FieldNotificationMessage(

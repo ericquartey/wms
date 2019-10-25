@@ -13,9 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionOperationsController : BaseWmsProxyBaseController
+    public class MissionOperationsController : BaseWmsProxyController
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -55,8 +54,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
-
-
         #region Methods
 
         [HttpPost("{id}/complete")]
@@ -74,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 var notificationMessage = new NotificationMessage(
                     messageData,
                     "Mission Operation Completed",
-                    MessageActor.MissionsManager,
+                    MessageActor.MachineManager,
                     MessageActor.WebApi,
                     MessageType.MissionOperationCompleted,
                     BayNumber.None);

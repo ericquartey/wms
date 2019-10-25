@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 ? false
                 : this.axisToSwitchOn == Axis.Horizontal;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -55,7 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
                 $"Switch On Inverter for axis {this.axisToSwitchOn}",
-                FieldMessageActor.FiniteStateMachines,
+                FieldMessageActor.DeviceManager,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOn,
                 MessageStatus.OperationStart,
@@ -69,7 +69,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Switch On Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new SwitchOnEndState(
+                    this.ParentStateMachine,
+                    this.axisToSwitchOn,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />

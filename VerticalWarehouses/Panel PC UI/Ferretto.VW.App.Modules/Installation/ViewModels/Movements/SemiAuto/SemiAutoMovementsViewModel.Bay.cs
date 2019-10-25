@@ -8,11 +8,15 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
         private readonly IBayManager bayManagerService;
+
+        private bool bayIsMultiPosition;
+
+        private BayNumber bayNumber;
 
         private double? bayPositionHeight;
 
@@ -34,14 +38,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition => this.bayManagerService.Bay.Positions.Count() > 1;
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
 
-        public int BayNumber => (int)this.bayManagerService.Bay.Number;
+        public BayNumber BayNumber
+        {
+            get => this.bayNumber;
+            set => this.SetProperty(ref this.bayNumber, value);
+        }
 
         public double? BayPositionHeight
         {
             get => this.bayPositionHeight;
-            protected set => this.SetProperty(ref this.bayPositionHeight, value);
+            private set => this.SetProperty(ref this.bayPositionHeight, value);
         }
 
         public bool IsElevatorMovingToBay
@@ -60,7 +72,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsPosition1Selected
         {
             get => this.isPosition1Selected;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isPosition1Selected, value))
                 {
@@ -72,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsPosition2Selected
         {
             get => this.isPosition2Selected;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isPosition2Selected, value))
                 {
@@ -84,7 +96,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public LoadingUnit LoadingUnitInBay
         {
             get => this.loadingUnitInBay;
-            protected set => this.SetProperty(ref this.loadingUnitInBay, value);
+            private set => this.SetProperty(ref this.loadingUnitInBay, value);
         }
 
         public ICommand MoveToBayHeightCommand =>
@@ -127,9 +139,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.InputHeight = this.BayPositionHeight.HasValue ? this.BayPositionHeight.Value : 0;
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.BayPositionHeight.Value,
-                    FeedRateCategory.VerticalManualMovementsAfterZero);
+                    this.procedureParameters.FeedRateAfterZero,
+                    false);
 
                 this.IsElevatorMovingToBay = true;
             }
@@ -148,13 +161,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPosition1()
         {
             this.IsPosition1Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.First().Height;
+            this.BayPositionHeight = this.bay.Positions.First().Height;
         }
 
         private void SelectBayPosition2()
         {
             this.IsPosition2Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.Last().Height;
+            this.BayPositionHeight = this.bay.Positions.Last().Height;
         }
 
         #endregion

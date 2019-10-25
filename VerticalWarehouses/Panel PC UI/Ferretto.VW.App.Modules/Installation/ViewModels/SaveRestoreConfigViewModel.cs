@@ -3,7 +3,8 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class SaveRestoreConfigViewModel : BaseMainViewModel
+    [System.Obsolete]
+    internal sealed class SaveRestoreConfigViewModel : BaseMainViewModel
     {
         #region Constructors
 

@@ -14,8 +14,6 @@
 
         DataLayerReady,
 
-        DrawerOperation,
-
         ExecuteMission,
 
         SwitchAxis,
@@ -72,10 +70,22 @@
 
         ElevatorWeightCheck,
 
-        PositioningTable,
-
         InverterFaultReset,
 
         ResetSecurity,
+
+        WeightAcquisitionCommand,
+
+        MachineManagerException,
+
+        MissionManagerException,
+
+        ChangeRunningState,
+
+        InverterPowerEnable,
+
+        MoveLoadingUnit,
+
+        ContinueMovement,
     }
 }

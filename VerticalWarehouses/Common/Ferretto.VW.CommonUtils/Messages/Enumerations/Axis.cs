@@ -10,6 +10,6 @@
 
         HorizontalAndVertical,
 
-        BayChain
+        BayChain,
     }
 }

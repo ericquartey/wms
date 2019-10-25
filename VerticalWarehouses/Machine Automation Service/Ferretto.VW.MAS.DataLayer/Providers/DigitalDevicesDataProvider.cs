@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Microsoft.EntityFrameworkCore;
@@ -30,58 +29,70 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public IEnumerable<Inverter> GetAllInverters()
         {
-            return this.dataContext.Inverters.ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.Inverters.ToArray();
+            }
         }
 
         public IEnumerable<Inverter> GetAllInvertersByBay(BayNumber bayNumber)
         {
-            if (bayNumber == BayNumber.ElevatorBay)
+            lock (this.dataContext)
             {
-                return this.dataContext.Elevators
-                    .Include(e => e.Axes)
-                    .ThenInclude(a => a.Inverter)
-                    .Single()
-                    .Axes
-                    .Select(a => a.Inverter)
-                    .Where(i => i != null)
-                    .ToList();
+                if (bayNumber == BayNumber.ElevatorBay)
+                {
+                    return this.dataContext.Elevators
+                        .Include(e => e.Axes)
+                        .ThenInclude(a => a.Inverter)
+                        .Single()
+                        .Axes
+                        .Select(a => a.Inverter)
+                        .Where(i => i != null)
+                        .ToList();
+                }
+
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Inverter)
+                    .Include(b => b.Shutter)
+                    .ThenInclude(s => s.Inverter)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+
+                var inverters = new List<Inverter>();
+
+                if (bay.Shutter != null && bay.Shutter.Inverter != null)
+                {
+                    inverters.Add(bay.Shutter.Inverter);
+                }
+
+                if (bay.Inverter != null)
+                {
+                    inverters.Add(bay.Inverter);
+                }
+
+                return inverters;
             }
-
-            var bay = this.dataContext.Bays
-                .Include(b => b.Inverter)
-                .Include(b => b.Shutter)
-                .ThenInclude(s => s.Inverter)
-                .SingleOrDefault(b => b.Number == bayNumber);
-
-            var inverters = new List<Inverter>();
-
-            if (bay.Shutter != null && bay.Shutter.Inverter != null)
-            {
-                inverters.Add(bay.Shutter.Inverter);
-            }
-
-            if (bay.Inverter != null)
-            {
-                inverters.Add(bay.Inverter);
-            }
-
-            return inverters;
         }
 
         public IEnumerable<IoDevice> GetAllIoDevices()
         {
-            return this.dataContext.IoDevices.ToArray();
+            lock (this.dataContext)
+            {
+                return this.dataContext.IoDevices.ToArray();
+            }
         }
 
         public Inverter GetInverterByIndex(InverterIndex index)
         {
-            var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == index);
-            if (inverter is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException((int)index);
-            }
+                var inverter = this.dataContext.Inverters.SingleOrDefault(i => i.Index == index);
+                if (inverter is null)
+                {
+                    throw new EntityNotFoundException((int)index);
+                }
 
-            return inverter;
+                return inverter;
+            }
         }
 
         #endregion

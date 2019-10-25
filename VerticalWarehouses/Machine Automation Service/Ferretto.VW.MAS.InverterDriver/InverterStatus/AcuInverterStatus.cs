@@ -1,11 +1,9 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 {
@@ -66,7 +64,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType()} is not compatible with Homing Mode");
+                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType().Name} is not compatible with Homing Mode");
             }
         }
 
@@ -84,7 +82,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Homing Mode");
+                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType().Name} is not compatible with Homing Mode");
             }
         }
 
@@ -102,7 +100,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType()} is not compatible with Position Mode");
+                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType().Name} is not compatible with Position Mode");
             }
         }
 
@@ -120,7 +118,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with Position Mode");
+                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType().Name} is not compatible with Position Mode");
             }
         }
 
@@ -138,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType()} is not compatible with TableTravel Mode");
+                throw new InvalidCastException($"Current Control Word Type {this.controlWord.GetType().Name} is not compatible with TableTravel Mode");
             }
         }
 
@@ -156,7 +154,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     return word;
                 }
 
-                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType()} is not compatible with TableTravel Mode");
+                throw new InvalidCastException($"Current Status Word Type {this.statusWord.GetType().Name} is not compatible with TableTravel Mode");
             }
         }
 

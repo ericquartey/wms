@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -56,7 +54,7 @@ namespace Ferretto.VW.App.Controls
 
         public void Initialize()
         {
-            if (this.DataContext is BasePresentation)
+            if (this.DataContext is BasePresentationViewModel)
             {
                 return;
             }
@@ -96,7 +94,7 @@ namespace Ferretto.VW.App.Controls
 
         private async Task OnViewLoadedAsync(object sender, RoutedEventArgs e)
         {
-            if (this.DataContext is BasePresentation basePresentation)
+            if (this.DataContext is BasePresentationViewModel basePresentation)
             {
                 await basePresentation.OnLoadedAsync();
             }

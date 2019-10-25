@@ -135,4 +135,7 @@
   <data name="MarkupNameOfSyntax" xml:space="preserve">
     <value>Syntax for NameOf is Type={x:Type &lt;className&gt;}.</value>
   </data>
+  <data name="ParameterCannotBeNullOrEmpty" xml:space="preserve">
+    <value>Parameter cannot be null or empty.</value>
+  </data>
 </root>

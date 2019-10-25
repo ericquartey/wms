@@ -1,12 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
-    public class ResetStartState : IoStateBase
+    internal sealed class ResetStartState : IoStateBase
     {
         #region Fields
 
@@ -68,6 +66,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
             {
                 this.status.UpdateOutputStates(resetIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(resetIoMessage);
         }
 

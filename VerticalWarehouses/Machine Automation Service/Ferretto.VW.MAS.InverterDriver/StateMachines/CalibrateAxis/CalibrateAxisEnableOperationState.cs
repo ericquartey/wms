@@ -1,5 +1,4 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -7,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisEnableOperationState : InverterStateBase
+    internal sealed class CalibrateAxisEnableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -39,13 +38,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogDebug($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal);
+            this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal || this.axisToCalibrate == Axis.BayChain);
 
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 
             var inverterMessage = new InverterMessage(
                 this.InverterStatus.SystemIndex,
-                (short)InverterParameterId.ControlWordParam,
+                (short)InverterParameterId.ControlWord,
                 this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"2:inverterMessage={inverterMessage}");
@@ -59,12 +58,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogDebug("1:Calibrate Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new CalibrateAxisStopState(
+                new CalibrateAxisDisableOperationState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
                     this.calibration,
                     this.InverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />

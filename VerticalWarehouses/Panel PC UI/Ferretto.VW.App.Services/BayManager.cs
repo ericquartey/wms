@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 
@@ -13,19 +12,17 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IMachineBaysService machineBaysService;
+        private readonly IMachineIdentityWebService machineIdentityWebService;
 
-        private readonly IMachineMissionOperationsService missionOperationsAutomationService;
+        private readonly IMachineMissionOperationsWebService missionOperationsAutomationService;
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
-
-        private Bay bay;
 
         private WMS.Data.WebAPI.Contracts.MissionOperation currentMissionOperation;
 
@@ -35,9 +32,9 @@ namespace Ferretto.VW.App.Services
 
         public BayManager(
             IOperatorHubClient operatorHubClient,
-            IMachineBaysService machineBaysService,
-            IMachineIdentityService identityService,
-            IMachineMissionOperationsService missionOperationsAutomationService,
+            IMachineBaysWebService machineBaysWebService,
+            IMachineIdentityWebService machineIdentityWebService,
+            IMachineMissionOperationsWebService missionOperationsAutomationWebService,
             WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
             WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
         {
@@ -46,14 +43,14 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(operatorHubClient));
             }
 
-            if (machineBaysService is null)
+            if (machineBaysWebService is null)
             {
-                throw new ArgumentNullException(nameof(machineBaysService));
+                throw new ArgumentNullException(nameof(machineBaysWebService));
             }
 
-            if (identityService is null)
+            if (machineIdentityWebService is null)
             {
-                throw new ArgumentNullException(nameof(identityService));
+                throw new ArgumentNullException(nameof(machineIdentityWebService));
             }
 
             if (missionOperationsDataService is null)
@@ -61,9 +58,9 @@ namespace Ferretto.VW.App.Services
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
 
-            if (missionOperationsAutomationService is null)
+            if (missionOperationsAutomationWebService is null)
             {
-                throw new ArgumentNullException(nameof(missionOperationsAutomationService));
+                throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
             }
 
             if (missionsDataService is null)
@@ -72,11 +69,11 @@ namespace Ferretto.VW.App.Services
             }
 
             this.missionOperationsDataService = missionOperationsDataService;
-            this.missionOperationsAutomationService = missionOperationsAutomationService;
+            this.missionOperationsAutomationService = missionOperationsAutomationWebService;
             this.missionsDataService = missionsDataService;
             this.operatorHubClient = operatorHubClient;
-            this.machineBaysService = machineBaysService;
-            this.identityService = identityService;
+            this.machineBaysWebService = machineBaysWebService;
+            this.machineIdentityWebService = machineIdentityWebService;
 
             this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
             this.operatorHubClient.MissionOperationAvailable += async (sender, e) => await this.OnMissionOperationAvailableAsync(sender, e);
@@ -91,8 +88,6 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Properties
-
-        public Bay Bay => this.bay;
 
         public WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; private set; }
 
@@ -115,6 +110,8 @@ namespace Ferretto.VW.App.Services
 
         public MachineIdentity Identity { get; private set; }
 
+        public IMachineIdentityWebService IdentityService => this.machineIdentityWebService;
+
         public int PendingMissionsCount { get; private set; }
 
         #endregion
@@ -133,16 +130,22 @@ namespace Ferretto.VW.App.Services
             this.CurrentMissionOperation = null;
         }
 
+        public async Task<Bay> GetBayAsync()
+        {
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            return await this.machineBaysWebService.GetByNumberAsync((BayNumber)bayNumber);
+        }
+
         public async Task InitializeAsync()
         {
-            this.Identity = await this.identityService.GetAsync();
-
-            this.bay = await this.machineBaysService.GetByNumberAsync();
+            this.Identity = await this.IdentityService.GetAsync();
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
         {
-            if (this.Bay != null && this.Bay.Number == (MAS.AutomationService.Contracts.BayNumber)e.Index)
+            var bay = await this.GetBayAsync();
+            if (bay != null && bay.Number == (BayNumber)e.Index)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
@@ -152,23 +155,23 @@ namespace Ferretto.VW.App.Services
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
             //TODO Review Implementation avoid using numbers to identify bays
-            var bayNumber = MAS.AutomationService.Contracts.BayNumber.None;
+            var bayNumber = BayNumber.None;
             switch (e.BayNumber)
             {
                 case 1:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    bayNumber = BayNumber.BayOne;
                     break;
 
                 case 2:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    bayNumber = BayNumber.BayTwo;
                     break;
 
                 case 3:
-                    bayNumber = MAS.AutomationService.Contracts.BayNumber.BayThree;
+                    bayNumber = BayNumber.BayThree;
                     break;
             }
 
-            if (this.Bay.Number == bayNumber)
+            if ((BayNumber)ConfigurationManager.AppSettings.GetBayNumber() == bayNumber)
             {
                 this.PendingMissionsCount = e.PendingMissionsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);

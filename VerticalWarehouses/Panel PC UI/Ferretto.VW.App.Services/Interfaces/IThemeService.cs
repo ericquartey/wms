@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.App.Services.Models;
 
-namespace Ferretto.VW.App.Services.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface IThemeService
     {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -7,15 +8,17 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Errors.ViewModels
 {
-    public class ErrorDetailsViewModel : BaseMainViewModel
+    internal sealed class ErrorDetailsViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IMachineErrorsService machineErrorsService;
+        private readonly IMachineErrorsWebService machineErrorsWebService;
 
-        private Error error;
+        private MachineError error;
 
         private string errorTime;
+
+        private bool isWaitingForResponse;
 
         private ICommand markAsResolvedCommand;
 
@@ -23,25 +26,24 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Constructors
 
-        public ErrorDetailsViewModel(IMachineErrorsService machineErrorsService)
+        public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineErrorsService is null)
-            {
-                throw new ArgumentNullException(nameof(machineErrorsService));
-            }
+            this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
 
-            this.machineErrorsService = machineErrorsService;
+            new Timer(this.OnErrorChanged, null, 0, 30 * 1000);
         }
 
         #endregion
 
         #region Properties
 
-        public Error Error
+        public override EnableMask EnableMask => EnableMask.None;
+
+        public MachineError Error
         {
             get => this.error;
-            set => this.SetProperty(ref this.error, value, this.OnErrorChanged);
+            set => this.SetProperty(ref this.error, value, () => this.OnErrorChanged(null));
         }
 
         public string ErrorTime
@@ -50,13 +52,20 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             set => this.SetProperty(ref this.errorTime, value);
         }
 
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set => this.SetProperty(ref this.isWaitingForResponse, value);
+        }
+
         public ICommand MarkAsResolvedCommand =>
             this.markAsResolvedCommand
             ??
             (this.markAsResolvedCommand = new DelegateCommand(
                 async () => await this.MarkAsResolvedAsync(),
-                this.CanExecuteMarkAsResolvedCommand)
-            .ObservesProperty(() => this.Error));
+                this.CanMarkAsResolved)
+            .ObservesProperty(() => this.Error)
+            .ObservesProperty(() => this.IsWaitingForResponse));
 
         #endregion
 
@@ -69,26 +78,37 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             this.Error = null;
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await this.CheckErrorsPresenceAsync();
+            await base.OnAppearedAsync();
+
+            await this.RetrieveErrorAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            await base.OnNavigatedAsync();
         }
 
-        private bool CanExecuteMarkAsResolvedCommand()
+        private bool CanMarkAsResolved()
         {
-            return this.error != null;
+            return
+                this.Error != null
+                &&
+                !this.IsWaitingForResponse;
         }
 
-        private async Task CheckErrorsPresenceAsync()
+        private async Task MarkAsResolvedAsync()
         {
+            if (this.Error is null)
+            {
+                return;
+            }
+
             try
             {
-                this.NavigationService.IsBusy = true;
-                this.Error = await this.machineErrorsService.GetCurrentAsync();
+                this.IsWaitingForResponse = true;
+
+                await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
+
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
             }
             catch (Exception ex)
             {
@@ -96,42 +116,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             }
             finally
             {
-                this.NavigationService.IsBusy = false;
+                this.IsWaitingForResponse = false;
             }
         }
 
-        private async Task MarkAsResolvedAsync()
-        {
-            if (this.error is null)
-            {
-                return;
-            }
-
-            try
-            {
-                this.NavigationService.IsBusy = true;
-
-                await this.machineErrorsService.ResolveAsync(this.error.Id);
-
-                var nextError = await this.machineErrorsService.GetCurrentAsync();
-
-                this.NavigationService.IsBusy = false;
-
-                if (nextError is null)
-                {
-                    this.NavigationService.GoBack();
-                }
-
-                this.Error = nextError;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-                this.NavigationService.IsBusy = false;
-            }
-        }
-
-        private void OnErrorChanged()
+        private void OnErrorChanged(object state)
         {
             if (this.error is null)
             {
@@ -155,6 +144,24 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             else
             {
                 this.ErrorTime = string.Format(Resources.VWApp.DaysAgo, elapsedTime.TotalDays);
+            }
+        }
+
+        private async Task RetrieveErrorAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.Error = await this.machineErrorsWebService.GetCurrentAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

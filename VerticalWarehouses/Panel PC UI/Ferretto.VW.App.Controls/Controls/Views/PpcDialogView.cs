@@ -6,7 +6,7 @@ using System.Windows.Data;
 using CommonServiceLocator;
 using DevExpress.Xpf.Core;
 using Ferretto.VW.App.Controls.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {
@@ -69,6 +69,37 @@ namespace Ferretto.VW.App.Controls
                 {
                     elemToFocus.Focus();
                 }
+            }
+        }
+
+        public static void ShowAnchorDialog(INavigableView registeredView, bool isNoModalDialog = false, bool isChildOfMainWindow = true)
+        {
+            if (!(registeredView is PpcDialogView ppcDialog))
+            {
+                return;
+            }
+
+            if (Application.Current.MainWindow.IsVisible
+                &&
+                isChildOfMainWindow)
+            {
+                ppcDialog.Owner = Application.Current.MainWindow;
+                ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            }
+            else
+            {
+                ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            }
+
+            ppcDialog.IsDraggingOrResizing = true;
+
+            if (isNoModalDialog)
+            {
+                ppcDialog.Show();
+            }
+            else
+            {
+                ppcDialog.ShowDialog();
             }
         }
 
@@ -185,7 +216,7 @@ namespace Ferretto.VW.App.Controls
 
             if (this.DataContext is INavigableViewModel viewModel)
             {
-                await viewModel.OnNavigatedAsync();
+                await viewModel.OnAppearedAsync();
             }
 
             SetFocus(this, this.FocusedStart);

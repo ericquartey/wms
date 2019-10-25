@@ -1,30 +1,39 @@
-﻿using System.Linq;
+﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
+
+        private double? bayChainHorizontalPosition;
 
         private DelegateCommand carouselDownCommand;
 
         private DelegateCommand carouselUpCommand;
+
+        private bool hasCarousel;
 
         private bool isCarouselMoving;
 
         #endregion
 
         #region Properties
+
+        public double? BayChainHorizontalPosition
+        {
+            get => this.bayChainHorizontalPosition;
+            private set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
+        }
 
         public ICommand CarouselDownCommand =>
             this.carouselDownCommand
@@ -40,7 +49,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CarouselUpAsync(),
                 this.CanExecuteCarouselUpCommand));
 
-        public bool HasCarousel => this.bayManagerService.Bay.Carousel != null;
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
 
         public bool IsCarouselMoving
         {
@@ -85,7 +98,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Backwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Backwards);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
@@ -104,11 +117,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselService.MoveAsync(HorizontalMovementDirection.Forwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Forwards);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
             {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuneBayAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineCarouselWebService.FindZeroAsync();
+                    this.IsTuningBay = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningBay = false;
+
                 this.ShowNotification(ex);
             }
             finally

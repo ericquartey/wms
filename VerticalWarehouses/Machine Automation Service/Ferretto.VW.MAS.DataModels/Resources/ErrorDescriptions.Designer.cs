@@ -70,11 +70,245 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Condizioni per la messa in marcia non soddisfatte..
+        /// </summary>
+        public static string ConditionsNotMetForRunning {
+            get {
+                return ResourceManager.GetString("ConditionsNotMetForRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cassetto non caricato completamente..
         /// </summary>
         public static string CradleNotCompletelyLoaded {
             get {
                 return ResourceManager.GetString("CradleNotCompletelyLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CradleNotCorrectlyLoadedDuringPickup.
+        /// </summary>
+        public static string CradleNotCorrectlyLoadedDuringPickup {
+            get {
+                return ResourceManager.GetString("CradleNotCorrectlyLoadedDuringPickup", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to CradleNotCorrectlyUnloadedDuringDeposit.
+        /// </summary>
+        public static string CradleNotCorrectlyUnloadedDuringDeposit {
+            get {
+                return ResourceManager.GetString("CradleNotCorrectlyUnloadedDuringDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore inverter..
+        /// </summary>
+        public static string InverterErrorBaseCode {
+            get {
+                return ResourceManager.GetString("InverterErrorBaseCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Impossibile scrivere il parametro dell&apos;inverter durante l&apos;esecuzione..
+        /// </summary>
+        public static string InverterErrorCannotWriteParameterWhileRunning {
+            get {
+                return ResourceManager.GetString("InverterErrorCannotWriteParameterWhileRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to I dati del dataset dell&apos;inverter non corrispondono..
+        /// </summary>
+        public static string InverterErrorDatasetValuesAreDifferent {
+            get {
+                return ResourceManager.GetString("InverterErrorDatasetValuesAreDifferent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore checksum EEPROM dell&apos;inverter..
+        /// </summary>
+        public static string InverterErrorEepromChecksumError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromChecksumError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore lettura EEPROM dell&apos;inverter..
+        /// </summary>
+        public static string InverterErrorEepromReadError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromReadError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore scrittura EEPROM dell&apos;inverter..
+        /// </summary>
+        public static string InverterErrorEepromWriteError {
+            get {
+                return ResourceManager.GetString("InverterErrorEepromWriteError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Dataset inverter non valido..
+        /// </summary>
+        public static string InverterErrorInvalidDataset {
+            get {
+                return ResourceManager.GetString("InverterErrorInvalidDataset", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Paramentro inverter non valido..
+        /// </summary>
+        public static string InverterErrorInvalidParameter {
+            get {
+                return ResourceManager.GetString("InverterErrorInvalidParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Il nodo specificato non è disponibile..
+        /// </summary>
+        public static string InverterErrorNodeNotAvailable {
+            get {
+                return ResourceManager.GetString("InverterErrorNodeNotAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametro inverter è in sola lettura..
+        /// </summary>
+        public static string InverterErrorParameterIsReadOnly {
+            get {
+                return ResourceManager.GetString("InverterErrorParameterIsReadOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametro inverter è in sola scrittura..
+        /// </summary>
+        public static string InverterErrorParameterIsWriteOnly {
+            get {
+                return ResourceManager.GetString("InverterErrorParameterIsWriteOnly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore di sintassi del messaggio inviato all&apos;inverter..
+        /// </summary>
+        public static string InverterErrorSyntaxError {
+            get {
+                return ResourceManager.GetString("InverterErrorSyntaxError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Parametro sconosciuto passato all&apos;inverter..
+        /// </summary>
+        public static string InverterErrorUnknownParameter {
+            get {
+                return ResourceManager.GetString("InverterErrorUnknownParameter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Incoerenza tra la lunghezza del messaggio all&apos;inverter e il tipo di dato del messaggio..
+        /// </summary>
+        public static string InverterErrorWrongPayloadLength {
+            get {
+                return ResourceManager.GetString("InverterErrorWrongPayloadLength", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to È stato rilevato un errore in uno degli inverter..
+        /// </summary>
+        public static string InverterFaultStateDetected {
+            get {
+                return ResourceManager.GetString("InverterFaultStateDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Errore Machine Manager.
+        /// </summary>
+        public static string MachineManagerErrorBaseCode {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorBaseCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database posizione destinazione cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database posizione sorgente cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceDb {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceDb", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Nessun cassetto presente nella baia indicata.
+        /// </summary>
+        public static string MachineManagerErrorNoLoadingUnitInSource {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to È scattata la funzione di sicurezza..
+        /// </summary>
+        public static string SecurityWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterDeposit.
+        /// </summary>
+        public static string ZeroSensorErrorAfterDeposit {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorErrorAfterPickup.
+        /// </summary>
+        public static string ZeroSensorErrorAfterPickup {
+            get {
+                return ResourceManager.GetString("ZeroSensorErrorAfterPickup", resourceCulture);
             }
         }
     }

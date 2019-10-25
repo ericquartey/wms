@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class PowerUpEndState : IoStateBase
+    internal sealed class PowerUpEndState : IoStateBase
     {
         #region Fields
 
@@ -41,29 +40,32 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace("1:Method Start");
 
-            //if (message.ValidOutputs && message.ElevatorMotorOn)
-            //{
-            //    var endNotification = new FieldNotificationMessage(
-            //        null,
-            //        "I/O power up complete",
-            //        FieldMessageActor.Any,
-            //        FieldMessageActor.IoDriver,
-            //        FieldMessageType.IoPowerUp,
-            //        MessageStatus.OperationEnd,
-            //        ErrorLevel.NoError,
-            //        (byte)this.index);
+            // why is this code commented out?
+            /*
+            if (message.ValidOutputs && message.ElevatorMotorOn)
+            {
+                var endNotification = new FieldNotificationMessage(
+                    null,
+                    "I/O power up complete",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
+                    FieldMessageType.IoPowerUp,
+                    MessageStatus.OperationEnd,
+                    ErrorLevel.NoError,
+                    (byte)this.index);
 
-            //    this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+                this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-            //    this.ParentStateMachine.PublishNotificationEvent(endNotification);
-            //}
+                this.ParentStateMachine.PublishNotificationEvent(endNotification);
+            }
+            */
         }
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
 
-            //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            // TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
         }
 
         public override void Start()
@@ -71,7 +73,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             var endNotification = new FieldNotificationMessage(
                 null,
                 "I/O power up complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.IoPowerUp,
                 MessageStatus.OperationEnd,
@@ -80,17 +82,20 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
             this.ParentStateMachine.PublishNotificationEvent(endNotification);
-            //var resetSecurityIoMessage = new IoSHDWriteMessage();
 
-            //resetSecurityIoMessage.SwitchElevatorMotor(true);
-            //this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
+            // why is this code commented out?
+            /*
+             var resetSecurityIoMessage = new IoSHDWriteMessage();
+             resetSecurityIoMessage.SwitchElevatorMotor(true);
+             this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
 
-            //lock (this.status)
-            //{
-            //    this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
-            //}
+             lock (this.status)
+             {
+                this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
+             }
 
-            //this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
+            */
         }
 
         #endregion

@@ -1,9 +1,9 @@
 ﻿using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Services.Interfaces;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class LayoutViewModel : ViewModelBase, IBusyViewModel
+    internal sealed class LayoutViewModel : ViewModelBase, IBusyViewModel
     {
         #region Fields
 

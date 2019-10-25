@@ -2,18 +2,16 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
+    internal sealed class VerticalOffsetCalibrationStep2ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
-
-        private readonly IMachineVerticalOffsetProcedureService verticalOffsetService;
 
         private DelegateCommand applyCorrectionCommand;
 
@@ -38,17 +36,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOffsetCalibrationStep2ViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalOffsetProcedureService verticalOffsetService)
-            : base(machineCellsService, machineElevatorService, verticalOffsetService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
+            : base(machineCellsWebService, machineElevatorWebService, verticalOffsetWebService)
         {
-            if (verticalOffsetService is null)
-            {
-                throw new ArgumentNullException(nameof(verticalOffsetService));
-            }
-
-            this.verticalOffsetService = verticalOffsetService;
         }
 
         #endregion
@@ -167,30 +159,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
 
-            if (this.Data is Cell cell)
-            {
-                this.Cell = cell;
-            }
+            this.Cell = this.Data as Cell ?? this.Cell;
 
-            try
-            {
-                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+            this.InputStepValue = this.ProcedureParameters.Step;
 
-                this.InputStepValue = parameters.StepValue;
-                this.CurrentVerticalOffset = parameters.VerticalOffset;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            await this.RetrieveVerticalOffset();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -246,7 +227,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var newOffset = this.CurrentVerticalOffset.Value - this.Displacement.Value;
-                await this.verticalOffsetService.CompleteAsync(newOffset);
+                await this.VerticalOffsetWebService.CompleteAsync(newOffset);
 
                 this.CurrentVerticalOffset = newOffset;
                 this.Displacement = null;
@@ -308,7 +289,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingDown = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
+                await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
 
                 this.Displacement = (this.Displacement ?? 0) - this.InputStepValue;
             }
@@ -330,7 +311,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingUp = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue);
+                await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(this.InputStepValue);
 
                 this.Displacement = (this.Displacement ?? 0) + this.InputStepValue;
             }
@@ -342,6 +323,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task RetrieveVerticalOffset()
+        {
+            try
+            {
+                this.CurrentVerticalOffset = await this.MachineElevatorWebService.GetVerticalOffsetAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
             }
         }
 

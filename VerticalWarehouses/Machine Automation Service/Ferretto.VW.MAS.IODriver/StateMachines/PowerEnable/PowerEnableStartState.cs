@@ -1,11 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
-    public class PowerEnableStartState : IoStateBase
+    internal sealed class PowerEnableStartState : IoStateBase
     {
         #region Fields
 
@@ -79,12 +78,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
             this.Logger.LogTrace($"1:Power Enable ={powerEnableIoMessage}");
 
-            powerEnableIoMessage.SwitchPowerEnable(this.enable);
+            powerEnableIoMessage.PowerEnable = this.enable;
 
             lock (this.status)
             {
                 this.status.UpdateOutputStates(powerEnableIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(powerEnableIoMessage);
         }
 

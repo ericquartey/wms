@@ -1,6 +1,6 @@
 ﻿using System.Windows.Input;
 
-namespace Ferretto.VW.App.Services.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface IPresentation
     {
@@ -8,8 +8,9 @@ namespace Ferretto.VW.App.Services.Interfaces
 
         ICommand ExecuteCommand { get; }
 
-        bool? IsVisible { get; set; }
         bool? IsEnabled { get; set; }
+
+        bool? IsVisible { get; set; }
 
         PresentationStates State { get; set; }
 

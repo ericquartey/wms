@@ -8,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
-    public class LoaderViewModel : BaseMainViewModel
+    internal sealed class LoaderViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -83,14 +83,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
-                async (e) => await this.OnHealthStatusChanged(e),
-                ThreadOption.UIThread,
-                false);
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    async (e) => await this.OnHealthStatusChanged(e),
+                    ThreadOption.UIThread,
+                    false);
         }
 
         private async Task CheckFirewallStatusAsync()

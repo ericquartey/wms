@@ -7,11 +7,11 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice
+    internal partial class IoDevice
     {
         #region Methods
 
@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             if (this.CurrentStateMachine != null)
             {
-                this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType()}");
+                this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType().Name}");
 
                 var ex = new Exception();
                 this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
                                 "Switch to Horizontal axis completed",
-                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
                                 MessageStatus.OperationEnd,
@@ -44,7 +44,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(endNotification);
                         }
                         else
                         {
@@ -70,7 +72,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             var endNotification = new FieldNotificationMessage(
                                 receivedMessage.Data,
                                 "Switch to Vertical axis completed",
-                                FieldMessageActor.Any,
+                                FieldMessageActor.IoDriver,
                                 FieldMessageActor.IoDriver,
                                 FieldMessageType.SwitchAxis,
                                 MessageStatus.OperationEnd,
@@ -78,7 +80,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"4:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(endNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(endNotification);
                         }
                         else
                         {
@@ -113,7 +117,9 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
                             this.logger.LogTrace($"6:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
-                            this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
+                            this.eventAggregator
+                                .GetEvent<FieldNotificationEvent>()
+                                .Publish(errorNotification);
                         }
 
                         break;

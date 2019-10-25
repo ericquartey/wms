@@ -1,13 +1,11 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisStartState : IoStateBase
+    internal sealed class SwitchAxisStartState : IoStateBase
     {
         #region Fields
 
@@ -80,7 +78,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
-            var switchOffAxisIoMessage = new IoWriteMessage();
+            var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true };
 
             this.Logger.LogTrace($"1:Switch off axis IO={switchOffAxisIoMessage}");
 
@@ -94,12 +92,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                     switchOffAxisIoMessage.SwitchCradleMotor(false);
                     break;
             }
-            switchOffAxisIoMessage.SwitchPowerEnable(true);
 
             lock (this.status)
             {
                 this.status.UpdateOutputStates(switchOffAxisIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(switchOffAxisIoMessage);
         }
 

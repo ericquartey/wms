@@ -4,7 +4,7 @@
     {
         #region Fields
 
-        private readonly object statusWordLockObject;
+        private readonly object syncRoot = new object();
 
         private ushort statusWord;
 
@@ -14,20 +14,11 @@
 
         public StatusWordBase()
         {
-            this.statusWord = 0x0000;
-            this.statusWordLockObject = new object();
         }
 
         public StatusWordBase(ushort statusWordValue)
         {
             this.statusWord = statusWordValue;
-            this.statusWordLockObject = new object();
-        }
-
-        public StatusWordBase(StatusWordBase otherStatusWord)
-        {
-            this.statusWord = otherStatusWord.statusWord;
-            this.statusWordLockObject = new object();
         }
 
         #endregion
@@ -38,7 +29,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0008) > 0;
                 }
@@ -49,7 +40,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0004) > 0;
                 }
@@ -60,7 +51,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0020) > 0;
                 }
@@ -71,7 +62,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0001) > 0;
                 }
@@ -82,7 +73,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0200) > 0;
                 }
@@ -93,7 +84,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0002) > 0;
                 }
@@ -104,7 +95,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0040) > 0;
                 }
@@ -115,7 +106,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0010) > 0;
                 }
@@ -126,7 +117,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x0080) > 0;
                 }
@@ -137,7 +128,7 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return (this.statusWord & 0x8000) > 0;
                 }
@@ -148,14 +139,15 @@
         {
             get
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     return this.statusWord;
                 }
             }
+
             set
             {
-                lock (this.statusWordLockObject)
+                lock (this.syncRoot)
                 {
                     this.statusWord = value;
                 }

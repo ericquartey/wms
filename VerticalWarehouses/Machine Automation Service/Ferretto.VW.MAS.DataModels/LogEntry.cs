@@ -1,4 +1,5 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -6,31 +7,32 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public string BayNumber { get; set; }
+        public BayNumber BayNumber { get; set; }
 
         public string Data { get; set; }
 
         public string Description { get; set; }
 
-        public string Destination { get; set; }
+        public MessageActor Destination { get; set; }
 
-        public string ErrorLevel { get; set; }
+        public ErrorLevel ErrorLevel { get; set; }
 
-        public string Exception { get; set; }
+        public MessageActor Source { get; set; }
 
-        public string Level { get; set; }
-
-        public string LoggerName { get; set; }
-
-        public string Message { get; set; }
-
-        public string Source { get; set; }
-
-        public string Status { get; set; }
+        public MessageStatus Status { get; set; }
 
         public DateTime TimeStamp { get; set; }
 
-        public string Type { get; set; }
+        public MessageType Type { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return $"{this.BayNumber,-15}|{this.Source,-20}|{this.Destination,-20}|{this.Type,-20}|{this.Status,-20}|{this.ErrorLevel,-20}|{this.Description,-100}|{this.Data}";
+        }
 
         #endregion
     }

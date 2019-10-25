@@ -8,11 +8,13 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class DepositAndPickUpTestViewModel
+    internal sealed partial class DepositAndPickUpTestViewModel
     {
         #region Fields
 
         private readonly IBayManager bayManagerService;
+
+        private bool bayIsMultiPosition;
 
         private double? bayPositionHeight;
 
@@ -32,7 +34,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsMultiPosition => this.bayManagerService.Bay.Positions.Count() > 1;
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
 
         public double? BayPositionHeight
         {
@@ -132,9 +138,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.GotoBayAdjusted;
                 }
 
-                await this.machineElevatorService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                         this.BayPositionHeight.Value,
-                        FeedRateCategory.VerticalManualMovementsAfterZero);
+                        this.procedureParameters.FeedRate,
+                        false);
 
                 this.IsElevatorMovingToBay = true;
             }
@@ -153,13 +160,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPosition1()
         {
             this.IsPosition1Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.First().Height;
+            this.BayPositionHeight = this.bay.Positions.First().Height;
         }
 
         private void SelectBayPosition2()
         {
             this.IsPosition2Selected = true;
-            this.BayPositionHeight = this.bayManagerService.Bay.Positions.Last().Height;
+            this.BayPositionHeight = this.bay.Positions.Last().Height;
         }
 
         #endregion

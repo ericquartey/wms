@@ -1,12 +1,10 @@
 ﻿using System;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.IODriver.Interface
+namespace Ferretto.VW.MAS.IODriver
 {
-    public interface IIoStateMachine : IDisposable
+    internal interface IIoStateMachine
     {
-
-
         #region Methods
 
         void ChangeState(IIoState newState);

@@ -17,7 +17,6 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
-            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -32,18 +31,18 @@
                    Text="{x:Static res:InstallationApp.BeltBurnishing}" />
 
         <ctrls:PpcSpinEdit Grid.Row="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.UpperBound}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.LowerBound}" />
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.LowerBound}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
@@ -51,21 +50,20 @@
                                  ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputRequiredCycles}"
+                                 LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
         <ctrls:PpcSpinEdit Grid.Row="2"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
+                           Grid.Column="1"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
         <StackPanel Grid.Row="3"
                     Grid.Column="1"
@@ -74,16 +72,16 @@
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding CompletedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.CompletedCycles}" />
+                                     ContentText="{Binding PerformedCyclesThisSession}"
+                                     LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
 
             <controls:PpcLabeledText Grid.Row="3"
                                      Grid.Column="2"
                                      Margin="80,0,0,0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding TotalCompletedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.TotalCompletedCycles}" />
+                                     ContentText="{Binding CumulativePerformedCycles}"
+                                     LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
         </StackPanel>
 
         <controls:PpcButton Grid.Row="4"
@@ -91,19 +89,13 @@
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+                            Content="{x:Static res:InstallationApp.Start}"
+                            IsBusy="{Binding IsExecutingProcedure}" />
 
         <controls:PpcButton Grid.Row="4"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
-
-
-        <controls:PpcButton Grid.Row="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding ResetCommand}"
-                            Content="{x:Static res:InstallationApp.Reset}" />
     </Grid>
 </ctrls:View>

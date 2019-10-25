@@ -6,11 +6,11 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ExternalBayManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class ExternalBayManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
-        private readonly IMachineBaysService machineBaysService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
         private bool canExecuteMoveBackwardsCommand;
 
@@ -31,17 +31,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ExternalBayManualMovementsViewModel(
-            IMachineElevatorService elevatorService,
-            IMachineBaysService machineBaysService,
+            IMachineElevatorWebService elevatorWebService,
+            IMachineBaysWebService machineBaysWebService,
             IBayManager bayManager)
-            : base(elevatorService, bayManager)
+            : base(elevatorWebService, bayManager)
         {
-            if (machineBaysService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineBaysService));
-            }
-
-            this.machineBaysService = machineBaysService;
+            this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
 
             this.RefreshCanExecuteCommands();
         }
@@ -163,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineBaysService.MoveAsync(direction);
+                await this.machineBaysWebService.MoveAsync(direction);
             }
             catch (System.Exception ex)
             {

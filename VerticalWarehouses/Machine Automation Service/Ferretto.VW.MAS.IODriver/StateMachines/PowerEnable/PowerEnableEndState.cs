@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 {
-    public class PowerEnableEndState : IoStateBase
+    internal sealed class PowerEnableEndState : IoStateBase
     {
         #region Fields
 
@@ -57,7 +56,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
             var endNotification = new FieldNotificationMessage(
                 null,
                 "Power Enable complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.PowerEnable,
                 MessageStatus.OperationEnd,

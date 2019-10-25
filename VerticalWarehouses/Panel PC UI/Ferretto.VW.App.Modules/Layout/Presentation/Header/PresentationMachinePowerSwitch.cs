@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationMachinePowerSwitch : BasePresentation
+    public class PresentationMachinePowerSwitch : BasePresentationViewModel
     {
         #region Fields
 
@@ -22,7 +21,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly IMachineModeService machineModeService;
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineSensorsWebService machineSensorsWebService;
+
+        private readonly SubscriptionToken runningStateSubscriptionToken;
 
         private readonly SubscriptionToken sensorsSubscriptionToken;
 
@@ -40,12 +41,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public PresentationMachinePowerSwitch(
             IMachineModeService machineModeService,
-            IMachineSensorsService machineSensorsService,
+            IMachineSensorsWebService machineSensorsWebService,
             IEventAggregator eventAggregator)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.machineSensorsService = machineSensorsService ?? throw new ArgumentNullException(nameof(machineSensorsService));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.sensorsSubscriptionToken = this.eventAggregator
@@ -54,6 +55,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                    message => this.OnSensorsChanged(message?.Data?.SensorsStates),
                    ThreadOption.UIThread,
                    false);
+
+            this.runningStateSubscriptionToken = this.eventAggregator
+                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+                .Subscribe(
+                    message => this.OnRunningStateChanged(message),
+                    ThreadOption.UIThread,
+                    false);
 
             this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
                 .Subscribe(
@@ -90,7 +98,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            var sensors = await this.machineSensorsService.GetAsync();
+            var sensors = await this.machineSensorsWebService.GetAsync();
             this.OnSensorsChanged(sensors.ToArray());
 
             if (this.emergencyButtonPressed)
@@ -127,7 +135,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
             try
             {
-                var sensors = await this.machineSensorsService.GetAsync();
+                var sensors = await this.machineSensorsWebService.GetAsync();
                 this.OnSensorsChanged(sensors.ToArray());
             }
             catch
@@ -144,6 +152,14 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             this.IsMachinePoweredOn = e.MachinePower == Services.Models.MachinePowerState.Powered;
             this.IsBusy = false;
+        }
+
+        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
+        {
+            if (message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
+            {
+                this.IsBusy = false;
+            }
         }
 
         private void OnSensorsChanged(bool[] sensorsStates)

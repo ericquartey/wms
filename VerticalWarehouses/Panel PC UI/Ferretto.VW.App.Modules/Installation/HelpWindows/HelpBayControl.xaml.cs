@@ -7,9 +7,13 @@ namespace Ferretto.VW.App.Installation.HelpWindows
     /// </summary>
     public partial class HelpBayHeightCheck : UserControl
     {
+        #region Constructors
+
         public HelpBayHeightCheck()
         {
             this.InitializeComponent();
         }
+
+        #endregion
     }
 }

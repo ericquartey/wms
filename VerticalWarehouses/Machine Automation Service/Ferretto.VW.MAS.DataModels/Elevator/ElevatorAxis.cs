@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -6,21 +7,45 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Fields
 
+        private double lowerBound;
+
         private double offset;
 
         private decimal resolution;
+
+        private int totalCycles = 1;
+
+        private double upperBound = 1;
 
         #endregion
 
         #region Properties
 
+        public double BrakeActivatePercent { get; set; }
+
+        public double BrakeReleaseTime { get; set; }
+
+        public double ChainOffset { get; set; }
+
         public MovementParameters EmptyLoadMovement { get; set; }
+
+        public MovementParameters FullLoadMovement { get; set; }
 
         public Inverter Inverter { get; set; }
 
-        public double LowerBound { get; set; }
+        public double LowerBound
+        {
+            get => this.lowerBound;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Lower bound cannot be negative.");
+                }
 
-        public MovementParameters MaximumLoadMovement { get; set; }
+                this.lowerBound = value;
+            }
+        }
 
         public double Offset
         {
@@ -29,7 +54,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value < 0)
                 {
-                    throw new System.ArgumentOutOfRangeException("Offset cannot be negative.", nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), "Offset cannot be negative.");
                 }
 
                 this.offset = value;
@@ -37,6 +62,21 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         public Orientation Orientation { get; set; }
+
+        /// <summary>
+        /// Gets or sets the target position for the horizontal movement in the profile calibration procedure.
+        /// </summary>
+        public double ProfileCalibrateLength { get; set; }
+
+        /// <summary>
+        /// Gets or sets the position that must match the raise of ProfileCalibrationBay signal in the profile calibration procedure.
+        /// </summary>
+        public int ProfileCalibratePosition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the speed used in the profile calibration procedure.
+        /// </summary>
+        public double ProfileCalibrateSpeed { get; set; }
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
@@ -47,20 +87,91 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (value <= 0)
                 {
-                    throw new System.ArgumentOutOfRangeException("Resolution cannot be negative or zero.", nameof(value));
+                    throw new ArgumentOutOfRangeException(nameof(value), "Resolution cannot be negative or zero.");
                 }
 
                 this.resolution = value;
             }
         }
 
-        public double UpperBound { get; set; }
+        public int TotalCycles
+        {
+            get => this.totalCycles;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Total cycles cannot be negative or zero.");
+                }
 
-        public int TotalCycles { get; set; }
+                this.totalCycles = value;
+            }
+        }
+
+        public double UpperBound
+        {
+            get => this.upperBound;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(value), "Upper bound cannot be negative or zero.");
+                }
+
+                this.upperBound = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the kM value in the formula weight = kM * current + kS.
+        /// </summary>
+        public double WeightMeasureMultiply { get; set; }
+
+        /// <summary>
+        /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/meter.
+        /// </summary>
+        public double WeightMeasureSpeed { get; set; }
+
+        /// <summary>
+        /// Gets or sets the kS value in the formula weight = kM * current + kS.
+        /// </summary>
+        public double WeightMeasureSum { get; set; }
+
+        /// <summary>
+        /// Gets or sets the time between the start of slow upward movement and the torque current request message, in tenth of seconds.
+        /// </summary>
+        public int WeightMeasureTime { get; set; }
 
         #endregion
 
         #region Methods
+
+        public MovementParameters ScaleMovementsByWeight(double grossWeight, double maximumLoadOnBoard)
+        {
+            if (grossWeight < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+            }
+
+            if (maximumLoadOnBoard <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+            }
+
+            if (grossWeight > maximumLoadOnBoard)
+            {
+                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+            }
+
+            var scalingFactor = grossWeight / maximumLoadOnBoard;
+
+            return new MovementParameters
+            {
+                Speed = this.EmptyLoadMovement.Speed + ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
+                Acceleration = this.EmptyLoadMovement.Acceleration + ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = this.EmptyLoadMovement.Deceleration + ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
+            };
+        }
 
         public override string ToString()
         {

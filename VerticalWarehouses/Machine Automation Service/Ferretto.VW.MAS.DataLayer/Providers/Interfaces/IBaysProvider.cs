@@ -17,7 +17,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
 
-        void Create(Bay bay);
+        double ConvertProfileToHeight(ushort profile);
+
+        double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
 
         Bay Deactivate(BayNumber bayNumber);
 
@@ -29,17 +31,37 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
 
+        Bay GetByIoIndex(IoIndex ioIndex);
+
+        Bay GetByLoadingUnitLocation(LoadingUnitLocation location);
+
         BayNumber GetByMovementType(IPositioningMessageData data);
 
         Bay GetByNumber(BayNumber bayNumber);
+
+        double GetChainOffset(InverterIndex inverterIndex);
 
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
 
+        InverterIndex GetInverterIndexByProfile(BayNumber bayNumber);
+
         IoIndex GetIoDevice(BayNumber bayNumber);
 
+        LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
+
+        double GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
+
+        LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
+
+        double GetResolution(InverterIndex inverterIndex);
+
+        void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
+
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
+
+        void UnloadLoadingUnit(LoadingUnitLocation location);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 

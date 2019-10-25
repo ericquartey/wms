@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Services.Interfaces
+﻿namespace Ferretto.VW.App.Services
 {
     public interface INavigationService
     {
@@ -17,6 +17,8 @@
         void GoBack();
 
         void GoBackTo(string modelName, string viewModelName);
+
+        bool IsActiveView(string moduleName, string viewModelName);
 
         void LoadModule(string moduleName);
 

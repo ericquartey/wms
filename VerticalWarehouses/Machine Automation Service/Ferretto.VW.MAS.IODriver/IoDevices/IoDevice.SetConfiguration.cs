@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice
+    internal partial class IoDevice
     {
         #region Methods
 

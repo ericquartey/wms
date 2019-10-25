@@ -120,7 +120,85 @@
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
     <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.</value>
   </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+  </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Il cassetto potrebbe essersi incastrato.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>ZeroSensorErrorAfterDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>ZeroSensorErrorAfterPickup</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+  </data>
+  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
+    <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
+    <value>Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+    <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
+  </data>
+  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+    <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
   </data>
 </root>

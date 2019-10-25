@@ -7,32 +7,47 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel : BaseMainViewModel
+    internal sealed partial class SemiAutoMovementsViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IMachineLoadingUnitsService machineLoadingUnitsService;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IMachineSensorsService machineSensorsService;
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly Sensors sensors = new Sensors();
 
-        private readonly IMachineShuttersService shuttersService;
+        private readonly IMachineShuttersWebService shuttersWebService;
+
+        private Bay bay;
+
+        private bool bay1ZeroChainisVisible;
+
+        private bool bay2ZeroChainisVisible;
+
+        private bool bay3ZeroChainisVisible;
 
         private SubscriptionToken homingToken;
 
         private int? inputLoadingUnitCode;
+
+        private bool isShutterTwoSensors;
 
         private bool isWaitingForResponse;
 
         private bool isZeroChain;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private VerticalManualMovementsProcedure procedureParameters;
 
         private SubscriptionToken sensorsToken;
 
@@ -45,73 +60,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public SemiAutoMovementsViewModel(
-            IMachineElevatorService machineElevatorService,
-            IMachineCellsService machineCellsService,
-            IMachineLoadingUnitsService machineLoadingUnitsService,
-            IMachineSensorsService machineSensorsService,
-            IMachineShuttersService shuttersService,
-            IMachineServiceService machineServiceService,
-            IMachineCarouselService machineCarouselService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineCellsWebService machineCellsWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineShuttersWebService shuttersWebService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineBaysWebService machineBaysWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            if (machineElevatorService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            if (machineCellsService is null)
-            {
-                throw new ArgumentNullException(nameof(machineCellsService));
-            }
-
-            if (machineLoadingUnitsService is null)
-            {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsService));
-            }
-
-            if (bayManagerService is null)
-            {
-                throw new ArgumentNullException(nameof(bayManagerService));
-            }
-
-            if (machineSensorsService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineSensorsService));
-            }
-
-            if (shuttersService is null)
-            {
-                throw new System.ArgumentNullException(nameof(shuttersService));
-            }
-
-            if (machineServiceService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineServiceService));
-            }
-
-            if (machineCarouselService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineCarouselService));
-            }
-
-            this.machineSensorsService = machineSensorsService;
-            this.machineElevatorService = machineElevatorService;
-            this.machineCellsService = machineCellsService;
-            this.machineLoadingUnitsService = machineLoadingUnitsService;
-            this.bayManagerService = bayManagerService;
-            this.shuttersService = shuttersService;
-            this.machineServiceService = machineServiceService;
-            this.machineCarouselService = machineCarouselService;
-
-            this.shutterSensors = new ShutterSensors(this.BayNumber);
-
-            this.SelectBayPosition1();
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
+            this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
 
         #endregion
 
         #region Properties
+
+        public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainisVisible; private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value); }
+
+        public bool Bay2ZeroChainIsVisible { get => this.bay2ZeroChainisVisible; private set => this.SetProperty(ref this.bay2ZeroChainisVisible, value); }
+
+        public bool Bay3ZeroChainIsVisible { get => this.bay3ZeroChainisVisible; private set => this.SetProperty(ref this.bay3ZeroChainisVisible, value); }
 
         public int? InputLoadingUnitCode
         {
@@ -143,12 +120,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsShutterTwoSensors => this.bayManagerService.Bay.Shutter.Type == ShutterType.TwoSensors;
+        public bool IsShutterTwoSensors
+        {
+            get => this.isShutterTwoSensors;
+            set => this.SetProperty(ref this.isShutterTwoSensors, value);
+        }
 
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set
+            private set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -174,120 +155,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.homingToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<HomingMessageData>>()
-                    .Unsubscribe(this.homingToken);
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.homingToken?.Dispose();
+            this.homingToken = null;
 
-                this.homingToken = null;
-            }
+            this.shutterPositionToken?.Dispose();
+            this.shutterPositionToken = null;
 
-            if (this.shutterPositionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-                    .Unsubscribe(this.shutterPositionToken);
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
 
-                this.shutterPositionToken = null;
-            }
-
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
-
-            if (this.sensorsToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Unsubscribe(this.sensorsToken);
-
-                this.sensorsToken = null;
-            }
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
+            */
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.IsBackNavigationAllowed = true;
 
-            this.homingToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<HomingMessageData>>()
-              .Subscribe(
-                  message => this.OnHomingChanged(message),
-                  ThreadOption.UIThread,
-                  false);
+            this.SubscribeToEvents();
 
-            this.shutterPositionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-              .Subscribe(
-                  message => this.OnShutterPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
-
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<PositioningMessageData>>()
-              .Subscribe(
-                  message => this.OnElevatorPositionChanged(message),
-                  ThreadOption.UIThread,
-                  false);
-
-            this.sensorsToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                .Subscribe(
-                    message =>
-                        {
-                            this.sensors.Update(message?.Data?.SensorsStates);
-                            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                            this.shutterSensors.Update(message?.Data?.SensorsStates);
-                            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
-                            this.RaiseCanExecuteChanged();
-                        },
-                    ThreadOption.UIThread,
-                    false);
-
-            try
-            {
-                var sensorsStates = await this.machineSensorsService.GetAsync();
-
-                this.sensors.Update(sensorsStates.ToArray());
-                this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-                this.shutterSensors.Update(sensorsStates.ToArray());
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
-            this.RaiseCanExecuteChanged();
-
-            await this.RetrieveElevatorPositionAsync();
-
-            await this.RetrieveCellsAsync();
-
-            await this.RetrieveLoadingUnitsAsync();
-
-            await base.OnNavigatedAsync();
-        }
-
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
-
-            this.RetrieveElevatorPositionAsync();
-        }
-
-        public async Task RetrieveLoadingUnitsAsync()
-        {
             try
             {
                 this.IsWaitingForResponse = true;
-                this.loadingUnits = await this.machineLoadingUnitsService.GetAllAsync();
+
+                this.bay = await this.bayManagerService.GetBayAsync();
+                this.BayNumber = this.bay.Number;
+                this.HasCarousel = this.bay.Carousel != null;
+                this.IsShutterTwoSensors = this.bay.Shutter.Type == ShutterType.TwoSensors;
+                this.BayIsMultiPosition = this.bay.Positions.Count() > 1;
+
+                await this.CheckZeroChainOnBays();
+                await this.InitializeSensorsAsync();
+
+                this.SelectBayPosition1();
+
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+
+                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
+
+                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
+
+                this.Cells = await this.machineCellsWebService.GetAllAsync();
+
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -297,6 +213,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+
+            await base.OnAppearedAsync();
+
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
         }
 
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
@@ -319,22 +240,58 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task CheckZeroChainOnBays()
+        {
+            var bays = await this.machineBaysWebService.GetAllAsync();
+
+            this.Bay1ZeroChainIsVisible = bays
+                  .Where(b => b.Number == BayNumber.BayOne)
+                  .Select(b => b.Carousel != null || b.IsExternal)
+                  .SingleOrDefault() && this.BayNumber == BayNumber.BayOne;
+
+            this.Bay2ZeroChainIsVisible = bays
+                  .Where(b => b.Number == BayNumber.BayTwo)
+                  .Select(b => b.Carousel != null || b.IsExternal)
+                  .SingleOrDefault() && this.BayNumber == BayNumber.BayTwo;
+
+            this.Bay3ZeroChainIsVisible = bays
+                  .Where(b => b.Number == BayNumber.BayThree)
+                  .Select(b => b.Carousel != null || b.IsExternal)
+                  .SingleOrDefault() && this.BayNumber == BayNumber.BayThree;
+        }
+
+        private async Task InitializeSensorsAsync()
+        {
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+
+            this.sensors.Update(sensorsStates.ToArray());
+            this.shutterSensors.Update(sensorsStates.ToArray());
+
+            this.RaisePropertyChanged(nameof(this.ShutterSensors));
+
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+        }
+
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
                     {
                         this.ShowNotification(string.Empty);
 
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         {
-                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                            this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                        }
+                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                        {
+                            this.BayChainHorizontalPosition = message.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
+                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
 
                         break;
@@ -342,13 +299,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
                     {
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                        if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         {
-                            this.ElevatorVerticalPosition = message.Data.CurrentPosition;
+                            this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
                         }
-                        else if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
                         {
-                            this.ElevatorHorizontalPosition = message.Data.CurrentPosition;
+                            this.BayChainHorizontalPosition = message.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
+                        }
+                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
                         }
 
                         break;
@@ -364,7 +325,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
@@ -383,11 +344,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            if (message is null || message.Data is null)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
@@ -399,6 +355,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
                         this.IsTuningChain = false;
+                        this.IsTuningBay = false;
                         break;
                     }
 
@@ -411,13 +368,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.sensors.Update(message.Data.SensorsStates);
+            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+            this.shutterSensors.Update(message.Data.SensorsStates);
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
+        }
+
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            if (message is null || message.Data is null)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
@@ -470,23 +431,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.CanInputCellId = this.Cells != null
-               &&
-               !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputCellId =
+                this.Cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
-            this.CanInputHeight = !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputHeight =
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
-            this.CanInputLoadingUnitId = this.LoadingUnits != null
-               &&
-               this.Cells != null
-               &&
-               !this.IsMoving
-               &&
-               !this.IsWaitingForResponse;
+            this.CanInputLoadingUnitId =
+                this.LoadingUnits != null
+                &&
+                this.Cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
 
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
             this.moveToHeightCommand?.RaiseCanExecuteChanged();
@@ -505,6 +469,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.carouselUpCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.homingToken = this.homingToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                        this.OnHomingChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.shutterPositionToken = this.shutterPositionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion

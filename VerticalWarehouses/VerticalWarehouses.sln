@@ -7,7 +7,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Machine Automation Service"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Panel PC UI", "Panel PC UI", "{F1C06ED8-17DC-48AE-9D64-B18455CA3231}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.FiniteStateMachines", "Machine Automation Service\Ferretto.VW.MAS.FiniteStateMachines\Ferretto.VW.MAS.FiniteStateMachines.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.DeviceManager", "Machine Automation Service\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj", "{2AB518D4-51CC-4405-853A-DAB7C5FF8287}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver\Ferretto.VW.MAS.InverterDriver.csproj", "{9BFA1210-9BD2-480F-AF7E-1F48C109096F}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Resources",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.CommonUtils", "Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj", "{A0095F7D-7CC6-4E7F-9695-8645EAD02E37}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionsManager", "Machine Automation Service\Ferretto.VW.MAS.MissionsManager\Ferretto.VW.MAS.MissionsManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MachineManager", "Machine Automation Service\Ferretto.VW.MAS.MachineManager\Ferretto.VW.MAS.MachineManager.csproj", "{E1FA8AB5-803C-4467-8EA3-6E16C85232AE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Controls", "Panel PC UI\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj", "{2F45ED0E-31CB-4115-8F27-6EC0B17876B3}"
 EndProject
@@ -82,6 +82,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Resources", "Machine Automation Service\Ferretto.VW.MAS.Resources\Ferretto.VW.MAS.Resources.csproj", "{96D3417B-1043-4F63-85D1-073561F098E2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver.Contracts", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj", "{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.MAS.MissionManager", "Machine Automation Service\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj", "{09A8D20C-7695-442F-A5F2-91BEC393222F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -618,6 +620,24 @@ Global
 		{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869}.Release|x64.Build.0 = Release|Any CPU
 		{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869}.Release|x86.ActiveCfg = Release|Any CPU
 		{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869}.Release|x86.Build.0 = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|x64.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Debug|x86.Build.0 = Debug|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x64.ActiveCfg = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x64.Build.0 = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x86.ActiveCfg = Release|Any CPU
+		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -653,6 +673,7 @@ Global
 		{D81C6B47-11EC-4B7D-B087-F580639106C3} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{96D3417B-1043-4F63-85D1-073561F098E2} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{09A8D20C-7695-442F-A5F2-91BEC393222F} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

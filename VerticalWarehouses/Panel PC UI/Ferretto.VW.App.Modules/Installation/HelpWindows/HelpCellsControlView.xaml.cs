@@ -14,6 +14,6 @@ namespace Ferretto.VW.App.Installation.HelpWindows
             this.InitializeComponent();
         }
 
-        #endregion Constructors
+        #endregion
     }
 }

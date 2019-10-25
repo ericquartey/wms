@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Controllers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -34,20 +31,20 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 &&
                 context.ExceptionHandled == false)
             {
-                if (context.Exception is DataLayer.Exceptions.EntityNotFoundException)
+                if (context.Exception is DataLayer.EntityNotFoundException)
                 {
                     context.Result = new NotFoundObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.NotFoundTitle,
-                        Detail = context.Exception.Message
+                        Detail = context.Exception.Message,
                     });
                 }
-                else if (context.Exception is ArgumentOutOfRangeException)
+                else if (context.Exception is ArgumentException)
                 {
                     context.Result = new BadRequestObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.BadRequestTitle,
-                        Detail = context.Exception.Message
+                        Detail = context.Exception.Message,
                     });
                 }
                 else if (context.Exception is InvalidOperationException)
@@ -55,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                     context.Result = new UnprocessableEntityObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.UnprocessableEntityTitle,
-                        Detail = context.Exception.Message
+                        Detail = context.Exception.Message,
                     });
                 }
                 else
@@ -63,10 +60,10 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                     context.Result = new ObjectResult(new ProblemDetails
                     {
                         Title = Resources.General.InternalServerErrorTitle,
-                        Detail = context.Exception.Message
+                        Detail = context.Exception.Message,
                     })
                     {
-                        StatusCode = StatusCodes.Status500InternalServerError
+                        StatusCode = StatusCodes.Status500InternalServerError,
                     };
                 }
 

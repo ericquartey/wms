@@ -12,15 +12,23 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         bool IsTorqueCurrentSamplingEnabled { get; set; }
 
+        bool IsWeightMeasure { get; set; }
+
+        bool IsWeightMeasureDone { get; set; }
+
         double? LoadedNetWeight { get; }
 
         int? LoadingUnitId { get; set; }
+
+        double MeasuredWeight { get; set; }
 
         MovementType MovementType { get; set; }
 
         int NumberCycles { get; }
 
         bool RefreshAll { get; }
+
+        BayNumber RequestingBay { get; set; }
 
         int[] SwitchPosition { get; set; }
 
@@ -31,6 +39,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
         int TargetPosition { get; set; }
 
         int[] TargetSpeed { get; set; }
+
+        bool WaitContinue { get; set; }
 
         #endregion
     }

@@ -178,6 +178,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Mark as resolved.
+        /// </summary>
+        public static string MarkAsResolved {
+            get {
+                return ResourceManager.GetString("MarkAsResolved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0:0} minutes ago.
         /// </summary>
         public static string MinutesAgo {
@@ -264,6 +273,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Version {
             get {
                 return ResourceManager.GetString("Version", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Back.
+        /// </summary>
+        public static string WarehouseSide_Back {
+            get {
+                return ResourceManager.GetString("WarehouseSide_Back", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Front.
+        /// </summary>
+        public static string WarehouseSide_Front {
+            get {
+                return ResourceManager.GetString("WarehouseSide_Front", resourceCulture);
             }
         }
     }

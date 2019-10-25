@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Services.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface INavigableViewModel : IDisposable
     {
@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Services.Interfaces
 
         void Disappear();
 
-        Task OnNavigatedAsync();
+        Task OnAppearedAsync();
 
         void OnNavigatedFrom(NavigationContext navigationContext);
 

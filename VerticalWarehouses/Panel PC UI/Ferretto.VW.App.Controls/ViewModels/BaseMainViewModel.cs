@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.App.Services.Models;
 using Prism.Events;
 using Prism.Regions;
@@ -51,46 +50,43 @@ namespace Ferretto.VW.App.Controls
 
         #region Methods
 
-        public override void Appear()
-        {
-            base.Appear();
-        }
-
         public void ClearNotifications()
         {
             this.EventAggregator
-              .GetEvent<PresentationNotificationPubSubEvent>()
-              .Publish(new PresentationNotificationMessage(true));
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(true));
         }
 
         public override void Disappear()
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.machineModeService.MachineModeChangedEvent
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.UpdatePresentation();
 
-            this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
-               .Subscribe(
-                   this.OnMachineModeChanged,
-                   ThreadOption.UIThread,
-                   false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.machineModeService.MachineModeChangedEvent
+                    .Subscribe(
+                       this.OnMachineModeChanged,
+                       ThreadOption.UIThread,
+                       false);
 
             this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
 
             this.UpdateNotifications();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

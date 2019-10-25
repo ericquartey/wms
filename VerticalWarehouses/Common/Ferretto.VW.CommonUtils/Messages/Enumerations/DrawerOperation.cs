@@ -14,6 +14,6 @@
 
         Pickup,
 
-        Deposit
+        Deposit,
     }
 }

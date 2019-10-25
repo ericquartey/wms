@@ -4,31 +4,30 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class BeltBurnishingViewModel : BaseMainViewModel, IDataErrorInfo
+    internal sealed class BeltBurnishingViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
-        private readonly IMachineBeltBurnishingProcedureService beltBurnishingService;
+        private readonly IMachineBeltBurnishingProcedureWebService beltBurnishingWebService;
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineSetupStatusService machineSetupStatusService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private int? completedCycles;
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
+        private int? completedCyclesThisSession;
 
         private double? currentPosition;
-
-        private int initialCycles;
 
         private int inputDelay;
 
@@ -46,9 +45,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? machineUpperBound;
 
-        private SubscriptionToken receivedActionUpdateToken;
-
-        private DelegateCommand resetCommand;
+        private SubscriptionToken positioningMessageReceivedToken;
 
         private DelegateCommand startCommand;
 
@@ -56,40 +53,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? totalCompletedCycles;
 
+        private int totalPerformedCyclesBeforeStart;
+
         #endregion
 
         #region Constructors
 
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
-            IMachineSetupStatusService machineSetupStatusService,
-            IMachineBeltBurnishingProcedureService beltBurnishingService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineSetupStatusWebService machineSetupStatusWebService,
+            IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (beltBurnishingService is null)
-            {
-                throw new ArgumentNullException(nameof(beltBurnishingService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.machineSetupStatusService = machineSetupStatusService;
-            this.beltBurnishingService = beltBurnishingService;
-            this.inputDelay = 0;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
+            this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public int? CompletedCycles
+        public int? CumulativePerformedCycles
         {
-            get => this.completedCycles;
-            private set => this.SetProperty(ref this.completedCycles, value);
+            get => this.totalCompletedCycles;
+            private set
+            {
+                if (this.SetProperty(ref this.totalCompletedCycles, value))
+                {
+                    this.PerformedCyclesThisSession = value.Value - this.totalPerformedCyclesBeforeStart;
+                }
+            }
         }
 
         public double? CurrentPosition
@@ -182,32 +178,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ICommand ResetCommand =>
-                        this.resetCommand
-                        ??
-                        (this.resetCommand = new DelegateCommand(
-                            async () => await this.ResetAsync(),
-                            this.CanExecuteResetCommand));
+        public int? PerformedCyclesThisSession
+        {
+            get => this.completedCyclesThisSession;
+            private set => this.SetProperty(ref this.completedCyclesThisSession, value);
+        }
 
         public ICommand StartCommand =>
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
-                async () => await this.StartAsync(),
-                this.CanExecuteStartCommand));
+                async () => await this.StartTestAsync(),
+                this.CanStartTest));
 
         public ICommand StopCommand =>
             this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
-                async () => await this.StopAsync(),
-                this.CanExecuteStopCommand));
-
-        public int? TotalCompletedCycles
-        {
-            get => this.totalCompletedCycles;
-            private set => this.SetProperty(ref this.totalCompletedCycles, value);
-        }
+                async () => await this.StopTestAsync(),
+                this.CanStopTest));
 
         #endregion
 
@@ -303,138 +292,140 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.receivedActionUpdateToken != null)
-            {
-                this.eventAggregator
-                  .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                  .Unsubscribe(this.receivedActionUpdateToken);
-
-                this.receivedActionUpdateToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.positioningMessageReceivedToken?.Dispose();
+            this.positioningMessageReceivedToken = null;
+            */
         }
 
         public async Task GetParameterValuesAsync()
         {
+            var procedureParameters = await this.beltBurnishingWebService.GetParametersAsync();
+
+            var bounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
+
+            this.InputUpperBound = bounds.Upper;
+            this.machineUpperBound = bounds.Upper;
+            this.InputLowerBound = bounds.Lower;
+            this.machineLowerBound = bounds.Lower;
+
+            this.PerformedCyclesThisSession = 0;
+            this.InputRequiredCycles = procedureParameters.RequiredCycles;
+            this.totalPerformedCyclesBeforeStart = procedureParameters.PerformedCycles;
+            this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+
             try
             {
-                var procedureParameters = await this.beltBurnishingService.GetParametersAsync();
+                this.IsWaitingForResponse = true;
 
-                this.InputUpperBound = procedureParameters.UpperBound;
-                this.machineUpperBound = procedureParameters.UpperBound;
-                this.InputLowerBound = procedureParameters.LowerBound;
-                this.machineLowerBound = procedureParameters.LowerBound;
+                await this.GetParameterValuesAsync();
 
-                this.InputRequiredCycles = procedureParameters.RequiredCycles;
-
-                await this.InitializeTotalCycles();
+                await this.RetrieveCurrentPositionAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+
+            this.positioningMessageReceivedToken = this.positioningMessageReceivedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
         }
 
-        public override async Task OnNavigatedAsync()
+        private bool CanStartTest()
         {
-            this.CompletedCycles = 0;
-
-            await base.OnNavigatedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.GetParameterValuesAsync();
-
-            this.receivedActionUpdateToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    async message => await this.UpdateCompletion(message),
-                    ThreadOption.UIThread,
-                    false);
+            return
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                string.IsNullOrWhiteSpace(this.Error);
         }
 
-        private bool CanExecuteResetCommand()
+        private bool CanStopTest()
         {
-            return !this.IsExecutingProcedure
-                   &&
-                   !this.IsWaitingForResponse;
+            return
+                this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
         }
 
-        private bool CanExecuteStartCommand()
+        private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
-            return !this.IsExecutingProcedure
-                && !this.IsWaitingForResponse
-                && string.IsNullOrWhiteSpace(this.Error)
-                && this.machineLowerBound <= this.inputLowerBound
-                && this.machineUpperBound >= this.inputUpperBound;
-        }
+            if (message.IsNotRunning())
+            {
+                this.IsExecutingProcedure = false;
+            }
 
-        private bool CanExecuteStopCommand()
-        {
-            return this.IsExecutingProcedure
-                && !this.IsWaitingForResponse;
-        }
+            if (message.IsErrored())
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+            }
 
-        private async Task InitializeTotalCycles()
-        {
-            var setupStatus = await this.machineSetupStatusService.GetAsync();
-            this.initialCycles = setupStatus.BeltBurnishing.CompletedCycles;
-            this.TotalCompletedCycles = this.initialCycles;
+            if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
+            {
+                this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
+                this.CumulativePerformedCycles = message.Data.ExecutedCycles;
+            }
         }
 
         private void RaiseCanExecuteChanged()
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
-            this.resetCommand.RaiseCanExecuteChanged();
         }
 
-        private async Task ResetAsync()
+        private async Task RetrieveCurrentPositionAsync()
+        {
+            this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+        }
+
+        private async Task StartTestAsync()
         {
             try
             {
-                this.IsWaitingForResponse = true;
-
-                await this.beltBurnishingService.ResetAsync();
-
-                await this.GetParameterValuesAsync();
-
-                this.CompletedCycles = 0;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-                this.IsExecutingProcedure = false;
-            }
-        }
-
-        private async Task StartAsync()
-        {
-            try
-            {
-                if ((this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value) <= 0)
+                var totalCyclesToPerform = this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value;
+                if (totalCyclesToPerform <= 0)
                 {
-                    this.ShowNotification("Total completed cycles are greater than required cycles.", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification("Required amount of cycles was completed.", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.beltBurnishingService.StartAsync(
+                this.totalPerformedCyclesBeforeStart = this.CumulativePerformedCycles ?? 0;
+                this.PerformedCyclesThisSession = 0;
+                this.RaisePropertyChanged(nameof(this.PerformedCyclesThisSession));
+
+                await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
                     this.InputLowerBound.Value,
-                    this.InputRequiredCycles.Value - this.TotalCompletedCycles.Value,
                     this.InputDelay);
-
-                await this.InitializeTotalCycles();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
             }
             finally
             {
@@ -442,59 +433,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StopAsync()
+        private async Task StopTestAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
 
-                await this.beltBurnishingService.StopAsync();
+                await this.beltBurnishingWebService.StopAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                this.IsExecutingProcedure = false;
             }
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.IsExecutingProcedure = false;
-            }
-        }
-
-        private async Task UpdateCompletion(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (message is null)
-            {
-                return;
-            }
-
-            this.TotalCompletedCycles = this.initialCycles + message.Data.ExecutedCycles;
-            this.CompletedCycles = message.Data.ExecutedCycles;
-            this.CurrentPosition = message.Data.CurrentPosition;
-
-            switch (message.Status)
-            {
-                case MessageStatus.OperationStart:
-                    this.IsExecutingProcedure = true;
-                    break;
-
-                case MessageStatus.OperationEnd:
-                    this.IsExecutingProcedure = false;
-
-                    await this.beltBurnishingService.MarkAsCompletedAsync();
-
-                    break;
-
-                case MessageStatus.OperationStop:
-                case MessageStatus.OperationFaultStop:
-                case MessageStatus.OperationRunningStop:
-                    this.IsExecutingProcedure = false;
-                    this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped);
-                    break;
-
-                case MessageStatus.OperationError:
-                    this.IsExecutingProcedure = false;
-                    break;
             }
         }
 

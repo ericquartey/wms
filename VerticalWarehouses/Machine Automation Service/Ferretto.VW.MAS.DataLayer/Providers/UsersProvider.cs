@@ -19,12 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public UsersProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -43,16 +38,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
             }
 
-            var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
-
-            if (user != null
-                &&
-                IsPasswordValid(password, user))
+            lock (this.dataContext)
             {
-                return user.AccessLevel;
+                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+
+                if (user != null
+                    &&
+                    IsPasswordValid(password, user))
+                {
+                    return user.AccessLevel;
+                }
             }
 
-            throw new Exceptions.EntityNotFoundException(userName);
+            throw new EntityNotFoundException(userName);
         }
 
         public User Create(string userName, string password, int accessLevel)
@@ -67,29 +65,32 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentException(Resources.General.ValueCannotBeNullOrWhiteSpace, nameof(password));
             }
 
-            var existingUser = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
-            if (existingUser != null)
+            lock (this.dataContext)
             {
-                return null;
+                var existingUser = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
+                if (existingUser != null)
+                {
+                    return null;
+                }
+
+                var salt = Convert.ToBase64String(GeneratePasswordSalt());
+
+                var passwordHash = GeneratePasswordHash(password, salt);
+
+                var user = new User
+                {
+                    AccessLevel = accessLevel,
+                    Name = userName,
+                    PasswordSalt = salt,
+                    PasswordHash = passwordHash,
+                };
+
+                this.dataContext.Users.Add(user);
+
+                this.dataContext.SaveChanges();
+
+                return user;
             }
-
-            var salt = Convert.ToBase64String(GeneratePasswordSalt());
-
-            var passwordHash = GeneratePasswordHash(password, salt);
-
-            var user = new User
-            {
-                AccessLevel = accessLevel,
-                Name = userName,
-                PasswordSalt = salt,
-                PasswordHash = passwordHash,
-            };
-
-            this.dataContext.Users.Add(user);
-
-            this.dataContext.SaveChanges();
-
-            return user;
         }
 
         private static string GeneratePasswordHash(string password, string salt)

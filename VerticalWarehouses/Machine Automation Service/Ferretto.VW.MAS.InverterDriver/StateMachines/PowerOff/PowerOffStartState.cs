@@ -28,9 +28,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 
         public override void Start()
         {
-            this.InverterStatus.CommonControlWord.QuickStop = false;
+            this.InverterStatus.CommonControlWord.EnableOperation = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -54,7 +54,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
+            this.Logger.LogDebug("1:Power Off Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new PowerOffEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />
@@ -76,10 +82,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             }
             else
             {
-                this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsQuickStopTrue)
+                this.Logger.LogDebug($"2:message={message}:Parameter Id={message.ParameterId}");
+                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.ParentStateMachine.ChangeState(new PowerOffDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
                 }
             }

@@ -6,9 +6,11 @@
 
         AutomationService,
 
-        MissionsManager,
+        MissionManager,
 
-        FiniteStateMachines,
+        MachineManager,
+
+        DeviceManager,
 
         InverterDriver,
 
@@ -16,6 +18,6 @@
 
         DataLayer,
 
-        Any
+        Any,
     }
 }

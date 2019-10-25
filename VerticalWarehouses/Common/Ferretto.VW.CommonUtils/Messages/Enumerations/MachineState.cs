@@ -6,6 +6,6 @@
 
         InverterDriver,
 
-        IODriver
+        IODriver,
     }
 }

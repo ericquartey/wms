@@ -8,13 +8,11 @@
 
         public const string CELLPANELSCHECK = "CellPanelsCheckViewModel";
 
-        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";        
+        public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
-
-        public const string LOADINGDRAWERS = "LoadingDrawersViewModel";
 
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
@@ -37,6 +35,7 @@
             #region Fields
 
             public const string BAYHEIGHTCHECK = "BayHeightCheckViewModel";
+
             public const string DEPOSITANDPICKUPTEST = "DepositAndPickUpTestViewModel";
 
             #endregion
@@ -80,6 +79,19 @@
             #endregion
         }
 
+        public static class LoadingUnits
+        {
+            #region Fields
+
+            public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
+
+            public const string LOADINGUNITFROMCELLTOBAY = "LoadingUnitFromCellToBayViewModel";
+
+            public const string LOADINGUNITFROMCELLTOCELL = "LoadingUnitFromCellToCellViewModel";
+
+            #endregion
+        }
+
         public static class ManualMovements
         {
             #region Fields
@@ -97,6 +109,15 @@
             public const string SHUTTER = "ShutterEngineManualMovementsViewModel";
 
             public const string VERTICALENGINE = "VerticalEngineManualMovementsViewModel";
+
+            #endregion
+        }
+
+        public static class Parameters
+        {
+            #region Fields
+
+            public const string PARAMETERS = "ParametersViewModel";
 
             #endregion
         }

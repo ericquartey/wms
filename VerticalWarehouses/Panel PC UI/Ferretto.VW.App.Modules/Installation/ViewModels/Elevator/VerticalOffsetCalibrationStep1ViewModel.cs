@@ -3,14 +3,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class VerticalOffsetCalibrationStep1ViewModel : BaseVerticalOffsetCalibrationViewModel
+    internal sealed class VerticalOffsetCalibrationStep1ViewModel : BaseVerticalOffsetCalibrationViewModel
     {
         #region Fields
 
@@ -31,10 +31,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public VerticalOffsetCalibrationStep1ViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService,
-            IMachineVerticalOffsetProcedureService verticalOffsetService)
-            : base(machineCellsService, machineElevatorService, verticalOffsetService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
+            : base(machineCellsWebService, machineElevatorWebService, verticalOffsetWebService)
         {
         }
 
@@ -94,15 +94,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             try
             {
-                var parameters = await this.VerticalOffsetService.GetParametersAsync();
+                var parameters = await this.VerticalOffsetWebService.GetParametersAsync();
 
                 this.InputCellId = parameters.ReferenceCellId;
             }
@@ -189,9 +189,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
-                    FeedRateCategory.VerticalOffsetCalibration);
+                    this.ProcedureParameters.FeedRate,
+                    false);
 
                 this.IsElevatorMoving = true;
             }
@@ -209,11 +210,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalOffsetCalibration.STEP1))
+            {
+                this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.VerticalOffsetCalibration.STEP2,
                 this.SelectedCell,
                 trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()
@@ -227,7 +231,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.MachineElevatorService.StopAsync();
+                await this.MachineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {

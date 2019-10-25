@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsHeightCheckStep1ViewModel : BaseCellsHeightCheckViewModel
+    internal sealed class CellsHeightCheckStep1ViewModel : BaseCellsHeightCheckViewModel
     {
         #region Fields
 
@@ -29,9 +30,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CellsHeightCheckStep1ViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineCellsService, machineElevatorService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService)
+            : base(machineCellsWebService, machineElevatorWebService)
         {
         }
 
@@ -91,46 +92,48 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             base.OnCurrentPositionChanged(message);
 
-            switch (message?.Status)
+            if (message.IsErrored())
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.IsElevatorMoving = false;
+                this.IsElevatorMoving = false;
+                this.ShowSteps();
+            }
+            else if (message.IsNotRunning())
+            {
+                this.IsElevatorMoving = false;
+                this.isElevatorOperationCompleted = true;
+                this.ShowSteps();
 
-                        this.isElevatorOperationCompleted = true;
+                switch (message.Status)
+                {
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                        {
+                            this.NavigateToNextStep();
 
-                        this.ShowSteps();
+                            break;
+                        }
 
-                        this.NavigateToNextStep();
+                    case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                        {
+                            this.IsElevatorMoving = false;
 
-                        break;
-                    }
+                            this.ShowNotification(
+                                "Procedura di posizionamento interrotta.",
+                                Services.Models.NotificationSeverity.Warning);
 
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        this.IsElevatorMoving = false;
-
-                        this.isElevatorOperationCompleted = false;
-
-                        this.ShowSteps();
-
-                        this.ShowNotification(
-                            "Procedura di posizionamento interrotta.",
-                            Services.Models.NotificationSeverity.Warning);
-
-                        break;
-                    }
+                            break;
+                        }
+                }
             }
         }
 
@@ -139,7 +142,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
 
-            this.CanInputCellId = this.Cells != null
+            this.CanInputCellId =
+                this.Cells != null
                 &&
                 !this.IsElevatorMoving
                 &&
@@ -148,7 +152,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return this.SelectedCell != null
+            return
+                this.SelectedCell != null
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -157,7 +162,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanStop()
         {
-            return !this.IsWaitingForResponse && this.IsElevatorMoving;
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.IsElevatorMoving;
         }
 
         private async Task MoveToCellHeightAsync()
@@ -166,9 +174,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
-                    FeedRateCategory.CellHeightCheck);
+                    this.ProcedureParameters.FeedRate,
+                    false);
 
                 this.IsElevatorMoving = true;
             }
@@ -186,11 +195,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.CellsHeightCheck.STEP2,
-                this.SelectedCell,
-                trackCurrentView: false);
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.CellsHeightCheck.STEP1))
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.CellsHeightCheck.STEP2,
+                    this.SelectedCell,
+                    trackCurrentView: false);
+            }
         }
 
         private void ShowSteps()
@@ -204,7 +216,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.MachineElevatorService.StopAsync();
+                await this.MachineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {

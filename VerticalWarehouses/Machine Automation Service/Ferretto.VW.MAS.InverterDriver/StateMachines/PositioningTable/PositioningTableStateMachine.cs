@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,6 +51,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         #endregion
 
         #region Methods
+
+        public override void Continue()
+        {
+            this.data.WaitContinue = false;
+            this.Logger.LogDebug($"Continue command received for inverter {this.inverterStatus.SystemIndex}");
+        }
 
         /// <inheritdoc />
         public override void Start()

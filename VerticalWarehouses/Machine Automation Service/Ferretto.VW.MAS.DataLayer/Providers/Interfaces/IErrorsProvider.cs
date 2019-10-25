@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -7,13 +8,15 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        Error GetCurrent();
+        MachineError GetCurrent();
 
         ErrorStatisticsSummary GetStatistics();
 
-        Error RecordNew(MachineErrors code, BayNumber bayNumber);
+        MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None);
 
-        Error Resolve(int id);
+        MachineError Resolve(int id);
+
+        IEnumerable<MachineError> ResolveAll();
 
         #endregion
     }

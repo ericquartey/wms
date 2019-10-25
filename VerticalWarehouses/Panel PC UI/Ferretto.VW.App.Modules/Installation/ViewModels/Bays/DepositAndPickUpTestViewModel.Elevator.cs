@@ -4,19 +4,17 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class DepositAndPickUpTestViewModel
+    internal sealed partial class DepositAndPickUpTestViewModel
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DepositAndPickUpState currentState;
 
         private double? elevatorHorizontalPosition;
 
         private double? elevatorVerticalPosition;
-
-        private LoadingUnit embarkedLoadingUnit;
 
         private bool isElevatorDisembarking;
 
@@ -74,22 +72,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async Task ReStart()
+        public async Task Restart()
         {
             await Task.Delay(this.inputDelay * 1000);
             this.currentState = DepositAndPickUpState.None;
-            this.ExecuteNextStateAsync();
+            await this.ExecuteNextStateAsync();
         }
 
         private HorizontalMovementDirection GetDirection()
         {
             if (this.currentState == DepositAndPickUpState.Deposit)
             {
-                return (this.bayManagerService.Bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                return this.bay.Side == WarehouseSide.Front
+                    ? HorizontalMovementDirection.Backwards
+                    : HorizontalMovementDirection.Forwards;
             }
             else
             {
-                return (this.bayManagerService.Bay.Side == WarehouseSide.Front) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                return this.bay.Side == WarehouseSide.Front
+                    ? HorizontalMovementDirection.Forwards
+                    : HorizontalMovementDirection.Backwards;
             }
         }
 
@@ -99,8 +101,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.ElevatorVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
             }
             catch (Exception ex)
             {
@@ -155,7 +157,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.PickUp;
                 }
 
-                await this.machineElevatorService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
+                await this.machineElevatorWebService.MoveHorizontalAutoAsync(this.GetDirection(), true, loadingUnitId, this.GrossWeight);
             }
             catch (System.Exception ex)
             {

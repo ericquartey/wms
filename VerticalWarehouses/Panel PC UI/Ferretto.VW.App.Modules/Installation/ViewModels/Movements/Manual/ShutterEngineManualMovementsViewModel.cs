@@ -1,9 +1,9 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
@@ -12,11 +12,11 @@ using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosit
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class ShutterEngineManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
-        private readonly IMachineShuttersService shuttersService;
+        private readonly IMachineShuttersWebService shuttersWebService;
 
         private bool canExecuteMoveDownCommand;
 
@@ -41,17 +41,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ShutterEngineManualMovementsViewModel(
-            IMachineShuttersService shuttersService,
-            IMachineElevatorService machineElevatorService,
+            IMachineShuttersWebService shuttersWebService,
+            IMachineElevatorWebService machineElevatorWebService,
             IBayManager bayManager)
-            : base(machineElevatorService, bayManager)
+            : base(machineElevatorWebService, bayManager)
         {
-            if (shuttersService is null)
+            if (shuttersWebService is null)
             {
-                throw new System.ArgumentNullException(nameof(shuttersService));
+                throw new System.ArgumentNullException(nameof(shuttersWebService));
             }
 
-            this.shuttersService = shuttersService;
+            this.shuttersWebService = shuttersWebService;
             this.RefreshCanExecuteCommands();
         }
 
@@ -133,14 +133,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
         public async Task MoveDownAsync()
@@ -150,7 +149,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Down);
+            await this.StartMovementAsync(ShutterMovementDirection.Down);
         }
 
         public async Task MoveUpAsync()
@@ -160,22 +159,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection.Up);
+            await this.StartMovementAsync(ShutterMovementDirection.Up);
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-              .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-              .Subscribe(
-                  message => this.CurrentPosition = (ShutterPosition?)message?.Data?.ShutterPosition,
-                  ThreadOption.UIThread,
-                  false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
             try
             {
-                this.CurrentPosition = await this.shuttersService.GetShutterPositionAsync();
+                this.CurrentPosition = await this.shuttersWebService.GetShutterPositionAsync();
             }
             catch (System.Exception ex)
             {
@@ -189,7 +191,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsStopping = true;
 
-                await this.shuttersService.StopAsync();
+                await this.shuttersWebService.StopAsync();
             }
             catch (System.Exception ex)
             {
@@ -204,17 +206,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            this.CurrentPosition = (ShutterPosition)message.Data.ShutterPosition;
+        }
+
         private void RefreshCanExecuteCommands()
         {
             this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(MAS.AutomationService.Contracts.ShutterMovementDirection direction)
+        private async Task StartMovementAsync(ShutterMovementDirection direction)
         {
             try
             {
-                await this.shuttersService.MoveAsync(direction);
+                await this.shuttersWebService.MoveAsync(direction);
             }
             catch (System.Exception ex)
             {

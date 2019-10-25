@@ -7,7 +7,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class ManualMovementsViewModel : BaseMainViewModel
+    internal sealed class ManualMovementsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -19,63 +19,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ExternalBayManualMovementsViewModel externalBayManualMovementsViewModel;
 
-        private readonly IMachineBaysService machineBayService;
+        private readonly IMachineBaysWebService machineBayWebService;
 
-        private readonly IMachineCarouselService machineCarouselService;
+        private readonly IMachineCarouselWebService machineCarouselWebService;
 
-        private readonly IMachineElevatorService machineElevatorService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private readonly IMachineShuttersService machineShutterService;
+        private readonly IMachineShuttersWebService machineShutterWebService;
 
         private readonly ShutterEngineManualMovementsViewModel shutterEngineManualMovementsViewModel;
+
+        private Bay bay;
+
+        private bool hasCarousel;
+
+        private bool isBayExternal;
 
         #endregion
 
         #region Constructors
 
         public ManualMovementsViewModel(
-            IMachineShuttersService shutterService,
-            IMachineCarouselService machineCarouselService,
-            IMachineElevatorService machineElevatorService,
-            IMachineBaysService machineBayService,
+            IMachineShuttersWebService shutterWebService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineBaysWebService machineBayWebService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (shutterService == null)
-            {
-                throw new System.ArgumentNullException(nameof(shutterService));
-            }
+            this.machineShutterWebService = shutterWebService ?? throw new System.ArgumentNullException(nameof(shutterWebService));
+            this.machineCarouselWebService = machineCarouselWebService ?? throw new System.ArgumentNullException(nameof(machineCarouselWebService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new System.ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineBayWebService = machineBayWebService ?? throw new System.ArgumentNullException(nameof(machineBayWebService));
+            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
 
-            if (machineCarouselService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineCarouselService));
-            }
-
-            if (machineElevatorService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            if (machineBayService == null)
-            {
-                throw new System.ArgumentNullException(nameof(machineBayService));
-            }
-
-            if (bayManager == null)
-            {
-                throw new System.ArgumentNullException(nameof(bayManager));
-            }
-
-            this.machineShutterService = shutterService;
-            this.machineCarouselService = machineCarouselService;
-            this.machineElevatorService = machineElevatorService;
-            this.machineBayService = machineBayService;
-            this.bayManager = bayManager;
-
-            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselService, this.machineElevatorService, this.bayManager);
-            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorService, this.bayManager);
-            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorService, this.machineBayService, this.bayManager);
-            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterService, this.machineElevatorService, this.bayManager);
+            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.bayManager);
+            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);
+            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorWebService, this.machineBayWebService, this.bayManager);
+            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.bayManager);
         }
 
         #endregion
@@ -88,9 +69,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 
-        public bool HasCarousel => this.bayManager.Bay.Carousel != null;
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
 
-        public bool IsBayExternal => this.bayManager.Bay.IsExternal;
+        public bool IsBayExternal
+        {
+            get => this.isBayExternal;
+            set => this.SetProperty(ref this.isBayExternal, value);
+        }
 
         public ShutterEngineManualMovementsViewModel ShutterEngineManualMovementsViewModel => this.shutterEngineManualMovementsViewModel;
 
@@ -98,14 +87,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
-        }
+            await base.OnAppearedAsync();
 
-        public override void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
+            this.bay = await this.bayManager.GetBayAsync();
+
+            this.HasCarousel = this.bay.Carousel != null;
+            this.IsBayExternal = this.bay.IsExternal;
+
+            this.RaisePropertyChanged(nameof(this.IsBayExternal));
         }
 
         public override void UpdateNotifications()

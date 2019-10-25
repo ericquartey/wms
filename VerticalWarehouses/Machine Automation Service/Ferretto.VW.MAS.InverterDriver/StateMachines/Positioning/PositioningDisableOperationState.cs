@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private readonly bool stopRequested;
+        private bool stopRequested;
 
         #endregion
 
@@ -40,34 +40,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         public override void Start()
         {
             this.Logger.LogDebug($"Positioning Disable Operation. StopRequested = {this.stopRequested}");
-            this.Inverter.PositionControlWord.EnableOperation = false;
             this.Inverter.PositionControlWord.NewSetPoint = false;
+            this.Inverter.PositionControlWord.ImmediateChangeSet = false;
             this.Inverter.PositionControlWord.RelativeMovement = false;
 
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.ControlWordParam,
+                    (short)InverterParameterId.ControlWord,
                     this.InverterStatus.CommonControlWord.Value));
         }
 
         /// <inheritdoc />
         public override void Stop()
         {
-            if (this.stopRequested)
-            {
-                this.Logger.LogTrace("1:Stop process already active");
-            }
-            else
-            {
-                this.Logger.LogDebug("1:Positioning Stop requested");
-
-                this.ParentStateMachine.ChangeState(
-                    new PositioningStopState(
-                        this.ParentStateMachine,
-                        this.Inverter,
-                        this.Logger));
-            }
+            this.Logger.LogDebug("1:Positioning Stop requested");
+            this.stopRequested = true;
         }
 
         /// <inheritdoc />
@@ -91,24 +79,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    if (this.stopRequested)
-                    {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningQuickStopState(
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
-                    }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(
-                            new PositioningEndState(
-                                this.ParentStateMachine,
-                                this.Inverter,
-                                this.Logger));
-                    }
+                    this.Inverter.PositionControlWord.EnableOperation = false;
+                    this.ParentStateMachine.EnqueueCommandMessage(
+                        new InverterMessage(
+                            this.InverterStatus.SystemIndex,
+                            (short)InverterParameterId.ControlWord,
+                            this.InverterStatus.CommonControlWord.Value));
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(
+                        new PositioningEndState(
+                            this.ParentStateMachine,
+                            this.Inverter,
+                            this.Logger,
+                            this.stopRequested));
 
                     returnValue = true;
                 }

@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.MAS.AutomationService.Hubs.Interfaces;
-using Ferretto.VW.MAS.AutomationService.StateMachines.Interface;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -35,10 +34,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
-        private List<DataModels.Bay> configuredBays;
-
-        private IStateMachine currentStateMachine;
-
         #endregion
 
         #region Constructors
@@ -54,12 +49,37 @@ namespace Ferretto.VW.MAS.AutomationService
             IBaysProvider baysProvider)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            if (applicationLifetime is null)
+            {
+                throw new ArgumentNullException(nameof(applicationLifetime));
+            }
+
+            if (installationHub is null)
+            {
+                throw new ArgumentNullException(nameof(installationHub));
+            }
+
+            if (dataHubClient is null)
+            {
+                throw new ArgumentNullException(nameof(dataHubClient));
+            }
+
+            if (operatorHub is null)
+            {
+                throw new ArgumentNullException(nameof(operatorHub));
+            }
+
             this.Logger.LogTrace("1:Method Start");
 
-            this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
-            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
-            this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
-            this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
+            this.installationHub = installationHub;
+            this.dataHubClient = dataHubClient;
+            this.operatorHub = operatorHub;
+            this.applicationLifetime = applicationLifetime;
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
         }
 
@@ -69,22 +89,32 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
-            this.LogVersion();
-
             await base.StartAsync(cancellationToken);
 
             await this.dataHubClient.ConnectAsync();
         }
 
-        private void LogVersion()
+        protected override void NotifyCommandError(CommandMessage notificationData)
         {
-            var versionAttribute = this.GetType().Assembly
-                .GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute), true)
-                .FirstOrDefault() as AssemblyInformationalVersionAttribute;
+            this.Logger.LogDebug($"Notifying Automation Service service error");
 
-            var versionString = versionAttribute?.InformationalVersion ?? this.GetType().Assembly.GetName().Version.ToString();
+            var msg = new NotificationMessage(
+                notificationData.Data,
+                "AS Error",
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.FsmException,
+                BayNumber.None,
+                BayNumber.None,
+                MessageStatus.OperationError,
+                ErrorLevel.Critical);
 
-            this.Logger.LogInformation($"VertiMag Automation Service version {versionString}");
+            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        protected override void NotifyError(NotificationMessage notificationData)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

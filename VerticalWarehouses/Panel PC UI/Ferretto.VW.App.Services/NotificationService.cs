@@ -1,10 +1,9 @@
-﻿using Ferretto.VW.App.Services.Interfaces;
-using Ferretto.VW.App.Services.Models;
+﻿using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
 using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
@@ -13,7 +12,6 @@ namespace Ferretto.VW.App.Services
 {
     internal class NotificationService : INotificationService
     {
-
         #region Fields
 
         private readonly IEventAggregator eventAggregator;
@@ -40,13 +38,13 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
-
-
         #region Methods
 
         private void HandlePositioningMessageData(NotificationMessageUI<PositioningMessageData> vp)
         {
-            this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
+            this.eventAggregator
+                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                .Publish(vp);
 
             if (vp.Status == MessageStatus.OperationError
                 &&
@@ -64,6 +62,7 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     case Axis.Horizontal:
+                    case Axis.BayChain:
                         actionType = ActionType.HorizontalHoming;
                         break;
 
@@ -71,7 +70,9 @@ namespace Ferretto.VW.App.Services
                         break;
                 }
 
-                this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
+                this.eventAggregator
+                    .GetEvent<MachineAutomationErrorPubSubEvent>()
+                    .Publish(
                     new MachineAutomationEventArgs(NotificationType.Error, actionType, ActionStatus.Error));
             }
         }
@@ -84,8 +85,10 @@ namespace Ferretto.VW.App.Services
 
             if (!dataSensors[(int)IOMachineSensors.RunningState])
             {
-                this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                    new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
+                this.eventAggregator
+                    .GetEvent<MachineAutomationErrorPubSubEvent>()
+                    .Publish(
+                        new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
             }
         }
 
@@ -103,17 +106,23 @@ namespace Ferretto.VW.App.Services
                     break;
 
                 case NotificationMessageUI<CalibrateAxisMessageData> cc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<CalibrateAxisMessageData>>().Publish(cc);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
+                        .Publish(cc);
 
                     if (cc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
+                        this.eventAggregator
+                            .GetEvent<MachineAutomationErrorPubSubEvent>()
+                            .Publish(
+                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
                     }
                     break;
 
                 case NotificationMessageUI<SwitchAxisMessageData> sw:
-                    this.eventAggregator.GetEvent<NotificationEventUI<SwitchAxisMessageData>>().Publish(sw);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
+                        .Publish(sw);
 
                     if (sw.Status == MessageStatus.OperationError)
                     {
@@ -156,12 +165,15 @@ namespace Ferretto.VW.App.Services
                     break;
 
                 case NotificationMessageUI<ResolutionCalibrationMessageData> rc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>().Publish(rc);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>()
+                        .Publish(rc);
 
                     if (rc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
+                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>()
+                            .Publish(
+                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
                     }
                     break;
 
@@ -170,8 +182,10 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
+                        this.eventAggregator
+                            .GetEvent<MachineAutomationErrorPubSubEvent>()
+                            .Publish(
+                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
                     }
                     break;
 
@@ -180,8 +194,10 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
+                        this.eventAggregator
+                            .GetEvent<MachineAutomationErrorPubSubEvent>()
+                            .Publish(
+                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
                     }
                     break;
 
@@ -190,21 +206,41 @@ namespace Ferretto.VW.App.Services
 
                     if (sc.Status == MessageStatus.OperationError)
                     {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
+                        this.eventAggregator
+                            .GetEvent<MachineAutomationErrorPubSubEvent>()
+                            .Publish(
+                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
                     }
                     break;
 
                 case NotificationMessageUI<InverterStatusWordMessageData> isw:
-                    this.eventAggregator.GetEvent<NotificationEventUI<InverterStatusWordMessageData>>().Publish(isw);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterStatusWordMessageData>>()
+                        .Publish(isw);
                     break;
 
                 case NotificationMessageUI<MachineStatusActiveMessageData> msa:
-                    this.eventAggregator.GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>().Publish(msa);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<MachineStatusActiveMessageData>>()
+                        .Publish(msa);
                     break;
 
                 case NotificationMessageUI<MachineStateActiveMessageData> msa:
-                    this.eventAggregator.GetEvent<NotificationEventUI<MachineStateActiveMessageData>>().Publish(msa);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<MachineStateActiveMessageData>>()
+                        .Publish(msa);
+                    break;
+
+                case NotificationMessageUI<ChangeRunningStateMessageData> crm:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+                        .Publish(crm);
+                    break;
+
+                case NotificationMessageUI<MoveLoadingUnitMessageData> mld:
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                        .Publish(mld);
                     break;
             }
         }

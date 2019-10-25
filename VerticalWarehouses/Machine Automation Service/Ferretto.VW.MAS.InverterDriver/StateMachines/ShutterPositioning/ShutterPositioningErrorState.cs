@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -36,7 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Shutter Positioning Error state");
+            this.Logger.LogError($"Shutter Positioning Error state");
 
             if (this.InverterStatus is AglInverterStatus currentStatus)
             {
@@ -60,21 +59,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogDebug("1:Stop ignored in error state");
+            // do nothing
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
+            // do nothing
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
+            // do nothing
             return true;
         }
 

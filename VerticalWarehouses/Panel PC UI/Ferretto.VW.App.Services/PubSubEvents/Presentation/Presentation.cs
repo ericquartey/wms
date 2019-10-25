@@ -1,5 +1,4 @@
 ﻿using System.Windows.Input;
-using Ferretto.VW.App.Services.Interfaces;
 
 namespace Ferretto.VW.App.Services
 {

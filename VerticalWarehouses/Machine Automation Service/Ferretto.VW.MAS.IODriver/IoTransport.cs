@@ -1,25 +1,25 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 
 namespace Ferretto.VW.MAS.IODriver
 {
-    public class IoTransport : IIoTransport, IDisposable
+    internal class IoTransport : IIoTransport, IDisposable
     {
         #region Fields
+
+        private readonly int readTimeoutMilliseconds;   // -1 is no timeout
 
         private readonly byte[] receiveBuffer = new byte[1024];
 
         private bool disposed;
 
         private IPAddress ioAddress;
-
-        private readonly int readTimeoutMilliseconds;    // -1 is no timeout
 
         private int sendPort;
 
@@ -84,7 +84,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (this.transportClient != null || this.transportStream != null)
             {
-                //throw new IoDriverException(
+                // throw new IoDriverException(
                 //    "Socket Transport is already open",
                 //    IoDriverExceptionCode.SocketOpen);
                 this.transportClient?.Dispose();
@@ -144,8 +144,6 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.transportStream?.Close();
             this.transportClient?.Close();
-
-            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -195,6 +193,16 @@ namespace Ferretto.VW.MAS.IODriver
                     throw new IoDriverException("Timeout reading data from Transport Stream");
                 }
             }
+            catch (IoDriverException ex)
+            {
+                this.Disconnect();
+                throw new IoDriverException(ex.Message);
+            }
+            catch (IOException ex)
+            {
+                this.Disconnect();
+                throw new IoDriverException(ex.Message);
+            }
             catch (Exception ex)
             {
                 this.Disconnect();
@@ -234,12 +242,14 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 throw new IoDriverException("Error writing data to Transport Stream", IoDriverExceptionCode.NetworkStreamWriteFailure);
             }
+
             try
             {
                 if (delay > 0)
                 {
                     await Task.Delay(delay, stoppingToken);
                 }
+
                 await this.transportStream.WriteAsync(message, 0, message.Length, stoppingToken);
                 return message.Length;
             }

@@ -13,8 +13,6 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        Bay Bay { get; }
-
         WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; }
 
         WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
@@ -30,6 +28,8 @@ namespace Ferretto.VW.App.Services
         void CompleteCurrentMission();
 
         Task CompleteCurrentMissionOperationAsync(double quantity);
+
+        Task<Bay> GetBayAsync();
 
         Task InitializeAsync();
 

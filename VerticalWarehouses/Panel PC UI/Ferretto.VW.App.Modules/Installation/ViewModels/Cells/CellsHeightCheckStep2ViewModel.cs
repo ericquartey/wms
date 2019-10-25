@@ -2,14 +2,14 @@
 using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
+    internal sealed class CellsHeightCheckStep2ViewModel : BaseCellsHeightCheckViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -34,9 +34,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public CellsHeightCheckStep2ViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
-            : base(machineCellsService, machineElevatorService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService)
+            : base(machineCellsWebService, machineElevatorWebService)
         {
         }
 
@@ -155,16 +155,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
             this.ShowSteps();
 
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             if (this.Data is Cell cell)
             {
                 this.Cell = cell;
             }
+
+            this.InputStepValue = this.ProcedureParameters.Step;
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -207,7 +209,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.Cell = await this.MachineCellsService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
+                this.Cell = await this.MachineCellsWebService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
 
                 this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
             }
@@ -264,7 +266,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingDown = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
+                await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
             }
             catch (Exception ex)
             {
@@ -284,7 +286,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingUp = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MachineElevatorService.MoveVerticalOfDistanceAsync(this.InputStepValue);
+                await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(this.InputStepValue);
             }
             catch (Exception ex)
             {

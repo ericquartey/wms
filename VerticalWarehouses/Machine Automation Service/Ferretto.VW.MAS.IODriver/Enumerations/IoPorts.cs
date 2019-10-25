@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.IODriver.Enumerations
 {
-    public enum IoPorts
+    internal enum IoPorts
     {
         #region Outputs
 
@@ -10,7 +10,7 @@
 
         CradleMotor = 2,
 
-        MeasureBarrier = 3,
+        MeasureProfile = 3,
 
         BayLight = 4,
 
@@ -52,7 +52,7 @@
 
         HookTrolley = 14,
 
-        FinePickingRobot = 15
+        FinePickingRobot = 15,
 
         #endregion
     }

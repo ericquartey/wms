@@ -53,7 +53,7 @@
         <controls:PpcLabeledText Grid.Row="4"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Cell.Side}"
+                                 ContentText="{Binding Cell.Side, Converter={StaticResource EWSC}}"
                                  LabelText="{x:Static res:InstallationApp.CellSide}" />
 
         <controls:PpcLabeledText Grid.Row="3"

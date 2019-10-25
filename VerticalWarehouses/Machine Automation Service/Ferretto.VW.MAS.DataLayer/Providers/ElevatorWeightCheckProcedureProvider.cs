@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -17,12 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorWeightCheckProcedureProvider(DataLayerContext dataContext)
         {
-            if (dataContext == null)
-            {
-                throw new System.ArgumentNullException(nameof(dataContext));
-            }
-
-            this.dataContext = dataContext;
+            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -34,7 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
             {
-                throw new Exceptions.EntityNotFoundException(loadingUnitId);
+                throw new EntityNotFoundException(loadingUnitId);
             }
 
             if (displacement < 0)
@@ -53,7 +47,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             // TO DO execute operations.
-            Task.Delay(5000);
+            throw new NotImplementedException();
         }
 
         public void Stop()

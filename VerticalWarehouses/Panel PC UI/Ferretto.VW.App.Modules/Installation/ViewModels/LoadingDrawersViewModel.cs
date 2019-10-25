@@ -3,7 +3,8 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class LoadingDrawersViewModel : BaseMainViewModel
+    [System.Obsolete]
+    internal sealed class LoadingDrawersViewModel : BaseMainViewModel
     {
         #region Constructors
 

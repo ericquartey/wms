@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Carousel Carousel { get; set; }
 
+        public double ChainOffset { get; set; }
+
         public int? CurrentMissionId { get; set; }
 
         public int? CurrentMissionOperationId { get; set; }
@@ -20,17 +22,17 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsActive { get; set; }
 
-        public bool IsDouble => this.Positions.Count() == 2;
+        public bool IsDouble => this.Positions?.Count() == 2;
 
         public bool IsExternal { get; set; }
-
-        public LoadingUnit LoadingUnit { get; set; }
 
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }
 
         public IEnumerable<BayPosition> Positions { get; set; }
+
+        public double Resolution { get; set; }
 
         public Shutter Shutter { get; set; }
 

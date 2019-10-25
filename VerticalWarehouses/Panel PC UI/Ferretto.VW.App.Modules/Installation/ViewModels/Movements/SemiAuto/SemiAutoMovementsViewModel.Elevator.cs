@@ -10,13 +10,11 @@ using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
 
-        private readonly IMachineElevatorService machineElevatorService;
-
-        private readonly IMachineServiceService machineServiceService;
+        private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand disembarkBackwardsCommand;
 
@@ -61,13 +59,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? ElevatorHorizontalPosition
         {
             get => this.elevatorHorizontalPosition;
-            protected set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+            private set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
         }
 
         public double? ElevatorVerticalPosition
         {
             get => this.elevatorVerticalPosition;
-            protected set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+            private set => this.SetProperty(ref this.elevatorVerticalPosition, value);
         }
 
         public ICommand EmbarkBackwardsCommand =>
@@ -93,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 return this.embarkedLoadingUnit;
             }
 
-            protected set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public ICommand EmbarkForwardsCommand =>
@@ -160,11 +158,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand TuningBayCommand =>
-                    this.tuningBayCommand
+            this.tuningBayCommand
             ??
             (this.tuningBayCommand = new DelegateCommand(
-                async () => await this.TuningBay(),
-                this.CanTuningBay));
+                async () => await this.TuneBayAsync(),
+                this.CanTuneBay));
 
         public ICommand TuningChainCommand =>
             this.tuningChainCommand
@@ -180,9 +178,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 this.Sensors.LuPresentInMachineSideBay1
@@ -193,9 +190,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
-
-                // !this.IsWaitingForResponse
-                // &&
+                !this.IsWaitingForResponse
+                &&
                 !this.IsMoving
                 &&
                 !this.Sensors.LuPresentInMachineSideBay1
@@ -205,13 +201,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsZeroChain;
         }
 
-        private bool CanTuningBay()
+        private bool CanTuneBay()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&
-                !this.IsTuningBay;
+                !this.IsTuningBay
+                &&
+                this.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()
@@ -241,65 +240,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(direction, false);
         }
 
-        private async Task RetrieveElevatorPositionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.ElevatorVerticalPosition = await this.machineElevatorService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorService.GetHorizontalPositionAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task StartMovementAsync(HorizontalMovementDirection direction, bool isOnBoard)
         {
             try
             {
-                await this.machineElevatorService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task TuningBay()
-        {
-            this.IsTuningBay = true;
-            await Task.Delay(1);
-        }
-
-        private async Task TuningChain()
-        {
-            try
-            {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
-                {
-                    this.IsWaitingForResponse = true;
-                    await this.machineServiceService.SearchHorizontalZeroAsync();
-                    this.IsTuningChain = true;
-                }
+                this.IsWaitingForResponse = true;
+                await this.machineElevatorWebService.MoveHorizontalAutoAsync(direction, isOnBoard, null, null);
             }
             catch (Exception ex)
             {
-                this.IsTuningChain = false;
-
                 this.ShowNotification(ex);
             }
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuningChain()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult == DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsWaitingForResponse = true;
+                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
+                    this.IsTuningChain = true;
+                }
+                catch (Exception ex)
+                {
+                    this.IsTuningChain = false;
+
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
             }
         }
 

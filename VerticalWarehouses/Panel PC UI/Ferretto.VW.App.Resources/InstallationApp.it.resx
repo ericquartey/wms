@@ -211,10 +211,10 @@
     <value>Limite inferiore [mm]</value>
   </data>
   <data name="Offset" xml:space="preserve">
-    <value>Offset [mm]:</value>
+    <value>Offset [mm]</value>
   </data>
   <data name="Output" xml:space="preserve">
-    <value>Risultato:</value>
+    <value>Risultato</value>
   </data>
   <data name="Start" xml:space="preserve">
     <value>Inizia</value>
@@ -305,7 +305,7 @@
     <value>L'origine dell'asse verticale non è stata effettuata.</value>
   </data>
   <data name="FeedRate" xml:space="preserve">
-    <value>Feed rate %:</value>
+    <value>Feed rate %</value>
   </data>
   <data name="OriginVerticalAxis" xml:space="preserve">
     <value>Origine asse verticale</value>
@@ -361,8 +361,8 @@
   <data name="Closed" xml:space="preserve">
     <value>Chiuso</value>
   </data>
-  <data name="CompletedCycles" xml:space="preserve">
-    <value>Cicli completati</value>
+  <data name="PerformedCyclesThisSession" xml:space="preserve">
+    <value>Cicli completati (sessione)</value>
   </data>
   <data name="CurrentPosition" xml:space="preserve">
     <value>Posizione attuale [mm]</value>
@@ -377,7 +377,7 @@
     <value>Aperta</value>
   </data>
   <data name="RequiredCycles" xml:space="preserve">
-    <value>Cicli richiesti:</value>
+    <value>Cicli richiesti</value>
   </data>
   <data name="Gate1Control" xml:space="preserve">
     <value>Test serranda baia 1</value>
@@ -632,7 +632,7 @@
     <value>Carico cassetti.</value>
   </data>
   <data name="LoadingDrawersTotalDrawers" xml:space="preserve">
-    <value>Totale cassetti:</value>
+    <value>Totale cassetti</value>
   </data>
   <data name="LoadingDrawersMaxWeight" xml:space="preserve">
     <value>Portata max. [kg]</value>
@@ -808,10 +808,6 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Valore inserito non valido</value>
   </data>
-  <data name="UpdateResolution" xml:space="preserve">
-    <value>Aggiorna Risoluzione</value>
-    <comment>Aggiorna Risoluzione</comment>
-  </data>
   <data name="LUPresentMiddleBottomBay" xml:space="preserve">
     <value>Secondo Cassetto Presente in Baia</value>
   </data>
@@ -953,9 +949,6 @@
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>La procedura è stata interrotta.</value>
   </data>
-  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
-    <value>Risoluzione dell'asse verticale aggiornata.</value>
-  </data>
   <data name="SelectLowerBound" xml:space="preserve">
     <value>Seleziona limite inferiore [mm]</value>
     <comment>Label text</comment>
@@ -976,8 +969,8 @@
   <data name="Reset" xml:space="preserve">
     <value>Reimposta</value>
   </data>
-  <data name="TotalCompletedCycles" xml:space="preserve">
-    <value>Totale cicli completati</value>
+  <data name="CumulativePerformedCycles" xml:space="preserve">
+    <value>Cicli completati (cumulativo)</value>
   </data>
   <data name="Next" xml:space="preserve">
     <value>Succ</value>
@@ -1069,4 +1062,45 @@
   <data name="LuPresenceOnOperatorCradle" xml:space="preserve">
     <value>Presenza UDC lato operatore</value>
   </data>
+  <data name="BayChainHorizontalPosition" xml:space="preserve">
+    <value>BayChainHorizontalPosition</value>
+  </data>
+  <data name="CurrentBayChainPosition" xml:space="preserve">
+    <value>CurrentBayChainPosition</value>
+  </data>
+  <data name="PreviousPanel" xml:space="preserve">
+    <value>Pannello Precedente</value>
+  </data>
+  <data name="InformationSuccessfullyUpdated" xml:space="preserve">
+    <value>L'informazione è stata aggiornata.</value>
+  </data>
+  <data name="SaveSuccessful" xml:space="preserve">
+    <value>Salvataggio completato con successo</value>
+  </data>
+  <data name="InsertDestinationCellId" xml:space="preserve">
+    <value>Id della cella di destinazione</value>
+  </data>
+  <data name="InsertLoadingUnitFromBayToCell" xml:space="preserve">
+    <value>Inserimento cassetto da baia in cella</value>
+  </data>
+  <data name="ZeroChain" xml:space="preserve">
+    <value>Catena a zero</value>
+  </data>
+  <data name="LoadingUnitFromCellToCell" xml:space="preserve">
+    <value>Spostamento cassetto da cella a cella</value>
+  </data>
+  <data name="MoveLoadingUnitFromCellToBay" xml:space="preserve">
+    <value>Spostamento cassetto da cella in baia</value>
+  </data>
+  <data name="ConfirmEjectLoadingUnit" xml:space="preserve">
+    <value>Conferma estrazione cassetto</value>
+  </data>
+  <data name="SelectDestinationBay" xml:space="preserve">
+    <value>Seleziona baia di destinazione</value>
+  </data>
+  <data name="ShutterEnduranceTest" xml:space="preserve">
+    <value>Test Serranda</value>
+  </data>
 </root>
+
+

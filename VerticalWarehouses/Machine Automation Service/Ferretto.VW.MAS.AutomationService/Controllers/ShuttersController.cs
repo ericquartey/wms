@@ -1,14 +1,13 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.FiniteStateMachines.Providers;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
@@ -17,13 +16,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
-
         private readonly ISensorsProvider sensorsProvider;
 
-        private readonly IShutterManualMovementsDataLayer shutterManualMovementsDataLayer;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
-        private readonly IShutterTestParametersProvider shutterTestParametersProvider;
+        private readonly IShutterProvider shutterProvider;
 
         #endregion
 
@@ -31,236 +28,58 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ShuttersController(
             IEventAggregator eventAggregator,
-            IShutterTestParametersProvider shutterTestParametersProvider,
-            IShutterManualMovementsDataLayer shutterManualMovementsDataLayer,
-            IBaysProvider baysProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IShutterProvider shutterProvider,
             ISensorsProvider sensorsProvider)
             : base(eventAggregator)
         {
-            if (shutterTestParametersProvider is null)
-            {
-                throw new ArgumentNullException(nameof(shutterTestParametersProvider));
-            }
-
-            if (shutterManualMovementsDataLayer is null)
-            {
-                throw new ArgumentNullException(nameof(shutterManualMovementsDataLayer));
-            }
-
-            if (baysProvider is null)
-            {
-                throw new ArgumentNullException(nameof(baysProvider));
-            }
-
-            if (sensorsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(sensorsProvider));
-            }
-
-            this.baysProvider = baysProvider;
-            this.sensorsProvider = sensorsProvider;
-            this.shutterTestParametersProvider = shutterTestParametersProvider;
-            this.shutterManualMovementsDataLayer = shutterManualMovementsDataLayer;
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
         }
 
         #endregion
 
         #region Methods
 
-        [HttpGet("shutters/position")]
+        [HttpGet("position")]
         public ActionResult<ShutterPosition> GetShutterPosition()
         {
             return this.Ok(this.sensorsProvider.GetShutterPosition(this.BayNumber));
         }
 
-        [HttpGet]
-        public ActionResult<ShutterTestParameters> GetTestParameters()
+        [HttpGet("test-parameters")]
+        public ActionResult<RepeatedTestProcedure> GetTestParameters()
         {
-            var parameters = this.shutterTestParametersProvider.Get();
-
-            return this.Ok(parameters);
+            return this.Ok(this.setupProceduresDataProvider.GetShutterTest());
         }
 
         [HttpPost("move")]
-        public void Move(ShutterMovementDirection direction)
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Move(ShutterMovementDirection direction)
         {
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
+            this.shutterProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
 
-            // speed is negative to go up
-            speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
-
-            var targetPosition = direction == ShutterMovementDirection.Up
-                ? ShutterPosition.Opened
-                : ShutterPosition.Closed;
-
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
-
-            var messageData = new ShutterPositioningMessageData(
-                targetPosition,
-                direction,
-                bay.Shutter.Type,
-                speedRate,
-                0,
-                0,
-                MovementMode.ShutterPosition,
-                MovementType.Relative,
-                0,
-                0,
-                0,
-                0,
-                0);
-
-            this.PublishCommand(
-                messageData,
-                "Execute Shutter Positioning Movement Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.ShutterPositioning);
+            return this.Accepted();
         }
 
         [HttpPost("moveTo")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public IActionResult MoveTo(ShutterPosition targetPosition)
         {
-            var direction = ShutterMovementDirection.None;
-            var position = this.sensorsProvider.GetShutterPosition(this.BayNumber);
-            switch (targetPosition)
-            {
-                case ShutterPosition.Closed:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened)
-                    {
-                        direction = ShutterMovementDirection.Down;
-                    }
-                    break;
-
-                case ShutterPosition.Half:
-                    if (position == ShutterPosition.Opened)
-                    {
-                        direction = ShutterMovementDirection.Down;
-                    }
-                    else if (position == ShutterPosition.Closed)
-                    {
-                        direction = ShutterMovementDirection.Up;
-                    }
-                    break;
-
-                case ShutterPosition.Opened:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed)
-                    {
-                        direction = ShutterMovementDirection.Up;
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-            if (direction == ShutterMovementDirection.None)
-            {
-                if (targetPosition != position)
-                {
-                    return this.BadRequest(Resources.Shutters.ThePositionIsNotValid);
-                }
-                else
-                {
-                    // destination already reached
-                    return this.Accepted();
-                }
-            }
-
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MaxSpeed;
-            if (speedRate == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheSpeedRateIsNotValid);
-            }
-
-            var lowSpeed = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
-            if (lowSpeed == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheMinSpeedIsNotValid);
-            }
-
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
-
-            // speed is negative to go up
-            speedRate *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
-            lowSpeed *= (direction == ShutterMovementDirection.Up) ? -1 : 1;
-
-            var messageData = new ShutterPositioningMessageData(
-                targetPosition,
-                direction,
-                bay.Shutter.Type,
-                speedRate,
-                this.shutterManualMovementsDataLayer.HigherDistance,
-                this.shutterManualMovementsDataLayer.LowerDistance,
-                MovementMode.ShutterPosition,
-                MovementType.Absolute,
-                0,
-                0,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
-                lowSpeed);
-
-            this.PublishCommand(
-                messageData,
-                "Execute Shutter Positioning Movement Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.ShutterPositioning);
+            this.shutterProvider.MoveTo(targetPosition, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
 
         [HttpPost("run-test")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         public IActionResult RunTest(int delayInSeconds, int testCycleCount)
         {
-            if (delayInSeconds <= 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheDelayBetweenTestCyclesMustBeStrictlyPositive);
-            }
-
-            if (testCycleCount <= 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
-            }
-
-            var speedRate = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MaxSpeed;
-            if (speedRate == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheSpeedRateIsNotValid);
-            }
-            var lowSpeed = this.shutterManualMovementsDataLayer.FeedRateSM * this.shutterManualMovementsDataLayer.MinSpeed;
-            if (lowSpeed == 0)
-            {
-                return this.BadRequest(Resources.Shutters.TheMinSpeedIsNotValid);
-            }
-
-            var bay = this.baysProvider.GetByNumber(this.BayNumber);
-
-            var delayInMilliseconds = delayInSeconds * 1000;
-
-            var messageData = new ShutterPositioningMessageData(
-                ShutterPosition.None,
-                ShutterMovementDirection.None,
-                bay.Shutter.Type,
-                speedRate,
-                this.shutterManualMovementsDataLayer.HigherDistance,
-                this.shutterManualMovementsDataLayer.LowerDistance,
-                MovementMode.ShutterTest,
-                MovementType.Absolute,
-                testCycleCount,
-                delayInMilliseconds,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationOpen,
-                this.shutterManualMovementsDataLayer.HighSpeedDurationClose,
-                lowSpeed);
-
-            this.PublishCommand(
-                messageData,
-                "Execute Shutter Test Loop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.ShutterPositioning);
+            this.shutterProvider.RunTest(delayInSeconds, testCycleCount, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -270,12 +89,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Stop()
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                "Stop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop);
+            this.shutterProvider.Stop(this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

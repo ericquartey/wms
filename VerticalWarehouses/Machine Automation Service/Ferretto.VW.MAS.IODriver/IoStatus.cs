@@ -3,20 +3,22 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver.Enumerations;
-using Ferretto.VW.MAS.Utils.Enumerations;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver
 {
     public class IoStatus
     {
         #region Fields
 
-        public const int TOTAL_INPUTS = 16;
+        public const int TotalInputs = 16;
 
         private const short COMTOUT_DEFAULT = 20000;
 
-        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32; // 50 ms
+        /// <summary>
+        /// Corresponds to 50ms.
+        /// </summary>
+        private const byte DEBOUNCE_INPUT_DEFAULT = 0x32;
 
         private const byte RELEASE_FW_10 = 0x10;
 
@@ -24,27 +26,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         private const byte SETUP_OUTPUTLINES_DEFAULT = 0x00;
 
-        private const int TOTAL_OUTPUTS = 8;
+        private const int TotalOutputs = 8;
 
-        private readonly bool[] inputs;
+        private readonly bool[] inputs = new bool[TotalInputs];
 
-        private readonly IoIndex ioIndex;
-
-        private readonly bool[] outputs;
+        private readonly bool[] outputs = new bool[TotalOutputs];
 
         private short comTout;
-
-        private byte debounceInput;
-
-        private ShdFormatDataOperation formatDataOperation;
-
-        private byte fwRelease;
-
-        private string ipAddress;
-
-        private byte setupOutputLines;
-
-        private bool useSetupOutputLines;
 
         #endregion
 
@@ -52,17 +40,13 @@ namespace Ferretto.VW.MAS.IODriver
 
         public IoStatus(IoIndex ioIndex)
         {
-            this.inputs = new bool[TOTAL_INPUTS];
-            this.outputs = new bool[TOTAL_OUTPUTS];
-
-            this.fwRelease = RELEASE_FW_10;
-            this.formatDataOperation = ShdFormatDataOperation.Data;
+            this.FwRelease = RELEASE_FW_10;
+            this.FormatDataOperation = ShdFormatDataOperation.Data;
             this.comTout = COMTOUT_DEFAULT;
-            this.setupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
-            this.debounceInput = DEBOUNCE_INPUT_DEFAULT;
-            this.useSetupOutputLines = false;
-            this.ipAddress = string.Empty;
-            this.ioIndex = ioIndex;
+            this.SetupOutputLines = SETUP_OUTPUTLINES_DEFAULT;
+            this.DebounceInput = DEBOUNCE_INPUT_DEFAULT;
+            this.UseSetupOutputLines = false;
+            this.IoIndex = ioIndex;
         }
 
         #endregion
@@ -70,82 +54,92 @@ namespace Ferretto.VW.MAS.IODriver
         #region Properties
 
         [Column(Order = (int)IoPorts.AntiIntrusionBarrierBay)]
-        public bool AntiIntrusionShutterBay => this.inputs?[(int)IoPorts.AntiIntrusionBarrierBay] ?? false;
+        public bool AntiIntrusionShutterBay => this.inputs[(int)IoPorts.AntiIntrusionBarrierBay];
 
-        public bool BayLightOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+        public bool BayLightOn => this.outputs[(int)IoPorts.CradleMotor];
 
         public short ComunicationTimeOut { get => this.comTout; set => this.comTout = value; }
 
         [Column(Order = (int)IoPorts.CradleMotor)]
-        public bool CradleMotorOn => this.outputs?[(int)IoPorts.CradleMotor] ?? false;
+        public bool CradleMotorOn => this.outputs[(int)IoPorts.CradleMotor];
 
         [Column(Order = (int)IoPorts.CradleMotorFeedback)]
-        public bool CradleMotorSelected => this.inputs?[(int)IoPorts.CradleMotorFeedback] ?? false;
+        public bool CradleMotorSelected => this.inputs[(int)IoPorts.CradleMotorFeedback];
 
-        public byte DebounceInput { get => this.debounceInput; set => this.debounceInput = value; }
+        public byte DebounceInput { get; set; }
 
-        public bool ElevatorMotorOn => this.outputs?[(int)IoPorts.ElevatorMotor] ?? false;
+        public bool ElevatorMotorOn => this.outputs[(int)IoPorts.ElevatorMotor];
 
         [Column(Order = (int)IoPorts.ElevatorMotorFeedback)]
-        public bool ElevatorMotorSelected => this.inputs?[(int)IoPorts.ElevatorMotorFeedback] ?? false;
+        public bool ElevatorMotorSelected => this.inputs[(int)IoPorts.ElevatorMotorFeedback];
 
-        public ShdFormatDataOperation FormatDataOperation { get => this.formatDataOperation; set => this.formatDataOperation = value; }
+        public ShdFormatDataOperation FormatDataOperation { get; set; }
 
-        public byte FwRelease { get => this.fwRelease; set => this.fwRelease = value; }
+        public byte FwRelease { get; set; }
 
         public bool[] InputData => this.inputs;
 
-        public IoIndex IoIndex => this.ioIndex;
-
-        // Remove
-        public string IpAddress { get => this.ipAddress; set => this.ipAddress = value; }
+        public IoIndex IoIndex { get; }
 
         [Column(Order = (int)IoPorts.LoadingUnitInBay)]
-        public bool LoadingUnitExistenceInBay => this.inputs?[(int)IoPorts.LoadingUnitInBay] ?? false;
+        public bool LoadingUnitExistenceInBay => this.inputs[(int)IoPorts.LoadingUnitInBay];
 
-        public bool MeasureBarrierOn => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool MeasureProfileOn => this.outputs[(int)IoPorts.MeasureProfile];
 
         [Column(Order = (int)IoPorts.MicroCarterLeftSideBay)]
-        public bool MicroCarterLeftSideBay => this.inputs?[(int)IoPorts.MicroCarterLeftSideBay] ?? false;
+        public bool MicroCarterLeftSideBay => this.inputs[(int)IoPorts.MicroCarterLeftSideBay];
 
         [Column(Order = (int)IoPorts.MicroCarterRightSideBay)]
-        public bool MicroCarterRightSideBay => this.inputs?[(int)IoPorts.MicroCarterRightSideBay] ?? false;
+        public bool MicroCarterRightSideBay => this.inputs[(int)IoPorts.MicroCarterRightSideBay];
 
         [Column(Order = (int)IoPorts.MushroomEmergency)]
-        public bool MushroomEmergency => this.inputs?[(int)IoPorts.MushroomEmergency] ?? false;
+        public bool MushroomEmergency => this.inputs[(int)IoPorts.MushroomEmergency];
 
         [Column(Order = (int)IoPorts.NormalState)]
-        public bool NormalState => this.inputs?[(int)IoPorts.NormalState] ?? false;
+        public bool NormalState => this.inputs[(int)IoPorts.NormalState];
 
         public bool[] OutputData => this.outputs;
 
-        public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
+        public bool ResetSecurity => this.outputs[(int)IoPorts.ResetSecurity];
 
-        public byte SetupOutputLines { get => this.setupOutputLines; set => this.setupOutputLines = value; }
+        public byte SetupOutputLines { get; set; }
 
-        public bool UseSetupOutputLines { get => this.useSetupOutputLines; set => this.useSetupOutputLines = value; }
+        public bool UseSetupOutputLines { get; set; }
 
         #endregion
-
-        // Add other output signals names
 
         #region Methods
 
         public bool MatchOutputs(bool[] outputsState)
         {
-            var matched = true;
-            for (var index = 0; index < TOTAL_OUTPUTS; index++)
+            if (outputsState is null)
+            {
+                throw new ArgumentNullException(nameof(outputsState));
+            }
+
+            if (outputsState.Length != this.outputs.Length)
+            {
+                throw new ArgumentException();
+            }
+
+            for (var index = 0; index < this.outputs.Length; index++)
             {
                 if (this.outputs[index] != outputsState[index])
                 {
-                    matched = false;
+                    return false;
                 }
             }
-            return matched;
+
+            return true;
         }
 
         public bool UpdateInputStates(bool[] newInputStates)
         {
+            if (newInputStates is null)
+            {
+                throw new ArgumentNullException(nameof(newInputStates));
+            }
+
             if (this.inputs.Length != newInputStates.Length)
             {
                 throw new IOException($"Input states length mismatch while updating I/O driver status");
@@ -162,7 +156,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             try
             {
-                Array.Copy(newInputStates, this.inputs, TOTAL_INPUTS);
+                Array.Copy(newInputStates, this.inputs, TotalInputs);
             }
             catch (Exception ex)
             {
@@ -172,64 +166,19 @@ namespace Ferretto.VW.MAS.IODriver
             return changeValues;
         }
 
-        public bool UpdateOutputStates(bool[] newOutputStates)
+        public void UpdateOutputStates(bool[] newOutputStates)
         {
+            if (newOutputStates is null)
+            {
+                throw new ArgumentNullException(nameof(newOutputStates));
+            }
+
             if (this.outputs.Length != newOutputStates.Length)
             {
                 throw new IOException($"Output states length mismatch while updating I/O driver status");
             }
 
-            for (var index = 0; index < TOTAL_OUTPUTS; index++)
-            {
-                if (this.outputs[index] != newOutputStates[index])
-                {
-                    this.outputs[index] = newOutputStates[index];
-                }
-            }
-
-            return true;
-        }
-
-        public bool UpdateSetupParameters(short comTout, byte debounceInput, byte setupOutputLines, bool useSetupOutputLines, string ipAddress)
-        {
-            this.comTout = comTout;
-            this.useSetupOutputLines = useSetupOutputLines;
-            this.debounceInput = debounceInput;
-            this.setupOutputLines = setupOutputLines;
-            this.ipAddress = ipAddress;
-
-            return true;
-        }
-
-        public bool UpdateStates(bool[] newInputStates, bool[] newOutputStates)
-        {
-            if (this.inputs.Length != newInputStates.Length)
-            {
-                throw new IOException($"Input states length mismatch while updating I/O driver status");
-            }
-            if (this.outputs.Length != newOutputStates.Length)
-            {
-                throw new IOException($"Output states length mismatch while updating I/O driver status");
-            }
-
-            try
-            {
-                Array.Copy(newInputStates, this.inputs, TOTAL_INPUTS);
-            }
-            catch (Exception ex)
-            {
-                throw new IOException($"Exception {ex.Message} while updating Inputs status");
-            }
-
-            for (var index = 0; index < TOTAL_OUTPUTS; index++)
-            {
-                if (this.outputs[index] != newOutputStates[index])
-                {
-                    this.outputs[index] = newOutputStates[index];
-                }
-            }
-
-            return true;
+            Array.Copy(newOutputStates, this.outputs, this.outputs.Length);
         }
 
         #endregion

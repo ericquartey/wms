@@ -188,6 +188,20 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 this.currentStateMachines.TryGetValue(message.SystemIndex, out var messageCurrentStateMachine);
 
+                if (message.IsError)
+                {
+                    this.Logger.LogError($"Received error Message: {message}");
+                    var errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode + message.UShortPayload;
+                    if (!Enum.IsDefined(typeof(DataModels.MachineErrorCode), errorCode))
+                    {
+                        errorCode = (int)DataModels.MachineErrorCode.InverterErrorBaseCode;
+                    }
+
+                    serviceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew((DataModels.MachineErrorCode)errorCode);
+                }
+
                 if (message.IsWriteMessage)
                 {
                     this.EvaluateWriteMessage(message, messageCurrentStateMachine, serviceProvider);
@@ -224,7 +238,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         catch (InverterDriverException ex)
                         {
-                        this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
+                            this.Logger.LogError($"1: Exception {ex.Message}; Exception code={ex.InverterDriverExceptionCode};\nInner exception: {ex.InnerException.Message}");
                         }
                         catch (Exception ex)
                         {
@@ -355,7 +369,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (Debugger.IsAttached
                     &&
-                    this.inverterCommandQueue.Count > 20)
+                    this.inverterCommandQueue.Count > 200)
                 {
                     Debugger.Break();
                 }

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
-    internal class DisableOperationStartState : InverterStateBase
+    internal sealed class DisableOperationStartState : InverterStateBase
     {
         #region Constructors
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
             //INFO Set Control Word Value or define parameter to be sent to Inverter and build the InverterMessage to be placed in inverter command queue
             this.InverterStatus.CommonControlWord.EnableOperation = false;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 

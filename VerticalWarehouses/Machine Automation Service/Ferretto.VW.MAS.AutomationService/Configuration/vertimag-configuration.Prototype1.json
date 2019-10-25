@@ -1,5 +1,22 @@
 {
   "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "01"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "02"
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Code": "03"
+    }
+  ],
   "Machine": {
     "Bays": [
       {
@@ -15,8 +32,15 @@
           "TcpPort": 19550
         },
         "IsExternal": true,
+        "ChainOffset": 0,
         "Number": 1,
-        "Positions": [ { "Height": 645 } ],
+        "Positions": [
+          {
+            "Height": 645,
+            "Location": "InternalBay1Down"
+          }
+        ],
+        "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
@@ -33,13 +57,20 @@
         },
         "Side": "Back",
         "IsExternal": false,
+        "ChainOffset": 0,
         "LaserPointer": {
           "Heights": [ 680, 1080 ]
         },
         "Number": 2,
         "Positions": [
-          { "Height": 645 },
-          { "Height": 1143 }
+          {
+            "Height": 645,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay2Up"
+          }
         ],
         "Shutter": {
           "Type": "TwoSensors",
@@ -59,9 +90,12 @@
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221
           },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
           "Offset": 350,
+          "ChainOffset": 0,
           "UpperBound": 4000,
           "LowerBound": 350,
           "EmptyLoadMovement": {
@@ -69,18 +103,23 @@
             "Deceleration": 1000,
             "Speed": 770
           },
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 400,
             "Deceleration": 400,
             "Speed": 550
-          }
+          },
+          "WeightMeasureMultiply": 121.46,
+          "WeightMeasureSum": -746.12,
+          "WeightMeasureSpeed": 20,
+          "WeightMeasureTime": 15
         },
         {
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
+          "ChainOffset": -6.4,
           "Inverter": null,
-          "MaximumLoadMovement": {
+          "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
             "Speed": 55
@@ -281,13 +320,13 @@
         "cells": [
           {
             "id": 1,
-            "position": 268,
+            "position": 375,
             "priority": 1,
             "status": "Free"
           },
           {
             "id": 3,
-            "position": 319,
+            "position": 380,
             "priority": 3,
             "status": "Free"
           },
@@ -1510,13 +1549,13 @@
         "cells": [
           {
             "id": 2,
-            "position": 317,
+            "position": 1889,
             "priority": 2,
             "status": "Free"
           },
           {
             "id": 4,
-            "position": 367,
+            "position": 2139,
             "priority": 4,
             "status": "Free"
           },
@@ -2738,64 +2777,68 @@
     "ProductionDate": "2019-10-19T16:39:57-08:00",
     "SerialNumber": "Prototype #1"
   },
-  "BayPositionControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "BeltBurnishing": {
-    //"CycleQuantity": 200, //TEMP Too many loops, temporary commented for our tests on the Belt-Burnishing 200 is too much
-    "CycleQuantity": 5
-  },
-  "DepositAndPickUp": {
-    "CycleQuantity": 10
-  },
-  "CellControl": {
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "HorizontalManualMovements": {
-    "FeedRate": 0.40,
-    "InitialTargetPosition": 30.0,
-    "RecoveryTargetPosition": 200.0
-  },
-  "LoadFirstDrawer": {
-    "FeedRate": 0.20
-  },
-
-  "OffsetCalibration": {
-    "ReferenceCell": 50, //TEMP Temporary value for software test
-    "StepValue": 0.5,
-    "FeedRate": 0.20
-  },
-  "PanelControl": {
-    "FeedRate": 0.20
-  },
-  "ResolutionCalibration": {
-    "InitialPosition": 1000.0, //TEMP Temporary value for software test
-    "FinalPosition": 5500.0, //TEMP Temporary value for software test
-    "FeedRate": 0.20
-  },
-  "ShutterHeightControl": {
-    "FeedRate": 0.10
-  },
-  "ShutterManualMovements": {
-    "FeedRate": 0.20,
-    "MaxSpeed": 40000.0,
-    "MinSpeed": 5000.0,
-    "Acceleration": 500.0,
-    "Deceleration": 500.0,
-    "HigherDistance": 467.0,
-    "LowerDistance": 472.0,
-    "HighSpeedDurationOpen": 14.0,
-    "HighSpeedDurationClose": 13.0
-  },
-  "VerticalManualMovements": {
-    "FeedRate": 0.10,
-    "PositiveTargetDirection": 30.0,
-    "NegativeTargetDirection": 30.0,
-    "FeedRateAfterZero": 0.15
-  },
-  "WeightControl": {
-    "FeedRate": 0.10
+  "SetupProcedures": {
+    "BayHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "BeltBurnishingTest": {
+      "RequiredCycles": 200
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "CellsHeightCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "HorizontalManualMovements": {
+      "FeedRate": 0.04,
+      "InitialTargetPosition": 30,
+      "RecoveryTargetPosition": 200
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterManualMovements": {
+      "FeedRate": 0.2,
+      "MaxSpeed": 31500,
+      "MinSpeed": 2500,
+      "HighSpeedDurationOpen": 16,
+      "HighSpeedDurationClose": 17
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10000
+    },
+    "VerticalManualMovements": {
+      "FeedRate": 0.1,
+      "PositiveTargetDirection": 30,
+      "NegativeTargetDirection": 30,
+      "FeedRateAfterZero": 0.15,
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "VerticalResolutionCalibration": {
+      "InitialPosition": 1000, //TEMP Temporary value for software test
+      "FinalPosition": 5500, //TEMP Temporary value for software test
+      "FeedRate": 0.2
+    },
+    "WeightCheck": {
+      "FeedRate": 0.05
+    }
   }
 }

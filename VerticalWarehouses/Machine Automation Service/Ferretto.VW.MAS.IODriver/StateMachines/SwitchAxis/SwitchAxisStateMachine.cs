@@ -11,11 +11,11 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisStateMachine : IoStateMachineBase
+    internal sealed class SwitchAxisStateMachine : IoStateMachineBase
     {
         #region Fields
 
-        private const int PAUSE_INTERVAL = 250;
+        private const int PauseInterval = 250;
 
         private readonly Axis axisToSwitchOn;
 
@@ -43,11 +43,10 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
             this.axisToSwitchOn = axisToSwitchOn;
             this.switchOffOtherAxis = switchOffOtherAxis;
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.pulseOneTime = false;
             this.index = index;
@@ -63,7 +62,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, Timeout.Infinite);
             }
 
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
@@ -78,7 +77,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             if (checkMessage && !this.pulseOneTime)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PAUSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 
@@ -95,7 +94,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             if (this.switchOffOtherAxis)
             {
                 this.Logger.LogTrace("2:Change State to SwitchOffMotorState");
-                this.CurrentState = new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.index, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -109,12 +107,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 this.Logger.LogTrace($"3:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
-                this.CurrentState?.Start();
+                this.ChangeState(new SwitchAxisStartState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
             }
             else
             {
                 this.Logger.LogTrace("4:Change State to SwitchOnMotorState");
-                this.CurrentState = new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this);
 
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
@@ -128,7 +125,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
                 this.Logger.LogTrace($"5:Start Notification published: {notificationMessage.Type}, {notificationMessage.Status}, {notificationMessage.Destination}");
                 this.PublishNotificationEvent(notificationMessage);
 
-                this.CurrentState?.Start();
+                this.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this));
             }
         }
 

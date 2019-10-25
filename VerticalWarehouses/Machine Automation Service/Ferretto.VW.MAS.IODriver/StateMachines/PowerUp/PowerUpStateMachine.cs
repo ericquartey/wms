@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -8,7 +7,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class PowerUpStateMachine : IoStateMachineBase
+    internal sealed class PowerUpStateMachine : IoStateMachineBase
     {
         #region Fields
 
@@ -34,9 +33,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
-            this.IoCommandQueue = ioCommandQueue;
             this.status = status;
             this.index = index;
 
@@ -55,7 +53,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
                 message.ValidOutputs &&
                 message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, Timeout.Infinite);
             }
 
             base.ProcessMessage(message);
@@ -71,8 +69,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
             if (checkMessage && !this.pulseOneTime)
             {
-                //TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                // TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
+                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 
@@ -82,8 +80,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new PowerUpStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new PowerUpStartState(this, this.status, this.index, this.Logger));
         }
 
         protected override void Dispose(bool disposing)
@@ -110,7 +107,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         private void DelayElapsed(object state)
         {
-            //TEMP Clear message IO
+            // TEMP Clear message IO
             var clearIoMessage = new IoWriteMessage();
 
             this.Logger.LogTrace($"1:Clear IO={clearIoMessage}");

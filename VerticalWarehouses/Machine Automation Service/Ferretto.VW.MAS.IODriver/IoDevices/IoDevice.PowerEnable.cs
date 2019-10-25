@@ -7,11 +7,11 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice
+    internal partial class IoDevice
     {
         #region Methods
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                 {
                     if (powerEnableMessageData.Enable)
                     {
-                        this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType()}");
+                        this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType().Name}");
 
                         var ex = new Exception();
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
@@ -31,10 +31,11 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                     else
                     {
                         // if Enable is false I have to turn off power immediately, even if another state machine is active
-                        this.logger.LogInformation($"PowerEnable Off destroys active state machine {this.CurrentStateMachine.GetType()}");
+                        this.logger.LogInformation($"PowerEnable Off destroys active state machine {this.CurrentStateMachine.GetType().Name}");
                         this.DestroyStateMachine();
                     }
                 }
+
                 if (this.CurrentStateMachine == null)
                 {
                     this.CurrentStateMachine = new PowerEnableStateMachine(

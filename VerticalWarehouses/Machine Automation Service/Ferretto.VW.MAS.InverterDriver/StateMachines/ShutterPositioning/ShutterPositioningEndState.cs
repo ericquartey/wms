@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
-
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -43,19 +42,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.Logger.LogDebug($"Notify Positioning End. StopRequested = {this.stopRequested}");
 
-            if (this.stopRequested)
-            {
-                this.ParentStateMachine.PublishNotificationEvent(
-                    new FieldNotificationMessage(
-                        null,
-                        "Message",
-                        FieldMessageActor.FiniteStateMachines,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterStop,
-                        MessageStatus.OperationEnd,
-                        this.InverterStatus.SystemIndex));
-            }
-
             if (this.InverterStatus is AglInverterStatus currentStatus)
             {
                 this.shutterPositionData.ShutterPosition = currentStatus.CurrentShutterPosition;
@@ -77,21 +63,19 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogDebug("1:Stop ignored in end state");
+            // do nothing
         }
 
         /// <inheritdoc/>
         public override bool ValidateCommandMessage(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
+            // do nothing
             return false;
         }
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            this.Logger.LogTrace($"1:message={message}:Is Error={message.IsError}");
-
+            // do nothing
             return true;
         }
 

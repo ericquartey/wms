@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface.Services;
 
-namespace Ferretto.VW.MAS.IODriver.Services
+namespace Ferretto.VW.MAS.IODriver
 {
-    internal class IoDevicesProvider : IIoDevicesProvider
+    internal sealed class IoDevicesProvider : IIoDevicesProvider
     {
         #region Constructors
 

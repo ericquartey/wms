@@ -9,7 +9,6 @@ using Ferretto.VW.App.Installation.Attributes;
 using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
@@ -18,11 +17,11 @@ using Prism.Regions;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class InstallatorMenuViewModel : BaseMainViewModel
+    internal sealed class InstallatorMenuViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly int bayNumber;
+        private readonly IBayManager bayManager;
 
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
@@ -32,30 +31,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly BindingList<MainNavigationMenuItem> sensorsItems = new BindingList<MainNavigationMenuItem>();
 
-        private readonly IMachineSetupStatusService setupStatusService;
+        private readonly IMachineSetupStatusWebService setupStatusWebService;
 
         private bool areItemsEnabled;
+
+        private int bayNumber;
 
         #endregion
 
         #region Constructors
 
         public InstallatorMenuViewModel(
-            IMachineSetupStatusService setupStatusService,
+            IMachineSetupStatusWebService setupStatusWebService,
             IMachineModeService machineModeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            this.setupStatusService = setupStatusService ?? throw new ArgumentNullException(nameof(setupStatusService));
+            this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-
-            // TODO Review Implementation avoid using numbers to identify bays
-            this.bayNumber = (int)bayManager.Bay.Number;
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.InitializeData();
         }
@@ -82,18 +76,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = false;
 
-            await this.UpdateMenuItemsStatus();
-        }
-
-        public override async void OnNavigatedTo(NavigationContext navigationContext)
-        {
-            base.OnNavigatedTo(navigationContext);
+            var bay = await this.bayManager.GetBayAsync();
+            this.bayNumber = (int)bay.Number;
 
             await this.UpdateMenuItemsStatus();
         }
@@ -160,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = false };
+            return setupStepStatus ?? new SetupStepStatus { IsCompleted = false, CanBePerformed = true };
         }
 
         private void InitializeData()
@@ -196,7 +186,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var setupStatus = await this.setupStatusService.GetAsync();
+                var setupStatus = await this.setupStatusWebService.GetAsync();
 
                 foreach (var menuItem in this.installatorItems)
                 {

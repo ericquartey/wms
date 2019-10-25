@@ -1,7 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
-using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -11,7 +10,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisStartState : InverterStateBase
+    internal sealed class CalibrateAxisStartState : InverterStateBase
     {
         #region Fields
 
@@ -47,7 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.ParentStateMachine.EnqueueCommandMessage(
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
-                    (short)InverterParameterId.SetOperatingModeParam,
+                    (short)InverterParameterId.SetOperatingMode,
                     this.InverterStatus.OperatingMode));
 
             this.ParentStateMachine.PublishNotificationEvent(
@@ -67,12 +66,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             this.Logger.LogDebug("1:Calibrate Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new CalibrateAxisStopState(
+                new CalibrateAxisDisableOperationState(
                     this.ParentStateMachine,
                     this.axisToCalibrate,
                     this.calibration,
                     this.InverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -86,10 +86,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (message.ParameterId == InverterParameterId.SetOperatingModeParam)
+                if (message.ParameterId == InverterParameterId.SetOperatingMode)
                 {
-                    // TODO: disable EnableOperation and enable SetParameters
-                    //this.ParentStateMachine.ChangeState(new CalibrateAxisEnableOperationState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                     this.ParentStateMachine.ChangeState(
                         new CalibrateAxisSetParametersState(
                             this.ParentStateMachine,

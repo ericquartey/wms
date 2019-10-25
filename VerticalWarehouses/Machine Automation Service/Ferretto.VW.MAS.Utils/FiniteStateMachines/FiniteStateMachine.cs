@@ -3,16 +3,18 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
+// ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
-namespace Ferretto.VW.MAS.Utils
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
     public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
@@ -21,15 +23,13 @@ namespace Ferretto.VW.MAS.Utils
 
         private readonly CommandEvent commandEvent;
 
-        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue = new BlockingConcurrentQueue<CommandMessage>();
+        private readonly BlockingConcurrentQueue<CommandMessage> commandQueue =
+            new BlockingConcurrentQueue<CommandMessage>();
 
         private readonly NotificationEvent notificationEvent;
 
-        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue = new BlockingConcurrentQueue<NotificationMessage>();
-
-        private readonly BayNumber requestingBay;
-
-        private readonly IServiceScope serviceScope;
+        private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue =
+            new BlockingConcurrentQueue<NotificationMessage>();
 
         private IState activeState;
 
@@ -48,44 +48,36 @@ namespace Ferretto.VW.MAS.Utils
 
         private Thread notificationsDequeuingThread;
 
+        private BayNumber requestingBay;
+
+        private IServiceProvider serviceProvider;
+
         #endregion
 
         #region Constructors
 
         protected FiniteStateMachine(
-            BayNumber requestingBay,
-            IEventAggregator eventAggregator,
-            ILogger<StateBase> logger,
-            IServiceScopeFactory serviceScopeFactory)
+        IEventAggregator eventAggregator,
+        ILogger<StateBase> logger)
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
+            this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
+            this.InstanceId = Guid.NewGuid();
 
-            this.Logger = logger;
-
-            this.requestingBay = requestingBay;
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
-            this.serviceScope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
 
         #region Events
 
-        public event EventHandler Completed;
+        public event EventHandler<FiniteStateMachinesEventArgs> Completed;
 
         #endregion
 
@@ -100,6 +92,14 @@ namespace Ferretto.VW.MAS.Utils
                 {
                     this.activeState?.Exit();
 
+                    if (this.activeState is IProgressMessageState progressMessageState)
+                    {
+                        if (progressMessageState.Message != null)
+                        {
+                            this.notificationEvent.Publish(progressMessageState.Message);
+                        }
+                    }
+
                     if (this.activeState is IDisposable disposable)
                     {
                         disposable.Dispose();
@@ -107,18 +107,54 @@ namespace Ferretto.VW.MAS.Utils
 
                     this.activeState = value;
 
-                    this.activeState.Enter(this.StartData);
+                    try
+                    {
+                        this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
+                    }
+                    catch (StateMachineException ex)
+                    {
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        this.RaiseCompleted(eventArgs);
+                    }
+
+                    if (this.activeState is IStartMessageState startMessageState)
+                    {
+                        this.notificationEvent.Publish(startMessageState.Message);
+                    }
+                }
+
+                // These code lines MUST be the last in the Setter
+                if (this.activeState is IEndState endState && endState.IsCompleted)
+                {
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    this.RaiseCompleted(eventArgs);
                 }
             }
         }
 
-        protected ILogger<StateBase> Logger { get; }
+        public Guid InstanceId { get; }
 
-        protected IMessageData StartData { get; private set; }
+        public IFiniteStateMachineData MachineData { get; protected set; }
+
+        public CommandMessage StartData { get; private set; }
+
+        protected ILogger<StateBase> Logger { get; }
 
         #endregion
 
         #region Methods
+
+        public void Abort()
+        {
+            this.activeState = this.OnAbort();
+        }
+
+        public virtual bool AllowMultipleInstances(CommandMessage command)
+        {
+            return true;
+        }
 
         /// <summary>
         /// This code added is to correctly implement the disposable pattern.
@@ -133,41 +169,61 @@ namespace Ferretto.VW.MAS.Utils
                 this.notificationEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken = null;
 
-                this.serviceScope.Dispose();
-
                 this.OnDisposing();
 
                 this.isDisposed = true;
             }
         }
 
-        public void Start(IMessageData data, CancellationToken cancellationToken)
+        public void Pause()
+        {
+            this.activeState = this.OnPause();
+        }
+
+        public void Resume()
+        {
+            this.ActiveState = this.OnResume();
+        }
+
+        public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             if (this.isStarted)
             {
                 throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
 
-            this.isStarted = true;
-
-            this.StartData = data;
-
-            this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
+            if (this.OnStart(commandMessage, cancellationToken))
             {
-                Name = $"FSM Commands {this.GetType().Name}",
-            };
+                this.isStarted = true;
 
-            this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
-            {
-                Name = $"FSM Notifications {this.GetType().Name}",
-            };
+                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.commandsDequeuingThread.Start(cancellationToken);
-            this.notificationsDequeuingThread.Start(cancellationToken);
+                this.StartData = commandMessage;
 
-            this.InitializeSubscriptions();
+                this.requestingBay = commandMessage.RequestingBay;
 
-            this.ActiveState = this.GetState<TStartState>();
+                this.commandsDequeuingThread = new Thread(this.DequeueCommands)
+                {
+                    Name = $"MM Commands {this.GetType().Name}",
+                };
+
+                this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
+                {
+                    Name = $"MM Notifications {this.GetType().Name}",
+                };
+
+                this.commandsDequeuingThread.Start(cancellationToken);
+                this.notificationsDequeuingThread.Start(cancellationToken);
+
+                this.InitializeSubscriptions();
+
+                this.ActiveState = this.GetState<TStartState>();
+            }
+        }
+
+        public void Stop(StopRequestReason reason)
+        {
+            this.ActiveState = this.OnStop(reason);
         }
 
         protected abstract bool FilterCommand(CommandMessage command);
@@ -177,12 +233,17 @@ namespace Ferretto.VW.MAS.Utils
         protected IState GetState<TState>()
             where TState : IState
         {
-            return this.serviceScope.ServiceProvider.GetRequiredService<TStartState>();
+            return this.serviceProvider.GetRequiredService<TState>();
+        }
+
+        protected virtual IState OnAbort()
+        {
+            return this.ActiveState.Abort();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType()}: received command {command.Type}, {command.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type}, {command.Description}");
 
             return this.ActiveState;
         }
@@ -195,14 +256,34 @@ namespace Ferretto.VW.MAS.Utils
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
         {
-            this.Logger.LogDebug($"{this.GetType()}: received notification {notification.Type}, {notification.Description}");
+            this.Logger.LogTrace($"{this.GetType().Name}: received notification {notification.Type}, {notification.Description}");
 
             return this.ActiveState;
         }
 
-        protected void RaiseCompleted()
+        protected virtual IState OnPause()
         {
-            this.Completed?.Invoke(this, null);
+            return this.ActiveState.Pause();
+        }
+
+        protected virtual IState OnResume()
+        {
+            return this.ActiveState.Resume();
+        }
+
+        protected virtual bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
+        {
+            return true;
+        }
+
+        protected virtual IState OnStop(StopRequestReason reason)
+        {
+            return this.ActiveState.Stop(reason);
+        }
+
+        protected void RaiseCompleted(FiniteStateMachinesEventArgs eventArgs)
+        {
+            this.Completed?.Invoke(this, eventArgs);
         }
 
         private void DequeueCommands(object cancellationTokenObject)
@@ -232,7 +313,7 @@ namespace Ferretto.VW.MAS.Utils
                     return;
                 }
             }
-            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void DequeueNotifications(object cancellationTokenObject)
@@ -262,7 +343,7 @@ namespace Ferretto.VW.MAS.Utils
                     return;
                 }
             }
-            while (cancellationToken == null || !cancellationToken.IsCancellationRequested);
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void InitializeSubscriptions()
@@ -272,14 +353,14 @@ namespace Ferretto.VW.MAS.Utils
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
                     false,
-                    command => this.FilterCommand(command));
+                    this.FilterCommand);
 
             this.notificationEventSubscriptionToken = this.notificationEvent
                 .Subscribe(
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,
                     false,
-                    notification => this.FilterNotification(notification));
+                    this.FilterNotification);
         }
 
         private void NotifyError(Exception ex)
@@ -290,9 +371,9 @@ namespace Ferretto.VW.MAS.Utils
                 new FsmExceptionMessageData(ex, string.Empty, 0),
                 "FSM Error",
                 MessageActor.Any,
-                MessageActor.MissionsManager,
+                MessageActor.MachineManager,
                 MessageType.FsmException,
-                BayNumber.None,
+                this.requestingBay,
                 BayNumber.None,
                 MessageStatus.OperationError,
                 ErrorLevel.Critical);

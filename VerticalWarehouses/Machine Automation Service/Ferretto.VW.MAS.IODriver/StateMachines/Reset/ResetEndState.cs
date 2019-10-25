@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -8,7 +7,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 {
-    public class ResetEndState : IoStateBase
+    internal sealed class ResetEndState : IoStateBase
     {
         #region Fields
 
@@ -47,7 +46,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
                 var endNotification = new FieldNotificationMessage(
                     null,
                     "IO Reset complete",
-                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
                     MessageStatus.OperationEnd,
@@ -63,14 +62,14 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}");
 
-            //TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
+            // TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
             if (this.status.MatchOutputs(message.Outputs))
             {
                 this.Logger.LogTrace("End State State ProcessMessage Notification Event");
                 var endNotification = new FieldNotificationMessage(
                     null,
                     "IO Reset complete",
-                    FieldMessageActor.Any,
+                    FieldMessageActor.IoDriver,
                     FieldMessageActor.IoDriver,
                     FieldMessageType.IoReset,
                     MessageStatus.OperationEnd,
@@ -84,16 +83,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         public override void Start()
         {
-            var resetSecurityIoMessage = new IoWriteMessage();
+            var resetSecurityIoMessage = new IoWriteMessage { PowerEnable = true };
 
             resetSecurityIoMessage.SwitchElevatorMotor(true);
-            resetSecurityIoMessage.SwitchPowerEnable(true);
 
             this.Logger.LogTrace($"1:Switch elevator MotorON IO={resetSecurityIoMessage}");
             lock (this.status)
             {
                 this.status.UpdateOutputStates(resetSecurityIoMessage.Outputs);
             }
+
             this.ParentStateMachine.EnqueueMessage(resetSecurityIoMessage);
         }
 

@@ -1,13 +1,14 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
-namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
+namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
     public interface IInstallationHub
     {
         #region Methods
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
+
+        Task ChangeRunningState(IBaseNotificationMessageUI message);
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs.Interfaces
         Task MachineStateActiveNotify(IBaseNotificationMessageUI message);
 
         Task MachineStatusActiveNotify(IBaseNotificationMessageUI message);
+
+        Task MoveLoadingUnit(IBaseNotificationMessageUI message);
 
         Task PositioningNotify(IBaseNotificationMessageUI message);
 

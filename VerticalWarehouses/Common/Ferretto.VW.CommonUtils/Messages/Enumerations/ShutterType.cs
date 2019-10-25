@@ -6,6 +6,6 @@
 
         TwoSensors = 1,
 
-        ThreeSensors = 2
+        ThreeSensors = 2,
     }
 }

@@ -6,8 +6,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 {
     public class StopMessageData : IStopMessageData
     {
-
-
         #region Constructors
 
         public StopMessageData(StopRequestReason stopReason, MessageVerbosity verbosity = MessageVerbosity.Debug)
@@ -18,8 +16,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         #endregion
 
-
-
         #region Properties
 
         public StopRequestReason StopReason { get; }
@@ -27,8 +23,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; }
 
         #endregion
-
-
 
         #region Methods
 

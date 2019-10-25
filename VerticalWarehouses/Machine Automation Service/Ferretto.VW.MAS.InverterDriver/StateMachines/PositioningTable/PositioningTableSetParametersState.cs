@@ -5,6 +5,42 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 {
+    /// <summary>
+    /// Sequence of transmission of parameters:
+    /// 1) Set table index: 33 (par. 1200)
+    /// 2) Set target position: TotalDistance (par. 1202) (*)
+    /// 3) Set Direction: (par 1261)
+    /// 4) Set table index: 50 (par. 1200) (*)
+    /// 5) Set target Speed[0]: (par. 1203) (*)
+    /// 6) Set Acceleration[0]: (par. 1204) (*)
+    /// 7) Set Deceleration[0]: (par. 1206) (*)
+    /// 8) Set table index: 51 (*)
+    /// 9) Set target Speed[1]: (par. 1203) (*)
+    /// 10)Set Acceleration[1]: (par. 1204) (*)
+    /// 11)Set Deceleration[1]: (par. 1206) (*)
+    /// 12)Set table index: 52 (*)
+    /// 13)Set target Speed[2]: (par. 1203) (*)
+    /// 14)Set Acceleration[2]: (par. 1204) (*)
+    /// 15)Set Deceleration[2]: (par. 1206) (*)
+    /// 16)Set table index: 53 (*)
+    /// 17)Set target Speed[3]: (par. 1203) (*)
+    /// 18)Set Acceleration[3]: (par. 1204) (*)
+    /// 19)Set Deceleration[3]: (par. 1206) (*)
+    /// 20)Set table index: 54 (*)
+    /// 30)Set target Speed[4]: (par. 1203) (*)
+    /// 31)Set Acceleration[4]: (par. 1204) (*)
+    /// 32)Set Deceleration[4]: (par. 1206) (*)
+    /// 33)Set table index: 56 (*)
+    /// 34)Set Switch Position[0]: (par. 1202) (*)
+    /// 35)Set table index: 57 (*)
+    /// 36)Set Switch Position[1]: (par. 1202) (*)
+    /// 37)Set table index: 58 (*)
+    /// 38)Set Switch Position[2]: (par. 1202) (*)
+    /// 39)Set table index: 59 (*)
+    /// 40)Set Switch Position[3]: (par. 1202) (*)
+    ///
+    /// (*) parameters are transmitted only when changed
+    /// </summary>
     internal class PositioningTableSetParametersState : InverterStateBase
     {
         #region Fields
@@ -62,10 +98,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.Logger.LogDebug("1:Positioning Stop requested");
 
             this.ParentStateMachine.ChangeState(
-                new PositioningTableStopState(
+                new PositioningTableDisableOperationState(
                     this.ParentStateMachine,
                     this.InverterStatus as IPositioningInverterStatus,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc />
@@ -212,7 +249,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else
             {
                 this.ParentStateMachine.ChangeState(
-                    new PositioningTableEnableOperationState(
+                    new PositioningTableWaitState(
                         this.ParentStateMachine,
                         this.data,
                         this.InverterStatus as IPositioningInverterStatus,
@@ -237,7 +274,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             while (++step < this.data.SwitchPosition.Length)
             {
-                for (int iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
+                for (var iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
                 {
                     if (this.data.TargetSpeed[iStep] != (this.dataOld?.TargetSpeed[iStep] ?? 0) ||
                         this.data.TargetAcceleration[iStep] != (this.dataOld?.TargetAcceleration[iStep] ?? 0)

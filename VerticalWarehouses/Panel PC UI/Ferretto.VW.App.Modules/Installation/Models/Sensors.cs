@@ -193,25 +193,15 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         private bool lUPresentMiddleBottomBay3;
 
-        private bool microCarterLeftSideBay1;
+        private bool microCarterLeftSide;
 
-        private bool microCarterLeftSideBay2;
-
-        private bool microCarterLeftSideBay3;
-
-        private bool microCarterRightSideBay1;
-
-        private bool microCarterRightSideBay2;
-
-        private bool microCarterRightSideBay3;
+        private bool microCarterRightSide;
 
         private bool mushroomEmergencyButtonBay1;
 
         private bool mushroomEmergencyButtonBay2;
 
         private bool mushroomEmergencyButtonBay3;
-
-        private bool runningState;
 
         private bool powerOnOff;
 
@@ -220,6 +210,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         private bool robotOptionBay2;
 
         private bool robotOptionBay3;
+
+        private bool runningState;
 
         private bool trolleyOptionBay1;
 
@@ -423,25 +415,15 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
         public bool LUPresentMiddleBottomBay3 { get => this.lUPresentMiddleBottomBay3; set => this.SetProperty(ref this.lUPresentMiddleBottomBay3, value); }
 
-        public bool MicroCarterLeftSideBay1 { get => this.microCarterLeftSideBay1; set => this.SetProperty(ref this.microCarterLeftSideBay1, value); }
+        public bool MicroCarterLeftSide { get => this.microCarterLeftSide; set => this.SetProperty(ref this.microCarterLeftSide, value); }
 
-        public bool MicroCarterLeftSideBay2 { get => this.microCarterLeftSideBay2; set => this.SetProperty(ref this.microCarterLeftSideBay2, value); }
-
-        public bool MicroCarterLeftSideBay3 { get => this.microCarterLeftSideBay3; set => this.SetProperty(ref this.microCarterLeftSideBay3, value); }
-
-        public bool MicroCarterRightSideBay1 { get => this.microCarterRightSideBay1; set => this.SetProperty(ref this.microCarterRightSideBay1, value); }
-
-        public bool MicroCarterRightSideBay2 { get => this.microCarterRightSideBay2; set => this.SetProperty(ref this.microCarterRightSideBay2, value); }
-
-        public bool MicroCarterRightSideBay3 { get => this.microCarterRightSideBay3; set => this.SetProperty(ref this.microCarterRightSideBay3, value); }
+        public bool MicroCarterRightSide { get => this.microCarterRightSide; set => this.SetProperty(ref this.microCarterRightSide, value); }
 
         public bool MushroomEmergencyButtonBay1 { get => this.mushroomEmergencyButtonBay1; set => this.SetProperty(ref this.mushroomEmergencyButtonBay1, value); }
 
         public bool MushroomEmergencyButtonBay2 { get => this.mushroomEmergencyButtonBay2; set => this.SetProperty(ref this.mushroomEmergencyButtonBay2, value); }
 
         public bool MushroomEmergencyButtonBay3 { get => this.mushroomEmergencyButtonBay3; set => this.SetProperty(ref this.mushroomEmergencyButtonBay3, value); }
-
-        public bool RunningState { get => this.runningState; set => this.SetProperty(ref this.runningState, value); }
 
         public bool PowerOnOff { get => this.powerOnOff; set => this.SetProperty(ref this.powerOnOff, value); }
 
@@ -450,6 +432,8 @@ namespace Ferretto.VW.App.Modules.Installation.Models
         public bool RobotOptionBay2 { get => this.robotOptionBay2; set => this.SetProperty(ref this.robotOptionBay2, value); }
 
         public bool RobotOptionBay3 { get => this.robotOptionBay3; set => this.SetProperty(ref this.robotOptionBay3, value); }
+
+        public bool RunningState { get => this.runningState; set => this.SetProperty(ref this.runningState, value); }
 
         public bool TrolleyOptionBay1 { get => this.trolleyOptionBay1; set => this.SetProperty(ref this.trolleyOptionBay1, value); }
 

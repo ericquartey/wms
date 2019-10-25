@@ -6,39 +6,14 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.IoDevices
 {
-    public partial class IoDevice
+    internal partial class IoDevice
     {
-
-
         #region Methods
 
-        private bool[] ByteArrayToBoolArray(byte b)
-        {
-            const int N_BITS8 = 8;
-            var t = new BitArray(new byte[] { b });
-            var bits = new bool[N_BITS8];
-            t.CopyTo(bits, 0);
-            return bits;
-        }
-
-        private bool IsHeaderValid(byte header)
-        {
-            return (header == 3 || header == 15 || header == 26);
-        }
-
-        private bool IsMessageLengthValid(byte firmwareVersion, byte length)
-        {
-            return (firmwareVersion == 0x10 && !(length == 15 || length == 3))    // length is not valid for old release
-                || (firmwareVersion == 0x11 && !(length == 26 || length == 3));
-        }
-
-        /// <summary>
-        /// Parsing the incoming telegram from the SHDRemoteIO device.
-        /// </summary>
         public void ParsingDataBytes(byte[] telegram, out int nBytesReceived, out ShdFormatDataOperation formatDataOperation, out byte fwRelease, ref bool[] inputs, ref bool[] outputs, out byte[] configurationData, out byte errorCode)
         {
             const int N_BYTES8 = 8;
@@ -176,17 +151,39 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             {
                 var errorNotification = new FieldNotificationMessage(
                     null,
-                        $"Exception {ex.Message} while parsing received IO raw message bytes",
-                        FieldMessageActor.Any,
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageType.InverterException,
-                        MessageStatus.OperationError,
-                        (byte)this.deviceIndex,
-                        ErrorLevel.Critical);
+                    $"Exception {ex.Message} while parsing received IO raw message bytes",
+                    FieldMessageActor.Any,
+                    FieldMessageActor.InverterDriver,
+                    FieldMessageType.InverterException,
+                    MessageStatus.OperationError,
+                    (byte)this.deviceIndex,
+                    ErrorLevel.Critical);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                 throw new IoDriverException($"Exception: {ex.Message} ParsingDataBytes error", IoDriverExceptionCode.CreationFailure, ex);
             }
+        }
+
+        private bool[] ByteArrayToBoolArray(byte b)
+        {
+            const int N_BITS8 = 8;
+            var t = new BitArray(new byte[] { b });
+            var bits = new bool[N_BITS8];
+            t.CopyTo(bits, 0);
+            return bits;
+        }
+
+        private bool IsHeaderValid(byte header)
+        {
+            return header == 3 || header == 15 || header == 26;
+        }
+
+        private bool IsMessageLengthValid(byte firmwareVersion, byte length)
+        {
+            return
+                (firmwareVersion == 0x10 && !(length == 15 || length == 3)) // length is not valid for old release
+                ||
+                (firmwareVersion == 0x11 && !(length == 26 || length == 3));
         }
 
         #endregion

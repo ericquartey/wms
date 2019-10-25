@@ -3,12 +3,11 @@ using System.Linq;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.ViewModels
 {
-    public class BasePresentationViewModel : BaseNavigationViewModel
+    internal class BasePresentationViewModel : BaseNavigationViewModel
     {
         #region Fields
 
@@ -31,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.notificationEvent = this.EventAggregator.GetEvent<PresentationChangedPubSubEvent>();
 
             this.presentationEventSubscription = this.notificationEvent.Subscribe(
-                notificationMessage => this.PresentationChanged(notificationMessage),
+                this.OnPresentationChanged,
                 ThreadOption.UIThread,
                 false);
 
@@ -75,8 +74,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             // do nothing
         }
 
-        public void PresentationChanged(PresentationChangedMessage presentation)
+        public void OnPresentationChanged(PresentationChangedMessage presentation)
         {
+            if (presentation is null)
+            {
+                throw new System.ArgumentNullException(nameof(presentation));
+            }
+
             this.UpdatePresentation(presentation.Mode);
 
             this.UpdateChanges(presentation);
@@ -103,26 +107,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public virtual void UpdatePresentation(PresentationMode mode)
         {
-            if (this.CurrentPresentation == PresentationMode.None ||
-                this.CurrentPresentation == mode)
-            {
-                return;
-            }
-
-            switch (mode)
-            {
-                case PresentationMode.Login:
-                    break;
-
-                case PresentationMode.Installer:
-                    break;
-
-                case PresentationMode.Operator:
-                    break;
-
-                case PresentationMode.None:
-                    break;
-            }
+            // do nothing
         }
 
         #endregion

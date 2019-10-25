@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.IODriver.StateMachines.Template.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 {
-    public class TemplateErrorState : IoStateBase
+    internal sealed class TemplateErrorState : IoStateBase
     {
         #region Fields
 
@@ -42,13 +41,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         public override void ProcessMessage(IoMessage message)
         {
-            //INFO This method should never be used in an error state
+            // INFO This method should never be used in an error state
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            //INFO This method should never be used in an error state
+            // INFO This method should never be used in an error state
             this.Logger.LogTrace($"1:Message processed: {message}");
         }
 

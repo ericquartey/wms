@@ -1,12 +1,10 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
-// ReSharper disable ArrangeThisQualifier
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 {
-    public class SetConfigurationStartState : IoStateBase
+    internal sealed class SetConfigurationStartState : IoStateBase
     {
         #region Fields
 
@@ -59,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
                 this.status.SetupOutputLines,
                 this.status.DebounceInput);
 
-            this.Logger.LogDebug($"1: ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
+            this.Logger.LogDebug($"1:ConfigurationMessage [comTout={this.status.ComunicationTimeOut}]");
 
             this.ParentStateMachine.EnqueueMessage(message);
         }

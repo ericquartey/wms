@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         {
             this.InverterStatus.CommonControlWord.SwitchOn = true;
 
-            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, this.InverterStatus.CommonControlWord.Value);
+            var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, this.InverterStatus.CommonControlWord.Value);
 
             this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -36,8 +36,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         /// <inheritdoc />
         public override void Stop()
         {
-            this.Logger.LogTrace("1:Method Start");
-            //TEMP Add your implementation code here
+            this.Logger.LogDebug("1:Power On Stop requested");
+
+            this.ParentStateMachine.ChangeState(
+                new PowerOnEndState(
+                    this.ParentStateMachine,
+                    this.InverterStatus,
+                    this.Logger));
         }
 
         /// <inheritdoc />
@@ -50,7 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override bool ValidateCommandResponse(InverterMessage message)
         {
-            var returnValue = false;
+            var responseReceived = false;
 
             if (message.IsError)
             {
@@ -63,10 +68,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                 if (this.InverterStatus.CommonStatusWord.IsSwitchedOn)
                 {
                     this.ParentStateMachine.ChangeState(new PowerOnEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
-                    returnValue = true;
+
+                    responseReceived = true;
                 }
             }
-            return returnValue;
+
+            return responseReceived;
         }
 
         #endregion

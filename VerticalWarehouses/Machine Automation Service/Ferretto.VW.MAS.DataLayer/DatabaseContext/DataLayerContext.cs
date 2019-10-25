@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         #region Properties
 
+        public DbSet<BayPosition> BayPositions { get; set; }
+
         public DbSet<Bay> Bays { get; set; }
 
         public DbSet<Carousel> Carousels { get; set; }
@@ -40,8 +42,6 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<CellPanel> CellPanels { get; set; }
 
         public DbSet<Cell> Cells { get; set; }
-
-        public DbSet<ConfigurationValue> ConfigurationValues { get; set; }
 
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
         public DbSet<ErrorDefinition> ErrorDefinitions { get; set; }
 
-        public DbSet<Error> Errors { get; set; }
+        public DbSet<MachineError> Errors { get; set; }
 
         public DbSet<ErrorStatistic> ErrorStatistics { get; set; }
 
@@ -72,6 +72,10 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public DbSet<MovementProfile> MovementProfiles { get; set; }
 
         public DbSet<ServicingInfo> ServicingInfo { get; set; }
+
+        public DbSet<SetupProcedure> SetupProcedures { get; set; }
+
+        public DbSet<SetupProceduresSet> SetupProceduresSets { get; set; }
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
@@ -126,9 +130,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
 
             modelBuilder
                 .ApplyConfiguration(new BaysConfiguration())
+                .ApplyConfiguration(new BayPositionsConfiguration())
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
-                .ApplyConfiguration(new ConfigurationValuesConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())

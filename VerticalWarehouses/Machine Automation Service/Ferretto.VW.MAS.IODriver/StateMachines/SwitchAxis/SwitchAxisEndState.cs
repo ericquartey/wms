@@ -1,6 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 {
-    public class SwitchAxisEndState : IoStateBase
+    internal sealed class SwitchAxisEndState : IoStateBase
     {
         #region Fields
 
@@ -58,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             var endNotification = new FieldNotificationMessage(
                 messageData,
                 "Motor Switch complete",
-                FieldMessageActor.Any,
+                FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
                 FieldMessageType.SwitchAxis,
                 MessageStatus.OperationEnd,

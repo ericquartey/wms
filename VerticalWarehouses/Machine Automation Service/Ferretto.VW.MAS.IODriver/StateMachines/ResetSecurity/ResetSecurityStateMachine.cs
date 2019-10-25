@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -8,13 +7,15 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 {
-    public class ResetSecurityStateMachine : IoStateMachineBase
+    internal sealed class ResetSecurityStateMachine : IoStateMachineBase
     {
         #region Fields
 
-        private const int PULSE_INTERVAL = 350;
+        private const int PulseInterval = 350;
 
         private readonly IoIndex index;
+
+        private readonly IoStatus mainIoDevice;
 
         private readonly IoStatus status;
 
@@ -31,16 +32,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
         public ResetSecurityStateMachine(
             BlockingConcurrentQueue<IoWriteMessage> ioCommandQueue,
             IoStatus status,
+            IoStatus mainIoDevice,
             IoIndex index,
             IEventAggregator eventAggregator,
             ILogger logger)
-            : base(eventAggregator, logger)
+            : base(eventAggregator, logger, ioCommandQueue)
         {
-            this.IoCommandQueue = ioCommandQueue;
-            this.status = status;
-            this.index = index;
+            this.status = status ?? throw new System.ArgumentNullException(nameof(status));
+            this.mainIoDevice = mainIoDevice ?? throw new System.ArgumentNullException(nameof(mainIoDevice));
 
-            logger.LogTrace("1:Method Start");
+            this.index = index;
         }
 
         #endregion
@@ -53,7 +54,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
             if (message.ValidOutputs && message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
             }
 
             base.ProcessMessage(message);
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
             if (this.CurrentState is ResetSecurityStartState && checkMessage && !this.pulseOneTime)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, -1);    //VALUE -1 period means timer does not fire multiple times
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 
@@ -78,8 +79,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
         public override void Start()
         {
             this.pulseOneTime = false;
-            this.CurrentState = new ResetSecurityStartState(this, this.status, this.index, this.Logger);
-            this.CurrentState?.Start();
+            this.ChangeState(new ResetSecurityStartState(this, this.status, this.mainIoDevice, this.index, this.Logger));
         }
 
         protected override void Dispose(bool disposing)
@@ -106,9 +106,11 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         private void DelayElapsed(object state)
         {
-            var pulseIoMessage = new IoWriteMessage();
-            pulseIoMessage.SwitchResetSecurity(false);
-            pulseIoMessage.SwitchPowerEnable(true);
+            var pulseIoMessage = new IoWriteMessage
+            {
+                ResetSecurity = false,
+                PowerEnable = true,
+            };
 
             this.Logger.LogTrace($"1:Pulse IO={pulseIoMessage}");
             this.status.UpdateOutputStates(pulseIoMessage.Outputs);

@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Microsoft.Extensions.Logging;
 
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
-    partial class AutomationService
+    public partial class AutomationService
     {
         #region Methods
 
@@ -90,19 +92,22 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.OnDataLayerReady();
                     break;
 
-                case MessageType.FaultStateChanged:
-                case MessageType.RunningStateChanged:
-                    this.OnMachineRunningStatusChange(receivedMessage);
+                case MessageType.ChangeRunningState:
+                    this.OnChangeRunningState(receivedMessage);
+                    break;
+
+                case MessageType.MoveLoadingUnit:
+                    this.OnMoveLoadingUnit(receivedMessage);
+
                     break;
             }
-
-            this.currentStateMachine?.ProcessNotificationMessage(receivedMessage);
         }
 
         private void OnDataLayerException(NotificationMessage receivedMessage)
         {
             if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
             {
+                this.Logger.LogCritical(receivedMessage.Description);
                 this.applicationLifetime.StopApplication();
             }
         }

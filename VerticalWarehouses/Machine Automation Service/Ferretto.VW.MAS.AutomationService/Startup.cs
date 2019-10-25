@@ -1,13 +1,13 @@
 ﻿using System.Globalization;
+using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
 using Ferretto.VW.MAS.AutomationService.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Provider;
 using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.FiniteStateMachines;
-using Ferretto.VW.MAS.InverterDriver;
+using Ferretto.VW.MAS.DeviceManager.Extensions;
 using Ferretto.VW.MAS.InverterDriver.Extensions;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.MissionsManager;
+using Ferretto.VW.MAS.MachineManager.Extensions;
+using Ferretto.VW.MAS.MissionManager.Extensions;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -15,7 +15,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
@@ -72,8 +71,11 @@ namespace Ferretto.VW.MAS.AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
-            app.UseOpenApi();
-            app.UseSwaggerUi3();
+            SwaggerBuilderExtensions.UseSwagger(app);
+            app.UseSwaggerUI(config =>
+            {
+                config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+            });
 
             if (this.Configuration.IsWmsEnabled())
             {
@@ -105,12 +107,13 @@ namespace Ferretto.VW.MAS.AutomationService
               .AddMvc(options =>
               {
                   options.Filters.Add(typeof(ReadinessFilter));
-                  options.Filters.Add(typeof(BayNumberFilter));
+                  options.Filters.Add(typeof(BayNumberActionFilter));
                   options.Filters.Add(typeof(ExceptionsFilter));
                   options.Conventions.Add(
                       new RouteTokenTransformerConvention(
                         new SlugifyParameterTransformer()));
               })
+              .AddJsonOptions(options => options.SerializerSettings.Converters.Add(new IPAddressConverter()))
               .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddSignalR();
@@ -120,13 +123,16 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddCheck<LivelinessHealthCheck>("liveliness-check", null, tags: new[] { LiveHealthCheckTag })
                 .AddCheck<ReadinessHealthCheck>("readiness-check", null, tags: new[] { ReadyHealthCheckTag });
 
-            services.AddSwaggerDocument(c => c.Title = "Machine Automation Web API");
-
-            services.AddApiVersioning(o =>
+            services.AddSwaggerGen(config =>
             {
-                o.DefaultApiVersion = new ApiVersion(1, 0);
-                o.AssumeDefaultVersionWhenUnspecified = true;
-                o.ApiVersionReader = new MediaTypeApiVersionReader(); // read the version number from the accept header
+                config.SwaggerDoc(
+                    "v1",
+                    new Swashbuckle.AspNetCore.Swagger.Info
+                    {
+                        Title = "Machine Automation Web API",
+                        Version = "v1",
+                    });
+                config.OperationFilter<BayNumberOperationFilter>();
             });
 
             services.AddSingleton<IEventAggregator, EventAggregator>();
@@ -149,7 +155,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddIODriver()
                 .AddInverterDriver()
                 .AddFiniteStateMachines()
-                .AddMissionsManager();
+                .AddMachineManager()
+                .AddMissionManager();
 
             services.AddHostedService<AutomationService>();
 

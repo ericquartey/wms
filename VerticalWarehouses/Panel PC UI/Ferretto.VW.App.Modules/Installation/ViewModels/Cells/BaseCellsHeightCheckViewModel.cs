@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.CommonUtils;
-using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public abstract class BaseCellsHeightCheckViewModel : BaseMainViewModel
+    internal abstract class BaseCellsHeightCheckViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -33,22 +33,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public BaseCellsHeightCheckViewModel(
-            IMachineCellsService machineCellsService,
-            IMachineElevatorService machineElevatorService)
+            IMachineCellsWebService machineCellsWebService,
+            IMachineElevatorWebService machineElevatorWebService)
             : base(Services.PresentationMode.Installer)
         {
-            if (machineCellsService is null)
-            {
-                throw new ArgumentNullException(nameof(machineCellsService));
-            }
-
-            if (machineElevatorService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorService));
-            }
-
-            this.MachineCellsService = machineCellsService;
-            this.MachineElevatorService = machineElevatorService;
+            this.MachineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
 
             this.InitializeNavigationMenu();
         }
@@ -106,9 +96,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected IMachineCellsService MachineCellsService { get; }
+        protected IMachineCellsWebService MachineCellsWebService { get; }
 
-        protected IMachineElevatorService MachineElevatorService { get; }
+        protected IMachineElevatorWebService MachineElevatorWebService { get; }
+
+        protected PositioningProcedure ProcedureParameters { get; private set; }
 
         #endregion
 
@@ -118,30 +110,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            if (this.subscriptionToken != null)
-            {
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
+            /*
+             * Avoid unsubscribing in case of navigation to error page.
+             * We may need to review this behaviour.
+             *
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+            */
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.EventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Subscribe(
-                    message => this.OnCurrentPositionChanged(message),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnCurrentPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.CurrentPosition != null);
 
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveCellsAsync();
+
+            await this.RetrieveProcedureParametersAsync();
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -155,7 +151,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentPosition = message?.Data?.CurrentPosition;
+            this.CurrentPosition = message.Data.CurrentPosition;
         }
 
         protected abstract void RaiseCanExecuteChanged();
@@ -181,7 +177,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.Cells = await this.MachineCellsService.GetAllAsync();
+                this.Cells = await this.MachineCellsWebService.GetAllAsync();
             }
             catch (Exception ex)
             {
@@ -193,7 +189,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.CurrentPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
+                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.ProcedureParameters = await this.MachineCellsWebService.GetHeightCheckProcedureParametersAsync();
             }
             catch (Exception ex)
             {

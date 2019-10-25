@@ -1,10 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Exceptions;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,20 +12,27 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly IDictionary<Orientation, ElevatorAxis> cachedAxes = new Dictionary<Orientation, ElevatorAxis>();
+        private static readonly MemoryCacheEntryOptions CacheOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(1));
+
+        private readonly IMemoryCache cache;
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ISetupStatusProvider setupStatusProvider;
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
 
         #region Constructors
 
-        public ElevatorDataProvider(DataLayerContext dataContext, ISetupStatusProvider setupStatusProvider)
+        public ElevatorDataProvider(
+            DataLayerContext dataContext,
+            IMemoryCache memoryCache,
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
+            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -34,148 +41,147 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public ElevatorAxis GetAxis(Orientation orientation)
         {
-            if (!this.cachedAxes.ContainsKey(orientation))
+            lock (this.dataContext)
             {
-                var axis = this.dataContext.ElevatorAxes
-                    .Include(a => a.Profiles)
-                    .ThenInclude(p => p.Steps)
-                    .Include(a => a.MaximumLoadMovement)
-                    .Include(a => a.EmptyLoadMovement)
-                    .SingleOrDefault(a => a.Orientation == orientation);
-
-                if (axis is null)
+                var cacheKey = GetAxisCacheKey(orientation);
+                if (!this.cache.TryGetValue(cacheKey, out ElevatorAxis cacheEntry))
                 {
-                    throw new EntityNotFoundException(orientation.ToString());
+                    cacheEntry = this.dataContext.ElevatorAxes
+                        .Include(a => a.Profiles)
+                        .ThenInclude(p => p.Steps)
+                        .Include(a => a.FullLoadMovement)
+                        .Include(a => a.EmptyLoadMovement)
+                        .SingleOrDefault(a => a.Orientation == orientation);
+
+                    if (cacheEntry is null)
+                    {
+                        throw new EntityNotFoundException(orientation.ToString());
+                    }
+
+                    this.cache.Set(cacheKey, cacheEntry, CacheOptions);
                 }
 
-                this.cachedAxes.Add(orientation, axis);
+                return cacheEntry;
             }
-
-            return this.cachedAxes[orientation];
         }
 
-        public int GetDepositAndPickUpCycleQuantity()
+        public IDbContextTransaction GetContextTransaction()
         {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
-
-            return horizontalAxis.TotalCycles;
+            return this.dataContext.Database.BeginTransaction();
         }
 
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
 
         public LoadingUnit GetLoadingUnitOnBoard()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.LoadingUnit)
-                .ThenInclude(l => l.Cell)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.LoadingUnit)
+                    .ThenInclude(l => l.Cell)
+                    .Single();
 
-            return elevator.LoadingUnit;
+                return elevator.LoadingUnit;
+            }
         }
 
         public ElevatorStructuralProperties GetStructuralProperties()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.StructuralProperties)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
 
-            return elevator.StructuralProperties;
+                return elevator.StructuralProperties;
+            }
         }
 
         public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
-        public void IncreaseDepositAndPickUpCycleQuantity()
+        public void IncreaseCycleQuantity(Orientation orientation)
         {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+            lock (this.dataContext)
+            {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(orientation.ToString());
+                }
 
-            horizontalAxis.TotalCycles++;
+                axis.TotalCycles++;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
         }
 
-        public void ResetDepositAndPickUpCycleQuantity()
+        public void LoadLoadingUnit(int id)
         {
-            var horizontalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Horizontal);
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext
+                    .Elevators
+                    .Include(e => e.LoadingUnit)
+                    .Single();
 
-            horizontalAxis.TotalCycles = 0;
+                elevator.LoadingUnitId = id;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
         }
 
-        public void SetLoadingUnitOnBoard(int? id)
+        public void UnloadLoadingUnit()
         {
-            var elevator = this.dataContext.Elevators
-                .Include(e => e.LoadingUnit)
-                .Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext
+                    .Elevators
+                    .Include(e => e.LoadingUnit)
+                    .Single();
 
-            elevator.LoadingUnitId = id;
+                elevator.LoadingUnitId = null;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void UpdateVerticalOffset(double newOffset)
         {
-            var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-            this.cachedAxes[Orientation.Vertical] = verticalAxis;
+            lock (this.dataContext)
+            {
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
 
-            verticalAxis.Offset = newOffset;
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
 
-            this.dataContext.ElevatorAxes.Update(verticalAxis);
+                verticalAxis.Offset = newOffset;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
 
-            this.dataContext.SaveChanges();
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
         public void UpdateVerticalResolution(decimal newResolution)
         {
-            var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-            this.cachedAxes[Orientation.Vertical] = verticalAxis;
+            lock (this.dataContext)
+            {
+                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
 
-            verticalAxis.Resolution = newResolution;
-            this.dataContext.SaveChanges();
+                var cacheKey = GetAxisCacheKey(Orientation.Vertical);
+                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
 
-            this.setupStatusProvider.CompleteVerticalResolution();
+                verticalAxis.Resolution = newResolution;
+                this.dataContext.ElevatorAxes.Update(verticalAxis);
+                this.dataContext.SaveChanges();
+
+                var procedureParameters = this.setupProceduresDataProvider.GetVerticalResolutionCalibration();
+                this.setupProceduresDataProvider.MarkAsCompleted(procedureParameters);
+            }
         }
 
-        /// <summary>
-        /// Computes the vertical position displacement due to the belt elongation, due to the given loading unit weight.
-        /// </summary>
-        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
-        /// <param name="targetPosition">The vertical position of the elevator, in millimeters.</param>
-        /// <returns>The vertical position displacement, in millimeters.</returns>
-        private double ComputeBeltElongation(double grossWeight, double targetPosition)
-        {
-            var machineHeight = this.dataContext.Machines.Single().Height;
-
-            var pulleysDistanceMeters = (machineHeight - ElevatorStructuralProperties.PulleysMargin) / 1000;
-
-            var properties = this.dataContext.ElevatorStructuralProperties.Single();
-
-            var beltSpacingMeters = properties.BeltSpacing / 1000;
-
-            var targetPositionMeters = targetPosition / 1000;
-
-            return
-                5000 * grossWeight
-                /
-                ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
-        }
-
-        /// <summary>
-        /// Computes the vertical position displacement due to the shaft torsion.
-        /// </summary>
-        /// <param name="grossWeight">The gross weight loaded on the elevator, in kilograms.</param>
-        /// <returns>The vertical position displacement, in millimeters.</returns>
-        private double ComputeShaftTorsion(double grossWeight)
-        {
-            var properties = this.dataContext.ElevatorStructuralProperties.Single();
-
-            const double m = 10.0 / 3;
-
-            return
-                64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
-                /
-                (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
-        }
+        internal static string GetAxisCacheKey(Orientation orientation) => $"{nameof(GetAxis)}{orientation}";
 
         #endregion
     }

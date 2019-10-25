@@ -2,6 +2,7 @@
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [System.Obsolete]
     public class SaveRestoreConfigViewModel : BindableBase
     {
     }

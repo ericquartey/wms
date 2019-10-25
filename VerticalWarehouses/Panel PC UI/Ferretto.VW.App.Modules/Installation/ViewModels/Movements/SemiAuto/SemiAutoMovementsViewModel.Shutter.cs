@@ -1,19 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Models;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public partial class SemiAutoMovementsViewModel
+    internal sealed partial class SemiAutoMovementsViewModel
     {
         #region Fields
-
-        private readonly ShutterSensors shutterSensors;
 
         private DelegateCommand closedShutterCommand;
 
@@ -22,6 +17,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMoving;
 
         private DelegateCommand openShutterCommand;
+
+        private ShutterSensors shutterSensors;
 
         #endregion
 
@@ -32,7 +29,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
-                this.CanExecuteClosedCommand));
+                this.CanCloseShutter));
 
         public ICommand IntermediateShutterCommand =>
             this.intermediateShutterCommand
@@ -59,7 +56,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.openShutterCommand = new DelegateCommand(
                 async () => await this.OpenShutterAsync(),
-                this.CanExecuteOpenCommand));
+                this.CanOpenShutter));
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
@@ -67,37 +64,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        protected void RaiseCanExecuteChanged1()
+        private bool CanCloseShutter()
         {
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-        }
-
-        private bool CanExecuteClosedCommand()
-        {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Open || this.ShutterSensors.MidWay);
+                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.MidWay));
         }
 
         private bool CanExecuteIntermediateCommand()
         {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Open || this.ShutterSensors.Closed);
+                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.Closed));
         }
 
-        private bool CanExecuteOpenCommand()
+        private bool CanOpenShutter()
         {
-            return !this.IsMoving
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors.Closed || this.ShutterSensors.MidWay);
+                (this.ShutterSensors != null && (this.ShutterSensors.Closed || this.ShutterSensors.MidWay));
         }
 
         private async Task ClosedShutterAsync()
@@ -106,7 +106,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(ShutterPosition.Closed);
+                await this.shuttersWebService.MoveToAsync(ShutterPosition.Closed);
                 this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(ShutterPosition.Half);
+                await this.shuttersWebService.MoveToAsync(ShutterPosition.Half);
                 this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
@@ -144,7 +144,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.shuttersService.MoveToAsync(ShutterPosition.Opened);
+                await this.shuttersWebService.MoveToAsync(ShutterPosition.Opened);
                 this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
@@ -155,6 +155,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void RaiseCanExecuteChanged1()
+        {
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

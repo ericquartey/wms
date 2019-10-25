@@ -120,7 +120,85 @@
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
     <value>Condizioni per il posizionamento non soddisfatte.</value>
   </data>
+  <data name="ConditionsNotMetForRunning" xml:space="preserve">
+    <value>Condizioni per la messa in marcia non soddisfatte.</value>
+  </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Cassetto non caricato completamente.</value>
+  </data>
+  <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
+    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+  </data>
+  <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
+    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
+    <value>ZeroSensorErrorAfterDeposit</value>
+  </data>
+  <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
+    <value>ZeroSensorErrorAfterPickup</value>
+  </data>
+  <data name="InverterErrorBaseCode" xml:space="preserve">
+    <value>Errore inverter.</value>
+  </data>
+  <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
+    <value>Impossibile scrivere il parametro dell'inverter durante l'esecuzione.</value>
+  </data>
+  <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
+    <value>I dati del dataset dell'inverter non corrispondono.</value>
+  </data>
+  <data name="InverterErrorEepromChecksumError" xml:space="preserve">
+    <value>Errore checksum EEPROM dell'inverter.</value>
+  </data>
+  <data name="InverterErrorEepromReadError" xml:space="preserve">
+    <value>Errore lettura EEPROM dell'inverter.</value>
+  </data>
+  <data name="InverterErrorEepromWriteError" xml:space="preserve">
+    <value>Errore scrittura EEPROM dell'inverter.</value>
+  </data>
+  <data name="InverterErrorInvalidDataset" xml:space="preserve">
+    <value>Dataset inverter non valido.</value>
+  </data>
+  <data name="InverterErrorInvalidParameter" xml:space="preserve">
+    <value>Paramentro inverter non valido.</value>
+  </data>
+  <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
+    <value>Il nodo specificato non è disponibile.</value>
+  </data>
+  <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
+    <value>Parametro inverter è in sola lettura.</value>
+  </data>
+  <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
+    <value>Parametro inverter è in sola scrittura.</value>
+  </data>
+  <data name="InverterErrorSyntaxError" xml:space="preserve">
+    <value>Errore di sintassi del messaggio inviato all'inverter.</value>
+  </data>
+  <data name="InverterErrorUnknownParameter" xml:space="preserve">
+    <value>Parametro sconosciuto passato all'inverter.</value>
+  </data>
+  <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
+    <value>Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.</value>
+  </data>
+  <data name="InverterFaultStateDetected" xml:space="preserve">
+    <value>È stato rilevato un errore in uno degli inverter.</value>
+  </data>
+  <data name="SecurityWasTriggered" xml:space="preserve">
+    <value>È scattata la funzione di sicurezza.</value>
+  </data>
+  <data name="MachineManagerErrorBaseCode" xml:space="preserve">
+    <value>Errore Machine Manager</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
+    <value>Inconsistenza database posizione destinazione cassetto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
+    <value />
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
+    <value>Inconsistenza database posizione sorgente cassetto</value>
+  </data>
+  <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
+    <value>Nessun cassetto presente nella baia indicata</value>
   </data>
 </root>

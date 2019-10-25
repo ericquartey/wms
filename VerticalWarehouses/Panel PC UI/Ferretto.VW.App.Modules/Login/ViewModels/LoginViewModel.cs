@@ -4,20 +4,23 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
-    public class LoginViewModel : BaseMainViewModel
+    internal sealed class LoginViewModel : BaseMainViewModel
     {
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
 
+        private readonly IMachineErrorsService machineErrorsService;
+
         private readonly IHealthProbeService healthProbeService;
+
+        private readonly IBayManager bayManager;
 
         private SubscriptionToken subscriptionToken;
 
@@ -29,41 +32,35 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private bool isWaitingForResponse;
 
+        private int bayNumber;
+
         #endregion
 
         #region Constructors
 
         public LoginViewModel(
             IAuthenticationService authenticationService,
+            IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
             IBayManager bayManager)
             : base(PresentationMode.Login)
         {
-            if (authenticationService is null)
-            {
-                throw new ArgumentNullException(nameof(authenticationService));
-            }
-
-            if (healthProbeService is null)
-            {
-                throw new ArgumentNullException(nameof(healthProbeService));
-            }
-
             if (bayManager is null)
             {
                 throw new ArgumentNullException(nameof(bayManager));
             }
 
-            this.authenticationService = authenticationService;
-            this.healthProbeService = healthProbeService;
-
-            this.BayNumber = (int)bayManager.Bay.Number;
+            this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+            this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged.Subscribe(
-                this.OnHealthStatusChanged,
-                ThreadOption.UIThread,
-                false);
+            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                .Subscribe(
+                    this.OnHealthStatusChanged,
+                    ThreadOption.UIThread,
+                    false);
 
 #if DEBUG
             this.UserLogin = new UserLogin
@@ -91,7 +88,14 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public UserLogin UserLogin { get; }
 
-        public int BayNumber { get; }
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            set
+            {
+                this.SetProperty(ref this.bayNumber, value);
+            }
+        }
 
         public MachineIdentity MachineIdentity
         {
@@ -148,6 +152,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             this.ServiceHealthStatus = e.HealthStatus;
 
             if (this.ServiceHealthStatus == HealthStatus.Degraded
@@ -158,9 +167,17 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public override async Task OnNavigatedAsync()
+        public override async Task OnAppearedAsync()
         {
-            await base.OnNavigatedAsync();
+            await base.OnAppearedAsync();
+
+            var bay = await this.bayManager.GetBayAsync();
+            if (!(bay is null))
+            {
+                this.BayNumber = (int)bay.Number;
+            }
+
+            this.machineErrorsService.AutoNavigateOnError = false;
 
             if (this.Data is MachineIdentity machineIdentity)
             {
@@ -172,8 +189,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             return
                 this.machineIdentity != null
-                //&&
-                //string.IsNullOrEmpty(this.UserLogin.Error)
+
+                // &&
+                // string.IsNullOrEmpty(this.UserLogin.Error)
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -187,7 +205,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private async Task LoginAsync()
         {
-            this.ShowNotification(string.Empty);
+            this.ClearNotifications();
 
             this.UserLogin.IsValidationEnabled = true;
             if (!string.IsNullOrEmpty(this.UserLogin.Error))
@@ -214,6 +232,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     {
                         this.NavigateToOperatorMainView();
                     }
+
+                    this.machineErrorsService.AutoNavigateOnError = true;
                 }
                 else
                 {

@@ -16,21 +16,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ICellPanelsProvider cellPanelsProvider;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         #endregion
 
         #region Constructors
 
         public CellPanelsController(
             ICellPanelsProvider cellPanelsProvider,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            if (cellPanelsProvider is null)
-            {
-                throw new ArgumentNullException(nameof(cellPanelsProvider));
-            }
-
-            this.cellPanelsProvider = cellPanelsProvider;
+            this.cellPanelsProvider = cellPanelsProvider ?? throw new ArgumentNullException(nameof(cellPanelsProvider));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
@@ -43,6 +42,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var panels = this.cellPanelsProvider.GetAll();
 
             return this.Ok(panels);
+        }
+
+        [HttpGet("height-check-parameters")]
+        public ActionResult<PositioningProcedure> GetProcedureParameters()
+        {
+            return this.Ok(this.setupProceduresDataProvider.GetCellPanelsCheck());
         }
 
         [HttpPost("height")]

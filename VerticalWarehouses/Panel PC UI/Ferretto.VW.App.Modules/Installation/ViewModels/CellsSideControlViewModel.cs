@@ -5,7 +5,8 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    public class CellsSideControlViewModel : BaseMainViewModel
+    [System.Obsolete]
+    internal sealed class CellsSideControlViewModel : BaseMainViewModel
     {
         #region Constructors
 
@@ -29,14 +30,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             // TODO
         }
 
+        public override Task OnAppearedAsync()
+        {
+            return base.OnAppearedAsync();
+        }
+
         public Task OnEnterViewAsync()
         {
             return Task.CompletedTask;
-        }
-
-        public override Task OnNavigatedAsync()
-        {
-            return base.OnNavigatedAsync();
         }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)

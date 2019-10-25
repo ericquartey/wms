@@ -2,26 +2,28 @@
 {
     public enum MovementMode
     {
-        NoMode = 0,
+        NoMode,
 
-        Position = 1,
+        Position,
 
-        Profile = 2,
+        PositionAndMeasure,
 
-        BeltBurnishing = 3,
+        BeltBurnishing,
 
-        FindZero = 4,
+        FindZero,
 
-        TorqueCurrentSampling = 5,
+        TorqueCurrentSampling,
 
-        ShutterPosition = 6,
+        ProfileCalibration,
 
-        ShutterTest = 7,
+        ShutterPosition,
 
-        BayChain = 8,
+        ShutterTest,
 
-        BayChainManual = 9,
+        BayChain,
 
-        BayTest = 10,
+        BayChainManual,
+
+        BayTest,
     }
 }

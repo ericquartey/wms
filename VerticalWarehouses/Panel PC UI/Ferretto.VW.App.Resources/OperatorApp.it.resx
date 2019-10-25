@@ -942,4 +942,10 @@
   <data name="GoToCellHeight" xml:space="preserve">
     <value>Vai a Quota Cella</value>
   </data>
+  <data name="LowerBayPosition" xml:space="preserve">
+    <value>Posizione Inferiore</value>
+  </data>
+  <data name="UpperBayPosition" xml:space="preserve">
+    <value>Posizione Superiore</value>
+  </data>
 </root>

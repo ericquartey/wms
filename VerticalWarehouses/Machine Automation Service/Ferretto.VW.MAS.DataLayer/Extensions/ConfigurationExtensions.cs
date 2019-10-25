@@ -41,11 +41,6 @@ namespace Ferretto.VW.MAS.DataLayer.Extensions
             return configuration.GetConnectionString(SecondaryConnectionStringName);
         }
 
-        public static string GetLoadingUnitsConfigurationFile(this IConfiguration configuration)
-        {
-            return configuration.GetValue<string>("Vertimag:DataLayer:LoadingUnitsFile", "loading-units.json");
-        }
-
         public static bool IsSetupStatusOverridden(this IConfiguration configuration)
         {
             return configuration.GetValue<bool>("Vertimag:DataLayer:OverrideSetupStatus");

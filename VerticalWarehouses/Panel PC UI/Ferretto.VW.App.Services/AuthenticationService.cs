@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -8,13 +7,13 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly IMachineUsersService usersService;
+        private readonly IMachineUsersWebService usersService;
 
         #endregion
 
         #region Constructors
 
-        public AuthenticationService(IMachineUsersService usersService)
+        public AuthenticationService(IMachineUsersWebService usersService)
         {
             if (usersService is null)
             {

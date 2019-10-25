@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -16,7 +15,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();
 
-        Task LoadFromAsync(string fileNamePath);
+        void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 

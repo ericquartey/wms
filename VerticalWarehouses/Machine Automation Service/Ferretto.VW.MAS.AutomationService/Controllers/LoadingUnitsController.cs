@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -19,11 +19,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IHorizontalManualMovementsDataLayer horizontalManualMovements;
-
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
         #endregion
 
@@ -31,58 +31,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IEventAggregator eventAggregator,
-            ILoadingUnitsProvider loadingUnitStatisticsProvider,
-            IHorizontalManualMovementsDataLayer horizontalManualMovementsDataLayer,
+            IMoveLoadingUnitProvider moveLoadingUnitProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
             IMachinesDataService machinesDataService)
             : base(eventAggregator)
         {
-            if (loadingUnitStatisticsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machinesDataService));
-            }
-
-            if (horizontalManualMovementsDataLayer is null)
-            {
-                throw new System.ArgumentNullException(nameof(horizontalManualMovementsDataLayer));
-            }
-
-            this.loadingUnitsProvider = loadingUnitStatisticsProvider;
-            this.machinesDataService = machinesDataService;
-            this.horizontalManualMovements = horizontalManualMovementsDataLayer;
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
         #endregion
 
         #region Methods
 
-        [HttpPost("deposit")]
+        // Interrupts operation finishing current movement leaving machine in a safe state
+        [HttpGet("abort-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Deposit(DrawerDestination destination, decimal targetPosition, bool isPositive)
+        public IActionResult Abort(Guid? missionId, BayNumber targetBay)
         {
-            var drawerOperationData = new DrawerOperationMessageData(
-               DrawerOperation.Deposit,
-               DrawerOperationStep.None);
+            this.moveLoadingUnitProvider.AbortMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
 
-            drawerOperationData.Destination = destination;
-            drawerOperationData.DestinationVerticalPosition = targetPosition;
-            drawerOperationData.IsDestinationPositive = isPositive;
-            drawerOperationData.DestinationHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
+        [HttpPost("eject-loading-unit")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult EjectLoadingUnit(LoadingUnitLocation destination, int loadingUnitId)
+        {
+            if (destination == LoadingUnitLocation.Cell || destination == LoadingUnitLocation.LoadingUnit)
             {
-                drawerOperationData.DestinationHorizontalPosition *= -1;
+                return this.BadRequest();
             }
 
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
+            this.moveLoadingUnitProvider.EjectFromCell(destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -109,11 +93,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     if (loadingUnit != null)
                     {
                         stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                        if (loadingUnit.AreaFillRate != null)
+                        {
+                            stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                        }
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -139,7 +126,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     }
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 // do nothing:
                 // data from WMS will remain to its default values
@@ -148,66 +135,99 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(statistics);
         }
 
-        [HttpPost("pickup")]
+        [HttpPost("insert-loading-unit")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult Pickup(DrawerDestination source, decimal targetPosition, bool isPositive)
+        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
         {
-            var drawerOperationData = new DrawerOperationMessageData(
-               DrawerOperation.Pickup,
-               DrawerOperationStep.None);
-
-            drawerOperationData.Source = source;
-            drawerOperationData.SourceVerticalPosition = targetPosition;
-            drawerOperationData.IsSourcePositive = isPositive;
-            drawerOperationData.SourceHorizontalPosition = this.horizontalManualMovements.RecoveryTargetPositionHM;
-            if (!isPositive)
+            if (source == LoadingUnitLocation.Cell || source == LoadingUnitLocation.LoadingUnit)
             {
-                drawerOperationData.SourceHorizontalPosition *= -1;
+                return this.BadRequest();
             }
 
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
+            this.moveLoadingUnitProvider.InsertToCell(source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
 
-        [HttpPost("start-moving")]
+        [HttpGet("pause-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult StartMoving(DrawerOperation drawerOperation)
+        public IActionResult Pause(Guid? missionId, BayNumber targetBay)
         {
-            var drawerOperationData = new DrawerOperationMessageData(
-               drawerOperation,
-               DrawerOperationStep.None);
+            this.moveLoadingUnitProvider.PauseMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
 
-            drawerOperationData.Source = DrawerDestination.InternalBay1Up; // TODO HACK remove this hardcoded value
-            drawerOperationData.Destination = DrawerDestination.Cell;
+        [HttpGet("resume-moving")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Resume(Guid? missionId, BayNumber targetBay)
+        {
+            this.moveLoadingUnitProvider.ResumeMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            return this.Accepted();
+        }
 
-            this.PublishCommand(
-                drawerOperationData,
-                "Execute Drawer Operation Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.DrawerOperation);
+        [HttpPost("start-moving-loading-unit-to-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
+        {
+            if (destination == LoadingUnitLocation.Cell)
+            {
+                return this.BadRequest();
+            }
+
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
 
+        [HttpPost("start-moving-loading-unit-to-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
+        {
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("start-moving-source-destination")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult StartMovingSourceDestination(LoadingUnitLocation source, LoadingUnitLocation destination, int? sourceCellId, int? destinationCellId)
+        {
+            if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+            }
+            else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber, MessageActor.AutomationService);
+            }
+            else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
+            {
+                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
+            }
+            else
+            {
+                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+            }
+
+            return this.Accepted();
+        }
+
+        // Instantaneously interrupts current operation leaving machine in a potentially unsafe condition
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult Stop()
+        public IActionResult Stop(Guid? missionId, BayNumber targetBay)
         {
-            var messageData = new StopMessageData(StopRequestReason.Stop);
-            this.PublishCommand(
-                messageData,
-                "Stop Command",
-                MessageActor.FiniteStateMachines,
-                MessageType.Stop);
-
+            this.moveLoadingUnitProvider.StopMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

@@ -1,11 +1,9 @@
 ﻿using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.IODriver.Interface;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 {
-    public class PowerUpStartState : IoStateBase
+    internal sealed class PowerUpStartState : IoStateBase
     {
         #region Fields
 

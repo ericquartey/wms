@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class MachineStatistics
+    public sealed class MachineStatistics : DataModel
     {
         #region Properties
 
@@ -10,8 +10,6 @@
             this.TotalPowerOnTime.TotalHours > 0
             ? this.TotalAutomaticTime.TotalHours * 100 / this.TotalPowerOnTime.TotalHours
             : 0;
-
-        public int Id { get; set; }
 
         public System.TimeSpan TotalAutomaticTime { get; set; }
 

@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 {
-    internal class CalibrateAxisDisableOperationState : InverterStateBase
+    internal sealed class CalibrateAxisDisableOperationState : InverterStateBase
     {
         #region Fields
 
@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
-        private readonly bool stopRequested;
+        private bool stopRequested;
 
         #endregion
 
@@ -44,9 +44,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             {
                 this.Logger.LogDebug($"Calibrate Disable Operation axis {this.axisToCalibrate}. StopRequested = {this.stopRequested}");
                 currentStatus.HomingControlWord.HomingOperation = false;
-                currentStatus.HomingControlWord.EnableOperation = false;
 
-                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWordParam, currentStatus.HomingControlWord.Value);
+                var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.HomingControlWord.Value);
 
                 this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
@@ -57,22 +56,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         /// <inheritdoc />
         public override void Stop()
         {
-            if (this.stopRequested)
-            {
-                this.Logger.LogTrace("1:Stop process already active");
-            }
-            else
-            {
-                this.Logger.LogDebug("1:Calibrate Axis Stop requested");
-
-                this.ParentStateMachine.ChangeState(
-                    new CalibrateAxisStopState(
-                        this.ParentStateMachine,
-                        this.axisToCalibrate,
-                        this.calibration,
-                        this.InverterStatus,
-                        this.Logger));
-            }
+            this.Logger.LogDebug("1:Calibrate Axis Stop requested");
+            this.stopRequested = true;
         }
 
         /// <inheritdoc />
@@ -95,20 +80,24 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-                if (!this.InverterStatus.CommonStatusWord.IsOperationEnabled)
+                if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    if (this.stopRequested)
+                    if (this.InverterStatus is IHomingInverterStatus currentStatus)
                     {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisQuickStopState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
+                        currentStatus.HomingControlWord.EnableOperation = false;
+                        var inverterMessage = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ControlWord, currentStatus.HomingControlWord.Value);
+
+                        this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+                        this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                     }
-                    else
-                    {
-                        this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
-                    }
+                }
+                else
+                {
+                    this.ParentStateMachine.ChangeState(new CalibrateAxisEndState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger, this.stopRequested));
                     returnValue = true;     // EvaluateReadMessage will stop sending StatusWordParam
                 }
             }
-
             return returnValue;
         }
 

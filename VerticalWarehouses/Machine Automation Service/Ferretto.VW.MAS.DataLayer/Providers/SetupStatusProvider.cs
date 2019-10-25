@@ -2,7 +2,6 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.DataModels;
 using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -15,6 +14,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+
         private readonly IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider;
 
         #endregion
@@ -23,51 +24,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public SetupStatusProvider(
             DataLayerContext dataContext,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
             IVerticalOriginVolatileSetupStatusProvider verticalOriginSetupStatusProvider,
             IConfiguration configuration)
         {
-            if (dataContext is null)
-            {
-                throw new ArgumentNullException(nameof(dataContext));
-            }
-
-            if (verticalOriginSetupStatusProvider is null)
-            {
-                throw new ArgumentNullException(nameof(verticalOriginSetupStatusProvider));
-            }
-
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            this.dataContext = dataContext;
-            this.verticalOriginSetupStatusProvider = verticalOriginSetupStatusProvider;
-            this.configuration = configuration;
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.verticalOriginSetupStatusProvider = verticalOriginSetupStatusProvider ?? throw new ArgumentNullException(nameof(verticalOriginSetupStatusProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion
 
         #region Methods
 
-        public void CompleteBeltBurnishing()
-        {
-            this.Update(s => s.BeltBurnishingCompleted = true);
-        }
-
-        public void CompleteVerticalOffset()
-        {
-            this.Update(s => s.VerticalOffsetCalibration = true);
-        }
-
         public void CompleteVerticalOrigin()
         {
             this.verticalOriginSetupStatusProvider.Complete();
-        }
-
-        public void CompleteVerticalResolution()
-        {
-            this.Update(s => s.VerticalResolution = true);
         }
 
         public SetupStatusCapabilities Get()
@@ -76,14 +49,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var verticalOrigin = this.verticalOriginSetupStatusProvider.Get();
 
+            var setup = this.setupProceduresDataProvider.GetAll();
+
             var statusCapabilities = new SetupStatusCapabilities
             {
                 Bay1 = new BaySetupStatus
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay1Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
+                        IsCompleted = status.Bay1HeightCheck,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
@@ -93,7 +68,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1Shape,
-                        CanBePerformed = status.Bay1Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.Bay1HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
@@ -103,12 +78,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay1HeightCheck && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay1Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay1HeightCheck && verticalOrigin.IsCompleted,
                     },
                 },
 
@@ -116,8 +91,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay2Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
+                        IsCompleted = status.Bay2HeightCheck,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
@@ -127,7 +102,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay2Shape,
-                        CanBePerformed = status.Bay2Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.Bay2HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
@@ -137,12 +112,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay2HeightCheck && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay2Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay2HeightCheck && verticalOrigin.IsCompleted,
                     },
                 },
 
@@ -150,8 +125,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     Check = new SetupStepStatus
                     {
-                        IsCompleted = status.Bay3Check,
-                        CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
+                        IsCompleted = status.Bay3HeightCheck,
+                        CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                     },
                     Laser = new SetupStepStatus
                     {
@@ -161,7 +136,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Shape = new SetupStepStatus
                     {
                         IsCompleted = status.Bay3Shape,
-                        CanBePerformed = status.Bay3Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.Bay3HeightCheck && verticalOrigin.IsCompleted,
                     },
                     Shutter = new SetupStepStatus
                     {
@@ -171,25 +146,23 @@ namespace Ferretto.VW.MAS.DataLayer
                     FirstLoadingUnit = new SetupStepStatus
                     {
                         IsCompleted = status.Bay1FirstLoadingUnit || status.Bay2FirstLoadingUnit || status.Bay3FirstLoadingUnit,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay3HeightCheck && verticalOrigin.IsCompleted,
                     },
                     AllLoadingUnits = new SetupStepStatus
                     {
                         IsCompleted = status.AllLoadingUnits,
-                        CanBePerformed = status.WeightMeasurement && status.Bay3Check && verticalOrigin.IsCompleted,
+                        CanBePerformed = status.WeightMeasurement && status.Bay3HeightCheck && verticalOrigin.IsCompleted,
                     },
                 },
-
-                BeltBurnishing = new BeltBurnishingSetupStepStatus
+                BeltBurnishing = new SetupStepStatus
                 {
-                    CompletedCycles = status.BeltBurnishingCompletedCycles,
-                    IsCompleted = status.BeltBurnishingCompleted,
+                    IsCompleted = setup.BeltBurnishingTest.IsCompleted,
                     CanBePerformed = verticalOrigin.IsCompleted,
                 },
                 CellsHeightCheck = new SetupStepStatus
                 {
-                    IsCompleted = status.CellsHeightCheck,
-                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
+                    IsCompleted = setup.CellsHeightCheck.IsCompleted,
+                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 AllLoadingUnits = new SetupStepStatus
                 {
@@ -201,21 +174,21 @@ namespace Ferretto.VW.MAS.DataLayer
                     IsCompleted = status.HorizontalHoming,
                     CanBePerformed = status.WeightMeasurement && verticalOrigin.IsCompleted,
                 },
-                PanelsCheck = new SetupStepStatus
+                CellPanelsCheck = new SetupStepStatus
                 {
-                    IsCompleted = status.PanelsCheck,
-                    CanBePerformed = status.VerticalOffsetCalibration && verticalOrigin.IsCompleted,
+                    IsCompleted = setup.CellPanelsCheck.IsCompleted,
+                    CanBePerformed = setup.VerticalOffsetCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 VerticalOriginCalibration = verticalOrigin,
                 VerticalOffsetCalibration = new SetupStepStatus
                 {
-                    IsCompleted = status.VerticalOffsetCalibration,
-                    CanBePerformed = status.VerticalResolution && verticalOrigin.IsCompleted,
+                    IsCompleted = setup.VerticalOffsetCalibration.IsCompleted,
+                    CanBePerformed = setup.VerticalResolutionCalibration.IsCompleted && verticalOrigin.IsCompleted,
                 },
-                VerticalResolution = new SetupStepStatus
+                VerticalResolutionCalibration = new SetupStepStatus
                 {
-                    IsCompleted = status.VerticalResolution,
-                    CanBePerformed = status.BeltBurnishingCompleted && verticalOrigin.IsCompleted,
+                    IsCompleted = setup.VerticalResolutionCalibration.IsCompleted,
+                    CanBePerformed = setup.BeltBurnishingTest.IsCompleted && verticalOrigin.IsCompleted,
                 },
                 WeightMeasurement = new SetupStepStatus
                 {
@@ -226,37 +199,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (this.configuration.IsSetupStatusOverridden())
             {
-                var debugStatus = SetupStatusCapabilities.Complete;
-                debugStatus.BeltBurnishing.CompletedCycles = status.BeltBurnishingCompletedCycles;
-                return debugStatus;
+                return SetupStatusCapabilities.Complete;
             }
 
             return statusCapabilities;
-        }
-
-        public void IncreaseBeltBurnishingCycle()
-        {
-            this.Update(s => s.BeltBurnishingCompletedCycles++);
-        }
-
-        public void ResetBeltBurnishing()
-        {
-            this.Update(s =>
-            {
-                s.BeltBurnishingCompletedCycles = 0;
-                s.BeltBurnishingCompleted = true;
-            });
-        }
-
-        private void Update(Action<SetupStatus> updateAction)
-        {
-            var setupStatus = this.dataContext.SetupStatus.FirstOrDefault();
-
-            updateAction(setupStatus);
-
-            this.dataContext.SetupStatus.Update(setupStatus);
-
-            this.dataContext.SaveChanges();
         }
 
         #endregion
