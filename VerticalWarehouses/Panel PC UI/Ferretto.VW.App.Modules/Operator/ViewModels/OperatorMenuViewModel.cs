@@ -117,28 +117,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         case MissionOperationType.Inventory:
                             this.NavigationService.Appear(
                                 nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.EMPTY,
+                                Utils.Modules.Operator.DrawerOperations.INVENTORY,
                                 null,
                                 trackCurrentView: true);
-                            //this.navigationService.NavigateToView<DrawerActivityInventoryViewModel, IDrawerActivityInventoryViewModel>();
                             break;
 
                         case MissionOperationType.Pick:
                             this.NavigationService.Appear(
                                 nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.EMPTY,
+                                Utils.Modules.Operator.DrawerOperations.PICKING,
                                 null,
                                 trackCurrentView: true);
-                            //this.navigationService.NavigateToView<DrawerActivityPickingViewModel, IDrawerActivityPickingViewModel>();
                             break;
 
                         case MissionOperationType.Put:
                             this.NavigationService.Appear(
                                 nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.EMPTY,
+                                Utils.Modules.Operator.DrawerOperations.REFILLING,
                                 null,
                                 trackCurrentView: true);
-                            //this.navigationService.NavigateToView<DrawerActivityRefillingViewModel, IDrawerActivityRefillingViewModel>();
                             break;
                     }
                 }
@@ -146,10 +143,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 {
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.EMPTY,
+                        Utils.Modules.Operator.DrawerOperations.WAIT,
                         null,
                         trackCurrentView: true);
-                    //this.navigationService.NavigateToView<DrawerWaitViewModel, IDrawerWaitViewModel>();
                 }
             }
             catch (System.Exception ex)

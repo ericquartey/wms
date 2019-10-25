@@ -12,6 +12,29 @@
 
         #region Classes
 
+        public static class DrawerOperations
+        {
+            #region Fields
+
+            public const string INVENTORY = "DrawerActivityInventoryViewModel";
+
+            public const string INVENTORYDETAIL = "DrawerActivityInventoryDetailViewModel";
+
+            public const string LOCALCALL = "DrawerActivityLocalCallViewModel";
+
+            public const string PICKING = "DrawerActivityPickingViewModel";
+
+            public const string PICKINGDETAIL = "DrawerActivityPickingDetailViewModel";
+
+            public const string REFILLING = "DrawerActivityRefillingViewModel";
+
+            public const string REFILLINGDETAIL = "DrawerActivityRefillingDetailViewModel";
+
+            public const string WAIT = "DrawerWaitViewModel";
+
+            #endregion
+        }
+
         public static class ItemSearch
         {
             #region Fields

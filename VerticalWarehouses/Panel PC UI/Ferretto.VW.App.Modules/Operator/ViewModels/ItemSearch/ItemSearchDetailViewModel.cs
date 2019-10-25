@@ -78,6 +78,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.itemSearchedModel.SelectedItem != null)
             {
                 this.Item = this.itemSearchedModel.SelectedItem;
+
                 // await this.LoadImage(this.item.Code);
                 this.RaisePropertyChanged(nameof(this.Item));
             }

@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippet Format="1.0.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <Header>
+    <SnippetTypes>
+      <SnippetType>Expansion</SnippetType>
+    </SnippetTypes>
+    <Title>PpcTextBox Operator</Title>
+    <Author>Solato Mirco</Author>
+    <Description>XAML snippet for a ppc textbox v1.0</Description>
+    <HelpUrl></HelpUrl>
+    <Shortcut>ppctextbox_operator</Shortcut>
+  </Header>
+  <Snippet>
+    <References>
+        <Reference><![CDATA[
+          xmlns:resources="clr-namespace:Ferretto.VW.App.resources;assembly=Ferretto.VW.App.resources"
+        ]]></Reference>
+    </References>
+    <Declarations>
+      <Literal Editable="true">
+        <ID>LabelText</ID>
+        <ToolTip>LabelText</ToolTip>
+        <Default>LabelText</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>InputText</ID>
+        <ToolTip>InputText</ToolTip>
+        <Default>InputText</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>GridRow</ID>
+        <ToolTip>Grid.Row</ToolTip>
+        <Default>Grid.Row="0"</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>GridColumn</ID>
+        <ToolTip>Grid.Column</ToolTip>
+        <Default>Grid.Column="0"</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>Module</ID>
+        <ToolTip>Name resource module</ToolTip>
+        <Default>OperatorApp</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>HorizontalAlignment</ID>
+        <ToolTip>HorizontalAlignment</ToolTip>
+        <Default>Left</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>VerticalAlignment</ID>
+        <ToolTip>VerticalAlignment</ToolTip>
+        <Default>Top</Default>
+        <Function>
+        </Function>
+      </Literal>
+    </Declarations>
+    <Code Language="XAML">
+      <![CDATA[
+          <controls:PpcTextBox $GridRow$
+                                   $GridColumn$
+                                   HorizontalAlignment="$HorizontalAlignment$"
+                                   VerticalAlignment="$VerticalAlignment$"
+                                   LabelText="{x:Static resources:$Module$.$LabelText$}"
+                                   InputText="{Binding $InputText$, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        ]]>
+    </Code>
+  </Snippet>
+</CodeSnippet>

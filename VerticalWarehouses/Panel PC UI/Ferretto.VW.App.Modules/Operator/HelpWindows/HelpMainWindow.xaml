@@ -5,10 +5,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:helpWindows="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:other="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other"
         xmlns:statistics="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics"
-        xmlns:viewmodelsdraweroperation="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations"
-        xmlns:viewmodelsdraweroperationdetails="clr-namespace:Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.DrawerOperations.Details"
         xmlns:viewsmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
         Width="1024"
         Height="768"
@@ -22,31 +19,31 @@
             <helpWindows:HelpInitialPage />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerWaitViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerWaitViewModel}">
             <helpWindows:HelpDrawerWait />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityPickingViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityPickingViewModel}">
             <helpWindows:HelpDrawerActivityPicking />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityPickingDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityPickingDetailViewModel}">
             <helpWindows:HelpDrawerActivityPickingDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityRefillingDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityRefillingDetailViewModel}">
             <helpWindows:HelpDrawerActivityRefillingDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperationdetails:DrawerActivityInventoryDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityInventoryDetailViewModel}">
             <helpWindows:HelpDrawerActivityInventoryDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityRefillingViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityRefillingViewModel}">
             <helpWindows:HelpDrawerActivityRefilling />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewmodelsdraweroperation:DrawerActivityInventoryViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityInventoryViewModel}">
             <helpWindows:HelpDrawerActivityInventory />
         </DataTemplate>
 

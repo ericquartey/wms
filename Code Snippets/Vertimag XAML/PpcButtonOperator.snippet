@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippet Format="1.0.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <Header>
+    <SnippetTypes>
+      <SnippetType>Expansion</SnippetType>
+    </SnippetTypes>
+    <Title>PpcButton Operator</Title>
+    <Author>Solato Mirco</Author>
+    <Description>XAML snippet for a ppc button v1.0</Description>
+    <HelpUrl></HelpUrl>
+    <Shortcut>ppcbutton_operator</Shortcut>
+  </Header>
+  <Snippet>
+    <Declarations>
+      <Literal Editable="true">
+        <ID>Command</ID>
+        <ToolTip>Command</ToolTip>
+        <Default>Command</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>Content</ID>
+        <ToolTip>Content</ToolTip>
+        <Default>Content</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>GridRow</ID>
+        <ToolTip>Grid.Row</ToolTip>
+        <Default>Grid.Row="0"</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>GridColumn</ID>
+        <ToolTip>Grid.Column</ToolTip>
+        <Default>Grid.Column="0"</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>Module</ID>
+        <ToolTip>Name resource module</ToolTip>
+        <Default>OperatorApp</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>HorizontalAlignment</ID>
+        <ToolTip>HorizontalAlignment</ToolTip>
+        <Default>Left</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>VerticalAlignment</ID>
+        <ToolTip>VerticalAlignment</ToolTip>
+        <Default>Top</Default>
+        <Function>
+        </Function>
+      </Literal>
+    </Declarations>
+    <Code Language="XAML">
+      <![CDATA[
+          <controls:PpcButton $GridRow$
+                              $GridColumn$
+                              HorizontalAlignment="$HorizontalAlignment$"
+                              VerticalAlignment="$VerticalAlignment$"
+                              Command="{Binding $Command$}"
+                              Content="{x:Static resources:$Module$.$Content$}" />
+        ]]>
+    </Code>
+  </Snippet>
+</CodeSnippet>
