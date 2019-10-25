@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 var pathToContentRoot = Directory.GetCurrentDirectory();
 
-                var isService = !Debugger.IsAttached && !args.Contains(ServiceConsoleArgument);
+                var isService = !Debugger.IsAttached && args.Contains(ServiceConsoleArgument);
                 if (isService)
                 {
                     var pathToExe = Process.GetCurrentProcess().MainModule.FileName;

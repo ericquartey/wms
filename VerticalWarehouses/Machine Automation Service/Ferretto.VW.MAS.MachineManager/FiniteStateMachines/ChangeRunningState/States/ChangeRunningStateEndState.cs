@@ -13,7 +13,6 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States
@@ -38,9 +37,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));

@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -91,6 +92,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.activeState?.Exit();
 
+                    if (this.activeState is IProgressMessageState progressMessageState)
+                    {
+                        if (progressMessageState.Message != null)
+                        {
+                            this.notificationEvent.Publish(progressMessageState.Message);
+                        }
+                    }
+
                     if (this.activeState is IDisposable disposable)
                     {
                         disposable.Dispose();
@@ -107,6 +116,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                         var eventArgs = new FiniteStateMachinesEventArgs
                         { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
                         this.RaiseCompleted(eventArgs);
+                    }
+
+                    if (this.activeState is IStartMessageState startMessageState)
+                    {
+                        this.notificationEvent.Publish(startMessageState.Message);
                     }
                 }
 
@@ -132,6 +146,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         #region Methods
 
+        public void Abort()
+        {
+            this.activeState = this.OnAbort();
+        }
+
         public virtual bool AllowMultipleInstances(CommandMessage command)
         {
             return true;
@@ -156,6 +175,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             }
         }
 
+        public void Pause()
+        {
+            this.activeState = this.OnPause();
+        }
+
+        public void Resume()
+        {
+            this.ActiveState = this.OnResume();
+        }
+
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
             if (this.isStarted)
@@ -163,35 +192,38 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
 
-            this.isStarted = true;
-
-            this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-
-            this.StartData = commandMessage;
-
-            this.requestingBay = commandMessage.RequestingBay;
-
-            this.commandsDequeuingThread = new Thread(this.DequeueCommands)
+            if (this.OnStart(commandMessage, cancellationToken))
             {
-                Name = $"MM Commands {this.GetType().Name}",
-            };
+                this.isStarted = true;
 
-            this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
-            {
-                Name = $"MM Notifications {this.GetType().Name}",
-            };
+                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
 
-            this.commandsDequeuingThread.Start(cancellationToken);
-            this.notificationsDequeuingThread.Start(cancellationToken);
+                this.StartData = commandMessage;
 
-            this.InitializeSubscriptions();
+                this.requestingBay = commandMessage.RequestingBay;
 
-            this.ActiveState = this.GetState<TStartState>();
+                this.commandsDequeuingThread = new Thread(this.DequeueCommands)
+                {
+                    Name = $"MM Commands {this.GetType().Name}",
+                };
+
+                this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
+                {
+                    Name = $"MM Notifications {this.GetType().Name}",
+                };
+
+                this.commandsDequeuingThread.Start(cancellationToken);
+                this.notificationsDequeuingThread.Start(cancellationToken);
+
+                this.InitializeSubscriptions();
+
+                this.ActiveState = this.GetState<TStartState>();
+            }
         }
 
         public void Stop(StopRequestReason reason)
         {
-            this.OnStop(reason);
+            this.ActiveState = this.OnStop(reason);
         }
 
         protected abstract bool FilterCommand(CommandMessage command);
@@ -202,6 +234,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             where TState : IState
         {
             return this.serviceProvider.GetRequiredService<TState>();
+        }
+
+        protected virtual IState OnAbort()
+        {
+            return this.ActiveState.Abort();
         }
 
         protected virtual IState OnCommandReceived(CommandMessage command)
@@ -224,14 +261,24 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.ActiveState;
         }
 
-        protected virtual void OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
+        protected virtual IState OnPause()
         {
-            // do nothing
+            return this.ActiveState.Pause();
         }
 
-        protected virtual void OnStop(StopRequestReason reason)
+        protected virtual IState OnResume()
         {
-            this.ActiveState = this.ActiveState.Stop(reason);
+            return this.ActiveState.Resume();
+        }
+
+        protected virtual bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
+        {
+            return true;
+        }
+
+        protected virtual IState OnStop(StopRequestReason reason)
+        {
+            return this.ActiveState.Stop(reason);
         }
 
         protected void RaiseCompleted(FiniteStateMachinesEventArgs eventArgs)

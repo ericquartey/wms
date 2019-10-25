@@ -12,7 +12,6 @@ using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
-using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
@@ -36,9 +35,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IBaysProvider baysProvider,
             IErrorsProvider errorsProvider,
-            IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
-            : base(eventAggregator, logger)
+            : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));

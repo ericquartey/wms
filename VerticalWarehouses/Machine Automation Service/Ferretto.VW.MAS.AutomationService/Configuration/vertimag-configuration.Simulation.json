@@ -38,6 +38,10 @@
           {
             "Height": 645,
             "Location": "InternalBay1Down"
+          },
+          {
+            "Height": 1143,
+            "Location": "InternalBay1Up"
           }
         ],
         "Resolution": 369.8453,
@@ -113,7 +117,7 @@
           },
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
-          "WeightMeasureSpeed": 50,
+          "WeightMeasureSpeed": 20,
           "WeightMeasureTime": 15,
         },
         {
@@ -122,9 +126,8 @@
           "Offset": 0,
           "ChainOffset": -6.4,
           "Inverter": null,
-          "ProfileCalibrateHeight": 150,
           "ProfileCalibratePosition": 300,
-          "ProfileCalibrateSpeed": 50,
+          "ProfileCalibrateSpeed": 30,
           "ProfileCalibrateLength": 900,
           "FullLoadMovement": {
             "Acceleration": 350,

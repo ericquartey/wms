@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
@@ -191,6 +192,16 @@ namespace Ferretto.VW.MAS.IODriver
                     this.Disconnect();
                     throw new IoDriverException("Timeout reading data from Transport Stream");
                 }
+            }
+            catch (IoDriverException ex)
+            {
+                this.Disconnect();
+                throw new IoDriverException(ex.Message);
+            }
+            catch (IOException ex)
+            {
+                this.Disconnect();
+                throw new IoDriverException(ex.Message);
             }
             catch (Exception ex)
             {

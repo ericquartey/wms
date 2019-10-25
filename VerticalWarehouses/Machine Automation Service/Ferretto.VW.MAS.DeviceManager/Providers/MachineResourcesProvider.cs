@@ -85,6 +85,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineRunning => this.IsMachineInRunningState;
 
+        public bool IsProfileCalibratedBay1 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay1];
+
+        public bool IsProfileCalibratedBay2 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay2];
+
+        public bool IsProfileCalibratedBay3 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay3];
+
         public bool IsSensorZeroOnBay1 => this.sensorStatus[(int)IOMachineSensors.ACUBay1S3IND];
 
         public bool IsSensorZeroOnBay2 => this.sensorStatus[(int)IOMachineSensors.ACUBay2S3IND];
@@ -151,6 +157,94 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 case BayNumber.BayThree:
                     return this.IsDrawerInBay3Top;
             }
+        }
+
+        public bool IsProfileCalibratedBay(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsProfileCalibratedBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsProfileCalibratedBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsProfileCalibratedBay3;
+            }
+        }
+
+        public bool IsLoadingUnitInLocation(LoadingUnitLocation location)
+        {
+            bool returnValue;
+
+            // TODO Update with missing information
+            switch (location)
+            {
+                case LoadingUnitLocation.InternalBay1Down:
+                    returnValue = this.IsDrawerInBay1Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay1Up:
+                    returnValue = this.IsDrawerInBay1Top;
+                    break;
+
+                case LoadingUnitLocation.InternalBay2Down:
+                    returnValue = this.IsDrawerInBay2Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay2Up:
+                    returnValue = this.IsDrawerInBay2Top;
+                    break;
+
+                case LoadingUnitLocation.InternalBay3Down:
+                    returnValue = this.IsDrawerInBay3Bottom;
+                    break;
+
+                case LoadingUnitLocation.InternalBay3Up:
+                    returnValue = this.IsDrawerInBay3Top;
+                    break;
+
+                // If location can't be idientifies simply become a "no operation" function
+                default:
+                    returnValue = true;
+                    break;
+            }
+
+            return returnValue;
+        }
+
+        public bool IsMachineSecureForRun()
+        {
+            var returnValue = true;
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide])
+            {
+                returnValue = false;
+            }
+
+            if (this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide])
+            {
+                returnValue = false;
+            }
+
+            return returnValue;
         }
 
         public bool IsSensorZeroOnBay(BayNumber bayNumber)
