@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private DelegateCommand abortCommand;
+
         private DelegateCommand applyCorrectionCommand;
 
         private Bay bay;
@@ -69,12 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Installer)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            this.bayManager = bayManager;
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -82,6 +79,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand AbortCommand =>
+           this.abortCommand
+           ??
+           (this.abortCommand = new DelegateCommand(
+               async () => await this.AbortAsync(),
+               this.CanAbort));
 
         public ICommand ApplyCorrectionCommand =>
             this.applyCorrectionCommand
@@ -331,6 +335,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task AbortAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorWebService.StopAsync();
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsElevatorMovingToHeight = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMovingToHeight = false;
+            }
+        }
+
         private async Task ApplyCorrectionAsync()
         {
             try
@@ -357,6 +385,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private bool CanAbort()
+        {
+            return
+                this.IsElevatorMovingToHeight
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private bool CanApplyCorrectionCommand()
@@ -550,6 +586,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.abortCommand?.RaiseCanExecuteChanged();
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
