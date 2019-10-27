@@ -317,11 +317,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.Bay = await this.bayManager.GetBayAsync();
-
             await this.InitializeDataAsync();
-
-            this.ChangeDataFromBayPosition();
 
             try
             {
@@ -479,8 +475,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task InitializeDataAsync()
         {
-            this.CurrentBayPosition = 1;
-
             this.IsElevatorMovingDown = false;
             this.IsElevatorMovingUp = false;
             this.IsElevatorMovingToHeight = false;
@@ -488,7 +482,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.Bay = await this.bayManager.GetBayAsync();
+
                 this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
+
+                this.CurrentBayPosition = 1;
             }
             catch (Exception ex)
             {

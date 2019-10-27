@@ -325,14 +325,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
+                this.IsWaitingForResponse = true;
 
+                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+                this.sensors.Update(sensorsStates.ToArray());
+
+                this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
                 this.InputRequiredCycles = this.procedureParameters.RequiredCycles;
                 this.CumulativePerformedCycles = this.procedureParameters.PerformedCycles;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -350,30 +361,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        async message => await this.OnElevatorPositionChangedAsync(message),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-
-            await this.InitializeSensors();
+            this.SubscribeToEvents();
 
             await this.GetCycleQtuantityAsync();
-
-            await this.RetrieveElevatorPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
 
@@ -471,20 +461,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case DepositAndPickUpState.Deposit:
                     await this.MoveToBayHeightAsync();
                     break;
-            }
-        }
-
-        private async Task InitializeSensors()
-        {
-            try
-            {
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
-
-                this.sensors.Update(sensorsStates.ToArray());
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
             }
         }
 
@@ -627,6 +603,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(
                 VW.App.Resources.InstallationApp.ProcedureWasStopped,
                 Services.Models.NotificationSeverity.Warning);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async message => await this.OnElevatorPositionChangedAsync(message),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         private void UpdateLoadingUnit()
