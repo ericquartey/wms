@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? stepValue;
 
+        private DelegateCommand stopCommand;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -234,6 +236,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.stepValue, value);
         }
 
+        public ICommand StopCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(this.Stop, this.CanStoped));
+
         private bool IsElevatorMoving
         {
             get => this.isElevatorMovingUp || this.isElevatorMovingDown || this.isElevatorMovingToCell;
@@ -391,6 +398,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
+        private bool CanStoped()
+        {
+            return this.IsElevatorMoving
+                &&
+                !this.IsWaitingForResponse;
+        }
+
         private void GoToCellHeight()
         {
             try
@@ -525,6 +539,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToPreviousPanelCommand?.RaiseCanExecuteChanged();
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void Stop()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.machineElevatorWebService.StopAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion
