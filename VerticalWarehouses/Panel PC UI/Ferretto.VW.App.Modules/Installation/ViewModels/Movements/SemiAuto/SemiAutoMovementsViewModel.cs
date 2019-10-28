@@ -467,6 +467,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closedShutterCommand?.RaiseCanExecuteChanged();
             this.carouselDownCommand?.RaiseCanExecuteChanged();
             this.carouselUpCommand?.RaiseCanExecuteChanged();
+            this.selectBayPosition1Command?.RaiseCanExecuteChanged();
+            this.selectBayPosition2Command?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
