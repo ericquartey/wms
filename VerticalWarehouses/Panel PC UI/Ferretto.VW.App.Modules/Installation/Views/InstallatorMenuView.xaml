@@ -23,6 +23,8 @@
         <ctrls:PpcMenuWrap Grid.Row="4"
                            IsEnabled="{Binding AreItemsEnabled}"
                            ItemsSource="{Binding OtherItems}" />
-
     </Grid>
+    <!--
+    </Grid>
+    -->
 </ctrls:View>

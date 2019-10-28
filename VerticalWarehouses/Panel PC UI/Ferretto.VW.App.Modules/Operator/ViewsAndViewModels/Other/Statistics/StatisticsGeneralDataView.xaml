@@ -38,12 +38,6 @@
                                            LabelText="{x:Static Resources:OperatorApp.MachineStatistics_AreaFillPercentage}"
                                            ProgressionValue="{Binding Model.AreaFillPercentage}" />
 
-        <controls:CustomProgressBarControl MaxWidth="300"
-                                           Margin="153,335,0,0"
-                                           HorizontalAlignment="Left"
-                                           VerticalAlignment="Top"
-                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_WeightCapacityPercentage}"
-                                           ProgressionValue="{Binding Model.WeightCapacityPercentage}" />
 
         <controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="473,255,0,0"
@@ -52,6 +46,13 @@
                                            LabelText="{x:Static Resources:OperatorApp.MachineStatistics_AutomaticTimePercentage}"
                                            ProgressionValue="{Binding Model.AutomaticTimePercentage}" />
 
+        <controls:CustomProgressBarControl MaxWidth="300"
+                                           Margin="153,335,0,0"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           LabelText="{x:Static Resources:OperatorApp.MachineStatistics_WeightCapacityPercentage}"
+                                           ProgressionValue="{Binding Model.WeightCapacityPercentage}" />
+        
         <controls:CustomProgressBarControl MaxWidth="300"
                                            Margin="473,335,0,0"
                                            HorizontalAlignment="Left"

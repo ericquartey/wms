@@ -8,9 +8,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class MachineStatisticsViewModel : BaseViewModel, IMachineStatisticsViewModel
     {
-        #region Fields
+        //private readonly IMachineStatisticsService statisticsService;
 
-        private readonly IMachineStatisticsService statisticsService;
+        #region Fields
 
         private MachineStatistics model;
 
@@ -18,14 +18,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public MachineStatisticsViewModel(IMachineStatisticsService statisticsService)
+        public MachineStatisticsViewModel(/*IMachineStatisticsService statisticsService*/)
         {
-            if (statisticsService == null)
-            {
-                throw new ArgumentNullException(nameof(statisticsService));
-            }
+            //if (statisticsService == null)
+            //{
+            //    throw new ArgumentNullException(nameof(statisticsService));
+            //}
 
-            this.statisticsService = statisticsService;
+            //this.statisticsService = statisticsService;
         }
 
         #endregion
@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         {
             try
             {
-                this.Model = await this.statisticsService.GetAsync();
+                //this.Model = await this.statisticsService.GetAsync();
 
                 await base.OnEnterViewAsync();
             }

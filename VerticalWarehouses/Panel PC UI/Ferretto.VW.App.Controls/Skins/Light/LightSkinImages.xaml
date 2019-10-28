@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <Image x:Key="IAPP_ImageChangeSkin"
            Source="/Ferretto.VW.App.Controls;Component/Assets/brush_light.png" />
 

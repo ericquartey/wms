@@ -25,6 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC
 	ProjectSection(ProjectDependencies) = postProject
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B} = {907674B7-B982-41C4-92DF-8928F8C9AF6B}
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF} = {F58AA4C5-3E96-471D-B2C5-7767C5C165EF}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.Utils", "Panel PC UI\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj", "{868F2E9D-DC2A-4B3E-8708-CD494DBE37E3}"
@@ -53,6 +54,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Lay
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Login", "Panel PC UI\Ferretto.VW.App.Modules\Login\Ferretto.VW.App.Modules.Login.csproj", "{907674B7-B982-41C4-92DF-8928F8C9AF6B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Ferretto.VW.App.Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -256,6 +259,30 @@ Global
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B}.Release|x64.Build.0 = Release|Any CPU
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B}.Release|x86.ActiveCfg = Release|Any CPU
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B}.Release|x86.Build.0 = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|Any CPU.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|x64.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|x64.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|x86.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Autogen|x86.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|x64.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Debug|x86.Build.0 = Debug|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|x64.ActiveCfg = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|x64.Build.0 = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|x86.ActiveCfg = Release|Any CPU
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -278,6 +305,7 @@ Global
 		{DFB9C84C-A4F3-45DD-9ED7-81B7EC8E4E16} = {ABEB84BE-A9AF-4935-8EA9-4DA0ACABECF0}
 		{D32FF50E-27EF-4DAE-A14E-BDB4695EB38B} = {ABEB84BE-A9AF-4935-8EA9-4DA0ACABECF0}
 		{907674B7-B982-41C4-92DF-8928F8C9AF6B} = {ABEB84BE-A9AF-4935-8EA9-4DA0ACABECF0}
+		{F58AA4C5-3E96-471D-B2C5-7767C5C165EF} = {ABEB84BE-A9AF-4935-8EA9-4DA0ACABECF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

@@ -11,7 +11,13 @@
            d:DesignWidth="800"
            prism:ViewModelLocator.AutoWireViewModel="True"
            mc:Ignorable="d">
-    <Grid Margin="100,0">
+
+    <view:View.InputBindings>
+        <KeyBinding Key="Return"
+                    Command="{Binding LoginCommand}" />
+    </view:View.InputBindings>
+
+    <Grid Margin="100,30,100,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -26,15 +32,14 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Grid.RowSpan="5"
+        <Image Grid.Row="1"
+               Grid.RowSpan="4"
                Grid.Column="1"
-               Width="300"
-               Height="520"
-               HorizontalAlignment="Left"
+               HorizontalAlignment="Right"
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
                Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
-               Stretch="Fill" />
+               Stretch="Uniform" />
 
         <TextBlock Grid.Row="1"
                    HorizontalAlignment="Left"
@@ -56,6 +61,7 @@
 
         <StackPanel Name="LoginForm"
                     Grid.Row="4"
+                    Margin="0"
                     IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
 
             <ctrls:PpcTextBox Width="200"
@@ -70,7 +76,7 @@
                               InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
                               LabelText="{x:Static res:VWApp.UserLogin_Password}" />
 
-            <ctrls:PpcButton Margin="0,20"
+            <ctrls:PpcButton Margin="0,20,0,0"
                              HorizontalAlignment="Left"
                              Command="{Binding LoginCommand}"
                              Content="{x:Static res:General.Login}"

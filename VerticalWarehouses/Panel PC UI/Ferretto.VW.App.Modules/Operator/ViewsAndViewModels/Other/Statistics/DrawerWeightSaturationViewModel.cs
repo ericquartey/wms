@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -15,13 +14,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineIdentityWebService identityService;
 
-        private readonly IMachineLoadingUnitsService loadingUnitService;
+        private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
         private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
 
-        private readonly IStatusMessageService statusMessageService;
+        //private readonly IStatusMessageService statusMessageService;
 
         private int currentItemIndex;
 
@@ -31,15 +30,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         private ICommand drawerSpaceSaturationButtonCommand;
 
-        private decimal grossWeight;
+        private double grossWeight;
 
         private double maxGrossWeight;
 
-        private decimal maxNetWeight;
+        private double maxNetWeight;
 
-        private decimal netWeight;
+        private double netWeight;
 
-        private decimal netWeightPercent;
+        private double netWeightPercent;
 
         private int totalLoadingUnits;
 
@@ -50,14 +49,14 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerWeightSaturationViewModel(
-            IMachineLoadingUnitsService loadingUnitService,
-            IMachineIdentityService identityService,
-            IStatusMessageService statusMessageService,
+            IMachineLoadingUnitsWebService loadingUnitService,
+            IMachineIdentityWebService identityService,
+            //IStatusMessageService statusMessageService,
             Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;
-            this.statusMessageService = statusMessageService;
+            //this.statusMessageService = statusMessageService;
             this.loadingUnitService = loadingUnitService;
             this.navigationService = navigationService;
             this.identityService = identityService;
@@ -76,7 +75,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                     this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
                 }));
 
-        public decimal GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
+        public double GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
         public double MaxGrossWeight
         {
@@ -84,11 +83,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             set => this.SetProperty(ref this.maxGrossWeight, value);
         }
 
-        public decimal MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
+        public double MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
 
-        public decimal NetWeight { get => this.netWeight; set => this.SetProperty(ref this.netWeight, value); }
+        public double NetWeight { get => this.netWeight; set => this.SetProperty(ref this.netWeight, value); }
 
-        public decimal NetWeightPercent { get => this.netWeightPercent; set => this.SetProperty(ref this.netWeightPercent, value); }
+        public double NetWeightPercent { get => this.netWeightPercent; set => this.SetProperty(ref this.netWeightPercent, value); }
 
         public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
 
@@ -136,7 +135,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
-                this.MaxNetWeight = (decimal)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
+                this.MaxNetWeight = (double)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
                 this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
                 this.NetWeightPercent = this.NetWeight * 100 / this.MaxNetWeight;
@@ -145,7 +144,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             }
             catch (Exception ex)
             {
-                this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
+                //this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
         }
 

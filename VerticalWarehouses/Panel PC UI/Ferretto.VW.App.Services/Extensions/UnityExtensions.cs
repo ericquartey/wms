@@ -33,6 +33,9 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
+            // Operator
+            containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
+            containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
 
             containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                 new InjectionFactory(c =>
