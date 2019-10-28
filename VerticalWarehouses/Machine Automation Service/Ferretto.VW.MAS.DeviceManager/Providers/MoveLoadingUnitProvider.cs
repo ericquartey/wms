@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
+                 notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationFaultStop ||
                  notification.Status == MessageStatus.OperationRunningStop ||
                  notification.Type == MessageType.ShutterPositioning);
