@@ -314,8 +314,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false,
                         m => m.Data?.AxisMovement == Axis.Vertical);
 
-            this.bay = await this.bayManager.GetBayAsync();
-
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
@@ -432,6 +430,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.bay = await this.bayManager.GetBayAsync();
 
                 this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
             }

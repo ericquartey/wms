@@ -95,25 +95,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task RetrieveElevatorPositionAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         private async Task StartMovementAsync()
         {
             try
