@@ -17,6 +17,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Prototype2"
       }
+    },
+    "MAS (Bender)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Bender"
+      }
     }
   }
 }

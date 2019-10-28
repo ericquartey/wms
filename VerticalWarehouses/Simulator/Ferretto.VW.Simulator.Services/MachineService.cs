@@ -222,7 +222,7 @@ namespace Ferretto.VW.Simulator.Services
         {
             using (client)
             {
-                //var lastReceivedMessage = DateTime.UtcNow;
+                var lastReceivedMessage = DateTime.UtcNow;
                 var buffer = new byte[1024];
                 var socket = client.Client;
                 try
@@ -233,7 +233,7 @@ namespace Ferretto.VW.Simulator.Services
                         {
                             if (socket.Poll(50000, SelectMode.SelectRead))
                             {
-                                //lastReceivedMessage = DateTime.UtcNow;
+                                lastReceivedMessage = DateTime.UtcNow;
                                 var bytes = socket.Receive(buffer);
                                 if (bytes > 0)
                                 {
@@ -246,11 +246,11 @@ namespace Ferretto.VW.Simulator.Services
                                     break;
                                 }
                             }
-                            //else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
-                            //{
-                            //    client.Close();
-                            //    break;
-                            //}
+                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
+                            {
+                                client.Close();
+                                //    break;
+                            }
                         }
                         else
                         {
@@ -508,16 +508,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetAccelerations:
-                {
-                    var replyMessage = message.ToBytes();
-                    if (message.UIntPayload == 0)
                     {
-                        replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
-                    }
+                        var replyMessage = message.ToBytes();
+                        if (message.UIntPayload == 0)
+                        {
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
+                        }
 
-                    result = client.Client.Send(replyMessage);
-                }
-                break;
+                        result = client.Client.Send(replyMessage);
+                    }
+                    break;
 
                 case InverterParameterId.TableTravelTargetDecelerations:
                     result = client.Client.Send(message.ToBytes());
@@ -596,7 +596,8 @@ namespace Ferretto.VW.Simulator.Services
             if (!this.RemoteIOs01.Outputs[(int)IoPorts.PowerEnable].Value ||
                 !device.Inputs[(int)IoPorts.MushroomEmergency].Value ||
                 !device.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value ||
-                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value
+                !device.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value ||
+                !device.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value
                 )
             {
                 // Reset run status

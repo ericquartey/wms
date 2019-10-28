@@ -171,10 +171,22 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnAppearedAsync();
 
-            var bay = await this.bayManager.GetBayAsync();
-            if (!(bay is null))
+            try
             {
-                this.BayNumber = (int)bay.Number;
+                this.IsWaitingForResponse = true;
+                var bay = await this.bayManager.GetBayAsync();
+                if (!(bay is null))
+                {
+                    this.BayNumber = (int)bay.Number;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
 
             this.machineErrorsService.AutoNavigateOnError = false;

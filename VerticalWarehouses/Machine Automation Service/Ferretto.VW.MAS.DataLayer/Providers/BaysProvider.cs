@@ -24,9 +24,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly double kMul = 0.0739795918367347;
+        private readonly double kMul = 0.090625;
 
-        private readonly double kSum = -14.79591836734694;
+        private readonly double kSum = -181.25;
 
         private readonly IMachineProvider machineProvider;
 
