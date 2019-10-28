@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     ? $"{this.machineData.MessageData.AxisMovement} Positioning Started"
                     : "Burnishing Started",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.Positioning,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

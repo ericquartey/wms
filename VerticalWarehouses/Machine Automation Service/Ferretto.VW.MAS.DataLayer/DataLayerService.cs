@@ -80,19 +80,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            /* serviceProvider
-                 .GetRequiredService<ILogEntriesProvider>()
-                 .Add(command);
-                 */
+            serviceProvider
+                .GetRequiredService<ILogEntriesProvider>()
+                .Add(command);
+
             return Task.CompletedTask;
         }
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage notification, IServiceProvider serviceProvider)
         {
-            /*serviceProvider
+            serviceProvider
                 .GetRequiredService<ILogEntriesProvider>()
                 .Add(notification);
-                */
+
             return Task.CompletedTask;
         }
 

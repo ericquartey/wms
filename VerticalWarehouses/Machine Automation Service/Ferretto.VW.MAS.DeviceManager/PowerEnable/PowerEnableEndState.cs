@@ -51,8 +51,8 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
             var notificationMessage = new NotificationMessage(
                 null,
                 "Power Enable Completed",
-                MessageActor.FiniteStateMachines,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
                 MessageType.PowerEnable,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

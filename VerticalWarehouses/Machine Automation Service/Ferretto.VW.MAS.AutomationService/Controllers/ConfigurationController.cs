@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
         private readonly IMachineProvider machineProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -20,8 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public ConfigurationController(
             ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
             IMachineProvider machineProvider)
         {
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
         }
@@ -33,10 +37,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<VertimagConfiguration> Get()
         {
-            var machine = this.machineProvider.Get();
-            var setupProcedure = this.setupProceduresDataProvider.GetAll();
-
-            var configuration = new VertimagConfiguration() { Machine = machine, SetupProcedures = setupProcedure };
+            var configuration = new VertimagConfiguration
+            {
+                Machine = this.machineProvider.Get(),
+                SetupProcedures = this.setupProceduresDataProvider.GetAll(),
+                LoadingUnits = this.loadingUnitsProvider.GetAll(),
+            };
 
             return this.Ok(configuration);
         }

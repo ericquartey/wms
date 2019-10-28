@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 null,
                 $"Starting power state change on inverters belonging to bay {this.machineData.TargetBay} to {this.machineData.Enable}",
                 MessageActor.Any,
-                MessageActor.FiniteStateMachines,
+                MessageActor.DeviceManager,
                 MessageType.InverterPowerEnable,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,

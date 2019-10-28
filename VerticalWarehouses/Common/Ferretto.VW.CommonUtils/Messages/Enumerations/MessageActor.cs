@@ -10,7 +10,7 @@
 
         MachineManager,
 
-        FiniteStateMachines,
+        DeviceManager,
 
         InverterDriver,
 
