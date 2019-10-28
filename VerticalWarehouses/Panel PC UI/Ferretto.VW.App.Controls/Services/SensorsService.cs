@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -28,8 +27,6 @@ namespace Ferretto.VW.App.Services
         private readonly Sensors sensors = new Sensors();
 
         private bool bayIsMultiPosition;
-
-        private int controlsMonitoring;
 
         private double? elevatorHorizontalPosition;
 
@@ -131,44 +128,30 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public void EndMonitoring()
-        {
-            this.controlsMonitoring--;
-        }
-
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {
             return true;
         }
 
-        public void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-        }
-
-        public void OnNavigatedTo(NavigationContext navigationContext)
-        {
-        }
-
         public async Task RefreshAsync()
         {
-            await this.RetrieveElevatorPositionAsync();
+            try
+            {
+                await this.RetrieveElevatorPositionAsync();
 
-            this.Bay = await this.bayManagerService.GetBayAsync();
+                this.Bay = await this.bayManagerService.GetBayAsync();
 
-            this.BayIsMultiPosition = this.Bay.IsDouble;
+                this.BayIsMultiPosition = this.Bay.IsDouble;
 
-            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
+                this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
 
-            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
 
-            await this.InitializeSensors();
-        }
-
-        public async Task StartMonitoring()
-        {
-            this.controlsMonitoring++;
-
-            await this.RefreshAsync();
+                await this.InitializeSensors();
+            }
+            catch
+            {
+            }
         }
 
         private void Initialize()
@@ -197,21 +180,15 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializeSensors()
         {
-            try
-            {
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+            var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
-                this.sensors.Update(sensorsStates.ToArray());
-                this.shutterSensors.Update(sensorsStates.ToArray());
+            this.sensors.Update(sensorsStates.ToArray());
+            this.shutterSensors.Update(sensorsStates.ToArray());
 
-                this.RaisePropertyChanged(nameof(this.Sensors));
-                this.RaisePropertyChanged(nameof(this.ShutterSensors));
+            this.RaisePropertyChanged(nameof(this.Sensors));
+            this.RaisePropertyChanged(nameof(this.ShutterSensors));
 
-                this.RaisePropertyChanged();
-            }
-            catch
-            {
-            }
+            this.RaisePropertyChanged();
         }
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -251,14 +228,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task RetrieveElevatorPositionAsync()
         {
-            try
-            {
-                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
-            }
-            catch
-            {
-            }
+            this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+            this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
         }
 
         #endregion

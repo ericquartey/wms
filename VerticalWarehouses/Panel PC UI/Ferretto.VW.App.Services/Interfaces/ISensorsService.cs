@@ -3,13 +3,11 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Services
 {
-    public interface ISensorsService : INavigationAware
+    public interface ISensorsService
     {
         #region Methods
 
-        void EndMonitoring();
-
-        Task StartMonitoring();
+        Task RefreshAsync();
 
         #endregion
     }

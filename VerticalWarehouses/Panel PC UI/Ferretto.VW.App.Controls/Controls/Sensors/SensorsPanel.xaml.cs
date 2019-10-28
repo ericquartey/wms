@@ -22,7 +22,6 @@ namespace Ferretto.VW.App.Controls
             this.InitializeComponent();
 
             this.Loaded += this.SensorsPanel_Loaded;
-            this.Unloaded += this.SensorsPanel_Unloaded;
 
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
             this.DataContext = this.sensorsService;
@@ -34,12 +33,7 @@ namespace Ferretto.VW.App.Controls
 
         private void SensorsPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.sensorsService.StartMonitoring();
-        }
-
-        private void SensorsPanel_Unloaded(object sender, System.Windows.RoutedEventArgs e)
-        {
-            this.sensorsService.EndMonitoring();
+            this.sensorsService.RefreshAsync();
         }
 
         #endregion
