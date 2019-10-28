@@ -201,4 +201,7 @@
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+    <value>La baia di destinazione deve essere vuota prima di richiamare un cassetto</value>
+  </data>
 </root>

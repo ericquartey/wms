@@ -157,6 +157,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData)
         {
             bool returnValue = false;
+            var error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationDb;
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
@@ -179,13 +180,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     {
                         returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
                     }
+                    else
+                    {
+                        error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay;
+                    }
 
                     break;
             }
 
             if (!returnValue)
             {
-                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationDb);
+                this.Logger.LogError(error.ToString());
+                this.errorsProvider.RecordNew(error);
             }
 
             return returnValue;
@@ -197,6 +203,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (!returnValue)
             {
+                this.Logger.LogError(MachineErrorCode.MachineManagerErrorLoadingUnitElevator.ToString());
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
             }
 
@@ -209,6 +216,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (!returnValue)
             {
+                this.Logger.LogError(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource.ToString());
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource);
             }
 
@@ -291,6 +299,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
             else
             {
+                this.Logger.LogError(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb.ToString());
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
             }
 

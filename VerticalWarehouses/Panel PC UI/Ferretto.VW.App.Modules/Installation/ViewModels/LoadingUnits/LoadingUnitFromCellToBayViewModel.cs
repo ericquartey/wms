@@ -53,6 +53,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.SelectBayPosition1();
         }
 
+        public override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+        }
+
         public override async Task StartAsync()
         {
             try
