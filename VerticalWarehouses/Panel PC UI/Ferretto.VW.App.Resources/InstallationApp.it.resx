@@ -1101,6 +1101,10 @@
   <data name="ShutterEnduranceTest" xml:space="preserve">
     <value>Test Serranda</value>
   </data>
+  <data name="BayPosition1Height" xml:space="preserve">
+    <value>Quota baia posizione 1 [mm]</value>
+  </data>
+  <data name="BayPosition2Height" xml:space="preserve">
+    <value>Quota baia posizione 2 [mm]</value>
+  </data>
 </root>
-
-
