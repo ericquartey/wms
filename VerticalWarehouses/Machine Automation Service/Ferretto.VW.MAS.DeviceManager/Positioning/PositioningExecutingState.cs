@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private bool beltBurnishingMovingUpwards;
 
+        private int countProfileCalibrated;
+
         private Timer delayTimer;
 
         private bool isDisposed;
@@ -57,11 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private double? profileCalibratePosition = null;
 
-        private InverterIndex profileInverterIndex;
-
         private double? profileStartPosition = null;
-
-        private Timer profileTimer;
 
         #endregion
 
@@ -137,7 +135,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.stateData.FieldMessage = message;
                     // stop timers
                     this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                    this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                     this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                     break;
             }
@@ -229,11 +226,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogTrace($"1:Publishing Field Command Message {ioCommandMessage.Type} Destination {ioCommandMessage.Destination}");
 
                         this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
-
-                        this.profileInverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
-
-                        // this timer is used to find the starting position of the profile mask
-                        this.profileTimer = new Timer(this.ProfileElapsed, null, 200, 200);
                     }
                     break;
 
@@ -309,7 +301,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             // stop timers
             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
@@ -344,7 +335,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             if (disposing)
             {
                 this.delayTimer?.Dispose();
-                this.profileTimer?.Dispose();
                 this.scope.Dispose();
             }
 
@@ -552,20 +542,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
             }
 
-            if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
-                && this.profileStartPosition.HasValue
-                && !this.profileCalibratePosition.HasValue
-                )
+            if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
             {
                 var machineResourcesProvider = this.scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
                 if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
                 {
-                    this.profileCalibratePosition = this.machineData.MessageData.CurrentPosition.Value - this.profileStartPosition.Value;
+                    if (this.countProfileCalibrated == 0
+                        && !this.profileStartPosition.HasValue
+                        )
+                    {
+                        this.profileStartPosition = this.machineData.MessageData.CurrentPosition.Value;
+                        this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
+                    }
+                    else if (this.countProfileCalibrated == 1
+                        && !this.profileCalibratePosition.HasValue
+                        )
+                    {
+                        this.profileCalibratePosition = this.machineData.MessageData.CurrentPosition.Value - this.profileStartPosition.Value;
 
-                    // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
-                    this.Logger.LogInformation($"ProfileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
+                        // TODO - store the profileCalibratePosition in the corrisponding configuration parameter or send it to the UI?
+                        this.Logger.LogInformation($"profileCalibratePosition Reached! Value {this.profileCalibratePosition.Value}");
 
-                    this.Stop(StopRequestReason.Stop);
+                        this.Stop(StopRequestReason.Stop);
+                    }
+                }
+                else if (this.countProfileCalibrated == 0
+                    && this.profileStartPosition.HasValue
+                    )
+                {
+                    // profileCalibrated signal is low after startPosion
+                    this.countProfileCalibrated = 1;
                 }
             }
         }
@@ -591,7 +597,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         this.profileStartPosition = this.machineData.MessageData.CurrentPosition.Value;
                         this.Logger.LogInformation($"profileStartPosition = {this.profileStartPosition.Value}");
-                        this.profileTimer.Change(Timeout.Infinite, Timeout.Infinite);
                     }
                 }
             }
@@ -643,7 +648,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             // stop timers
                             this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                            this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                         }
                     }
@@ -705,7 +709,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.machineData.ExecutedSteps = this.performedCycles;
                 // stop timers
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
             }
             else if (
@@ -728,30 +731,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.machineData.MessageData = newPositioningMessageData;
                 // stop timers
                 this.delayTimer?.Change(Timeout.Infinite, Timeout.Infinite);
-                this.profileTimer?.Change(Timeout.Infinite, Timeout.Infinite);
                 this.ParentStateMachine.ChangeState(new PositioningStartState(this.stateData));
             }
-        }
-
-        private void ProfileElapsed(object state)
-        {
-            this.RequestMeasureProfile();
-        }
-
-        private void RequestMeasureProfile()
-        {
-            var inverterCommandMessageData = new MeasureProfileFieldMessageData();
-            var inverterCommandMessage = new FieldCommandMessage(
-                inverterCommandMessageData,
-                $"Measure Profile",
-                FieldMessageActor.InverterDriver,
-                FieldMessageActor.DeviceManager,
-                FieldMessageType.MeasureProfile,
-                (byte)this.profileInverterIndex);
-
-            this.Logger.LogTrace($"Publishing Field Command Message {inverterCommandMessage.Type} Destination {inverterCommandMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
         }
 
         #endregion

@@ -39,8 +39,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void SetRunningState(bool requestedState, BayNumber requestingBay, MessageActor sender)
         {
+            // TODO check this call...
             this.SendCommandToMissionManager(
-                new ChangeRunningStateMessageData(requestedState),
+                new ChangeRunningStateMessageData(requestedState, null, CommandAction.Start, requestedState ? StopRequestReason.NoReason : StopRequestReason.Stop),
                 $"Bay {requestingBay} requested setting Running State to {requestedState}",
                 sender,
                 MessageType.ChangeRunningState,
