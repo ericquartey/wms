@@ -40,6 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 notification.Type == MessageType.InverterFaultReset ||
                 notification.Type == MessageType.InverterPowerEnable ||
                 notification.Type == MessageType.ResetSecurity ||
+                notification.Status == MessageStatus.OperationStop ||
                 notification.Status == MessageStatus.OperationFaultStop ||
                 notification.Status == MessageStatus.OperationRunningStop);
         }
@@ -210,6 +211,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             if (message.Status == MessageStatus.OperationFaultStop ||
+                message.Status == MessageStatus.OperationStop ||
                 message.Status == MessageStatus.OperationRunningStop)
             {
                 return MessageStatus.OperationEnd;
