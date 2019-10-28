@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -158,6 +159,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         {
             bool returnValue = false;
             var error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationDb;
+            var errorDescription = ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationDb;
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
@@ -183,6 +185,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     else
                     {
                         error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay;
+                        errorDescription = ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay;
                     }
 
                     break;
@@ -190,7 +193,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (!returnValue)
             {
-                this.Logger.LogError(error.ToString());
+                this.Logger.LogError(errorDescription);
                 this.errorsProvider.RecordNew(error);
             }
 
@@ -203,7 +206,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (!returnValue)
             {
-                this.Logger.LogError(MachineErrorCode.MachineManagerErrorLoadingUnitElevator.ToString());
+                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator.ToString());
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
             }
 
@@ -216,7 +219,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
             if (!returnValue)
             {
-                this.Logger.LogError(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource.ToString());
+                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorNoLoadingUnitInSource);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource);
             }
 
@@ -299,7 +302,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
             else
             {
-                this.Logger.LogError(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb.ToString());
+                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceDb.ToString());
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
             }
 
