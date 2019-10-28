@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.Shutter1HeightControlView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ShutterHeightControlView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
@@ -9,9 +9,7 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Width="1024"
-          Height="608"
-          IsEnabled="False">
+    <Grid IsEnabled="False">
 
         <TextBlock Margin="160,30,0,0"
                    HorizontalAlignment="Left"
