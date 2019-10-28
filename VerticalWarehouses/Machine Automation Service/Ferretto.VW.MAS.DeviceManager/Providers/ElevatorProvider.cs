@@ -146,11 +146,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            //if (measure && isLoadingUnitOnBoard)
-            //{
-            //    this.logger.LogWarning($"Do not measure profile on full elevator!");
-            //    measure = false;
-            //}
+            if (measure && isLoadingUnitOnBoard)
+            {
+                this.logger.LogWarning($"Do not measure profile on full elevator!");
+                measure = false;
+            }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
             this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
