@@ -360,7 +360,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.Panels != null
                 &&
-                this.Panels.LastOrDefault() != this.CurrentPanel
+                this.CurrentPanelNumber < this.Panels.Count()
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -372,7 +372,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.Panels != null
                 &&
-                this.Panels.FirstOrDefault() != this.CurrentPanel
+                this.CurrentPanelNumber > 1
                 &&
                 !this.IsWaitingForResponse
                 &&
