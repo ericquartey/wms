@@ -121,18 +121,21 @@
           "WeightMeasureTime": 15,
         },
         {
+          "Inverter": {
+            "Index": 1,
+            "Type": "Acu"
+          },
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
           "ChainOffset": -6.4,
-          "Inverter": null,
           "ProfileCalibratePosition": 300,
           "ProfileCalibrateSpeed": 30,
           "ProfileCalibrateLength": 900,
           "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
-            "Speed": 55
+            "Speed": 550
           },
           "EmptyLoadMovement": {
             "Acceleration": 1500,
