@@ -29,13 +29,13 @@ namespace Ferretto.VW.App.Services
 
         private bool bayIsMultiPosition;
 
+        private int controlsMonitoring;
+
         private double? elevatorHorizontalPosition;
 
         private double? elevatorVerticalPosition;
 
         private bool isShutterTwoSensors;
-
-        private bool isZeroChain;
 
         private SubscriptionToken positioningToken;
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
 
-            this.StartMonitoring();
+            this.Initialize();
         }
 
         #endregion
@@ -121,11 +121,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.isShutterTwoSensors, value);
         }
 
-        public bool IsZeroChain
-        {
-            get => this.isZeroChain;
-            set => this.SetProperty(ref this.isZeroChain, value);
-        }
+        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
         public Sensors Sensors => this.sensors;
 
@@ -137,6 +133,7 @@ namespace Ferretto.VW.App.Services
 
         public void EndMonitoring()
         {
+            this.controlsMonitoring--;
         }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
@@ -154,10 +151,6 @@ namespace Ferretto.VW.App.Services
 
         public async Task RefreshAsync()
         {
-            this.IsZeroChain = this.IsOneTonMachine
-                ? this.sensors.ZeroPawlSensorOneK
-                : this.sensors.ZeroPawlSensor;
-
             await this.RetrieveElevatorPositionAsync();
 
             this.Bay = await this.bayManagerService.GetBayAsync();
@@ -171,7 +164,14 @@ namespace Ferretto.VW.App.Services
             await this.InitializeSensors();
         }
 
-        public void StartMonitoring()
+        public async Task StartMonitoring()
+        {
+            this.controlsMonitoring++;
+
+            await this.RefreshAsync();
+        }
+
+        private void Initialize()
         {
             this.sensorsToken = this.sensorsToken
                 ??
@@ -191,6 +191,8 @@ namespace Ferretto.VW.App.Services
                         this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.RefreshAsync();
         }
 
         private async Task InitializeSensors()
@@ -200,7 +202,12 @@ namespace Ferretto.VW.App.Services
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
-                this.ShutterSensors.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray());
+
+                this.RaisePropertyChanged(nameof(this.Sensors));
+                this.RaisePropertyChanged(nameof(this.ShutterSensors));
+
+                this.RaisePropertyChanged();
             }
             catch
             {
@@ -230,12 +237,14 @@ namespace Ferretto.VW.App.Services
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
-            this.ShutterSensors.Update(message.Data.SensorsStates);
+            this.shutterSensors.Update(message.Data.SensorsStates);
 
-            this.IsZeroChain = this.IsOneTonMachine
-                ? this.sensors.ZeroPawlSensorOneK
-                : this.sensors.ZeroPawlSensor;
+            this.RaisePropertyChanged();
+        }
 
+        private void RaisePropertyChanged()
+        {
+            this.RaisePropertyChanged(nameof(this.IsZeroChain));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
         }

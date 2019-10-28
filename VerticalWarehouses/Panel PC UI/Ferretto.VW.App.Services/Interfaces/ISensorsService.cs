@@ -1,4 +1,5 @@
-﻿using Prism.Regions;
+﻿using System.Threading.Tasks;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Services
 {
@@ -8,7 +9,7 @@ namespace Ferretto.VW.App.Services
 
         void EndMonitoring();
 
-        void StartMonitoring();
+        Task StartMonitoring();
 
         #endregion
     }
