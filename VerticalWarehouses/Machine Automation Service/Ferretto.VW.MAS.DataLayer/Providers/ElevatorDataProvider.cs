@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
+                var elevator = this.dataContext.Elevators.AsNoTracking()
                     .Include(e => e.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .Single();
