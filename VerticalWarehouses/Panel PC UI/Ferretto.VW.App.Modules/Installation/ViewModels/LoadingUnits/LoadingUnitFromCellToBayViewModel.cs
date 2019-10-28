@@ -20,14 +20,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 bayManagerService)
         {
         }
