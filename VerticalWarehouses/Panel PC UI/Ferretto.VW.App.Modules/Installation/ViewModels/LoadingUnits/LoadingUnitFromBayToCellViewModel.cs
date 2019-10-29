@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -13,18 +10,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
                     IMachineCellsWebService machineCellsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 machineCellsWebService,
                 bayManagerService)
-
         {
         }
 

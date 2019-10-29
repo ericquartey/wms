@@ -14,8 +14,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private bool bayIsMultiPosition;
-
         private BayNumber bayNumber;
 
         private double? bayPositionHeight;
@@ -26,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPosition2Selected;
 
-        private LoadingUnit loadingUnitInBay;
-
         private DelegateCommand moveToBayHeightCommand;
 
         private DelegateCommand selectBayPosition1Command;
@@ -37,12 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public bool BayIsMultiPosition
-        {
-            get => this.bayIsMultiPosition;
-            set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
 
         public BayNumber BayNumber
         {
@@ -93,12 +83,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public LoadingUnit LoadingUnitInBay
-        {
-            get => this.loadingUnitInBay;
-            private set => this.SetProperty(ref this.loadingUnitInBay, value);
-        }
-
         public ICommand MoveToBayHeightCommand =>
             this.moveToBayHeightCommand
             ??
@@ -128,7 +112,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                (this.IsZeroChain || (this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1));
+                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
         }
 
         private bool CanSelectBayPosition()
@@ -138,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                (this.IsZeroChain || (this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1));
+                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
         }
 
         private async Task MoveToBayHeightAsync()
