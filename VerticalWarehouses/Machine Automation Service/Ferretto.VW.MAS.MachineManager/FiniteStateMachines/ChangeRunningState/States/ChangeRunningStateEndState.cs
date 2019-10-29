@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
             var notificationStatus = this.machineControlProvider.StopOperationStatus(notification);
 
-            if (notificationStatus != MessageStatus.NoStatus)
+            if (notificationStatus != MessageStatus.NotSpecified)
             {
                 switch (notificationStatus)
                 {

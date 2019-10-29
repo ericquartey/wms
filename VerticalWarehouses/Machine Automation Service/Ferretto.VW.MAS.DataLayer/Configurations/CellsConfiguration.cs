@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
         public void Configure(EntityTypeBuilder<Cell> builder)
         {
-            if (builder == null)
+            if (builder is null)
             {
                 throw new System.ArgumentNullException(nameof(builder));
             }

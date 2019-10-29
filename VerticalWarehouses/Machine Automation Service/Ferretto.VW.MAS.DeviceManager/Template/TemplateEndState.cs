@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
                 $"Template End State Notification with {this.machineData.Message} and {this.stateData.Message}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,
-                MessageType.NoType,
+                MessageType.NotSpecified,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));

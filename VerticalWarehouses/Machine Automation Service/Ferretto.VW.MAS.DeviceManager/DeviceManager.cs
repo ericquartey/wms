@@ -650,7 +650,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         FieldMessageActor.Any,
                         FieldMessageActor.DeviceManager,
                         FieldMessageType.DataLayerReady,
-                        MessageStatus.NoStatus,
+                        MessageStatus.NotSpecified,
                         (byte)InverterIndex.None);
 
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);

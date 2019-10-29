@@ -1,9 +1,6 @@
-﻿using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.MAStoUIMessages.Enumerations;
+﻿using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using NLog;
 using Prism.Events;
 using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
 using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
@@ -18,6 +15,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IInstallationHubClient installationHubClient;
 
+        private readonly Logger logger;
+
         #endregion
 
         #region Constructors
@@ -26,191 +25,92 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IInstallationHubClient installationHubClient)
         {
-            if (installationHubClient is null)
-            {
-                throw new System.ArgumentNullException(nameof(installationHubClient));
-            }
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+            this.installationHubClient = installationHubClient ?? throw new System.ArgumentNullException(nameof(installationHubClient));
 
-            this.eventAggregator = eventAggregator;
-            this.installationHubClient = installationHubClient;
-            this.installationHubClient.MessageNotified += this.InstallationMessageNotifiedEventHandler;
+            this.installationHubClient.MessageReceived += this.OnMessageReceived;
+
+            this.logger = NLog.LogManager.GetCurrentClassLogger();
         }
 
         #endregion
 
         #region Methods
 
-        private void HandlePositioningMessageData(NotificationMessageUI<PositioningMessageData> vp)
-        {
-            this.eventAggregator
-                .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                .Publish(vp);
-
-            if (vp.Status == MessageStatus.OperationError
-                &&
-                vp.Data is PositioningMessageData positioningData)
-            {
-                var actionType = ActionType.None;
-                switch (positioningData.AxisMovement)
-                {
-                    case Axis.HorizontalAndVertical:
-                        actionType = ActionType.Homing;
-                        break;
-
-                    case Axis.Vertical:
-                        actionType = ActionType.VerticalHoming;
-                        break;
-
-                    case Axis.Horizontal:
-                    case Axis.BayChain:
-                        actionType = ActionType.HorizontalHoming;
-                        break;
-
-                    case Axis.None:
-                        break;
-                }
-
-                this.eventAggregator
-                    .GetEvent<MachineAutomationErrorPubSubEvent>()
-                    .Publish(
-                    new MachineAutomationEventArgs(NotificationType.Error, actionType, ActionStatus.Error));
-            }
-        }
-
-        private void HandleSensorsChangedMessage(NotificationMessageUI<SensorsChangedMessageData> message)
-        {
-            var dataSensors = message.Data.SensorsStates;
-
-            this.eventAggregator.GetEvent<NotificationEventUI<SensorsChangedMessageData>>().Publish(message);
-
-            if (!dataSensors[(int)IOMachineSensors.RunningState])
-            {
-                this.eventAggregator
-                    .GetEvent<MachineAutomationErrorPubSubEvent>()
-                    .Publish(
-                        new MachineAutomationEventArgs(NotificationType.Error, ActionType.SensorsChanged, ActionStatus.Error));
-            }
-        }
-
-        /// <summary>
-        /// Delegate when an incoming Notification Message is catch from SignalR controller and the related event is fired.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void InstallationMessageNotifiedEventHandler(object sender, MessageNotifiedEventArgs e)
+        private void OnMessageReceived(object sender, MessageNotifiedEventArgs e)
         {
             switch (e.NotificationMessage)
             {
                 case NotificationMessageUI<SensorsChangedMessageData> sv:
-                    this.HandleSensorsChangedMessage(sv);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                        .Publish(sv);
                     break;
 
                 case NotificationMessageUI<CalibrateAxisMessageData> cc:
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<CalibrateAxisMessageData>>()
                         .Publish(cc);
-
-                    if (cc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator
-                            .GetEvent<MachineAutomationErrorPubSubEvent>()
-                            .Publish(
-                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
-                    }
                     break;
 
                 case NotificationMessageUI<SwitchAxisMessageData> sw:
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<SwitchAxisMessageData>>()
                         .Publish(sw);
-
-                    if (sw.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.SwitchAxis, ActionStatus.Error));
-                    }
                     break;
 
                 case NotificationMessageUI<ShutterPositioningMessageData> sp:
-                    this.eventAggregator.GetEvent<NotificationEventUI<ShutterPositioningMessageData>>().Publish(sp);
-
-                    if (sp.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.ShutterPositioning, ActionStatus.Error));
-                    }
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                        .Publish(sp);
                     break;
 
                 case NotificationMessageUI<HomingMessageData> h:
-                    this.eventAggregator.GetEvent<NotificationEventUI<HomingMessageData>>().Publish(h);
-
-                    if (h.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>().Publish(
-                            new MachineAutomationEventArgs(NotificationType.Error, ActionType.Homing, ActionStatus.Error));
-                    }
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<HomingMessageData>>()
+                        .Publish(h);
                     break;
 
                 case NotificationMessageUI<CurrentPositionMessageData> cp:
-                    this.eventAggregator.GetEvent<NotificationEventUI<CurrentPositionMessageData>>().Publish(cp);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
+                        .Publish(cp);
                     break;
 
                 case NotificationMessageUI<InverterExceptionMessageData> ie:
-                    this.eventAggregator.GetEvent<NotificationEventUI<InverterExceptionMessageData>>().Publish(ie);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterExceptionMessageData>>()
+                        .Publish(ie);
                     break;
 
                 case NotificationMessageUI<PositioningMessageData> vp:
-                    this.eventAggregator.GetEvent<NotificationEventUI<PositioningMessageData>>().Publish(vp);
-                    this.HandlePositioningMessageData(vp);
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                        .Publish(vp);
                     break;
 
                 case NotificationMessageUI<ResolutionCalibrationMessageData> rc:
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<ResolutionCalibrationMessageData>>()
                         .Publish(rc);
-
-                    if (rc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator.GetEvent<MachineAutomationErrorPubSubEvent>()
-                            .Publish(
-                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResolutionCalibration, ActionStatus.Error));
-                    }
                     break;
 
                 case NotificationMessageUI<ResetSecurityMessageData> sc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<ResetSecurityMessageData>>().Publish(sc);
-
-                    if (sc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator
-                            .GetEvent<MachineAutomationErrorPubSubEvent>()
-                            .Publish(
-                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.ResetSecurity, ActionStatus.Error));
-                    }
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<ResetSecurityMessageData>>()
+                        .Publish(sc);
                     break;
 
                 case NotificationMessageUI<InverterStopMessageData> sc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<InverterStopMessageData>>().Publish(sc);
-
-                    if (sc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator
-                            .GetEvent<MachineAutomationErrorPubSubEvent>()
-                            .Publish(
-                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.InverterStop, ActionStatus.Error));
-                    }
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<InverterStopMessageData>>()
+                        .Publish(sc);
                     break;
 
                 case NotificationMessageUI<PowerEnableMessageData> sc:
-                    this.eventAggregator.GetEvent<NotificationEventUI<PowerEnableMessageData>>().Publish(sc);
-
-                    if (sc.Status == MessageStatus.OperationError)
-                    {
-                        this.eventAggregator
-                            .GetEvent<MachineAutomationErrorPubSubEvent>()
-                            .Publish(
-                                new MachineAutomationEventArgs(NotificationType.Error, ActionType.PowerEnable, ActionStatus.Error));
-                    }
+                    this.eventAggregator
+                        .GetEvent<NotificationEventUI<PowerEnableMessageData>>()
+                        .Publish(sc);
                     break;
 
                 case NotificationMessageUI<InverterStatusWordMessageData> isw:
@@ -241,6 +141,10 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
                         .Publish(mld);
+                    break;
+
+                default:
+                    this.logger.Debug($"Signal-R hub message {e.NotificationMessage.GetType().Name} was ignored.");
                     break;
             }
         }

@@ -2,12 +2,12 @@
 {
     public enum InverterTimer
     {
-        NoTimer = 0,
+        NotSpecified,
 
-        SensorStatus = 1,
+        SensorStatus,
 
-        AxisPosition = 2,
+        AxisPosition,
 
-        StatusWord = 3,
+        StatusWord,
     }
 }

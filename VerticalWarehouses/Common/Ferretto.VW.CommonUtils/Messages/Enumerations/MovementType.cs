@@ -2,10 +2,12 @@
 {
     public enum MovementType
     {
-        Absolute = 0,
+        NotSpecified,
 
-        Relative = 1,
+        Absolute,
 
-        TableTarget = 2,
+        Relative,
+
+        TableTarget,
     }
 }
