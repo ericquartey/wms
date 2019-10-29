@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Converters;
@@ -64,11 +63,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 var environment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
                 var seedFileName = GetSeedFileName(environment.EnvironmentName);
 
-                if (System.IO.File.Exists(seedFileName))
+                if (File.Exists(seedFileName))
                 {
-                    this.Logger.LogInformation($"Applying seed file '{seedFileName}' ...");
+                    this.Logger.LogInformation($"First run: applying seed file '{seedFileName}' ...");
 
-                    var seedScript = await System.IO.File.ReadAllTextAsync(seedFileName);
+                    var seedScript = await File.ReadAllTextAsync(seedFileName);
 
                     var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
                     await dataContext.Database.ExecuteSqlCommandAsync(seedScript);

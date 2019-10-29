@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IState returnValue = this;
 
             var notificationStatus = this.machineControlProvider.ResetBayFaultStatus(notification);
-            if (notificationStatus != MessageStatus.NoStatus)
+            if (notificationStatus != MessageStatus.NotSpecified)
             {
                 switch (notificationStatus)
                 {
