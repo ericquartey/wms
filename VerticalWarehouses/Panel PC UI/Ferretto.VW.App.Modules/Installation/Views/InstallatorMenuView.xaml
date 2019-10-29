@@ -19,6 +19,8 @@
 
         <ctrls:PpcMenuWrap Grid.Row="4"
                            ItemsSource="{Binding OtherItems}" />
-
     </Grid>
+    <!--
+    </Grid>
+    -->
 </ctrls:View>

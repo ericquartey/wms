@@ -370,44 +370,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.moveLoadingUnitToken = this.moveLoadingUnitToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
-                    .Subscribe(this.OnMoveLoadingUnitChanged,
-                       ThreadOption.UIThread,
-                       false);
-
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
+            this.SubscribeToEvents();
 
             await this.RetrieveElevatorPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
-
-            this.Bay = await this.bayManagerService.GetBayAsync();
-
-            this.BayIsMultiPosition = this.Bay.IsDouble;
-
-            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
-
-            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
 
             await this.InitializeSensors();
 
@@ -417,7 +384,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public void RaiseCanExecuteChanged()
+        public virtual void RaiseCanExecuteChanged()
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
@@ -514,6 +481,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                this.Bay = await this.bayManagerService.GetBayAsync();
+
+                this.BayIsMultiPosition = this.Bay.IsDouble;
+
+                this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
+
+                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
@@ -530,18 +505,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationExecuting:
-                {
-                    if (message.Data.AxisMovement == Axis.Vertical)
                     {
-                        this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                    }
-                    else if (message.Data.AxisMovement == Axis.Horizontal)
-                    {
-                        this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                    }
+                        if (message.Data.AxisMovement == Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                        }
 
-                    break;
-                }
+                        break;
+                    }
             }
         }
 
@@ -562,25 +537,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     break;
 
                 case MessageStatus.OperationEnd:
-                {
-                    if (!this.IsExecutingProcedure)
                     {
+                        if (!this.IsExecutingProcedure)
+                        {
+                            break;
+                        }
+
+                        this.Ended();
+
                         break;
                     }
-
-                    this.Ended();
-
-                    break;
-                }
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
-                {
-                    this.Stopped();
+                    {
+                        this.Stopped();
 
-                    break;
-                }
+                        break;
+                    }
 
                 case MessageStatus.OperationError:
                     this.IsExecutingProcedure = false;
@@ -638,6 +613,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.ShowNotification(
                 Resources.InstallationApp.ProcedureWasStopped,
                 Services.Models.NotificationSeverity.Warning);
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.subscriptionToken = this.subscriptionToken
+               ??
+               this.EventAggregator
+                   .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                   .Subscribe(
+                       this.OnElevatorPositionChanged,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        this.OnMoveLoadingUnitChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion

@@ -2,7 +2,7 @@
 {
     public enum MessageStatus
     {
-        NoStatus,
+        NotSpecified,
 
         OperationEnd,
 

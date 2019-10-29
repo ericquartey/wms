@@ -1,14 +1,15 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.BayHeightCheckView"
-            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
-            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-            xmlns:prism="http://prismlibrary.com/"
-            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            prism:ViewModelLocator.AutoWireViewModel="True"
-            mc:Ignorable="d">
+﻿<ctrls:View
+    x:Class="Ferretto.VW.App.Installation.Views.BayHeightCheckView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+    xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:prism="http://prismlibrary.com/"
+    xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+    prism:ViewModelLocator.AutoWireViewModel="True"
+    mc:Ignorable="d">
 
     <Grid Margin="130,30,0,0">
         <Grid.ColumnDefinitions>
@@ -19,82 +20,108 @@
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="3"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BayHeightCheck}" />
+        <TextBlock
+            Grid.ColumnSpan="3"
+            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+            Text="{x:Static res:InstallationApp.BayHeightCheck}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 ContentText="{Binding PositionHeight}"
-                                 LabelText="{x:Static res:InstallationApp.BayHeight}" />
+        <controls:PpcLabeledText
+            Grid.Row="1"
+            ContentText="{Binding PositionHeight}"
+            LabelText="{x:Static res:InstallationApp.BayHeight}" />
 
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    VerticalAlignment="Top"
-                    Orientation="Horizontal"
-                    Visibility="{Binding Bay.IsDouble, Converter={StaticResource BTVC}}">
-            <controls:PpcButton Width="100"
-                                Margin="0,0,10,0"
-                                Command="{Binding ChangeToLowerBayPositionCommand}"
-                                Content="{x:Static res:InstallationApp.LowerBayPosition}" />
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Top"
+            Orientation="Horizontal"
+            Visibility="{Binding Bay.IsDouble, Converter={StaticResource BTVC}}">
+            <controls:PpcButton
+                Width="100"
+                Margin="0,0,10,0"
+                Command="{Binding ChangeToLowerBayPositionCommand}"
+                Content="{x:Static res:InstallationApp.LowerBayPosition}" />
 
-            <controls:PpcButton Width="100"
-                                Command="{Binding ChangeToUpperBayPositionCommand}"
-                                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
+            <controls:PpcButton
+                Width="100"
+                Command="{Binding ChangeToUpperBayPositionCommand}"
+                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
 
         </StackPanel>
 
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="2"
-                            VerticalAlignment="Top"
-                            Command="{Binding MoveToBayHeightCommand}"
-                            Content="{x:Static res:InstallationApp.GoToBay}"
-                            IsBusy="{Binding IsElevatorMovingToHeight}" />
+        <controls:PpcButton
+            Grid.Row="1"
+            Grid.Column="2"
+            VerticalAlignment="Top"
+            Command="{Binding MoveToBayHeightCommand}"
+            Content="{x:Static res:InstallationApp.GoToBay}"
+            IsBusy="{Binding IsElevatorMovingToHeight}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="3"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+        <controls:PpcButton
+            Grid.Row="2"
+            Grid.Column="2"
+            Margin="0,15,0,0"
+            VerticalAlignment="Top"
+            Command="{Binding AbortCommand}"
+            Content="{x:Static res:InstallationApp.Abort}" />
+        <controls:PpcButton
+            Grid.Row="1"
+            Grid.Column="3"
+            VerticalAlignment="Top"
+            Command="{Binding StopCommand}"
+            Content="{x:Static res:InstallationApp.Stop}" />
 
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcTextBox Grid.Row="2"
-                             Grid.Column="1"
-                             InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
-                             LabelText="{x:Static res:InstallationApp.StepValue}" />
+        <controls:PpcLabeledText
+            Grid.Row="3"
+            ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
+            LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <StackPanel Grid.Row="2"
-                    Grid.Column="2"
-                    Orientation="Vertical">
-            <controls:PpcButton Command="{Binding MoveUpCommand}"
-                                Content="{x:Static res:InstallationApp.Up}"
-                                IsBusy="{Binding IsElevatorMovingUp}" />
+        <controls:PpcTextBox
+            Grid.Row="3"
+            Grid.Column="1"
+            InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
+            LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-            <controls:PpcButton Margin="0,20,0,0"
-                                Command="{Binding MoveDownCommand}"
-                                Content="{x:Static res:InstallationApp.Down}"
-                                IsBusy="{Binding IsElevatorMovingDown}" />
+        <StackPanel
+            Grid.Row="3"
+            Grid.Column="2"
+            Orientation="Vertical">
+            <controls:PpcButton
+                Command="{Binding MoveUpCommand}"
+                Content="{x:Static res:InstallationApp.Up}"
+                IsBusy="{Binding IsElevatorMovingUp}" />
+
+            <controls:PpcButton
+                Margin="0,20,0,0"
+                Command="{Binding MoveDownCommand}"
+                Content="{x:Static res:InstallationApp.Down}"
+                IsBusy="{Binding IsElevatorMovingDown}" />
         </StackPanel>
 
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="1"
-                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                                 LabelText="{x:Static res:InstallationApp.Displacement}" />
+        <controls:PpcLabeledText
+            Grid.Row="4"
+            Grid.Column="1"
+            Margin="0,30,0,0"
+            VerticalAlignment="Top"
+            ContentText="{Binding Displacement, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
+            LabelText="{x:Static res:InstallationApp.Displacement}" />
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="2"
-                            VerticalAlignment="Top"
-                            Command="{Binding ApplyCorrectionCommand}"
-                            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
+        <controls:PpcButton
+            Grid.Row="4"
+            Grid.Column="2"
+            Margin="0,30,0,0"
+            VerticalAlignment="Top"
+            Command="{Binding ApplyCorrectionCommand}"
+            Content="{x:Static res:InstallationApp.ApplyCorrection}" />
 
     </Grid>
 </ctrls:View>

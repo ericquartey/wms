@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
+                 notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationFaultStop ||
                  notification.Status == MessageStatus.OperationRunningStop ||
                  notification.Type == MessageType.ShutterPositioning);
@@ -141,7 +142,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, openShutter, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, openShutter, openShutter, requestingBay, sender);
 
             if (openShutter)
             {
@@ -156,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         /// <summary>
@@ -185,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public MessageStatus ShutterStatus(NotificationMessage message)
@@ -194,7 +195,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
@@ -239,7 +240,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return MessageStatus.OperationEnd;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         #endregion

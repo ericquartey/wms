@@ -106,6 +106,7 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.Inputs[(int)IoPorts.MushroomEmergency].Value = true;
             this.Inputs[(int)IoPorts.MicroCarterLeftSideBay].Value = true;
             this.Inputs[(int)IoPorts.MicroCarterRightSideBay].Value = true;
+            this.Inputs[(int)IoPorts.AntiIntrusionBarrierBay].Value = true;
 
             // Set empty position on bay
             this.Inputs[(int)IoPorts.LoadingUnitInBay].Value = true;

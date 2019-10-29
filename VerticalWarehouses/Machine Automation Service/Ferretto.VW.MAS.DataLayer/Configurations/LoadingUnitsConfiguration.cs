@@ -11,14 +11,14 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
         public void Configure(EntityTypeBuilder<LoadingUnit> builder)
         {
-            if (builder == null)
+            if (builder is null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }
 
             builder.HasKey(l => l.Id);
 
-            builder.HasIndex(l => l.Code).IsUnique();
+            builder.Ignore(l => l.Code);
         }
 
         #endregion

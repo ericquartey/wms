@@ -40,6 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 notification.Type == MessageType.InverterFaultReset ||
                 notification.Type == MessageType.InverterPowerEnable ||
                 notification.Type == MessageType.ResetSecurity ||
+                notification.Status == MessageStatus.OperationStop ||
                 notification.Status == MessageStatus.OperationFaultStop ||
                 notification.Status == MessageStatus.OperationRunningStop);
         }
@@ -51,7 +52,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)
@@ -61,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void ResetBayFault(BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
@@ -103,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void ResetSecurity(MessageActor sender, BayNumber requestingBay)
@@ -127,7 +128,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void StartChangePowerStatus(IChangeRunningStateMessageData messageData, MessageActor sender, BayNumber requestingBay)
@@ -210,12 +211,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             if (message.Status == MessageStatus.OperationFaultStop ||
+                message.Status == MessageStatus.OperationStop ||
                 message.Status == MessageStatus.OperationRunningStop)
             {
                 return MessageStatus.OperationEnd;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         #endregion

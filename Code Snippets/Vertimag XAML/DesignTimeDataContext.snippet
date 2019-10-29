@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippet Format="1.0.0" xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <Header>
+    <SnippetTypes>
+      <SnippetType>Expansion</SnippetType>
+    </SnippetTypes>
+    <Title>Design Time Data-Context</Title>
+    <Author>Microsoft Corporation</Author>
+    <Description>XAML snippet for Design Time Data-Context</Description>
+    <HelpUrl>
+    </HelpUrl>
+    <Shortcut>ddcxt</Shortcut>
+  </Header>
+  <Snippet>
+    <Declarations>
+     <Literal Editable="true">
+        <ID>prefix</ID>
+        <ToolTip>prefix</ToolTip>
+        <Default>sys</Default>
+        <Function>
+        </Function>
+      </Literal>
+      <Literal Editable="true">
+        <ID>TypeName</ID>
+        <ToolTip>TypeName</ToolTip>
+        <Default>string</Default>
+        <Function>
+        </Function>
+      </Literal>
+    </Declarations>
+    <Code Language="XAML"><![CDATA[d:DataContext="{d:DesignInstance Type=$prefix$:$TypeName$, IsDesignTimeCreatable=True}"]]></Code>
+  </Snippet>
+</CodeSnippet>

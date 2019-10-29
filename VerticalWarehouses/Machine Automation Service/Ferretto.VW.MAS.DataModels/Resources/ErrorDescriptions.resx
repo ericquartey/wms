@@ -201,4 +201,7 @@
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Nessun cassetto presente nella baia indicata</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+    <value>Baia di destinazione occupata</value>
+  </data>
 </root>

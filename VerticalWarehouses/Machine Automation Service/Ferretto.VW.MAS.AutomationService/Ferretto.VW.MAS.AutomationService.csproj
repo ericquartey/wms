@@ -66,6 +66,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.Bender.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="appsettings.Prototype2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -91,10 +91,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.bay = await this.bayManager.GetBayAsync();
+            try
+            {
+                this.bay = await this.bayManager.GetBayAsync();
 
-            this.HasCarousel = this.bay.Carousel != null;
-            this.IsBayExternal = this.bay.IsExternal;
+                this.HasCarousel = this.bay.Carousel != null;
+                this.IsBayExternal = this.bay.IsExternal;
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
 
             this.RaisePropertyChanged(nameof(this.IsBayExternal));
         }

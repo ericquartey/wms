@@ -250,6 +250,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Baia di destinazione occupata.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationBay {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza database posizione destinazione cassetto.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationDb {

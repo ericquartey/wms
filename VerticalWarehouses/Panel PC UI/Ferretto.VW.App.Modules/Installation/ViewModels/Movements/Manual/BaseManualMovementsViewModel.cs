@@ -121,28 +121,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.notificationUIsubscriptionToken = this.notificationUIsubscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-
-            this.movementsSubscriptionToken = this.movementsSubscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<ManualMovementsChangedPubSubEvent>()
-                    .Subscribe(
-                        this.EnabledChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        message => message != null);
-
-            this.bay = await this.bayManagerService.GetBayAsync();
-            this.BayNumber = (int)this.bay.Number;
+            this.SubscribeToEvents();
 
             await this.RetrieveCurrentPositionAsync();
 
@@ -201,6 +180,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.bay = await this.bayManagerService.GetBayAsync();
+                this.BayNumber = (int)this.bay.Number;
+
                 this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
                 this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
             }
@@ -208,6 +190,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.notificationUIsubscriptionToken = this.notificationUIsubscriptionToken
+                            ??
+                            this.EventAggregator
+                                .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                                .Subscribe(
+                                    this.OnElevatorPositionChanged,
+                                    ThreadOption.UIThread,
+                                    false,
+                                    m => m.Data != null);
+
+            this.movementsSubscriptionToken = this.movementsSubscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<ManualMovementsChangedPubSubEvent>()
+                    .Subscribe(
+                        this.EnabledChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        message => message != null);
         }
 
         #endregion

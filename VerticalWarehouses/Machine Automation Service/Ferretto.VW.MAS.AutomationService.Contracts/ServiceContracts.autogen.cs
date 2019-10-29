@@ -2383,7 +2383,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 300001 = MachineManagerErrorNoLoadingUnitInSource
     /// 300002 = MachineManagerErrorLoadingUnitSourceDb
     /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
-    /// 300004 = MachineManagerErrorLoadingUnitElevator</summary>
+    /// 300004 = MachineManagerErrorLoadingUnitElevator
+    /// 300005 = MachineManagerErrorLoadingUnitDestinationBay</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
@@ -2444,6 +2445,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         MachineManagerErrorLoadingUnitDestinationDb = 300003,
     
         MachineManagerErrorLoadingUnitElevator = 300004,
+    
+        MachineManagerErrorLoadingUnitDestinationBay = 300005,
     
     }
     

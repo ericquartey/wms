@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         // return true if movement is started
         public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
-            var direction = ShutterMovementDirection.None;
+            var direction = ShutterMovementDirection.NotSpecified;
             var position = this.sensorsProvider.GetShutterPosition(bayNumber);
             switch (targetPosition)
             {
@@ -110,7 +110,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 default:
                     break;
             }
-            if (direction == ShutterMovementDirection.None)
+
+            if (direction == ShutterMovementDirection.NotSpecified)
             {
                 throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
             }
@@ -173,8 +174,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var delayInMilliseconds = delayInSeconds * 1000;
 
             var messageData = new ShutterPositioningMessageData(
-                ShutterPosition.None,
-                ShutterMovementDirection.None,
+                ShutterPosition.NotSpecified,
+                ShutterMovementDirection.NotSpecified,
                 bay.Shutter.Type,
                 speedRate,
                 MovementMode.ShutterTest,
