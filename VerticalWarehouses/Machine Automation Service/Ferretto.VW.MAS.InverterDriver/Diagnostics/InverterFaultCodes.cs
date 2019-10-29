@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
             { 0x0706, "Motor chopper Trigger threshold 507 too small, check mains voltage." },
             // Electronics voltage
             { 0x0801, "Electronics voltage DC 24 V too low, check control terminal." },
-            { 0x0804, "Electronics voltage too high, check wiring of control terminals." }
+            { 0x0804, "Electronics voltage too high, check wiring of control terminals." },
             // Brake chopper
             { 0x1010, "Brake Chopper Overcurrent; refer to chapter 19.4 “Brake Chopper and Brake Resistance”." },
             // Output frequency
