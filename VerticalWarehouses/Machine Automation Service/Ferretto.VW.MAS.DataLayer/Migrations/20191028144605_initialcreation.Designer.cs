@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191025132359_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20191028144605_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -500,6 +500,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "",
                             Reason = "",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300005,
+                            Code = 300005,
+                            Description = "Baia di destinazione occupata",
+                            Reason = "La baia di destinazione deve essere vuota prima di richiamare un cassetto",
+                            Severity = 1
                         });
                 });
 
@@ -658,6 +666,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300004,
                             TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300005,
+                            TotalErrors = 0
                         });
                 });
 
@@ -746,31 +759,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("BayNumber");
+                    b.Property<int>("BayNumber");
 
                     b.Property<string>("Data");
 
                     b.Property<string>("Description");
 
-                    b.Property<string>("Destination");
+                    b.Property<int>("Destination");
 
-                    b.Property<string>("ErrorLevel");
+                    b.Property<int>("ErrorLevel");
 
-                    b.Property<string>("Exception");
+                    b.Property<int>("Source");
 
-                    b.Property<string>("Level");
-
-                    b.Property<string>("LoggerName");
-
-                    b.Property<string>("Message");
-
-                    b.Property<string>("Source");
-
-                    b.Property<string>("Status");
+                    b.Property<int>("Status");
 
                     b.Property<DateTime>("TimeStamp");
 
-                    b.Property<string>("Type");
+                    b.Property<int>("Type");
 
                     b.HasKey("Id");
 
@@ -935,7 +940,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 25, 15, 23, 58, 905, DateTimeKind.Local).AddTicks(1197),
+                            InstallationDate = new DateTime(2016, 12, 28, 15, 46, 5, 15, DateTimeKind.Local).AddTicks(1610),
                             ServiceStatus = 86
                         });
                 });
