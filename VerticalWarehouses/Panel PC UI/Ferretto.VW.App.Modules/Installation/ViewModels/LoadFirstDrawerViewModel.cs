@@ -1,9 +1,13 @@
-﻿using Ferretto.VW.App.Controls;
+﻿using System;
+using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
+using Prism.Events;
+using Prism.Mvvm;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Modules.Installation.ViewModels
+namespace Ferretto.VW.App.Installation.ViewModels
 {
-    [System.Obsolete]
+    [Obsolete]
     internal sealed class LoadFirstDrawerViewModel : BaseMainViewModel
     {
         #region Constructors
@@ -16,6 +20,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+        }
 
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {

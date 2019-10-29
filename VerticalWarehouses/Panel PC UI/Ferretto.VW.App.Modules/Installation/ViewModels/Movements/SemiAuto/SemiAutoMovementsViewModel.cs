@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -52,6 +54,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken sensorsToken;
 
         private SubscriptionToken shutterPositionToken;
+
+        private DelegateCommand stopMovingCommand;
 
         private SubscriptionToken subscriptionToken;
 
@@ -147,6 +151,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public Sensors Sensors => this.sensors;
 
+        public ICommand StopMovingCommand =>
+           this.stopMovingCommand
+           ??
+           (this.stopMovingCommand = new DelegateCommand(async () => await this.StopMovingAsync(), this.CanStopMoving));
+
         #endregion
 
         #region Methods
@@ -238,6 +247,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsTuningBay = false;
                 this.IsShutterMoving = false;
             }
+        }
+
+        private bool CanStopMoving()
+        {
+            return this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task CheckZeroChainOnBays()
@@ -469,8 +485,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.carouselUpCommand?.RaiseCanExecuteChanged();
             this.selectBayPosition1Command?.RaiseCanExecuteChanged();
             this.selectBayPosition2Command?.RaiseCanExecuteChanged();
+            this.stopMovingCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task StopMovingAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                if (this.IsShutterMoving)
+                {
+                    await this.shuttersWebService.StopAsync();
+                }
+                else if (this.IsCarouselMoving)
+                {
+                    await this.machineCarouselWebService.StopAsync();
+                }
+                else if (this.IsTuningBay)
+                {
+                    await this.machineCarouselWebService.StopAsync();
+                }
+                else
+                {
+                    await this.machineElevatorWebService.StopAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void SubscribeToEvents()
