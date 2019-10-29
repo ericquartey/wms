@@ -151,12 +151,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsZeroChain
-        {
-            get => this.isZeroChain;
-            set => this.SetProperty(ref this.isZeroChain, value);
-        }
-
         public ICommand TuningBayCommand =>
             this.tuningBayCommand
             ??
@@ -182,9 +176,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                this.Sensors.LuPresentInMachineSideBay1
+                this.sensorsService.Sensors.LuPresentInMachineSideBay1
                 &&
-                this.Sensors.LuPresentInOperatorSideBay1;
+                this.sensorsService.Sensors.LuPresentInOperatorSideBay1;
         }
 
         private bool CanEmbark()
@@ -194,11 +188,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                !this.Sensors.LuPresentInMachineSideBay1
+                !this.sensorsService.Sensors.LuPresentInMachineSideBay1
                 &&
-                !this.Sensors.LuPresentInOperatorSideBay1
+                !this.sensorsService.Sensors.LuPresentInOperatorSideBay1
                 &&
-                this.IsZeroChain;
+                this.sensorsService.IsZeroChain;
         }
 
         private bool CanTuneBay()
@@ -210,7 +204,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningBay
                 &&
-                this.Sensors.ACUBay1S3IND;
+                this.sensorsService.Sensors.ACUBay1S3IND;
         }
 
         private bool CanTuningChain()
@@ -221,11 +215,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsTuningChain
                 &&
-                this.IsZeroChain
+                this.sensorsService.IsZeroChain
                 &&
-                !this.Sensors.LuPresentInMachineSideBay1
+                !this.sensorsService.Sensors.LuPresentInMachineSideBay1
                 &&
-                !this.Sensors.LuPresentInOperatorSideBay1;
+                !this.sensorsService.Sensors.LuPresentInOperatorSideBay1;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)

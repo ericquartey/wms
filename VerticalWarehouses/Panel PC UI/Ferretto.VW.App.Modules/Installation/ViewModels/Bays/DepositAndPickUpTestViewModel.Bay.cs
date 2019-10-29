@@ -103,15 +103,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        private bool CanMoveToBayHeight()
-        {
-            return this.BayPositionHeight.HasValue
-              &&
-              !this.IsWaitingForResponse
-              &&
-              !this.IsElevatorMoving;
-        }
-
         private async Task MoveToBayHeightAsync()
         {
             try

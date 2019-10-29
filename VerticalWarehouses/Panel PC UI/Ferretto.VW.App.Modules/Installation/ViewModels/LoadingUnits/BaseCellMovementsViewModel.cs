@@ -22,15 +22,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public BaseCellMovementsViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
                     IMachineCellsWebService machineCellsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 bayManagerService)
 
         {
