@@ -32,8 +32,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? inputLoadingUnitCode;
 
-        private bool isShutterTwoSensors;
-
         private bool isWaitingForResponse;
 
         private IEnumerable<LoadingUnit> loadingUnits;
@@ -97,14 +95,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsCarouselMoving
                 || this.IsShutterMoving;
 
-        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
-
-        public bool IsShutterTwoSensors
-        {
-            get => this.isShutterTwoSensors;
-            set => this.SetProperty(ref this.isShutterTwoSensors, value);
-        }
-
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -167,7 +157,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
-                this.IsShutterTwoSensors = this.bay.Shutter.Type == ShutterType.TwoSensors;
 
                 this.SelectBayPosition1();
 

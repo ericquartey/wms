@@ -302,7 +302,6 @@ namespace Ferretto.VW.App.Services
             this.LoadingUnitPosition2InBay = null;
 
             this.Bay = await this.bayManagerService.GetBayAsync();
-
             this.BayNumber = this.Bay.Number;
 
             this.Bay1IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne);
