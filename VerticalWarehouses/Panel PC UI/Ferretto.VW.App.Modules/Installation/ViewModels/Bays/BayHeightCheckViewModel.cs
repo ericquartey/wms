@@ -59,8 +59,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private PositioningProcedure procedureParameters;
 
-        private DelegateCommand stopMovingCommand;
-
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -258,11 +256,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
-
-        public ICommand StopCommand =>
-                                                                                                                                                           this.stopMovingCommand
-           ??
-           (this.stopMovingCommand = new DelegateCommand(async () => await this.StopMovingAsync(), this.CanStopMoving));
 
         #endregion
 
@@ -471,13 +464,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
         }
 
-        private bool CanStopMoving()
-        {
-            return this.IsElevatorMovingToHeight
-                &&
-                !this.IsWaitingForResponse;
-        }
-
         private void ChangeDataFromBayPosition()
         {
             this.PositionHeight = this.CurrentBayPosition == 1
@@ -606,25 +592,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
             this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
-            this.stopMovingCommand?.RaiseCanExecuteChanged();
-        }
-
-        private async Task StopMovingAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineElevatorWebService.StopAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private void ToggleBayPosition()
