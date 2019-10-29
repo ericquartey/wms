@@ -9,8 +9,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BayStatus BayStatus { get; set; }
 
-        public BayType BayType { get; set; }
-
         public int? CurrentMissionOperationId { get; set; }
 
         public BayNumber Index { get; }

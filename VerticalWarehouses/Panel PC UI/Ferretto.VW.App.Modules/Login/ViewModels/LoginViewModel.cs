@@ -275,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                "TODO", // Utils.Modules.Operator,
+                Utils.Modules.Operator.OPERATORMENU,
                 data: null,
                 trackCurrentView: true);
         }

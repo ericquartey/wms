@@ -1367,13 +1367,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
+    /// <summary>0 = NotSpecified
     /// 1 = TwoSensors
     /// 2 = ThreeSensors</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterType
     {
-        Undefined = 0,
+        NotSpecified = 0,
     
         TwoSensors = 1,
     
@@ -1476,14 +1476,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Forwards
-    /// 1 = Backwards</summary>
+    /// <summary>0 = NotSpecified
+    /// 1 = Forwards
+    /// 2 = Backwards</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
-        Forwards = 0,
+        NotSpecified = 0,
     
-        Backwards = 1,
+        Forwards = 1,
+    
+        Backwards = 2,
     
     }
     
@@ -2383,7 +2386,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 300001 = MachineManagerErrorNoLoadingUnitInSource
     /// 300002 = MachineManagerErrorLoadingUnitSourceDb
     /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
-    /// 300004 = MachineManagerErrorLoadingUnitElevator</summary>
+    /// 300004 = MachineManagerErrorLoadingUnitElevator
+    /// 300005 = MachineManagerErrorLoadingUnitDestinationBay</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
@@ -2444,6 +2448,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         MachineManagerErrorLoadingUnitDestinationDb = 300003,
     
         MachineManagerErrorLoadingUnitElevator = 300004,
+    
+        MachineManagerErrorLoadingUnitDestinationBay = 300005,
     
     }
     
@@ -2777,7 +2783,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
+    /// <summary>0 = NotSpecified
     /// 1 = Opened
     /// 2 = Half
     /// 3 = Closed
@@ -2785,7 +2791,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
-        None = 0,
+        NotSpecified = 0,
     
         Opened = 1,
     
@@ -2797,13 +2803,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
+    /// <summary>0 = NotSpecified
     /// 1 = Up
     /// 2 = Down</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterMovementDirection
     {
-        None = 0,
+        NotSpecified = 0,
     
         Up = 1,
     

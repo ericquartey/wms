@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Pannelli Mensola")]
         CellPanelsCheck,
 
-        [View(Utils.Modules.Installation.SHUTTTER1HEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.SHUTTTERHEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
         BayShape,
 

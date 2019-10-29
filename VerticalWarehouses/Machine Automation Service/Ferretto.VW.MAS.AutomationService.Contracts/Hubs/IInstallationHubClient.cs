@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Events
 
-        event EventHandler<MessageNotifiedEventArgs> MessageNotified;
+        event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
         #endregion
     }

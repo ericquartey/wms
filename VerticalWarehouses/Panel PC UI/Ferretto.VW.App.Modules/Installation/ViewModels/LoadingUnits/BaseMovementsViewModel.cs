@@ -284,7 +284,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public void RaiseCanExecuteChanged()
+        public virtual void RaiseCanExecuteChanged()
         {
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();

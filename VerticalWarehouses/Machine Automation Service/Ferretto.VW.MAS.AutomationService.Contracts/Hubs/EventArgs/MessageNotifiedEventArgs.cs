@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         public MessageNotifiedEventArgs(IBaseNotificationMessageUI notificationMessage)
         {
-            this.NotificationMessage = notificationMessage;
+            this.NotificationMessage = notificationMessage ?? throw new System.ArgumentNullException(nameof(notificationMessage));
         }
 
         #endregion

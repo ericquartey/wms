@@ -93,12 +93,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand SelectBayPosition1Command =>
             this.selectBayPosition1Command
             ??
-            (this.selectBayPosition1Command = new DelegateCommand(this.SelectBayPosition1));
+            (this.selectBayPosition1Command = new DelegateCommand(() => this.SelectBayPosition1(), this.CanSelectBayPosition));
 
         public ICommand SelectBayPosition2Command =>
             this.selectBayPosition2Command
             ??
-            (this.selectBayPosition2Command = new DelegateCommand(this.SelectBayPosition2));
+            (this.selectBayPosition2Command = new DelegateCommand(() => this.SelectBayPosition2(), this.CanSelectBayPosition));
 
         #endregion
 
@@ -113,6 +113,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsMoving
                 &&
                 (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
+        }
+
+        private bool CanSelectBayPosition()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                (this.IsZeroChain || (this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1));
         }
 
         private async Task MoveToBayHeightAsync()

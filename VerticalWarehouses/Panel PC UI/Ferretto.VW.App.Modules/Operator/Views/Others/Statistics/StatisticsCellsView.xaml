@@ -1,0 +1,107 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.StatisticsCellsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <ctrls:View.Resources>
+        <ResourceDictionary>
+            <DataTemplate DataType="{x:Type controls:CustomControlCellStatisticsDataGridViewModel}">
+                <controls:CustomControlCellStatisticsDataGrid />
+            </DataTemplate>
+        </ResourceDictionary>
+    </ctrls:View.Resources>
+    <Grid Margin="100,30,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static resources:OperatorApp.CellsStatisticsHeader}" />
+
+        <Grid Grid.Row="1"
+              Grid.Column="0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="0"
+                                     Margin="0,0,15,15"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding CellStatistics.TotalCells}"
+                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsCellsTotal}" />
+
+            <controls:PpcLabeledText Grid.Row="0"
+                                     Grid.Column="1"
+                                     Margin="0,0,0,15"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding CellStatistics.TotalFrontCells}"
+                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsFrontCellsTotal}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="0,0,0,15"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding CellStatistics.TotalBackCells}"
+                                     LabelText="{x:Static resources:OperatorApp.CellsStatisticsRearCellsTotal}" />
+
+            <ContentControl Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            MinWidth="530"
+                            MinHeight="160"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            Content="{Binding DataGridViewModel}" />
+
+
+
+        </Grid>
+
+        <controls:CustomProgressBarControl Grid.Row="3"
+                                               Grid.Column="0"
+                                               Margin="0,15,0,0"
+                                               HorizontalAlignment="Right"
+                                               VerticalAlignment="Top"
+                                               LabelText="{x:Static resources:OperatorApp.CellsStatisticsTotalUsedCells}"
+                                               ProgressionValue="{Binding CellStatistics.CellOccupationPercentage}" />
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="1"
+                            Margin="15,15,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Top"
+                            Command="{Binding DrawerCompactingButtonCommand}"
+                            Content="{x:Static resources:OperatorApp.CellsStatisticsOther}" />
+
+    </Grid>
+</ctrls:View>

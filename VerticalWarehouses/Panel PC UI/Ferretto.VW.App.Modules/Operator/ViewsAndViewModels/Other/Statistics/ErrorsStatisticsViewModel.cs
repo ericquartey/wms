@@ -5,7 +5,6 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -15,9 +14,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IMachineErrorsService errorsService;
+        private readonly IMachineErrorsWebService errorsService;
 
-        private readonly IStatusMessageService statusMessageService;
+        //private readonly IStatusMessageService statusMessageService;
 
         private int currentItemIndex;
 
@@ -34,11 +33,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public ErrorsStatisticsViewModel(
-            IStatusMessageService statusMessageService,
-            IMachineErrorsService errorsService,
+            //IStatusMessageService statusMessageService,
+            IMachineErrorsWebService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.statusMessageService = statusMessageService;
+            //this.statusMessageService = statusMessageService;
             this.errorsService = errorsService;
             this.dataGridViewModelRef = errorsDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
@@ -102,7 +101,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             }
             catch (Exception ex)
             {
-                this.statusMessageService.Notify(ex, $"Cannot load data.");
+                //this.statusMessageService.Notify(ex, $"Cannot load data.");
             }
         }
 

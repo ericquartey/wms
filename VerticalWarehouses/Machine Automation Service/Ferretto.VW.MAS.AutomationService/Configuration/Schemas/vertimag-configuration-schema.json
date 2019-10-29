@@ -18,8 +18,8 @@
         "title": "The Items Schema",
         "required": [
           "Tare",
-          "MaxNetWeight",
-          "Code"
+          "Id",
+          "MaxNetWeight"
         ],
         "properties": {
           "Tare": {
@@ -29,19 +29,17 @@
             "minimum": 0,
             "exclusiveMinimum": true
           },
+          "Id": {
+            "$id": "#/properties/LoadingUnits/items/properties/Id",
+            "type": "integer",
+            "title": "The Id Schema"
+          },
           "MaxNetWeight": {
             "$id": "#/properties/LoadingUnits/items/properties/MaxNetWeight",
             "type": "integer",
             "title": "The Maxnetweight Schema",
             "minimum": 0,
             "exclusiveMinimum": true
-          },
-          "Code": {
-            "$id": "#/properties/LoadingUnits/items/properties/Code",
-            "type": "string",
-            "title": "The Code Schema",
-            "default": "",
-            "pattern": "^(.*)$"
           }
         }
       }
@@ -644,7 +642,7 @@
                     },
                     "position": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
-                      "type": "integer",
+                      "type": "number",
                       "title": "The Position Schema",
                       "minimum": 0,
                       "exclusiveMinimum": true

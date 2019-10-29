@@ -160,7 +160,7 @@
     <value>Numero Seriale: {0}</value>
   </data>
   <data name="UserLogin_Password" xml:space="preserve">
-    <value>Nome Utente</value>
+    <value>Password</value>
   </data>
   <data name="FirstSeen" xml:space="preserve">
     <value>Visto</value>

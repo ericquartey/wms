@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             var targetPositionMeters = targetPosition / 1000;
 
             return
-                5000 * grossWeight
+                  5000 * grossWeight
                 /
                 ((properties.BeltRigidity / ((2 * pulleysDistanceMeters) - beltSpacingMeters - targetPositionMeters)) + (properties.BeltRigidity / targetPositionMeters));
         }

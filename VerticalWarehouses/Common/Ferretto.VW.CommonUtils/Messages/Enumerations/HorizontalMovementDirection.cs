@@ -2,6 +2,8 @@
 {
     public enum HorizontalMovementDirection
     {
+        NotSpecified,
+
         Forwards,
 
         Backwards,

@@ -89,7 +89,8 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding ConfirmEjectLoadingUnitCommand}"
-                            Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}" />
+                            Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}" 
+                            Visibility="{Binding IsLoadingUnitInBay, Converter={StaticResource BTVIC}}" />
         
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"

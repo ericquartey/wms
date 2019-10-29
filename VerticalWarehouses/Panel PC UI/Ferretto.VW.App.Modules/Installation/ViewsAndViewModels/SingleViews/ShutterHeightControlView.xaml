@@ -1,0 +1,73 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.ShutterHeightControlView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid IsEnabled="False">
+
+        <TextBlock Margin="160,30,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.Gate1HeightControl}" />
+
+        <controls:PpcTextBox Margin="160,140,0,0"
+                             HorizontalAlignment="Left"
+                             VerticalAlignment="Top"
+                             InputText="{Binding Speed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.SpeedMMSec}" />
+
+        <controls:PpcLabeledText Margin="700,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding Tolerance, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.Tolerance}" />
+
+        <controls:PpcLabeledText Margin="410,140,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding SystemError, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.SystemErrorMM}" />
+
+        <controls:PpcLabeledText Margin="160,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
+
+        <controls:PpcLabeledText Margin="700,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding GateCorrection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.GateCorrection}" />
+
+        <controls:PpcLabeledText Margin="160,360,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding NoteText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 LabelText="{x:Static res:InstallationApp.Output}" />
+
+        <controls:PpcButton Margin="410,490,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Start}" />
+
+        <controls:PpcButton Margin="700,490,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+        <controls:PpcSensorControl Margin="410,260,0,0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   SensorState="{Binding LuPresentInBay}"
+                                   Text="{x:Static res:InstallationApp.Gate1HeightReached}" />
+
+    </Grid>
+</ctrls:View>

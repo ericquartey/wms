@@ -2,14 +2,14 @@
 {
     public enum StopRequestReason
     {
-        NoReason = 0,
+        NoReason,
 
-        Stop = 1,
+        Stop,
 
-        Error = 2,
+        Error,
 
-        RunningStateChanged = 3,
+        RunningStateChanged,
 
-        FaultStateChanged = 4,
+        FaultStateChanged,
     }
 }

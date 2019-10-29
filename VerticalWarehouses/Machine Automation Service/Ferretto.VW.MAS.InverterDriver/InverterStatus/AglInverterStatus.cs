@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private ShutterPosition GetCurrentPosition()
         {
-            var value = ShutterPosition.None;
+            var value = ShutterPosition.NotSpecified;
             if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorA])
             {
                 if (this.Inputs[(int)InverterSensors.AGL_ShutterSensorB])
