@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -26,7 +25,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly ISensorsService sensorsService;
+        private readonly Controls.Interfaces.ISensorsService sensorsService;
 
         private Bay bay;
 
@@ -70,7 +69,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            ISensorsService sensorsService,
+            Controls.Interfaces.ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {

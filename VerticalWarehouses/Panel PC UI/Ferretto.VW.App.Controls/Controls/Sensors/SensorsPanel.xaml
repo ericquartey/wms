@@ -155,7 +155,6 @@
                             <TextBlock
                                Style="{StaticResource TextBlockContentStyle}"
                                Text="{Binding BayChainPosition}" />
-                            <!-- Check-->
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">

@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -18,8 +17,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMoving;
 
         private DelegateCommand openShutterCommand;
-
-        private ShutterSensors shutterSensors;
 
         #endregion
 
@@ -59,8 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.OpenShutterAsync(),
                 this.CanOpenShutter));
 
-        public ShutterSensors ShutterSensors => this.shutterSensors;
-
         #endregion
 
         #region Methods
@@ -74,7 +69,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.MidWay));
+                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.MidWay));
         }
 
         private bool CanExecuteIntermediateCommand()
@@ -86,7 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors != null && (this.ShutterSensors.Open || this.ShutterSensors.Closed));
+                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
         }
 
         private bool CanOpenShutter()
@@ -98,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
-                (this.ShutterSensors != null && (this.ShutterSensors.Closed || this.ShutterSensors.MidWay));
+                (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Closed || this.sensorsService.ShutterSensors.MidWay));
         }
 
         private async Task ClosedShutterAsync()
