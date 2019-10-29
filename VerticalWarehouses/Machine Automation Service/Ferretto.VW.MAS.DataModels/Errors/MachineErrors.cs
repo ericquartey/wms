@@ -88,13 +88,28 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceDb), 1)]
         MachineManagerErrorLoadingUnitSourceDb = MachineManagerErrorBaseCode + 2,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationDb), 1)]
-        MachineManagerErrorLoadingUnitDestinationDb = MachineManagerErrorBaseCode + 3,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationCell), 1)]
+        MachineManagerErrorLoadingUnitDestinationCell = MachineManagerErrorBaseCode + 3,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitElevator), 1)]
         MachineManagerErrorLoadingUnitElevator = MachineManagerErrorBaseCode + 4,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotRemoved), 1)]
+        MachineManagerErrorLoadingUnitNotRemoved = MachineManagerErrorBaseCode + 5,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitDestinationBay), 1)]
-        MachineManagerErrorLoadingUnitDestinationBay = MachineManagerErrorBaseCode + 5,
+        MachineManagerErrorLoadingUnitDestinationBay = MachineManagerErrorBaseCode + 6,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceCell), 1)]
+        MachineManagerErrorLoadingUnitSourceCell = MachineManagerErrorBaseCode + 7,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotFound), 1)]
+        MachineManagerErrorLoadingUnitNotFound = MachineManagerErrorBaseCode + 8,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitNotLoaded), 1)]
+        MachineManagerErrorLoadingUnitNotLoaded = MachineManagerErrorBaseCode + 9,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceBay), 1)]
+        MachineManagerErrorLoadingUnitSourceBay = MachineManagerErrorBaseCode + 10,
     }
 }

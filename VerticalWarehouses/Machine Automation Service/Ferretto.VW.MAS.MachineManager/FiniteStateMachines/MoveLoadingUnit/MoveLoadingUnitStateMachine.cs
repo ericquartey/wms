@@ -163,11 +163,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:
-                    // TODO Check loading unit height if source is cell
                     if (messageData.DestinationCellId != null)
                     {
                         var destinationCell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
                         returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
+                    }
+                    else
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell);
                     }
 
                     break;
@@ -184,17 +187,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     }
                     else
                     {
-                        error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay;
-                        errorDescription = ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay;
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
                     }
-
                     break;
-            }
-
-            if (!returnValue)
-            {
-                this.Logger.LogError(errorDescription);
-                this.errorsProvider.RecordNew(error);
             }
 
             return returnValue;
@@ -244,6 +239,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         machineData.LoadingUnitCellSourceId = sourceCell.Id;
                     }
 
+                    if (unitToMove == null)
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceCell);
+                    }
+
                     break;
 
                 case LoadingUnitLocation.LoadingUnit:
@@ -274,7 +274,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         if (machineData.LoadingUnitSource == LoadingUnitLocation.NoLocation)
                         {
                             unitToMove = null;
+                            this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotLoaded);
                         }
+                    }
+                    else
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
 
                     break;
@@ -290,6 +295,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     else
                     {
                         unitToMove = this.baysProvider.GetLoadingUnitByDestination(messageData.Source);
+                    }
+
+                    if (unitToMove == null)
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
+                    }
+                    else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
+                    {
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
                     }
 
                     machineData.LoadingUnitSource = messageData.Source;

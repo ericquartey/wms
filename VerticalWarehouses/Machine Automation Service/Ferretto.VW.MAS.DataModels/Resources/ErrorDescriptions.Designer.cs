@@ -250,6 +250,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+<<<<<<< Updated upstream
         ///   Looks up a localized string similar to Baia di destinazione occupata.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationBay {
@@ -260,19 +261,76 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Inconsistenza database posizione destinazione cassetto.
+=======
+        ///   Looks up a localized string similar to Baia di destinazione del cassetto occupata.
+>>>>>>> Stashed changes
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationDb {
+        public static string MachineManagerErrorLoadingUnitDestinationBay {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationDb", resourceCulture);
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Inconsistenza database cella destinazione cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Culla elevatore occupata.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitElevator {
             get {
                 return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotFound {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Il cassetto selezionato non risulta caricato in magazzino.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotLoaded {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cassetto rilevato nella baia di estrazione.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotRemoved {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baia sorgente del cassetto vuota.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceBay {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inconsistenza database cella sorgente cassetto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceCell", resourceCulture);
             }
         }
         

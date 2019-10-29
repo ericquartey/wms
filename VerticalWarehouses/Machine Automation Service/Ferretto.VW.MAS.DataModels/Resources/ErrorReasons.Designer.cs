@@ -250,6 +250,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+<<<<<<< Updated upstream
         ///   Looks up a localized string similar to La baia di destinazione deve essere vuota prima di richiamare un cassetto.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationBay {
@@ -260,19 +261,76 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         
         /// <summary>
         ///   Looks up a localized string similar to Verificare che la posizione destinazione del cassetto all&apos;interno del database sia correttamente configurata.
+=======
+        ///   Looks up a localized string similar to Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente..
+>>>>>>> Stashed changes
         /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationDb {
+        public static string MachineManagerErrorLoadingUnitDestinationBay {
             get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationDb", resourceCulture);
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Verificare che la cella destinazione del cassetto all&apos;interno del database sia correttamente configurata.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitDestinationCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitElevator {
             get {
                 return ResourceManager.GetString("MachineManagerErrorLoadingUnitElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotFound {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotLoaded {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotLoaded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitNotRemoved {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceBay {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare che la cella sorgent del cassetto all&apos;interno del database sia correttamente configurata.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceCell", resourceCulture);
             }
         }
         

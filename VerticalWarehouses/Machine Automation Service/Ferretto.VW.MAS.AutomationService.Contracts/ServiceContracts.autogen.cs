@@ -2382,9 +2382,20 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     /// 300000 = MachineManagerErrorBaseCode
     /// 300001 = MachineManagerErrorNoLoadingUnitInSource
     /// 300002 = MachineManagerErrorLoadingUnitSourceDb
+<<<<<<< Updated upstream
     /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
     /// 300004 = MachineManagerErrorLoadingUnitElevator
     /// 300005 = MachineManagerErrorLoadingUnitDestinationBay</summary>
+=======
+    /// 300003 = MachineManagerErrorLoadingUnitDestinationCell
+    /// 300004 = MachineManagerErrorLoadingUnitElevator
+    /// 300005 = MachineManagerErrorLoadingUnitNotRemoved
+    /// 300006 = MachineManagerErrorLoadingUnitDestinationBay
+    /// 300007 = MachineManagerErrorLoadingUnitSourceCell
+    /// 300008 = MachineManagerErrorLoadingUnitNotFound
+    /// 300009 = MachineManagerErrorLoadingUnitNotLoaded
+    /// 300010 = MachineManagerErrorLoadingUnitSourceBay</summary>
+>>>>>>> Stashed changes
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineErrorCode
     {
@@ -2442,11 +2453,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         MachineManagerErrorLoadingUnitSourceDb = 300002,
     
-        MachineManagerErrorLoadingUnitDestinationDb = 300003,
+        MachineManagerErrorLoadingUnitDestinationCell = 300003,
     
         MachineManagerErrorLoadingUnitElevator = 300004,
     
+<<<<<<< Updated upstream
         MachineManagerErrorLoadingUnitDestinationBay = 300005,
+=======
+        MachineManagerErrorLoadingUnitNotRemoved = 300005,
+    
+        MachineManagerErrorLoadingUnitDestinationBay = 300006,
+    
+        MachineManagerErrorLoadingUnitSourceCell = 300007,
+    
+        MachineManagerErrorLoadingUnitNotFound = 300008,
+    
+        MachineManagerErrorLoadingUnitNotLoaded = 300009,
+    
+        MachineManagerErrorLoadingUnitSourceBay = 300010,
+>>>>>>> Stashed changes
     
     }
     

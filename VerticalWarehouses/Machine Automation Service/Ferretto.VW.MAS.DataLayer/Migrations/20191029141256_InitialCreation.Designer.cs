@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20191029141256_InitialCreation")]
+    partial class InitialCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -546,14 +548,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Baia sorgente del cassetto vuota",
                             Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
                             Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300005,
-                            Code = 300005,
-                            Description = "Baia di destinazione occupata",
-                            Reason = "La baia di destinazione deve essere vuota prima di richiamare un cassetto",
-                            Severity = 1
                         });
                 });
 
@@ -717,8 +711,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300005,
                             TotalErrors = 0
-<<<<<<< Updated upstream
-=======
                         },
                         new
                         {
@@ -744,7 +736,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300010,
                             TotalErrors = 0
->>>>>>> Stashed changes
                         });
                 });
 
@@ -799,6 +790,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CellId");
 
+                    b.Property<string>("Code");
+
                     b.Property<string>("Description");
 
                     b.Property<double>("GrossWeight");
@@ -818,6 +811,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CellId")
+                        .IsUnique();
+
+                    b.HasIndex("Code")
                         .IsUnique();
 
                     b.ToTable("LoadingUnits");
@@ -1009,11 +1005,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-<<<<<<< Updated upstream
-                            InstallationDate = new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235),
-=======
                             InstallationDate = new DateTime(2016, 12, 29, 15, 12, 56, 285, DateTimeKind.Local).AddTicks(98),
->>>>>>> Stashed changes
                             ServiceStatus = 86
                         });
                 });
