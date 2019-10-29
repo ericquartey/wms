@@ -419,7 +419,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.ProfileInput:
-                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(20, 10000)));
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
                     result = client.Client.Send(profileMessage);
                     break;
 

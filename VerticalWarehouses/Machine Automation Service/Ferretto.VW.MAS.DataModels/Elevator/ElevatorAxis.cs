@@ -167,9 +167,9 @@ namespace Ferretto.VW.MAS.DataModels
 
             return new MovementParameters
             {
-                Speed = this.EmptyLoadMovement.Speed + ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
-                Acceleration = this.EmptyLoadMovement.Acceleration + ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = this.EmptyLoadMovement.Deceleration + ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
+                Speed = this.EmptyLoadMovement.Speed - ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
+                Acceleration = this.EmptyLoadMovement.Acceleration - ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = this.EmptyLoadMovement.Deceleration - ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
             };
         }
 
