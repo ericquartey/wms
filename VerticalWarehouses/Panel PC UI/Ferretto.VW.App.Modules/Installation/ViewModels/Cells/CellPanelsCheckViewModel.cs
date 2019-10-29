@@ -465,7 +465,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
+                this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
             }
             catch (Exception ex)
             {
@@ -488,7 +488,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
+                this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
             }
             catch (Exception ex)
             {
