@@ -381,6 +381,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             switch ((InverterParameterId)this.parameterId)
             {
+                case InverterParameterId.CurrentError:
                 case InverterParameterId.ControlWord:
                 case InverterParameterId.StatusWord:
                 case InverterParameterId.SetOperatingMode:
@@ -469,7 +470,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             var returnValue = default(ushort);
 
             switch ((InverterParameterId)this.parameterId)
-            {
+            {                
                 case InverterParameterId.ControlWord:
                 case InverterParameterId.StatusWord:
                 case InverterParameterId.SetOperatingMode:
@@ -480,6 +481,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.ShutterTargetPosition:
                 case InverterParameterId.HomingCalibration:
                 case InverterParameterId.ProfileInput:
+                case InverterParameterId.CurrentError:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
