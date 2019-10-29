@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -8,13 +7,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorWebService machineElevatorWebService;
-
         private DepositAndPickUpState currentState;
-
-        private double? elevatorHorizontalPosition;
-
-        private double? elevatorVerticalPosition;
 
         private bool isElevatorDisembarking;
 
@@ -23,18 +16,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public double? ElevatorHorizontalPosition
-        {
-            get => this.elevatorHorizontalPosition;
-            set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
-        }
-
-        public double? ElevatorVerticalPosition
-        {
-            get => this.elevatorVerticalPosition;
-            set => this.SetProperty(ref this.elevatorVerticalPosition, value);
-        }
 
         public bool IsElevatorDisembarking
         {
@@ -60,12 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
-        }
-
-        public bool IsZeroChain
-        {
-            get => this.isZeroChain;
-            set => this.SetProperty(ref this.isZeroChain, value);
         }
 
         #endregion
@@ -109,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.currentState == DepositAndPickUpState.GotoBay
                     &&
-                    !this.IsLoadingUnitInBay)
+                    !this.sensorsService.IsLoadingUnitInBay)
                 {
                     this.IsExecutingProcedure = false;
                     this.ShowNotification($"Imbarco non eseguito causa Cassetto mancante");
@@ -118,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.currentState == DepositAndPickUpState.GotoBayAdjusted
                     &&
-                    !this.IsLoadingUnitOnElevator)
+                    !this.sensorsService.IsLoadingUnitOnElevator)
                 {
                     this.IsExecutingProcedure = false;
                     this.ShowNotification($"Sbarco non eseguito causa Cassetto mancante");

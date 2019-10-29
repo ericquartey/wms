@@ -26,7 +26,7 @@
 
     <ControlTemplate x:Key="PpcSensorControlSmallTemplate"
                      TargetType="{x:Type controls:PpcSensorControl}">
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Orientation="Horizontal" Height="13" Margin="0 0 0 0">
             <Grid Width="13"
                   Height="13">
                 <Ellipse Width="13"

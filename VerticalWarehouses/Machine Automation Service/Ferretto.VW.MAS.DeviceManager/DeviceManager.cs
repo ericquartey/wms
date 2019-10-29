@@ -14,10 +14,12 @@ using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -217,14 +219,40 @@ namespace Ferretto.VW.MAS.DeviceManager
                 MessageType.FaultStateChanged,
                 BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                foreach (var inverter in inverterProvider.GetAll())
+                {
+                    var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                    var commandMessage = new FieldCommandMessage(
+                        fieldMessageData,
+                        $"Request Inverter Error Code",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.DeviceManager,
+                        FieldMessageType.InverterCurrentError,
+                        (byte)inverter.SystemIndex);
+
+                    this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                }
+            }
         }
 
         private void MachineSensorsStatusOnRunningStateChanged(object sender, StatusUpdateEventArgs e)
         {
             if (!e.NewState)
             {
-                this.logger.LogError($"RunningState signal fall detected! Begin Stop machine procedure.");
+                this.logger.LogError($"Running State signal fall detected! Begin Stop machine procedure.");
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                    this.logger.LogDebug($"Emergency button status are [1:{machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
+                    this.logger.LogDebug($"Anti intrusion barrier status are [1:{machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
+                    this.logger.LogDebug($"Micro carter status are [Left:{machineResourcesProvider.IsMicroCarterLeftSide}, Right:{machineResourcesProvider.IsMicroCarterRightSide}]");
+                }
             }
+
             var messageData = new StateChangedMessageData(e.NewState);
             var msg = new NotificationMessage(
                 messageData,

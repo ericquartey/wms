@@ -181,7 +181,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = false;
+                this.IsExecutingProcedure = true;
 
                 await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputFinalPosition.Value,

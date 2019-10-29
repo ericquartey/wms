@@ -56,6 +56,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool[] DisplayedInputs => this.sensorStatus;
 
+        public bool IsAntiIntrusionBarrierBay1 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay1];
+
+        public bool IsAntiIntrusionBarrierBay2 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay2];
+
+        public bool IsAntiIntrusionBarrierBay3 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3];
+
         public bool IsDrawerCompletelyOffCradle => !this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && !this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
 
         public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
@@ -77,13 +83,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
         //TEMP SecurityFunctionActive means the machine is in operative mode (vs the emergency mode)
-        public bool IsMachineInEmergencyStateBay1 => !this.sensorStatus[(int)IOMachineSensors.RunningState];
+        public bool IsMachineInEmergencyState => !this.sensorStatus[(int)IOMachineSensors.RunningState];
 
         public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
         public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
         public bool IsMachineRunning => this.IsMachineInRunningState;
+
+        public bool IsMicroCarterLeftSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide];
+
+        public bool IsMicroCarterRightSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterRightSide];
+
+        public bool IsMushroomEmergencyButtonBay1 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay1];
+
+        public bool IsMushroomEmergencyButtonBay2 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay2];
+
+        public bool IsMushroomEmergencyButtonBay3 => this.sensorStatus[(int)IOMachineSensors.MushroomEmergencyButtonBay3];
 
         public bool IsProfileCalibratedBay1 => this.sensorStatus[(int)IOMachineSensors.ProfileCalibrationBay1];
 
@@ -159,22 +175,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public bool IsProfileCalibratedBay(BayNumber bayNumber)
-        {
-            switch (bayNumber)
-            {
-                default:
-                case BayNumber.BayOne:
-                    return this.IsProfileCalibratedBay1;
-
-                case BayNumber.BayTwo:
-                    return this.IsProfileCalibratedBay2;
-
-                case BayNumber.BayThree:
-                    return this.IsProfileCalibratedBay3;
-            }
-        }
-
         public bool IsLoadingUnitInLocation(LoadingUnitLocation location)
         {
             bool returnValue;
@@ -245,6 +245,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return returnValue;
+        }
+
+        public bool IsProfileCalibratedBay(BayNumber bayNumber)
+        {
+            switch (bayNumber)
+            {
+                default:
+                case BayNumber.BayOne:
+                    return this.IsProfileCalibratedBay1;
+
+                case BayNumber.BayTwo:
+                    return this.IsProfileCalibratedBay2;
+
+                case BayNumber.BayThree:
+                    return this.IsProfileCalibratedBay3;
+            }
         }
 
         public bool IsSensorZeroOnBay(BayNumber bayNumber)

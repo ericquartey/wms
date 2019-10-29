@@ -9,6 +9,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Diagnostics;
 using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -348,6 +349,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
                 this.Logger.LogDebug($"ProfileInput inverter={message.SystemIndex}; value={message.UShortPayload}");
+            }
+            else if (message.ParameterId == InverterParameterId.CurrentError)
+            {
+                var error = message.UShortPayload;
+                if (error > 0)
+                {
+                    this.Logger.LogError($"Inverter Fault: {error} - {InverterFaultCodes.GetErrorByCode(error)}");
+                }
             }
         }
 
@@ -991,6 +1000,15 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.currentStateMachines.Add(currentInverter, currentStateMachine);
                 currentStateMachine.Start();
             }
+        }
+
+        private void ProcessReadCurrentError(IInverterStatusBase inverter)
+        {
+            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.CurrentError);
+
+            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+
+            this.inverterCommandQueue.Enqueue(inverterMessage);
         }
 
         private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)

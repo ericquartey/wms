@@ -19,6 +19,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool[] DisplayedInputs { get; }
 
+        bool IsAntiIntrusionBarrierBay1 { get; }
+
+        bool IsAntiIntrusionBarrierBay2 { get; }
+
+        bool IsAntiIntrusionBarrierBay3 { get; }
+
         bool IsDrawerCompletelyOffCradle { get; }
 
         bool IsDrawerCompletelyOnCradle { get; }
@@ -37,11 +43,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerPartiallyOnCradleBay1 { get; }
 
-        bool IsMachineInEmergencyStateBay1 { get; }
+        bool IsMachineInEmergencyState { get; }
 
         bool IsMachineInFaultState { get; }
 
         bool IsMachineInRunningState { get; }
+
+        bool IsMicroCarterLeftSide { get; }
+
+        bool IsMicroCarterRightSide { get; }
+
+        bool IsMushroomEmergencyButtonBay1 { get; }
+
+        bool IsMushroomEmergencyButtonBay2 { get; }
+
+        bool IsMushroomEmergencyButtonBay3 { get; }
 
         bool IsSensorZeroOnBay1 { get; }
 

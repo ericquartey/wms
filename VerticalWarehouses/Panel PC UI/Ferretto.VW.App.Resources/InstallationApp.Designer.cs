@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -295,11 +295,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position 1 bay height [mm].
+        /// </summary>
+        public static string BayPosition1Height {
+            get {
+                return ResourceManager.GetString("BayPosition1Height", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position 2.
         /// </summary>
         public static string BayPosition2 {
             get {
                 return ResourceManager.GetString("BayPosition2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position 2 bay height [mm].
+        /// </summary>
+        public static string BayPosition2Height {
+            get {
+                return ResourceManager.GetString("BayPosition2Height", resourceCulture);
             }
         }
         
@@ -372,6 +390,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CarouselUp {
             get {
                 return ResourceManager.GetString("CarouselUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell.
+        /// </summary>
+        public static string Cell {
+            get {
+                return ResourceManager.GetString("Cell", resourceCulture);
             }
         }
         
@@ -1627,6 +1654,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit code.
+        /// </summary>
+        public static string LoadingUnitCode {
+            get {
+                return ResourceManager.GetString("LoadingUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position 1.
+        /// </summary>
+        public static string LoadingUnitCodePosition1 {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePosition1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position 2.
+        /// </summary>
+        public static string LoadingUnitCodePosition2 {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePosition2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move loading unit from cell to cell.
         /// </summary>
         public static string LoadingUnitFromCellToCell {
@@ -2748,6 +2802,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayInBay {
             get {
                 return ResourceManager.GetString("TrayInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray in position 1.
+        /// </summary>
+        public static string TrayInBayPosition1 {
+            get {
+                return ResourceManager.GetString("TrayInBayPosition1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray in position 2.
+        /// </summary>
+        public static string TrayInBayPosition2 {
+            get {
+                return ResourceManager.GetString("TrayInBayPosition2", resourceCulture);
             }
         }
         

@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 switch (data.ConditionToCheck)
                 {
                     case ConditionToCheckType.MachineIsInEmergencyState:
-                        data.Result = machineResourcesProvider.IsMachineInEmergencyStateBay1;
+                        data.Result = machineResourcesProvider.IsMachineInEmergencyState;
                         break;
 
                     case ConditionToCheckType.DrawerIsCompletelyOnCradle:

@@ -61,5 +61,7 @@
         BrakeReleaseTime = 625,
 
         BrakeActivatePercent = 637,
+
+        CurrentError = 260,
     }
 }

@@ -9,16 +9,14 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="80,15">
+    <Grid Margin="80,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto"
-                           MinHeight="100" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -34,137 +32,8 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.DLUTestHeader}" />
 
-        <Border Grid.Row="1"
-                Grid.RowSpan="3"
-                Margin="0,5,5,5"
-                Background="{DynamicResource PpcButtonBackground}">
-            <Grid Margin="10">
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="50" />
-                </Grid.ColumnDefinitions>
-                <TextBlock Grid.Row="0"
-                           Grid.ColumnSpan="2"
-                           Margin="0,10,0,0"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.Bay}" />
-                <Border Grid.Row="1"
-                        Grid.ColumnSpan="2"
-                        Margin="0,10,0,5"
-                        BorderBrush="Black"
-                        BorderThickness="0,2,0,0" />
-
-                <TextBlock Grid.Row="2"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.BayHeight}" />
-                <TextBlock Grid.Row="2"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding BayPositionHeight}" />
-
-                <TextBlock Grid.Row="3"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.TrayInBay}" />
-
-                <TextBlock Grid.Row="3"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding IsLoadingUnitInBay, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
-
-                <TextBlock Grid.Row="5"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.LoadingUnitId}" />
-                <TextBlock Grid.Row="5"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding LoadingUnitInBay.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
-
-                <TextBlock Grid.Row="6"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.LoadingUnitWeight}" />
-                <TextBlock Grid.Row="6"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding GrossWeight, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
-
-                <TextBlock Grid.Row="7"
-                           Grid.ColumnSpan="2"
-                           Margin="0,30,0,0"
-                           FontSize="14"
-                           FontWeight="Bold"
-                           Foreground="White"
-                           Text="Elevatore" />
-                <Border Grid.Row="8"
-                        Grid.ColumnSpan="2"
-                        Margin="0,10,0,5"
-                        BorderBrush="Black"
-                        BorderThickness="0,2,0,0" />
-
-                <TextBlock Grid.Row="9"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="Cassetto su Elevatore" />
-
-                <TextBlock Grid.Row="9"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding IsLoadingUnitOnElevator, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
-
-
-                <TextBlock Grid.Row="10"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
-                <TextBlock Grid.Row="10"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding ElevatorVerticalPosition, StringFormat=0}" />
-
-                <TextBlock Grid.Row="11"
-                           Grid.Column="0"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
-                <TextBlock Grid.Row="11"
-                           Grid.Column="1"
-                           Foreground="White"
-                           Text="{Binding ElevatorHorizontalPosition, StringFormat=0}" />
-
-                <TextBlock Grid.Row="11"
-                           Grid.Column="0"
-                           VerticalAlignment="Center"
-                           Foreground="White"
-                           Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
-                <controls:PpcSensorControl Grid.Row="11"
-                                           Grid.Column="1"
-                                           Margin="0,20"
-                                           SensorState="{Binding IsZeroChain}"
-                                           Template="{StaticResource PpcSensorControlSmallTemplate}" />
-
-
-            </Grid>
-        </Border>
+        <ctrls:SensorsPanel Grid.Row="1"
+                            Grid.RowSpan="3"/>
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
@@ -180,7 +49,7 @@
                                 IsActive="{Binding IsPosition1Selected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Margin="15"
+            <controls:PpcButton Margin="15 5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPosition2Command}"
@@ -189,12 +58,11 @@
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
         </StackPanel>
 
-        <!--  Weight  -->
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                           EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.TrayTare}" />
 
@@ -202,16 +70,15 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.NetWeight}" />
 
-        <!--  Deposit / Pick up  -->
         <ctrls:PpcSpinEdit Grid.Row="3"
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                           EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
@@ -219,7 +86,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
