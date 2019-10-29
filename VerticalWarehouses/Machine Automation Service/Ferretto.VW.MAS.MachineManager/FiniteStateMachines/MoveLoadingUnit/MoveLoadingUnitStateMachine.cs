@@ -158,8 +158,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData)
         {
             bool returnValue = false;
-            var error = MachineErrorCode.MachineManagerErrorLoadingUnitDestinationDb;
-            var errorDescription = ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationDb;
             switch (messageData.Destination)
             {
                 case LoadingUnitLocation.Cell:

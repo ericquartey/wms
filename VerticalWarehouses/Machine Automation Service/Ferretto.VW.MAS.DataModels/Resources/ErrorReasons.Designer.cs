@@ -250,20 +250,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-<<<<<<< Updated upstream
-        ///   Looks up a localized string similar to La baia di destinazione deve essere vuota prima di richiamare un cassetto.
-        /// </summary>
-        public static string MachineManagerErrorLoadingUnitDestinationBay {
-            get {
-                return ResourceManager.GetString("MachineManagerErrorLoadingUnitDestinationBay", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Verificare che la posizione destinazione del cassetto all&apos;interno del database sia correttamente configurata.
-=======
         ///   Looks up a localized string similar to Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente..
->>>>>>> Stashed changes
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationBay {
             get {

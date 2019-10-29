@@ -546,14 +546,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Baia sorgente del cassetto vuota",
                             Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
                             Severity = 1
-                        },
-                        new
-                        {
-                            Id = 300005,
-                            Code = 300005,
-                            Description = "Baia di destinazione occupata",
-                            Reason = "La baia di destinazione deve essere vuota prima di richiamare un cassetto",
-                            Severity = 1
                         });
                 });
 
@@ -717,8 +709,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300005,
                             TotalErrors = 0
-<<<<<<< Updated upstream
-=======
                         },
                         new
                         {
@@ -744,7 +734,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300010,
                             TotalErrors = 0
->>>>>>> Stashed changes
                         });
                 });
 
@@ -1009,11 +998,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-<<<<<<< Updated upstream
-                            InstallationDate = new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235),
-=======
-                            InstallationDate = new DateTime(2016, 12, 29, 15, 12, 56, 285, DateTimeKind.Local).AddTicks(98),
->>>>>>> Stashed changes
+                            InstallationDate = new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886),
                             ServiceStatus = 86
                         });
                 });
