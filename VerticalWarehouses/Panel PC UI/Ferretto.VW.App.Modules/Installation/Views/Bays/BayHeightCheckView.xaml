@@ -15,6 +15,7 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
@@ -38,12 +39,12 @@
                     Visibility="{Binding Bay.IsDouble, Converter={StaticResource BTVC}}">
             <controls:PpcButton Width="100"
                                 Margin="0,0,10,0"
-                                Command="{Binding ChangeToUpperBayPositionCommand}"
-                                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
-
-            <controls:PpcButton Width="100"
                                 Command="{Binding ChangeToLowerBayPositionCommand}"
                                 Content="{x:Static res:InstallationApp.LowerBayPosition}" />
+
+            <controls:PpcButton Width="100"
+                                Command="{Binding ChangeToUpperBayPositionCommand}"
+                                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
 
         </StackPanel>
 
@@ -53,6 +54,12 @@
                             Command="{Binding MoveToBayHeightCommand}"
                             Content="{x:Static res:InstallationApp.GoToBay}"
                             IsBusy="{Binding IsElevatorMovingToHeight}" />
+
+        <controls:PpcButton Grid.Row="1"
+                            Grid.Column="3"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
 
         <controls:PpcLabeledText Grid.Row="2"
@@ -88,7 +95,6 @@
                             VerticalAlignment="Top"
                             Command="{Binding ApplyCorrectionCommand}"
                             Content="{x:Static res:InstallationApp.ApplyCorrection}" />
-
 
     </Grid>
 </ctrls:View>
