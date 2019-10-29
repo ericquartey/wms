@@ -142,9 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand GoToCellHeightCommand =>
            this.goToCellHeightCommand
            ??
-           (this.goToCellHeightCommand = new DelegateCommand(
-               this.GoToCellHeight,
-               this.CanGoToCellHeight));
+           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeight(), this.CanGoToCellHeight));
 
         public ICommand GoToNextPanelCommand =>
            this.goToNextPanelCommand
@@ -202,16 +200,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand MoveDownCommand =>
            this.moveDownCommand
            ??
-           (this.moveDownCommand = new DelegateCommand(
-               this.MoveDown,
-               this.CanMoveUpOrDown));
+           (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDown(), this.CanMoveUpOrDown));
 
         public ICommand MoveUpCommand =>
            this.moveUpCommand
            ??
-           (this.moveUpCommand = new DelegateCommand(
-               this.MoveUp,
-               this.CanMoveUpOrDown));
+           (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUp(), this.CanMoveUpOrDown));
 
         public IEnumerable<CellPanel> Panels
         {
@@ -239,7 +233,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand StopCommand =>
             this.stopCommand
             ??
-            (this.stopCommand = new DelegateCommand(this.Stop, this.CanStoped));
+            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStoped));
 
         private bool IsElevatorMoving
         {
@@ -405,7 +399,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private void GoToCellHeight()
+        private async Task GoToCellHeight()
         {
             try
             {
@@ -413,7 +407,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                this.machineElevatorWebService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.CurrentCell.Position,
                     this.procedureParameters.FeedRate,
                     false);
@@ -456,14 +450,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void MoveDown()
+        private async Task MoveDown()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsElevatorMovingDown = true;
 
-                this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
+                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
 
                 this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
             }
@@ -479,14 +473,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void MoveUp()
+        private async Task MoveUp()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsElevatorMovingUp = true;
 
-                this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
+                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
 
                 this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
             }
@@ -542,12 +536,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopCommand?.RaiseCanExecuteChanged();
         }
 
-        private void Stop()
+        private async Task Stop()
         {
             try
             {
                 this.IsWaitingForResponse = true;
-                this.machineElevatorWebService.StopAsync();
+                await this.machineElevatorWebService.StopAsync();
             }
             catch (Exception ex)
             {
