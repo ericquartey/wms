@@ -243,8 +243,16 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             if (!e.NewState)
             {
-                this.logger.LogError($"RunningState signal fall detected! Begin Stop machine procedure.");
+                this.logger.LogError($"Running State signal fall detected! Begin Stop machine procedure.");
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                    this.logger.LogDebug($"Emergency button status are [1:{machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
+                    this.logger.LogDebug($"Anti intrusion barrier status are [1:{machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
+                    this.logger.LogDebug($"Micro carter status are [Left:{machineResourcesProvider.IsMicroCarterLeftSide}, Right:{machineResourcesProvider.IsMicroCarterRightSide}]");
+                }
             }
+
             var messageData = new StateChangedMessageData(e.NewState);
             var msg = new NotificationMessage(
                 messageData,
