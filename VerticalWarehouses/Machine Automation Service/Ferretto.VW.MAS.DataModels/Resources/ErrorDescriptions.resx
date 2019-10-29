@@ -193,7 +193,7 @@
     <value>Inconsistenza database posizione destinazione cassetto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value />
+    <value>Elevatore occupato logicamente</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
     <value>Inconsistenza database posizione sorgente cassetto</value>

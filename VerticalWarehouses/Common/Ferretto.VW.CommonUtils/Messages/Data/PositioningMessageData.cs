@@ -111,6 +111,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public int ExecutedCycles { get; set; }
 
+        public double FeedRate { get; set; }
+
         public bool IsOneKMachine { get; set; }
 
         public bool IsStartedOnBoard { get; set; }

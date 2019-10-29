@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Elevatore occupato logicamente.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitElevator {
             get {
