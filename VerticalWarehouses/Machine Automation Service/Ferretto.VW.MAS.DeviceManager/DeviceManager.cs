@@ -14,10 +14,12 @@ using Ferretto.VW.MAS.DeviceManager.PowerEnable;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.ResetFault;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
+using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.DependencyInjection;
@@ -217,6 +219,24 @@ namespace Ferretto.VW.MAS.DeviceManager
                 MessageType.FaultStateChanged,
                 BayNumber.None);
             this.eventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+
+            using (var scope = this.serviceScopeFactory.CreateScope())
+            {
+                var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                foreach (var inverter in inverterProvider.GetAll())
+                {
+                    var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                    var commandMessage = new FieldCommandMessage(
+                        fieldMessageData,
+                        $"Request Inverter Error Code",
+                        FieldMessageActor.InverterDriver,
+                        FieldMessageActor.DeviceManager,
+                        FieldMessageType.InverterCurrentError,
+                        (byte)inverter.SystemIndex);
+
+                    this.eventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                }
+            }
         }
 
         private void MachineSensorsStatusOnRunningStateChanged(object sender, StatusUpdateEventArgs e)
@@ -630,7 +650,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         FieldMessageActor.Any,
                         FieldMessageActor.DeviceManager,
                         FieldMessageType.DataLayerReady,
-                        MessageStatus.NoStatus,
+                        MessageStatus.NotSpecified,
                         (byte)InverterIndex.None);
 
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(fieldNotification);

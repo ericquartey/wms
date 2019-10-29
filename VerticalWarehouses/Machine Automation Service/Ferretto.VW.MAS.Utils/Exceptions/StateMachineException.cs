@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
 
         public StateMachineException(string description, CommandMessage command, MessageActor source)
         {
-            MessageType notificationType = MessageType.NoType;
+            MessageType notificationType = MessageType.NotSpecified;
 
             switch (source)
             {

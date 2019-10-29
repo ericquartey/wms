@@ -2,6 +2,8 @@
 {
     public enum MessageActor
     {
+        NotSpecified,
+
         WebApi,
 
         AutomationService,

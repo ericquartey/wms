@@ -2,10 +2,10 @@
 {
     public enum BeltBurnishingPosition
     {
-        None = 0,
+        NotSpecified,
 
-        LowerBound = 1,
+        LowerBound,
 
-        UpperBound = 2,
+        UpperBound,
     }
 }

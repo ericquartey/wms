@@ -2,7 +2,7 @@
 {
     public enum MovementMode
     {
-        NoMode,
+        NotSpecified,
 
         Position,
 

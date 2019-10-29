@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             var notificationStatus = this.loadingUnitMovementProvider.StopOperationStatus(notification);
 
-            if (notificationStatus != MessageStatus.NoStatus)
+            if (notificationStatus != MessageStatus.NotSpecified)
             {
                 switch (notificationStatus)
                 {
