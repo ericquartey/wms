@@ -339,3 +339,6 @@ ASALocalRun/
 
 # Other Files
 *.zip
+
+# swagger auto generated files
+*.autogen.cs
