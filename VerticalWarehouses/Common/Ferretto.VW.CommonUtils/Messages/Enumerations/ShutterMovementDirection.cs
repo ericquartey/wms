@@ -2,7 +2,7 @@
 {
     public enum ShutterMovementDirection
     {
-        None = 0,
+        NotSpecified,
 
         Up,
 

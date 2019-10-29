@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
                 $"Template Error State Notification with {this.machineData.Message} and {this.stateData.Message}. Filed message: {this.stateData.FieldMessage.Description}",
                 MessageActor.DeviceManager,
                 MessageActor.DeviceManager,
-                MessageType.NoType,
+                MessageType.NotSpecified,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 MessageStatus.OperationError,

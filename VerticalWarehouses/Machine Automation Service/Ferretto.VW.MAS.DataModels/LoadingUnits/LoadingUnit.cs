@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CellId { get; set; }
 
-        public string Code { get; set; }
+        public string Code => this.Id.ToString("00");
 
         public string Description { get; set; }
 

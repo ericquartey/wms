@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class initialcreation : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -526,7 +526,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CellId = table.Column<int>(nullable: true),
-                    Code = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     GrossWeight = table.Column<double>(nullable: false),
                     Height = table.Column<double>(nullable: false),
@@ -871,7 +870,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 28, 15, 46, 5, 15, DateTimeKind.Local).AddTicks(1610), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1146,12 +1145,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LoadingUnits_Code",
-                table: "LoadingUnits",
-                column: "Code",
                 unique: true);
 
             migrationBuilder.CreateIndex(

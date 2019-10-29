@@ -19,6 +19,6 @@
 
         Canceled,
 
-        Faulted
+        Faulted,
     }
 }
