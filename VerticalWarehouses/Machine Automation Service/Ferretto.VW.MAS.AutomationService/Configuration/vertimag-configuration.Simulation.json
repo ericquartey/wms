@@ -118,7 +118,7 @@
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
           "WeightMeasureSpeed": 20,
-          "WeightMeasureTime": 15,
+          "WeightMeasureTime": 15
         },
         {
           "Inverter": {
@@ -318,13 +318,13 @@
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
         "HalfShaftLength": 2084,
-        "MaximumLoadOnBoard": 800,
+        "MaximumLoadOnBoard": 990,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,
         "ShaftElasticity": 210000
       }
     },
-    "Height": 4563,
+    "Height": 9460,
     "MaxGrossWeight": 50000,
     "ModelName": "Simulation Vertimag 800kg",
     "Panels": [

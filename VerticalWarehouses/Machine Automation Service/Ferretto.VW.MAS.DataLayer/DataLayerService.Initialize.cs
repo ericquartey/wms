@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -18,6 +19,13 @@ namespace Ferretto.VW.MAS.DataLayer
     internal partial class DataLayerService
     {
         #region Methods
+
+        private static string GetSeedFileName(string environmentName)
+        {
+            return environmentName is null
+                ? "configuration/seed.sql"
+                : $"configuration/seed.{environmentName}.sql";
+        }
 
         private async Task ApplyMigrationsAsync()
         {
@@ -52,12 +60,25 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     redundancyService.IsEnabled = true;
+
+                    var environment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+                    var seedFileName = GetSeedFileName(environment.EnvironmentName);
+
+                    if (System.IO.File.Exists(seedFileName))
+                    {
+                        this.Logger.LogInformation($"Applying seed file '{seedFileName}' ...");
+
+                        var seedScript = await System.IO.File.ReadAllTextAsync(seedFileName);
+
+                        var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                        await dataContext.Database.ExecuteSqlCommandAsync(seedScript);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 this.Logger.LogError(ex, "Error while migating databases.");
-                this.SendErrorMessage(new DLExceptionMessageData(ex));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migating databases.", 0, MessageVerbosity.Fatal));
             }
         }
 
