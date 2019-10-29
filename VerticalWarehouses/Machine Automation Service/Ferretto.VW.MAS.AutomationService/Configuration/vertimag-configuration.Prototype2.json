@@ -777,14 +777,13 @@
                 "ShaftElasticity": 210000
             }
         },
-        "Height": 9000,
+    "Height": 9460,
         "MaxGrossWeight": 50000,
         "ModelName": "Vertimag 1000kg",
         "Panels": [
             {
                 "side": "front",
                 "cells": [
-
                     {
                         "id": 1,
                         "position": 1438.0,
