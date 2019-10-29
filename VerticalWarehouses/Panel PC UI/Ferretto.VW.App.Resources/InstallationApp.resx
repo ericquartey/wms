@@ -1200,4 +1200,7 @@
   <data name="LoadingUnitCode" xml:space="preserve">
     <value>Loading unit code</value>
   </data>
+  <data name="Cell" xml:space="preserve">
+    <value>Cell</value>
+  </data>
 </root>

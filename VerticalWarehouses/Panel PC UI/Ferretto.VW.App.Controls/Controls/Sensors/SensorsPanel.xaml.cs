@@ -4,9 +4,6 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls
 {
-    /// <summary>
-    /// Interaction logic for SensorsPanel.xaml
-    /// </summary>
     public partial class SensorsPanel : UserControl
     {
         #region Fields
