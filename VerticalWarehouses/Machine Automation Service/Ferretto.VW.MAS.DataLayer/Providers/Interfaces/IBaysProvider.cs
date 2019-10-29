@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location);
 
-        double GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
+        double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 

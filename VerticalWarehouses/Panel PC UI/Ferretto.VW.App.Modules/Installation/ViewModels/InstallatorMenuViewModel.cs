@@ -58,19 +58,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool AreItemsEnabled
-        {
-            get => this.areItemsEnabled;
-            private set => this.SetProperty(ref this.areItemsEnabled, value);
-        }
-
         public override EnableMask EnableMask => EnableMask.None;
 
         public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
 
         public BindingList<MainNavigationMenuItem> OtherItems => this.otherItems;
-
-        public BindingList<MainNavigationMenuItem> SensorsItems => this.sensorsItems;
 
         #endregion
 
@@ -92,7 +84,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.OnMachineModeChanged(e);
 
-            this.AreItemsEnabled = e.MachinePower != Services.Models.MachinePowerState.Unpowered;
+            this.UpdateMenuItemsStatus();
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
@@ -156,8 +148,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void InitializeData()
         {
             this.InstallatorItems.Clear();
-            this.SensorsItems.Clear();
             this.OtherItems.Clear();
+
+            this.areItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
 
             var values = Enum.GetValues(typeof(InstallationMenus));
             foreach (InstallationMenus enumValue in values)
@@ -169,17 +162,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     dispAttribute != null)
                 {
-                    this.AddMenuItem(
-                        viewAttribute.InstallatorMenuType,
-                        new MainNavigationMenuItem(enumValue, viewAttribute.ViewModelName, viewAttribute.ModuleName, dispAttribute.Description, trackCurrentView: true));
+                    var menuItem = new MainNavigationMenuItem(
+                        enumValue,
+                        viewAttribute.ViewModelName,
+                        viewAttribute.ModuleName,
+                        dispAttribute.Description,
+                        trackCurrentView: true)
+                    { IsEnabled = this.areItemsEnabled };
+
+                    this.AddMenuItem(viewAttribute.InstallatorMenuType, menuItem);
                 }
             }
-
-            this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
-
-            this.RaisePropertyChanged(nameof(this.InstallatorItems));
-            this.RaisePropertyChanged(nameof(this.SensorsItems));
-            this.RaisePropertyChanged(nameof(this.OtherItems));
         }
 
         private async Task UpdateMenuItemsStatus()
@@ -188,14 +181,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 var setupStatus = await this.setupStatusWebService.GetAsync();
 
+                this.areItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
+
                 foreach (var menuItem in this.installatorItems)
                 {
                     var itemStatus = this.GetItemStatus(menuItem, setupStatus);
-                    menuItem.IsEnabled = itemStatus.CanBePerformed;
-                    menuItem.IsActive = itemStatus.IsCompleted;
+                    menuItem.IsEnabled = itemStatus.CanBePerformed && this.areItemsEnabled;
+                    menuItem.IsActive = itemStatus.IsCompleted && this.areItemsEnabled;
                 }
 
-                this.AreItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
+                foreach (var menuItem in this.otherItems)
+                {
+                    if (menuItem.ViewModelName == Utils.Modules.Installation.Parameters.PARAMETERS
+                        ||
+                        menuItem.ViewModelName == Utils.Modules.Installation.Sensors.VERTICALAXIS)
+                    {
+                        menuItem.IsEnabled = true;
+                    }
+                    else
+                    {
+                        menuItem.IsEnabled = this.areItemsEnabled;
+                    }
+                }
+
+                foreach (var menuItem in this.installatorItems)
+                {
+                    if (menuItem.ViewModelName == Utils.Modules.Installation.Parameters.PARAMETERS
+                        ||
+                        menuItem.ViewModelName == Utils.Modules.Installation.Sensors.VERTICALAXIS)
+                    {
+                        menuItem.IsEnabled = true;
+                    }
+                    else
+                    {
+                        menuItem.IsEnabled = this.areItemsEnabled;
+                    }
+                }
+
+                this.RaisePropertyChanged(nameof(this.InstallatorItems));
+                this.RaisePropertyChanged(nameof(this.OtherItems));
             }
             catch (Exception ex)
             {
