@@ -12,10 +12,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToCellViewModel(
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                     IMachineCellsWebService machineCellsWebService,
+                    Controls.Interfaces.ISensorsService sensorsService,
                     IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
+                sensorsService,
                 bayManagerService)
         {
         }
