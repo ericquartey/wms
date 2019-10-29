@@ -1107,4 +1107,19 @@
   <data name="BayPosition2Height" xml:space="preserve">
     <value>Quota baia posizione 2 [mm]</value>
   </data>
+  <data name="TrayInBayPosition1" xml:space="preserve">
+    <value>Cassetto in posizione 1</value>
+  </data>
+  <data name="TrayInBayPosition2" xml:space="preserve">
+    <value>Cassetto in posizione 2</value>
+  </data>
+  <data name="LoadingUnitCodePosition1" xml:space="preserve">
+    <value>Codice cassetto posizione 1</value>
+  </data>
+  <data name="LoadingUnitCodePosition2" xml:space="preserve">
+    <value>Codice cassetto posizione 2</value>
+  </data>
+  <data name="LoadingUnitCode" xml:space="preserve">
+    <value>Codice cassetto</value>
+  </data>
 </root>

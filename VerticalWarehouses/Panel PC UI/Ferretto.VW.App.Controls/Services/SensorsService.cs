@@ -252,11 +252,9 @@ namespace Ferretto.VW.App.Services
             {
                 await this.RetrieveElevatorPositionAsync();
 
-                await this.InitializeBayAsync();
+                await this.GetBayAsync();
 
-                this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
-
-                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                this.GetShutter();
 
                 await this.CheckZeroChainOnBays();
 
@@ -297,31 +295,7 @@ namespace Ferretto.VW.App.Services
                   .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
         }
 
-        private void Initialize()
-        {
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        this.OnSensorsChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-
-            this.positioningToken = this.positioningToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.RefreshAsync();
-        }
-
-        private async Task InitializeBayAsync()
+        private async Task GetBayAsync()
         {
             this.LoadingUnitPosition1InBay = null;
             this.LoadingUnitPosition2InBay = null;
@@ -349,6 +323,37 @@ namespace Ferretto.VW.App.Services
             this.BayIsMultiPosition = this.Bay.IsDouble;
 
             this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
+        }
+
+        private void GetShutter()
+        {
+            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
+
+            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+        }
+
+        private void Initialize()
+        {
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        (async (m) => await this.OnSensorsChangedAsync(m)),
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
+
+            this.positioningToken = this.positioningToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.RefreshAsync();
         }
 
         private async Task InitializeSensors()
@@ -384,10 +389,12 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
             this.shutterSensors.Update(message.Data.SensorsStates);
+
+            await this.GetBayAsync();
 
             this.RaisePropertyChanged();
         }
