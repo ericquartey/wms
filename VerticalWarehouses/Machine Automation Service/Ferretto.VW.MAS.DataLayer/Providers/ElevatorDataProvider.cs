@@ -37,6 +37,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
+        #region Properties
+
+        public object Context { get; private set; }
+
+        #endregion
+
         #region Methods
 
         public ElevatorAxis GetAxis(Orientation orientation)
