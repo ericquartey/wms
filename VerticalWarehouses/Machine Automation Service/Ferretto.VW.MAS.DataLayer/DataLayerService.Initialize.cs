@@ -23,8 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer
         private static string GetSeedFileName(string environmentName)
         {
             return environmentName is null
-                ? "configuration/seed.sql"
-                : $"configuration/seed.{environmentName}.sql";
+                ? "configuration/seeds/seed.sql"
+                : $"configuration/seeds/seed.{environmentName}.sql";
         }
 
         private async Task ApplyMigrationsAsync()
@@ -60,19 +60,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
 
                     redundancyService.IsEnabled = true;
-
-                    var environment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
-                    var seedFileName = GetSeedFileName(environment.EnvironmentName);
-
-                    if (System.IO.File.Exists(seedFileName))
-                    {
-                        this.Logger.LogInformation($"Applying seed file '{seedFileName}' ...");
-
-                        var seedScript = await System.IO.File.ReadAllTextAsync(seedFileName);
-
-                        var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                        await dataContext.Database.ExecuteSqlCommandAsync(seedScript);
-                    }
                 }
             }
             catch (Exception ex)
@@ -92,7 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    this.LoadConfiguration(
+                    await this.LoadConfigurationAsync(
                         configuration.GetDataLayerConfigurationFile(),
                         scope.ServiceProvider.GetRequiredService<DataLayerContext>());
 
