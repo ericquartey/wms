@@ -5,7 +5,7 @@ using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 
-namespace Ferretto.VW.App.Modules.Installation.ViewModels
+namespace Ferretto.VW.App.Installation.ViewModels
 {
     [Obsolete]
     internal sealed class ShutterHeightControlViewModel : BaseMainViewModel
@@ -66,6 +66,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public void ExitFromViewMethod()
         {
             // TODO
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
         }
 
         public Task OnEnterViewAsync()
