@@ -157,7 +157,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         /// <summary>
@@ -176,7 +176,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, false, requestingBay, MessageActor.MachineManager);
+            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, requestingBay, MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public MessageStatus ShutterStatus(NotificationMessage message)
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
@@ -240,7 +240,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return MessageStatus.OperationEnd;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         #endregion

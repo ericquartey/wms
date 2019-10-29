@@ -4,17 +4,17 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "01"
+      "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "02"
+      "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "03"
+      "Id": 3
     }
   ],
   "Machine": {
@@ -2825,7 +2825,7 @@
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15,
+      "FeedRateAfterZero": 0.15
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test

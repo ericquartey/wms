@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public static MessageStatus GetMessageStatusFromReason(StopRequestReason reason)
         {
-            MessageStatus returnValue = MessageStatus.NoStatus;
+            MessageStatus returnValue = MessageStatus.NotSpecified;
             switch (reason)
             {
                 case StopRequestReason.NoReason:

@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
 
         public void Configure(EntityTypeBuilder<BayPosition> builder)
         {
-            if (builder == null)
+            if (builder is null)
             {
                 throw new ArgumentNullException(nameof(builder));
             }

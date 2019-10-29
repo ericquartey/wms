@@ -4,17 +4,20 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "01"
+
+      "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "02"
+
+      "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Code": "03"
+
+      "Id": 3
     }
   ],
   "Machine": {
@@ -118,21 +121,24 @@
           "WeightMeasureMultiply": 121.46,
           "WeightMeasureSum": -746.12,
           "WeightMeasureSpeed": 20,
-          "WeightMeasureTime": 15,
+          "WeightMeasureTime": 15
         },
         {
+          "Inverter": {
+            "Index": 1,
+            "Type": "Acu"
+          },
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
           "ChainOffset": -6.4,
-          "Inverter": null,
           "ProfileCalibratePosition": 300,
           "ProfileCalibrateSpeed": 30,
           "ProfileCalibrateLength": 900,
           "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
-            "Speed": 55
+            "Speed": 550
           },
           "EmptyLoadMovement": {
             "Acceleration": 1500,
@@ -315,15 +321,15 @@
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
         "HalfShaftLength": 2084,
-        "MaximumLoadOnBoard": 800,
+        "MaximumLoadOnBoard": 990,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,
         "ShaftElasticity": 210000
       }
     },
-    "Height": 4563,
+    "Height": 9460,
     "MaxGrossWeight": 50000,
-    "ModelName": "Simulation Vertimag 800kg",
+    "ModelName": "Simulation Vertimag 1000kg",
     "Panels": [
       {
         "side": "front",
@@ -2838,7 +2844,7 @@
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15,
+      "FeedRateAfterZero": 0.15
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,

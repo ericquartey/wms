@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -18,6 +19,13 @@ namespace Ferretto.VW.MAS.DataLayer
     internal partial class DataLayerService
     {
         #region Methods
+
+        private static string GetSeedFileName(string environmentName)
+        {
+            return environmentName is null
+                ? "configuration/seeds/seed.sql"
+                : $"configuration/seeds/seed.{environmentName}.sql";
+        }
 
         private async Task ApplyMigrationsAsync()
         {
@@ -57,7 +65,7 @@ namespace Ferretto.VW.MAS.DataLayer
             catch (Exception ex)
             {
                 this.Logger.LogError(ex, "Error while migating databases.");
-                this.SendErrorMessage(new DLExceptionMessageData(ex));
+                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migating databases.", 0, MessageVerbosity.Fatal));
             }
         }
 
@@ -71,7 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 try
                 {
-                    this.LoadConfiguration(
+                    await this.LoadConfigurationAsync(
                         configuration.GetDataLayerConfigurationFile(),
                         scope.ServiceProvider.GetRequiredService<DataLayerContext>());
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -92,19 +92,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    BayNumber = table.Column<string>(nullable: true),
+                    BayNumber = table.Column<int>(nullable: false),
                     Data = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    Destination = table.Column<string>(nullable: true),
-                    ErrorLevel = table.Column<string>(nullable: true),
-                    Exception = table.Column<string>(nullable: true),
-                    Level = table.Column<string>(nullable: true),
-                    LoggerName = table.Column<string>(nullable: true),
-                    Message = table.Column<string>(nullable: true),
-                    Source = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: true),
+                    Destination = table.Column<int>(nullable: false),
+                    ErrorLevel = table.Column<int>(nullable: false),
+                    Source = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false),
-                    Type = table.Column<string>(nullable: true)
+                    Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -530,7 +526,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     CellId = table.Column<int>(nullable: true),
-                    Code = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
                     GrossWeight = table.Column<double>(nullable: false),
                     Height = table.Column<double>(nullable: false),
@@ -725,6 +720,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300005, 300005, "Baia di destinazione occupata", "La baia di destinazione deve essere vuota prima di richiamare un cassetto", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 300004, 300004, "", "", 1 });
 
             migrationBuilder.InsertData(
@@ -780,7 +780,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200014, 200014, "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200013, 200013, "Errore di sintassi del messaggio inviato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -790,7 +790,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200013, 200013, "Errore di sintassi del messaggio inviato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200014, 200014, "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -870,7 +870,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 25, 15, 23, 58, 905, DateTimeKind.Local).AddTicks(1197), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -891,6 +891,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 100032, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300003, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -955,12 +960,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300003, 0 });
+                values: new object[] { 200009, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200009, 0 });
+                values: new object[] { 200008, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1025,12 +1030,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200008, 0 });
+                values: new object[] { 300004, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300004, 0 });
+                values: new object[] { 300005, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BayPositions_BayId",
@@ -1140,12 +1145,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_LoadingUnits_Code",
-                table: "LoadingUnits",
-                column: "Code",
                 unique: true);
 
             migrationBuilder.CreateIndex(

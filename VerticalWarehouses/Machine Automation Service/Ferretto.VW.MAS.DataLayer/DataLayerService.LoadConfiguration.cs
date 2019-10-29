@@ -1,8 +1,12 @@
 ﻿using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        private void LoadConfiguration(string configurationFilePath, DataLayerContext dataContext)
+        private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext)
         {
             if (dataContext.Machines.Any())
             {
@@ -48,6 +52,27 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
 
             this.Logger.LogInformation($"First run: configuration loaded.");
+
+            await this.LoadSeedsAsync();
+        }
+
+        private async Task LoadSeedsAsync()
+        {
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var environment = scope.ServiceProvider.GetRequiredService<IHostingEnvironment>();
+                var seedFileName = GetSeedFileName(environment.EnvironmentName);
+
+                if (File.Exists(seedFileName))
+                {
+                    this.Logger.LogInformation($"First run: applying seed file '{seedFileName}' ...");
+
+                    var seedScript = await File.ReadAllTextAsync(seedFileName);
+
+                    var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                    await dataContext.Database.ExecuteSqlCommandAsync(seedScript);
+                }
+            }
         }
 
         #endregion

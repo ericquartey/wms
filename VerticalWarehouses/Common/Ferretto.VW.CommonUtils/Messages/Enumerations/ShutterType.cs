@@ -2,10 +2,10 @@
 {
     public enum ShutterType
     {
-        Undefined = 0,
+        NotSpecified,
 
-        TwoSensors = 1,
+        TwoSensors,
 
-        ThreeSensors = 2,
+        ThreeSensors,
     }
 }

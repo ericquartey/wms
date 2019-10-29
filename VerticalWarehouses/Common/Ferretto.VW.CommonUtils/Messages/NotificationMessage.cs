@@ -32,7 +32,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             MessageType type,
             BayNumber requestingBay,
             BayNumber targetBay = BayNumber.None,
-            MessageStatus status = MessageStatus.NoStatus,
+            MessageStatus status = MessageStatus.NotSpecified,
             ErrorLevel level = ErrorLevel.NoError,
             MessageVerbosity verbosity = MessageVerbosity.Info)
         {

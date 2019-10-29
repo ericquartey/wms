@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Events
 
-        public event EventHandler<MessageNotifiedEventArgs> MessageNotified;
+        public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
         #endregion
 
@@ -74,77 +74,77 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnChangeRunningState(NotificationMessageUI<ChangeRunningStateMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnCurrentPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnElavtorWeightCheck(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnInverterStatusWordChanged(NotificationMessageUI<InverterStatusWordMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnMoveLoadingUnit(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnSensorsChanged(NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnShutterPositioningNotify(NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
         {
-            this.MessageNotified?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         #endregion

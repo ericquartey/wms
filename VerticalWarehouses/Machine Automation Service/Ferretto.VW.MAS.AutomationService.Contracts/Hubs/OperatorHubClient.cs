@@ -46,7 +46,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 this,
                 new BayStatusChangedEventArgs(
                     e.Index,
-                    e.BayType,
                     e.BayStatus,
                     e.PendingMissionsCount,
                     e.CurrentMissionOperationId));

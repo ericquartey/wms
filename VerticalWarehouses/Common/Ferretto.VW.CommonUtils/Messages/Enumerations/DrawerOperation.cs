@@ -2,7 +2,7 @@
 {
     public enum DrawerOperation
     {
-        None = 0,
+        NotSpecified,
 
         ManualStore,
 

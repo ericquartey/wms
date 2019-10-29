@@ -16,7 +16,8 @@
                                 Height="70"
                                 Margin="15,0,15,15"
                                 Command="{Binding NavigateCommand}"
-                                Content="{Binding Description}" />
+                                Content="{Binding Description}"
+                                IsEnabled="{Binding IsEnabled}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
 </ItemsControl>

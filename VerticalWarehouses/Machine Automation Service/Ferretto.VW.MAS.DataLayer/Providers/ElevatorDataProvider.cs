@@ -37,6 +37,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
+        #region Properties
+
+        public object Context { get; private set; }
+
+        #endregion
+
         #region Methods
 
         public ElevatorAxis GetAxis(Orientation orientation)
@@ -76,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
+                var elevator = this.dataContext.Elevators.AsNoTracking()
                     .Include(e => e.LoadingUnit)
                     .ThenInclude(l => l.Cell)
                     .Single();

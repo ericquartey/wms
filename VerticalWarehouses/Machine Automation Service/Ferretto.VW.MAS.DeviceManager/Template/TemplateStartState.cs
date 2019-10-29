@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
                 $"Template Start State Notification with {this.machineData.Message}",
                 MessageActor.Any,
                 MessageActor.DeviceManager,
-                MessageType.NoType,
+                MessageType.NotSpecified,
                 this.machineData.RequestingBay,
                 this.machineData.TargetBay,
                 MessageStatus.OperationStart);

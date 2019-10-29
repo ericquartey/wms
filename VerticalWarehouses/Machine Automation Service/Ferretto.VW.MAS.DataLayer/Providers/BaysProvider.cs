@@ -491,9 +491,9 @@ namespace Ferretto.VW.MAS.DataLayer
                        .Select(p => p.LoadingUnit).SingleOrDefault();
         }
 
-        public double GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
+        public double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
         {
-            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.Height ?? 0;
+            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.Height;
         }
 
         public LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId)
