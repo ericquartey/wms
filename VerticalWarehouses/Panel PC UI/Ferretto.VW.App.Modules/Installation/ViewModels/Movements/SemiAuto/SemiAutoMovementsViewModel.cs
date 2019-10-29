@@ -124,8 +124,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
-        public Sensors Sensors => this.sensors;
-
         public ICommand StopMovingCommand =>
            this.stopMovingCommand
            ??
@@ -224,39 +222,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
-        }
-
-        private async Task CheckZeroChainOnBays()
-        {
-            var bays = await this.machineBaysWebService.GetAllAsync();
-
-            this.Bay1ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayOne)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayOne;
-
-            this.Bay2ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayTwo)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayTwo;
-
-            this.Bay3ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayThree)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayThree;
-        }
-
-        private async Task InitializeSensorsAsync()
-        {
-            var sensorsStates = await this.machineSensorsWebService.GetAsync();
-            this.shutterSensors = new ShutterSensors((int)this.bay.Number);
-
-            this.sensors.Update(sensorsStates.ToArray());
-            this.shutterSensors.Update(sensorsStates.ToArray());
-
-            this.RaisePropertyChanged(nameof(this.ShutterSensors));
-
-            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
         }
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)

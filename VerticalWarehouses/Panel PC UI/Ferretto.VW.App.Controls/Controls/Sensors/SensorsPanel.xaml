@@ -246,12 +246,12 @@
                                                SensorState="{Binding ShutterSensors.Open}"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
-                                    Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}">
+                                    Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVC}}">
                             <TextBlock
                                VerticalAlignment="Center"
                                Style="{StaticResource TextBlockTitleStyle}"
                                Text="{x:Static res:InstallationApp.ShutterMidWay}"
-                               Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVIC}}" />
+                               Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVC}}" />
                             <controls:PpcSensorControl
                                                Margin="0"
                                                Template="{StaticResource PpcSensorControlSmallTemplate}"

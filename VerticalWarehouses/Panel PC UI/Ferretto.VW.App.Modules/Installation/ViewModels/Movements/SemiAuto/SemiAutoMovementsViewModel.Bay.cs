@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                (this.IsZeroChain || (this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1));
+                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
         }
 
         private async Task MoveToBayHeightAsync()

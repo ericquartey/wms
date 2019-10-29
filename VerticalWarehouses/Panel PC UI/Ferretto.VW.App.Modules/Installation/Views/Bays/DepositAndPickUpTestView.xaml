@@ -9,7 +9,7 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="80,15">
+    <Grid Margin="80,10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -17,7 +17,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -34,8 +33,7 @@
                    Text="{x:Static res:InstallationApp.DLUTestHeader}" />
 
         <ctrls:SensorsPanel Grid.Row="1"
-                            Grid.RowSpan="3"
-                            Margin="0,5,5,5" />
+                            Grid.RowSpan="3"/>
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
@@ -51,7 +49,7 @@
                                 IsActive="{Binding IsPosition1Selected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
-            <controls:PpcButton Margin="15"
+            <controls:PpcButton Margin="15 5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPosition2Command}"
@@ -64,7 +62,7 @@
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                           EditValue="{Binding Tare, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.TrayTare}" />
 
@@ -72,7 +70,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding NetWeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.NetWeight}" />
 
@@ -80,7 +78,7 @@
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
+                           EditValue="{Binding InputRequiredCycles, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='0'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
 
@@ -88,7 +86,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                             EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
 
