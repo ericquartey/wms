@@ -20,7 +20,7 @@
 
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
-        public const string SHUTTTER1HEIGHTCONTROL = "Shutter1HeightControlViewModel";
+        public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 

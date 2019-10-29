@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep2View>();
             containerRegistry.RegisterForNavigation<VerticalResolutionCalibrationStep3View>();
             containerRegistry.RegisterForNavigation<LoadFirstDrawerView>();
-            containerRegistry.RegisterForNavigation<Shutter1HeightControlView>();
+            containerRegistry.RegisterForNavigation<ShutterHeightControlView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromBayToCellView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromCellToBayView>();
             containerRegistry.RegisterForNavigation<LoadingUnitFromCellToCellView>();

@@ -82,7 +82,11 @@ namespace Ferretto.VW.App.Controls
             this.InitializeComponent();
             var customInputFieldControlFocusable = this;
             this.LayoutRoot.DataContext = customInputFieldControlFocusable;
-            this.Loaded += this.PpcSpinEdit_Loaded;
+
+            if (!System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            {
+                this.Loaded += this.PpcSpinEdit_Loaded;
+            }
         }
 
         #endregion

@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? stepValue;
 
+        private DelegateCommand stopCommand;
+
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -140,9 +142,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand GoToCellHeightCommand =>
            this.goToCellHeightCommand
            ??
-           (this.goToCellHeightCommand = new DelegateCommand(
-               this.GoToCellHeight,
-               this.CanGoToCellHeight));
+           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeight(), this.CanGoToCellHeight));
 
         public ICommand GoToNextPanelCommand =>
            this.goToNextPanelCommand
@@ -200,16 +200,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand MoveDownCommand =>
            this.moveDownCommand
            ??
-           (this.moveDownCommand = new DelegateCommand(
-               this.MoveDown,
-               this.CanMoveUpOrDown));
+           (this.moveDownCommand = new DelegateCommand(async () => await this.MoveDown(), this.CanMoveUpOrDown));
 
         public ICommand MoveUpCommand =>
            this.moveUpCommand
            ??
-           (this.moveUpCommand = new DelegateCommand(
-               this.MoveUp,
-               this.CanMoveUpOrDown));
+           (this.moveUpCommand = new DelegateCommand(async () => await this.MoveUp(), this.CanMoveUpOrDown));
 
         public IEnumerable<CellPanel> Panels
         {
@@ -233,6 +229,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.stepValue;
             set => this.SetProperty(ref this.stepValue, value);
         }
+
+        public ICommand StopCommand =>
+            this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStoped));
 
         private bool IsElevatorMoving
         {
@@ -360,7 +361,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.Panels != null
                 &&
-                this.Panels.LastOrDefault() != this.CurrentPanel
+                this.CurrentPanelNumber < this.Panels.Count()
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -372,7 +373,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 this.Panels != null
                 &&
-                this.Panels.FirstOrDefault() != this.CurrentPanel
+                this.CurrentPanelNumber > 1
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -391,7 +392,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
-        private void GoToCellHeight()
+        private bool CanStoped()
+        {
+            return this.IsElevatorMoving
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private async Task GoToCellHeight()
         {
             try
             {
@@ -399,7 +407,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                this.machineElevatorWebService.MoveToVerticalPositionAsync(
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.CurrentCell.Position,
                     this.procedureParameters.FeedRate,
                     false);
@@ -442,16 +450,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void MoveDown()
+        private async Task MoveDown()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsElevatorMovingDown = true;
 
-                this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
+                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
+                this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
             }
             catch (Exception ex)
             {
@@ -465,16 +473,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void MoveUp()
+        private async Task MoveUp()
         {
             try
             {
                 this.IsWaitingForResponse = true;
                 this.IsElevatorMovingUp = true;
 
-                this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
+                await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
+                this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
             }
             catch (Exception ex)
             {
@@ -525,6 +533,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToPreviousPanelCommand?.RaiseCanExecuteChanged();
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+        }
+
+        private async Task Stop()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                await this.machineElevatorWebService.StopAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion
