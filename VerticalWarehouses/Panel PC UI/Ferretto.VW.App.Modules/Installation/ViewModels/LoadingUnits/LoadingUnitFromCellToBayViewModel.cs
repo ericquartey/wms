@@ -21,9 +21,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public LoadingUnitFromCellToBayViewModel(
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+                    Controls.Interfaces.ISensorsService sensorsService,
                     IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
+                sensorsService,
                 bayManagerService)
         {
         }
@@ -74,6 +76,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
+                if (this.IsLoadingUnitInBay)
+                {
+                    this.ShowNotification("la baia non è libera", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
+
                 this.IsWaitingForResponse = true;
 
                 await this.MachineLoadingUnitsWebService.EjectLoadingUnitAsync(destination, this.LoadingUnitId.Value);
@@ -108,7 +116,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool CanConfirmEjectLoadingUnit()
         {
-            return this.isEjectLoadingUnitConfirmationEnabled;
+            return this.isEjectLoadingUnitConfirmationEnabled && !this.IsLoadingUnitInBay;
         }
 
         private async Task ConfirmEjectLoadingUnit()

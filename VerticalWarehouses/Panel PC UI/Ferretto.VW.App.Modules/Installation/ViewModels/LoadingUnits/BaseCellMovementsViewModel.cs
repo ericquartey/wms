@@ -31,6 +31,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
+                sensorsService,
                 bayManagerService)
 
         {
@@ -40,7 +41,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
 
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
-            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
         }
 
         #endregion
@@ -90,8 +90,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 return this.cells.Any(l => l.Id == this.destinationCellId.Value);
             }
         }
-
-        public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
 
         protected IEnumerable<Cell> Cells
         {

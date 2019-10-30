@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private readonly IBayManager bayManagerService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
+        private readonly ISensorsService sensorsService;
 
         private bool bayIsMultiPosition;
 
@@ -44,6 +47,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand selectBayPosition2Command;
 
+        private SubscriptionToken sensorsToken;
+
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -54,11 +59,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public BaseMovementsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
         }
 
         #endregion
@@ -101,6 +108,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 return this.loadingUnits.Any(l => l.Id == this.loadingUnitId.Value);
             }
         }
+
+        public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
 
         public bool IsPosition1Selected
         {
@@ -421,6 +430,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+            this.RaiseCanExecuteChanged();
+        }
+
         private void RestoreStates()
         {
             this.IsExecutingProcedure = false;
@@ -448,6 +463,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         this.OnMoveLoadingUnitChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         private async Task UpdateBayAsync()
