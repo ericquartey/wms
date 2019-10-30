@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly Sensors sensors = new Sensors();
 
+        private bool bay1IsVisible;
+
         private bool bay1ZeroChainisVisible;
 
         private bool bay2IsVisible;
@@ -47,15 +49,19 @@ namespace Ferretto.VW.App.Services
 
         private MAS.AutomationService.Contracts.BayNumber bayNumber;
 
-        private double? bayPosition1Height;
+        private double? bayPositionDownHeight;
 
-        private double? bayPosition2Height;
+        private double? bayPositionUpHeight;
 
         private double? elevatorHorizontalPosition;
 
         private double? elevatorVerticalPosition;
 
         private LoadingUnit embarkedLoadingUnit;
+
+        private string embarkedLoadingUnitCode;
+
+        private double embarkedLoadingUnitWeight;
 
         private bool isShutterTwoSensors;
 
@@ -99,8 +105,8 @@ namespace Ferretto.VW.App.Services
 
         public bool Bay1IsVisible
         {
-            get => this.bay3IsVisible;
-            set => this.SetProperty(ref this.bay3IsVisible, value);
+            get => this.bay1IsVisible;
+            set => this.SetProperty(ref this.bay1IsVisible, value);
         }
 
         public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainisVisible; private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value); }
@@ -139,16 +145,16 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayNumber, value);
         }
 
-        public double? BayPosition1Height
+        public double? BayPositionDownHeight
         {
-            get => this.bayPosition1Height;
-            private set => this.SetProperty(ref this.bayPosition1Height, value);
+            get => this.bayPositionDownHeight;
+            private set => this.SetProperty(ref this.bayPositionDownHeight, value);
         }
 
-        public double? BayPosition2Height
+        public double? BayPositionUpHeight
         {
-            get => this.bayPosition2Height;
-            private set => this.SetProperty(ref this.bayPosition2Height, value);
+            get => this.bayPositionUpHeight;
+            private set => this.SetProperty(ref this.bayPositionUpHeight, value);
         }
 
         public double? ElevatorHorizontalPosition
@@ -172,6 +178,9 @@ namespace Ferretto.VW.App.Services
                 if (this.CanEmbark())
                 {
                     this.embarkedLoadingUnit = new LoadingUnit();
+                    // TO DO load from loadingUnitProvicder, check case sesnors true
+                    this.EmbarkedLoadingUnitCode = this.EmbarkedLoadingUnit.Code;
+                    this.EmbarkedLoadingUnitWeight = this.EmbarkedLoadingUnit.GrossWeight;
                 }
                 else
                 {
@@ -182,6 +191,18 @@ namespace Ferretto.VW.App.Services
             }
 
             private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+        }
+
+        public string EmbarkedLoadingUnitCode
+        {
+            get => this.embarkedLoadingUnitCode;
+            set => this.SetProperty(ref this.embarkedLoadingUnitCode, value);
+        }
+
+        public double EmbarkedLoadingUnitWeight
+        {
+            get => this.embarkedLoadingUnitWeight;
+            set => this.SetProperty(ref this.embarkedLoadingUnitWeight, value);
         }
 
         public bool IsLoadingUnitInBay
@@ -308,16 +329,16 @@ namespace Ferretto.VW.App.Services
             this.Bay2IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo);
             this.Bay3IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree);
 
-            if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPosition1)
+            if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
             {
-                this.BayPosition1Height = bayPosition1.Height;
-                this.LoadingUnitPosition1InBay = bayPosition1.LoadingUnit;
+                this.BayPositionDownHeight = bayPositionDown.Height;
+                this.LoadingUnitPosition1InBay = bayPositionDown.LoadingUnit;
             }
 
-            if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPosition2)
+            if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
             {
-                this.LoadingUnitPosition2InBay = bayPosition2.LoadingUnit;
-                this.BayPosition2Height = bayPosition2.Height;
+                this.LoadingUnitPosition2InBay = bayPositionUp.LoadingUnit;
+                this.BayPositionUpHeight = bayPositionUp.Height;
             }
 
             this.BayIsMultiPosition = this.Bay.IsDouble;
@@ -401,9 +422,9 @@ namespace Ferretto.VW.App.Services
 
         private void RaisePropertyChanged()
         {
+            this.RaisePropertyChanged(nameof(this.Sensors));
             this.RaisePropertyChanged(nameof(this.IsZeroChain));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
-            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 

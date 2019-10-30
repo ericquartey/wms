@@ -1101,17 +1101,17 @@
   <data name="ShutterEnduranceTest" xml:space="preserve">
     <value>Test Serranda</value>
   </data>
-  <data name="BayPosition1Height" xml:space="preserve">
-    <value>Quota baia posizione 1 [mm]</value>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Quota baia posiz. bassa [mm]</value>
   </data>
-  <data name="BayPosition2Height" xml:space="preserve">
-    <value>Quota baia posizione 2 [mm]</value>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Quota baia posiz. alta [mm]</value>
   </data>
-  <data name="TrayInBayPosition1" xml:space="preserve">
-    <value>Cassetto in posizione 1</value>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Cassetto in posizione down</value>
   </data>
-  <data name="TrayInBayPosition2" xml:space="preserve">
-    <value>Cassetto in posizione 2</value>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Cassetto in posizione up</value>
   </data>
   <data name="LoadingUnitCodePosition1" xml:space="preserve">
     <value>Codice cassetto posizione 1</value>

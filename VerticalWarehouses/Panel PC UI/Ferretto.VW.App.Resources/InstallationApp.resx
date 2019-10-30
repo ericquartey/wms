@@ -1179,17 +1179,17 @@
   <data name="ShutterEnduranceTest" xml:space="preserve">
     <value>Shutter Test</value>
   </data>
-  <data name="BayPosition1Height" xml:space="preserve">
-    <value>Position 1 bay height [mm]</value>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Position down bay height [mm]</value>
   </data>
-  <data name="BayPosition2Height" xml:space="preserve">
-    <value>Position 2 bay height [mm]</value>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Position up bay height [mm]</value>
   </data>
-  <data name="TrayInBayPosition1" xml:space="preserve">
-    <value>Tray in position 1</value>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Tray in position down</value>
   </data>
-  <data name="TrayInBayPosition2" xml:space="preserve">
-    <value>Tray in position 2</value>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Tray in position up</value>
   </data>
   <data name="LoadingUnitCodePosition1" xml:space="preserve">
     <value>Loading unit code position 1</value>
