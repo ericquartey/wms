@@ -17,6 +17,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
+        // TODO transform these constants in configuration parameters?
+        private const double MinimumLoadOnBoard = 10.0;
+
+        private const int WeightTolerance = 50;
+
         private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IElevatorDataProvider elevatorProvider;
@@ -94,12 +99,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasureMultiply}. kSum {this.verticalParams.WeightMeasureSum}");
                 this.data.IsWeightMeasureDone = true;
                 if (this.data.LoadingUnitId.HasValue
-                    && this.data.MeasuredWeight > 10.0
-                    && this.data.LoadingUnitId < this.elevatorProvider.GetStructuralProperties().MaximumLoadOnBoard)
+                    && this.data.MeasuredWeight > MinimumLoadOnBoard
+                    && this.data.MeasuredWeight < this.elevatorProvider.GetStructuralProperties().MaximumLoadOnBoard)
                 {
                     this.ParentStateMachine.GetRequiredService<ILoadingUnitsProvider>().SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
                     if (!this.data.LoadedNetWeight.HasValue
-                        || Math.Abs(this.data.MeasuredWeight - this.data.LoadedNetWeight.Value) > 50
+                        || Math.Abs(this.data.MeasuredWeight - this.data.LoadedNetWeight.Value) > WeightTolerance
                         )
                     {
                         this.ScaleMovementsByWeight();
