@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -545,6 +546,23 @@ namespace Ferretto.VW.Simulator.Services
                 case InverterParameterId.CurrentError:
                     var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(1, 100)));
                     result = client.Client.Send(errorMessage);
+                    break;
+
+                case InverterParameterId.BlockDefinition:
+                    inverter.BlockDefinitions = (List<InverterBlockDefinition>)message.Payload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.BlockWrite:
+                    var blockRead = message.ConvertPayloadToBlockRead(inverter.BlockDefinitions);
+                    for (int iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
+                    {
+                        if (inverter.BlockDefinitions[iblock].ParameterId == InverterParameterId.TableTravelTargetSpeeds)
+                        {
+                            inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)blockRead[iblock], inverter.TargetSpeed[inverter.CurrentAxis]);
+                        }
+                    }
+                    result = client.Client.Send(message.ToBytes());
                     break;
 
                 default:
