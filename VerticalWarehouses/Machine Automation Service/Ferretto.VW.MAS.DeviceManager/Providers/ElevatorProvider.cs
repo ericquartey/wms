@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
 
             var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
