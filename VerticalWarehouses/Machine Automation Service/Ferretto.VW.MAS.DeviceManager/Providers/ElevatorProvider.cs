@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
 
             var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -240,7 +240,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Horizontal);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
 
             var speed = new[] { procedureParameters.ProfileCalibrateSpeed };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -313,7 +313,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException("Invalid Zero Chain position");
             }
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -335,6 +335,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 deceleration,
                 switchPosition,
                 HorizontalMovementDirection.Forwards);
+            messageData.LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id;
+            messageData.FeedRate = feedRate;
 
             this.PublishCommand(
                 messageData,
@@ -378,7 +380,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     : -parameters.NegativeTargetDirection;
             }
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -421,7 +423,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -475,7 +477,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetWeightCheck();
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             double[] speed = { movementParameters.Speed * procedureParameters.FeedRate };
             double[] acceleration = { movementParameters.Acceleration };
@@ -495,6 +497,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 LoadedNetWeight = netWeight,
                 LoadingUnitId = loadingUnitId,
+                FeedRate = procedureParameters.FeedRate
             };
 
             this.PublishCommand(
@@ -546,7 +549,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -628,19 +631,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 this.isDisposed = true;
             }
-        }
-
-        private MovementParameters ScaleMovementsByWeight(Orientation orientation)
-        {
-            var axis = orientation == Orientation.Horizontal
-                ? this.elevatorDataProvider.GetHorizontalAxis()
-                : this.elevatorDataProvider.GetVerticalAxis();
-
-            var structuralProperties = this.elevatorDataProvider.GetStructuralProperties();
-
-            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-
-            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         #endregion

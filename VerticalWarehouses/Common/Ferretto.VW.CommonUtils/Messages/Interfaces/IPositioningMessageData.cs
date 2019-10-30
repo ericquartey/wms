@@ -19,6 +19,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int ExecutedCycles { get; set; }
 
+        double FeedRate { get; set; }
+
         bool IsOneKMachine { get; set; }
 
         bool IsStartedOnBoard { get; set; }

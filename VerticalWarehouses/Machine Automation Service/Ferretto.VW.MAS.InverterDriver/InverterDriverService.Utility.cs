@@ -10,7 +10,6 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Diagnostics;
-using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines;
@@ -745,81 +744,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
+                        var targetPosition = invertersProvider.ComputePositioningValues(inverter, positioningData, axisOrientation, currentPosition, this.refreshTargetTable, out var positioningFieldData);
 
-                        var position = positioningData.TargetPosition;
-                        if (positioningData.MovementType == MovementType.Absolute)
-                        {
-                            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                        this.Logger.LogDebug($"Current axis: {this.currentAxis}; " +
+                            $"current position: {currentPosition}; " +
+                            $"target: {positioningFieldData.TargetPosition} [impulses: {targetPosition}]; " +
+                            $"speed: {positioningFieldData.TargetSpeed[0]}; " +
+                            $"acceleration: {positioningFieldData.TargetAcceleration[0]}; " +
+                            $"movement type: {positioningFieldData.MovementType}");
 
-                            var axis = positioningData.AxisMovement == Axis.Horizontal
-                                ? elevatorDataProvider.GetHorizontalAxis()
-                                : elevatorDataProvider.GetVerticalAxis();
-
-                            position -= axis.Offset;
-
-                            if (position < 0)
-                            {
-                                throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
-                            }
-
-                            if (axis.Orientation == Orientation.Vertical)
-                            {
-                                var beltDisplacement = invertersProvider.ComputeDisplacement(positioningData.TargetPosition);
-                                this.Logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
-                                position += beltDisplacement;
-                            }
-                        }
-
-                        int targetPosition;
-                        if (positioningData.AxisMovement == Axis.BayChain)
-                        {
-                            targetPosition = (int)(serviceProvider.GetRequiredService<IBaysProvider>().GetResolution(inverter.SystemIndex) * position);
-                        }
-                        else
-                        {
-                            targetPosition = invertersProvider.ConvertMillimetersToPulses(position, axisOrientation);
-                        }
-
-                        var targetAcceleration = positioningData.TargetAcceleration
-                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
-                            .ToArray();
-
-                        var targetDeceleration = positioningData.TargetDeceleration
-                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
-                            .ToArray();
-
-                        var targetSpeed = positioningData.TargetSpeed
-                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
-                            .ToArray();
-
-                        var switchPosition = positioningData.SwitchPosition
-                            .Select(value => invertersProvider.ConvertMillimetersToPulses(value, axisOrientation))
-                            .ToArray();
-
-                        var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
-
-                        this.Logger.LogDebug($"Direction: {positioningData.Direction}");
-                        this.Logger.LogDebug($"Position:");
-                        for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
-                        {
-                            this.Logger.LogDebug($"{positioningData.SwitchPosition[i]} mm");
-                        }
-
-                        var positioningFieldData = new InverterPositioningFieldMessageData(
-                            positioningData,
-                            targetAcceleration,
-                            targetDeceleration,
-                            targetPosition,
-                            targetSpeed,
-                            switchPosition,
-                            direction,
-                            this.refreshTargetTable);
-
-                        this.Logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
-                        this.Logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
                         this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(Timeout.Infinite, Timeout.Infinite);
-
-                        this.Logger.LogDebug($"Current axis: {this.currentAxis}; current position: {currentPosition}; target: {positioningData.TargetPosition} [impulses: {targetPosition}]; movement type: {positioningData.MovementType}");
 
                         switch (positioningData.MovementType)
                         {

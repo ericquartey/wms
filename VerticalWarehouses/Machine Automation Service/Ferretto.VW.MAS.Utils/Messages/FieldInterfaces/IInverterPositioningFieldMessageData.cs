@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int Direction { get; set; }
 
+        double FeedRate { get; set; }
+
         bool IsTorqueCurrentSamplingEnabled { get; set; }
 
         bool IsWeightMeasure { get; set; }

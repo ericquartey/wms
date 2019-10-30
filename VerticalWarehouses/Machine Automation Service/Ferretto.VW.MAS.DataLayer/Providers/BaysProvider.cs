@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         public double ConvertProfileToHeight(ushort profile)
         {
-            return profile * this.kMul + this.kSum;
+            return (profile * this.kMul) + this.kSum;
         }
 
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)

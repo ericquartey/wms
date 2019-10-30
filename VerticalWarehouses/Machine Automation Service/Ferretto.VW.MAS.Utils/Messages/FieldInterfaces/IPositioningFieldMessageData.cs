@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         HorizontalMovementDirection Direction { get; set; }
 
+        double FeedRate { get; }
+
         bool IsTorqueCurrentSamplingEnabled { get; }
 
         bool IsWeightMeasure { get; }
