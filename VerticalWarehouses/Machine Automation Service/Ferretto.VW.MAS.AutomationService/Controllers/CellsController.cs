@@ -70,6 +70,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(cell);
         }
 
+        [HttpPost("fromid/toid/height")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Cell>> UpdatesHeight(int fromid, int toid, WarehouseSide side, double height)
+        {
+            var cells = this.cellsProvider.UpdatesHeight(fromid, toid, side, height);
+
+            return this.Ok(cells);
+        }
+
         #endregion
     }
 }
