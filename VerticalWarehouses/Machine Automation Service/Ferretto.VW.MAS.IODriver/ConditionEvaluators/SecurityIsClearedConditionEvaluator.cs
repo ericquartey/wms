@@ -35,11 +35,11 @@ namespace Ferretto.VW.MAS.IODriver
                 &&
                 !mainDevice.MushroomEmergency
                 &&
-                mainDevice.MicroCarterLeftSideBay
+                !mainDevice.MicroCarterLeftSideBay
                 &&
                 !mainDevice.AntiIntrusionShutterBay
                 &&
-                mainDevice.MicroCarterRightSideBay;
+                !mainDevice.MicroCarterRightSideBay;
         }
 
         #endregion
