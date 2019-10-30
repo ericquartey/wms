@@ -412,29 +412,42 @@
                     "title": "The Lowerbound Schema",
                     "default": 0
                   },
-                  "WeightMeasureMultiply": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureMultiply",
-                    "type": "number",
-                    "title": "The WeightMeasureMultiply Schema",
-                    "default": 0
-                  },
-                  "WeightMeasureSum": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureSum",
-                    "type": "number",
-                    "title": "The WeightMeasureSum Schema",
-                    "default": 0
-                  },
-                  "WeightMeasureSpeed": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureSpeed",
-                    "type": "integer",
-                    "title": "The WeightMeasureSpeed Schema",
-                    "default": 0
-                  },
-                  "WeightMeasureTime": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasureTime",
-                    "type": "integer",
-                    "title": "The WeightMeasureTime Schema",
-                    "default": 0
+                  "WeightMeasurement": {
+                    "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement",
+                    "type": "object",
+                    "title": "The Weightmeasurement Schema",
+                    "required": [
+                      "MeasureMultiply",
+                      "MeasureSum",
+                      "MeasureSpeed",
+                      "MeasureTime"
+                    ],
+                    "properties": {
+                      "MeasureMultiply": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureMultiply",
+                        "type": "number",
+                        "title": "The Measuremultiply Schema",
+                        "default": 0.0
+                      },
+                      "MeasureSum": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSum",
+                        "type": "number",
+                        "title": "The Measuresum Schema",
+                        "default": 0.0
+                      },
+                      "MeasureSpeed": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSpeed",
+                        "type": "integer",
+                        "title": "The Measurespeed Schema",
+                        "default": 0
+                      },
+                      "MeasureTime": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureTime",
+                        "type": "integer",
+                        "title": "The Measuretime Schema",
+                        "default": 0
+                      }
+                    }
                   },
                   "ProfileCalibrateLength": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",

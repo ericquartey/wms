@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             else
             {
-                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.verticalParams.WeightMeasureTime * 100)
+                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.verticalParams.WeightMeasurement.MeasureTime * 100)
                 {
                     this.RequestSample();
                     this.startTime = DateTime.UtcNow;
@@ -95,8 +95,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
-                this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasureMultiply / 10.0) + this.verticalParams.WeightMeasureSum;
-                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasureMultiply}. kSum {this.verticalParams.WeightMeasureSum}");
+                this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasurement.MeasureMultiply / 10.0) + this.verticalParams.WeightMeasurement.MeasureSum;
+                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasurement.MeasureMultiply}. kSum {this.verticalParams.WeightMeasurement.MeasureSum}");
                 this.data.IsWeightMeasureDone = true;
                 if (this.data.LoadingUnitId.HasValue
                     && this.data.MeasuredWeight > MinimumLoadOnBoard

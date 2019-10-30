@@ -238,6 +238,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "WeightMeasurement",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    MeasureMultiply = table.Column<double>(nullable: false),
+                    MeasureSpeed = table.Column<double>(nullable: false),
+                    MeasureSum = table.Column<double>(nullable: false),
+                    MeasureTime = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeightMeasurement", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Errors",
                 columns: table => new
                 {
@@ -677,10 +693,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Resolution = table.Column<decimal>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
-                    WeightMeasureMultiply = table.Column<double>(nullable: false),
-                    WeightMeasureSpeed = table.Column<double>(nullable: false),
-                    WeightMeasureSum = table.Column<double>(nullable: false),
-                    WeightMeasureTime = table.Column<int>(nullable: false),
+                    WeightMeasurementId = table.Column<int>(nullable: true),
                     ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -708,6 +721,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         name: "FK_ElevatorAxes_Inverters_InverterId",
                         column: x => x.InverterId,
                         principalTable: "Inverters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_WeightMeasurement_WeightMeasurementId",
+                        column: x => x.WeightMeasurementId,
+                        principalTable: "WeightMeasurement",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -895,7 +914,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 30, 16, 23, 26, 566, DateTimeKind.Local).AddTicks(23), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1157,6 +1176,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_ElevatorAxes_InverterId",
                 table: "ElevatorAxes",
                 column: "InverterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_WeightMeasurementId",
+                table: "ElevatorAxes",
+                column: "WeightMeasurementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_LoadingUnitId",
@@ -1452,6 +1476,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ElevatorAxes");
+
+            migrationBuilder.DropTable(
+                name: "WeightMeasurement");
         }
     }
 }
