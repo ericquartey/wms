@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -8,7 +9,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class CellsSideControlViewModel : BaseMainViewModel
+    internal sealed class CellsSideControlViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -57,6 +58,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.correctCommand = new DelegateCommand(
                 async () => await this.CorrectCommandAsync(),
                 this.CanCorrectCommand));
+
+        public string Error => string.Join(
+            this[nameof(this.StepValue)],
+            this[nameof(this.InputFormCellId)],
+            this[nameof(this.InputToCellId)]);
 
         public int? InputFormCellId
         {
@@ -149,6 +155,60 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
+        #region Indexers
+
+        public string this[string columnName]
+        {
+            get
+            {
+                switch (columnName)
+                {
+                    case nameof(this.StepValue):
+                        if (!this.StepValue.HasValue)
+                        {
+                            return $"Step is required.";
+                        }
+
+                        if (this.StepValue.Value <= 0)
+                        {
+                            return "Step must be positive.";
+                        }
+
+                        break;
+
+                    case nameof(this.InputFormCellId):
+                        if (!this.InputFormCellId.HasValue)
+                        {
+                            return $"InputFormCellId is required.";
+                        }
+
+                        if (this.InputFormCellId.Value <= 0)
+                        {
+                            return "InputFormCellId must be positive.";
+                        }
+
+                        break;
+
+                    case nameof(this.InputToCellId):
+                        if (!this.InputToCellId.HasValue)
+                        {
+                            return $"InputToCellId is required.";
+                        }
+
+                        if (this.InputToCellId.Value <= 0)
+                        {
+                            return "InputToCellId must be positive.";
+                        }
+
+                        break;
+                }
+
+                return null;
+            }
+        }
+
+        #endregion
+
         #region Methods
 
         public override async Task OnAppearedAsync()
@@ -165,7 +225,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanCorrectCommand()
         {
-            return !this.isWaitingForResponse
+            return string.IsNullOrEmpty(this.Error)
+                &&
+                !this.isWaitingForResponse
                 &&
                 this.cells != null
                 &&
