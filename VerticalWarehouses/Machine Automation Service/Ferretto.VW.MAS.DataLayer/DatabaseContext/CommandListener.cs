@@ -67,6 +67,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             bool async,
             DateTimeOffset startTime)
         {
+            this.logger.LogTrace(command.CommandText);
+
             lock (this.redundancyService)
             {
                 if (this.redundancyService.IsEnabled
