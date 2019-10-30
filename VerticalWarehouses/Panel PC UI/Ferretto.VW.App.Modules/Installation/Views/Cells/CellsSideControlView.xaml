@@ -1,0 +1,97 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Installation.Views.CellsSideControlView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="130,30,0,0">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.CellsSideControlDescription}" />
+
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="0"
+                             Margin="0,15,15,15"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputFormCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.CellsSideControlInitialCell}" />
+
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="1"
+                             Margin="0,15,15,15"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Top"
+                             InputText="{Binding InputToCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.CellsSideControlFinalCell}" />
+
+
+        <controls:PpcTextBox Grid.Row="1"
+                             Grid.Column="2"
+                             Margin="0,15,15,15"
+                             HorizontalAlignment="Stretch"
+                             VerticalAlignment="Top"
+                             InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             LabelText="{x:Static res:InstallationApp.CellsSideControlCorrection}" />
+
+        <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Orientation="Vertical">
+
+            <controls:PpcLabeledText HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Top"
+                                     LabelText="{x:Static res:InstallationApp.CellsSideControlSelectedSide}" />
+
+            <StackPanel Orientation="Horizontal">
+
+                <controls:PpcButton Width="110"
+                                    Margin="0,0,15,0"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding SideFrontCommand}"
+                                    Content="{x:Static res:InstallationApp.Front}"
+                                    IsActive="{Binding IsFrontActive}" />
+
+                <controls:PpcButton Width="110"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding SideBackCommand}"
+                                    Content="{x:Static res:InstallationApp.Back}"
+                                    IsActive="{Binding IsBackActive}" />
+            </StackPanel>
+
+        </StackPanel>
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="3"
+                            Margin="15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding CorrectCommand}"
+                            Content="{x:Static res:InstallationApp.Correct}" />
+
+    </Grid>
+</ctrls:View>
