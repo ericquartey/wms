@@ -236,6 +236,27 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
+        private void OnMachineModeChanged(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                if (receivedMessage.Data is DataLayer.MachineModeMessageData data)
+                {
+                    this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
+                }
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.Logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
         private void OnMoveLoadingUnit(NotificationMessage receivedMessage)
         {
             try

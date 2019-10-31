@@ -1,6 +1,6 @@
 ﻿using Ferretto.VW.MAS.DataLayer;
 
-namespace Ferretto.VW.MAS.MachineManager.Providers
+namespace Ferretto.VW.MAS.MachineManager
 {
     public interface IMachineModeProvider
     {

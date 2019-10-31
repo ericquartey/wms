@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    trackCurrentView: true);
         }));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public double GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 

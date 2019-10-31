@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 

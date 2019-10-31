@@ -77,7 +77,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand LoginCommand =>
             this.loginCommand

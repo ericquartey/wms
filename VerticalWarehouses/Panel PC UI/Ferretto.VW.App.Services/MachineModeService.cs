@@ -13,8 +13,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IHealthProbeService healthProbeService;
-
         private readonly SubscriptionToken healthStatusChangedToken;
 
         private readonly Logger logger;
@@ -35,12 +33,10 @@ namespace Ferretto.VW.App.Services
 
         public MachineModeService(
             IEventAggregator eventAggregator,
-            IHealthProbeService healthProbeService,
             IMachinePowerWebService machinePowerWebService,
             IMachineModeWebService machineModeWebService)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
             this.logger = LogManager.GetCurrentClassLogger();
@@ -59,8 +55,8 @@ namespace Ferretto.VW.App.Services
                    ThreadOption.UIThread,
                    false);
 
-            this.healthStatusChangedToken = this.healthProbeService
-                .HealthStatusChanged
+            this.healthStatusChangedToken = this.eventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
                 .Subscribe(
                     async (e) => await this.OnHealthStatusChangedAsync(e),
                     ThreadOption.UIThread,
@@ -102,9 +98,9 @@ namespace Ferretto.VW.App.Services
                     .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
                     .Publish(new MachinePowerChangedEventArgs(this.MachinePower));
             }
-            catch (Exception ex)
+            catch
             {
-                this.ShowError(ex);
+                // do nothing
             }
         }
 
@@ -179,14 +175,7 @@ namespace Ferretto.VW.App.Services
                 ||
                 e.HealthStatus == HealthStatus.Degraded)
             {
-                try
-                {
-                    this.MachinePower = await this.machinePowerWebService.GetAsync();
-                }
-                catch (Exception ex)
-                {
-                    this.ShowError(ex);
-                }
+                await this.GetMachineStatusAsync();
             }
         }
 

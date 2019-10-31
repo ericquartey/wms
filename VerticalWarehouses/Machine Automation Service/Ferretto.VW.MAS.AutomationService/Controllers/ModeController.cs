@@ -1,6 +1,5 @@
 ﻿using System;
-using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.MachineManager.Providers;
+using Ferretto.VW.MAS.MachineManager;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 

@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
                 () => this.DrawerDetailsButtonMethod()));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 

@@ -3,12 +3,14 @@
     [System.Flags]
     public enum EnableMask
     {
-        None = 0x0,
+        Any = MachinePoweredOff | MachinePoweredOn | MachineManualMode | MachineAutomaticMode,
 
-        MachineAutomaticMode = 0x1,
+        MachinePoweredOff = 0x1,
 
-        MachineManualMode = 0x2,
+        MachinePoweredOn = 0x2,
 
-        MachinePoweredOff = 0x3,
+        MachineManualMode = MachinePoweredOn | 0x4,
+
+        MachineAutomaticMode = MachinePoweredOn | 0x8,
     }
 }

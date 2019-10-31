@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public VertimagConfiguration Configuration => this.configuration;
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsBusy
         {

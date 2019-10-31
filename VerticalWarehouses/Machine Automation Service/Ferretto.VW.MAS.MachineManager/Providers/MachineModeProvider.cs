@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Prism.Events;
@@ -30,17 +28,35 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Methods
 
-        public CommonUtils.Messages.MachineMode GetCurrent()
+        public MachineMode GetCurrent()
         {
             return this.machineModeDataProvider.Mode;
         }
 
-        public void RequestChange(CommonUtils.Messages.MachineMode machineMode)
+        public void RequestChange(MachineMode machineMode)
         {
+            if (machineMode == this.machineModeDataProvider.Mode)
+            {
+                return;
+            }
+
+            if (machineMode is MachineMode.Automatic)
+            {
+                this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+            }
+            else if (machineMode is MachineMode.Manual)
+            {
+                this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
+            }
+            else
+            {
+                throw new ArgumentException(nameof(machineMode));
+            }
+
             this.SendCommandToMissionManager(
                 new MachineModeMessageData(machineMode),
                 $"Request mode change to '{machineMode}'",
-                MessageActor.NotSpecified,
+                MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
         }

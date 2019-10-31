@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly Task healthProbeTask;
 
-        private readonly HealthStatusChangedPubSubEvent healthStatusChangedEvent;
+        private readonly PubSubEvent<HealthStatusChangedEventArgs> healthStatusChangedEvent;
 
         private readonly string liveHealthCheckPath;
 
@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Services
             this.baseAddress = baseAddress;
             this.liveHealthCheckPath = liveHealthCheckPath;
             this.readyHealthCheckPath = readyHealthCheckPath;
-            this.healthStatusChangedEvent = eventAggregator.GetEvent<HealthStatusChangedPubSubEvent>();
+            this.healthStatusChangedEvent = eventAggregator.GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>();
             this.logger = NLog.LogManager.GetCurrentClassLogger();
 
             this.healthProbeTask = new Task(
@@ -94,7 +94,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public HealthStatusChangedPubSubEvent HealthStatusChanged => this.healthStatusChangedEvent;
+        public PubSubEvent<HealthStatusChangedEventArgs> HealthStatusChanged => this.healthStatusChangedEvent;
 
         public int PollInterval
         {

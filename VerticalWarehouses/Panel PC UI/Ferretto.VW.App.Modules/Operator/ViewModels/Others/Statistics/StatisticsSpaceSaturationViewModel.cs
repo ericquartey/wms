@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public double FillPercentage { get => this.fillPercentage; set => this.SetProperty(ref this.fillPercentage, value); }
 

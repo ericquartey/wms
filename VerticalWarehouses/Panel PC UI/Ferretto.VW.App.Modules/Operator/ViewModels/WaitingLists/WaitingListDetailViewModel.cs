@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ??
             (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public IItemListsDataService ItemListsDataService { get; }
 

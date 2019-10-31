@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
-        public virtual EnableMask EnableMask => EnableMask.MachinePoweredOff;
+        public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public bool IsEnabled
         {
@@ -187,21 +187,24 @@ namespace Ferretto.VW.App.Controls
 
         private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode)
         {
-            var powerOffIsMasked = (this.EnableMask & EnableMask.MachinePoweredOff) == EnableMask.None;
+            var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
 
-            var automaticIsMasked = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.None;
+            var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
 
-            var manualIsMasked = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.None;
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] POWER : {powerOffIsMasked || machinePower != MachinePowerState.Powered}");
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] AUTO  : {automaticIsMasked || machineMode == MachineMode.Automatic}");
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] MANUAL: {manualIsMasked || machineMode == MachineMode.Manual}");
+            var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
+
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] POWER : {enabeIfPoweredOn && machinePower == MachinePowerState.Powered}");
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] AUTO  : {enableIfAutomatic && machineMode == MachineMode.Automatic}");
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] MANUAL: {enableIfManual && machineMode == MachineMode.Manual}");
 
             this.IsEnabled =
-                (powerOffIsMasked || machinePower != MachinePowerState.Powered)
-                &&
-                (automaticIsMasked || machineMode == MachineMode.Automatic)
-                &&
-                (manualIsMasked || machineMode == MachineMode.Manual);
+                this.EnableMask == EnableMask.Any
+                ||
+                (enabeIfPoweredOn && machinePower == MachinePowerState.Powered)
+                ||
+                (enableIfAutomatic && machineMode == MachineMode.Automatic)
+                ||
+                (enableIfManual && machineMode == MachineMode.Manual);
         }
 
         private void UpdatePresentation()

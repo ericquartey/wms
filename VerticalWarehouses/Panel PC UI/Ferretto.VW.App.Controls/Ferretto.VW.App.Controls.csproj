@@ -65,6 +65,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
+      <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
       <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
     </Compile>

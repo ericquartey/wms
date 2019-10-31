@@ -12,6 +12,8 @@
 
         SensorsChanged,
 
+        MachineMode,
+
         DataLayerReady,
 
         ExecuteMission,
@@ -23,8 +25,6 @@
         MachineStateActive,
 
         MachineStatusActive,
-
-        MachineMode,
 
         NewMissionAvailable,
 

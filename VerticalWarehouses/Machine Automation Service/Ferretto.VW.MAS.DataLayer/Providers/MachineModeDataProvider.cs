@@ -1,10 +1,53 @@
-﻿namespace Ferretto.VW.MAS.DataLayer
+﻿using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Prism.Events;
+
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class MachineModeDataProvider : IMachineModeDataProvider
     {
+        #region Fields
+
+        private readonly IEventAggregator eventAggregator;
+
+        private MachineMode mode = MachineMode.Automatic;
+
+        #endregion
+
+        #region Constructors
+
+        public MachineModeDataProvider(IEventAggregator eventAggregator)
+        {
+            this.eventAggregator = eventAggregator;
+        }
+
+        #endregion
+
         #region Properties
 
-        public CommonUtils.Messages.MachineMode Mode { get; set; } = CommonUtils.Messages.MachineMode.Manual;
+        public MachineMode Mode
+        {
+            get => this.mode;
+            set
+            {
+                if (this.mode != value)
+                {
+                    this.mode = value;
+
+                    this.eventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage
+                            {
+                                Data = new MachineModeMessageData(this.mode),
+                                Destination = MessageActor.Any,
+                                Source = MessageActor.DataLayer,
+                                Type = MessageType.MachineMode,
+                            });
+                }
+            }
+        }
 
         #endregion
     }

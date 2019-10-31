@@ -1,8 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer;
 
-namespace Ferretto.VW.MAS.MachineManager
+namespace Ferretto.VW.MAS.DataLayer
 {
     public class MachineModeMessageData : IMessageData
     {

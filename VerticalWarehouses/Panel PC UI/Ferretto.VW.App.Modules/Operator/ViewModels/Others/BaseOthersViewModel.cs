@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 

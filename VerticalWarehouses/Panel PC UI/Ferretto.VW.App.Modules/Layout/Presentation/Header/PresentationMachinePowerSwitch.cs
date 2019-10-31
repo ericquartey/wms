@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
@@ -18,17 +14,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly SubscriptionToken healthStatusChangedToken;
 
         private readonly IMachineModeService machineModeService;
 
         private readonly SubscriptionToken machinePowerChangedToken;
-
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
-        private readonly SubscriptionToken sensorsChangedSubscriptionToken;
-
-        private bool emergencyButtonPressed;
 
         private bool isBusy;
 
@@ -36,31 +26,29 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachinePoweredOn;
 
+        private bool isStatusUnknown;
+
         #endregion
 
         #region Constructors
 
         public PresentationMachinePowerSwitch(
-            IMachineModeService machineModeService,
-            IMachineSensorsWebService machineSensorsWebService,
-            IEventAggregator eventAggregator)
+            IMachineModeService machineModeService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-
-            this.sensorsChangedSubscriptionToken = this.eventAggregator
-               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-               .Subscribe(
-                   message => this.OnSensorsChanged(message?.Data?.SensorsStates),
-                   ThreadOption.UIThread,
-                   false);
 
             this.machinePowerChangedToken = this.EventAggregator
                 .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
                 .Subscribe(
                     this.OnMachinePowerChanged,
+                    ThreadOption.UIThread,
+                    false);
+
+            this.healthStatusChangedToken = this.EventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    this.OnHealthStatusChanged,
                     ThreadOption.UIThread,
                     false);
 
@@ -89,6 +77,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachinePoweredOn, value);
         }
 
+        public bool IsStatusUnknown
+        {
+            get => this.isStatusUnknown;
+            set
+            {
+                if (this.SetProperty(ref this.isStatusUnknown, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -100,16 +100,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            var sensors = await this.machineSensorsWebService.GetAsync();
-            this.OnSensorsChanged(sensors.ToArray());
-
-            if (this.emergencyButtonPressed)
-            {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                dialogService.ShowMessage(Resources.VWApp.EnsureEmergencyIsOff, Resources.VWApp.EmergencyIsOn, DialogType.Exclamation, DialogButtons.OK);
-                return;
-            }
-
             this.IsBusy = true;
 
             if (this.IsMachinePoweredOn)
@@ -131,23 +121,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             }
         }
 
-        public override async Task OnLoadedAsync()
-        {
-            await base.OnLoadedAsync();
-
-            try
-            {
-                var sensors = await this.machineSensorsWebService.GetAsync();
-                this.OnSensorsChanged(sensors.ToArray());
-            }
-            catch
-            {
-            }
-        }
-
         protected override bool CanExecute()
         {
-            return !this.isBusy;
+            return
+                !this.isBusy
+                &&
+                !this.IsStatusUnknown;
         }
 
         private void Dispose(bool disposing)
@@ -160,41 +139,27 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             if (disposing)
             {
                 this.machinePowerChangedToken.Dispose();
-                this.sensorsChangedSubscriptionToken.Dispose();
+                this.healthStatusChangedToken.Dispose();
             }
 
             this.isDisposed = true;
         }
 
-        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
+        private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            System.Diagnostics.Debug.WriteLine(
-                            $"####### Presentation ## OnPowerChange ## {e.MachinePowerState}");
-
-            this.UpdatePowerState(e.MachinePowerState);
+            this.IsStatusUnknown =
+                e.HealthStatus != HealthStatus.Healthy
+                &&
+                e.HealthStatus != HealthStatus.Degraded;
         }
 
-        private void OnSensorsChanged(bool[] sensorsStates)
+        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
         {
-            var emergencyPressed =
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay1]
-                ||
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay2]
-                ||
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay3];
-
-            if (this.emergencyButtonPressed != emergencyPressed)
-            {
-                this.IsBusy = false;
-                this.emergencyButtonPressed = emergencyPressed;
-            }
+            this.UpdatePowerState(e.MachinePowerState);
         }
 
         private void UpdatePowerState(MachinePowerState machinePowerState)
         {
-            System.Diagnostics.Debug.WriteLine(
-                            $"####### Presentation {nameof(this.IsMachinePoweredOn)}={this.IsMachinePoweredOn} ## {machinePowerState}");
-
             this.IsMachinePoweredOn = machinePowerState == MachinePowerState.Powered;
 
             this.IsBusy =

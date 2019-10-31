@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
 
@@ -197,7 +197,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var setupStatus = await this.setupStatusWebService.GetAsync();
 
                 this.areItemsEnabled = this.machineModeService.MachinePower is MachinePowerState.Powered;
-                System.Diagnostics.Debug.WriteLine($">>> {this.machineModeService.MachinePower} (areItemsEnabled: {this.areItemsEnabled})");
 
                 foreach (var menuItem in this.installatorItems)
                 {
