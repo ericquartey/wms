@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.App.Services
 {
-    public interface INotificationService
+    public interface IHubNotificationService
     {
     }
 }

@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Modules.Operator.HelpWindows
     {
         #region Fields
 
-        private IEventAggregator eventAggregator;
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 

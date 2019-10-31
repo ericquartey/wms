@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
@@ -100,15 +99,6 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.OnMoveLoadingUnit(receivedMessage);
 
                     break;
-            }
-        }
-
-        private void OnDataLayerException(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
-            {
-                this.Logger.LogCritical(receivedMessage.Description);
-                this.applicationLifetime.StopApplication();
             }
         }
 

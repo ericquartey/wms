@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -12,7 +11,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -103,7 +101,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             protected set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
 
-        public ICommand ItemCallCommand => this.itemCallCommand ?? (this.itemCallCommand = new DelegateCommand(() => this.ItemCallMethodAsync(), this.CanItemCall));
+        public ICommand ItemCallCommand =>
+            this.itemCallCommand
+            ??
+            (this.itemCallCommand = new DelegateCommand(
+                async () => await this.ItemCallMethodAsync(),
+                this.CanItemCall));
 
         public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
@@ -149,7 +152,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true)));
+        public ICommand UpDataGridButtonCommand =>
+            this.upDataGridButtonCommand
+            ??
+            (this.upDataGridButtonCommand = new DelegateCommand(async () => await this.ChangeSelectedItemAsync(true)));
 
         #endregion
 

@@ -24,7 +24,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 machineSensorsWebService,
                 machineCellsWebService,
                 bayManagerService)
-
         {
         }
 

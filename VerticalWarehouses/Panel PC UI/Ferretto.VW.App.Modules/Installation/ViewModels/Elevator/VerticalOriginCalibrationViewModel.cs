@@ -208,10 +208,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.IsExecutingProcedure = false;
                 this.IsWaitingForResponse = false;
@@ -220,14 +221,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteStartCommand()
         {
-            return !this.isExecutingProcedure
+            return
+                !this.isExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
         }
 
         private bool CanExecuteStopCommand()
         {
-            return this.isExecutingProcedure
+            return
+                this.isExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
         }

@@ -464,7 +464,7 @@ namespace Ferretto.VW.App.Modules.Installation.Models
 
                 if (propertyInfo is null)
                 {
-                    System.Diagnostics.Debug.WriteLine($"Unable to decode {value}");
+                    NLog.LogManager.GetCurrentClassLogger().Warn($"Unable to decode sensor '{value}'.");
                 }
 
                 if (propertyInfo != null && (int)value < sensorStates.Length)

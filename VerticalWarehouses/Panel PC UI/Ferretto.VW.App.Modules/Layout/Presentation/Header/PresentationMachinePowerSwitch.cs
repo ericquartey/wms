@@ -8,12 +8,13 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationMachinePowerSwitch : BasePresentationViewModel
+    public class PresentationMachinePowerSwitch : BasePresentationViewModel, IDisposable
     {
         #region Fields
 
@@ -21,17 +22,17 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly IMachineModeService machineModeService;
 
+        private readonly SubscriptionToken machinePowerChangedToken;
+
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly SubscriptionToken runningStateSubscriptionToken;
-
-        private readonly SubscriptionToken sensorsSubscriptionToken;
-
-        private readonly SubscriptionToken subscriptionToken;
+        private readonly SubscriptionToken sensorsChangedSubscriptionToken;
 
         private bool emergencyButtonPressed;
 
         private bool isBusy;
+
+        private bool isDisposed;
 
         private bool isMachinePoweredOn;
 
@@ -49,25 +50,21 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            this.sensorsSubscriptionToken = this.eventAggregator
+            this.sensorsChangedSubscriptionToken = this.eventAggregator
                .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                .Subscribe(
                    message => this.OnSensorsChanged(message?.Data?.SensorsStates),
                    ThreadOption.UIThread,
                    false);
 
-            this.runningStateSubscriptionToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+            this.machinePowerChangedToken = this.EventAggregator
+                .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
                 .Subscribe(
-                    message => this.OnRunningStateChanged(message),
+                    this.OnMachinePowerChanged,
                     ThreadOption.UIThread,
                     false);
 
-            this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
-                .Subscribe(
-                    this.OnMachineModeChanged,
-                    ThreadOption.UIThread,
-                    false);
+            this.UpdatePowerState(this.machineModeService.MachinePower);
         }
 
         #endregion
@@ -95,6 +92,11 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #endregion
 
         #region Methods
+
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
 
         public override async Task ExecuteAsync()
         {
@@ -148,18 +150,28 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             return !this.isBusy;
         }
 
-        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        private void Dispose(bool disposing)
         {
-            this.IsMachinePoweredOn = e.MachinePower == Services.Models.MachinePowerState.Powered;
-            this.IsBusy = false;
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                this.machinePowerChangedToken.Dispose();
+                this.sensorsChangedSubscriptionToken.Dispose();
+            }
+
+            this.isDisposed = true;
         }
 
-        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
+        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
         {
-            if (message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
-            {
-                this.IsBusy = false;
-            }
+            System.Diagnostics.Debug.WriteLine(
+                            $"####### Presentation ## OnPowerChange ## {e.MachinePowerState}");
+
+            this.UpdatePowerState(e.MachinePowerState);
         }
 
         private void OnSensorsChanged(bool[] sensorsStates)
@@ -176,6 +188,19 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 this.IsBusy = false;
                 this.emergencyButtonPressed = emergencyPressed;
             }
+        }
+
+        private void UpdatePowerState(MachinePowerState machinePowerState)
+        {
+            System.Diagnostics.Debug.WriteLine(
+                            $"####### Presentation {nameof(this.IsMachinePoweredOn)}={this.IsMachinePoweredOn} ## {machinePowerState}");
+
+            this.IsMachinePoweredOn = machinePowerState == MachinePowerState.Powered;
+
+            this.IsBusy =
+                machinePowerState == MachinePowerState.PoweringDown
+                ||
+                machinePowerState == MachinePowerState.PoweringUp;
         }
 
         #endregion

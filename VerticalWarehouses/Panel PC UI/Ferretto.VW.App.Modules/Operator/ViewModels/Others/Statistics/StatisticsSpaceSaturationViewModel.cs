@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -129,11 +126,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
 
-                //var machineStat = await this.machineStatisticsService.GetAsync();
-                //if (machineStat.AreaFillPercentage.HasValue)
-                //{
-                //    this.FillPercentage = machineStat.AreaFillPercentage.Value;
-                //}
+                /*
+                var machineStat = await this.machineStatisticsService.GetAsync();
+                if (machineStat.AreaFillPercentage.HasValue)
+                {
+                    this.FillPercentage = machineStat.AreaFillPercentage.Value;
+                }
+                */
             }
             catch (Exception ex)
             {

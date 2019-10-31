@@ -10,6 +10,7 @@ using Ferretto.VW.App.Installation.Models;
 using Ferretto.VW.App.Installation.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.VW.Utils.Extensions;
 using Prism.Regions;
@@ -84,14 +85,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(ex);
             }
 
-            await this.UpdateMenuItemsStatus();
+            await this.UpdateMenuItemsStatusAsync();
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachineModeChangedAsync(e);
 
-            this.UpdateMenuItemsStatus();
+            await this.UpdateMenuItemsStatusAsync();
+        }
+
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            await base.OnMachinePowerChangedAsync(e);
+
+            await this.UpdateMenuItemsStatusAsync();
         }
 
         private void AddMenuItem(InstallatorMenuTypes menuType, MainNavigationMenuItem menuItem)
@@ -157,7 +165,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InstallatorItems.Clear();
             this.OtherItems.Clear();
 
-            this.areItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
+            this.areItemsEnabled = this.machineModeService.MachinePower is MachinePowerState.Powered;
 
             var values = Enum.GetValues(typeof(InstallationMenus));
             foreach (InstallationMenus enumValue in values)
@@ -182,13 +190,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task UpdateMenuItemsStatus()
+        private async Task UpdateMenuItemsStatusAsync()
         {
             try
             {
                 var setupStatus = await this.setupStatusWebService.GetAsync();
 
-                this.areItemsEnabled = this.machineModeService.MachinePower != Services.Models.MachinePowerState.Unpowered;
+                this.areItemsEnabled = this.machineModeService.MachinePower is MachinePowerState.Powered;
+                System.Diagnostics.Debug.WriteLine($">>> {this.machineModeService.MachinePower} (areItemsEnabled: {this.areItemsEnabled})");
 
                 foreach (var menuItem in this.installatorItems)
                 {

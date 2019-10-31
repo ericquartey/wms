@@ -155,10 +155,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
@@ -173,10 +173,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);

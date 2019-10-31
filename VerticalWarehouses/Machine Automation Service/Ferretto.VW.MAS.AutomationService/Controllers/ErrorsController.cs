@@ -3,14 +3,13 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ErrorsController : BaseAutomationController
+    public class ErrorsController : ControllerBase
     {
         #region Fields
 
@@ -20,17 +19,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public ErrorsController(
-            IErrorsProvider errorsProvider,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+        public ErrorsController(IErrorsProvider errorsProvider)
         {
-            if (errorsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(errorsProvider));
-            }
-
-            this.errorsProvider = errorsProvider;
+            this.errorsProvider = errorsProvider ?? throw new System.ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -52,18 +43,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             return this.Ok(statistics);
         }
-
-#if DEBUG
-
-        [HttpPost]
-        public ActionResult<MachineError> Create(MachineErrorCode code)
-        {
-            var newError = this.errorsProvider.RecordNew(code, BayNumber.None);
-
-            return this.Ok(newError);
-        }
-
-#endif
 
         [HttpPost("{id}/resolve")]
         [ProducesResponseType(StatusCodes.Status200OK)]

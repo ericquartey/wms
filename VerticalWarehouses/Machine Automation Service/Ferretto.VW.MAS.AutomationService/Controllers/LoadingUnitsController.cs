@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoadingUnitsController : BaseAutomationController
+    public class LoadingUnitsController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -30,16 +30,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            IEventAggregator eventAggregator,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             IMachinesDataService machinesDataService)
-            : base(eventAggregator)
         {
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 

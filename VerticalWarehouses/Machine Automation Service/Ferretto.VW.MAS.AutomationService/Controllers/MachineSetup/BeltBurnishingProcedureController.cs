@@ -10,9 +10,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/setup/[controller]")]
     [ApiController]
-    public class BeltBurnishingProcedureController : BaseAutomationController
+    public class BeltBurnishingProcedureController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -25,14 +25,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public BeltBurnishingProcedureController(
-            IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
-            : base(eventAggregator)
         {
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 

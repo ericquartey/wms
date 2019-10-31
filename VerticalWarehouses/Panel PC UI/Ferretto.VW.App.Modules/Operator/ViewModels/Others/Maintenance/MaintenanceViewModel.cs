@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -84,14 +80,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.kits = new ObservableCollection<DataGridKit>();
             for (var i = 0; i < random.Next(3, 30); i++)
             {
-                this.kits.Add(new DataGridKit
-                {
-                    Kit = $"Kit {i}",
-                    Description = $"Kit number {i}",
-                    State = $"State",
-                    Request = "Request",
-                }
-                );
+                this.kits.Add(
+                    new DataGridKit
+                    {
+                        Kit = $"Kit {i}",
+                        Description = $"Kit number {i}",
+                        State = $"State",
+                        Request = "Request",
+                    });
             }
 
             this.dataGridViewModelRef.Kits = this.kits;

@@ -9,11 +9,12 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
     {
         #region Constructors
 
-        public ChangeRunningStateMessageData(bool enable,
-                                             Guid? missionId = null,
-                                             CommandAction commandAction = CommandAction.Start,
-                                             StopRequestReason stopReason = StopRequestReason.NoReason,
-                                             MessageVerbosity verbosity = MessageVerbosity.Debug)
+        public ChangeRunningStateMessageData(
+            bool enable,
+            Guid? missionId = null,
+            CommandAction commandAction = CommandAction.Start,
+            StopRequestReason stopReason = StopRequestReason.NoReason,
+            MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
             this.Enable = enable;
             this.MissionId = missionId;

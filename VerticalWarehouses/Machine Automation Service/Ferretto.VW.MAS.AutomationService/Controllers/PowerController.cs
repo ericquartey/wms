@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PowerController : BaseAutomationController
+    public class PowerController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -20,22 +20,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public PowerController(
-            IRunningStateProvider runningStateProvider,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+        public PowerController(IRunningStateProvider runningStateProvider)
         {
             this.runningStateProvider = runningStateProvider ?? throw new ArgumentNullException(nameof(runningStateProvider));
         }
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
-        [HttpGet("is-powered-on")]
-        public ActionResult<bool> IsPoweredOn()
+        [HttpGet]
+        public ActionResult<CommonUtils.Messages.MachinePowerState> Get()
         {
-            return this.runningStateProvider.IsRunning;
+            return this.runningStateProvider.IsRunning
+                ? CommonUtils.Messages.MachinePowerState.Powered
+                : CommonUtils.Messages.MachinePowerState.Unpowered;
         }
 
         [HttpPost("power-off")]

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Controls;
@@ -65,15 +61,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             var random = new Random();
             this.maintenanceDetails = new ObservableCollection<DataGridMaintenanceDetail>();
-            for (int i = 0; i < random.Next(3, 30); i++)
+            for (var i = 0; i < random.Next(3, 30); i++)
             {
-                this.maintenanceDetails.Add(new DataGridMaintenanceDetail
-                {
-                    Element = $"Element {i}",
-                    Description = $"This is element {i}",
-                    Quantity = random.Next(2, 40).ToString(),
-                }
-                );
+                this.maintenanceDetails.Add(
+                    new DataGridMaintenanceDetail
+                    {
+                        Element = $"Element {i}",
+                        Description = $"This is element {i}",
+                        Quantity = random.Next(2, 40).ToString(),
+                    });
             }
 
             this.dataGridViewModelRef.MaintenanceDetails = this.maintenanceDetails;

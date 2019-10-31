@@ -58,10 +58,6 @@ namespace Ferretto.VW.MAS.IODriver
                     throw new IOException($"Exception {ex.Message} while initializing Inputs status");
                 }
             }
-            else
-            {
-                this.inputs = null;
-            }
 
             if (outputs != null)
             {
@@ -76,10 +72,6 @@ namespace Ferretto.VW.MAS.IODriver
                     throw new IOException($"Exception {ex.Message} while initializing Outputs status");
                 }
             }
-            else
-            {
-                this.outputs = null;
-            }
 
             if (data != null)
             {
@@ -92,10 +84,6 @@ namespace Ferretto.VW.MAS.IODriver
                 {
                     throw new IOException($"Exception {ex.Message} while initializing Data payload");
                 }
-            }
-            else
-            {
-                this.data = null;
             }
         }
 
@@ -124,10 +112,6 @@ namespace Ferretto.VW.MAS.IODriver
         public bool PowerEnable => this.outputs?[(int)IoPorts.PowerEnable] ?? false;
 
         public bool ResetSecurity => this.outputs?[(int)IoPorts.ResetSecurity] ?? false;
-
-        public bool ValidData => this.data != null;
-
-        public bool ValidInputs => this.inputs != null;
 
         public bool ValidOutputs => this.outputs != null;
 

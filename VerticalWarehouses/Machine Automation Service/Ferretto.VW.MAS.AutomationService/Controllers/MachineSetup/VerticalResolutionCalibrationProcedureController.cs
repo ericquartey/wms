@@ -8,9 +8,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/setup/[controller]")]
     [ApiController]
-    public class VerticalResolutionCalibrationProcedureController : BaseAutomationController
+    public class VerticalResolutionCalibrationProcedureController : ControllerBase
     {
         #region Fields
 
@@ -23,10 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public VerticalResolutionCalibrationProcedureController(
-            IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
-            : base(eventAggregator)
         {
             if (elevatorDataProvider is null)
             {

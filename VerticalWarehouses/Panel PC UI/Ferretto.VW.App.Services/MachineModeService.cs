@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Models;
-using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using NLog;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
@@ -17,19 +15,19 @@ namespace Ferretto.VW.App.Services
 
         private readonly IHealthProbeService healthProbeService;
 
-        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly SubscriptionToken healthStatusChangedToken;
+
+        private readonly Logger logger;
+
+        private readonly SubscriptionToken machineModeChangedToken;
+
+        private readonly IMachineModeWebService machineModeWebService;
+
+        private readonly SubscriptionToken machinePowerChangedToken;
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
-        private SubscriptionToken healthSubscriptionToken;
-
         private bool isDisposed;
-
-        private MachinePowerState machinePower;
-
-        private SubscriptionToken sensorsSubscriptionToken;
 
         #endregion
 
@@ -38,80 +36,76 @@ namespace Ferretto.VW.App.Services
         public MachineModeService(
             IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
-            IMachineSensorsWebService machineSensorsWebService,
-            IMachinePowerWebService machinePowerWebService)
+            IMachinePowerWebService machinePowerWebService,
+            IMachineModeWebService machineModeWebService)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
+            this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
+            this.logger = LogManager.GetCurrentClassLogger();
 
-            if (healthProbeService is null)
-            {
-                throw new ArgumentNullException(nameof(healthProbeService));
-            }
+            this.machinePowerChangedToken = this.eventAggregator
+              .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+              .Subscribe(
+                  this.OnMachinePowerChanged,
+                  ThreadOption.UIThread,
+                  false);
 
-            if (machineSensorsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineSensorsWebService));
-            }
-
-            if (machinePowerWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machinePowerWebService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.healthProbeService = healthProbeService;
-            this.machineSensorsWebService = machineSensorsWebService;
-            this.machinePowerWebService = machinePowerWebService;
-
-            this.sensorsSubscriptionToken = this.eventAggregator
-               .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+            this.machineModeChangedToken = this.eventAggregator
+               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
                .Subscribe(
-                   message => this.OnRunningStateChanged(message),
+                   this.OnMachineModeChanged,
                    ThreadOption.UIThread,
                    false);
 
-            this.healthSubscriptionToken = this.healthProbeService.HealthStatusChanged
+            this.healthStatusChangedToken = this.healthProbeService
+                .HealthStatusChanged
                 .Subscribe(
                     async (e) => await this.OnHealthStatusChangedAsync(e),
                     ThreadOption.UIThread,
                     false);
+
+            this.GetMachineStatusAsync();
         }
 
         #endregion
 
         #region Properties
 
-        public MachineMode MachineMode { get; }
+        public MachineMode MachineMode { get; private set; }
 
-        public MachineModeChangedPubSubEvent MachineModeChangedEvent => this.eventAggregator.GetEvent<MachineModeChangedPubSubEvent>();
-
-        public MachinePowerState MachinePower
-        {
-            get => this.machinePower;
-            set
-            {
-                if (this.machinePower != value)
-                {
-                    this.machinePower = value;
-
-                    this.MachineModeChangedEvent
-                        .Publish(new MachineModeChangedEventArgs(this.MachineMode, this.MachinePower));
-                }
-            }
-        }
+        public MachinePowerState MachinePower { get; private set; }
 
         #endregion
 
         #region Methods
 
-        // This code added to correctly implement the disposable pattern.
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing).
             this.Dispose(true);
+        }
+
+        public async Task GetMachineStatusAsync()
+        {
+            try
+            {
+                this.MachinePower = await this.machinePowerWebService.GetAsync();
+                this.MachineMode = await this.machineModeWebService.GetAsync();
+
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                    .Publish(new MachineModeChangedEventArgs(this.MachineMode));
+
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Publish(new MachinePowerChangedEventArgs(this.MachinePower));
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
+            }
         }
 
         public async Task PowerOffAsync()
@@ -138,6 +132,30 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public async Task SetAutomaticMode()
+        {
+            try
+            {
+                await this.machineModeWebService.SetAutomaticAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
+            }
+        }
+
+        public async Task SetManualMode()
+        {
+            try
+            {
+                await this.machineModeWebService.SetManualAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowError(ex);
+            }
+        }
+
         private void Dispose(bool disposing)
         {
             if (this.isDisposed)
@@ -147,11 +165,9 @@ namespace Ferretto.VW.App.Services
 
             if (disposing)
             {
-                this.sensorsSubscriptionToken?.Dispose();
-                this.sensorsSubscriptionToken = null;
-
-                this.healthSubscriptionToken?.Dispose();
-                this.healthSubscriptionToken = null;
+                this.machineModeChangedToken.Dispose();
+                this.machinePowerChangedToken.Dispose();
+                this.healthStatusChangedToken.Dispose();
             }
 
             this.isDisposed = true;
@@ -165,9 +181,7 @@ namespace Ferretto.VW.App.Services
             {
                 try
                 {
-                    var isPoweredOn = await this.machinePowerWebService.IsPoweredOnAsync();
-
-                    this.MachinePower = isPoweredOn ? MachinePowerState.Powered : MachinePowerState.Unpowered;
+                    this.MachinePower = await this.machinePowerWebService.GetAsync();
                 }
                 catch (Exception ex)
                 {
@@ -176,10 +190,18 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
+        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
-            var runningState = message.Status == MessageStatus.OperationEnd && message.Data.Enable;
-            this.MachinePower = runningState ? MachinePowerState.Powered : MachinePowerState.Unpowered;
+            this.logger.Debug($"Machine mode changed to '{e.MachineMode}'.");
+
+            this.MachineMode = e.MachineMode;
+        }
+
+        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
+        {
+            this.logger.Debug($"Machine power state changed to '{e.MachinePowerState}'.");
+
+            this.MachinePower = e.MachinePowerState;
         }
 
         private void ShowError(Exception ex)

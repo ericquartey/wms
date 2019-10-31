@@ -5,6 +5,7 @@ using System.Windows;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -105,6 +106,7 @@ namespace Ferretto.VW.App
 
                 return client;
             });
+
             containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
 
             // WMS Web API services

@@ -28,7 +28,8 @@ namespace Ferretto.VW.MAS.MachineManager.Extensions
 
             services
                 .AddTransient<IRunningStateProvider, RunningStateProvider>()
-                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>();
+                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
+                .AddTransient<IMachineModeProvider, MachineModeProvider>();
 
             services
                 .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()
@@ -39,8 +40,9 @@ namespace Ferretto.VW.MAS.MachineManager.Extensions
                 .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
                 .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
                 .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
-                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>()
+                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
 
+            services
                 .AddTransient<IMoveLoadingUnitStartState, MoveLoadingUnitStartState>()
                 .AddTransient<IMoveLoadingUnitLoadElevatorState, MoveLoadingUnitLoadElevatorState>()
                 .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()

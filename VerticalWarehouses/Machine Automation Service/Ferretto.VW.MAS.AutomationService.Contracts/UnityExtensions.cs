@@ -1,5 +1,4 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
-using Prism.Ioc;
+﻿using Prism.Ioc;
 using Prism.Unity;
 using Unity;
 using Unity.Injection;
@@ -9,22 +8,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public static class UnityExtensions
     {
         private static readonly System.Func<IUnityContainer, RetryHttpClient> DefaultResolveHttpClientFunction = (IUnityContainer c) => c.Resolve<RetryHttpClient>();
-
-        public static IContainerRegistry RegisterMachineAutomationHubs(
-            this IContainerRegistry container,
-            System.Uri webServiceUrl,
-            string operatorHubPath,
-            string installationHubPath)
-        {
-            var urlString = webServiceUrl.ToString();
-
-            var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
-
-            container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
-            container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(urlString, installationHubPath));
-
-            return container;
-        }
 
         public static IContainerRegistry RegisterMachineAutomationWebServices(
             this IContainerRegistry container,
@@ -82,6 +65,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             container.GetContainer().RegisterType<IMachineSensorsWebService>(
                 new InjectionFactory(c => new MachineSensorsWebService(urlString, resolveFunction(c))));
 
+            container.GetContainer().RegisterType<IMachineModeWebService>(
+                new InjectionFactory(c => new MachineModeWebService(urlString, resolveFunction(c))));
+
             container.GetContainer().RegisterType<IMachineShuttersWebService>(
                 new InjectionFactory(c => new MachineShuttersWebService(urlString, resolveFunction(c))));
 
@@ -107,24 +93,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                 new InjectionFactory(c => new MachineConfigurationWebService(urlString, resolveFunction(c))));
 
             return container;
-        }
-
-        public static IContainerProvider UseMachineAutomationHubs(this IContainerProvider containerProvider)
-        {
-            if (containerProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(containerProvider));
-            }
-
-            containerProvider
-                .Resolve<IInstallationHubClient>()
-                .ConnectAsync();
-
-            containerProvider
-                .Resolve<IOperatorHubClient>()
-                .ConnectAsync();
-
-            return containerProvider;
         }
     }
 }

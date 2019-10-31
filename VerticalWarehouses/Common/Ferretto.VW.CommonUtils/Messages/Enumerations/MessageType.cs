@@ -24,6 +24,8 @@
 
         MachineStatusActive,
 
+        MachineMode,
+
         NewMissionAvailable,
 
         CreateMission,

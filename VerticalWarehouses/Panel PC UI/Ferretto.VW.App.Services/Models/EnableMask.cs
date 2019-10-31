@@ -5,8 +5,10 @@
     {
         None = 0x0,
 
-        MachineMode = 0x1,
+        MachineAutomaticMode = 0x1,
 
-        MachinePower = 0x2
+        MachineManualMode = 0x2,
+
+        MachinePoweredOff = 0x3,
     }
 }

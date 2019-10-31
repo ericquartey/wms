@@ -6,9 +6,9 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/setup/[controller]")]
     [ApiController]
-    public class DepositAndPickupProcedureController : BaseAutomationController
+    public class DepositAndPickupProcedureController : ControllerBase
     {
         #region Fields
 
@@ -19,9 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public DepositAndPickupProcedureController(
-                IEventAggregator eventAggregator,
-                ISetupProceduresDataProvider setupProceduresDataProvider)
-                : base(eventAggregator)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
