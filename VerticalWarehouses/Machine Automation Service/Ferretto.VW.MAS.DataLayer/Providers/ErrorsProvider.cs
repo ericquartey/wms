@@ -128,11 +128,12 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 Code = (int)code,
                 OccurrenceDate = DateTime.Now,
+                BayNumber = bayNumber,
             };
 
             lock (this.dataContext)
             {
-                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null);
+                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null && e.BayNumber == bayNumber);
                 if (existingUnresolvedError != null)
                 {
                     return existingUnresolvedError;

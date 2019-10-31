@@ -158,6 +158,54 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height)
+        {
+            lock (this.dataContext)
+            {
+                var res = new List<Cell>();
+                for (int cellId = fromCellId; cellId <= toCellId; cellId++)
+                {
+                    var cell = this.dataContext.Cells
+                        .Include(c => c.Panel)
+                        .SingleOrDefault(c => c.Id == cellId);
+                    if (cell != null && cell.Side == side)
+                    {
+                        var cellsOnSameSide = this.dataContext.Cells
+                            .Where(c => c.Side == cell.Side)
+                            .OrderBy(c => c.Position);
+
+                        var higherCell = cellsOnSameSide.FirstOrDefault(c => c.Position > cell.Position);
+                        var lowerCell = cellsOnSameSide.FirstOrDefault(c => c.Position < cell.Position);
+
+                        if ((higherCell == null
+                            ||
+                            higherCell.Position > height)
+                            &&
+                            (lowerCell == null
+                            ||
+                            lowerCell.Position < height))
+                        {
+                            cell.Position += height;
+
+                            this.dataContext.Cells.Update(cell);
+                            this.dataContext.SaveChanges();
+                        }
+                        else
+                        {
+                            throw new ArgumentOutOfRangeException(
+                                Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
+                        }
+
+                        res.Add(this.dataContext.Cells
+                                    .Include(c => c.Panel)
+                                    .SingleOrDefault(c => c.Id == cellId));
+                    }
+                }
+
+                return res;
+            }
+        }
+
         #endregion
     }
 }
