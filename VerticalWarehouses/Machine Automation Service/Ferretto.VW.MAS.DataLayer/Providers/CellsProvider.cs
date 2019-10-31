@@ -158,6 +158,33 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height)
+        {
+            lock (this.dataContext)
+            {
+                var res = new List<Cell>();
+                for (int cellId = fromCellId; cellId <= toCellId; cellId++)
+                {
+                    var cell = this.dataContext.Cells
+                        .Include(c => c.Panel)
+                        .SingleOrDefault(c => c.Id == cellId);
+                    if (cell != null && cell.Side == side)
+                    {
+                        cell.Position += height;
+
+                        this.dataContext.Cells.Update(cell);
+                        this.dataContext.SaveChanges();
+
+                        res.Add(this.dataContext.Cells
+                                    .Include(c => c.Panel)
+                                    .SingleOrDefault(c => c.Id == cellId));
+                    }
+                }
+
+                return res;
+            }
+        }
+
         #endregion
     }
 }

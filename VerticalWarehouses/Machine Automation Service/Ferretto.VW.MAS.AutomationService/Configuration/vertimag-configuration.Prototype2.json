@@ -568,10 +568,12 @@
             "Deceleration": 400,
             "Speed": 420
           },
-          "WeightMeasureMultiply": 152.61,
-          "WeightMeasureSum": -901.32,
-          "WeightMeasureSpeed": 30,
-          "WeightMeasureTime": 15
+          "WeightMeasurement": {
+            "MeasureMultiply": 152.61,
+            "MeasureSum": -901.32,
+            "MeasureSpeed": 30,
+            "MeasureTime": 15
+          }
         },
         {
           "Inverter": {
