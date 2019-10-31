@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.height;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
                     throw new System.ArgumentOutOfRangeException(nameof(value));
                 }
