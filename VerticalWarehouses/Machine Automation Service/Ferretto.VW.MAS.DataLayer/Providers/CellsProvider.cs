@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Cell = Ferretto.VW.MAS.DataModels.Cell;
+using CellStatus = Ferretto.VW.MAS.DataModels.CellStatus;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -38,6 +41,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(c => c.Panel)
                     .ToArray();
             }
+        }
+
+        public Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
+        {
+            return this.dataContext.Cells
+                       .Include(c => c.LoadingUnit)
+                       .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
         }
 
         public Cell GetCellById(int cellId)

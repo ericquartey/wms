@@ -616,8 +616,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.Homing:
                     case MessageType.Positioning:
+                    case MessageType.Homing:
                     case MessageType.ShutterPositioning:
                     case MessageType.PowerEnable:
                     case MessageType.InverterFaultReset:

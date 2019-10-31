@@ -16,7 +16,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Models
     {
         #region Constructors
 
-        public PositioningMachineData(BayNumber requestingBay,
+        public PositioningMachineData(
+            MessageActor requester,
+            BayNumber requestingBay,
             BayNumber targetBay,
             IPositioningMessageData messageData,
             IMachineResourcesProvider machineResourcesProvider,
@@ -26,6 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Models
             IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
+            this.Requester = requester;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MessageData = messageData;
@@ -54,6 +57,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Models
         public IMachineResourcesProvider MachineSensorStatus { get; }
 
         public IPositioningMessageData MessageData { get; set; }
+
+        public MessageActor Requester { get; }
 
         public BayNumber RequestingBay { get; }
 
