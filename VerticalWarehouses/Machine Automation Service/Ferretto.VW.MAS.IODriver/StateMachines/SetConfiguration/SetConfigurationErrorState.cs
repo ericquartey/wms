@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
+            this.Logger.LogTrace($"1: Received Message = {message.ToString()}");
         }
 
         public override void Start()
