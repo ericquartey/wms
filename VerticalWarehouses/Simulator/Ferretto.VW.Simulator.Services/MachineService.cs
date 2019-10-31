@@ -248,8 +248,8 @@ namespace Ferretto.VW.Simulator.Services
                             }
                             else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 20)
                             {
-                                client.Close();
-                                break;
+                                //client.Close();
+                                //break;
                             }
                         }
                         else
@@ -508,16 +508,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetAccelerations:
+                {
+                    var replyMessage = message.ToBytes();
+                    if (message.UIntPayload == 0)
                     {
-                        var replyMessage = message.ToBytes();
-                        if (message.UIntPayload == 0)
-                        {
-                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
-                        }
-
-                        result = client.Client.Send(replyMessage);
+                        replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
                     }
-                    break;
+
+                    result = client.Client.Send(replyMessage);
+                }
+                break;
 
                 case InverterParameterId.TableTravelTargetDecelerations:
                     result = client.Client.Send(message.ToBytes());

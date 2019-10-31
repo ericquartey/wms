@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -8,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
         IEnumerable<Cell> GetAll();
+
+        Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide);
 
         Cell GetCellById(int cellId);
 
