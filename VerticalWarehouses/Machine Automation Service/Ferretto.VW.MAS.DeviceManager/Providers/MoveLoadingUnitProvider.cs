@@ -62,10 +62,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
+                 notification.Type == MessageType.ShutterPositioning ||
                  notification.Status == MessageStatus.OperationStop ||
+                 notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
-                 notification.Status == MessageStatus.OperationRunningStop ||
-                 notification.Type == MessageType.ShutterPositioning);
+                 notification.Status == MessageStatus.OperationRunningStop);
         }
 
         public double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
@@ -181,7 +182,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning || message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.Positioning ||
+                message.Type == MessageType.ShutterPositioning ||
+                message.Type == MessageType.MachineManagerException)
             {
                 return message.Status;
             }

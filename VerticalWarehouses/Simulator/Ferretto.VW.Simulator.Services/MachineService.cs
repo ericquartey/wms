@@ -247,7 +247,7 @@ namespace Ferretto.VW.Simulator.Services
                                     break;
                                 }
                             }
-                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
+                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 20)
                             {
                                 client.Close();
                                 break;

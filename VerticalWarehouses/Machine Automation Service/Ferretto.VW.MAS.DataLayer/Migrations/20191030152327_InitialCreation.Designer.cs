@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191029144804_InitialCreation")]
+    [Migration("20191030152327_InitialCreation")]
     partial class InitialCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -202,13 +202,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
-                    b.Property<double>("WeightMeasureMultiply");
-
-                    b.Property<double>("WeightMeasureSpeed");
-
-                    b.Property<double>("WeightMeasureSum");
-
-                    b.Property<int>("WeightMeasureTime");
+                    b.Property<int?>("WeightMeasurementId");
 
                     b.HasKey("Id");
 
@@ -219,6 +213,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("FullLoadMovementId");
 
                     b.HasIndex("InverterId");
+
+                    b.HasIndex("WeightMeasurementId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -1000,7 +996,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886),
+                            InstallationDate = new DateTime(2016, 12, 30, 16, 23, 26, 566, DateTimeKind.Local).AddTicks(23),
                             ServiceStatus = 86
                         });
                 });
@@ -1261,6 +1257,24 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("MeasureMultiply");
+
+                    b.Property<double>("MeasureSpeed");
+
+                    b.Property<double>("MeasureSum");
+
+                    b.Property<int>("MeasureTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeightMeasurement");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1432,6 +1446,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement", "WeightMeasurement")
+                        .WithMany()
+                        .HasForeignKey("WeightMeasurementId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>

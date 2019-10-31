@@ -57,6 +57,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == orientation);
 
                     if (cacheEntry is null)
@@ -174,6 +175,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
@@ -198,6 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
 
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
