@@ -241,6 +241,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     case InverterParameterId.TableTravelTargetSpeeds:
                     case InverterParameterId.TableTravelTargetAccelerations:
                     case InverterParameterId.TableTravelTargetDecelerations:
+                    case InverterParameterId.PositionTargetPosition:
+                    case InverterParameterId.PositionTargetSpeed:
+                    case InverterParameterId.PositionAcceleration:
+                    case InverterParameterId.PositionDeceleration:
                         length = 8;
                         break;
 

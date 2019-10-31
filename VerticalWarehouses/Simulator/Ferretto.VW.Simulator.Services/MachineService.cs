@@ -557,9 +557,28 @@ namespace Ferretto.VW.Simulator.Services
                     var blockRead = message.ConvertPayloadToBlockRead(inverter.BlockDefinitions);
                     for (var iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
                     {
-                        if (inverter.BlockDefinitions[iblock].ParameterId == InverterParameterId.TableTravelTargetSpeeds)
+                        switch (inverter.BlockDefinitions[iblock].ParameterId)
                         {
-                            inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)blockRead[iblock], inverter.TargetSpeed[inverter.CurrentAxis]);
+                            case InverterParameterId.TableTravelTargetSpeeds:
+                                inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)blockRead[iblock], inverter.TargetSpeed[inverter.CurrentAxis]);
+                                break;
+
+                            case InverterParameterId.PositionTargetPosition:
+                                inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)blockRead[iblock]);
+                                inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                                break;
+
+                            case InverterParameterId.PositionTargetSpeed:
+                                inverter.TargetSpeed[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.PositionAcceleration:
+                                inverter.TargetAcceleration[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.PositionDeceleration:
+                                inverter.TargetAcceleration[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
                         }
                     }
                     result = client.Client.Send(message.ToBytes());
