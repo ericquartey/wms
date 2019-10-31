@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue = this;
 
-            if (this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
+            if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
             {
                 this.baysProvider.UnloadLoadingUnit(this.ejectBay);
 
