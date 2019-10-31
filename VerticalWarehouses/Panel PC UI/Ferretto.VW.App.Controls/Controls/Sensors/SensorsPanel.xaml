@@ -173,7 +173,7 @@
                                 <controls:PpcSensorControl
                                                Margin="0"
                                                Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}" />
+                                               SensorState="{Binding Sensors.LUPresentInBay1}" />
                             </StackPanel>
 
                             <StackPanel Orientation="Horizontal"
@@ -184,7 +184,7 @@
                                 <controls:PpcSensorControl
                                                Margin="0"
                                                Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.LUPresentInBay1}" />
+                                               SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}" />
                                                
                             </StackPanel>
                         </StackPanel>
