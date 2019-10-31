@@ -234,11 +234,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.IsPositionDownSelected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Up;
                 }
             }
 
@@ -246,11 +246,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.IsPositionDownSelected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Up;
                 }
             }
 
@@ -258,11 +258,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.IsPositionDownSelected)
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
                 }
                 else
                 {
-                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
+                    return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Up;
                 }
             }
 

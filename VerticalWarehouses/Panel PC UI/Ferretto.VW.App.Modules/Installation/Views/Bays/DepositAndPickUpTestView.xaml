@@ -46,8 +46,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionDownCommand}"
                                 Content="{x:Static res:InstallationApp.BayPositionDown}"
-                                IsActive="{Binding IsPositionDownSelected}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+                                IsActive="{Binding IsPositionDownSelected}"  />
 
             <controls:PpcButton Margin="15 5"
                                 HorizontalAlignment="Center"
