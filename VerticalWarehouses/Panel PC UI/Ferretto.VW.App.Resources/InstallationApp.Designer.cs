@@ -286,20 +286,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Position down.
         /// </summary>
-        public static string BayPosition1 {
+        public static string BayPositionDown {
             get {
-                return ResourceManager.GetString("BayPosition1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Position 2.
-        /// </summary>
-        public static string BayPosition2 {
-            get {
-                return ResourceManager.GetString("BayPosition2", resourceCulture);
+                return ResourceManager.GetString("BayPositionDown", resourceCulture);
             }
         }
         
@@ -309,6 +300,15 @@ namespace Ferretto.VW.App.Resources {
         public static string BayPositionDownHeight {
             get {
                 return ResourceManager.GetString("BayPositionDownHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up.
+        /// </summary>
+        public static string BayPositionUp {
+            get {
+                return ResourceManager.GetString("BayPositionUp", resourceCulture);
             }
         }
         
@@ -1663,20 +1663,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit code position 1.
+        ///   Looks up a localized string similar to Loading unit code position down.
         /// </summary>
-        public static string LoadingUnitCodePosition1 {
+        public static string LoadingUnitCodePositionDown {
             get {
-                return ResourceManager.GetString("LoadingUnitCodePosition1", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitCodePositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit code position 2.
+        ///   Looks up a localized string similar to Loading unit code position up.
         /// </summary>
-        public static string LoadingUnitCodePosition2 {
+        public static string LoadingUnitCodePositionUp {
             get {
-                return ResourceManager.GetString("LoadingUnitCodePosition2", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitCodePositionUp", resourceCulture);
             }
         }
         

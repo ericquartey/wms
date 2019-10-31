@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.LoadingUnitId = null;
 
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public override async Task StartAsync()

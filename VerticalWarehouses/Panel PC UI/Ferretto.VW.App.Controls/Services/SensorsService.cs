@@ -65,9 +65,9 @@ namespace Ferretto.VW.App.Services
 
         private bool isShutterTwoSensors;
 
-        private LoadingUnit loadingUnitPosition1InBay;
+        private string loadingUnitPositionDownInBayCode;
 
-        private LoadingUnit loadingUnitPosition2InBay;
+        private string loadingUnitPositionUpInBayCode;
 
         private SubscriptionToken positioningToken;
 
@@ -243,16 +243,16 @@ namespace Ferretto.VW.App.Services
 
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
-        public LoadingUnit LoadingUnitPosition1InBay
+        public string LoadingUnitPositionDownInBayCode
         {
-            get => this.loadingUnitPosition1InBay;
-            private set => this.SetProperty(ref this.loadingUnitPosition1InBay, value);
+            get => this.loadingUnitPositionDownInBayCode;
+            private set => this.SetProperty(ref this.loadingUnitPositionDownInBayCode, value);
         }
 
-        public LoadingUnit LoadingUnitPosition2InBay
+        public string LoadingUnitPositionUpInBayCode
         {
-            get => this.loadingUnitPosition2InBay;
-            private set => this.SetProperty(ref this.loadingUnitPosition2InBay, value);
+            get => this.loadingUnitPositionUpInBayCode;
+            private set => this.SetProperty(ref this.loadingUnitPositionUpInBayCode, value);
         }
 
         public Sensors Sensors => this.sensors;
@@ -319,9 +319,6 @@ namespace Ferretto.VW.App.Services
 
         private async Task GetBayAsync()
         {
-            this.LoadingUnitPosition1InBay = null;
-            this.LoadingUnitPosition2InBay = null;
-
             this.Bay = await this.bayManagerService.GetBayAsync();
             this.BayNumber = this.Bay.Number;
 
@@ -332,12 +329,12 @@ namespace Ferretto.VW.App.Services
             if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
             {
                 this.BayPositionDownHeight = bayPositionDown.Height;
-                this.LoadingUnitPosition1InBay = bayPositionDown.LoadingUnit;
+                this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
             }
 
             if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
             {
-                this.LoadingUnitPosition2InBay = bayPositionUp.LoadingUnit;
+                this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
                 this.BayPositionUpHeight = bayPositionUp.Height;
             }
 

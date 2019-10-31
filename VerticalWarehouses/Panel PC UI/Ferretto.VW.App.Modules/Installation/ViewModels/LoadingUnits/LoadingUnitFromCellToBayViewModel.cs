@@ -46,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
             await this.RetrieveLoadingUnitsAsync();
             this.LoadingUnitId = null;
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public override void RaiseCanExecuteChanged()

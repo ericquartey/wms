@@ -309,7 +309,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaiseCanExecuteChanged();
 
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public async Task RetrieveLoadingUnitsAsync()

@@ -871,11 +871,11 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Porta a quota cella</value>
   </data>
-  <data name="BayPosition1" xml:space="preserve">
-    <value>Posizione 1</value>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Posizione bassa</value>
   </data>
-  <data name="BayPosition2" xml:space="preserve">
-    <value>Posizione 2</value>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Posizione alta</value>
   </data>
   <data name="Displacement" xml:space="preserve">
     <value>Spostamento [mm]</value>
@@ -1113,11 +1113,11 @@
   <data name="TrayInBayPositionUp" xml:space="preserve">
     <value>Cassetto in posizione up</value>
   </data>
-  <data name="LoadingUnitCodePosition1" xml:space="preserve">
-    <value>Codice cassetto posizione 1</value>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Codice cassetto posizione alta</value>
   </data>
-  <data name="LoadingUnitCodePosition2" xml:space="preserve">
-    <value>Codice cassetto posizione 2</value>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Codice cassetto posizione bassa</value>
   </data>
   <data name="LoadingUnitCode" xml:space="preserve">
     <value>Codice cassetto</value>
