@@ -158,7 +158,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
 
-                this.SelectBayPosition1();
+                this.SelectBayPositionDown();
 
                 this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
                 this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
@@ -404,8 +404,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closedShutterCommand?.RaiseCanExecuteChanged();
             this.carouselDownCommand?.RaiseCanExecuteChanged();
             this.carouselUpCommand?.RaiseCanExecuteChanged();
-            this.selectBayPosition1Command?.RaiseCanExecuteChanged();
-            this.selectBayPosition2Command?.RaiseCanExecuteChanged();
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));

@@ -44,17 +44,17 @@
             <controls:PpcButton Margin="5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Command="{Binding SelectBayPosition1Command}"
-                                Content="{x:Static res:InstallationApp.BayPosition1}"
-                                IsActive="{Binding IsPosition1Selected}"
+                                Command="{Binding SelectBayPositionDownCommand}"
+                                Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                IsActive="{Binding IsPositionDownSelected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Margin="15 5"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Command="{Binding SelectBayPosition2Command}"
-                                Content="{x:Static res:InstallationApp.BayPosition2}"
-                                IsActive="{Binding IsPosition2Selected}"
+                                Command="{Binding SelectBayPositionUpCommand}"
+                                Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                IsActive="{Binding IsPositionUpSelected}"
                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
         </StackPanel>
 

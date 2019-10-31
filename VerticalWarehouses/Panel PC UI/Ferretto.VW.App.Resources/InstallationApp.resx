@@ -936,11 +936,11 @@
   <data name="MoveToCellHeight" xml:space="preserve">
     <value>Move to cell height</value>
   </data>
-  <data name="BayPosition1" xml:space="preserve">
-    <value>Position 1</value>
+  <data name="BayPositionDown" xml:space="preserve">
+    <value>Position down</value>
   </data>
-  <data name="BayPosition2" xml:space="preserve">
-    <value>Position 2</value>
+  <data name="BayPositionUp" xml:space="preserve">
+    <value>Position up</value>
   </data>
   <data name="Displacement" xml:space="preserve">
     <value>Displacement [mm]</value>
@@ -1179,23 +1179,23 @@
   <data name="ShutterEnduranceTest" xml:space="preserve">
     <value>Shutter Test</value>
   </data>
-  <data name="BayPosition1Height" xml:space="preserve">
-    <value>Position 1 bay height [mm]</value>
+  <data name="BayPositionDownHeight" xml:space="preserve">
+    <value>Position down bay height [mm]</value>
   </data>
-  <data name="BayPosition2Height" xml:space="preserve">
-    <value>Position 2 bay height [mm]</value>
+  <data name="BayPositionUpHeight" xml:space="preserve">
+    <value>Position up bay height [mm]</value>
   </data>
-  <data name="TrayInBayPosition1" xml:space="preserve">
-    <value>Tray in position 1</value>
+  <data name="TrayInBayPositionDown" xml:space="preserve">
+    <value>Tray in position down</value>
   </data>
-  <data name="TrayInBayPosition2" xml:space="preserve">
-    <value>Tray in position 2</value>
+  <data name="TrayInBayPositionUp" xml:space="preserve">
+    <value>Tray in position up</value>
   </data>
-  <data name="LoadingUnitCodePosition1" xml:space="preserve">
-    <value>Loading unit code position 1</value>
+  <data name="LoadingUnitCodePositionUp" xml:space="preserve">
+    <value>Loading unit code position up</value>
   </data>
-  <data name="LoadingUnitCodePosition2" xml:space="preserve">
-    <value>Loading unit code position 2</value>
+  <data name="LoadingUnitCodePositionDown" xml:space="preserve">
+    <value>Loading unit code position down</value>
   </data>
   <data name="LoadingUnitCode" xml:space="preserve">
     <value>Loading unit code</value>
