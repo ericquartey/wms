@@ -160,6 +160,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.sideSelected = WarehouseSide.Back;
+
             this.ChangeSideCommand();
         }
 
@@ -211,6 +212,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineCellsWebService.UpdatesHeightAsync(this.inputFormCellId.Value, this.inputToCellId.Value, this.sideSelected, this.stepValue.Value);
+
+                this.ShowNotification("Modifica avvenuta con successo", Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -223,6 +226,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sideBackCommand?.RaiseCanExecuteChanged();
             this.sideFrontCommand?.RaiseCanExecuteChanged();
             this.correctCommand?.RaiseCanExecuteChanged();
+            this.ClearNotifications();
         }
 
         private async Task RetrieveCellsAsync()

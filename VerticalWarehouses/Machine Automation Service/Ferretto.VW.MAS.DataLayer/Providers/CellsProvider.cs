@@ -170,31 +170,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .SingleOrDefault(c => c.Id == cellId);
                     if (cell != null && cell.Side == side)
                     {
-                        var cellsOnSameSide = this.dataContext.Cells
-                            .Where(c => c.Side == cell.Side)
-                            .OrderBy(c => c.Position);
+                        cell.Position += height;
 
-                        var higherCell = cellsOnSameSide.FirstOrDefault(c => c.Position > cell.Position);
-                        var lowerCell = cellsOnSameSide.FirstOrDefault(c => c.Position < cell.Position);
-
-                        if ((higherCell == null
-                            ||
-                            higherCell.Position > height)
-                            &&
-                            (lowerCell == null
-                            ||
-                            lowerCell.Position < height))
-                        {
-                            cell.Position += height;
-
-                            this.dataContext.Cells.Update(cell);
-                            this.dataContext.SaveChanges();
-                        }
-                        else
-                        {
-                            throw new ArgumentOutOfRangeException(
-                                Resources.Cells.TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights);
-                        }
+                        this.dataContext.Cells.Update(cell);
+                        this.dataContext.SaveChanges();
 
                         res.Add(this.dataContext.Cells
                                     .Include(c => c.Panel)
