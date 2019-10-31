@@ -357,6 +357,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger.LogError($"Inverter Fault: {error} - {InverterFaultCodes.GetErrorByCode(error)}");
                 }
             }
+            else if (message.ParameterId == InverterParameterId.BlockRead)
+            {
+                currentStateMachine?.ValidateCommandResponse(message);
+            }
         }
 
         private void EvaluateWriteMessage(

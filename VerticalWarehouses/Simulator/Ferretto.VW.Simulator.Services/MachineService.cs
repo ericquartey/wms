@@ -555,7 +555,7 @@ namespace Ferretto.VW.Simulator.Services
 
                 case InverterParameterId.BlockWrite:
                     var blockRead = message.ConvertPayloadToBlockRead(inverter.BlockDefinitions);
-                    for (int iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
+                    for (var iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
                     {
                         if (inverter.BlockDefinitions[iblock].ParameterId == InverterParameterId.TableTravelTargetSpeeds)
                         {
@@ -563,6 +563,35 @@ namespace Ferretto.VW.Simulator.Services
                         }
                     }
                     result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.BlockRead:
+                    var blockValues = new object[inverter.BlockDefinitions.Count];
+                    for (var iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
+                    {
+                        switch (inverter.BlockDefinitions[iblock].ParameterId)
+                        {
+                            case InverterParameterId.TableTravelTableIndex:
+                                blockValues[iblock] = (short)inverter.TableIndex;
+                                break;
+
+                            case InverterParameterId.TableTravelTargetSpeeds:
+                                blockValues[iblock] = inverter.TargetSpeed[inverter.CurrentAxis];
+                                break;
+
+                            case InverterParameterId.TableTravelTargetAccelerations:
+                                blockValues[iblock] = inverter.TargetAcceleration[inverter.CurrentAxis];    // this value is not correct, just to test the message
+                                break;
+
+                            case InverterParameterId.TableTravelTargetDecelerations:
+                                blockValues[iblock] = inverter.TargetDeceleration[inverter.CurrentAxis];    // this value is not correct, just to test the message
+                                break;
+                        }
+                    }
+                    {
+                        var replyMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(message.FormatBlockWrite(blockValues)));
+                        result = client.Client.Send(replyMessage);
+                    }
                     break;
 
                 default:

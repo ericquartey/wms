@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData dataOld;
 
+        private List<InverterBlockDefinition> definitions;
+
         private bool isBlockDefined;
 
         private int stepId;
@@ -246,14 +248,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 //this.Logger.LogDebug($"Set table index: {this.tableIndex}");
                 if (!this.isBlockDefined)
                 {
-                    var definitions = new List<InverterBlockDefinition>
+                    this.definitions = new List<InverterBlockDefinition>
                     {
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetSpeeds),
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetAccelerations),
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetDecelerations)
                     };
-                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
+                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, this.definitions));
                     this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetSpeeds}, {InverterParameterId.TableTravelTargetAccelerations}, {InverterParameterId.TableTravelTargetDecelerations}");
                 }
                 else

@@ -513,16 +513,16 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             {
                 try
                 {
-                    var systemIndex = int.Parse(stringPayload.Substring(start, 1);
-                    var dataset = int.Parse(stringPayload.Substring(start + 1, 1);
+                    var systemIndex = int.Parse(stringPayload.Substring(start, 1));
+                    var dataset = int.Parse(stringPayload.Substring(start + 1, 1));
                     var parameterId1 = Convert.ToInt32(stringPayload.Substring(start + 2, 1), 16);
-                    var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2);
+                    var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2));
+                    definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
                 }
                 catch
                 {
                     throw new InverterDriverException("Received not valid block definition message");
                 }
-                definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
                 start += 5;
             }
             return definitions;
