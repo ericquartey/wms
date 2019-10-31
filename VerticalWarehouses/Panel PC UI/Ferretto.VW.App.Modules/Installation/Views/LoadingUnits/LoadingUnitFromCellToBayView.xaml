@@ -66,16 +66,16 @@
                 <controls:PpcButton Margin="5"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Command="{Binding SelectBayPosition1Command}"
-                                    Content="{x:Static res:InstallationApp.BayPosition1}"
-                                    IsActive="{Binding IsPosition1Selected}" />
+                                    Command="{Binding SelectBayPositionDownCommand}"
+                                    Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                    IsActive="{Binding IsPositionDownSelected}" />
 
                 <controls:PpcButton Margin="15"
                                     HorizontalAlignment="Center"
                                     VerticalAlignment="Center"
-                                    Command="{Binding SelectBayPosition2Command}"
-                                    Content="{x:Static res:InstallationApp.BayPosition2}"
-                                    IsActive="{Binding IsPosition2Selected}"
+                                    Command="{Binding SelectBayPositionUpCommand}"
+                                    Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                    IsActive="{Binding IsPositionUpSelected}"
                                     Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
             </StackPanel>
@@ -87,8 +87,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding ConfirmEjectLoadingUnitCommand}"
-                            Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}"
-                            Visibility="{Binding IsLoadingUnitInBay, Converter={StaticResource BTVIC}}" />
+                            Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}"/>
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"
