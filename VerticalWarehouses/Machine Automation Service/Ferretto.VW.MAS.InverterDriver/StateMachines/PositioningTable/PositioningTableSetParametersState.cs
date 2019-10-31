@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
@@ -49,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly IInverterPositioningFieldMessageData dataOld;
 
+        private bool isBlockDefined;
+
         private int stepId;
 
         private InverterTableIndex tableIndex;
@@ -90,6 +93,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
             this.Logger.LogDebug($"Set table index: {this.tableIndex}");
             this.stepId = 0;
+            this.isBlockDefined = false;
         }
 
         /// <inheritdoc />
@@ -121,6 +125,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 switch (message.ParameterId)
                 {
+                    case InverterParameterId.BlockDefinition:
+                        this.isBlockDefined = true;
+                        object[] blockValues = new object[]
+                        {
+                            (short)this.tableIndex,
+                            this.data.TargetSpeed[this.stepId],
+                            this.data.TargetAcceleration[this.stepId],
+                            this.data.TargetAcceleration[this.stepId]
+                        };
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
+                        this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
+                        break;
+
+                    case InverterParameterId.BlockWrite:
+                        this.DoTargetDecelerations();
+                        break;
+
                     case InverterParameterId.TableTravelTableIndex:
                         switch (this.tableIndex)
                         {
@@ -221,8 +242,35 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (this.stepId < this.data.SwitchPosition.Length)
             {
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.stepId);
+#if BLOCK_WRITE
+                if (!this.isBlockDefined)
+                {
+                    var definitions = new List<InverterBlockDefinition>
+                    {
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetSpeeds),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetAccelerations),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetDecelerations)
+                    };
+                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
+                    this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetSpeeds}, {InverterParameterId.TableTravelTargetAccelerations}, {InverterParameterId.TableTravelTargetDecelerations}");
+                }
+                else
+                {
+                    object[] blockValues = new object[]
+                    {
+                        (short)this.tableIndex,
+                        this.data.TargetSpeed[this.stepId],
+                        this.data.TargetAcceleration[this.stepId],
+                        this.data.TargetAcceleration[this.stepId]
+                    };
+                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
+                    this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
+                }
+#else
                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
                 this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+#endif
             }
             else
             {
