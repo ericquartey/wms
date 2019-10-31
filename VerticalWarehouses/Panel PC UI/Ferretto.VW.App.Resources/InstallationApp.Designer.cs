@@ -286,38 +286,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Position down.
         /// </summary>
-        public static string BayPosition1 {
+        public static string BayPositionDown {
             get {
-                return ResourceManager.GetString("BayPosition1", resourceCulture);
+                return ResourceManager.GetString("BayPositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1 bay height [mm].
+        ///   Looks up a localized string similar to Position down bay height [mm].
         /// </summary>
-        public static string BayPosition1Height {
+        public static string BayPositionDownHeight {
             get {
-                return ResourceManager.GetString("BayPosition1Height", resourceCulture);
+                return ResourceManager.GetString("BayPositionDownHeight", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 2.
+        ///   Looks up a localized string similar to Position up.
         /// </summary>
-        public static string BayPosition2 {
+        public static string BayPositionUp {
             get {
-                return ResourceManager.GetString("BayPosition2", resourceCulture);
+                return ResourceManager.GetString("BayPositionUp", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 2 bay height [mm].
+        ///   Looks up a localized string similar to Position up bay height [mm].
         /// </summary>
-        public static string BayPosition2Height {
+        public static string BayPositionUpHeight {
             get {
-                return ResourceManager.GetString("BayPosition2Height", resourceCulture);
+                return ResourceManager.GetString("BayPositionUpHeight", resourceCulture);
             }
         }
         
@@ -1663,20 +1663,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit code position 1.
+        ///   Looks up a localized string similar to Loading unit code position down.
         /// </summary>
-        public static string LoadingUnitCodePosition1 {
+        public static string LoadingUnitCodePositionDown {
             get {
-                return ResourceManager.GetString("LoadingUnitCodePosition1", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitCodePositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Loading unit code position 2.
+        ///   Looks up a localized string similar to Loading unit code position up.
         /// </summary>
-        public static string LoadingUnitCodePosition2 {
+        public static string LoadingUnitCodePositionUp {
             get {
-                return ResourceManager.GetString("LoadingUnitCodePosition2", resourceCulture);
+                return ResourceManager.GetString("LoadingUnitCodePositionUp", resourceCulture);
             }
         }
         
@@ -2806,20 +2806,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray in position 1.
+        ///   Looks up a localized string similar to Tray in position down.
         /// </summary>
-        public static string TrayInBayPosition1 {
+        public static string TrayInBayPositionDown {
             get {
-                return ResourceManager.GetString("TrayInBayPosition1", resourceCulture);
+                return ResourceManager.GetString("TrayInBayPositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Tray in position 2.
+        ///   Looks up a localized string similar to Tray in position up.
         /// </summary>
-        public static string TrayInBayPosition2 {
+        public static string TrayInBayPositionUp {
             get {
-                return ResourceManager.GetString("TrayInBayPosition2", resourceCulture);
+                return ResourceManager.GetString("TrayInBayPositionUp", resourceCulture);
             }
         }
         
