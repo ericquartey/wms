@@ -617,16 +617,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                 switch (receivedMessage.Type)
                 {
                     case MessageType.Positioning:
-                        this.logger.LogTrace($"16:Deallocation FSM [{messageCurrentStateMachine?.GetType().Name}] ended with {receivedMessage.Status}");
-                        this.currentStateMachines.Remove(receivedMessage.TargetBay);
-                        this.SendCleanDebug();
-
-                        if (receivedMessage.Data is IPositioningMessageData positioningData && positioningData.AxisMovement == Axis.Horizontal)
-                        {
-                            this.UpdateLoadingUnitLocation(receivedMessage, positioningData, serviceProvider);
-                        }
-                        break;
-
                     case MessageType.Homing:
                     case MessageType.ShutterPositioning:
                     case MessageType.PowerEnable:

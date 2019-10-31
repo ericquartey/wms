@@ -263,6 +263,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                     currentStateMachine = new PositioningStateMachine(
+                        message.Source,
                         message.RequestingBay,
                         targetBay,
                         data,
@@ -535,87 +536,6 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                 this.eventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
-            }
-        }
-
-        private void UpdateLoadingUnitLocation(NotificationMessage receivedMessage, IPositioningMessageData positioningData, IServiceProvider serviceProvider)
-        {
-            LoadingUnit currentLoadingUnit;
-
-            var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-
-            var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
-
-            var bayProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-
-            var cellProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-
-            if (resourceProvider.IsDrawerCompletelyOnCradle)
-            {
-                currentLoadingUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
-
-                if (currentLoadingUnit == null)
-                {
-                    this.logger.LogWarning($"Loading unit loaded on cradle not found in database");
-                }
-            }
-
-            var position = elevatorProvider.VerticalPosition;
-
-            var cell = cellProvider.GetCellByHeight(position, 10, positioningData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Back : WarehouseSide.Front);
-
-            var bayLocation = LoadingUnitLocation.NoLocation;
-
-            if (cell != null)
-            {
-                currentLoadingUnit = cell.LoadingUnit;
-            }
-            else
-            {
-                bayLocation = bayProvider.GetPositionByHeight(position, 10, receivedMessage.RequestingBay);
-
-                currentLoadingUnit = bayProvider.GetLoadingUnitByDestination(bayLocation);
-            }
-
-            if (currentLoadingUnit == null)
-            {
-                this.logger.LogWarning($"Found no loading unit at position {position}");
-            }
-            else
-            {
-                using (var transaction = elevatorDataProvider.GetContextTransaction())
-                {
-                    if (resourceProvider.IsDrawerCompletelyOnCradle)
-                    {
-                        elevatorDataProvider.LoadLoadingUnit(currentLoadingUnit.Id);
-
-                        if (cell != null)
-                        {
-                            cellProvider.UnloadLoadingUnit(cell.Id);
-                        }
-                        else
-                        {
-                            bayProvider.UnloadLoadingUnit(bayLocation);
-                        }
-                    }
-                    else
-                    {
-                        elevatorDataProvider.UnloadLoadingUnit();
-
-                        if (cell != null)
-                        {
-                            cellProvider.LoadLoadingUnit(currentLoadingUnit.Id, cell.Id);
-                        }
-                        else
-                        {
-                            bayProvider.LoadLoadingUnit(currentLoadingUnit.Id, bayLocation);
-                        }
-                    }
-
-                    transaction.Commit();
-                }
             }
         }
 
