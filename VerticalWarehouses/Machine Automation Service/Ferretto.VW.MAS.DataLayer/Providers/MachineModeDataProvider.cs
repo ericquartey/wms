@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
-        private MachineMode mode = MachineMode.Automatic;
+        private MachineMode mode;
 
         #endregion
 

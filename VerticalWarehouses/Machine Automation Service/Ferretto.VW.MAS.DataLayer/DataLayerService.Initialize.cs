@@ -70,34 +70,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        /*
-        private async Task BackupDatabaseAsync()
-        {
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var redundancyService = scope
-                  .ServiceProvider
-                  .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
-
-                redundancyService.IsEnabled = false;
-                try
-                {
-                    using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
-                    {
-                        activeDbContext.Database.ExecuteSqlCommand
-                    }
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "Error while backing up database.");
-                }
-                finally
-                {
-                    redundancyService.IsEnabled = true;
-                }
-            }
-        }*/
-
         private void EnsureFolderExistence()
         {
             if (!System.IO.Directory.Exists("Database"))
@@ -108,8 +80,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private async Task InitializeAsync()
         {
-            // await this.BackupDatabaseAsync();
-
             await this.ApplyMigrationsAsync();
 
             using (var scope = this.ServiceScopeFactory.CreateScope())

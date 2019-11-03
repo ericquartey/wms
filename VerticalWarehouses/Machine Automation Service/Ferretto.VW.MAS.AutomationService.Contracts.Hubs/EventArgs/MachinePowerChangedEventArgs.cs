@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class MachinePowerChangedEventArgs
+    public class MachinePowerChangedEventArgs : System.EventArgs
     {
         #region Constructors
 
