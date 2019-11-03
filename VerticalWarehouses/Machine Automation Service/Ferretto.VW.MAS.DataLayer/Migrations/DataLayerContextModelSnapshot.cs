@@ -200,13 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
-                    b.Property<double>("WeightMeasureMultiply");
-
-                    b.Property<double>("WeightMeasureSpeed");
-
-                    b.Property<double>("WeightMeasureSum");
-
-                    b.Property<int>("WeightMeasureTime");
+                    b.Property<int?>("WeightMeasurementId");
 
                     b.HasKey("Id");
 
@@ -217,6 +211,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("FullLoadMovementId");
 
                     b.HasIndex("InverterId");
+
+                    b.HasIndex("WeightMeasurementId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -487,24 +483,64 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 300003,
                             Code = 300003,
-                            Description = "Inconsistenza database posizione destinazione cassetto",
-                            Reason = "Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata",
+                            Description = "Inconsistenza database cella destinazione cassetto",
+                            Reason = "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata",
                             Severity = 1
                         },
                         new
                         {
                             Id = 300004,
                             Code = 300004,
-                            Description = "",
-                            Reason = "",
+                            Description = "Culla elevatore occupata",
+                            Reason = "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 300005,
                             Code = 300005,
-                            Description = "Baia di destinazione occupata",
-                            Reason = "La baia di destinazione deve essere vuota prima di richiamare un cassetto",
+                            Description = "Cassetto rilevato nella baia di estrazione",
+                            Reason = "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300006,
+                            Code = 300006,
+                            Description = "Baia di destinazione del cassetto occupata",
+                            Reason = "Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300007,
+                            Code = 300007,
+                            Description = "Inconsistenza database cella sorgente cassetto",
+                            Reason = "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300008,
+                            Code = 300008,
+                            Description = "Inconsistenza database cassetto",
+                            Reason = "Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300009,
+                            Code = 300009,
+                            Description = "Il cassetto selezionato non risulta caricato in magazzino",
+                            Reason = "Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300010,
+                            Code = 300010,
+                            Description = "Baia sorgente del cassetto vuota",
+                            Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
                             Severity = 1
                         });
                 });
@@ -668,6 +704,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300005,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300006,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300007,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300008,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300009,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300010,
                             TotalErrors = 0
                         });
                 });
@@ -933,7 +994,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235),
+                            InstallationDate = new DateTime(2016, 12, 30, 16, 23, 26, 566, DateTimeKind.Local).AddTicks(23),
                             ServiceStatus = 86
                         });
                 });
@@ -1194,6 +1255,24 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("MeasureMultiply");
+
+                    b.Property<double>("MeasureSpeed");
+
+                    b.Property<double>("MeasureSum");
+
+                    b.Property<int>("MeasureTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeightMeasurement");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1365,6 +1444,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement", "WeightMeasurement")
+                        .WithMany()
+                        .HasForeignKey("WeightMeasurementId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>

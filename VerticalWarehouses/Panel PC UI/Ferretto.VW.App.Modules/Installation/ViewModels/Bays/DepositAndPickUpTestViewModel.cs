@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -22,11 +20,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineDepositAndPickupProcedureWebService machineDepositAndPickupProcedureWebService;
 
+        private readonly IMachineElevatorWebService machineElevatorWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly Sensors sensors = new Sensors();
+        private readonly Controls.Interfaces.ISensorsService sensorsService;
 
         private Bay bay;
 
@@ -43,8 +43,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isStopping;
 
         private bool isWaitingForResponse;
-
-        private bool isZeroChain;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
@@ -69,44 +67,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public DepositAndPickUpTestViewModel(
-            IMachineSetupStatusWebService machineSetupStatusWebService,
-            IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
             IMachineElevatorWebService machineElevatorWebService,
+            IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineSensorsWebService machineSensorsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            if (machineDepositPickupProcedure == null)
-            {
-                throw new ArgumentNullException(nameof(machineDepositPickupProcedure));
-            }
-
-            if (machineElevatorWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineElevatorWebService));
-            }
-
-            if (machineLoadingUnitsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
-            }
-
             if (bayManagerService is null)
             {
-                throw new ArgumentNullException(nameof(bayManagerService));
+                throw new
+                    ArgumentNullException(nameof(bayManagerService));
             }
 
-            if (machineSensorsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineSensorsWebService));
-            }
-
-            this.machineSensorsWebService = machineSensorsWebService;
-            this.machineElevatorWebService = machineElevatorWebService;
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
-            this.bayManagerService = bayManagerService;
-            this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure;
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineDepositAndPickupProcedureWebService = machineDepositPickupProcedure ?? throw new ArgumentNullException(nameof(machineDepositPickupProcedure));
             this.inputDelay = 0;
         }
 
@@ -200,36 +178,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsLoadingUnitInBay
-        {
-            get
-            {
-                if (this.bay == null)
-                {
-                    return false;
-                }
-
-                if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
-                {
-                    return this.Sensors.LUPresentInBay1;
-                }
-                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
-                {
-                    return this.Sensors.LUPresentInBay2;
-                }
-                else if (this.bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
-                {
-                    return this.Sensors.LUPresentInBay3;
-                }
-
-                return false;
-            }
-        }
-
-        public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1;
-
-        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
-
         public bool IsStopping
         {
             get => this.isStopping;
@@ -266,10 +214,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public Sensors Sensors => this.sensors;
-
         public ICommand StartCommand =>
-           this.startCommand
+                   this.startCommand
            ??
            (this.startCommand = new DelegateCommand(
                async () => await this.StartAsync(),
@@ -328,12 +274,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
-
-                var sensorsStates = await this.machineSensorsWebService.GetAsync();
-                this.sensors.Update(sensorsStates.ToArray());
-
                 this.procedureParameters = await this.machineDepositAndPickupProcedureWebService.GetParametersAsync();
                 this.InputRequiredCycles = this.procedureParameters.RequiredCycles;
                 this.CumulativePerformedCycles = this.procedureParameters.PerformedCycles;
@@ -358,8 +298,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.BayIsMultiPosition = this.bay.IsDouble;
 
-            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-
             this.IsBackNavigationAllowed = true;
 
             this.SubscribeToEvents();
@@ -369,11 +307,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveLoadingUnitsAsync();
 
             this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
-            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
 
             this.RaiseCanExecuteChanged();
 
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public async Task RetrieveLoadingUnitsAsync()
@@ -413,9 +350,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                this.IsLoadingUnitInBay
+                this.sensorsService.IsLoadingUnitInBay
                 &&
-                !this.IsLoadingUnitOnElevator;
+                !this.sensorsService.IsLoadingUnitOnElevator;
         }
 
         private bool CanExecuteStopCommand()
@@ -474,20 +411,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     break;
 
-                case MessageStatus.OperationExecuting:
-                    {
-                        if (message.Data?.AxisMovement == Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data?.AxisMovement == Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
-
-                        break;
-                    }
-
                 case MessageStatus.OperationEnd:
                     {
                         if (!this.IsExecutingProcedure)
@@ -528,11 +451,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
-            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-            this.RaisePropertyChanged(nameof(this.LoadingUnitInBay));
-            this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
-            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaiseCanExecuteChanged();
         }
 

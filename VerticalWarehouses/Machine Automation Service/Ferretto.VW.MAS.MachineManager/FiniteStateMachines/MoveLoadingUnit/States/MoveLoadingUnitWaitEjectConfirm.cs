@@ -2,6 +2,8 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,7 +17,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
+        private readonly ISensorsProvider sensorsProvider;
+
         private LoadingUnitLocation ejectBay;
+
+        private BayNumber requestingBay;
 
         #endregion
 
@@ -23,10 +31,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitWaitEjectConfirm(
             IBaysProvider baysProvider,
+            ISensorsProvider sensorsProvider,
+            IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -35,6 +47,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.requestingBay = commandMessage.RequestingBay;
+
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
             {
                 this.ejectBay = messageData.Destination;
@@ -43,11 +57,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override IState OnResume()
         {
-            this.baysProvider.UnloadLoadingUnit(this.ejectBay);
+            IState returnValue = this;
 
-            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
+            if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
+            {
+                this.baysProvider.UnloadLoadingUnit(this.ejectBay);
 
-            ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+
+                ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+            }
+            else
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotRemoved, this.requestingBay);
+            }
 
             return returnValue;
         }

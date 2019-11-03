@@ -189,11 +189,11 @@
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
-    <value>Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+    <value>Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value />
+    <value>Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
     <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
@@ -201,7 +201,22 @@
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+    <value>Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.</value>
+  </data>
   <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
-    <value>La baia di destinazione deve essere vuota prima di richiamare un cassetto</value>
+    <value>Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+    <value>Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+    <value>Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+    <value>Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+    <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
   </data>
 </root>

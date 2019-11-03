@@ -103,6 +103,13 @@
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
         <controls:PpcLabeledText Grid.Row="6"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"

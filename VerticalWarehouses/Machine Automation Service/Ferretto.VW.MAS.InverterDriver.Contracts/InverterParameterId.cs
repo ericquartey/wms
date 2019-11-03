@@ -61,5 +61,13 @@
         BrakeReleaseTime = 625,
 
         BrakeActivatePercent = 637,
+
+        CurrentError = 260,
+
+        BlockDefinition = 17,
+
+        BlockWrite = 18,
+
+        BlockRead = 19,
     }
 }

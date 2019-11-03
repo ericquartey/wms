@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         public double ConvertProfileToHeight(ushort profile)
         {
-            return profile * this.kMul + this.kSum;
+            return (profile * this.kMul) + this.kSum;
         }
 
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
@@ -499,6 +499,17 @@ namespace Ferretto.VW.MAS.DataLayer
         public LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId)
         {
             return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+        }
+
+        public LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                           .Where(b => b.Number == bayNumber)
+                           .SelectMany(b => b.Positions)
+                           .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
+            }
         }
 
         public double GetResolution(InverterIndex inverterIndex)

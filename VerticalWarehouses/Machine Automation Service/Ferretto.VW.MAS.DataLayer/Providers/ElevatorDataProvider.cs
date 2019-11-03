@@ -57,6 +57,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == orientation);
 
                     if (cacheEntry is null)
@@ -134,6 +135,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public MovementParameters ScaleMovementsByWeight(Orientation orientation)
+        {
+            var axis = orientation == Orientation.Horizontal
+                ? this.GetHorizontalAxis()
+                : this.GetVerticalAxis();
+
+            var structuralProperties = this.GetStructuralProperties();
+
+            var loadingUnit = this.GetLoadingUnitOnBoard();
+
+            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         public void UnloadLoadingUnit()

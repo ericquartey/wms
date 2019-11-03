@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ElevatorDistance = table.Column<double>(nullable: false),
+                    ElevatorDistance = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     MaximumLoadOnBoard = table.Column<double>(nullable: false),
                     PulleyDiameter = table.Column<double>(nullable: false),
                     ShaftDiameter = table.Column<double>(nullable: false),
-                    ShaftElasticity = table.Column<double>(nullable: false),
+                    ShaftElasticity = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Code = table.Column<int>(nullable: false),
                     Description = table.Column<string>(nullable: false),
                     Reason = table.Column<string>(nullable: true),
-                    Severity = table.Column<int>(nullable: false),
+                    Severity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,7 +64,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Index = table.Column<byte>(nullable: false),
                     IpAddress = table.Column<string>(type: "text", nullable: true),
                     TcpPort = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Index = table.Column<byte>(nullable: false),
                     IpAddress = table.Column<string>(type: "text", nullable: true),
-                    TcpPort = table.Column<int>(nullable: false),
+                    TcpPort = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -100,7 +100,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Source = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false),
-                    Type = table.Column<int>(nullable: false),
+                    Type = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     TotalPowerOnTime = table.Column<TimeSpan>(nullable: false),
                     TotalVerticalAxisCycles = table.Column<int>(nullable: false),
                     TotalVerticalAxisKilometers = table.Column<double>(nullable: false),
-                    WeightCapacityPercentage = table.Column<double>(nullable: false),
+                    WeightCapacityPercentage = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     InstallationDate = table.Column<DateTime>(nullable: false),
                     LastServiceDate = table.Column<DateTime>(nullable: true),
                     NextServiceDate = table.Column<DateTime>(nullable: true),
-                    ServiceStatus = table.Column<int>(nullable: false),
+                    ServiceStatus = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     NegativeTargetDirection = table.Column<double>(nullable: true),
                     PositiveTargetDirection = table.Column<double>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
-                    InitialPosition = table.Column<double>(nullable: true),
+                    InitialPosition = table.Column<double>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Bay3Shutter = table.Column<bool>(nullable: false),
                     CompletedDate = table.Column<DateTime>(nullable: true),
                     HorizontalHoming = table.Column<bool>(nullable: false),
-                    WeightMeasurement = table.Column<bool>(nullable: false),
+                    WeightMeasurement = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     LoadedNetWeight = table.Column<double>(nullable: false),
-                    LoadingUnitId = table.Column<int>(nullable: true),
+                    LoadingUnitId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -230,11 +230,27 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     AccessLevel = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     PasswordHash = table.Column<string>(nullable: false),
-                    PasswordSalt = table.Column<string>(nullable: false),
+                    PasswordSalt = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WeightMeasurement",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    MeasureMultiply = table.Column<double>(nullable: false),
+                    MeasureSpeed = table.Column<double>(nullable: false),
+                    MeasureSum = table.Column<double>(nullable: false),
+                    MeasureTime = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeightMeasurement", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -246,7 +262,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     BayNumber = table.Column<int>(nullable: false),
                     Code = table.Column<int>(nullable: false),
                     OccurrenceDate = table.Column<DateTime>(nullable: false),
-                    ResolutionDate = table.Column<DateTime>(nullable: true),
+                    ResolutionDate = table.Column<DateTime>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -264,7 +280,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 columns: table => new
                 {
                     Code = table.Column<int>(nullable: false),
-                    TotalErrors = table.Column<int>(nullable: false),
+                    TotalErrors = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -285,7 +301,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     InverterId = table.Column<int>(nullable: true),
                     TotalCycles = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false),
+                    Type = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -318,7 +334,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     VerticalManualMovementsId = table.Column<int>(nullable: true),
                     VerticalOffsetCalibrationId = table.Column<int>(nullable: true),
                     VerticalResolutionCalibrationId = table.Column<int>(nullable: true),
-                    WeightCheckId = table.Column<int>(nullable: true),
+                    WeightCheckId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -424,7 +440,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     MeasurementSessionId = table.Column<int>(nullable: false),
                     RequestTimeStamp = table.Column<DateTime>(nullable: false),
                     TimeStamp = table.Column<DateTime>(nullable: false),
-                    Value = table.Column<double>(nullable: false),
+                    Value = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -446,7 +462,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Height = table.Column<double>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: true),
                     Location = table.Column<string>(type: "text", nullable: false),
-                    BayId = table.Column<int>(nullable: true),
+                    BayId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -472,7 +488,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Resolution = table.Column<double>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
                     Side = table.Column<string>(type: "text", nullable: false),
-                    MachineId = table.Column<int>(nullable: true),
+                    MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -512,7 +528,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     PanelId = table.Column<int>(nullable: false),
                     Position = table.Column<double>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -533,7 +549,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     MaxNetWeight = table.Column<double>(nullable: false),
                     MissionsCount = table.Column<int>(nullable: false),
                     Status = table.Column<long>(nullable: false),
-                    Tare = table.Column<double>(nullable: false),
+                    Tare = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -553,7 +569,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     LoadingUnitId = table.Column<int>(nullable: true),
-                    StructuralPropertiesId = table.Column<int>(nullable: true),
+                    StructuralPropertiesId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -582,7 +598,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Height = table.Column<double>(nullable: false),
                     MaxGrossWeight = table.Column<double>(nullable: false),
                     ModelName = table.Column<string>(nullable: true),
-                    SerialNumber = table.Column<string>(nullable: true),
+                    SerialNumber = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -602,7 +618,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Side = table.Column<string>(type: "text", nullable: false),
-                    MachineId = table.Column<int>(nullable: true),
+                    MachineId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -624,7 +640,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Correction = table.Column<double>(nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     TotalDistance = table.Column<double>(nullable: false),
-                    ElevatorAxisId = table.Column<int>(nullable: true),
+                    ElevatorAxisId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -643,7 +659,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Discriminator = table.Column<string>(nullable: false),
                     Number = table.Column<int>(nullable: true),
                     Position = table.Column<double>(nullable: true),
-                    MovementProfileId = table.Column<int>(nullable: true),
+                    MovementProfileId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -677,11 +693,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Resolution = table.Column<decimal>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
-                    WeightMeasureMultiply = table.Column<double>(nullable: false),
-                    WeightMeasureSpeed = table.Column<double>(nullable: false),
-                    WeightMeasureSum = table.Column<double>(nullable: false),
-                    WeightMeasureTime = table.Column<int>(nullable: false),
-                    ElevatorId = table.Column<int>(nullable: true),
+                    WeightMeasurementId = table.Column<int>(nullable: true),
+                    ElevatorId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -710,6 +723,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalTable: "Inverters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_WeightMeasurement_WeightMeasurementId",
+                        column: x => x.WeightMeasurementId,
+                        principalTable: "WeightMeasurement",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
@@ -720,37 +739,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300005, 300005, "Baia di destinazione occupata", "La baia di destinazione deve essere vuota prima di richiamare un cassetto", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300004, 300004, "", "", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300003, 300003, "Inconsistenza database posizione destinazione cassetto", "Verificare che la posizione destinazione del cassetto all'interno del database sia correttamente configurata", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300002, 300002, "Inconsistenza database posizione sorgente cassetto", "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300001, 300001, "Nessun cassetto presente nella baia indicata", "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300000, 300000, "Errore Machine Manager", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 100040, 100040, "ZeroSensorErrorAfterDeposit", "ZeroSensorErrorAfterDeposit", 0 });
+                values: new object[] { 100038, 100038, "CradleNotCorrectlyUnloadedDuringDeposit", "CradleNotCorrectlyUnloadedDuringDeposit", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -760,7 +749,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 100038, 100038, "CradleNotCorrectlyUnloadedDuringDeposit", "CradleNotCorrectlyUnloadedDuringDeposit", 0 });
+                values: new object[] { 100040, 100040, "ZeroSensorErrorAfterDeposit", "ZeroSensorErrorAfterDeposit", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300000, 300000, "Errore Machine Manager", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300001, 300001, "Nessun cassetto presente nella baia indicata", "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300002, 300002, "Inconsistenza database posizione sorgente cassetto", "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -770,7 +774,42 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200030, 200030, "Errore di sintassi del messaggio inviato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 300003, 300003, "Inconsistenza database cella destinazione cassetto", "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300005, 300005, "Cassetto rilevato nella baia di estrazione", "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300006, 300006, "Baia di destinazione del cassetto occupata", "Verificare che la baia di destinazione del cassetto sia effettivamente vuota. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300007, 300007, "Inconsistenza database cella sorgente cassetto", "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300008, 300008, "Inconsistenza database cassetto", "Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300009, 300009, "Il cassetto selezionato non risulta caricato in magazzino", "Il cassetto selezionato risulta presente nel database ma non risulta caricato nel magazzino. Verificare la configurazione del database.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300010, 300010, "Baia sorgente del cassetto vuota", "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300004, 300004, "Culla elevatore occupata", "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -780,22 +819,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 200030, 200030, "Errore di sintassi del messaggio inviato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 200013, 200013, "Errore di sintassi del messaggio inviato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200011, 200011, "Parametro sconosciuto passato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200014, 200014, "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200008, 200008, "Impossibile scrivere il parametro dell'inverter durante l'esecuzione.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -820,7 +849,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200009, 200009, "I dati del dataset dell'inverter non corrispondono.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200000, 200000, "Errore inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -830,7 +859,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200000, 200000, "Errore inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200014, 200014, "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -840,7 +869,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200004, 200004, "Parametro inverter è in sola lettura.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200002, 200002, "Dataset inverter non valido.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -860,7 +889,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200002, 200002, "Dataset inverter non valido.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200008, 200008, "Impossibile scrivere il parametro dell'inverter durante l'esecuzione.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 200009, 200009, "I dati del dataset dell'inverter non corrispondono.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 200011, 200011, "Parametro sconosciuto passato all'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 200004, 200004, "Parametro inverter è in sola lettura.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
@@ -870,7 +914,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2016, 12, 29, 13, 57, 11, 644, DateTimeKind.Local).AddTicks(4235), null, null, 86 });
+                values: new object[] { 1, new DateTime(2016, 12, 30, 16, 23, 26, 566, DateTimeKind.Local).AddTicks(23), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -895,37 +939,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300003, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300002, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300001, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300000, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100040, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100039, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100038, 0 });
+                values: new object[] { 200030, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -935,7 +949,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200030, 0 });
+                values: new object[] { 100038, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100039, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100040, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300000, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -945,87 +974,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200014, 0 });
+                values: new object[] { 300001, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200013, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200011, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200009, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200008, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200007, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200006, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200005, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200004, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200003, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200002, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200001, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 200000, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100036, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100035, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100034, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 100033, 0 });
+                values: new object[] { 300003, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1036,6 +990,121 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 300005, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300006, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300007, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300008, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300002, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300009, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200014, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200011, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100033, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100034, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100035, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 100036, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200000, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200001, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200013, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200002, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200004, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200005, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200006, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200007, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200008, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200009, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 200003, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 300010, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_BayPositions_BayId",
@@ -1107,6 +1176,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_ElevatorAxes_InverterId",
                 table: "ElevatorAxes",
                 column: "InverterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_WeightMeasurementId",
+                table: "ElevatorAxes",
+                column: "WeightMeasurementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_LoadingUnitId",
@@ -1402,6 +1476,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ElevatorAxes");
+
+            migrationBuilder.DropTable(
+                name: "WeightMeasurement");
         }
     }
 }

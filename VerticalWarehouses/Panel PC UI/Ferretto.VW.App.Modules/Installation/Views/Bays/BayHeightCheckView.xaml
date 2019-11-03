@@ -39,12 +39,12 @@
                     Visibility="{Binding Bay.IsDouble, Converter={StaticResource BTVC}}">
             <controls:PpcButton Width="100"
                                 Margin="0,0,10,0"
-                                Command="{Binding ChangeToUpperBayPositionCommand}"
-                                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
-
-            <controls:PpcButton Width="100"
                                 Command="{Binding ChangeToLowerBayPositionCommand}"
                                 Content="{x:Static res:InstallationApp.LowerBayPosition}" />
+
+            <controls:PpcButton Width="100"
+                                Command="{Binding ChangeToUpperBayPositionCommand}"
+                                Content="{x:Static res:InstallationApp.UpperBayPosition}" />
 
         </StackPanel>
 
@@ -61,7 +61,6 @@
                             VerticalAlignment="Top"
                             Command="{Binding AbortCommand}"
                             Content="{x:Static res:InstallationApp.Abort}" />
-
 
         <controls:PpcLabeledText Grid.Row="3"
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
@@ -99,7 +98,6 @@
                             VerticalAlignment="Top"
                             Command="{Binding ApplyCorrectionCommand}"
                             Content="{x:Static res:InstallationApp.ApplyCorrection}" />
-
 
     </Grid>
 </ctrls:View>

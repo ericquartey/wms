@@ -150,7 +150,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public string StringPayload => this.ConvertPayloadToString();
 
-        public InverterIndex SystemIndex { get; private set; }
+        public InverterIndex SystemIndex
+        { get; private set; }
 
         public string TelegramErrorText => this.telegramErrorText.ContainsKey(this.UShortPayload)
             ? this.UShortPayload.ToString() + this.telegramErrorText[this.UShortPayload]
@@ -221,6 +222,94 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return message;
+        }
+
+        public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
+        {
+            object[] blockValues = new object[blockDefinitions.Count];
+            var stringPayload = Encoding.ASCII.GetString(this.payload);
+            int start = 0;
+            for (int iblock = 0; iblock < blockValues.Length; iblock++)
+            {
+                int length;
+                switch (blockDefinitions[iblock].ParameterId)
+                {
+                    case InverterParameterId.TableTravelTableIndex:
+                        length = 4;
+                        break;
+
+                    case InverterParameterId.TableTravelTargetSpeeds:
+                    case InverterParameterId.TableTravelTargetAccelerations:
+                    case InverterParameterId.TableTravelTargetDecelerations:
+                    case InverterParameterId.PositionTargetPosition:
+                    case InverterParameterId.PositionTargetSpeed:
+                    case InverterParameterId.PositionAcceleration:
+                    case InverterParameterId.PositionDeceleration:
+                        length = 8;
+                        break;
+
+                    default:
+                        throw new InverterDriverException($"Block read parameter {blockValues[iblock].GetType().Name} not valid");
+                }
+
+                if (start + length > stringPayload.Length)
+                {
+                    throw new InverterDriverException("Received too short block message");
+                }
+
+                blockValues[iblock] = Convert.ToInt32(stringPayload.Substring(start, length), 16);
+                start += length;
+            }
+            return blockValues;
+        }
+
+        public string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockDefinitions)
+            {
+                text.AppendFormat("{0}", (byte)block.SystemIndex);
+                text.AppendFormat("{0}", (byte)block.DataSetIndex);
+                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
+                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
+        }
+
+        public string FormatBlockWrite(object[] blockValues)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockValues)
+            {
+                switch (block.GetType().Name)
+                {
+                    case "Int16":
+                    case "UInt16":
+                        text.AppendFormat("{0:X4}", (short)block);
+                        break;
+
+                    case "Int32":
+                    case "UInt32":
+                        text.AppendFormat("{0:X8}", (int)block);
+                        break;
+
+                    default:
+                        throw new InverterDriverException($"Block write parameter {block.GetType().Name} not valid");
+                }
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
         }
 
         public byte[] GetHeartbeatMessage(bool setBit)
@@ -371,7 +460,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             this.IsWriteMessage = true;
             this.heartbeatMessage = false;
             this.sendDelay = sendDelay;
-
             this.SetPayload(payload);
         }
 
@@ -381,6 +469,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
             switch ((InverterParameterId)this.parameterId)
             {
+                case InverterParameterId.CurrentError:
                 case InverterParameterId.ControlWord:
                 case InverterParameterId.StatusWord:
                 case InverterParameterId.SetOperatingMode:
@@ -410,9 +499,37 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.DigitalInputsOutputs:
                     returnValue = Encoding.ASCII.GetString(this.payload);
                     break;
+
+                case InverterParameterId.BlockDefinition:
+                    returnValue = this.ConvertPayloadToBlockDefinitions();
+                    break;
             }
 
             return returnValue;
+        }
+
+        private List<InverterBlockDefinition> ConvertPayloadToBlockDefinitions()
+        {
+            var definitions = new List<InverterBlockDefinition>();
+            var stringPayload = Encoding.ASCII.GetString(this.payload);
+            int start = 0;
+            for (int iblock = 0; (start + 5) <= stringPayload.Length; iblock++)
+            {
+                try
+                {
+                    var systemIndex = int.Parse(stringPayload.Substring(start, 1));
+                    var dataset = int.Parse(stringPayload.Substring(start + 1, 1));
+                    var parameterId1 = Convert.ToInt32(stringPayload.Substring(start + 2, 1), 16);
+                    var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2));
+                    definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
+                }
+                catch
+                {
+                    throw new InverterDriverException("Received not valid block definition message");
+                }
+                start += 5;
+            }
+            return definitions;
         }
 
         private int ConvertPayloadToInt()
@@ -480,6 +597,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 case InverterParameterId.ShutterTargetPosition:
                 case InverterParameterId.HomingCalibration:
                 case InverterParameterId.ProfileInput:
+                case InverterParameterId.CurrentError:
                     if (this.payloadLength == 2)
                     {
                         returnValue = BitConverter.ToUInt16(this.payload, 0);
@@ -503,48 +621,58 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 this.payloadLength = 0;
                 return;
             }
-
-            var payloadType = payload.GetType();
-
-            switch (payloadType.Name)
+            if (payload is List<InverterBlockDefinition> blockDefinitions)
             {
-                case "Byte":
-                    this.payload = new[] { (byte)payload };
-                    break;
+                this.payload = Encoding.ASCII.GetBytes(this.FormatBlockDefinition(blockDefinitions));
+            }
+            else if (payload is object[] blockValues)
+            {
+                this.payload = Encoding.ASCII.GetBytes(this.FormatBlockWrite(blockValues));
+            }
+            else
+            {
+                var payloadType = payload.GetType();
 
-                case "Int16":
-                    this.payload = BitConverter.GetBytes((short)payload);
-                    break;
+                switch (payloadType.Name)
+                {
+                    case "Byte":
+                        this.payload = new[] { (byte)payload };
+                        break;
 
-                case "UInt16":
-                    this.payload = BitConverter.GetBytes((ushort)payload);
-                    break;
+                    case "Int16":
+                        this.payload = BitConverter.GetBytes((short)payload);
+                        break;
 
-                case "Int32":
-                    this.payload = BitConverter.GetBytes((int)payload);
-                    break;
+                    case "UInt16":
+                        this.payload = BitConverter.GetBytes((ushort)payload);
+                        break;
 
-                case "Single":
-                    this.payload = BitConverter.GetBytes((float)payload);
-                    break;
+                    case "Int32":
+                        this.payload = BitConverter.GetBytes((int)payload);
+                        break;
 
-                case "Double":
-                    this.payload = BitConverter.GetBytes((double)payload);
-                    break;
+                    case "Single":
+                        this.payload = BitConverter.GetBytes((float)payload);
+                        break;
 
-                case "String":
-                    this.payload = Encoding.ASCII.GetBytes((string)payload);
-                    break;
+                    case "Double":
+                        this.payload = BitConverter.GetBytes((double)payload);
+                        break;
 
-                default:
-                    if (Debugger.IsAttached)
-                    {
-                        Debugger.Break();
-                    }
+                    case "String":
+                        this.payload = Encoding.ASCII.GetBytes((string)payload);
+                        break;
 
-                    this.payload = new byte[0];
-                    this.payloadLength = 0;
-                    return;
+                    default:
+                        if (Debugger.IsAttached)
+                        {
+                            Debugger.Break();
+                        }
+
+                        this.payload = new byte[0];
+                        this.payloadLength = 0;
+                        return;
+                }
             }
 
             this.payloadLength = this.payload.Length;

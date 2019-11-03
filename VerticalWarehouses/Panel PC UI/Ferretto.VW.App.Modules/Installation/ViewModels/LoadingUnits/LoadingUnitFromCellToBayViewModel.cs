@@ -20,14 +20,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
                     IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 bayManagerService)
         {
         }
@@ -50,7 +46,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
             await this.RetrieveLoadingUnitsAsync();
             this.LoadingUnitId = null;
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public override void RaiseCanExecuteChanged()

@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ? null
                         : this.Cells.SingleOrDefault(c => c.Id == value);
 
-                    this.InputHeight = this.SelectedCell?.Position ?? 0;
+                    this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ? null
                         : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
 
-                    this.InputCellId = this.SelectedLoadingUnit?.CellId ?? 0;
+                    this.InputCellId = this.SelectedLoadingUnit?.CellId;
 
                     this.RaiseCanExecuteChanged();
                 }

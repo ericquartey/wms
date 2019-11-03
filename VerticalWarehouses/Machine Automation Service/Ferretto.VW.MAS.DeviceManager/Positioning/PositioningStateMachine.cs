@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         #region Constructors
 
         public PositioningStateMachine(
+            MessageActor requester,
             BayNumber requestingBay,
             BayNumber targetBay,
             IPositioningMessageData messageData,
@@ -39,6 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
 
             this.machineData = new PositioningMachineData(
+                requester,
                 requestingBay,
                 targetBay,
                 messageData,

@@ -1,11 +1,15 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -62,6 +66,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService)
+                            {
+                                this.UpdateLoadingUnitLocation();
+                            }
+
                             break;
 
                         case MessageStatus.OperationError:
@@ -107,6 +117,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
+
+                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                {
+                    this.UpdateLoadingUnitLocation();
+                }
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
@@ -137,6 +152,84 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Stop(StopRequestReason reason)
         {
             this.Logger.LogDebug("1:Stop Method Empty");
+        }
+
+        private void UpdateLoadingUnitLocation()
+        {
+            LoadingUnit currentLoadingUnit;
+
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+
+            var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+
+            var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
+
+            var bayProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+
+            var cellProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+
+            var bayLocation = LoadingUnitLocation.NoLocation;
+
+            var position = elevatorProvider.VerticalPosition;
+
+            var cell = cellProvider.GetCellByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
+
+            currentLoadingUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
+
+            if (currentLoadingUnit == null)
+            {
+                if (cell != null)
+                {
+                    currentLoadingUnit = cell.LoadingUnit;
+                }
+                else
+                {
+                    bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
+
+                    currentLoadingUnit = bayProvider.GetLoadingUnitByDestination(bayLocation);
+                }
+            }
+
+            if (currentLoadingUnit == null)
+            {
+                this.Logger.LogWarning($"Found no loading unit at position {position}");
+            }
+            else
+            {
+                using (var transaction = elevatorDataProvider.GetContextTransaction())
+                {
+                    if (resourceProvider.IsDrawerCompletelyOnCradle)
+                    {
+                        elevatorDataProvider.LoadLoadingUnit(currentLoadingUnit.Id);
+
+                        if (cell != null)
+                        {
+                            cellProvider.UnloadLoadingUnit(cell.Id);
+                        }
+                        else
+                        {
+                            bayProvider.UnloadLoadingUnit(bayLocation);
+                        }
+                    }
+                    else
+                    {
+                        elevatorDataProvider.UnloadLoadingUnit();
+
+                        if (cell != null)
+                        {
+                            cellProvider.LoadLoadingUnit(currentLoadingUnit.Id, cell.Id);
+                        }
+                        else
+                        {
+                            bayProvider.LoadLoadingUnit(currentLoadingUnit.Id, bayLocation);
+                        }
+                    }
+
+                    transaction.Commit();
+                }
+            }
         }
 
         #endregion

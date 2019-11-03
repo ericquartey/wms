@@ -10,9 +10,7 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Width="1024"
-          Height="608"
-          IsEnabled="False">
+    <Grid IsEnabled="False">
 
         <TextBlock Margin="240,30,0,0"
                    HorizontalAlignment="Left"
@@ -25,14 +23,14 @@
                                  VerticalAlignment="Top"
                                  ContentText="4"
                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsToCheck}" />
-        <!--  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
+          <!--ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->  
 
         <controls:PpcLabeledText Margin="240,240,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="2"
                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerTotCellsChecked}" />
-        <!--  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
+          <!--ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->  
 
         <controls:PpcLabeledText Margin="240,328,0,0"
                                  HorizontalAlignment="Left"
@@ -45,14 +43,14 @@
                              VerticalAlignment="Top"
                              InputText="1"
                              LabelText="{x:Static res:InstallationApp.LoadFirstDrawerDrawerToInsert}" />
-        <!--  InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
+          <!--InputText="{Binding StepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->  
 
         <controls:PpcLabeledText Margin="580,240,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="500"
                                  LabelText="{x:Static res:InstallationApp.LoadFirstDrawerMaxWeight}" />
-        <!--  ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  -->
+          <!--ContentText="{Binding CurrentHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->  
 
         <controls:PpcButton Margin="240,480,0,0"
                             HorizontalAlignment="Left"

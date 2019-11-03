@@ -467,8 +467,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void ChangeDataFromBayPosition()
         {
             this.PositionHeight = this.CurrentBayPosition == 1
-                ? this.Bay.Positions.Min(p => p.Height)
-                : this.Bay.Positions.Max(p => p.Height);
+                ? this.Bay.Positions.Max(p => p.Height)
+                : this.Bay.Positions.Min(p => p.Height);
 
             this.RaiseCanExecuteChanged();
         }
@@ -487,7 +487,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
 
-                this.CurrentBayPosition = 1;
+                this.CurrentBayPosition = 2;
             }
             catch (Exception ex)
             {

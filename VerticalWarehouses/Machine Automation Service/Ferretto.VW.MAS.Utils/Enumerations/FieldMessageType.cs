@@ -59,5 +59,7 @@
         InverterSetTimer,
 
         ContinueMovement,
+
+        InverterCurrentError,
     }
 }
