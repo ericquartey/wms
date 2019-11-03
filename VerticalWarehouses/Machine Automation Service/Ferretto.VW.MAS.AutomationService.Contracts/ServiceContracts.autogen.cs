@@ -370,13 +370,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -669,14 +662,40 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
-    public partial interface IMachinePowerWebService
+    public partial interface IMachineModeWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsPoweredOnAsync();
+        System.Threading.Tasks.Task<MachineMode> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsPoweredOnAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineMode> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAutomaticAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAutomaticAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetManualAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachinePowerWebService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachinePowerState> GetAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachinePowerState> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOffAsync();
@@ -2383,116 +2402,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>100032 = CradleNotCompletelyLoaded
-    /// 100033 = ConditionsNotMetForPositioning
-    /// 100034 = ConditionsNotMetForRunning
-    /// 100035 = SecurityWasTriggered
-    /// 100036 = InverterFaultStateDetected
-    /// 100037 = CradleNotCorrectlyLoadedDuringPickup
-    /// 100038 = CradleNotCorrectlyUnloadedDuringDeposit
-    /// 100039 = ZeroSensorErrorAfterPickup
-    /// 100040 = ZeroSensorErrorAfterDeposit
-    /// 200000 = InverterErrorBaseCode
-    /// 200001 = InverterErrorInvalidParameter
-    /// 200002 = InverterErrorInvalidDataset
-    /// 200003 = InverterErrorParameterIsWriteOnly
-    /// 200004 = InverterErrorParameterIsReadOnly
-    /// 200005 = InverterErrorEepromReadError
-    /// 200006 = InverterErrorEepromWriteError
-    /// 200007 = InverterErrorEepromChecksumError
-    /// 200008 = InverterErrorCannotWriteParameterWhileRunning
-    /// 200009 = InverterErrorDatasetValuesAreDifferent
-    /// 200011 = InverterErrorUnknownParameter
-    /// 200013 = InverterErrorSyntaxError
-    /// 200014 = InverterErrorWrongPayloadLength
-    /// 200020 = InverterErrorNodeNotAvailable
-    /// 200030 = InverterErrorSyntaxError2
-    /// 300000 = MachineManagerErrorBaseCode
-    /// 300001 = MachineManagerErrorNoLoadingUnitInSource
-    /// 300002 = MachineManagerErrorLoadingUnitSourceDb
-    /// 300003 = MachineManagerErrorLoadingUnitDestinationCell
-    /// 300004 = MachineManagerErrorLoadingUnitElevator
-    /// 300005 = MachineManagerErrorLoadingUnitNotRemoved
-    /// 300006 = MachineManagerErrorLoadingUnitDestinationBay
-    /// 300007 = MachineManagerErrorLoadingUnitSourceCell
-    /// 300008 = MachineManagerErrorLoadingUnitNotFound
-    /// 300009 = MachineManagerErrorLoadingUnitNotLoaded
-    /// 300010 = MachineManagerErrorLoadingUnitSourceBay</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MachineErrorCode
-    {
-        CradleNotCompletelyLoaded = 100032,
-    
-        ConditionsNotMetForPositioning = 100033,
-    
-        ConditionsNotMetForRunning = 100034,
-    
-        SecurityWasTriggered = 100035,
-    
-        InverterFaultStateDetected = 100036,
-    
-        CradleNotCorrectlyLoadedDuringPickup = 100037,
-    
-        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
-    
-        ZeroSensorErrorAfterPickup = 100039,
-    
-        ZeroSensorErrorAfterDeposit = 100040,
-    
-        InverterErrorBaseCode = 200000,
-    
-        InverterErrorInvalidParameter = 200001,
-    
-        InverterErrorInvalidDataset = 200002,
-    
-        InverterErrorParameterIsWriteOnly = 200003,
-    
-        InverterErrorParameterIsReadOnly = 200004,
-    
-        InverterErrorEepromReadError = 200005,
-    
-        InverterErrorEepromWriteError = 200006,
-    
-        InverterErrorEepromChecksumError = 200007,
-    
-        InverterErrorCannotWriteParameterWhileRunning = 200008,
-    
-        InverterErrorDatasetValuesAreDifferent = 200009,
-    
-        InverterErrorUnknownParameter = 200011,
-    
-        InverterErrorSyntaxError = 200013,
-    
-        InverterErrorWrongPayloadLength = 200014,
-    
-        InverterErrorNodeNotAvailable = 200020,
-    
-        InverterErrorSyntaxError2 = 200030,
-    
-        MachineManagerErrorBaseCode = 300000,
-    
-        MachineManagerErrorNoLoadingUnitInSource = 300001,
-    
-        MachineManagerErrorLoadingUnitSourceDb = 300002,
-    
-        MachineManagerErrorLoadingUnitDestinationCell = 300003,
-    
-        MachineManagerErrorLoadingUnitElevator = 300004,
-    
-        MachineManagerErrorLoadingUnitNotRemoved = 300005,
-    
-        MachineManagerErrorLoadingUnitDestinationBay = 300006,
-    
-        MachineManagerErrorLoadingUnitSourceCell = 300007,
-    
-        MachineManagerErrorLoadingUnitNotFound = 300008,
-    
-        MachineManagerErrorLoadingUnitNotLoaded = 300009,
-    
-        MachineManagerErrorLoadingUnitSourceBay = 300010,
-    
-    }
-    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineIdentity 
     {
@@ -2820,6 +2729,46 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<HomingProcedureParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    /// <summary>0 = NotSpecified
+    /// 1 = Automatic
+    /// 2 = Manual
+    /// 3 = SwitchingToAutomatic
+    /// 4 = SwitchingToManual</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachineMode
+    {
+        NotSpecified = 0,
+    
+        Automatic = 1,
+    
+        Manual = 2,
+    
+        SwitchingToAutomatic = 3,
+    
+        SwitchingToManual = 4,
+    
+    }
+    
+    /// <summary>0 = NotSpecified
+    /// 1 = Unpowered
+    /// 2 = PoweringUp
+    /// 3 = Powered
+    /// 4 = PoweringDown</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachinePowerState
+    {
+        NotSpecified = 0,
+    
+        Unpowered = 1,
+    
+        PoweringUp = 2,
+    
+        Powered = 3,
+    
+        PoweringDown = 4,
     
     }
     
