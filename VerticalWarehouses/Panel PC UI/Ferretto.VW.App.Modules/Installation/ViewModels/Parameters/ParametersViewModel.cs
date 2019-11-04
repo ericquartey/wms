@@ -13,8 +13,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly IMachineIdentityWebService machineIdentityWebService;
-
         private VertimagConfiguration configuration;
 
         private bool isBusy;
@@ -66,10 +64,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
-            this.configuration = await this.machineConfigurationWebService.GetAsync();
-            this.RaisePropertyChanged(nameof(this.Configuration));
+            try
+            {
+                this.IsBusy = true;
+                this.IsBackNavigationAllowed = true;
+                this.configuration = await this.machineConfigurationWebService.GetAsync();
+                this.RaisePropertyChanged(nameof(this.Configuration));
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private bool CanSave()
