@@ -170,8 +170,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Bays
-                    .Include(b => b.Shutter)
+                    .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                    .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
                     .ToArray();
             }
@@ -250,6 +253,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
@@ -313,6 +317,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)

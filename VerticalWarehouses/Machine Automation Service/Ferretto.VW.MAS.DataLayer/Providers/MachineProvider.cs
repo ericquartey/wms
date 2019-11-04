@@ -51,6 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(e => e.StructuralProperties)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Positions)
+                            .ThenInclude(l => l.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
                     .Include(m => m.Bays)
@@ -59,6 +60,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.IoDevice)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
+                           .ThenInclude(i => i.Inverter)
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single();
