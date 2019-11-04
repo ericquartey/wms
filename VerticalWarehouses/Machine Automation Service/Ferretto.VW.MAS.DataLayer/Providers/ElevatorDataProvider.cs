@@ -147,7 +147,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var loadingUnit = this.GetLoadingUnitOnBoard();
 
-            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
+            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumGrossWeightOnBoard);
         }
 
         public void UnloadLoadingUnit()

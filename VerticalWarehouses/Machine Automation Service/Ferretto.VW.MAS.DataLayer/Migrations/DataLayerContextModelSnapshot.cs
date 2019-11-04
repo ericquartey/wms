@@ -228,7 +228,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("HalfShaftLength");
 
-                    b.Property<double>("MaximumLoadOnBoard");
+                    b.Property<double>("MaximumGrossWeightOnBoard");
 
                     b.Property<double>("PulleyDiameter");
 
