@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.LoadingUnitId = messageData.LoadingUnitId;
             this.TorqueCurrentSample = messageData.TorqueCurrentSample;
             this.FeedRate = messageData.FeedRate;
+            this.ComputeElongation = messageData.ComputeElongation;
 
             this.WaitContinue = messageData.WaitContinue;
             this.RequestingBay = requestingBay;
@@ -69,6 +70,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public Axis AxisMovement { get; set; }
+
+        public bool ComputeElongation { get; }
 
         public HorizontalMovementDirection Direction { get; set; }
 

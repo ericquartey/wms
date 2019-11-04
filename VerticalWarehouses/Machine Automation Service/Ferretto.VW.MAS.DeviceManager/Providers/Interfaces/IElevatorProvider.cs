@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender);
+        void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
 
         void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 

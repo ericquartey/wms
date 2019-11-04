@@ -359,7 +359,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     bayHeight,
                     this.procedureParameters.FeedRate,
-                    false);
+                    false,
+                    true);
             }
             catch (Exception ex)
             {

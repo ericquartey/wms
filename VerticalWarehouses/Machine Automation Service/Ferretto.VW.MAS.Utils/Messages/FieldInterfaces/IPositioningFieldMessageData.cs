@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         Axis AxisMovement { get; set; }
 
+        bool ComputeElongation { get; }
+
         HorizontalMovementDirection Direction { get; set; }
 
         double FeedRate { get; }
