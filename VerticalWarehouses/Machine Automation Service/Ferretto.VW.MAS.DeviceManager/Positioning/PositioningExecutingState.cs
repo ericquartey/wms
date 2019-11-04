@@ -573,12 +573,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     // profileCalibrated signal is low after startPosion
                     this.countProfileCalibrated = 1;
                 }
+                else if (this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1)
+                {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ProfileCalibrateSensorNotDetected, this.machineData.RequestingBay);
+                    this.Logger.LogError("Profile calibrate sensor not detected");
+                    this.stateData.FieldMessage = message;
+                    this.Stop(StopRequestReason.Stop);
+                }
             }
         }
 
         /// <summary>
-        /// Reads the profile height to find the position where the profile mask starts.
-        /// The profileCalibratePosition is relative to the start of the mask.
+        /// Inverter has reached the final position before the calibration sensor
         /// </summary>
         /// <param name="message"></param>
         private void ProcessEndMeasureProfile(FieldNotificationMessage message)
@@ -589,15 +595,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     && message.Source == FieldMessageActor.InverterDriver
                     )
                 {
-                    var profileHeight = this.baysProvider.ConvertProfileToHeight(data.Profile);
-                    this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
-                    if (profileHeight > 250.0 &&
-                        !this.profileStartPosition.HasValue &&
-                        this.machineData.MessageData.CurrentPosition.HasValue)
-                    {
-                        this.profileStartPosition = this.machineData.MessageData.CurrentPosition.Value;
-                        this.Logger.LogInformation($"profileStartPosition = {this.profileStartPosition.Value}");
-                    }
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ProfileCalibrateSensorNotDetected, this.machineData.RequestingBay);
+                    this.Logger.LogError("Profile calibrate sensor not detected");
+                    this.stateData.FieldMessage = message;
+                    this.Stop(StopRequestReason.Stop);
                 }
             }
         }

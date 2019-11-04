@@ -340,6 +340,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ProfileCalibrateSensorNotDetected.
+        /// </summary>
+        public static string ProfileCalibrateSensorNotDetected {
+            get {
+                return ResourceManager.GetString("ProfileCalibrateSensorNotDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string SecurityWasTriggered {
