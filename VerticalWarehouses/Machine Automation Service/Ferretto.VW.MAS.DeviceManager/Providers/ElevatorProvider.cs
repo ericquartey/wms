@@ -286,13 +286,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
 
-            // TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
-            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if (!homingDone)
-            {
-                throw new InvalidOperationException(
-                   Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
-            }
+            //// TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
+            //var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            //if (!homingDone)
+            //{
+            //    throw new InvalidOperationException(
+            //       Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+            //}
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
@@ -304,14 +304,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 measure = false;
             }
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
-                ? IOMachineSensors.ZeroPawlSensorOneK
-                : IOMachineSensors.ZeroPawlSensor;
-
-            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
-            {
-                throw new InvalidOperationException("Invalid Zero Chain position");
-            }
 
             var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
@@ -319,12 +311,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
-            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
-                $"targetPosition: {targetPosition}; " +
-                $"speed: {speed[0]}; " +
-                $"acceleration: {acceleration[0]}; " +
-                $"deceleration: {deceleration[0]} ");
-
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
@@ -337,6 +323,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 HorizontalMovementDirection.Forwards);
             messageData.LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id;
             messageData.FeedRate = feedRate;
+
+            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]}; " +
+                $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(
                 messageData,

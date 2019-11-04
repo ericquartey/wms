@@ -219,4 +219,25 @@
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
     <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
   </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>BottomLevelBayOccupied</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>InvalidPresenceSensors</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>LoadUnitPresentOnEmptyElevator</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>MissingZeroSensorWithEmptyElevator</value>
+  </data>
+  <data name="SensoZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>SensoZeroBayNotActiveAtStart</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>TopLevelBayOccupied</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>ZeroSensorActiveWithFullElevator</value>
+  </data>
 </root>
