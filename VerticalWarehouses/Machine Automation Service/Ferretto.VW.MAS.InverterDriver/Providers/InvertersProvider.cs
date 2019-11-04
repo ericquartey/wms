@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
                 }
 
-                if (axis.Orientation == Orientation.Vertical)
+                if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
                 {
                     var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
                     this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");

@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             this.LoadedNetWeight = positioningFieldMessageData.LoadedNetWeight;
             this.LoadingUnitId = positioningFieldMessageData.LoadingUnitId;
             this.FeedRate = positioningFieldMessageData.FeedRate;
+            this.ComputeElongation = positioningFieldMessageData.ComputeElongation;
 
             this.IsWeightMeasureDone = false;
             this.MeasuredWeight = 0.0;
@@ -47,6 +48,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
         #region Properties
 
         public Axis AxisMovement { get; set; }
+
+        public bool ComputeElongation { get; set; }
 
         public int Direction { get; set; }
 

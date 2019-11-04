@@ -11,6 +11,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        bool ComputeElongation { get; set; }
+
         double? CurrentPosition { get; set; }
 
         int Delay { get; set; }

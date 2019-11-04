@@ -177,7 +177,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, requestingBay, MessageActor.MachineManager);
+            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, true, requestingBay, MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)

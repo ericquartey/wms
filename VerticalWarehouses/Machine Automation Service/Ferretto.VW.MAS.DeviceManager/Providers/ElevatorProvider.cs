@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -323,6 +323,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 HorizontalMovementDirection.Forwards);
             messageData.LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id;
             messageData.FeedRate = feedRate;
+            messageData.ComputeElongation = computeElongation;
 
             this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
                 $"targetPosition: {targetPosition}; " +

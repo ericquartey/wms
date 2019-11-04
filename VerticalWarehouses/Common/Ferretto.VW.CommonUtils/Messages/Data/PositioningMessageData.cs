@@ -103,6 +103,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        public bool ComputeElongation { get; set; }
+
         public double? CurrentPosition { get; set; }
 
         public int Delay { get; set; }
