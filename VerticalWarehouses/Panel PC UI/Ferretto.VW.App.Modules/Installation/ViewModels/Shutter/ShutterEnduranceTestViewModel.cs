@@ -101,7 +101,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public string Error => string.Join(
-            System.Environment.NewLine,
             this[nameof(this.InputDelayBetweenCycles)],
             this[nameof(this.InputRequiredCycles)]);
 

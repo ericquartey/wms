@@ -998,7 +998,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886),
+                            InstallationDate = new DateTime(2016, 12, 30, 16, 20, 53, 141, DateTimeKind.Local).AddTicks(9561),
                             ServiceStatus = 86
                         });
                 });
@@ -1105,7 +1105,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay1Laser");
 
-                    b.Property<bool>("Bay1Shape");
+                    b.Property<bool>("Bay1Profile");
 
                     b.Property<bool>("Bay1Shutter");
 
@@ -1115,7 +1115,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay2Laser");
 
-                    b.Property<bool>("Bay2Shape");
+                    b.Property<bool>("Bay2Profile");
 
                     b.Property<bool>("Bay2Shutter");
 
@@ -1125,7 +1125,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("Bay3Laser");
 
-                    b.Property<bool>("Bay3Shape");
+                    b.Property<bool>("Bay3Profile");
 
                     b.Property<bool>("Bay3Shutter");
 
@@ -1147,17 +1147,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Bay1FirstLoadingUnit = false,
                             Bay1HeightCheck = false,
                             Bay1Laser = false,
-                            Bay1Shape = false,
+                            Bay1Profile = false,
                             Bay1Shutter = false,
                             Bay2FirstLoadingUnit = false,
                             Bay2HeightCheck = false,
                             Bay2Laser = false,
-                            Bay2Shape = false,
+                            Bay2Profile = false,
                             Bay2Shutter = false,
                             Bay3FirstLoadingUnit = false,
                             Bay3HeightCheck = false,
                             Bay3Laser = false,
-                            Bay3Shape = false,
+                            Bay3Profile = false,
                             Bay3Shutter = false,
                             HorizontalHoming = false,
                             WeightMeasurement = false

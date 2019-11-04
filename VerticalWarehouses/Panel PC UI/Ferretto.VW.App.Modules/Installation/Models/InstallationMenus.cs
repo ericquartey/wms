@@ -34,9 +34,9 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Controllo Pannelli Mensola")]
         CellPanelsCheck,
 
-        [View(Utils.Modules.Installation.SHUTTTERHEIGHTCONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
+        [View(Utils.Modules.Installation.ProfileHeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Barriera misura altezza")]
-        BayShape,
+        BayProfile,
 
         [View(Utils.Modules.Installation.Elevator.WeightCheck.STEP1, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Installer)]
         [Display(Description = "Controllo Peso")]
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Installation.Resources
         CellsHeightCheck,
 
         [View(Utils.Modules.Installation.CELLSSIDECONTROL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Modifica blocco celle")]
+        [Display(Description = "Modifica quote gruppo celle")]
         CellsBlockTuning,
 
         [View(Utils.Modules.Installation.Bays.DEPOSITANDPICKUPTEST, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]

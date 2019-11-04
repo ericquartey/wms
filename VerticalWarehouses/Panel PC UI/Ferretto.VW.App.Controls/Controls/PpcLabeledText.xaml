@@ -9,12 +9,41 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top">
         <TextBlock Margin="0,1,5,1"
-                   Style="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
-                   Text="{Binding LabelText}" />
+                   Text="{Binding LabelText}">
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource VWAPP_CustomLabel_LabelTextBlockStyle}"
+                       TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <TextBlock Margin="0,1,5,1"
                    Background="Transparent"
-                   Style="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                    Text="{Binding ContentText, TargetNullValue={x:Static res:General.TargetNullValue}}"
-                   TextWrapping="Wrap" />
+                   TextWrapping="Wrap">
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource VWAPP_CustomLabel_ContentTextBlockStyle}"
+                       TargetType="TextBlock">
+                    <Setter Property="Visibility" Value="Visible" />
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                        <Trigger Property="Text" Value="{x:Null}">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+
+        </TextBlock>
     </StackPanel>
 </UserControl>
