@@ -84,6 +84,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Database\" />
     <Folder Include="Properties\" />
   </ItemGroup>
 

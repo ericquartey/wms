@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191030152327_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20191104132408_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -459,6 +459,62 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100041,
+                            Code = 100041,
+                            Description = "InvalidPresenceSensors",
+                            Reason = "InvalidPresenceSensors",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100042,
+                            Code = 100042,
+                            Description = "MissingZeroSensorWithEmptyElevator",
+                            Reason = "MissingZeroSensorWithEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100043,
+                            Code = 100043,
+                            Description = "ZeroSensorActiveWithFullElevator",
+                            Reason = "ZeroSensorActiveWithFullElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100044,
+                            Code = 100044,
+                            Description = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "LoadUnitPresentOnEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100045,
+                            Code = 100045,
+                            Description = "TopLevelBayOccupied",
+                            Reason = "TopLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100046,
+                            Code = 100046,
+                            Description = "BottomLevelBayOccupied",
+                            Reason = "BottomLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100047,
+                            Code = 100047,
+                            Description = "SensoZeroBayNotActiveAtStart",
+                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 300000,
                             Code = 300000,
                             Description = "Errore Machine Manager",
@@ -601,6 +657,41 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100040,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100041,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100042,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100043,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100044,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100045,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100046,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100047,
                             TotalErrors = 0
                         },
                         new
@@ -996,7 +1087,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 30, 16, 23, 26, 566, DateTimeKind.Local).AddTicks(23),
+                            InstallationDate = new DateTime(2017, 1, 4, 14, 24, 8, 57, DateTimeKind.Local).AddTicks(3409),
                             ServiceStatus = 86
                         });
                 });
