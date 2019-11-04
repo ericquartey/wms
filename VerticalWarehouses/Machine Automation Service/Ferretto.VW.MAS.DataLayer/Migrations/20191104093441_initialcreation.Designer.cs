@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191029144804_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20191104093441_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -463,6 +463,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100041,
+                            Code = 100041,
+                            Description = "ProfileCalibrateSensorNotDetected",
+                            Reason = "ProfileCalibrateSensorNotDetected",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 300000,
                             Code = 300000,
                             Description = "Errore Machine Manager",
@@ -605,6 +613,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100040,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100041,
                             TotalErrors = 0
                         },
                         new
@@ -1000,7 +1013,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886),
+                            InstallationDate = new DateTime(2017, 1, 4, 10, 34, 41, 102, DateTimeKind.Local).AddTicks(5742),
                             ServiceStatus = 86
                         });
                 });

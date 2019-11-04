@@ -219,4 +219,7 @@
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
     <value>Inconsistenza database cella sorgente cassetto</value>
   </data>
+  <data name="ProfileCalibrateSensorNotDetected" xml:space="preserve">
+    <value>ProfileCalibrateSensorNotDetected</value>
+  </data>
 </root>

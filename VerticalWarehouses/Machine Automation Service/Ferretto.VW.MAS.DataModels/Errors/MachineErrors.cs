@@ -79,6 +79,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
         ZeroSensorErrorAfterDeposit = 100040,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ProfileCalibrateSensorNotDetected))]
+        ProfileCalibrateSensorNotDetected = 100041,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorBaseCode), 1)]
         MachineManagerErrorBaseCode = 300000,
 
