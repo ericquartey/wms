@@ -10,7 +10,7 @@
             Check = SetupStepStatus.Complete,
             FirstLoadingUnit = SetupStepStatus.Complete,
             Laser = SetupStepStatus.Complete,
-            Shape = SetupStepStatus.Complete,
+            Profile = SetupStepStatus.Complete,
             Shutter = SetupStepStatus.Complete,
         };
 
@@ -26,7 +26,7 @@
 
         public SetupStepStatus Laser { get; set; }
 
-        public SetupStepStatus Shape { get; set; }
+        public SetupStepStatus Profile { get; set; }
 
         public SetupStepStatus Shutter { get; set; }
 

@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Installation.Views
 {
-    public partial class ShutterHeightControlView
+    public partial class ProfileHeightCheckNavigationView
     {
         #region Constructors
 
-        public ShutterHeightControlView()
+        public ProfileHeightCheckNavigationView()
         {
             this.InitializeComponent();
         }

@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (this.currentStateMachines.TryGetValue(message.RequestingBay, out var currentStateMachine))
             {
-                this.logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType().Name}");
+                this.logger.LogWarning($"2:Ignore message FSM {currentStateMachine?.GetType().Name}");
                 this.SendNotificationMessage(new FsmExceptionMessageData(null,
                     $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay",
                     1, MessageVerbosity.Error));
