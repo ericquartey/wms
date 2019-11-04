@@ -143,6 +143,9 @@ namespace Ferretto.VW.App
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
+
+            NLog.LogManager.Flush();
+            NLog.LogManager.Shutdown();
         }
 
         private void HACK_ForceItalianLanguage()
