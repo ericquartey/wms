@@ -246,11 +246,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             base.OnMachineModeChanged(e);
+
+            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            {
+                this.RestoreStates();
+            }
+
             this.CheckMachinePowerAndMode();
         }
 
         protected virtual void RaiseCanExecuteChanged()
         {
+        }
+
+        protected void RestoreStates()
+        {
+            this.IsExecutingProcedure = false;
+
+            this.RaiseCanExecuteChanged();
         }
 
         protected virtual void ShowSteps()
@@ -284,7 +297,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 new NavigationMenuItem(
                     Utils.Modules.Installation.ProfileHeightCheck.STEP1,
                     nameof(Utils.Modules.Installation),
-                    InstallationApp.Shutter,
+                    InstallationApp.Drawer,
                     trackCurrentView: false));
 
             this.menuItems.Add(

@@ -2284,8 +2284,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controllare i livelli dell&apos;elevatore che coincidano con quella della baia e che la portella sia &quot;Aperta&quot;.
-        ///A controllo effettuato permere il tasto &quot;Successivo&quot;..
+        ///   Looks up a localized string similar to Caricare un cassetto in Baia..
         /// </summary>
         public static string PHC1ComandNote {
             get {

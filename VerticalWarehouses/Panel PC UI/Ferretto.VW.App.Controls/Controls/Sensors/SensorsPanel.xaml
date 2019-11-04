@@ -1,35 +1,40 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Controls.SensorsPanel"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             d:DesignHeight="450"
+             d:DesignWidth="800"
+             mc:Ignorable="d">
 
     <UserControl.Resources>
-        <Style x:Key="TextBlockMainTitleStyle" TargetType="TextBlock">
-            <Setter Property="Margin" Value="0 20 0 0" />
+        <Style x:Key="TextBlockMainTitleStyle"
+               TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,20,0,0" />
             <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
             <Setter Property="FontWeight" Value="Bold" />
             <Setter Property="FontSize" Value="14" />
         </Style>
-        <Style x:Key="BorderSeparatorStyle" TargetType="Border">
-            <Setter Property="Margin" Value="0 10 0 5" />
+        <Style x:Key="BorderSeparatorStyle"
+               TargetType="Border">
+            <Setter Property="Margin" Value="0,10,0,5" />
             <Setter Property="BorderBrush" Value="{StaticResource FerrettoBlack}" />
-            <Setter Property="BorderThickness" Value="0 2 0 0" />
+            <Setter Property="BorderThickness" Value="0,2,0,0" />
         </Style>
-        <Style x:Key="TextBlockTitleStyle" TargetType="TextBlock">
+        <Style x:Key="TextBlockTitleStyle"
+               TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
-            <Setter Property="HorizontalAlignment"  Value="Left" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
             <Setter Property="Width" Value="180" />
             <Setter Property="Margin" Value="0" />
         </Style>
-        <Style x:Key="TextBlockContentStyle" TargetType="TextBlock">
+        <Style x:Key="TextBlockContentStyle"
+               TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
             <Setter Property="Width" Value="30" />
-            <Setter Property="Margin" Value="3 0 0 0" />
+            <Setter Property="Margin" Value="3,0,0,0" />
         </Style>
     </UserControl.Resources>
 
@@ -39,7 +44,7 @@
                 Margin="0,5,5,5"
                 Background="{DynamicResource PpcButtonBackground}">
 
-            <Grid Margin="8 0 8 8">
+            <Grid Margin="8,0,8,8">
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -48,226 +53,179 @@
 
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Vertical">
-                        <TextBlock
-                               Style="{StaticResource TextBlockMainTitleStyle}"
-                               Text="{x:Static res:InstallationApp.Elevator}" />
+                        <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
+                                   Text="{x:Static res:InstallationApp.Elevator}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock                          
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
-                            <TextBlock 
-                               Style="{StaticResource TextBlockContentStyle}"                           
-                               Text="{Binding ElevatorVerticalPosition, StringFormat={}{0:F1}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding ElevatorVerticalPosition, StringFormat={}{0:F1}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
-                            <TextBlock                                
-                               Style="{StaticResource TextBlockContentStyle}"
-                               Text="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.LoadingUnitCode}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"                           
-                               Text="{Binding EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LoadingUnitCode}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.TrayWeight}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"                           
-                               Text="{Binding EmbarkedLoadingUnit.Weight, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.TrayWeight}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding EmbarkedLoadingUnit.Weight, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding IsZeroChain}"/>
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding IsZeroChain}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradle}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"                                               
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.LuPresentInMachineSideBay1}"
-                                               />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradle}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding Sensors.LuPresentInMachineSideBay1}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradle}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.LuPresentInOperatorSideBay1}"/>
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradle}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding Sensors.LuPresentInOperatorSideBay1}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
 
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <TextBlock 
-                               Style="{StaticResource TextBlockMainTitleStyle}"
-                               Text="{x:Static res:InstallationApp.Bay}" />
+                        <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
+                                   Text="{x:Static res:InstallationApp.Bay}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"                           
-                               Text="{x:Static res:InstallationApp.BayHeight}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.BayPosition1Height}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"                           
-                               Text="{Binding BayPosition1Height}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.BayHeight}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.BayPosition1Height}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding BayPosition1Height}" />
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"                           
-                               Text="{x:Static res:InstallationApp.BayPosition2Height}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"                                                      
-                               Text="{Binding BayPosition2Height}" />
+                        <StackPanel Orientation="Horizontal"
+                                    Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.BayPosition2Height}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding BayPosition2Height}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="Posizione Catena" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"
-                               Text="{Binding BayChainPosition}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="Posizione Catena" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding BayChainPosition}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"                           
-                               Text="{x:Static res:InstallationApp.TrayInBay}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.TrayInBayPosition1}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding LoadingUnitPosition1InBay, Converter={StaticResource OTBC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.TrayInBay}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.TrayInBayPosition1}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding LoadingUnitPosition1InBay, Converter={StaticResource OTBC}}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.TrayInBayPosition2}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding LoadingUnitPosition2InBay, Converter={StaticResource OTBC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.TrayInBayPosition2}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding LoadingUnitPosition2InBay, Converter={StaticResource OTBC}}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"                           
-                               Text="{x:Static res:InstallationApp.LoadingUnitCode}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.LoadingUnitCodePosition1}"
-                               Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                            <TextBlock                          
-                               Style="{StaticResource TextBlockContentStyle}"
-                               Text="{Binding LoadingUnitPosition1InBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LoadingUnitCode}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LoadingUnitCodePosition1}"
+                                       Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding LoadingUnitPosition1InBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
-                            <TextBlock
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.LoadingUnitCodePosition2}" />
-                            <TextBlock
-                               Style="{StaticResource TextBlockContentStyle}"                           
-                               Text="{Binding LoadingUnitPosition2InBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.LoadingUnitCodePosition2}" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding LoadingUnitPosition2InBay.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock                               
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ZeroChain}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.ACUBay1S3IND}"                                           
-                                               Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.ACUBay2S3IND}"                            
-                                               Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding Sensors.ACUBay3S3IND}"                                           
-                                               Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ZeroChain}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding Sensors.ACUBay1S3IND}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                                       Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding Sensors.ACUBay2S3IND}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                                       Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding Sensors.ACUBay3S3IND}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}"
+                                                       Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
                         </StackPanel>
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">
-                        <TextBlock                           
-                               Style="{StaticResource TextBlockMainTitleStyle}"                        
-                               Text="{x:Static res:InstallationApp.Shutter}" />
-                        <Border
-                            Style="{StaticResource BorderSeparatorStyle}" />
+                        <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
+                                   Text="{x:Static res:InstallationApp.Shutter}" />
+                        <Border Style="{StaticResource BorderSeparatorStyle}" />
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               VerticalAlignment="Center"
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ShutterOpen}" />
-                            <controls:PpcSensorControl
-                                                Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding ShutterSensors.Open}"/>
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ShutterOpen}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding ShutterSensors.Open}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
                                     Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVC}}">
-                            <TextBlock
-                               VerticalAlignment="Center"
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ShutterMidWay}"
-                               Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               SensorState="{Binding ShutterSensors.MidWay}"                                               
-                                               />
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ShutterMidWay}"
+                                       Visibility="{Binding IsShutterTwoSensors, Converter={StaticResource BTVC}}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding ShutterSensors.MidWay}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock
-                               VerticalAlignment="Center"
-                               Style="{StaticResource TextBlockTitleStyle}"
-                               Text="{x:Static res:InstallationApp.ShutterClosed}" />
-                            <controls:PpcSensorControl
-                                               Margin="0"
-                                               SensorState="{Binding ShutterSensors.Closed}"
-                                               Template="{StaticResource PpcSensorControlSmallTemplate}"
-                                               />
+                            <TextBlock VerticalAlignment="Center"
+                                       Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                            <controls:PpcSensorControl Margin="0"
+                                                       SensorState="{Binding ShutterSensors.Closed}"
+                                                       Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
                     </StackPanel>
                 </StackPanel>

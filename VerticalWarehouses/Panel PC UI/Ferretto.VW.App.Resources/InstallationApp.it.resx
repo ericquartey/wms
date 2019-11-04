@@ -1020,8 +1020,7 @@ Una volta verificato proseguire premendo il tasto "Successivo"</value>
     <comment>Label text</comment>
   </data>
   <data name="PHC1ComandNote" xml:space="preserve">
-    <value>Controllare i livelli dell'elevatore che coincidano con quella della baia e che la portella sia "Aperta".
-A controllo effettuato permere il tasto "Successivo".</value>
+    <value>Caricare un cassetto in Baia.</value>
     <comment>Note text</comment>
   </data>
   <data name="ShutterState" xml:space="preserve">
@@ -1219,6 +1218,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Cella</value>
   </data>
   <data name="SemiAutomaticMovements" xml:space="preserve">
-    <value>Movimenti semiautomatici</value>
+    <value>Movimenti semi-automatici</value>
   </data>
 </root>

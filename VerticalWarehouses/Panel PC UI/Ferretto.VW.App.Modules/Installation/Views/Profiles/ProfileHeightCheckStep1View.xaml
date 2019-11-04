@@ -43,30 +43,27 @@
                     Grid.ColumnSpan="3"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    Orientation="Vertical">
+                    Orientation="Horizontal">
 
-            <controls:PpcLabeledText Margin="15,5"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Center"
-                                     LabelText="{x:Static res:InstallationApp.ShutterState}" />
+            <ctrls:PpcSpinEdit Margin="15,5"
+                               HorizontalAlignment="Stretch"
+                               VerticalAlignment="Top"
+                               EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               LabelText="{x:Static res:InstallationApp.DrawerNumber}"
+                               IsEnabled="{Binding CanInputLoadingUnitId}"
+                               Mask="#0" />
+            <!--    -->
 
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Vertical">
 
-                <controls:PpcSensorControl Margin="15,5"
-                                           VerticalAlignment="Center"
-                                           SensorState="{Binding Sensors.Open}"
-                                           Text="{x:Static res:InstallationApp.ShutterOpen}" />
-
-                <controls:PpcSensorControl Margin="15,5"
-                                           VerticalAlignment="Center"
-                                           SensorState="{Binding Sensors.MidWay}"
-                                           Text="{x:Static res:InstallationApp.ShutterMidWay}"
-                                           Visibility="{Binding Sensors.IsShutterTwoSensors, Converter={StaticResource BTVC}}" />
+                <controls:PpcLabeledText Margin="15,5"
+                                         HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         LabelText="{x:Static res:InstallationApp.LuPresentInBay}" />
 
                 <controls:PpcSensorControl Margin="15,5"
                                            VerticalAlignment="Center"
-                                           SensorState="{Binding Sensors.Closed}"
-                                           Text="{x:Static res:InstallationApp.ShutterClosed}" />
+                                           SensorState="{Binding LUPresentInBay}" />
 
             </StackPanel>
 
@@ -79,20 +76,8 @@
                     VerticalAlignment="Bottom"
                     Orientation="Horizontal">
 
-            <controls:PpcButton Margin="0,0,30,0"
-                                Command="{Binding OpenCommand}"
-                                Content="{x:Static res:InstallationApp.Open}"
-                                IsEnabled="{Binding CanExecuteOpenCommand}" />
-
-            <controls:PpcButton Margin="0,0,30,0"
-                                Command="{Binding ClosedCommand}"
-                                Content="{x:Static res:InstallationApp.Closed}"
-                                IsEnabled="{Binding CanExecuteClosedCommand}" />
-
-            <controls:PpcButton Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}"
-                                IsEnabled="{Binding CanExecuteStopCommand}" />
-
+            <controls:PpcButton Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}" />
 
         </StackPanel>
 
