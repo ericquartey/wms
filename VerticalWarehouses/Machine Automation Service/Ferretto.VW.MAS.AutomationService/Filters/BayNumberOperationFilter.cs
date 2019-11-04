@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.AutomationService.Controllers;
 using Swashbuckle.AspNetCore.Swagger;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -15,14 +16,17 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 operation.Parameters = new List<IParameter>();
             }
 
-            operation.Parameters.Add(
-                new NonBodyParameter
-                {
-                    Name = BayNumberActionFilter.HeaderName,
-                    In = "header",
-                    Type = "string",
-                    Required = true,
-                });
+            if (context.MethodInfo.DeclaringType.GetInterface(nameof(IRequestingBayController)) != null)
+            {
+                operation.Parameters.Add(
+                    new NonBodyParameter
+                    {
+                        Name = BayNumberActionFilter.HeaderName,
+                        In = "header",
+                        Type = "string",
+                        Required = true,
+                    });
+            }
         }
 
         #endregion

@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -186,12 +187,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachinePowerChangedAsync(e);
 
-            // reset all status if stop machine
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.IsElevatorMovingToCell = false;
                 this.IsElevatorMovingToHeight = false;

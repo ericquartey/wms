@@ -8,6 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -353,11 +354,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 Services.Models.NotificationSeverity.Success);
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachinePowerChangedAsync(e);
 
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.RestoreStates();
             }

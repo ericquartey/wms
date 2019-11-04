@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class CustomMachineOnMarchToggleButton : PpcControl
+    public partial class CustomMachinePowerToggleButton
     {
         #region Constructors
 
-        public CustomMachineOnMarchToggleButton()
+        public CustomMachinePowerToggleButton()
         {
             this.InitializeComponent();
         }

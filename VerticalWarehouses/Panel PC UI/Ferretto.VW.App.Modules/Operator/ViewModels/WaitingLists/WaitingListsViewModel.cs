@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -12,7 +9,6 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -75,7 +71,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsWaitingForResponse
         {
@@ -139,7 +135,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId);
                 await this.LoadListsAsync();
             }
-            catch (Exception ex)
+            catch
             {
                 this.ShowNotification($"Cannot execute List.", Services.Models.NotificationSeverity.Warning);
             }

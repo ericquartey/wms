@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
 using Prism.Regions;
 
@@ -15,9 +17,11 @@ namespace Ferretto.VW.App.Controls
 
         private bool isEnabled;
 
-        private PresentationMode mode;
+        private SubscriptionToken machineModeChangedToken;
 
-        private SubscriptionToken subscriptionToken;
+        private SubscriptionToken machinePowerChangedToken;
+
+        private PresentationMode mode;
 
         #endregion
 
@@ -32,7 +36,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Properties
 
-        public virtual EnableMask EnableMask => EnableMask.MachineMode | EnableMask.MachinePower;
+        public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public bool IsEnabled
         {
@@ -65,8 +69,11 @@ namespace Ferretto.VW.App.Controls
              * Avoid unsubscribing in case of navigation to error page.
              * We may need to review this behaviour.
              *
-            this.subscriptionToken.Dispose();
-            this.subscriptionToken = null;
+            this.machineModeChangedToken?.Dispose();
+            this.machineModeChangedToken = null;
+
+            this.machinePowerChangedToken?.Dispose();
+            this.machinePowerChangedToken = null;
             */
         }
 
@@ -74,15 +81,27 @@ namespace Ferretto.VW.App.Controls
         {
             this.UpdatePresentation();
 
-            this.subscriptionToken = this.subscriptionToken
+            this.machineModeChangedToken = this.machineModeChangedToken
                 ??
-                this.machineModeService.MachineModeChangedEvent
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
                     .Subscribe(
-                       this.OnMachineModeChanged,
+                       async e => await this.OnMachineModeChangedAsync(e),
                        ThreadOption.UIThread,
                        false);
 
-            this.UpdateIsEnabled(this.machineModeService.MachineMode, this.machineModeService.MachinePower);
+            this.machinePowerChangedToken = this.machinePowerChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Subscribe(
+                       async e => await this.OnMachinePowerChangedAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode);
 
             this.UpdateNotifications();
 
@@ -147,30 +166,45 @@ namespace Ferretto.VW.App.Controls
                 .Publish(presentationMessage);
         }
 
-        public void ShowSteps(bool isPrevEnabled, string prevModuleName = null, string prevViewName = null)
-        {
-        }
-
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
         }
 
-        protected virtual void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
-            this.UpdateIsEnabled(e.MachineMode, e.MachinePower);
+            this.UpdateIsEnabled(this.machineModeService.MachinePower, e.MachineMode);
+
+            return Task.CompletedTask;
         }
 
-        private void UpdateIsEnabled(MachineMode machineMode, MachinePowerState machinePower)
+        protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            if ((this.EnableMask & EnableMask.MachinePower) != EnableMask.None)
-            {
-                this.IsEnabled = machinePower != MachinePowerState.Unpowered;
-            }
-            else
-            {
-                this.IsEnabled = true;
-            }
+            this.UpdateIsEnabled(e.MachinePowerState, this.machineModeService.MachineMode);
+
+            return Task.CompletedTask;
+        }
+
+        private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode)
+        {
+            var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
+
+            var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
+
+            var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
+
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] POWER : {enabeIfPoweredOn && machinePower == MachinePowerState.Powered}");
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] AUTO  : {enableIfAutomatic && machineMode == MachineMode.Automatic}");
+            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] MANUAL: {enableIfManual && machineMode == MachineMode.Manual}");
+
+            this.IsEnabled =
+                this.EnableMask == EnableMask.Any
+                ||
+                (enabeIfPoweredOn && machinePower == MachinePowerState.Powered)
+                ||
+                (enableIfAutomatic && machineMode == MachineMode.Automatic)
+                ||
+                (enableIfManual && machineMode == MachineMode.Manual);
         }
 
         private void UpdatePresentation()

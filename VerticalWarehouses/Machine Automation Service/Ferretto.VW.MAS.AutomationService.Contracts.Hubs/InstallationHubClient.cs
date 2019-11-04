@@ -18,6 +18,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Events
 
+        public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
+
+        public event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
+
         public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
         #endregion
@@ -26,7 +30,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData>>(
+            connection.On<MachineMode>(
+                nameof(IInstallationHub.MachineModeChanged), this.OnMachineModeChanged);
+
+            connection.On<MachinePowerState>(
+                nameof(IInstallationHub.MachinePowerChanged), this.OnMachinePowerChanged);
+
+            connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
                 nameof(IInstallationHub.SensorsChanged), this.OnSensorsChanged);
 
             connection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
@@ -35,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<SwitchAxisMessageData>>(
                  nameof(IInstallationHub.SwitchAxisNotify), this.OnSwitchAxisNotify);
 
-            connection.On<NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData>>(
+            connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
                  nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
 
             connection.On<NotificationMessageUI<PositioningMessageData>>(
@@ -65,19 +75,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
                  nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
 
-            connection.On<NotificationMessageUI<ChangeRunningStateMessageData>>(
-                nameof(IInstallationHub.ChangeRunningState), this.OnChangeRunningState);
-
             connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
                 nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
         }
 
         private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
-        {
-            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
-        }
-
-        private void OnChangeRunningState(NotificationMessageUI<ChangeRunningStateMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -100,6 +102,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnInverterStatusWordChanged(NotificationMessageUI<InverterStatusWordMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineModeChanged(MachineMode machineMode)
+        {
+            this.MachineModeChanged?.Invoke(this, new MachineModeChangedEventArgs(machineMode));
+        }
+
+        private void OnMachinePowerChanged(MachinePowerState machinePowerState)
+        {
+            this.MachinePowerChanged?.Invoke(this, new MachinePowerChangedEventArgs(machinePowerState));
         }
 
         private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)

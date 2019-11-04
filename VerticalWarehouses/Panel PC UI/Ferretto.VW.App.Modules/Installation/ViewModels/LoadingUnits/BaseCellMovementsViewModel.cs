@@ -32,7 +32,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             : base(
                 machineLoadingUnitsWebService,
                 bayManagerService)
-
         {
             if (machineCellsWebService is null)
             {

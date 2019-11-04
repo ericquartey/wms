@@ -1,14 +1,14 @@
-﻿// ReSharper disable InconsistentNaming
-// ReSharper disable ArrangeThisQualifier
-
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.Extensions.Logging;
 
+// ReSharper disable InconsistentNaming
+// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
 {
     public partial class AutomationService
@@ -144,26 +144,49 @@ namespace Ferretto.VW.MAS.AutomationService
                 throw new ArgumentNullException(nameof(messageData));
             }
 
-            this.operatorHub.Clients.All
-                .BayStatusChanged(messageData);
+            this.operatorHub.Clients.All.BayStatusChanged(messageData);
         }
 
         private void OnChangeRunningState(NotificationMessage receivedMessage)
         {
             try
             {
-                var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-                this.installationHub.Clients.All.ChangeRunningState(message);
-            }
-            catch (ArgumentNullException exNull)
-            {
-                this.Logger.LogTrace($"7:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
-                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+                if (receivedMessage.Data is CommonUtils.Messages.Data.ChangeRunningStateMessageData data)
+                {
+                    var machinePowerState = MachinePowerState.NotSpecified;
+
+                    switch (receivedMessage.Status)
+                    {
+                        case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                        case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
+                            machinePowerState = data.Enable ? MachinePowerState.PoweringUp : MachinePowerState.PoweringDown;
+                            break;
+
+                        case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                            machinePowerState = data.Enable ? MachinePowerState.Powered : MachinePowerState.Unpowered;
+                            break;
+
+                        default:
+                            machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
+                            break;
+                    }
+
+                    this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
+                }
             }
             catch (Exception ex)
             {
                 this.Logger.LogTrace($"8:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
                 throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
+        private void OnDataLayerException(NotificationMessage receivedMessage)
+        {
+            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
+            {
+                this.Logger.LogCritical(receivedMessage.Description);
+                this.applicationLifetime.StopApplication();
             }
         }
 
@@ -200,6 +223,27 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 var msgUI = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
                 this.installationHub.Clients.All.InverterStatusWordChanged(msgUI);
+            }
+            catch (ArgumentNullException exNull)
+            {
+                this.Logger.LogTrace($"3:Exception {exNull.Message} while create SignalR Message:{receivedMessage.Type}");
+                throw new AutomationServiceException($"Exception: {exNull.Message} while sending SignalR notification", exNull);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogTrace($"4:Exception {ex.Message} while sending SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
+                throw new AutomationServiceException($"Exception: {ex.Message} while sending SignalR notification", ex);
+            }
+        }
+
+        private void OnMachineModeChanged(NotificationMessage receivedMessage)
+        {
+            try
+            {
+                if (receivedMessage.Data is DataLayer.MachineModeMessageData data)
+                {
+                    this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
+                }
             }
             catch (ArgumentNullException exNull)
             {

@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
-            if (context.Controller is BaseAutomationController baseController)
+            if (context.Controller is IRequestingBayController baseController)
             {
                 var bayNumberHeaders = context.HttpContext.Request.Headers[HeaderName];
 

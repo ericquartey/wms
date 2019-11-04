@@ -117,7 +117,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 // await this.loadingUnitsWebService.StopAsync(this.bay.);
-
                 this.IsStartStoreButtonActive = true;
                 this.IsStartRecallButtonActive = true;
                 this.IsStopButtonActive = false;

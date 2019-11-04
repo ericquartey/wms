@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -35,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsWaitingForResponse
         {

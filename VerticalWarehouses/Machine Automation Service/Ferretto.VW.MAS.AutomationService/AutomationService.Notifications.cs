@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
@@ -20,72 +19,76 @@ namespace Ferretto.VW.MAS.AutomationService
                 notification.Destination == MessageActor.Any;
         }
 
-        protected override async Task OnNotificationReceivedAsync(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
-            switch (receivedMessage.Type)
+            switch (message.Type)
             {
                 case MessageType.SensorsChanged:
-                    this.OnSensorsChanged(receivedMessage);
+                    this.OnSensorsChanged(message);
+                    break;
+
+                case MessageType.MachineMode:
+                    this.OnMachineModeChanged(message);
                     break;
 
                 case MessageType.DlException:
-                    this.OnDataLayerException(receivedMessage);
+                    this.OnDataLayerException(message);
                     break;
 
                 case MessageType.Homing:
-                    this.HomingMethod(receivedMessage);
+                    this.HomingMethod(message);
                     break;
 
                 case MessageType.SwitchAxis:
-                    this.SwitchAxisMethod(receivedMessage);
+                    this.SwitchAxisMethod(message);
                     break;
 
                 case MessageType.ShutterPositioning:
-                    this.ShutterPositioningMethod(receivedMessage);
+                    this.ShutterPositioningMethod(message);
                     break;
 
                 case MessageType.CalibrateAxis:
-                    this.CalibrateAxisMethod(receivedMessage);
+                    this.CalibrateAxisMethod(message);
                     break;
 
                 case MessageType.CurrentPosition:
-                    this.CurrentPositionMethod(receivedMessage);
+                    this.CurrentPositionMethod(message);
                     break;
 
                 case MessageType.Positioning:
-                    this.OnPositioningChanged(receivedMessage);
+                    this.OnPositioningChanged(message);
                     break;
 
                 case MessageType.ResolutionCalibration:
-                    this.ResolutionCalibrationMethod(receivedMessage);
+                    this.ResolutionCalibrationMethod(message);
                     break;
 
                 case MessageType.ExecuteMission:
-                    await this.OnNewMissionOperationAvailable(receivedMessage.Data as INewMissionOperationAvailable);
+                    await this.OnNewMissionOperationAvailable(message.Data as INewMissionOperationAvailable);
                     break;
 
                 case MessageType.ElevatorWeightCheck:
-                    this.ElevatorWeightCheckMethod(receivedMessage);
+                    this.ElevatorWeightCheckMethod(message);
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayConnected(receivedMessage.Data as IBayOperationalStatusChangedMessageData);
+                    this.OnBayConnected(message.Data as IBayOperationalStatusChangedMessageData);
                     break;
 
                 case MessageType.ErrorStatusChanged:
-                    this.OnErrorStatusChanged(receivedMessage.Data as IErrorStatusMessageData);
+                    this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData);
                     break;
 
                 case MessageType.InverterStatusWord:
-                    this.OnInverterStatusWordChanged(receivedMessage);
+                    this.OnInverterStatusWordChanged(message);
                     break;
 
                 case MessageType.MachineStateActive:
-                    this.MachineStateActiveMethod(receivedMessage);
+                    this.MachineStateActiveMethod(message);
                     break;
 
                 case MessageType.MachineStatusActive:
-                    this.MachineStatusActiveMethod(receivedMessage);
+                    this.MachineStatusActiveMethod(message);
                     break;
 
                 case MessageType.DataLayerReady:
@@ -93,22 +96,13 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.ChangeRunningState:
-                    this.OnChangeRunningState(receivedMessage);
+                    this.OnChangeRunningState(message);
                     break;
 
                 case MessageType.MoveLoadingUnit:
-                    this.OnMoveLoadingUnit(receivedMessage);
+                    this.OnMoveLoadingUnit(message);
 
                     break;
-            }
-        }
-
-        private void OnDataLayerException(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.ErrorLevel == ErrorLevel.Critical)
-            {
-                this.Logger.LogCritical(receivedMessage.Description);
-                this.applicationLifetime.StopApplication();
             }
         }
 

@@ -5,7 +5,6 @@
                   xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls"
                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                  xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
                   d:DesignHeight="60"
                   d:DesignWidth="100"
                   PresentationType="MachineMode"
@@ -13,6 +12,6 @@
 
     <controls:PpcButton x:Name="LayoutRoot"
                         Command="{Binding ExecuteCommand}"
-                        Content="{x:Static res:VWApp.ManualMode}"
+                        IsBusy="{Binding IsBusy}"
                         Style="{DynamicResource PpcButtonMachineModeHeaderStyle}" />
 </ctrls:PpcControl>

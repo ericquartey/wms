@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
@@ -29,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 

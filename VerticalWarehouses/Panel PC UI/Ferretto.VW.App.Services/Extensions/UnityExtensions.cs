@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
             containerRegistry.RegisterSingleton<IThemeService, ThemeService>();
             containerRegistry.RegisterSingleton<ISessionService, SessionService>();
-            containerRegistry.RegisterSingleton<INotificationService, NotificationService>();
+            containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
             // Operator
@@ -56,7 +56,7 @@ namespace Ferretto.VW.App.Services
             }
 
             // force the instantiation of the services
-            _ = containerProvider.Resolve<INotificationService>();
+            _ = containerProvider.Resolve<IHubNotificationService>();
             _ = containerProvider.Resolve<IMachineModeService>();
 
             containerProvider.Resolve<IHealthProbeService>().Start();

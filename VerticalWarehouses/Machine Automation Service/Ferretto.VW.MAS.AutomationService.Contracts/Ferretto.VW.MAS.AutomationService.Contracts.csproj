@@ -24,9 +24,8 @@
   <ItemGroup Condition="'$(TargetFramework)' != 'net471'">
     <Compile Remove="UnityExtensions.cs" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <ProjectReference Include="..\Ferretto.VW.MAS.AutomationService.Hubs\Ferretto.VW.MAS.AutomationService.Hubs.csproj" />
-  </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Ferretto.VW.CommonUtils\Ferretto.VW.CommonUtils.csproj" />
+  </ItemGroup>
 </Project>

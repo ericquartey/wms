@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CellPanelsController : BaseAutomationController
+    public class CellPanelsController : ControllerBase
     {
         #region Fields
 
@@ -24,9 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CellPanelsController(
             ICellPanelsProvider cellPanelsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.cellPanelsProvider = cellPanelsProvider ?? throw new ArgumentNullException(nameof(cellPanelsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));

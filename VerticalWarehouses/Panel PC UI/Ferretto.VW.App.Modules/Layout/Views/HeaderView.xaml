@@ -40,9 +40,9 @@
                                                     Items="{Binding States}"
                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
-            <controls:CustomMachineOnMarchToggleButton Margin="15,0,0,0"
-                                                       Items="{Binding States}"
-                                                       Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
+            <controls:CustomMachinePowerToggleButton Margin="15,0,0,0"
+                                                     Items="{Binding States}"
+                                                     Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 
             <controls:CustomMainWindowErrorButton Margin="15,0,0,0"
                                                   Items="{Binding States}"

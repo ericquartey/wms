@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
@@ -7,7 +8,7 @@ using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hub
 
 namespace Ferretto.VW.App.Services
 {
-    internal class NotificationService : INotificationService
+    internal class HubNotificationService : IHubNotificationService
     {
         #region Fields
 
@@ -21,21 +22,37 @@ namespace Ferretto.VW.App.Services
 
         #region Constructors
 
-        public NotificationService(
+        public HubNotificationService(
             IEventAggregator eventAggregator,
             IInstallationHubClient installationHubClient)
         {
             this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+
             this.installationHubClient = installationHubClient ?? throw new System.ArgumentNullException(nameof(installationHubClient));
-
             this.installationHubClient.MessageReceived += this.OnMessageReceived;
+            this.installationHubClient.MachineModeChanged += this.OnMachineModeChanged;
+            this.installationHubClient.MachinePowerChanged += this.OnMachinePowerChanged;
 
-            this.logger = NLog.LogManager.GetCurrentClassLogger();
+            this.logger = LogManager.GetCurrentClassLogger();
         }
 
         #endregion
 
         #region Methods
+
+        private void OnMachineModeChanged(object sender, MachineModeChangedEventArgs e)
+        {
+            this.eventAggregator
+                .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                .Publish(e);
+        }
+
+        private void OnMachinePowerChanged(object sender, MachinePowerChangedEventArgs e)
+        {
+            this.eventAggregator
+                .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                .Publish(e);
+        }
 
         private void OnMessageReceived(object sender, MessageNotifiedEventArgs e)
         {

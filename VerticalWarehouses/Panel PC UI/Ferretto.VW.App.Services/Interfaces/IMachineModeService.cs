@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
@@ -8,8 +8,6 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         MachineMode MachineMode { get; }
-
-        MachineModeChangedPubSubEvent MachineModeChangedEvent { get; }
 
         MachinePowerState MachinePower { get; }
 

@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS.AutomationService
         private readonly IApplicationLifetime applicationLifetime;
 
         private readonly IBaysProvider baysProvider;
+
+        private readonly IConfiguration configuration;
 
         private readonly IDataHubClient dataHubClient;
 
@@ -46,41 +49,16 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
-            IBaysProvider baysProvider)
+            IBaysProvider baysProvider,
+            IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            if (applicationLifetime is null)
-            {
-                throw new ArgumentNullException(nameof(applicationLifetime));
-            }
-
-            if (installationHub is null)
-            {
-                throw new ArgumentNullException(nameof(installationHub));
-            }
-
-            if (dataHubClient is null)
-            {
-                throw new ArgumentNullException(nameof(dataHubClient));
-            }
-
-            if (operatorHub is null)
-            {
-                throw new ArgumentNullException(nameof(operatorHub));
-            }
-
-            this.Logger.LogTrace("1:Method Start");
-
-            this.installationHub = installationHub;
-            this.dataHubClient = dataHubClient;
-            this.operatorHub = operatorHub;
-            this.applicationLifetime = applicationLifetime;
+            this.installationHub = installationHub ?? throw new ArgumentNullException(nameof(installationHub));
+            this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
+            this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
+            this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
         #endregion
@@ -91,7 +69,10 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             await base.StartAsync(cancellationToken);
 
-            await this.dataHubClient.ConnectAsync();
+            if (this.configuration.IsWmsEnabled())
+            {
+                await this.dataHubClient.ConnectAsync();
+            }
         }
 
         protected override void NotifyCommandError(CommandMessage notificationData)

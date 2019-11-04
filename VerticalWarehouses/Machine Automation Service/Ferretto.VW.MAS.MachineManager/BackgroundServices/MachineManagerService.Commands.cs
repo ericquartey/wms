@@ -79,18 +79,19 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         break;
 
                     case CommandAction.Stop:
-                        //if (messageData.MissionId != null)
-                        //{
-                        //    this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
-                        //}
-                        //else
-                        //{
-                        //    foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
-                        //    {
-                        //        mission.StopMachine(StopRequestReason.Stop);
-                        //    }
-                        //}
-
+                        /*
+                        if (messageData.MissionId != null)
+                        {
+                            this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
+                            {
+                                mission.StopMachine(StopRequestReason.Stop);
+                            }
+                        }
+                        */
                         break;
                 }
             }

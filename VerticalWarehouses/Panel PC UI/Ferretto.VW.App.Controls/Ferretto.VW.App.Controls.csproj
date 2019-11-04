@@ -59,11 +59,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
+      <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
       <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
     </Compile>

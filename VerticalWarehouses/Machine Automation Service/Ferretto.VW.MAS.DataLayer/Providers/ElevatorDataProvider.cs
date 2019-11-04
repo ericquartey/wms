@@ -169,17 +169,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis =
-                    this.dataContext.ElevatorAxes
-                        .Include(a => a.Profiles)
-                        .ThenInclude(p => p.Steps)
-                        .Include(a => a.FullLoadMovement)
-                        .Include(a => a.EmptyLoadMovement)
-                        .Include(a => a.WeightMeasurement)
-                        .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
@@ -194,17 +187,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis =
-                    this.dataContext.ElevatorAxes
-                        .Include(a => a.Profiles)
-                        .ThenInclude(p => p.Steps)
-                        .Include(a => a.FullLoadMovement)
-                        .Include(a => a.EmptyLoadMovement)
-                        .Include(a => a.WeightMeasurement)
-                        .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);

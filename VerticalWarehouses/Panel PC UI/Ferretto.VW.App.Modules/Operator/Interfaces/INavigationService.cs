@@ -9,17 +9,17 @@ namespace Ferretto.VW.App.Modules.Operator.Interfaces
 
         void NavigateFromView();
 
-        void NavigateToView<T, I>()
-          where T : BindableBase, I
-          where I : IViewModel;
+        void NavigateToView<T, TViewModel>()
+          where T : BindableBase, TViewModel
+          where TViewModel : IViewModel;
 
-        void NavigateToView<T, I>(object parameterObject)
-          where T : BindableBase, I
-          where I : IViewModel;
+        void NavigateToView<T, TViewModel>(object parameterObject)
+          where T : BindableBase, TViewModel
+          where TViewModel : IViewModel;
 
-        void NavigateToViewWithoutNavigationStack<T, I>()
-            where T : BindableBase, I
-            where I : IViewModel;
+        void NavigateToViewWithoutNavigationStack<T, TViewModel>()
+            where T : BindableBase, TViewModel
+            where TViewModel : IViewModel;
 
         #endregion
     }
