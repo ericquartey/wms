@@ -65,8 +65,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "Error while migating databases.");
-                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migating databases.", 0, MessageVerbosity.Fatal));
+                this.Logger.LogError(ex, "Error while migrating databases.");
+                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migrating databases.", 0, MessageVerbosity.Fatal));
             }
         }
 
