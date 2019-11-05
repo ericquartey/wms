@@ -81,6 +81,8 @@ namespace Ferretto.VW.App.Controls
         {
             this.UpdatePresentation();
 
+            this.InitializeSteps();
+
             this.machineModeChangedToken = this.machineModeChangedToken
                 ??
                 this.EventAggregator
@@ -119,6 +121,13 @@ namespace Ferretto.VW.App.Controls
             this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
         }
 
+        public virtual void InitializeSteps()
+        {
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
+        }
+
         public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
         {
             this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
@@ -126,9 +135,12 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
-            this.EventAggregator
+            if (this.IsVisible)
+            {
+                this.EventAggregator
                  .GetEvent<PresentationNotificationPubSubEvent>()
                  .Publish(new PresentationNotificationMessage(message, severity));
+            }
         }
 
         public void ShowNotification(Exception exception)
@@ -138,9 +150,12 @@ namespace Ferretto.VW.App.Controls
                 throw new ArgumentNullException(nameof(exception));
             }
 
-            this.EventAggregator
-                .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(exception));
+            if (this.IsVisible)
+            {
+                this.EventAggregator
+                    .GetEvent<PresentationNotificationPubSubEvent>()
+                    .Publish(new PresentationNotificationMessage(exception));
+            }
         }
 
         public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
@@ -150,20 +165,23 @@ namespace Ferretto.VW.App.Controls
 
         public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
-            var presentationStep = new PresentationStep()
+            if (this.IsVisible)
             {
-                Type = presentationType,
-                IsEnabled = isEnabled,
-                IsVisible = isVisible,
-                ModuleName = moduleName,
-                ViewName = viewName
-            };
+                var presentationStep = new PresentationStep()
+                {
+                    Type = presentationType,
+                    IsEnabled = isEnabled,
+                    IsVisible = isVisible,
+                    ModuleName = moduleName,
+                    ViewName = viewName
+                };
 
-            var presentationMessage = new PresentationChangedMessage(presentationStep);
+                var presentationMessage = new PresentationChangedMessage(presentationStep);
 
-            this.EventAggregator
-                .GetEvent<PresentationChangedPubSubEvent>()
-                .Publish(presentationMessage);
+                this.EventAggregator
+                    .GetEvent<PresentationChangedPubSubEvent>()
+                    .Publish(presentationMessage);
+            }
         }
 
         public virtual void UpdateNotifications()
