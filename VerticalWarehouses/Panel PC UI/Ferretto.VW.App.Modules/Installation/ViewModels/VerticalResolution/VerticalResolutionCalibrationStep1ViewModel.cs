@@ -107,10 +107,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override async Task OnAppearedAsync()
+        public override void InitializeSteps()
         {
             this.ShowSteps();
+        }
 
+        public override async Task OnAppearedAsync()
+        {
             await base.OnAppearedAsync();
 
             await this.GetParametersAsync();

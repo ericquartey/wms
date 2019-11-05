@@ -224,8 +224,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.ShowSteps();
-
             this.subscriptionToken = this.subscriptionToken
                 ??
                 this.EventAggregator
@@ -236,6 +234,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false);
 
             this.RaiseCanExecuteChanged();
+        }
+
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
         }
 
         protected override void RaiseCanExecuteChanged()
