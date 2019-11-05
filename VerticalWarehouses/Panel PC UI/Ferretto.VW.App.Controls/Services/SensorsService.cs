@@ -271,14 +271,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private bool Embarked()
-        {
-            return
-                this.sensors.LuPresentInMachineSideBay1
-                &&
-                this.sensors.LuPresentInOperatorSideBay1;
-        }
-
         private async Task CheckZeroChainOnBays()
         {
             var bays = await this.machineBaysWebService.GetAllAsync();
@@ -297,6 +289,14 @@ namespace Ferretto.VW.App.Services
                   .Where(b => b.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
                   .Select(b => b.Carousel != null || b.IsExternal)
                   .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
+        }
+
+        private bool Embarked()
+        {
+            return
+                this.sensors.LuPresentInMachineSideBay1
+                &&
+                this.sensors.LuPresentInOperatorSideBay1;
         }
 
         private async Task GetBayAsync()
@@ -400,6 +400,10 @@ namespace Ferretto.VW.App.Services
                         else if (message.Data.AxisMovement == Axis.Horizontal)
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.BayChain)
+                        {
+                            this.BayChainPosition = message?.Data?.CurrentPosition ?? this.BayChainPosition;
                         }
 
                         break;

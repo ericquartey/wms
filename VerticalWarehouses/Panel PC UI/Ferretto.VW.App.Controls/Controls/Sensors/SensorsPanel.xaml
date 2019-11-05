@@ -138,7 +138,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="Posizione Catena" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding BayChainPosition}" />
+                                       Text="{Binding BayChainPosition, StringFormat={}{0:0.0}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical"
