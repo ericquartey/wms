@@ -108,6 +108,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {
