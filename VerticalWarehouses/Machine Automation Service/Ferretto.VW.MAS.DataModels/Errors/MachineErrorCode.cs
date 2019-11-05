@@ -5,22 +5,58 @@ namespace Ferretto.VW.MAS.DataModels
     public enum MachineErrorCode
     {
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCompletelyLoaded))]
-        CradleNotCompletelyLoaded = 100032,
+        CradleNotCompletelyLoaded = 1,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForPositioning))]
         [ErrorCondition(typeof(IElevatorHorizontalChainZeroConditionEvaluator))]
-        ConditionsNotMetForPositioning = 100033,
+        ConditionsNotMetForPositioning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ConditionsNotMetForRunning))]
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
-        ConditionsNotMetForRunning = 100034,
+        ConditionsNotMetForRunning,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityWasTriggered))]
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
-        SecurityWasTriggered = 100035,
+        SecurityWasTriggered,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]
-        InverterFaultStateDetected = 100036,
+        InverterFaultStateDetected,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
+        CradleNotCorrectlyLoadedDuringPickup,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
+        CradleNotCorrectlyUnloadedDuringDeposit,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
+        ZeroSensorErrorAfterPickup,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
+        ZeroSensorErrorAfterDeposit,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPresenceSensors))]
+        InvalidPresenceSensors,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissingZeroSensorWithEmptyElevator))]
+        MissingZeroSensorWithEmptyElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorActiveWithFullElevator))]
+        ZeroSensorActiveWithFullElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentOnEmptyElevator))]
+        LoadUnitPresentOnEmptyElevator,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayOccupied))]
+        TopLevelBayOccupied,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied))]
+        BottomLevelBayOccupied,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensoZeroBayNotActiveAtStart))]
+        SensoZeroBayNotActiveAtStart,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightExceeded), 1)]
+        LoadingUnitWeightExceeded,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
@@ -66,39 +102,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorSyntaxError), 1)]
         InverterErrorSyntaxError2 = InverterErrorBaseCode + 30,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyLoadedDuringPickup))]
-        CradleNotCorrectlyLoadedDuringPickup = 100037,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCorrectlyUnloadedDuringDeposit))]
-        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterPickup))]
-        ZeroSensorErrorAfterPickup = 100039,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
-        ZeroSensorErrorAfterDeposit = 100040,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPresenceSensors))]
-        InvalidPresenceSensors = 100041,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissingZeroSensorWithEmptyElevator))]
-        MissingZeroSensorWithEmptyElevator = 100042,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorActiveWithFullElevator))]
-        ZeroSensorActiveWithFullElevator = 100043,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentOnEmptyElevator))]
-        LoadUnitPresentOnEmptyElevator = 100044,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayOccupied))]
-        TopLevelBayOccupied = 100045,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied))]
-        BottomLevelBayOccupied = 100046,
-
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensoZeroBayNotActiveAtStart))]
-        SensoZeroBayNotActiveAtStart = 100047,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorBaseCode), 1)]
         MachineManagerErrorBaseCode = 300000,

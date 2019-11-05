@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191105090210_Initial")]
+    [Migration("20191105130026_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -230,8 +230,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("HalfShaftLength");
 
-                    b.Property<double>("MaximumGrossWeightOnBoard");
-
                     b.Property<double>("PulleyDiameter");
 
                     b.Property<double>("ShaftDiameter");
@@ -267,43 +265,139 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 100032,
-                            Code = 100032,
+                            Id = 1,
+                            Code = 1,
                             Description = "Cassetto non caricato completamente.",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
                             Severity = 0
                         },
                         new
                         {
-                            Id = 100033,
-                            Code = 100033,
+                            Id = 2,
+                            Code = 2,
                             Description = "Condizioni per il posizionamento non soddisfatte.",
                             Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
                         },
                         new
                         {
-                            Id = 100034,
-                            Code = 100034,
+                            Id = 3,
+                            Code = 3,
                             Description = "Condizioni per la messa in marcia non soddisfatte.",
                             Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
                         {
-                            Id = 100035,
-                            Code = 100035,
+                            Id = 4,
+                            Code = 4,
                             Description = "È scattata la funzione di sicurezza.",
                             Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
                         {
-                            Id = 100036,
-                            Code = 100036,
+                            Id = 5,
+                            Code = 5,
                             Description = "È stato rilevato un errore in uno degli inverter.",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = 6,
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Code = 7,
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Code = 8,
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Code = 9,
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Code = 10,
+                            Description = "InvalidPresenceSensors",
+                            Reason = "InvalidPresenceSensors",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Code = 11,
+                            Description = "MissingZeroSensorWithEmptyElevator",
+                            Reason = "MissingZeroSensorWithEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Code = 12,
+                            Description = "ZeroSensorActiveWithFullElevator",
+                            Reason = "ZeroSensorActiveWithFullElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Code = 13,
+                            Description = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "LoadUnitPresentOnEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Code = 14,
+                            Description = "TopLevelBayOccupied",
+                            Reason = "TopLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Code = 15,
+                            Description = "BottomLevelBayOccupied",
+                            Reason = "BottomLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Code = 16,
+                            Description = "SensoZeroBayNotActiveAtStart",
+                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Code = 17,
+                            Description = "Il peso massimo caricato sul cassetto è eccessivo.",
+                            Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
+                            Severity = 1
                         },
                         new
                         {
@@ -427,94 +521,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 100037,
-                            Code = 100037,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100038,
-                            Code = 100038,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100039,
-                            Code = 100039,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100040,
-                            Code = 100040,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100041,
-                            Code = 100041,
-                            Description = "InvalidPresenceSensors",
-                            Reason = "InvalidPresenceSensors",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100042,
-                            Code = 100042,
-                            Description = "MissingZeroSensorWithEmptyElevator",
-                            Reason = "MissingZeroSensorWithEmptyElevator",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100043,
-                            Code = 100043,
-                            Description = "ZeroSensorActiveWithFullElevator",
-                            Reason = "ZeroSensorActiveWithFullElevator",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100044,
-                            Code = 100044,
-                            Description = "LoadUnitPresentOnEmptyElevator",
-                            Reason = "LoadUnitPresentOnEmptyElevator",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100045,
-                            Code = 100045,
-                            Description = "TopLevelBayOccupied",
-                            Reason = "TopLevelBayOccupied",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100046,
-                            Code = 100046,
-                            Description = "BottomLevelBayOccupied",
-                            Reason = "BottomLevelBayOccupied",
-                            Severity = 0
-                        },
-                        new
-                        {
-                            Id = 100047,
-                            Code = 100047,
-                            Description = "SensoZeroBayNotActiveAtStart",
-                            Reason = "SensoZeroBayNotActiveAtStart",
-                            Severity = 0
-                        },
-                        new
-                        {
                             Id = 300000,
                             Code = 300000,
                             Description = "Errore Machine Manager",
@@ -616,82 +622,87 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
-                            Code = 100032,
+                            Code = 1,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100033,
+                            Code = 2,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100034,
+                            Code = 3,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100035,
+                            Code = 4,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100036,
+                            Code = 5,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100037,
+                            Code = 6,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100038,
+                            Code = 7,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100039,
+                            Code = 8,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100040,
+                            Code = 9,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100041,
+                            Code = 10,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100042,
+                            Code = 11,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100043,
+                            Code = 12,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100044,
+                            Code = 13,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100045,
+                            Code = 14,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100046,
+                            Code = 15,
                             TotalErrors = 0
                         },
                         new
                         {
-                            Code = 100047,
+                            Code = 16,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 17,
                             TotalErrors = 0
                         },
                         new
@@ -1087,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 5, 10, 2, 9, 128, DateTimeKind.Local).AddTicks(1926),
+                            InstallationDate = new DateTime(2017, 1, 5, 14, 0, 25, 885, DateTimeKind.Local).AddTicks(2639),
                             ServiceStatus = 86
                         });
                 });

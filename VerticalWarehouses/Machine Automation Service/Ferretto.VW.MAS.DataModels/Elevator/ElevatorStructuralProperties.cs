@@ -29,11 +29,6 @@
         public double HalfShaftLength { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum weight, in kilograms, that can be loaded on the cradle.
-        /// </summary>
-        public double MaximumGrossWeightOnBoard { get; set; }
-
-        /// <summary>
         /// Gets or sets the diameter, in millimeters, of the pulley (belt wheel).
         /// </summary>
         public double PulleyDiameter { get; set; }

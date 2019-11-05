@@ -16,14 +16,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        // TODO transform these constants in configuration parameters?
-        private const double MinimumLoadOnBoard = 10.0;
-
         private const int WeightTolerance = 50;
 
         private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IElevatorDataProvider elevatorProvider;
+
+        private readonly IErrorsProvider errorProvider;
 
         private readonly ElevatorAxis verticalParams;
 
@@ -40,14 +39,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
-            if (data is null)
-            {
-                throw new ArgumentNullException(nameof(data));
-            }
-
-            this.data = data;
-
+            this.data = data ?? throw new ArgumentNullException(nameof(data));
             this.elevatorProvider = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>();
+            this.errorProvider = this.ParentStateMachine.GetRequiredService<IErrorsProvider>();
             this.verticalParams = this.elevatorProvider.GetAxis(Orientation.Vertical);
         }
 
@@ -92,21 +86,27 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.startTime = DateTime.UtcNow;
                 }
             }
+
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasurement.MeasureMultiply / 10.0) + this.verticalParams.WeightMeasurement.MeasureSum;
+
                 this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasurement.MeasureMultiply}. kSum {this.verticalParams.WeightMeasurement.MeasureSum}");
                 this.data.IsWeightMeasureDone = true;
-                if (this.data.LoadingUnitId.HasValue
-                    && this.data.MeasuredWeight > MinimumLoadOnBoard
-                    && this.data.MeasuredWeight < this.elevatorProvider.GetStructuralProperties().MaximumGrossWeightOnBoard)
+
+                if (this.data.LoadingUnitId.HasValue)
                 {
-                    this.ParentStateMachine.GetRequiredService<ILoadingUnitsProvider>().SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
-                    if (!this.data.LoadedNetWeight.HasValue
-                        || Math.Abs(this.data.MeasuredWeight - this.data.LoadedNetWeight.Value) > WeightTolerance
-                        )
+                    try
                     {
+                        this.ParentStateMachine
+                            .GetRequiredService<ILoadingUnitsProvider>()
+                            .SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
+
                         this.ScaleMovementsByWeight();
+                    }
+                    catch
+                    {
+                        this.errorProvider.RecordNew(MachineErrorCode.LoadingUnitWeightExceeded);
                     }
                 }
 
@@ -133,17 +133,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             var invertersProvider = this.ParentStateMachine.GetRequiredService<IInvertersProvider>();
             var axis = this.elevatorProvider.GetVerticalAxis();
-            MovementParameters movementParameters = null;
+
             try
             {
-                movementParameters = this.elevatorProvider.ScaleMovementsByWeight(Orientation.Vertical);
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogError(ex.Message);
-            }
-            if (movementParameters != null)
-            {
+                var movementParameters = this.elevatorProvider.ScaleMovementsByWeight(Orientation.Vertical);
+
                 var targetPosition = invertersProvider.ConvertPulsesToMillimeters(this.data.TargetPosition, Orientation.Vertical);
                 targetPosition += axis.Offset;
 
@@ -167,6 +161,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 {
                     currentPosition = acuInverter.CurrentPosition;
                 }
+
                 positioningData.SwitchPosition = new[] { 0.0 };
                 invertersProvider.ComputePositioningValues(this.Inverter, positioningData, Orientation.Vertical, currentPosition, false, out var fieldMessageData);
                 this.data.TargetPosition = fieldMessageData.TargetPosition;
@@ -179,6 +174,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     $"speed: {this.data.TargetSpeed[0]}; " +
                     $"acceleration: {this.data.TargetAcceleration[0]}; " +
                     $"deceleration: {this.data.TargetDeceleration[0]} ");
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex.Message);
             }
         }
 

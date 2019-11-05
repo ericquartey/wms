@@ -425,7 +425,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (OperationCanceledException)
                     {
-                        this.Logger.LogInformation("WriteEnable wait was canceled.");
+                        this.Logger.LogDebug("WriteEnable wait was canceled.");
                         break;
                     }
                 }
