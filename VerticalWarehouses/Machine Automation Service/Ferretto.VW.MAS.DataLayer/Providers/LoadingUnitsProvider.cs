@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -33,7 +34,9 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.LoadingUnits.ToArray();
+                return this.dataContext.LoadingUnits
+                    .Include(i => i.Cell)
+                    .ToArray();
             }
         }
 

@@ -368,6 +368,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
 
+            this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"Current position {beltBurnishingPosition}",
@@ -521,7 +522,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
             }
 
-            if (message.Data is InverterStatusUpdateFieldMessageData data)
+            if (message.Data is InverterStatusUpdateFieldMessageData data
+                && message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex
+                )
             {
                 if (data.CurrentPosition != null)
                 {
@@ -529,6 +532,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 this.machineData.MessageData.TorqueCurrentSample = data.TorqueCurrent;
 
+                this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     $"Current Encoder position: {data.CurrentPosition}",
