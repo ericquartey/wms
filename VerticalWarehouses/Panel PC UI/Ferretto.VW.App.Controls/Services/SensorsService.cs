@@ -80,12 +80,12 @@ namespace Ferretto.VW.App.Services
         #region Constructors
 
         public SensorsService(
-         IMachineBaysWebService machineBaysWebService,
-         IMachineElevatorWebService machineElevatorWebService,
-         IMachineSensorsWebService machineSensorsWebService,
-         IMachineCarouselWebService machineCarouselWebService,
-         IEventAggregator eventAggregator,
-         IBayManager bayManagerService)
+            IMachineBaysWebService machineBaysWebService,
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IMachineCarouselWebService machineCarouselWebService,
+            IEventAggregator eventAggregator,
+            IBayManager bayManagerService)
         {
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
@@ -109,7 +109,11 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bay1IsVisible, value);
         }
 
-        public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainisVisible; private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value); }
+        public bool Bay1ZeroChainIsVisible
+        {
+            get => this.bay1ZeroChainisVisible;
+            private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value);
+        }
 
         public bool Bay2IsVisible
         {
@@ -231,7 +235,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSideBay1 && this.Sensors.LuPresentInOperatorSideBay1;
+        public bool IsLoadingUnitOnElevator => this.Sensors.LuPresentInMachineSide && this.Sensors.LuPresentInOperatorSide;
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
@@ -284,15 +288,16 @@ namespace Ferretto.VW.App.Services
             }
             catch
             {
+                *****************
             }
         }
 
         private bool CanEmbark()
         {
             return
-                !this.sensors.LuPresentInMachineSideBay1
+                !this.sensors.LuPresentInMachineSide
                 &&
-                !this.sensors.LuPresentInOperatorSideBay1
+                !this.sensors.LuPresentInOperatorSide
                 &&
                 this.IsZeroChain;
         }
@@ -319,28 +324,34 @@ namespace Ferretto.VW.App.Services
 
         private async Task GetBayAsync()
         {
-            this.Bay = await this.bayManagerService.GetBayAsync();
-            this.BayNumber = this.Bay.Number;
-
-            this.Bay1IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne);
-            this.Bay2IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo);
-            this.Bay3IsVisible = (this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree);
-
-            if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+            try
             {
-                this.BayPositionDownHeight = bayPositionDown.Height;
-                this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
-            }
+                this.Bay = await this.bayManagerService.GetBayAsync();
+                this.BayNumber = this.Bay.Number;
 
-            if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
+                this.Bay1IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne;
+                this.Bay2IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                this.Bay3IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree;
+
+                if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+                {
+                    this.BayPositionDownHeight = bayPositionDown.Height;
+                    this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
+                }
+
+                if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
+                {
+                    this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
+                    this.BayPositionUpHeight = bayPositionUp.Height;
+                }
+
+                this.BayIsMultiPosition = this.Bay.IsDouble;
+
+                this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
+            }
+            catch (Exception ex)
             {
-                this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
-                this.BayPositionUpHeight = bayPositionUp.Height;
             }
-
-            this.BayIsMultiPosition = this.Bay.IsDouble;
-
-            this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
         }
 
         private void GetShutter()
@@ -412,6 +423,9 @@ namespace Ferretto.VW.App.Services
             this.sensors.Update(message.Data.SensorsStates);
             this.shutterSensors.Update(message.Data.SensorsStates);
 
+            try
+            {
+            }
             await this.GetBayAsync();
 
             this.RaisePropertyChanged();

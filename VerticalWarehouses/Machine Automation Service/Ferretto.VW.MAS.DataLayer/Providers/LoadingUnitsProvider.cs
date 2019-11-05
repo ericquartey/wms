@@ -111,12 +111,23 @@ namespace Ferretto.VW.MAS.DataLayer
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                if(loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
                 {
-                    throw new ArgumentOutOfRangeException($"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
+                    throw new ArgumentOutOfRangeException(
+                        $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
                 }
 
                 loadingUnit.GrossWeight = loadingUnitGrossWeight;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
 
                 this.dataContext.SaveChanges();
             }

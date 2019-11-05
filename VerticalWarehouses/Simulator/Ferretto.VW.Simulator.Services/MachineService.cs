@@ -509,16 +509,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetAccelerations:
-                {
-                    var replyMessage = message.ToBytes();
-                    if (message.UIntPayload == 0)
                     {
-                        replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
-                    }
+                        var replyMessage = message.ToBytes();
+                        if (message.UIntPayload == 0)
+                        {
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
+                        }
 
-                    result = client.Client.Send(replyMessage);
-                }
-                break;
+                        result = client.Client.Send(replyMessage);
+                    }
+                    break;
 
                 case InverterParameterId.TableTravelTargetDecelerations:
                     result = client.Client.Send(message.ToBytes());

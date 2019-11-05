@@ -193,10 +193,6 @@ namespace Ferretto.VW.App.Controls
 
             var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
 
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] POWER : {enabeIfPoweredOn && machinePower == MachinePowerState.Powered}");
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] AUTO  : {enableIfAutomatic && machineMode == MachineMode.Automatic}");
-            System.Diagnostics.Debug.WriteLine($"[{this.GetType().Name}] MANUAL: {enableIfManual && machineMode == MachineMode.Manual}");
-
             this.IsEnabled =
                 this.EnableMask == EnableMask.Any
                 ||

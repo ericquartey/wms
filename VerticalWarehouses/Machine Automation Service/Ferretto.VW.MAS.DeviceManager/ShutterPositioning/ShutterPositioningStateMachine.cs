@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState
                 ||
-                this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 // why only bay 1 ???
+                this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle // why only bay 1 ???
                 ||
                 !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
                 )

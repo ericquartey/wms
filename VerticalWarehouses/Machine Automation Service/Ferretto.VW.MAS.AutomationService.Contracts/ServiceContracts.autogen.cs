@@ -389,11 +389,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineStatistics> Get2Async();
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineStatistics> Get2Async(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -917,16 +917,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = MainInverter
-    /// 1 = Slave1
-    /// 2 = Slave2
-    /// 3 = Slave3
-    /// 4 = Slave4
-    /// 5 = Slave5
-    /// 6 = Slave6
-    /// 7 = Slave7
-    /// 16 = All
-    /// 255 = None</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterIndex
     {
@@ -952,37 +942,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Unspecified
-    /// 1 = Unix
-    /// 2 = InterNetwork
-    /// 3 = ImpLink
-    /// 4 = Pup
-    /// 5 = Chaos
-    /// 6 = Ipx
-    /// 6 = NS
-    /// 7 = Iso
-    /// 7 = Osi
-    /// 8 = Ecma
-    /// 9 = DataKit
-    /// 10 = Ccitt
-    /// 11 = Sna
-    /// 12 = DecNet
-    /// 13 = DataLink
-    /// 14 = Lat
-    /// 15 = HyperChannel
-    /// 16 = AppleTalk
-    /// 17 = NetBios
-    /// 18 = VoiceView
-    /// 19 = FireFox
-    /// 21 = Banyan
-    /// 22 = Atm
-    /// 23 = InterNetworkV6
-    /// 24 = Cluster
-    /// 25 = Ieee12844
-    /// 26 = Irda
-    /// 28 = NetworkDesigners
-    /// 29 = Max
-    /// -1 = Unknown</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AddressFamily
     {
@@ -1050,10 +1009,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = Ang
-    /// 2 = Agl
-    /// 3 = Acu</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterType
     {
@@ -1091,11 +1046,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = IoDevice1
-    /// 1 = IoDevice2
-    /// 2 = IoDevice3
-    /// 16 = All
-    /// 255 = None</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum IoIndex
     {
@@ -1111,12 +1061,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
-    /// 1 = BayOne
-    /// 2 = BayTwo
-    /// 3 = BayThree
-    /// 4 = ElevatorBay
-    /// 10 = All</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayNumber
     {
@@ -1134,8 +1078,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Idle
-    /// 1 = ExecutingMission</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
@@ -1247,9 +1189,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Front
-    /// 2 = Back</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum WarehouseSide
     {
@@ -1261,10 +1200,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Free
-    /// 1 = Disabled
-    /// 2 = Occupied
-    /// 3 = Unusable</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum CellStatus
     {
@@ -1278,11 +1213,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = InBay
-    /// 2 = OnMovementToLocation
-    /// 3 = OnMovementToBay
-    /// 4 = InLocation</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitStatus
     {
@@ -1298,27 +1228,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NoLocation
-    /// 1 = InternalBay1Up
-    /// 2 = InternalBay1Down
-    /// 3 = InternalBay2Up
-    /// 4 = InternalBay2Down
-    /// 5 = InternalBay3Up
-    /// 6 = InternalBay3Down
-    /// 7 = ExternalBay1Up
-    /// 8 = ExternalBay1Down
-    /// 9 = ExternalBay2Up
-    /// 10 = ExternalBay2Down
-    /// 11 = ExternalBay3Up
-    /// 12 = ExternalBay3Down
-    /// 13 = CarouselBay1Up
-    /// 14 = CarouselBay1Down
-    /// 15 = CarouselBay2Up
-    /// 16 = CarouselBay2Down
-    /// 17 = CarouselBay3Up
-    /// 18 = CarouselBay3Down
-    /// 19 = Cell
-    /// 20 = LoadingUnit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
@@ -1390,9 +1299,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = TwoSensors
-    /// 2 = ThreeSensors</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterType
     {
@@ -1404,10 +1310,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Disconnected
-    /// 1 = Idle
-    /// 2 = Busy
-    /// 3 = Errored</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayStatus
     {
@@ -1499,9 +1401,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Forwards
-    /// 2 = Backwards</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
@@ -1771,9 +1670,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = Vertical
-    /// 2 = Horizontal</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Orientation
     {
@@ -1812,11 +1708,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = ShortPickup
-    /// 2 = ShortDeposit
-    /// 3 = LongDeposit
-    /// 4 = LongPickup</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementProfileType
     {
@@ -2243,8 +2134,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Up
-    /// 1 = Down</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum VerticalMovementDirection
     {
@@ -2451,10 +2340,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 71 = Expiring
-    /// 86 = Valid
-    /// 88 = Expired</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineServiceStatus
     {
@@ -2729,11 +2614,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Automatic
-    /// 2 = Manual
-    /// 3 = SwitchingToAutomatic
-    /// 4 = SwitchingToManual</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineMode
     {
@@ -2749,11 +2629,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Unpowered
-    /// 2 = PoweringUp
-    /// 3 = Powered
-    /// 4 = PoweringDown</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachinePowerState
     {
@@ -2769,11 +2644,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Opened
-    /// 2 = Half
-    /// 3 = Closed
-    /// 4 = Intermediate</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
@@ -2789,9 +2659,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Up
-    /// 2 = Down</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterMovementDirection
     {
@@ -2824,10 +2691,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = SuperUser
-    /// 1 = Admin
-    /// 2 = User
-    /// 3 = Base</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum UserAccessLevel
     {
