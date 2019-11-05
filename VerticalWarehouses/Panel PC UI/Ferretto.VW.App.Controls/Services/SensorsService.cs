@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Services
 
         private string embarkedLoadingUnitCode;
 
-        private double embarkedLoadingUnitWeight;
+        private double? embarkedLoadingUnitWeight;
 
         private bool isShutterTwoSensors;
 
@@ -176,7 +176,14 @@ namespace Ferretto.VW.App.Services
         public LoadingUnit EmbarkedLoadingUnit
         {
             get => this.embarkedLoadingUnit;
-            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+            private set
+            {
+                if (this.SetProperty(ref this.embarkedLoadingUnit, value))
+                {
+                    this.EmbarkedLoadingUnitCode = this.embarkedLoadingUnit?.Code;
+                    this.EmbarkedLoadingUnitWeight = this.embarkedLoadingUnit?.GrossWeight;
+                }
+            }
         }
 
         public string EmbarkedLoadingUnitCode
@@ -185,7 +192,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.embarkedLoadingUnitCode, value);
         }
 
-        public double EmbarkedLoadingUnitWeight
+        public double? EmbarkedLoadingUnitWeight
         {
             get => this.embarkedLoadingUnitWeight;
             set => this.SetProperty(ref this.embarkedLoadingUnitWeight, value);
@@ -270,18 +277,10 @@ namespace Ferretto.VW.App.Services
 
                 await this.InitializeSensors();
             }
-            catch
+            catch (Exception ex)
             {
-                *****************
+                this.ShowNotification(ex);
             }
-        }
-
-        private bool Embarked()
-        {
-            return
-                this.sensors.LuPresentInMachineSideBay1
-                &&
-                this.sensors.LuPresentInOperatorSideBay1;
         }
 
         private async Task CheckZeroChainOnBays()
@@ -333,24 +332,26 @@ namespace Ferretto.VW.App.Services
             }
             catch (Exception ex)
             {
+                this.ShowNotification(ex);
             }
         }
 
         private async Task GetElevatorAsync()
         {
-            if (this.Embarked())
+            try
             {
-                this.EmbarkedLoadingUnit = await this.machineElevatorWebService.GetHorizontalLoadingUnitOnBoardAsync();
+                var isLoadingUnitEmbarked =
+                    this.sensors.LuPresentInMachineSide
+                    &&
+                    this.sensors.LuPresentInOperatorSide;
 
-                this.EmbarkedLoadingUnitCode = this.embarkedLoadingUnit.Code;
-                this.EmbarkedLoadingUnitWeight = this.embarkedLoadingUnit.GrossWeight;
+                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked
+                    ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
+                    : null;
             }
-            else
+            catch (Exception ex)
             {
-                this.embarkedLoadingUnit = null;
-
-                this.EmbarkedLoadingUnitCode = null;
-                this.EmbarkedLoadingUnitWeight = 0;
+                this.ShowNotification(ex);
             }
         }
 
@@ -446,6 +447,18 @@ namespace Ferretto.VW.App.Services
         {
             this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
             this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+        }
+
+        private void ShowNotification(Exception exception)
+        {
+            if (exception is null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
         #endregion
