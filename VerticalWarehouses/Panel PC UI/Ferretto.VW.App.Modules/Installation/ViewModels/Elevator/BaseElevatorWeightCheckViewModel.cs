@@ -36,15 +36,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
         }
 
-        public override void OnNavigatedFrom(NavigationContext navigationContext)
-        {
-            base.OnNavigatedFrom(navigationContext);
-
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
-        }
-
         protected abstract void RaiseCanExecuteChanged();
 
         private void InitializeNavigationMenu()
