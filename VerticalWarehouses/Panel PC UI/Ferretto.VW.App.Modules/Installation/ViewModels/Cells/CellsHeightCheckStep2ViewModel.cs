@@ -156,9 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Methods
 
         public override async Task OnAppearedAsync()
-        {
-            this.ShowSteps();
-
+        {         
             await base.OnAppearedAsync();
 
             if (this.Data is Cell cell)
@@ -167,6 +165,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.InputStepValue = this.ProcedureParameters.Step;
+        }
+
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

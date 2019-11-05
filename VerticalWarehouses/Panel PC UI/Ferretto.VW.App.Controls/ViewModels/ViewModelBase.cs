@@ -8,6 +8,12 @@ namespace Ferretto.VW.App.Controls
 {
     public class ViewModelBase : BindableBase, INavigableViewModel, INavigationAware
     {
+        #region Fields
+
+        private bool isVisible;
+
+        #endregion
+
         #region Constructors
 
         protected ViewModelBase()
@@ -24,6 +30,12 @@ namespace Ferretto.VW.App.Controls
         {
             get;
             private set;
+        }
+
+        public bool IsVisible
+        {
+            get => this.isVisible;
+            set => this.SetProperty(ref this.isVisible, value);
         }
 
         public string MapId { get; set; }
@@ -44,7 +56,7 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void Disappear()
         {
-            // do nothing
+            this.IsVisible = false;
         }
 
         public void Dispose()
@@ -59,19 +71,19 @@ namespace Ferretto.VW.App.Controls
 
         public virtual Task OnAppearedAsync()
         {
-            // do nothing
+            this.IsVisible = true;
             return Task.CompletedTask;
         }
 
         public virtual void OnNavigatedFrom(NavigationContext navigationContext)
         {
-            // do nothing
+            this.IsVisible = false;
             // let the derived classes implement the behaviour of this method
         }
 
         public virtual void OnNavigatedTo(NavigationContext navigationContext)
         {
-            // do nothing
+            this.IsVisible = true;
             // let the derived classes implement the behaviour of this method
         }
 
