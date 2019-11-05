@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.data.IsWeightMeasureDone = true;
                 if (this.data.LoadingUnitId.HasValue
                     && this.data.MeasuredWeight > MinimumLoadOnBoard
-                    && this.data.MeasuredWeight < this.elevatorProvider.GetStructuralProperties().MaximumLoadOnBoard)
+                    && this.data.MeasuredWeight < this.elevatorProvider.GetStructuralProperties().MaximumGrossWeightOnBoard)
                 {
                     this.ParentStateMachine.GetRequiredService<ILoadingUnitsProvider>().SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
                     if (!this.data.LoadedNetWeight.HasValue

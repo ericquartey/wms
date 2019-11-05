@@ -773,7 +773,7 @@
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
         "HalfShaftLength": 2084,
-        "MaximumLoadOnBoard": 990,
+        "MaximumGrossWeightOnBoard": 990,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,
         "ShaftElasticity": 210000

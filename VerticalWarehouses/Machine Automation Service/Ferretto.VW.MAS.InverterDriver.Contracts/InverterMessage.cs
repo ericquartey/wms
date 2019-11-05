@@ -226,10 +226,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
-            object[] blockValues = new object[blockDefinitions.Count];
+            var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
-            int start = 0;
-            for (int iblock = 0; iblock < blockValues.Length; iblock++)
+            var start = 0;
+            for (var iblock = 0; iblock < blockValues.Length; iblock++)
             {
                 int length;
                 switch (blockDefinitions[iblock].ParameterId)
@@ -260,6 +260,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 blockValues[iblock] = Convert.ToInt32(stringPayload.Substring(start, length), 16);
                 start += length;
             }
+
             return blockValues;
         }
 
@@ -512,8 +513,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         {
             var definitions = new List<InverterBlockDefinition>();
             var stringPayload = Encoding.ASCII.GetString(this.payload);
-            int start = 0;
-            for (int iblock = 0; (start + 5) <= stringPayload.Length; iblock++)
+            var start = 0;
+            for (var iblock = 0; (start + 5) <= stringPayload.Length; iblock++)
             {
                 try
                 {
@@ -527,8 +528,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 {
                     throw new InverterDriverException("Received not valid block definition message");
                 }
+
                 start += 5;
             }
+
             return definitions;
         }
 
@@ -621,6 +624,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 this.payloadLength = 0;
                 return;
             }
+
             if (payload is List<InverterBlockDefinition> blockDefinitions)
             {
                 this.payload = Encoding.ASCII.GetBytes(this.FormatBlockDefinition(blockDefinitions));

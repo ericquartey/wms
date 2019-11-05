@@ -538,7 +538,7 @@
                 "BeltRigidity",
                 "BeltSpacing",
                 "HalfShaftLength",
-                "MaximumLoadOnBoard",
+                "MaximumGrossWeightOnBoard",
                 "PulleyDiameter",
                 "ShaftDiameter",
                 "ShaftElasticity"
@@ -562,8 +562,8 @@
                   "title": "The Halfshaftlength Schema",
                   "default": 0
                 },
-                "MaximumLoadOnBoard": {
-                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/MaximumLoadOnBoard",
+                "MaximumGrossWeightOnBoard": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/MaximumGrossWeightOnBoard",
                   "type": "integer",
                   "title": "The Maximumloadonboard Schema",
                   "default": 0

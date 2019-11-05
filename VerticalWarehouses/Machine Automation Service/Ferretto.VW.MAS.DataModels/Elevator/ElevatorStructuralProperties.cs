@@ -31,7 +31,7 @@
         /// <summary>
         /// Gets or sets the maximum weight, in kilograms, that can be loaded on the cradle.
         /// </summary>
-        public double MaximumLoadOnBoard { get; set; }
+        public double MaximumGrossWeightOnBoard { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter, in millimeters, of the pulley (belt wheel).

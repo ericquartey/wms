@@ -94,7 +94,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(e => e.StructuralProperties)
                     .Single();
 
-                var maximumLoadOnBoard = elevator.StructuralProperties.MaximumLoadOnBoard;
+                var maximumLoadOnBoard = elevator.StructuralProperties.MaximumGrossWeightOnBoard;
                 return maximumLoadOnBoard == MaxDrawerGrossWeight;
             }
         }

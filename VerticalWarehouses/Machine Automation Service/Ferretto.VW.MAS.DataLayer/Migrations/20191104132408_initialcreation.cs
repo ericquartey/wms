@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     BeltRigidity = table.Column<int>(nullable: false),
                     BeltSpacing = table.Column<double>(nullable: false),
                     HalfShaftLength = table.Column<double>(nullable: false),
-                    MaximumLoadOnBoard = table.Column<double>(nullable: false),
+                    MaximumGrossWeightOnBoard = table.Column<double>(nullable: false),
                     PulleyDiameter = table.Column<double>(nullable: false),
                     ShaftDiameter = table.Column<double>(nullable: false),
                     ShaftElasticity = table.Column<double>(nullable: false)
