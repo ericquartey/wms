@@ -74,6 +74,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("horizontal/loadingunitonboard")]
+        public ActionResult<LoadingUnit> GetHorizontalLoadingUnitOnBoard()
+        {
+            return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());
+        }
+
         [HttpGet("horizontal/position")]
         public ActionResult<double> GetHorizontalPosition()
         {
