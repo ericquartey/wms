@@ -303,13 +303,13 @@ namespace Ferretto.VW.App.Services
                   .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
         }
 
-        private bool Embarked()
-        {
-            return
-                this.sensors.LuPresentInMachineSideBay1
-                &&
-                this.sensors.LuPresentInOperatorSideBay1;
-        }
+        //private bool Embarked()
+        //{
+        //    return
+        //        this.sensors.LuPresentInMachineSideBay1
+        //        &&
+        //        this.sensors.LuPresentInOperatorSideBay1;
+        //}
 
         private async Task GetBayAsync()
         {
