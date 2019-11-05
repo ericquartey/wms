@@ -101,14 +101,14 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             var stateData = new ShutterPositioningStateData(this, this.machineData);
 
-            if (!this.machineData.MachineSensorsStatus.IsMachineInRunningState
-                ||
-                this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1 // why only bay 1 ???
-                ||
-                !(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
-                )
+            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1)
             {
-                this.Logger.LogError($"Invalid conditions before moving shutter");
+                this.Logger.LogError($"Invalid Elevator presence sensors before moving shutter");
+                this.ChangeState(new ShutterPositioningErrorState(stateData));
+            }
+            if (!(this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterPosition || this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest))
+            {
+                this.Logger.LogError($"Invalid positioning message");
                 this.ChangeState(new ShutterPositioningErrorState(stateData));
             }
             else
