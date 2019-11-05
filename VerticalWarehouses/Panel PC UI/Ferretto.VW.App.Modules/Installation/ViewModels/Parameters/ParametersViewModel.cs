@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private VertimagConfiguration configuration;
 
+        private DelegateCommand goToImportExport;
+
         private bool isBusy;
 
         private DelegateCommand saveCommand;
@@ -36,6 +38,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public VertimagConfiguration Configuration => this.configuration;
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand GoToImportExport => this.goToImportExport
+            ??
+            (this.goToImportExport = new DelegateCommand(
+                this.ShowImportExport, this.CanShowImportExport));
 
         public bool IsBusy
         {
@@ -86,6 +93,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsBusy;
         }
 
+        private bool CanShowImportExport()
+        {
+            return !this.IsBusy;
+        }
+
         private async Task SaveAsync()
         {
             try
@@ -108,6 +120,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
+        }
+
+        private void ShowImportExport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTEXPORT,
+                null,
+                trackCurrentView: false);
         }
 
         #endregion

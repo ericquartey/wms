@@ -10,67 +10,105 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d" 
             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Width="1024"
-          Height="608"
-          IsEnabled="False">
 
-        <TextBlock Margin="220,30,0,0"
-                   HorizontalAlignment="Left"
+    <Grid Margin="50,15">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock HorizontalAlignment="Left"
                    VerticalAlignment="Top"
+                   Grid.ColumnSpan="3"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
 
-        <controls:PpcLabeledText Margin="220,100,0,0"
+
+        <TreeView Grid.Row="1"
+                  Grid.ColumnSpan="2"
+                  Name="RootTreeView"
+                  Background="AliceBlue"
+                  Foreground="Black">
+            <TreeViewItem Header="Browse">
+                <TreeViewItem.ItemsSource>
+                    <Binding Source="{StaticResource RootFolderDataProvider}">
+                        <Binding.Path>SubFolders</Binding.Path>
+                    </Binding>
+                </TreeViewItem.ItemsSource>
+            </TreeViewItem>
+        </TreeView>
+
+        <controls:PpcLabeledText Grid.Row="1"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="F:\VW_190012"
+                                 TextBlock.LineStackingStrategy="BlockLineHeight"
+                                 ContentText="{Binding WorkingFolder}"
                                  LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
 
-        <controls:PpcButton Margin="220,180,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+
+        <controls:PpcButton Grid.Row="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmSaveButton}"
                             IsEnabled="False" />
 
-        <controls:PpcButton Margin="640,100,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}" />
 
-        <controls:PpcButton Margin="640,180,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortSaveButton}"
                             IsEnabled="False" />
 
-        <TextBlock Margin="220,350,0,0"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
+
+        <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="3"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
 
-        <controls:PpcLabeledText Margin="220,420,0,0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
+        <!--<controls:PpcLabeledText Grid.Row="3"
+                    Grid.ColumnSpan="3"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
                                  ContentText="F:"
                                  IsEnabled="False"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />-->
 
-        <controls:PpcButton Margin="220,500,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+        <controls:PpcButton Grid.Row="4"                   
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigConfirmRestoreButton}"
                             IsEnabled="False" />
 
-        <controls:PpcButton Margin="640,420,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
                             IsEnabled="False" />
 
-        <controls:PpcButton Margin="640,500,0,0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
                             IsEnabled="False" />
 
