@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         break;
 
                     case ConditionToCheckType.DrawerIsPartiallyOnCradle:
-                        data.Result = machineResourcesProvider.IsDrawerPartiallyOnCradleBay1;
+                        data.Result = machineResourcesProvider.IsDrawerPartiallyOnCradle;
                         break;
 
                         //TEMP Add here other condition getters

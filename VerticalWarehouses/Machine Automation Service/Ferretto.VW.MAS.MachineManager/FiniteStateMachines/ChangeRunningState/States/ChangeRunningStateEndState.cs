@@ -85,12 +85,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     if (runningState.Enable)
                     {
                         this.errorsProvider.ResolveAll();
-                        this.machineModeDataProvider.Mode = MachineMode.Manual;
                     }
-                    else
-                    {
-                        this.machineModeDataProvider.Mode = MachineMode.NotSpecified;
-                    }
+
+                    this.machineModeDataProvider.Mode = MachineMode.Manual;
                 }
             }
             else

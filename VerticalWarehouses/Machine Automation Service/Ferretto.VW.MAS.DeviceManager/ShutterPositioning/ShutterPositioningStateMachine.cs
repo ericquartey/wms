@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
             var stateData = new ShutterPositioningStateData(this, this.machineData);
 
-            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradleBay1)
+            if (this.machineData.MachineSensorsStatus.IsDrawerPartiallyOnCradle)
             {
                 this.Logger.LogError($"Invalid Elevator presence sensors before moving shutter");
                 this.ChangeState(new ShutterPositioningErrorState(stateData));
