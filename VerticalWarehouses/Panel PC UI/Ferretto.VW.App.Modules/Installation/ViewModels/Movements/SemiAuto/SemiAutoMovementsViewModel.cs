@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -21,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly Controls.Interfaces.ISensorsService sensorsService;
@@ -38,6 +43,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private VerticalManualMovementsProcedure procedureParameters;
+
+        private DelegateCommand resetCommand;
 
         private SubscriptionToken sensorsToken;
 
@@ -60,6 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCarouselWebService machineCarouselWebService,
             IMachineBaysWebService machineBaysWebService,
             Controls.Interfaces.ISensorsService sensorsService,
+            IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -72,6 +80,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
 
         #endregion
@@ -114,6 +123,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
+
+        public ICommand ResetCommand =>
+           this.resetCommand
+           ??
+           (this.resetCommand = new DelegateCommand(async () => await this.ResetCommandAsync(), this.CanResetCommand));
 
         public ICommand StopMovingCommand =>
            this.stopMovingCommand
@@ -204,6 +218,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsTuningBay = false;
                 this.IsShutterMoving = false;
             }
+        }
+
+        private bool CanResetCommand()
+        {
+            return !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private bool CanStopMoving()
@@ -409,6 +430,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovingCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task ResetCommandAsync()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult == DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsWaitingForResponse = true;
+
+                    await this.machineMissionOperationsWebService.ResetMachineAsync();
+
+                    this.ShowNotification("Reset macchina avvenuta con successo.", Services.Models.NotificationSeverity.Success);
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
+            }
         }
 
         private async Task StopMovingAsync()
