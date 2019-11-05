@@ -6,7 +6,6 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Prism.Mvvm;
 
@@ -38,7 +37,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BindableBase DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 

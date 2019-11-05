@@ -94,6 +94,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.currentPosition, value);
         }
 
+        public override EnableMask EnableMask => EnableMask.MachineManualMode;
+
         public string Error => string.Join(
                 Environment.NewLine,
                 this[nameof(this.InputLowerBound)],

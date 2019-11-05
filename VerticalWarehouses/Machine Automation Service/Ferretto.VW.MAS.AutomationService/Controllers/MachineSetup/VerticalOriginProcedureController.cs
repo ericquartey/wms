@@ -4,6 +4,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -11,13 +13,15 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/setup/[controller]")]
     [ApiController]
-    public class VerticalOriginProcedureController : BaseAutomationController
+    public class VerticalOriginProcedureController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
         private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly IEventAggregator eventAggregator;
 
         #endregion
 
@@ -26,10 +30,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public VerticalOriginProcedureController(
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider)
-            : base(eventAggregator)
         {
+            this.eventAggregator = eventAggregator;
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -80,6 +90,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Stop);
 
             return this.Accepted();
+        }
+
+        [Obsolete("Move message publishing to providers.")]
+        protected void PublishCommand(
+            IMessageData messageData,
+            string description,
+            MessageActor receiver,
+            MessageType messageType)
+        {
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        messageData,
+                        description,
+                        receiver,
+                        MessageActor.WebApi,
+                        messageType,
+                        this.BayNumber));
         }
 
         #endregion

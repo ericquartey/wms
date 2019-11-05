@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         #region Constructors
 
         public PositioningStateMachine(
+            MessageActor requester,
             BayNumber requestingBay,
             BayNumber targetBay,
             IPositioningMessageData messageData,
@@ -39,6 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
 
             this.machineData = new PositioningMachineData(
+                requester,
                 requestingBay,
                 targetBay,
                 messageData,
@@ -91,7 +93,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var stateData = new PositioningStateData(this, this.machineData);
                 //INFO Check the Horizontal and Vertical conditions for Positioning
-                if (this.CheckConditions(out var errorText))
+                if (this.CheckConditions(out var errorText, out var errorCode))
                 {
                     if (this.machineData.MessageData.MovementMode == MovementMode.FindZero
                         &&
@@ -120,7 +122,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
 
-                        errorsProvider.RecordNew(DataModels.MachineErrorCode.ConditionsNotMetForPositioning, this.machineData.RequestingBay);
+                        errorsProvider.RecordNew(errorCode, this.machineData.RequestingBay);
                     }
 
                     this.Logger.LogError(errorText);
@@ -142,33 +144,44 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         }
 
         // return false in case of error
-        private bool CheckConditions(out string errorText)
+        private bool CheckConditions(out string errorText, out DataModels.MachineErrorCode errorCode)
         {
             var ok = true;
             errorText = string.Empty;
-            if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
-               !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+            errorCode = DataModels.MachineErrorCode.ConditionsNotMetForPositioning;
+            if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
             {
-                ok = false;
-                errorText = "Invalid presence sensors";
-            }
-            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-               this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
-            {
-                ok = false;
-                errorText = "Missing Zero sensor with empty elevator";
-            }
-            else if (this.machineData.MessageData.AxisMovement == Axis.Vertical &&
-                this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
-                this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
-                (this.machineData.MessageData.MovementMode == MovementMode.Position ||
-                    this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure ||
-                    this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
-                )
-            {
-                ok = false;
-                errorText = "Zero sensor active with full elevator";
+                if (!this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle &&
+                   !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                {
+                    ok = false;
+                    errorText = "Invalid presence sensors";
+                    errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
+                }
+                else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                {
+                    ok = false;
+                    errorText = "Missing Zero sensor with empty elevator";
+                    errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
+                }
+                else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
+                        this.machineData.MachineSensorStatus.IsSensorZeroOnCradle &&
+                        (this.machineData.MessageData.MovementMode == MovementMode.Position ||
+                            this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure ||
+                            this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                    )
+                {
+                    ok = false;
+                    errorText = "Zero sensor active with full elevator";
+                    errorCode = DataModels.MachineErrorCode.ZeroSensorActiveWithFullElevator;
+                }
+                else if (this.machineData.MessageData.LoadingUnitId.HasValue &&
+                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                {
+                    ok = false;
+                    errorText = "Load Unit present on empty Elevator";
+                    errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
+                }
             }
             else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
             {
@@ -180,6 +193,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     errorText = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
                             $"Top level Bay {(int)this.machineData.TargetBay} Occupied" :
                             $"Bottom level Bay {(int)this.machineData.TargetBay} Occupied");
+                    errorCode = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
+                        DataModels.MachineErrorCode.TopLevelBayOccupied :
+                        DataModels.MachineErrorCode.BottomLevelBayOccupied);
                 }
                 else
                 {
@@ -187,6 +203,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     if (!ok)
                     {
                         errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";
+                        errorCode = DataModels.MachineErrorCode.SensoZeroBayNotActiveAtStart;
                     }
                 }
             }

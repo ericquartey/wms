@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
+        private readonly IMachineModeDataProvider machineModeDataProvider;
+
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
 
         #endregion
@@ -37,12 +39,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
+            IMachineModeDataProvider machineModeDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
         }
 
         #endregion
@@ -73,12 +77,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 commandMessage.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
 
-            if (this.StopRequestReason == StopRequestReason.NoReason)
+            if (this.StopRequestReason is StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
-                if (this.EndMessage.Data is IChangeRunningStateMessageData runningState && runningState.Enable)
+                if (this.EndMessage.Data is IChangeRunningStateMessageData runningState)
                 {
-                    this.errorsProvider.ResolveAll();
+                    if (runningState.Enable)
+                    {
+                        this.errorsProvider.ResolveAll();
+                        this.machineModeDataProvider.Mode = MachineMode.Manual;
+                    }
+                    else
+                    {
+                        this.machineModeDataProvider.Mode = MachineMode.NotSpecified;
+                    }
                 }
             }
             else

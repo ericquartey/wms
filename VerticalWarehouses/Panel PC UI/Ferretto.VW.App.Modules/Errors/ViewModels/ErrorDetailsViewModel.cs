@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public MachineError Error
         {

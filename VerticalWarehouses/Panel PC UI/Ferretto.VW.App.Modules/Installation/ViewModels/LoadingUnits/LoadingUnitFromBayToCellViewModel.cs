@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -13,18 +10,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
                     IMachineCellsWebService machineCellsWebService,
+                    Controls.Interfaces.ISensorsService sensorsService,
                     IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 machineCellsWebService,
+                sensorsService,
                 bayManagerService)
-
         {
         }
 
@@ -38,7 +32,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.LoadingUnitId = null;
 
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public override async Task StartAsync()
@@ -62,6 +56,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.ShowNotification("la cella inserita non è libera", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
+
+                //if (!this.IsLoadingUnitInBay)
+                //{
+                //    this.ShowNotification("la baia non è occupata", Services.Models.NotificationSeverity.Warning);
+                //    return;
+                //}
 
                 var source = this.GetLoadingUnitSource();
 

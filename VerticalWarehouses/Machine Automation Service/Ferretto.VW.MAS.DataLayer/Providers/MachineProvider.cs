@@ -45,12 +45,16 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.FullLoadMovement)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.WeightMeasurement)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.StructuralProperties)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Positions)
+                            .ThenInclude(b => b.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
                     .Include(m => m.Bays)
@@ -59,6 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.IoDevice)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.Inverter)
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single();
@@ -103,6 +108,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {

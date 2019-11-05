@@ -19,16 +19,18 @@ namespace Ferretto.VW.MAS.MachineManager.Extensions
 
         public static IServiceCollection AddMachineManager(this IServiceCollection services)
         {
-            if (services == null)
+            if (services is null)
             {
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<MachineManagerService>();
+            services
+                .AddHostedService<MachineManagerService>();
 
             services
                 .AddTransient<IRunningStateProvider, RunningStateProvider>()
-                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>();
+                .AddTransient<IMoveLoadingUnitProvider, MoveLoadingUnitProvider>()
+                .AddTransient<IMachineModeProvider, MachineModeProvider>();
 
             services
                 .AddTransient<IChangeRunningStateStateMachine, ChangeRunningStateStateMachine>()
@@ -39,8 +41,9 @@ namespace Ferretto.VW.MAS.MachineManager.Extensions
                 .AddTransient<IChangeRunningStateResetFaultState, ChangeRunningStateResetFaultState>()
                 .AddTransient<IChangeRunningStateResetSecurity, ChangeRunningStateResetSecurity>()
                 .AddTransient<IChangeRunningStateInverterPowerSwitch, ChangeRunningStateInverterPowerSwitch>()
-                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>()
+                .AddTransient<IChangeRunningStateEndState, ChangeRunningStateEndState>();
 
+            services
                 .AddTransient<IMoveLoadingUnitStartState, MoveLoadingUnitStartState>()
                 .AddTransient<IMoveLoadingUnitLoadElevatorState, MoveLoadingUnitLoadElevatorState>()
                 .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()

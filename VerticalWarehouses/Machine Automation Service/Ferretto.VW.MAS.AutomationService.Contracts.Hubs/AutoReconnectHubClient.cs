@@ -94,17 +94,19 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 return;
             }
 
-            this.connection = new HubConnectionBuilder()
-                .WithUrl(this.endpoint.AbsoluteUri)
-                //.ConfigureLogging(logging =>
-                //                  {
-                //                      // Log to the Output Window
-                //                      logging.AddDebug();
+            var connectionBuilder = new HubConnectionBuilder()
+                .WithUrl(this.endpoint.AbsoluteUri);
 
-                //                      // This will set ALL logging to Debug level
-                //                      logging.SetMinimumLevel(LogLevel.Debug);
-                //                  })
-                .Build();
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                connectionBuilder.ConfigureLogging(logging =>
+                {
+                    logging.AddDebug();
+                    logging.SetMinimumLevel(LogLevel.Information);
+                });
+            }
+
+            this.connection = connectionBuilder.Build();
 
             this.RegisterEvents(this.connection);
 

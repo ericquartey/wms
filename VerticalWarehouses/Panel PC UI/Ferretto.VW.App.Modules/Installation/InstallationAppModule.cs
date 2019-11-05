@@ -2,6 +2,7 @@
 using Ferretto.VW.App.Installation.Views;
 using Ferretto.VW.App.Modules.Installation.Views;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
@@ -33,13 +34,6 @@ namespace Ferretto.VW.App.Modules.Installation
         #endregion
 
         #region Methods
-
-        public static void BindViewModelToView<TViewModel, TView>(IContainerProvider containerProvider)
-        {
-            ViewModelLocationProvider.Register(
-                typeof(TView).ToString(),
-                () => containerProvider.Resolve<TViewModel>());
-        }
 
         public void OnInitialized(IContainerProvider containerProvider)
         {

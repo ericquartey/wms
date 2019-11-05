@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -208,9 +209,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachineModeChangedAsync(e);
+
             if (!this.IsEnabled)
             {
                 this.StopMoving();

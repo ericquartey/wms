@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Cell = Ferretto.VW.MAS.DataModels.Cell;
+using CellStatus = Ferretto.VW.MAS.DataModels.CellStatus;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -38,6 +41,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(c => c.Panel)
                     .ToArray();
             }
+        }
+
+        public Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
+        {
+            return this.dataContext.Cells
+                       .Include(c => c.LoadingUnit)
+                       .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
         }
 
         public Cell GetCellById(int cellId)
@@ -155,6 +165,33 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Cells
                     .Include(c => c.Panel)
                     .SingleOrDefault(c => c.Id == cellId);
+            }
+        }
+
+        public IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height)
+        {
+            lock (this.dataContext)
+            {
+                var res = new List<Cell>();
+                for (int cellId = fromCellId; cellId <= toCellId; cellId++)
+                {
+                    var cell = this.dataContext.Cells
+                        .Include(c => c.Panel)
+                        .SingleOrDefault(c => c.Id == cellId);
+                    if (cell != null && cell.Side == side)
+                    {
+                        cell.Position += height;
+
+                        this.dataContext.Cells.Update(cell);
+                        this.dataContext.SaveChanges();
+
+                        res.Add(this.dataContext.Cells
+                                    .Include(c => c.Panel)
+                                    .SingleOrDefault(c => c.Id == cellId));
+                    }
+                }
+
+                return res;
             }
         }
 

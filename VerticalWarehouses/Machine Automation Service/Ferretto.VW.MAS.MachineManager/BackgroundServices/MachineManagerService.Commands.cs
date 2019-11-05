@@ -58,13 +58,13 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                             }
                             catch (Exception ex)
                             {
-                                this.Logger.LogDebug($"Failed to start Change Running State machine mission {ex.Message}");
+                                this.Logger.LogError($"Failed to start Change Running State machine mission {ex.Message}");
                                 this.NotifyCommandError(command);
                             }
                         }
                         else
                         {
-                            this.Logger.LogDebug("Failed to create Change Running State machine mission");
+                            this.Logger.LogError("Failed to create Change Running State machine mission");
                             this.NotifyCommandError(command);
                         }
 
@@ -73,30 +73,31 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                     case CommandAction.Abort:
                     case CommandAction.Pause:
                     case CommandAction.Resume:
-                        this.Logger.LogDebug($"Invalid command action {messageData.CommandAction} for Change Running State Mission");
+                        this.Logger.LogError($"Invalid command action {messageData.CommandAction} for Change Running State Mission");
                         this.NotifyCommandError(command);
 
                         break;
 
                     case CommandAction.Stop:
-                        //if (messageData.MissionId != null)
-                        //{
-                        //    this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
-                        //}
-                        //else
-                        //{
-                        //    foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
-                        //    {
-                        //        mission.StopMachine(StopRequestReason.Stop);
-                        //    }
-                        //}
-
+                        /*
+                        if (messageData.MissionId != null)
+                        {
+                            this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop);
+                        }
+                        else
+                        {
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.ChangeRunningType))
+                            {
+                                mission.StopMachine(StopRequestReason.Stop);
+                            }
+                        }
+                        */
                         break;
                 }
             }
             else
             {
-                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Change Running State Command");
+                this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Change Running State Command");
                 this.NotifyCommandError(command);
             }
         }
@@ -121,13 +122,13 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                             }
                             catch (Exception ex)
                             {
-                                this.Logger.LogDebug($"Failed to start Move Loading UNit State machine mission: {ex.Message}");
+                                this.Logger.LogError($"Failed to start Move Loading UNit State machine mission: {ex.Message}");
                                 this.NotifyCommandError(command);
                             }
                         }
                         else
                         {
-                            this.Logger.LogDebug("Failed to create Move Loading Unit State machine mission");
+                            this.Logger.LogError("Failed to create Move Loading Unit State machine mission");
                             this.NotifyCommandError(command);
                         }
 
@@ -138,7 +139,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         {
                             if (!this.machineMissionsProvider.AbortMachineMission(messageData.MissionId.Value))
                             {
-                                this.Logger.LogDebug("Supplied mission Id to be aborted is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be aborted is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -157,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         {
                             if (!this.machineMissionsProvider.StopMachineMission(messageData.MissionId.Value, StopRequestReason.Stop))
                             {
-                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -176,7 +177,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         {
                             if (!this.machineMissionsProvider.PauseMachineMission(messageData.MissionId.Value))
                             {
-                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -195,7 +196,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
                         {
                             if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
                             {
-                                this.Logger.LogDebug("Supplied mission Id to be stopped is no longer valid");
+                                this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -212,7 +213,7 @@ namespace Ferretto.VW.MAS.MachineManager.BackgroundServices
             }
             else
             {
-                this.Logger.LogDebug($"Invalid command message data {command.Data.GetType().Name} fol Move Loading Unit Command");
+                this.Logger.LogError($"Invalid command message data {command.Data.GetType().Name} for Move Loading Unit Command");
                 this.NotifyCommandError(command);
             }
         }

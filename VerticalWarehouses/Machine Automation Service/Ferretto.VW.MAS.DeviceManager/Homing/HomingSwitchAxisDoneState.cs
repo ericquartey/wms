@@ -72,6 +72,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         {
                             notificationData.MovementMode = MovementMode.BayChain;
                         }
+                        this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={notificationData.AxisMovement}; value={(int)dataInverters.CurrentPosition.Value}");
                         var notificationMessage = new NotificationMessage(
                             notificationData,
                             $"Current Encoder position: {notificationData.CurrentPosition}",

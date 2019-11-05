@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -80,7 +77,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                    trackCurrentView: true);
         }));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public double GrossWeight { get => this.grossWeight; set => this.SetProperty(ref this.grossWeight, value); }
 
@@ -146,7 +143,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
-                this.MaxNetWeight = (double)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
+                this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
                 this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
                 this.NetWeightPercent = this.NetWeight * 100 / this.MaxNetWeight;

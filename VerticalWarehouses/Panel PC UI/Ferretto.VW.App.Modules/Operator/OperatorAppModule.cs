@@ -1,12 +1,10 @@
 ﻿using System.Configuration;
-using System.Windows;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Operator.Views;
-using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;

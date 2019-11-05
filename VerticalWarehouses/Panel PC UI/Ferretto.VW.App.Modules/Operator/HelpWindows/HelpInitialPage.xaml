@@ -111,11 +111,11 @@
                                                 HorizontalAlignment="Left"
                                                 VerticalAlignment="Top" />
 
-        <controls:CustomMachineOnMarchToggleButton Margin="20,260,0,0"
+        <controls:CustomMachinePowerToggleButton Margin="20,260,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top" />
 
-        <controls:CustomMachineOnMarchToggleButton Margin="20,330,0,0"
+        <controls:CustomMachinePowerToggleButton Margin="20,330,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top" />
 

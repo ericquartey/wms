@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -59,7 +54,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 

@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ShuttersController : BaseAutomationController
+    public class ShuttersController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -27,16 +27,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public ShuttersController(
-            IEventAggregator eventAggregator,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
             ISensorsProvider sensorsProvider)
-            : base(eventAggregator)
         {
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 

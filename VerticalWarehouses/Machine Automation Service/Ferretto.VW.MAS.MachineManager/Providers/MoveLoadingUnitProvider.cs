@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
-    internal class MoveLoadingUnitProvider : BaseProvider, IMoveLoadingUnitProvider
+    internal sealed class MoveLoadingUnitProvider : BaseProvider, IMoveLoadingUnitProvider
     {
         #region Constructors
 

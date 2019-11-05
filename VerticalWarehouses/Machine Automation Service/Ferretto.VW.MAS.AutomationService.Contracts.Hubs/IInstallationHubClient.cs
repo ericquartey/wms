@@ -6,6 +6,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Events
 
+        event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
+
+        event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
+
         event EventHandler<MessageNotifiedEventArgs> MessageReceived;
 
         #endregion

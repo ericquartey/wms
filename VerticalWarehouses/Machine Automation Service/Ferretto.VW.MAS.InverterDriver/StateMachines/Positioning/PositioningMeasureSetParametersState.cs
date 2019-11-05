@@ -74,7 +74,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.PositionTargetPosition:
-                        var speed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.verticalParams.WeightMeasureSpeed, Orientation.Vertical);
+                        var speed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(this.verticalParams.WeightMeasurement.MeasureSpeed, Orientation.Vertical);
                         this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetSpeed, speed));
                         this.Logger.LogDebug($"Set target Speed: {speed}");
                         break;

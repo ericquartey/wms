@@ -1,6 +1,5 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.AutomationService.Hubs;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
@@ -31,13 +30,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         protected override void RegisterEvents(HubConnection connection)
         {
             connection.On<INewMissionOperationAvailable>(
-                nameof(IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
+                nameof(AutomationService.Hubs.IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
 
             connection.On<IBayOperationalStatusChangedMessageData>(
-                nameof(IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
+                nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
 
             connection.On<int>(
-                nameof(IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
+                nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
         }
 
         private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)

@@ -5,9 +5,13 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.InverterDriver
@@ -22,6 +26,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly ILogger<InverterDriverService> logger;
+
         private readonly IMachineProvider machineProvider;
 
         private IEnumerable<IInverterStatusBase> inverters;
@@ -35,12 +41,15 @@ namespace Ferretto.VW.MAS.InverterDriver
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
             IBaysProvider baysProvider,
-            IDigitalDevicesDataProvider digitalDevicesDataProvider)
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            ILogger<InverterDriverService> logger
+            )
         {
             if (eventAggregator is null)
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
@@ -86,6 +95,84 @@ namespace Ferretto.VW.MAS.InverterDriver
             var beltElongation = this.ComputeBeltElongation(loadingUnit.GrossWeight, targetPosition);
 
             return beltElongation + shaftTorsion;
+        }
+
+        public int ComputePositioningValues(
+            IInverterStatusBase inverter,
+            IPositioningFieldMessageData positioningData,
+            Orientation axisOrientation,
+            int currentPosition,
+            bool refreshTargetTable,
+            out InverterPositioningFieldMessageData positioningFieldData)
+        {
+            int targetPosition;
+            var position = positioningData.TargetPosition;
+            if (positioningData.MovementType == MovementType.Absolute)
+            {
+                var axis = positioningData.AxisMovement == Axis.Horizontal
+                    ? this.elevatorDataProvider.GetHorizontalAxis()
+                    : this.elevatorDataProvider.GetVerticalAxis();
+
+                position -= axis.Offset;
+
+                if (position < 0)
+                {
+                    throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
+                }
+
+                if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
+                {
+                    var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
+                    this.logger.LogInformation($"Belt elongation for height={positioningData.TargetPosition} is {beltDisplacement} [mm].");
+                    position += beltDisplacement;
+                }
+            }
+            if (positioningData.AxisMovement == Axis.BayChain)
+            {
+                targetPosition = (int)(this.baysProvider.GetResolution(inverter.SystemIndex) * position);
+            }
+            else
+            {
+                targetPosition = this.ConvertMillimetersToPulses(position, axisOrientation);
+            }
+
+            var targetAcceleration = positioningData.TargetAcceleration
+                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                .ToArray();
+
+            var targetDeceleration = positioningData.TargetDeceleration
+                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                .ToArray();
+
+            var targetSpeed = positioningData.TargetSpeed
+                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                .ToArray();
+
+            var switchPosition = positioningData.SwitchPosition
+                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                .ToArray();
+
+            var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
+
+            this.logger.LogDebug($"Direction: {positioningData.Direction}");
+            this.logger.LogDebug($"Position:");
+            for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
+            {
+                this.logger.LogDebug($"{positioningData.SwitchPosition[i]} mm");
+            }
+
+            positioningFieldData = new InverterPositioningFieldMessageData(
+                positioningData,
+                targetAcceleration,
+                targetDeceleration,
+                targetPosition,
+                targetSpeed,
+                switchPosition,
+                direction,
+                refreshTargetTable);
+            this.logger.LogTrace($"1:CurrentPositionAxis = {currentPosition}");
+            this.logger.LogTrace($"2:data.TargetPosition = {positioningFieldData.TargetPosition}");
+            return targetPosition;
         }
 
         public int ConvertMillimetersToPulses(double millimeters, Orientation orientation)

@@ -55,6 +55,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
+        LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber);
+
         double GetResolution(InverterIndex inverterIndex);
 
         void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);

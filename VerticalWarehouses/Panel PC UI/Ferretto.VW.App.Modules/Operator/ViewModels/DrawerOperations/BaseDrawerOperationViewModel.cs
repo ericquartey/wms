@@ -4,13 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -59,7 +56,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.compartments, value);
         }
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public int? InputQuantity { get => this.inputQuantity; set => this.SetProperty(ref this.inputQuantity, value); }
 

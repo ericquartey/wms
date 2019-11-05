@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CarouselController : BaseAutomationController
+    public class CarouselController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -19,13 +19,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public CarouselController(
-            IEventAggregator eventAggregator,
-            ICarouselProvider carouselProvider)
-            : base(eventAggregator)
+        public CarouselController(ICarouselProvider carouselProvider)
         {
             this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 

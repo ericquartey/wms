@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 using Prism.Events;
@@ -58,7 +60,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() => this.DrawerActivityButtonMethod(), this.CanDrawerActivityButtonMethod));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsWaitingForResponse
         {
@@ -76,11 +78,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachinePowerChangedAsync(e);
 
-            this.AreItemsEnabled = e.MachinePower != Services.Models.MachinePowerState.Unpowered;
+            this.AreItemsEnabled = e.MachinePowerState is MachinePowerState.Powered;
         }
 
         private bool CanDrawerActivityButtonMethod()

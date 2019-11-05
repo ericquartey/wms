@@ -79,6 +79,27 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorErrorAfterDeposit))]
         ZeroSensorErrorAfterDeposit = 100040,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InvalidPresenceSensors))]
+        InvalidPresenceSensors = 100041,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MissingZeroSensorWithEmptyElevator))]
+        MissingZeroSensorWithEmptyElevator = 100042,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(ZeroSensorActiveWithFullElevator))]
+        ZeroSensorActiveWithFullElevator = 100043,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadUnitPresentOnEmptyElevator))]
+        LoadUnitPresentOnEmptyElevator = 100044,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayOccupied))]
+        TopLevelBayOccupied = 100045,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied))]
+        BottomLevelBayOccupied = 100046,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensoZeroBayNotActiveAtStart))]
+        SensoZeroBayNotActiveAtStart = 100047,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorBaseCode), 1)]
         MachineManagerErrorBaseCode = 300000,
 

@@ -5,6 +5,7 @@ using System.Windows;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -105,7 +106,12 @@ namespace Ferretto.VW.App
 
                 return client;
             });
+
             containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
+
+            //var sensorsService = this.Container.Resolve<SensorsService>();
+            //containerRegistry.RegisterInstance<ISensorsService>(sensorsService);
+            containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
 
             // WMS Web API services
             RegisterWmsHubs(containerRegistry);
@@ -137,6 +143,9 @@ namespace Ferretto.VW.App
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
+
+            NLog.LogManager.Flush();
+            NLog.LogManager.Shutdown();
         }
 
         private void HACK_ForceItalianLanguage()

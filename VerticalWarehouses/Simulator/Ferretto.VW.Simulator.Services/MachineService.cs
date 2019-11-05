@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
@@ -246,10 +247,10 @@ namespace Ferretto.VW.Simulator.Services
                                     break;
                                 }
                             }
-                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 10)
+                            else if (DateTime.UtcNow.Subtract(lastReceivedMessage).TotalSeconds >= 20)
                             {
-                                client.Close();
-                                break;
+                                //client.Close();
+                                //break;
                             }
                         }
                         else
@@ -414,12 +415,12 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TorqueCurrent:
-                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(72, 140)));
+                    var torqueMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(72, 120)));
                     result = client.Client.Send(torqueMessage);
                     break;
 
                 case InverterParameterId.ProfileInput:
-                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(0, 10000)));
+                    var profileMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(2000, 10000)));
                     result = client.Client.Send(profileMessage);
                     break;
 
@@ -508,16 +509,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetAccelerations:
+                {
+                    var replyMessage = message.ToBytes();
+                    if (message.UIntPayload == 0)
                     {
-                        var replyMessage = message.ToBytes();
-                        if (message.UIntPayload == 0)
-                        {
-                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
-                        }
-
-                        result = client.Client.Send(replyMessage);
+                        replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
                     }
-                    break;
+
+                    result = client.Client.Send(replyMessage);
+                }
+                break;
 
                 case InverterParameterId.TableTravelTargetDecelerations:
                     result = client.Client.Send(message.ToBytes());
@@ -545,6 +546,71 @@ namespace Ferretto.VW.Simulator.Services
                 case InverterParameterId.CurrentError:
                     var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(1, 100)));
                     result = client.Client.Send(errorMessage);
+                    break;
+
+                case InverterParameterId.BlockDefinition:
+                    inverter.BlockDefinitions = (List<InverterBlockDefinition>)message.Payload;
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.BlockWrite:
+                    var blockRead = message.ConvertPayloadToBlockRead(inverter.BlockDefinitions);
+                    for (var iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
+                    {
+                        switch (inverter.BlockDefinitions[iblock].ParameterId)
+                        {
+                            case InverterParameterId.TableTravelTargetSpeeds:
+                                inverter.TargetSpeed[inverter.CurrentAxis] = Math.Max((int)blockRead[iblock], inverter.TargetSpeed[inverter.CurrentAxis]);
+                                break;
+
+                            case InverterParameterId.PositionTargetPosition:
+                                inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)blockRead[iblock]);
+                                inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                                break;
+
+                            case InverterParameterId.PositionTargetSpeed:
+                                inverter.TargetSpeed[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.PositionAcceleration:
+                                inverter.TargetAcceleration[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.PositionDeceleration:
+                                inverter.TargetAcceleration[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+                        }
+                    }
+                    result = client.Client.Send(message.ToBytes());
+                    break;
+
+                case InverterParameterId.BlockRead:
+                    var blockValues = new object[inverter.BlockDefinitions.Count];
+                    for (var iblock = 0; iblock < inverter.BlockDefinitions.Count; iblock++)
+                    {
+                        switch (inverter.BlockDefinitions[iblock].ParameterId)
+                        {
+                            case InverterParameterId.TableTravelTableIndex:
+                                blockValues[iblock] = (short)inverter.TableIndex;
+                                break;
+
+                            case InverterParameterId.TableTravelTargetSpeeds:
+                                blockValues[iblock] = inverter.TargetSpeed[inverter.CurrentAxis];
+                                break;
+
+                            case InverterParameterId.TableTravelTargetAccelerations:
+                                blockValues[iblock] = inverter.TargetAcceleration[inverter.CurrentAxis];    // this value is not correct, just to test the message
+                                break;
+
+                            case InverterParameterId.TableTravelTargetDecelerations:
+                                blockValues[iblock] = inverter.TargetDeceleration[inverter.CurrentAxis];    // this value is not correct, just to test the message
+                                break;
+                        }
+                    }
+                    {
+                        var replyMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(message.FormatBlockWrite(blockValues)));
+                        result = client.Client.Send(replyMessage);
+                    }
                     break;
 
                 default:

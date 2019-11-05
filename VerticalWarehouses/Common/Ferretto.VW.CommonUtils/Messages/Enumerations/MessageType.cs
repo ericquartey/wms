@@ -12,6 +12,8 @@
 
         SensorsChanged,
 
+        MachineMode,
+
         DataLayerReady,
 
         ExecuteMission,

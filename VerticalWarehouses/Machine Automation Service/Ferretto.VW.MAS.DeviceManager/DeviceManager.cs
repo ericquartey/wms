@@ -491,10 +491,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                             {
                                 var carouselProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
                                 carouselProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
-                                notificationData.AxisMovement = Axis.Horizontal;
+                                notificationData.AxisMovement = Axis.BayChain;
                                 notificationData.MovementMode = MovementMode.BayChain;
                             }
-                            this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; axis={dataInverters.CurrentAxis}; value={(int)dataInverters.CurrentPosition.Value}");
+                            this.logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; Movement={notificationData.AxisMovement}; value={(int)dataInverters.CurrentPosition.Value}");
 
                             this.currentStateMachines.TryGetValue(messageBayBayIndex, out var tempStateMachine);
                             if (tempStateMachine == null ||
@@ -616,8 +616,8 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 switch (receivedMessage.Type)
                 {
-                    case MessageType.Homing:
                     case MessageType.Positioning:
+                    case MessageType.Homing:
                     case MessageType.ShutterPositioning:
                     case MessageType.PowerEnable:
                     case MessageType.InverterFaultReset:

@@ -8,9 +8,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
     public class StatisticsGeneralDataViewModel : BaseViewModel, IStatisticsGeneralDataViewModel
     {
-        //private readonly IMachineStatisticsService statisticsService;
-
-        //private readonly IStatusMessageService statusMessageService;
+        // private readonly IMachineStatisticsService statisticsService;
 
         #region Fields
 
@@ -21,19 +19,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public StatisticsGeneralDataViewModel(
-            IStatisticsNavigationViewModel statisticsNavigationViewModel/*,*/
-                                                                        //IMachineStatisticsService statisticsService,
-                                                                        /*IStatusMessageService statusMessageService*/)
+            IStatisticsNavigationViewModel statisticsNavigationViewModel/*,
+            IMachineStatisticsService statisticsService*/)
         {
-            //if (statisticsService == null)
-            //{
-            //    throw new System.ArgumentNullException(nameof(statisticsService));
-            //}
-
-            //if (statusMessageService == null)
-            //{
-            //    throw new System.ArgumentNullException(nameof(statusMessageService));
-            //}
+            /*
+            if (statisticsService == null)
+            {
+                throw new System.ArgumentNullException(nameof(statisticsService));
+            }
+            */
 
             if (statisticsNavigationViewModel == null)
             {
@@ -41,8 +35,8 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             }
 
             this.NavigationViewModel = statisticsNavigationViewModel as BindableBase;
-            //this.statisticsService = statisticsService;
-            //this.statusMessageService = statusMessageService;
+
+            // this.statisticsService = statisticsService;
         }
 
         #endregion
@@ -63,13 +57,13 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         {
             try
             {
-                //this.Model = await this.statisticsService.GetAsync();
+                // this.Model = await this.statisticsService.GetAsync();
 
                 await base.OnEnterViewAsync();
             }
-            catch (System.Exception ex)
+            catch
             {
-                //this.statusMessageService.Notify(ex);
+                // this.statusMessageService.Notify(ex);
             }
         }
 

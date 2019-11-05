@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             this.States.Add(this.GetInstance(nameof(PresentationShutdown)));
             this.States.Add(this.GetInstance(nameof(PresentationHelp)));
             this.States.Add(this.GetInstance(nameof(PresentationLogged)));
-            this.States.Add(this.GetInstance(nameof(PresentationMachineMode)));
+            this.States.Add(this.GetInstance(nameof(PresentationMachineModeSwitch)));
             this.States.Add(this.GetInstance(nameof(PresentationMachinePowerSwitch)));
             this.States.Add(this.GetInstance(nameof(PresentationError)));
             this.States.Add(this.GetInstance(nameof(PresentationDebug)));

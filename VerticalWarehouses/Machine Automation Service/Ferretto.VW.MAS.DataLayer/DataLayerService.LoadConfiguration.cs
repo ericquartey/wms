@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.DataLayer
             string fileContents;
             using (var streamReader = new StreamReader(configurationFilePath))
             {
-                fileContents = streamReader.ReadToEnd();
+                fileContents = await streamReader.ReadToEndAsync();
             }
 
             var jsonObject = JObject.Parse(fileContents);

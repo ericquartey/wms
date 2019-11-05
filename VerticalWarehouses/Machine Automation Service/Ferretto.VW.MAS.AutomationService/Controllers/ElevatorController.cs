@@ -5,6 +5,8 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -14,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ElevatorController : BaseAutomationController
+    public class ElevatorController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -24,6 +26,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -31,38 +35,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public ElevatorController(
-            IEventAggregator eventAggregator,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider)
-            : base(eventAggregator)
+            IElevatorWeightCheckProcedureProvider elevatorWeightCheckProvider,
+            IEventAggregator eventAggregator)
         {
-            if (elevatorProvider is null)
-            {
-                throw new ArgumentNullException(nameof(elevatorProvider));
-            }
-
-            if (elevatorDataProvider is null)
-            {
-                throw new ArgumentNullException(nameof(elevatorDataProvider));
-            }
-
-            if (elevatorWeightCheckProvider is null)
-            {
-                throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
-            }
-
-            if (setupProceduresDataProvider is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            }
-
-            this.elevatorProvider = elevatorProvider;
-            this.elevatorDataProvider = elevatorDataProvider;
-            this.elevatorWeightCheckProvider = elevatorWeightCheckProvider;
-            this.setupProceduresDataProvider = setupProceduresDataProvider;
+            this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.elevatorWeightCheckProvider = elevatorWeightCheckProvider ?? throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
+            this.eventAggregator = eventAggregator;
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -82,6 +72,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 MessageType.Homing);
 
             return this.Accepted();
+        }
+
+        [HttpGet("horizontal/loadingunitonboard")]
+        public ActionResult<LoadingUnit> GetHorizontalLoadingUnitOnBoard()
+        {
+            return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());
         }
 
         [HttpGet("horizontal/position")]
@@ -125,7 +121,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
         {
-            //this.elevatorProvider.MoveHorizontalProfileCalibration(direction, this.BayNumber, MessageActor.AutomationService);  // TEST
+            // this.elevatorProvider.MoveHorizontalProfileCalibration(direction, this.BayNumber, MessageActor.AutomationService);  // TEST
             this.elevatorProvider.MoveHorizontalAuto(
                 direction,
                 isStartedOnBoard,
@@ -153,9 +149,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate, bool measure)
+        public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation)
         {
-            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRate, measure, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRate, measure, computeElongation, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -227,6 +223,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorWeightCheckProvider.Start(loadingUnitId, runToTest, weight);
 
             return this.Accepted();
+        }
+
+        [Obsolete("Move message publishing to providers.")]
+        protected void PublishCommand(
+            IMessageData messageData,
+            string description,
+            MessageActor receiver,
+            MessageType messageType)
+        {
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        messageData,
+                        description,
+                        receiver,
+                        MessageActor.WebApi,
+                        messageType,
+                        this.BayNumber));
         }
 
         #endregion

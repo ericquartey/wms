@@ -11,7 +11,6 @@ using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -29,6 +28,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private async Task ApplyMigrationsAsync()
         {
+            this.EnsureFolderExistence();
+
             try
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
@@ -64,8 +65,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             catch (Exception ex)
             {
-                this.Logger.LogError(ex, "Error while migating databases.");
-                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migating databases.", 0, MessageVerbosity.Fatal));
+                this.Logger.LogError(ex, "Error while migrating databases.");
+                this.SendErrorMessage(new DLExceptionMessageData(ex, "Error while migrating databases.", 0, MessageVerbosity.Fatal));
+            }
+        }
+
+        private void EnsureFolderExistence()
+        {
+            if (!System.IO.Directory.Exists("Database"))
+            {
+                System.IO.Directory.CreateDirectory("Database");
             }
         }
 

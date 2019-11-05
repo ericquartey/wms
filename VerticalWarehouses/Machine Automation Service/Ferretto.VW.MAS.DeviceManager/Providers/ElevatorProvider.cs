@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
 
             var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -240,7 +240,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Horizontal);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
 
             var speed = new[] { procedureParameters.ProfileCalibrateSpeed };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, BayNumber requestingBay, MessageActor sender)
+        public void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -286,13 +286,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
 
-            // TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
-            var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            if (!homingDone)
-            {
-                throw new InvalidOperationException(
-                   Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
-            }
+            //// TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
+            //var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
+            //if (!homingDone)
+            //{
+            //    throw new InvalidOperationException(
+            //       Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
+            //}
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
@@ -304,27 +304,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");
                 measure = false;
             }
-            var zeroSensor = this.machineProvider.IsOneTonMachine()
-                ? IOMachineSensors.ZeroPawlSensorOneK
-                : IOMachineSensors.ZeroPawlSensor;
 
-            if ((!isLoadingUnitOnBoard && !sensors[(int)zeroSensor]) || (isLoadingUnitOnBoard && sensors[(int)zeroSensor]))
-            {
-                throw new InvalidOperationException("Invalid Zero Chain position");
-            }
-
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
-            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
-                $"targetPosition: {targetPosition}; " +
-                $"speed: {speed[0]}; " +
-                $"acceleration: {acceleration[0]}; " +
-                $"deceleration: {deceleration[0]} ");
-
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Absolute,
@@ -335,6 +321,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 deceleration,
                 switchPosition,
                 HorizontalMovementDirection.Forwards);
+            messageData.LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id;
+            messageData.FeedRate = feedRate;
+            messageData.ComputeElongation = computeElongation;
+
+            this.logger.LogDebug($"MoveToVerticalPosition: {(measure ? MovementMode.PositionAndMeasure : MovementMode.Position)}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]}; " +
+                $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(
                 messageData,
@@ -378,7 +374,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     : -parameters.NegativeTargetDirection;
             }
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -421,7 +417,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
             }
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed * feedRate };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -475,7 +471,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetWeightCheck();
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             double[] speed = { movementParameters.Speed * procedureParameters.FeedRate };
             double[] acceleration = { movementParameters.Acceleration };
@@ -495,6 +491,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 LoadedNetWeight = netWeight,
                 LoadingUnitId = loadingUnitId,
+                FeedRate = procedureParameters.FeedRate
             };
 
             this.PublishCommand(
@@ -546,7 +543,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
 
-            var movementParameters = this.ScaleMovementsByWeight(Orientation.Vertical);
+            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed };
             var acceleration = new[] { movementParameters.Acceleration };
@@ -628,19 +625,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 this.isDisposed = true;
             }
-        }
-
-        private MovementParameters ScaleMovementsByWeight(Orientation orientation)
-        {
-            var axis = orientation == Orientation.Horizontal
-                ? this.elevatorDataProvider.GetHorizontalAxis()
-                : this.elevatorDataProvider.GetVerticalAxis();
-
-            var structuralProperties = this.elevatorDataProvider.GetStructuralProperties();
-
-            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
-
-            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
         }
 
         #endregion

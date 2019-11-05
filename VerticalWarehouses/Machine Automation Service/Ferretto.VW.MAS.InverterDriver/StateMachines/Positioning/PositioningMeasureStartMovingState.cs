@@ -1,8 +1,11 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
 
@@ -13,7 +16,14 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
+        // TODO transform these constants in configuration parameters?
+        private const double MinimumLoadOnBoard = 10.0;
+
+        private const int WeightTolerance = 50;
+
         private readonly IInverterPositioningFieldMessageData data;
+
+        private readonly IElevatorDataProvider elevatorProvider;
 
         private readonly ElevatorAxis verticalParams;
 
@@ -37,7 +47,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             this.data = data;
 
-            this.verticalParams = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>().GetAxis(Orientation.Vertical);
+            this.elevatorProvider = this.ParentStateMachine.GetRequiredService<IElevatorDataProvider>();
+            this.verticalParams = this.elevatorProvider.GetAxis(Orientation.Vertical);
         }
 
         #endregion
@@ -75,7 +86,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             else
             {
-                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.verticalParams.WeightMeasureTime * 100)
+                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.verticalParams.WeightMeasurement.MeasureTime * 100)
                 {
                     this.RequestSample();
                     this.startTime = DateTime.UtcNow;
@@ -83,13 +94,22 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             }
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
-                this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasureMultiply / 10.0) + this.verticalParams.WeightMeasureSum;
-                if (this.data.LoadingUnitId.HasValue)
+                this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasurement.MeasureMultiply / 10.0) + this.verticalParams.WeightMeasurement.MeasureSum;
+                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasurement.MeasureMultiply}. kSum {this.verticalParams.WeightMeasurement.MeasureSum}");
+                this.data.IsWeightMeasureDone = true;
+                if (this.data.LoadingUnitId.HasValue
+                    && this.data.MeasuredWeight > MinimumLoadOnBoard
+                    && this.data.MeasuredWeight < this.elevatorProvider.GetStructuralProperties().MaximumLoadOnBoard)
                 {
                     this.ParentStateMachine.GetRequiredService<ILoadingUnitsProvider>().SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
+                    if (!this.data.LoadedNetWeight.HasValue
+                        || Math.Abs(this.data.MeasuredWeight - this.data.LoadedNetWeight.Value) > WeightTolerance
+                        )
+                    {
+                        this.ScaleMovementsByWeight();
+                    }
                 }
-                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasureMultiply}. kSum {this.verticalParams.WeightMeasureSum}");
-                this.data.IsWeightMeasureDone = true;
+
                 this.ParentStateMachine.ChangeState(
                     new PositioningMeasureDisableOperationState(
                         this.ParentStateMachine,
@@ -107,6 +127,59 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 new InverterMessage(
                     this.InverterStatus.SystemIndex,
                     InverterParameterId.TorqueCurrent));
+        }
+
+        private void ScaleMovementsByWeight()
+        {
+            var invertersProvider = this.ParentStateMachine.GetRequiredService<IInvertersProvider>();
+            var axis = this.elevatorProvider.GetVerticalAxis();
+            MovementParameters movementParameters = null;
+            try
+            {
+                movementParameters = this.elevatorProvider.ScaleMovementsByWeight(Orientation.Vertical);
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex.Message);
+            }
+            if (movementParameters != null)
+            {
+                var targetPosition = invertersProvider.ConvertPulsesToMillimeters(this.data.TargetPosition, Orientation.Vertical);
+                targetPosition += axis.Offset;
+
+                var positioningData = new PositioningFieldMessageData(
+                    Axis.Vertical,
+                    MovementType.Absolute,
+                    targetPosition,
+                    new[] { movementParameters.Speed * this.data.FeedRate },
+                    new[] { movementParameters.Acceleration },
+                    new[] { movementParameters.Deceleration },
+                    0,
+                    false,
+                    BayNumber.ElevatorBay);
+
+                var currentPosition = 0;
+                if (this.Inverter is AngInverterStatus angInverter)
+                {
+                    currentPosition = angInverter.CurrentPositionAxisVertical;
+                }
+                else if (this.Inverter is AcuInverterStatus acuInverter)
+                {
+                    currentPosition = acuInverter.CurrentPosition;
+                }
+                positioningData.SwitchPosition = new[] { 0.0 };
+                invertersProvider.ComputePositioningValues(this.Inverter, positioningData, Orientation.Vertical, currentPosition, false, out var fieldMessageData);
+                this.data.TargetPosition = fieldMessageData.TargetPosition;
+                this.data.TargetSpeed = fieldMessageData.TargetSpeed;
+                this.data.TargetAcceleration = fieldMessageData.TargetAcceleration;
+                this.data.TargetDeceleration = fieldMessageData.TargetDeceleration;
+
+                this.Logger.LogDebug($"ScaleMovementsByWeight: {MovementMode.PositionAndMeasure}; " +
+                    $"targetPosition: {this.data.TargetPosition}; " +
+                    $"speed: {this.data.TargetSpeed[0]}; " +
+                    $"acceleration: {this.data.TargetAcceleration[0]}; " +
+                    $"deceleration: {this.data.TargetDeceleration[0]} ");
+            }
         }
 
         #endregion

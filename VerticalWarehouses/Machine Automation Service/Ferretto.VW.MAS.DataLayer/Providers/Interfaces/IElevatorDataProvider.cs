@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void LoadLoadingUnit(int loadingUnitId);
 
+        MovementParameters ScaleMovementsByWeight(Orientation orientation);
+
         void UnloadLoadingUnit();
 
         void UpdateVerticalOffset(double newOffset);

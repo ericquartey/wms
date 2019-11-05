@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
@@ -18,9 +17,7 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
-        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
-
-        //private readonly IStatusMessageService statusMessageService;
+        private readonly INavigationService navigationService;
 
         private int currentItemIndex;
 
@@ -51,12 +48,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         public DrawerWeightSaturationViewModel(
             IMachineLoadingUnitsWebService loadingUnitService,
             IMachineIdentityWebService identityService,
-            //IStatusMessageService statusMessageService,
-            Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService,
+            INavigationService navigationService,
             ICustomControlDrawerWeightSaturationDataGridViewModel drawerWeightSaturationDataGridViewModel)
         {
             this.dataGridViewModel = drawerWeightSaturationDataGridViewModel;
-            //this.statusMessageService = statusMessageService;
             this.loadingUnitService = loadingUnitService;
             this.navigationService = navigationService;
             this.identityService = identityService;
@@ -68,9 +63,15 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         public ICustomControlDrawerWeightSaturationDataGridViewModel DataGridViewModel { get => this.dataGridViewModel; set => this.SetProperty(ref this.dataGridViewModel, value); }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
+        public ICommand DownDataGridButtonCommand =>
+            this.downDataGridButtonCommand
+            ??
+            (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(false)));
 
-        public ICommand DrawerSpaceSaturationButtonCommand => this.drawerSpaceSaturationButtonCommand ?? (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
+        public ICommand DrawerSpaceSaturationButtonCommand =>
+            this.drawerSpaceSaturationButtonCommand
+            ??
+            (this.drawerSpaceSaturationButtonCommand = new DelegateCommand(() =>
                 {
                     this.navigationService.NavigateToView<DrawerSpaceSaturationViewModel, IDrawerSpaceSaturationViewModel>();
                 }));
@@ -83,15 +84,34 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             set => this.SetProperty(ref this.maxGrossWeight, value);
         }
 
-        public double MaxNetWeight { get => this.maxNetWeight; set => this.SetProperty(ref this.maxNetWeight, value); }
+        public double MaxNetWeight
+        {
+            get => this.maxNetWeight;
+            set => this.SetProperty(ref this.maxNetWeight, value);
+        }
 
-        public double NetWeight { get => this.netWeight; set => this.SetProperty(ref this.netWeight, value); }
+        public double NetWeight
+        {
+            get => this.netWeight;
+            set => this.SetProperty(ref this.netWeight, value);
+        }
 
-        public double NetWeightPercent { get => this.netWeightPercent; set => this.SetProperty(ref this.netWeightPercent, value); }
+        public double NetWeightPercent
+        {
+            get => this.netWeightPercent;
+            set => this.SetProperty(ref this.netWeightPercent, value);
+        }
 
-        public int TotalLoadingUnits { get => this.totalLoadingUnits; set => this.SetProperty(ref this.totalLoadingUnits, value); }
+        public int TotalLoadingUnits
+        {
+            get => this.totalLoadingUnits;
+            set => this.SetProperty(ref this.totalLoadingUnits, value);
+        }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
+        public ICommand UpDataGridButtonCommand =>
+            this.upDataGridButtonCommand
+            ??
+            (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItem(true)));
 
         #endregion
 
@@ -135,16 +155,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 this.currentItemIndex = 0;
                 var machine = await this.identityService.GetAsync();
                 this.MaxGrossWeight = machine.MaxGrossWeight;
-                this.MaxNetWeight = (double)machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
+                this.MaxNetWeight = machine.MaxGrossWeight - loadingUnits.Sum(l => l.Tare);
                 this.GrossWeight = loadingUnits.Sum(l => l.GrossWeight);
                 this.NetWeight = loadingUnits.Sum(l => l.GrossWeight) - loadingUnits.Sum(l => l.Tare);
                 this.NetWeightPercent = this.NetWeight * 100 / this.MaxNetWeight;
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
             }
-            catch (Exception ex)
+            catch
             {
-                //this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
+                // this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
         }
 

@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BottomLevelBayOccupied.
+        /// </summary>
+        public static string BottomLevelBayOccupied {
+            get {
+                return ResourceManager.GetString("BottomLevelBayOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore..
         /// </summary>
         public static string ConditionsNotMetForPositioning {
@@ -102,6 +111,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string CradleNotCorrectlyUnloadedDuringDeposit {
             get {
                 return ResourceManager.GetString("CradleNotCorrectlyUnloadedDuringDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to InvalidPresenceSensors.
+        /// </summary>
+        public static string InvalidPresenceSensors {
+            get {
+                return ResourceManager.GetString("InvalidPresenceSensors", resourceCulture);
             }
         }
         
@@ -241,6 +259,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadUnitPresentOnEmptyElevator.
+        /// </summary>
+        public static string LoadUnitPresentOnEmptyElevator {
+            get {
+                return ResourceManager.GetString("LoadUnitPresentOnEmptyElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
         /// </summary>
         public static string MachineManagerErrorBaseCode {
@@ -340,11 +367,47 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MissingZeroSensorWithEmptyElevator.
+        /// </summary>
+        public static string MissingZeroSensorWithEmptyElevator {
+            get {
+                return ResourceManager.GetString("MissingZeroSensorWithEmptyElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string SecurityWasTriggered {
             get {
                 return ResourceManager.GetString("SecurityWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SensoZeroBayNotActiveAtStart.
+        /// </summary>
+        public static string SensoZeroBayNotActiveAtStart {
+            get {
+                return ResourceManager.GetString("SensoZeroBayNotActiveAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TopLevelBayOccupied.
+        /// </summary>
+        public static string TopLevelBayOccupied {
+            get {
+                return ResourceManager.GetString("TopLevelBayOccupied", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ZeroSensorActiveWithFullElevator.
+        /// </summary>
+        public static string ZeroSensorActiveWithFullElevator {
+            get {
+                return ResourceManager.GetString("ZeroSensorActiveWithFullElevator", resourceCulture);
             }
         }
         

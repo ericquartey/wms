@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            this.Logger.LogDebug($"1: Received Message = {message.ToString()}");
+            this.Logger.LogTrace($"1: Received Message = {message.ToString()}");
 
             // TEMP Check the matching between the status output flags and the message output flags (i.e. the switch ElevatorMotorON has been processed)
         }

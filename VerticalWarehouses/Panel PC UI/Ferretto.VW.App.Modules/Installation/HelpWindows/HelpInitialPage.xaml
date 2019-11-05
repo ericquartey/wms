@@ -53,11 +53,11 @@
                                               VerticalAlignment="Top"
                                               Visibility="Visible" />
 
-        <controls:CustomMachineOnMarchToggleButton Margin="20,280,0,0"
+        <controls:CustomMachinePowerToggleButton Margin="20,280,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top" />
 
-        <controls:CustomMachineOnMarchToggleButton Margin="20,210,0,0"
+        <controls:CustomMachinePowerToggleButton Margin="20,210,0,0"
                                                    HorizontalAlignment="Left"
                                                    VerticalAlignment="Top" />
 

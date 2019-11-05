@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SensorsController : BaseAutomationController
+    public class SensorsController : ControllerBase
     {
         #region Fields
 
@@ -16,17 +16,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Constructors
 
-        public SensorsController(
-            IEventAggregator eventAggregator,
-            ISensorsProvider sensorsProvider)
-            : base(eventAggregator)
+        public SensorsController(ISensorsProvider sensorsProvider)
         {
-            if (sensorsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(sensorsProvider));
-            }
-
-            this.sensorsProvider = sensorsProvider;
+            this.sensorsProvider = sensorsProvider ?? throw new System.ArgumentNullException(nameof(sensorsProvider));
         }
 
         #endregion

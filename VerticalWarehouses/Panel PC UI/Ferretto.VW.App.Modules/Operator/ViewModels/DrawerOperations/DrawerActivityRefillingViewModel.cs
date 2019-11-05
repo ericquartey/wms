@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -49,7 +43,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
                 () => this.DrawerDetailsButtonMethod()));
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 

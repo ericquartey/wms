@@ -200,13 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("UpperBound");
 
-                    b.Property<double>("WeightMeasureMultiply");
-
-                    b.Property<double>("WeightMeasureSpeed");
-
-                    b.Property<double>("WeightMeasureSum");
-
-                    b.Property<int>("WeightMeasureTime");
+                    b.Property<int?>("WeightMeasurementId");
 
                     b.HasKey("Id");
 
@@ -217,6 +211,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("FullLoadMovementId");
 
                     b.HasIndex("InverterId");
+
+                    b.HasIndex("WeightMeasurementId");
 
                     b.ToTable("ElevatorAxes");
                 });
@@ -461,6 +457,62 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 100041,
+                            Code = 100041,
+                            Description = "InvalidPresenceSensors",
+                            Reason = "InvalidPresenceSensors",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100042,
+                            Code = 100042,
+                            Description = "MissingZeroSensorWithEmptyElevator",
+                            Reason = "MissingZeroSensorWithEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100043,
+                            Code = 100043,
+                            Description = "ZeroSensorActiveWithFullElevator",
+                            Reason = "ZeroSensorActiveWithFullElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100044,
+                            Code = 100044,
+                            Description = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "LoadUnitPresentOnEmptyElevator",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100045,
+                            Code = 100045,
+                            Description = "TopLevelBayOccupied",
+                            Reason = "TopLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100046,
+                            Code = 100046,
+                            Description = "BottomLevelBayOccupied",
+                            Reason = "BottomLevelBayOccupied",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 100047,
+                            Code = 100047,
+                            Description = "SensoZeroBayNotActiveAtStart",
+                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 300000,
                             Code = 300000,
                             Description = "Errore Machine Manager",
@@ -603,6 +655,41 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 100040,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100041,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100042,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100043,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100044,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100045,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100046,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 100047,
                             TotalErrors = 0
                         },
                         new
@@ -998,7 +1085,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2016, 12, 29, 15, 48, 3, 705, DateTimeKind.Local).AddTicks(886),
+                            InstallationDate = new DateTime(2017, 1, 4, 14, 24, 8, 57, DateTimeKind.Local).AddTicks(3409),
                             ServiceStatus = 86
                         });
                 });
@@ -1259,6 +1346,24 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("MeasureMultiply");
+
+                    b.Property<double>("MeasureSpeed");
+
+                    b.Property<double>("MeasureSum");
+
+                    b.Property<int>("MeasureTime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("WeightMeasurement");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
@@ -1430,6 +1535,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.WeightMeasurement", "WeightMeasurement")
+                        .WithMany()
+                        .HasForeignKey("WeightMeasurementId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.ErrorStatistic", b =>

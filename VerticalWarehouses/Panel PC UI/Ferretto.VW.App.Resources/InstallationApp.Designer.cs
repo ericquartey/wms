@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -286,20 +286,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Position down.
         /// </summary>
-        public static string BayPosition1 {
+        public static string BayPositionDown {
             get {
-                return ResourceManager.GetString("BayPosition1", resourceCulture);
+                return ResourceManager.GetString("BayPositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 2.
+        ///   Looks up a localized string similar to Position down bay height [mm].
         /// </summary>
-        public static string BayPosition2 {
+        public static string BayPositionDownHeight {
             get {
-                return ResourceManager.GetString("BayPosition2", resourceCulture);
+                return ResourceManager.GetString("BayPositionDownHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up.
+        /// </summary>
+        public static string BayPositionUp {
+            get {
+                return ResourceManager.GetString("BayPositionUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up bay height [mm].
+        /// </summary>
+        public static string BayPositionUpHeight {
+            get {
+                return ResourceManager.GetString("BayPositionUpHeight", resourceCulture);
             }
         }
         
@@ -372,6 +390,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CarouselUp {
             get {
                 return ResourceManager.GetString("CarouselUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell.
+        /// </summary>
+        public static string Cell {
+            get {
+                return ResourceManager.GetString("Cell", resourceCulture);
             }
         }
         
@@ -1627,6 +1654,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit code.
+        /// </summary>
+        public static string LoadingUnitCode {
+            get {
+                return ResourceManager.GetString("LoadingUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position down.
+        /// </summary>
+        public static string LoadingUnitCodePositionDown {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePositionDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position up.
+        /// </summary>
+        public static string LoadingUnitCodePositionUp {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePositionUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move loading unit from cell to cell.
         /// </summary>
         public static string LoadingUnitFromCellToCell {
@@ -2748,6 +2802,24 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayInBay {
             get {
                 return ResourceManager.GetString("TrayInBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray in position down.
+        /// </summary>
+        public static string TrayInBayPositionDown {
+            get {
+                return ResourceManager.GetString("TrayInBayPositionDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray in position up.
+        /// </summary>
+        public static string TrayInBayPositionUp {
+            get {
+                return ResourceManager.GetString("TrayInBayPositionUp", resourceCulture);
             }
         }
         
