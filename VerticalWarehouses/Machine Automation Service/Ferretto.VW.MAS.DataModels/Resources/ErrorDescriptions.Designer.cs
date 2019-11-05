@@ -259,6 +259,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Il peso massimo caricato sul cassetto è eccessivo..
+        /// </summary>
+        public static string LoadingUnitWeightExceeded {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeightExceeded", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LoadUnitPresentOnEmptyElevator.
         /// </summary>
         public static string LoadUnitPresentOnEmptyElevator {

@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool IsDrawerInBay3Top { get; }
 
-        bool IsDrawerPartiallyOnCradleBay1 { get; }
+        bool IsDrawerPartiallyOnCradle { get; }
 
         bool IsMachineInEmergencyState { get; }
 

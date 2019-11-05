@@ -127,9 +127,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var isLoadingUnitOnBoard =
-                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                sensors[(int)IOMachineSensors.LuPresentInMachineSide]
                 &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
             if (isStartedOnBoard != isLoadingUnitOnBoard)
             {
@@ -296,9 +296,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
-                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                sensors[(int)IOMachineSensors.LuPresentInMachineSide]
                 &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
             if (measure && !isLoadingUnitOnBoard)
             {
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");

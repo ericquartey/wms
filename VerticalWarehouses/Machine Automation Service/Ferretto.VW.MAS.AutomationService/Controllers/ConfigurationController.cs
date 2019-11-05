@@ -52,6 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.machineProvider.Update(vertimagConfiguration.Machine);
             this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures);
+            this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits);
 
             return this.Ok();
         }

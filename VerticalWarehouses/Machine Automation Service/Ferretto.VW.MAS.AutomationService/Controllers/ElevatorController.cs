@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("horizontal/findzero")]
+        [HttpPost("horizontal/find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
@@ -74,8 +74,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpGet("horizontal/loadingunitonboard")]
-        public ActionResult<LoadingUnit> GetHorizontalLoadingUnitOnBoard()
+        [HttpGet("loading-unit-on-board")]
+        public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
             return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());
         }

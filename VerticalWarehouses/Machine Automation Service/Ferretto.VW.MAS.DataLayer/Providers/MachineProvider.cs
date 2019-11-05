@@ -10,8 +10,6 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private const int MaxDrawerGrossWeight = 990;
-
         private readonly IMemoryCache cache;
 
         private readonly DataLayerContext dataContext;
@@ -90,12 +88,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
-                    .Include(e => e.StructuralProperties)
-                    .Single();
+                var elevatorInvertersCount = this.dataContext.ElevatorAxes
+                    .Where(a => a.Inverter != null)
+                    .Select(a => a.Inverter.Id)
+                    .Distinct()
+                    .Count();
 
-                var maximumLoadOnBoard = elevator.StructuralProperties.MaximumLoadOnBoard;
-                return maximumLoadOnBoard == MaxDrawerGrossWeight;
+                return elevatorInvertersCount > 1;
             }
         }
 

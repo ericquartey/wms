@@ -128,24 +128,20 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Methods
 
-        public MovementParameters ScaleMovementsByWeight(double grossWeight, double maximumLoadOnBoard)
+        public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit)
         {
-            if (grossWeight < 0)
+            if (loadingUnit is null)
             {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+                return this.EmptyLoadMovement;
             }
 
-            if (maximumLoadOnBoard <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
-            }
+            var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;
 
-            if (grossWeight > maximumLoadOnBoard)
-            {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
-            }
+            System.Diagnostics.Debug.Assert(
+                maxGrossWeight > 0,
+                "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
-            var scalingFactor = grossWeight / maximumLoadOnBoard;
+            var scalingFactor = loadingUnit.GrossWeight / maxGrossWeight;
 
             return new MovementParameters
             {

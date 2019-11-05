@@ -401,7 +401,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1]
                         && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
-                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
+                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
                         return true;
@@ -416,7 +416,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1]
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
-                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
+                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
                         return true;
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1]
                         && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
-                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
+                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
                         return true;
@@ -454,7 +454,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1]
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
-                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradleBay1
+                        && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
                         return true;

@@ -112,7 +112,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
+                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSide && this.sensorsService.Sensors.LuPresentInOperatorSide));
         }
 
         private bool CanSelectBayPosition()
@@ -122,7 +122,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSideBay1 && this.sensorsService.Sensors.LuPresentInOperatorSideBay1));
+                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSide && this.sensorsService.Sensors.LuPresentInOperatorSide));
         }
 
         private async Task MoveToBayHeightAsync()
