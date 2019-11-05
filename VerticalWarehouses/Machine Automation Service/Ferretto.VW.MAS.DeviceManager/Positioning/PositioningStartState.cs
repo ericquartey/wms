@@ -173,6 +173,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
             }
 
+            this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 this.machineData.MessageData.RequiredCycles == 0
