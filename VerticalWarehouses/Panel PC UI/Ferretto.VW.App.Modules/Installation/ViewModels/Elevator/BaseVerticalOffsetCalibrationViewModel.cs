@@ -144,11 +144,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveProcedureParametersAsync();
         }
 
-        //public override void OnNavigatedFrom(NavigationContext navigationContext)
-        //{
-        //    base.OnNavigatedFrom(navigationContext);
-        //}
-
         protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             this.CurrentPosition = message.Data.CurrentPosition;
