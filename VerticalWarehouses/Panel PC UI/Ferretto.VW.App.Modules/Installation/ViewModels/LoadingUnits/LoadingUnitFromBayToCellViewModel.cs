@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -10,10 +13,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineCellsWebService machineCellsWebService,
-                    Controls.Interfaces.ISensorsService sensorsService,
-                    IBayManager bayManagerService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
+            IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 machineCellsWebService,
@@ -26,11 +29,59 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public void GetCells()
+        {
+            try
+            {
+                if (this.Cells.Count() > 0)
+                {
+                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                }
+                else
+                {
+                    this.DestinationCellId = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+            }
+        }
+
+        public async Task GetLoadingUnits()
+        {
+            try
+            {
+                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
+
+                if (lst.Count() > 0)
+                {
+                    this.LoadingUnitId = lst.Max(o => o.Id) + 1;
+                }
+                else
+                {
+                    this.LoadingUnitId = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.LoadingUnitId = null;
+            await this.GetLoadingUnits();
+
+            this.GetCells();
 
             this.SelectBayPositionDown();
         }
