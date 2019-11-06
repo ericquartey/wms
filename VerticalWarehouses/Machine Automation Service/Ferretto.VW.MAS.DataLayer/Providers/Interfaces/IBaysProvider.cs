@@ -61,6 +61,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
 
+        void ResetMachine();
+
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
         void UnloadLoadingUnit(LoadingUnitLocation location);

@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void LoadLoadingUnit(int loadingUnitId);
 
+        void ResetMachine();
+
         MovementParameters ScaleMovementsByWeight(Orientation orientation);
 
         void UnloadLoadingUnit();

@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +19,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly ILogger logger;
@@ -30,7 +36,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public MissionOperationsController(
             IEventAggregator eventAggregator,
             ILogger<MissionOperationsController> logger,
-            IMissionOperationsDataService missionOperationsDataService)
+            IMissionOperationsDataService missionOperationsDataService,
+            IBaysProvider baysProvider,
+            IElevatorDataProvider elevatorDataProvider)
         {
             if (eventAggregator is null)
             {
@@ -46,6 +54,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 throw new ArgumentNullException(nameof(missionOperationsDataService));
             }
+
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
 
             this.eventAggregator = eventAggregator;
             this.logger = logger;
@@ -78,6 +89,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
                 this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                 this.logger.LogDebug($"AS-OC Operator marked mission operation id={id} as completed, with quantity {quantity}.");
+
+                return this.Ok();
+            }
+            catch (SwaggerException ex)
+            {
+                return this.NegativeResult(ex);
+            }
+        }
+
+        // Vorrei capire se è il punto giusto dove mettere il metodo, per oggi la lascio qui
+        [HttpPost("resetmachine")]
+        public ActionResult ResetMachine()
+        {
+            try
+            {
+                this.baysProvider.ResetMachine();
+                this.elevatorDataProvider.ResetMachine();
+
+                this.logger.LogInformation($"RESET MACHINE.");
 
                 return this.Ok();
             }

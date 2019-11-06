@@ -574,6 +574,23 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void ResetMachine()
+        {
+            // TODO: Da verificare con Stefano
+            foreach (var bay in this.dataContext.Bays
+                                    .Include(i => i.Positions))
+            {
+                bay.CurrentMissionId = null;
+                bay.CurrentMissionOperationId = null;
+                foreach (var position in bay.Positions)
+                {
+                    position.LoadingUnit = null;
+                }
+            }
+
+            this.dataContext.SaveChanges();
+        }
+
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
         {
             lock (this.dataContext)
