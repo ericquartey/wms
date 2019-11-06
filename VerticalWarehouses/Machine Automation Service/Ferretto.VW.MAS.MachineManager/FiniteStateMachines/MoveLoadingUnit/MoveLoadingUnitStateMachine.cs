@@ -166,7 +166,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         var destinationCell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
                         returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
                     }
-                    else
+
+                    if (!returnValue)
                     {
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationCell);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell);

@@ -141,9 +141,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, openShutter, openShutter, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, openShutter, requestingBay, sender);
 
             if (openShutter)
             {

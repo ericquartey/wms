@@ -52,6 +52,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private bool isBlockDefined;
 
+        private bool isPositionDefined;
+
         private int stepId;
 
         private InverterTableIndex tableIndex;
@@ -126,20 +128,47 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.BlockDefinition:
-                        this.isBlockDefined = true;
-                        object[] blockValues = new object[]
+                        if (!this.isPositionDefined)
                         {
-                            (short)this.tableIndex,
-                            this.data.TargetSpeed[this.stepId],
-                            this.data.TargetAcceleration[this.stepId],
-                            this.data.TargetAcceleration[this.stepId]
-                        };
-                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
-                        this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
+                            this.isBlockDefined = true;
+                            object[] blockValues = new object[]
+                            {
+                                (short)this.tableIndex,
+                                this.data.TargetSpeed[this.stepId],
+                                this.data.TargetAcceleration[this.stepId],
+                                this.data.TargetAcceleration[this.stepId]
+                            };
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
+                            this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
+                        }
+                        else
+                        {
+                            object[] blockValues = new object[]
+                            {
+                                (short)InverterTableIndex.TableTravelP1,
+                                this.data.SwitchPosition[0],
+                                (short)InverterTableIndex.TableTravelP2,
+                                this.data.SwitchPosition[1],
+                                (short)InverterTableIndex.TableTravelP3,
+                                this.data.SwitchPosition[2],
+                                (short)InverterTableIndex.TableTravelP4,
+                                this.data.SwitchPosition[3],
+                            };
+                            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
+                            this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]}, {blockValues[4]}, {blockValues[5]}, {blockValues[6]}, {blockValues[7]} ");
+                        }
                         break;
 
                     case InverterParameterId.BlockWrite:
-                        this.DoTargetDecelerations();
+                        if (!this.isPositionDefined)
+                        {
+                            this.DoTargetDecelerations();
+                        }
+                        else
+                        {
+                            this.stepId = this.data.SwitchPosition.Length;
+                            this.DoTargetPosition();
+                        }
                         break;
 
                     case InverterParameterId.TableTravelTableIndex:
@@ -276,8 +305,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             {
                 this.stepId = 0;
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
+#if BLOCK_WRITE
+                var definitions = new List<InverterBlockDefinition>
+                    {
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                    };
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
+                this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}");
+                this.isPositionDefined = true;
+#else
                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
                 this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+#endif
             }
         }
 
@@ -291,8 +337,25 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else if (++this.stepId < this.data.SwitchPosition.Length - 1)
             {
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
+#if BLOCK_WRITE
+                var definitions = new List<InverterBlockDefinition>
+                    {
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTargetPosition),
+                    };
+                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
+                this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}");
+                this.isPositionDefined = true;
+#else
                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
                 this.Logger.LogDebug($"Set table index: {this.tableIndex}");
+#endif
             }
             else
             {

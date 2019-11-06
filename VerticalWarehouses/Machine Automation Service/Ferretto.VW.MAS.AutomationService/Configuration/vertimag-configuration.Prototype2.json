@@ -525,6 +525,10 @@
         "Positions": [
           {
             "Height": 776,
+            "Location": "InternalBay1Down"
+          },
+          {
+            "Height": 776,
             "Location": "InternalBay1Up"
           }
         ],
@@ -561,7 +565,7 @@
           "EmptyLoadMovement": {
             "Acceleration": 1000,
             "Deceleration": 1000,
-            "Speed": 600//420
+            "Speed": 600 //420
           },
           "FullLoadMovement": {
             "Acceleration": 400,
@@ -606,7 +610,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 200,
+                  "Speed": 300,
                   "Number": 0,
                   "Position": 200
                 },
@@ -690,7 +694,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 1000,
-                  "Speed": 200,
+                  "Speed": 300,
                   "Position": 200,
                   "Number": 0
                 },
@@ -4458,7 +4462,7 @@
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15
+      "FeedRateAfterZero": 0.25
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
