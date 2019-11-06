@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -88,24 +89,27 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("statistics")]
-        public async Task<ActionResult<MachineStatistics>> GetStatistics()
+        public async Task<ActionResult<MachineStatistics>> GetStatistics([FromServices] IConfiguration configuration)
         {
-            var statics = this.machineProvider.GetStatistics();
+            var statistics = this.machineProvider.GetStatistics();
 
-            try
+            if (configuration.IsWmsEnabled())
             {
-                var machineId = 1; // TODO HACK remove this hardcoded value
-                var machine = await this.machinesDataService.GetByIdAsync(machineId);
+                try
+                {
+                    var machineId = 1; // TODO HACK remove this hardcoded value and use the machine serial number
+                    var machine = await this.machinesDataService.GetByIdAsync(machineId);
 
-                statics.AreaFillPercentage = machine.AreaFillRate;
-            }
-            catch (System.Exception)
-            {
-                // do nothing:
-                // if the call fails, data from WMS will not be populated
+                    statistics.AreaFillPercentage = machine.AreaFillRate;
+                }
+                catch (System.Exception)
+                {
+                    // do nothing:
+                    // if the call fails, data from WMS will not be populated
+                }
             }
 
-            return this.Ok(statics);
+            return this.Ok(statistics);
         }
 
         #endregion

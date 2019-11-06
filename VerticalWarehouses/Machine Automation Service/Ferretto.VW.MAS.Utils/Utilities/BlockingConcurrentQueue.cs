@@ -60,6 +60,8 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
         {
+            result = default(T);
+
             try
             {
                 if (this.Count > 0)
@@ -76,22 +78,22 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     }
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
-                throw;
+                return false;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception {ex.Message} while trying to dequeue object from blocking queue {this.GetType().Name}");
+                throw new Exception($"An error occurred while trying to dequeue from blocking queue {this.GetType().Name}", ex);
             }
-
-            result = default(T);
 
             return false;
         }
 
         public bool TryPeek(int timeout, CancellationToken cancellationToken, out T result)
         {
+            result = default(T);
+
             try
             {
                 if (this.Count > 0)
@@ -104,16 +106,14 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     return this.TryPeek(out result);
                 }
             }
-            catch (OperationCanceledException)
+            catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
             {
-                throw;
+                return false;
             }
             catch (Exception ex)
             {
-                throw new Exception($"Exception {ex.Message} while trying to peek object from blocking queue {this.GetType().Name}");
+                throw new Exception($"An error occurred while trying to peek from blocking queue {this.GetType().Name}", ex);
             }
-
-            result = default(T);
 
             return false;
         }

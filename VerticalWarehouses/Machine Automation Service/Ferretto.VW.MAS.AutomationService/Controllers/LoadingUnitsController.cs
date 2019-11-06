@@ -9,6 +9,7 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -83,57 +84,66 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("statistics/space")]
-        public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
+        public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
+            [FromServices] IConfiguration configuration)
         {
             var statistics = this.loadingUnitsProvider.GetSpaceStatistics();
 
-            try
+            if (configuration.IsWmsEnabled())
             {
-                var machineId = 1; // TODO HACK remove this hardcoded value
-                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                try
                 {
-                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    var machineId = 1; // TODO HACK remove this hardcoded value and use machine serial number
+                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    foreach (var stat in statistics)
                     {
-                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        if (loadingUnit.AreaFillRate != null)
+                        var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                        if (loadingUnit != null)
                         {
-                            stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                            stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                            if (loadingUnit.AreaFillRate != null)
+                            {
+                                stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                // do nothing:
-                // data from WMS will remain to its default values
+                catch (Exception)
+                {
+                    // do nothing:
+                    // data from WMS will remain to its default values
+                }
             }
 
             return this.Ok(statistics);
         }
 
         [HttpGet("statistics/weight")]
-        public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
+        public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync(
+            [FromServices] IConfiguration configuration)
         {
             var statistics = this.loadingUnitsProvider.GetWeightStatistics();
-            try
+
+            if (configuration.IsWmsEnabled())
             {
-                var machineId = 1; // TODO HACK remove this hardcoded value
-                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                try
                 {
-                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    var machineId = 1; // TODO HACK remove this hardcoded value
+                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    foreach (var stat in statistics)
                     {
-                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                        var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                        if (loadingUnit != null)
+                        {
+                            stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                // do nothing:
-                // data from WMS will remain to its default values
+                catch (Exception)
+                {
+                    // do nothing:
+                    // data from WMS will remain to its default values
+                }
             }
 
             return this.Ok(statistics);

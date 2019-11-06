@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
+        private const int NoError = 0;
+
         private const string ServiceConsoleArgument = "--service";
 
         #endregion
@@ -70,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             logger.LogInformation("Application terminated correctly.");
 
-            return 0;
+            return NoError;
         }
 
         private static string GetVersion()

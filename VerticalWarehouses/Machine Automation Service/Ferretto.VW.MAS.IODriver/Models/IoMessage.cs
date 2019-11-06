@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 catch (Exception ex)
                 {
-                    throw new IOException($"Exception {ex.Message} while initializing Inputs status");
+                    throw new IOException($"Error while initializing I/O input message.", ex);
                 }
             }
             else
@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 catch (Exception ex)
                 {
-                    throw new IOException($"Exception {ex.Message} while initializing Outputs status");
+                    throw new IOException($"Error while initializing I/O output message.", ex);
                 }
             }
         }

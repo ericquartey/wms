@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class MissionOperationsController : BaseWmsProxyController
     {
         #region Fields
+
+        private readonly IConfiguration configuration;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -30,26 +33,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public MissionOperationsController(
             IEventAggregator eventAggregator,
             ILogger<MissionOperationsController> logger,
+            IConfiguration configuration,
             IMissionOperationsDataService missionOperationsDataService)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (missionOperationsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(missionOperationsDataService));
-            }
-
-            this.eventAggregator = eventAggregator;
-            this.logger = logger;
-            this.missionOperationsDataService = missionOperationsDataService;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
         }
 
         #endregion
@@ -59,6 +49,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity)
         {
+            if (this.configuration.IsWmsEnabled())
+            {
+                throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
+            }
+
             try
             {
                 await this.missionOperationsDataService.CompleteItemAsync(id, quantity);

@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public override bool UpdateInputsStates(bool[] newInputStates)
         {
-            if (newInputStates == null)
+            if (newInputStates is null)
             {
                 return false;
             }
@@ -217,6 +217,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
                     break;
                 }
             }
+
             try
             {
                 if (updateRequired)
@@ -226,7 +227,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while updating ANG Inputs status");
+                throw new InverterDriverException("Error while updating ANG inverter inputs.", ex);
             }
 
             return updateRequired;

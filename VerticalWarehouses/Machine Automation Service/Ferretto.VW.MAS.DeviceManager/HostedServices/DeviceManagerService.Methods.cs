@@ -108,8 +108,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
                 {
-                    this.Logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType().Name}");
-                    this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                    this.SendCriticalErrorMessage(
+                        new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
                 }
                 else
                 {
@@ -129,21 +129,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
                     this.currentStateMachines.Add(targetBay, currentStateMachine);
 
-                    try
-                    {
-                        currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                    }
+                    this.StartStateMachine(targetBay);
                 }
             }
             else
             {
-                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
@@ -155,8 +146,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
-                this.Logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType().Name}");
-                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
                     $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on {receivedMessage.TargetBay}",
                     1, MessageVerbosity.Error));
             }
@@ -174,28 +164,16 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
                 this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
 
-                try
-                {
-                    currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, $"3:Exception: during the FSM {currentStateMachine.GetType().Name} start");
-
-                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.StartStateMachine(receivedMessage.TargetBay);
             }
         }
 
         private void ProcessInverterPowerEnable(CommandMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            this.Logger.LogTrace("1:ProcessInverterPowerEnable Start");
-
             if (this.currentStateMachines.TryGetValue(receivedMessage.TargetBay, out var currentStateMachine))
             {
-                this.Logger.LogTrace($"2:FSM {currentStateMachine?.GetType().Name} still active on target bay {receivedMessage.TargetBay}");
-                this.SendNotificationMessage(new FsmExceptionMessageData(null,
-                    $"Error while starting InverterPowerEnable state machine. Operation  {currentStateMachine?.GetType().Name} already in progress on {receivedMessage.TargetBay}",
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
+                    $"Unable to start '{nameof(InverterPowerEnableStateMachine)}' FSM. Operation {currentStateMachine?.GetType().Name} already in progress on {receivedMessage.TargetBay}",
                     1, MessageVerbosity.Error));
             }
             else
@@ -214,16 +192,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogTrace($"3:Starting FSM {currentStateMachine.GetType().Name}");
                 this.currentStateMachines.Add(receivedMessage.TargetBay, currentStateMachine);
 
-                try
-                {
-                    currentStateMachine.Start();
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError($"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                    this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                }
+                this.StartStateMachine(receivedMessage.TargetBay);
             }
         }
 
@@ -257,7 +226,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
                 {
-                    this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
+                    this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
                 }
                 else
                 {
@@ -278,21 +247,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
                     this.currentStateMachines.Add(targetBay, currentStateMachine);
 
-                    try
-                    {
-                        currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                    }
+                    this.StartStateMachine(targetBay);
                 }
             }
             else
             {
-                this.SendNotificationMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
             }
         }
 
@@ -339,16 +299,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
-                    try
-                    {
-                        currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError(ex, $"4:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                    }
+                    this.StartStateMachine(BayNumber.BayOne);
                 }
                 else
                 {
@@ -403,16 +354,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
             this.currentStateMachines.Add(BayNumber.BayOne, currentStateMachine);
 
-            try
-            {
-                currentStateMachine.Start();
-            }
-            catch (Exception ex)
-            {
-                this.Logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-            }
+            this.StartStateMachine(BayNumber.BayOne);
         }
 
         private void ProcessSensorsChangedMessage(IServiceProvider serviceProvider)
@@ -460,7 +402,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (this.currentStateMachines.TryGetValue(message.RequestingBay, out var currentStateMachine))
             {
                 this.Logger.LogTrace($"2:Deallocation FSM {currentStateMachine?.GetType().Name}");
-                this.SendNotificationMessage(new FsmExceptionMessageData(null,
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null,
                     $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay",
                     1, MessageVerbosity.Error));
             }
@@ -483,16 +425,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
                     this.currentStateMachines.Add(message.TargetBay, currentStateMachine);
 
-                    try
-                    {
-                        currentStateMachine.Start();
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError(ex, $"3:Exception: {ex.Message} during the FSM {currentStateMachine.GetType().Name} start");
-
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-                    }
+                    this.StartStateMachine(message.TargetBay);
                 }
             }
         }
@@ -539,6 +472,22 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogTrace($"3:Type={errorNotification.Type}:Destination={errorNotification.Destination}:Status={errorNotification.Status}");
 
                 this.EventAggregator?.GetEvent<NotificationEvent>().Publish(errorNotification);
+            }
+        }
+
+        private void StartStateMachine(BayNumber bayNumber)
+        {
+            var stateMachine = this.currentStateMachines[bayNumber];
+
+            try
+            {
+                stateMachine?.Start();
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, $"Unable to start '{stateMachine.GetType().Name}' FSM.");
+                this.SendCriticalErrorMessage(ex);
+                throw;
             }
         }
 

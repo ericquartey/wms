@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.fieldNotificationReceiveTask = new Task(this.FieldNotificationReceiveTaskFunction);
+            this.fieldNotificationReceiveTask = new Task(this.DequeueFieldNotifications);
 
             this.InitializeMethodSubscriptions();
         }
@@ -79,9 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
             catch (Exception ex)
             {
-                this.Logger.LogCritical($"2:Exception: {ex.Message} while starting service threads");
-
-                this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+                this.SendCriticalErrorMessage(ex);
             }
 
             await Task.CompletedTask;
@@ -272,35 +270,33 @@ namespace Ferretto.VW.MAS.DeviceManager
             return Task.CompletedTask;
         }
 
-        private void FieldNotificationReceiveTaskFunction()
+        private void DequeueFieldNotifications()
         {
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            do
             {
-                do
+                try
                 {
-                    try
+                    if (this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage))
                     {
-                        this.fieldNotificationQueue.TryDequeue(Timeout.Infinite, this.stoppingToken, out var receivedMessage);
-
                         this.Logger.LogTrace($"1:Queue Length({this.fieldNotificationQueue.Count}), Field Notification received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
 
-                        this.OnFieldNotificationReceived(receivedMessage, scope.ServiceProvider);
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        this.Logger.LogError(ex, $"2:Exception: {ex.Message}");
-
-                        this.SendNotificationMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
-
-                        return;
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            this.OnFieldNotificationReceived(receivedMessage, scope.ServiceProvider);
+                        }
                     }
                 }
-                while (!this.stoppingToken.IsCancellationRequested);
+                catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
+                {
+                    this.Logger.LogDebug($"Terminating field notifications thread for {this.GetType().Name}.");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    this.SendCriticalErrorMessage(ex);
+                }
             }
+            while (!this.stoppingToken.IsCancellationRequested);
         }
 
         private void InitializeMethodSubscriptions()
@@ -613,11 +609,17 @@ namespace Ferretto.VW.MAS.DeviceManager
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.EventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(notificationMessage);
             }
 
             {
-                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
+                var notificationMessageData = new MachineStateActiveMessageData(
+                    MessageActor.DeviceManager,
+                    string.Empty,
+                    MessageVerbosity.Info);
+
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
                     $"FSM current state null",
@@ -628,23 +630,34 @@ namespace Ferretto.VW.MAS.DeviceManager
                     BayNumber.None,
                     MessageStatus.OperationStart);
 
-                this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.EventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(notificationMessage);
             }
         }
 
-        private void SendNotificationMessage(IMessageData data)
+        private void SendCriticalErrorMessage(Exception ex)
         {
-            var msg = new NotificationMessage(
-                data,
-                "FSM Error",
-                MessageActor.Any,
-                MessageActor.DeviceManager,
-                MessageType.FsmException,
-                BayNumber.None,
-                BayNumber.None,
-                MessageStatus.OperationError,
-                ErrorLevel.Critical);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+            this.SendCriticalErrorMessage(new FsmExceptionMessageData(ex, string.Empty, 0));
+        }
+
+        private void SendCriticalErrorMessage(IFsmExceptionMessageData data)
+        {
+            this.Logger.LogCritical($"Exception detected: {data.ExceptionDescription} {data.InnerException?.Message}");
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(
+                    new NotificationMessage(
+                        data,
+                        "FSM Error",
+                        MessageActor.Any,
+                        MessageActor.DeviceManager,
+                        MessageType.FsmException,
+                        BayNumber.None,
+                        BayNumber.None,
+                        MessageStatus.OperationError,
+                        ErrorLevel.Critical));
         }
 
         #endregion

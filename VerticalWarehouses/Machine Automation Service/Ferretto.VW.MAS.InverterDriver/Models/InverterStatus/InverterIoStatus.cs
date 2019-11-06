@@ -11,16 +11,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         private const int TOTAL_INPUTS = 8;
 
-        private readonly bool[] inputs;
-
-        #endregion
-
-        #region Constructors
-
-        public InverterIoStatus()
-        {
-            this.inputs = new bool[TOTAL_INPUTS];
-        }
+        private readonly bool[] inputs = new bool[TOTAL_INPUTS];
 
         #endregion
 
@@ -38,7 +29,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool UpdateInputStates(bool[] newInputStates)
         {
-            if (this.inputs?.Length != newInputStates.Length)
+            if (this.inputs.Length != newInputStates.Length)
             {
                 throw new InverterDriverException($"Input states length mismatch while updating I/O driver status");
             }
@@ -61,7 +52,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while updating Inputs status");
+                throw new InverterDriverException($"Error while updating inverter inputs.", ex);
             }
 
             return updateRequired;
@@ -73,6 +64,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             {
                 throw new InverterDriverException($"Input states length mismatch while updating I/O driver status");
             }
+
             var updateRequired = false;
 
             for (var index = 0; index < TOTAL_INPUTS; index++)

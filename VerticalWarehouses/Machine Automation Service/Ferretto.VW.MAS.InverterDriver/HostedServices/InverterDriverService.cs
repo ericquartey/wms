@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
-                this.Logger.LogError($"7:Exception {ex.Message} while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}");
+                this.Logger.LogError($"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}", ex);
 
                 this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 
@@ -258,7 +258,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                         else
                         {
-                            this.Logger.LogInformation($"3:Connection OK ipAddress={this.inverterAddress}:Port={this.inverterPort}");
+                            this.Logger.LogInformation($"Connected to inverter's TCP address {this.inverterAddress}:{this.inverterPort}");
                             this.forceStatusPublish = true;
                         }
 
@@ -280,6 +280,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(null, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
                             continue;
                         }
+
                         this.receiveBuffer = this.receiveBuffer.AppendArrays(inverterData, inverterData.Length);
 
                         this.readWaitStopwatch.Stop();
@@ -291,9 +292,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
                         this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
                     }
-                    catch (OperationCanceledException)
+                    catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
                     {
-                        this.Logger.LogDebug("2:Method End - operation cancelled");
+                        this.Logger.LogDebug("Terminating inverter read task.");
 
                         return;
                     }
@@ -308,17 +309,18 @@ namespace Ferretto.VW.MAS.InverterDriver
                     catch (InvalidOperationException ex)
                     {
                         // connection error
-                        this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message ?? string.Empty}");
+                        this.Logger.LogError($"Exception {ex.Message}; InnerException {ex.InnerException?.Message}", ex);
                         this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Connection Error", 0), FieldMessageType.InverterException);
+
                         continue;
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogCritical($"3:Exception: {ex.Message}");
+                        this.Logger.LogCritical(ex, "Error while reading from inverter socket.");
 
                         this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "Inverter Driver Exeption", 0), FieldMessageType.InverterException);
 
-                        throw new InverterDriverException($"Exception {ex.Message} ReceiveInverterData Failed 3", ex);
+                        return;
                     }
 
                     //INFO: Byte 1 of read data contains packet length
@@ -330,6 +332,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         this.socketTransport.Disconnect();
                         continue;
                     }
+
                     if (this.receiveBuffer.Length < 2 || this.receiveBuffer.Length < this.receiveBuffer[1] + 2)
                     {
                         // this is not an error: we try to recover from messages received in more pieces
@@ -423,9 +426,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
                         }
                     }
-                    catch (OperationCanceledException)
+                    catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
                     {
-                        this.Logger.LogDebug("WriteEnable wait was canceled.");
+                        this.Logger.LogDebug("Terminating inverter write task.");
                         break;
                     }
                 }

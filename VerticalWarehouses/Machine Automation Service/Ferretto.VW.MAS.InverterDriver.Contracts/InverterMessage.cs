@@ -524,9 +524,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2));
                     definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new InverterDriverException("Received not valid block definition message");
+                    throw new InverterDriverException("Received not valid block definition message", ex);
                 }
 
                 start += 5;

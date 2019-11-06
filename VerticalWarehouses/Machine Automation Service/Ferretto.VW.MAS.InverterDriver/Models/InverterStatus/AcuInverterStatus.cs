@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public override bool UpdateInputsStates(bool[] newInputStates)
         {
-            if (newInputStates == null)
+            if (newInputStates is null)
             {
                 return false;
             }
@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
             }
             catch (Exception ex)
             {
-                throw new InverterDriverException($"Exception {ex.Message} while updating ACU Inputs status");
+                throw new InverterDriverException($"Error while updating ACU inverter inputs.", ex);
             }
 
             return updateRequired;

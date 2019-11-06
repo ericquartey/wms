@@ -21,13 +21,9 @@ namespace Ferretto.VW.MAS.Utils
 
         private readonly BlockingConcurrentQueue<TCommandMessage> commandQueue = new BlockingConcurrentQueue<TCommandMessage>();
 
-        private readonly IServiceScope commandQueueScope;
-
         private readonly Thread commandsDequeuingThread;
 
         private readonly BlockingConcurrentQueue<TNotificationMessage> notificationQueue = new BlockingConcurrentQueue<TNotificationMessage>();
-
-        private readonly IServiceScope notificationQueueScope;
 
         private readonly Thread notificationsDequeuingThread;
 
@@ -49,9 +45,6 @@ namespace Ferretto.VW.MAS.Utils
             this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-
-            this.commandQueueScope = serviceScopeFactory.CreateScope();
-            this.notificationQueueScope = serviceScopeFactory.CreateScope();
 
             this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
             {
@@ -89,14 +82,10 @@ namespace Ferretto.VW.MAS.Utils
 
         public override async Task StopAsync(CancellationToken cancellationToken)
         {
-            this.EventAggregator
-                .GetEvent<CommandEvent>()
-                .Unsubscribe(this.commandEventSubscriptionToken);
+            this.commandEventSubscriptionToken?.Dispose();
             this.commandEventSubscriptionToken = null;
 
-            this.EventAggregator
-                .GetEvent<NotificationEvent>()
-                .Unsubscribe(this.notificationEventSubscriptionToken);
+            this.notificationEventSubscriptionToken?.Dispose();
             this.notificationEventSubscriptionToken = null;
 
             await base.StopAsync(cancellationToken);
@@ -158,16 +147,21 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    if (this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command))
+                    if (this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command)
+                        &&
+                        command != null)
                     {
                         this.Logger.LogTrace($"Dequeued command {command}.");
 
-                        this.OnCommandReceivedAsync(command, this.commandQueueScope.ServiceProvider).Wait();
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            this.OnCommandReceivedAsync(command, scope.ServiceProvider).Wait();
+                        }
                     }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
-                    this.Logger.LogDebug($"Terminating commands thread for service {this.GetType().Name}.");
+                    this.Logger.LogDebug($"Terminating commands thread for {this.GetType().Name}.");
                     return;
                 }
                 catch (Exception ex)
@@ -186,16 +180,21 @@ namespace Ferretto.VW.MAS.Utils
             {
                 try
                 {
-                    if (this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification))
+                    if (this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification)
+                        &&
+                        notification != null)
                     {
                         this.Logger.LogTrace($"Dequeued notification {notification}");
 
-                        this.OnNotificationReceivedAsync(notification, this.notificationQueueScope.ServiceProvider).Wait();
+                        using (var scope = this.ServiceScopeFactory.CreateScope())
+                        {
+                            this.OnNotificationReceivedAsync(notification, scope.ServiceProvider).Wait();
+                        }
                     }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
-                    this.Logger.LogDebug($"Terminating notifications thread for service {this.GetType().Name}.");
+                    this.Logger.LogDebug($"Terminating notifications thread for {this.GetType().Name}.");
                     return;
                 }
                 catch (Exception ex)
@@ -215,9 +214,6 @@ namespace Ferretto.VW.MAS.Utils
 
             if (disposing)
             {
-                this.commandQueueScope.Dispose();
-                this.notificationQueueScope.Dispose();
-
                 this.commandEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken?.Dispose();
             }
@@ -235,7 +231,7 @@ namespace Ferretto.VW.MAS.Utils
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
                     false,
-                    this.FilterCommand);
+                    m => m != null && this.FilterCommand(m));
 
             this.Logger.LogTrace("Subscribed to command events.");
 
@@ -245,7 +241,7 @@ namespace Ferretto.VW.MAS.Utils
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,
                     false,
-                    this.FilterNotification);
+                    m => m != null && this.FilterNotification(m));
 
             this.Logger.LogTrace("Subscribed to notification events.");
         }

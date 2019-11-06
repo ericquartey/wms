@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly Stopwatch readStopwatch;
+        private readonly Stopwatch readStopwatch = new Stopwatch();
 
         /// <summary>
         /// The timeout for read operations on the socket.
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly byte[] receiveBuffer = new byte[1024];
 
-        private readonly Stopwatch roundTripStopwatch;
+        private readonly Stopwatch roundTripStopwatch = new Stopwatch();
 
         private IPAddress inverterAddress;
 
@@ -48,14 +48,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public SocketTransport(IConfiguration configuration)
         {
-            this.readStopwatch = new Stopwatch();
-
-            this.roundTripStopwatch = new Stopwatch();
-
-            this.ReadWaitTimeData = new InverterDiagnosticsData();
-
-            this.WriteRoundtripTimeData = new InverterDiagnosticsData();
-
             this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
         }
 
@@ -65,9 +57,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
 
-        public InverterDiagnosticsData ReadWaitTimeData { get; }
+        public InverterDiagnosticsData ReadWaitTimeData { get; } = new InverterDiagnosticsData();
 
-        public InverterDiagnosticsData WriteRoundtripTimeData { get; }
+        public InverterDiagnosticsData WriteRoundtripTimeData { get; } = new InverterDiagnosticsData();
 
         #endregion
 
@@ -163,6 +155,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public void Disconnect()
         {
+            if (this.isDisposed)
+            {
+                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
             if (!this.transportClient?.Connected ?? false)
             {
                 return;
@@ -170,8 +167,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.transportStream?.Close();
             this.transportClient?.Close();
-
-            //this.Dispose(true);
         }
 
         public void Dispose()
@@ -182,6 +177,11 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
+            if (this.isDisposed)
+            {
+                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
             if (this.transportStream is null)
             {
                 throw new InverterDriverException(
@@ -253,11 +253,21 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, CancellationToken stoppingToken)
         {
+            if (this.isDisposed)
+            {
+                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
             return await this.WriteAsync(inverterMessage, 0, stoppingToken);
         }
 
         public async ValueTask<int> WriteAsync(byte[] inverterMessage, int delay, CancellationToken stoppingToken)
         {
+            if (this.isDisposed)
+            {
+                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
             if (this.transportStream is null)
             {
                 throw new InverterDriverException(

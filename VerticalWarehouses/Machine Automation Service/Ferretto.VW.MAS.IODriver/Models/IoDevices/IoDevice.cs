@@ -171,13 +171,13 @@ namespace Ferretto.VW.MAS.IODriver
                     }
                     catch (IoDriverException ex)
                     {
-                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected};\nInner exception: {ex.InnerException.Message}");
+                        this.logger.LogError($"Error while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.DeviceNotConnected}", ex);
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.DeviceNotConnected));
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogCritical($"2:Exception: {ex.Message} while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
+                        this.logger.LogCritical($"Error while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}, ex");
 
                         this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.CreationFailure));
                         throw new IOException($"Exception: {ex.Message} ReceiveIoDataTaskFunction Failed 1", ex);
@@ -187,8 +187,7 @@ namespace Ferretto.VW.MAS.IODriver
                     {
                         this.logger.LogError("3:Socket Transport failed to connect");
 
-                        var ex = new Exception();
-                        this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                        this.SendMessage(new IoExceptionFieldMessageData(new Exception(), "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
                         continue;
                     }
                     else
@@ -396,82 +395,85 @@ namespace Ferretto.VW.MAS.IODriver
                 IoWriteMessage shdMessage;
                 try
                 {
-                    this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out shdMessage);
+                    if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out shdMessage)
+                        &&
+                        shdMessage != null)
+                    {
+                        this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
+                    }
 
-                    this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
+                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                    {
+                        if (this.ioTransport.IsConnected)
+                        {
+                            this.writeEnableEvent.Reset();
+
+                            var result = false;
+
+                            try
+                            {
+                                switch (shdMessage.CodeOperation)
+                                {
+                                    case ShdCodeOperation.Data:
+                                        {
+                                            var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                            result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+
+                                            this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
+
+                                            break;
+                                        }
+
+                                    case ShdCodeOperation.Configuration:
+                                        {
+                                            var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                            result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+
+                                            this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
+
+                                            break;
+                                        }
+
+                                    case ShdCodeOperation.SetIP:
+                                        throw new NotImplementedException();
+
+                                    default:
+                                        if (Debugger.IsAttached)
+                                        {
+                                            Debugger.Break();
+                                        }
+
+                                        break;
+                                }
+                            }
+                            catch (IoDriverException ex)
+                            {
+                                // connection error
+                                this.logger.LogError(ex, $"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
+                                this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
+                                continue;
+                            }
+
+                            if (result)
+                            {
+                                this.ioCommandQueue.Dequeue(out _);
+                            }
+                            else
+                            {
+                                this.writeEnableEvent.Set();
+                            }
+                        }
+                        else
+                        {
+                            Thread.Sleep(5);
+                        }
+                    }
                 }
                 catch (OperationCanceledException)
                 {
                     this.logger.LogDebug("2:Method End operation cancelled");
 
                     return;
-                }
-
-                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
-                {
-                    if (this.ioTransport.IsConnected)
-                    {
-                        this.writeEnableEvent.Reset();
-
-                        var result = false;
-
-                        try
-                        {
-                            switch (shdMessage.CodeOperation)
-                            {
-                                case ShdCodeOperation.Data:
-                                    {
-                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
-
-                                        this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
-
-                                        break;
-                                    }
-
-                                case ShdCodeOperation.Configuration:
-                                    {
-                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
-
-                                        this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
-
-                                        break;
-                                    }
-
-                                case ShdCodeOperation.SetIP:
-                                    throw new NotImplementedException();
-
-                                default:
-                                    if (Debugger.IsAttached)
-                                    {
-                                        Debugger.Break();
-                                    }
-
-                                    break;
-                            }
-                        }
-                        catch (IoDriverException ex)
-                        {
-                            // connection error
-                            this.logger.LogError(ex, $"Exception {ex.Message}, IoDriverExceptionCode={ex.IoDriverExceptionCode}");
-                            this.SendMessage(new IoExceptionFieldMessageData(ex, "IO Driver Connection Error", (int)IoDriverExceptionCode.DeviceNotConnected));
-                            continue;
-                        }
-
-                        if (result)
-                        {
-                            this.ioCommandQueue.Dequeue(out _);
-                        }
-                        else
-                        {
-                            this.writeEnableEvent.Set();
-                        }
-                    }
-                    else
-                    {
-                        Thread.Sleep(5);
-                    }
                 }
             }
             while (!this.stoppingToken.IsCancellationRequested);
@@ -540,7 +542,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
             else
             {
-                this.logger.LogInformation($"3:Connection OK ipAddress={this.ipAddress}:Port={this.port}");
+                this.logger.LogInformation($"Connected to I/O device {this.deviceIndex} on TCP address {this.ipAddress}:{this.port}");
             }
 
             try

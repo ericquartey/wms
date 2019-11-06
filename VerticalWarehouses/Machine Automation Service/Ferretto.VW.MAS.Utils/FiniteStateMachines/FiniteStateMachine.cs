@@ -124,7 +124,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     catch (StateMachineException ex)
                     {
                         var eventArgs = new FiniteStateMachinesEventArgs
-                        { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        {
+                            InstanceId = this.InstanceId,
+                            NotificationMessage = ex.NotificationMessage,
+                        };
+
                         this.RaiseCompleted(eventArgs);
                     }
 
@@ -138,7 +142,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 if (this.activeState is IEndState endState && endState.IsCompleted)
                 {
                     var eventArgs = new FiniteStateMachinesEventArgs
-                    { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    {
+                        InstanceId = this.InstanceId,
+                        NotificationMessage = endState.EndMessage,
+                    };
+
                     this.RaiseCompleted(eventArgs);
                 }
             }
@@ -294,9 +302,12 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var commandMessage);
-
-                    this.ActiveState = this.OnCommandReceived(commandMessage);
+                    if (this.commandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var commandMessage)
+                        &&
+                        commandMessage != null)
+                    {
+                        this.ActiveState = this.OnCommandReceived(commandMessage);
+                    }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
@@ -306,9 +317,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, "Error while processing a command.");
-
                     this.NotifyError(ex);
-                    return;
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -322,9 +331,12 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var notificationMessage);
-
-                    this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                    if (this.notificationQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var notificationMessage)
+                        &&
+                        notificationMessage != null)
+                    {
+                        this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                    }
                 }
                 catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
@@ -335,8 +347,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
-
-                    return;
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -361,18 +371,17 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private void NotifyError(Exception ex)
         {
-            var msg = new NotificationMessage(
-                new FsmExceptionMessageData(ex, string.Empty, 0),
-                "FSM Error",
-                MessageActor.Any,
-                MessageActor.MachineManager,
-                MessageType.FsmException,
-                this.requestingBay,
-                BayNumber.None,
-                MessageStatus.OperationError,
-                ErrorLevel.Critical);
-
-            this.notificationEvent.Publish(msg);
+            this.notificationEvent.Publish(
+                new NotificationMessage(
+                    new FsmExceptionMessageData(ex, string.Empty, 0),
+                    "FSM Error",
+                    MessageActor.Any,
+                    MessageActor.MachineManager,
+                    MessageType.FsmException,
+                    this.requestingBay,
+                    BayNumber.None,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Critical));
         }
 
         #endregion

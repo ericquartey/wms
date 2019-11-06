@@ -479,6 +479,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
+                this.Logger.LogError(ex, "Error while processing the disable message.");
                 this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Inverter status not configured for requested inverter Type", 0), FieldMessageType.InverterDisable);
             }
         }
@@ -842,7 +843,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     catch (Exception ex)
                     {
-                        this.Logger.LogError(ex, $"Exception {ex.Message}");
+                        this.Logger.LogError(ex, $"Error processing positioning message.");
                         this.SendOperationErrorMessage(inverter.SystemIndex, new InverterExceptionFieldMessageData(ex, "Wrong message Data Values", 0), FieldMessageType.Positioning);
                     }
                 }
@@ -1158,7 +1159,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
-                this.Logger.LogCritical($"2:Exception {ex.Message} while Connecting Receiver Socket Transport");
+                this.Logger.LogCritical($"Error while connecting Receiver Socket Transport: {ex.Message}");
 
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while Connecting Receiver Socket Transport", 0), FieldMessageType.InverterException);
                 throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 1", ex);
@@ -1183,7 +1184,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
-                this.Logger.LogCritical($"4:Exception: {ex.Message} while starting service threads");
+                this.Logger.LogCritical($"Error while starting inverter socket threads: {ex.Message}");
 
                 this.SendOperationErrorMessage(InverterIndex.MainInverter, new InverterExceptionFieldMessageData(ex, "while starting service threads", 0), FieldMessageType.InverterException);
                 throw new InverterDriverException($"Exception {ex.Message} StartHardwareCommunications Failed 2", ex);

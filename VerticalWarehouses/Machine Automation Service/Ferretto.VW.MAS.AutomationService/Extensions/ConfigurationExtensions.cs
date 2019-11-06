@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration {WmsServiceHubUrlKey} is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{WmsServiceHubUrlKey}' is not specified or invalid.", ex);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService
             }
             catch (Exception ex)
             {
-                throw new Exception($"The configuration {WmsServiceHubUrlKey} is not specified or invalid.", ex);
+                throw new Exception($"The configuration key '{WmsServiceHubUrlKey}' is not specified or invalid.", ex);
             }
         }
 

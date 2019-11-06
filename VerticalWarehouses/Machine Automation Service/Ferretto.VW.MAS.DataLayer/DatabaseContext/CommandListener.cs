@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         }
                         catch
                         {
+                            this.logger.LogWarning("Inhibiting database standby channel.");
                             this.redundancyService.InhibitStandbyDb();
                         }
 
