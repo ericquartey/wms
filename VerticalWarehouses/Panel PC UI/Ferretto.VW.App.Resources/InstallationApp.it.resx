@@ -1125,4 +1125,13 @@
   <data name="Cell" xml:space="preserve">
     <value>Cella</value>
   </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Ripristino completato con successo</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Ripristina</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Esporta</value>
+  </data>
 </root>

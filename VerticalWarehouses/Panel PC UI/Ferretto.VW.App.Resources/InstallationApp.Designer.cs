@@ -970,6 +970,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Bay.
         /// </summary>
         public static string ExternalBay {
@@ -2338,6 +2347,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore successful.
+        /// </summary>
+        public static string RestoreSuccessful {
+            get {
+                return ResourceManager.GetString("RestoreSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel loading.
         /// </summary>
         public static string SaveRestoreConfigAbortRestoreButton {
@@ -2428,7 +2455,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save succssful.
+        ///   Looks up a localized string similar to Save successful.
         /// </summary>
         public static string SaveSuccessful {
             get {

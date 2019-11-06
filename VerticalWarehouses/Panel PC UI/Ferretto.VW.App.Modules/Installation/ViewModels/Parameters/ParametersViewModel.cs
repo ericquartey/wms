@@ -15,7 +15,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private VertimagConfiguration configuration;
 
-        private DelegateCommand goToImportExport;
+        private DelegateCommand goToExport;
+
+        private DelegateCommand goToImport;
 
         private bool isBusy;
 
@@ -39,10 +41,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public ICommand GoToImportExport => this.goToImportExport
+        public ICommand GoToExport => this.goToExport
             ??
-            (this.goToImportExport = new DelegateCommand(
-                this.ShowImportExport, this.CanShowImportExport));
+            (this.goToExport = new DelegateCommand(
+                this.ShowExport, this.CanShowExport));
+
+        public ICommand GoToImport => this.goToImport
+                    ??
+            (this.goToImport = new DelegateCommand(
+                this.ShowImport, this.CanShowImport));
 
         public bool IsBusy
         {
@@ -93,7 +100,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsBusy;
         }
 
-        private bool CanShowImportExport()
+        private bool CanShowExport()
+        {
+            return !this.IsBusy;
+        }
+
+        private bool CanShowImport()
         {
             return !this.IsBusy;
         }
@@ -122,11 +134,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private void ShowImportExport()
+        private void ShowExport()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Installation),
-                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTEXPORT,
+                Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                this.Configuration,
+                trackCurrentView: false);
+        }
+
+        private void ShowImport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
                 null,
                 trackCurrentView: false);
         }

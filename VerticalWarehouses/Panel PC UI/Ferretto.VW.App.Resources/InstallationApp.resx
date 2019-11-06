@@ -1153,7 +1153,7 @@
     <value>Previous Panel</value>
   </data>
   <data name="SaveSuccessful" xml:space="preserve">
-    <value>Save succssful</value>
+    <value>Save successful</value>
   </data>
   <data name="InsertDestinationCellId" xml:space="preserve">
     <value>Destination cell id</value>
@@ -1202,5 +1202,14 @@
   </data>
   <data name="Cell" xml:space="preserve">
     <value>Cell</value>
+  </data>
+  <data name="RestoreSuccessful" xml:space="preserve">
+    <value>Restore successful</value>
+  </data>
+  <data name="Restore" xml:space="preserve">
+    <value>Restore</value>
+  </data>
+  <data name="Export" xml:space="preserve">
+    <value>Export</value>
   </data>
 </root>

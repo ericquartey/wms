@@ -119,7 +119,11 @@
 
             public const string PARAMETERS = "ParametersViewModel";
 
-            public const string PARAMETERSIMPORTEXPORT = "ParametersImportExportViewModel";
+            public const string PARAMETERSEXPORT = "ParametersIxportViewModel";
+
+            public const string PARAMETERSIMPORTSTEP1 = "ParametersImportStep1ViewModel";
+
+            public const string PARAMETERSIMPORTSTEP2 = "ParametersImportStep2ViewModel";
 
             #endregion
         }

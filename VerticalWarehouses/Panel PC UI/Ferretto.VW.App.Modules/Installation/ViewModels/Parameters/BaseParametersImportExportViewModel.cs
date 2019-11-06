@@ -10,16 +10,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class Folder
-    {
-        #region Properties
-
-        public string FullPath { get; set; }
-
-        #endregion
-    }
-
-    public class ParametersImportExportViewModel : BaseMainViewModel
+    public class BaseParametersImportExportViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -29,17 +20,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isBusy;
 
-        private DelegateCommand restoreCommand;
-
-        private DelegateCommand saveCommand;
-
         private string workingFolder;
 
         #endregion
 
         #region Constructors
 
-        public ParametersImportExportViewModel() : base(Services.PresentationMode.Installer)
+        public BaseParametersImportExportViewModel() : base(Services.PresentationMode.Installer)
         {
         }
 
@@ -75,23 +62,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isBusy, value))
                 {
-                    ((DelegateCommand)this.saveCommand).RaiseCanExecuteChanged();
+                    this.RaisePropertyChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
                 }
             }
         }
-
-        public ICommand RestoreCommand =>
-            this.saveCommand
-                    ??
-                    (this.restoreCommand = new DelegateCommand(
-                    async () => await this.RestoreAsync(), this.CanRestore));
-
-        public ICommand SaveCommand =>
-                    this.saveCommand
-                   ??
-                   (this.saveCommand = new DelegateCommand(
-                       async () => await this.SaveAsync(), this.CanSave));
 
         public string WorkingFolder
         {
@@ -133,59 +108,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        private bool CanRestore()
+        public virtual void RaisePropertyChanged()
         {
-            return !this.IsBusy;
-        }
-
-        private bool CanSave()
-        {
-            return !this.IsBusy;
         }
 
         private void dispatcherTimer_Tick(object sender, EventArgs e)
         {
             this.RaisePropertyChanged(nameof(this.Folders));
-        }
-
-        private async Task RestoreAsync()
-        {
-            try
-            {
-                this.IsBusy = true;
-                this.IsBackNavigationAllowed = false;
-
-                // TO DO save configuration
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsBusy = false;
-                this.IsBackNavigationAllowed = true;
-            }
-        }
-
-        private async Task SaveAsync()
-        {
-            try
-            {
-                this.IsBusy = true;
-                this.IsBackNavigationAllowed = false;
-
-                // TO DO restore configuration
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsBusy = false;
-                this.IsBackNavigationAllowed = true;
-            }
         }
 
         private void StartMonitorDrive()
@@ -195,6 +124,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.devicesFolderUpdateTimer.Interval = new TimeSpan(0, 5, 0);
             this.devicesFolderUpdateTimer.Start();
         }
+
+        #endregion
+    }
+
+    public class Folder
+    {
+        #region Properties
+
+        public string FullPath { get; set; }
 
         #endregion
     }
