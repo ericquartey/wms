@@ -303,6 +303,14 @@ namespace Ferretto.VW.App.Services
                   .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
         }
 
+        //private bool Embarked()
+        //{
+        //    return
+        //        this.sensors.LuPresentInMachineSideBay1
+        //        &&
+        //        this.sensors.LuPresentInOperatorSideBay1;
+        //}
+
         private async Task GetBayAsync()
         {
             try
@@ -412,6 +420,10 @@ namespace Ferretto.VW.App.Services
                         else if (message.Data.AxisMovement == Axis.Horizontal)
                         {
                             this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.BayChain)
+                        {
+                            this.BayChainPosition = message?.Data?.CurrentPosition ?? this.BayChainPosition;
                         }
 
                         break;
