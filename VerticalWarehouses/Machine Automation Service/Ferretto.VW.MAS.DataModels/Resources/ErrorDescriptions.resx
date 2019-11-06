@@ -240,4 +240,7 @@
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>ZeroSensorActiveWithFullElevator</value>
   </data>
+  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+    <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
+  </data>
 </root>

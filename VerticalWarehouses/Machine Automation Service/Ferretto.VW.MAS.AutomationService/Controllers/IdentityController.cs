@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("statistics")]
-        public async Task<ActionResult<MachineStatistics>> GetAsync()
+        public async Task<ActionResult<MachineStatistics>> GetStatistics()
         {
             var statics = this.machineProvider.GetStatistics();
 

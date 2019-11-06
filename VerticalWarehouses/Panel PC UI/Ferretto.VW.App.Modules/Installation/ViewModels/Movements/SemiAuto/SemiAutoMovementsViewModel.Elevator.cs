@@ -176,9 +176,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                this.sensorsService.Sensors.LuPresentInMachineSideBay1
+                this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
-                this.sensorsService.Sensors.LuPresentInOperatorSideBay1;
+                this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private bool CanEmbark()
@@ -188,9 +188,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSideBay1
+                !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSideBay1
+                !this.sensorsService.Sensors.LuPresentInOperatorSide
                 &&
                 this.sensorsService.IsZeroChain;
         }
@@ -217,9 +217,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.sensorsService.IsZeroChain
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSideBay1
+                !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSideBay1;
+                !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private async Task Disembark(HorizontalMovementDirection direction)

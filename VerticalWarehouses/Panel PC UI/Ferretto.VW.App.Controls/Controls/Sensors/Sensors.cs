@@ -405,9 +405,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool LUPresentInBay3 { get => this.lUPresentInBay3; set => this.SetProperty(ref this.lUPresentInBay3, value); }
 
-        public bool LuPresentInMachineSideBay1 { get => this.luPresentInMachineSideBay1; set => this.SetProperty(ref this.luPresentInMachineSideBay1, value); }
+        public bool LuPresentInMachineSide { get => this.luPresentInMachineSideBay1; set => this.SetProperty(ref this.luPresentInMachineSideBay1, value); }
 
-        public bool LuPresentInOperatorSideBay1 { get => this.luPresentInOperatorSideBay1; set => this.SetProperty(ref this.luPresentInOperatorSideBay1, value); }
+        public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSideBay1; set => this.SetProperty(ref this.luPresentInOperatorSideBay1, value); }
 
         public bool LUPresentMiddleBottomBay1 { get => this.lUPresentMiddleBottomBay1; set => this.SetProperty(ref this.lUPresentMiddleBottomBay1, value); }
 

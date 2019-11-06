@@ -259,9 +259,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
-                !this.sensorsService.Sensors.LuPresentInMachineSideBay1
+                !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
-                !this.sensorsService.Sensors.LuPresentInOperatorSideBay1;
+                !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private async Task MoveToCellHeightAsync()
