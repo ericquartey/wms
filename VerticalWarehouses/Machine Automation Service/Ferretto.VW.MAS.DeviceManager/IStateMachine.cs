@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         IEventAggregator EventAggregator { get; }
 
-        ILogger<DeviceManager> Logger { get; }
+        ILogger Logger { get; }
 
         IServiceScopeFactory ServiceScopeFactory { get; }
 

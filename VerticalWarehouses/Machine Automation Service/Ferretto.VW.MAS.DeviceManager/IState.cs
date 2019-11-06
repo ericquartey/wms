@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Properties
 
-        ILogger<DeviceManager> Logger { get; }
+        ILogger Logger { get; }
 
         #endregion
 

@@ -4,7 +4,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.VW.MAS.DeviceManager.Extensions
+namespace Ferretto.VW.MAS.DeviceManager
 {
     public static class ServiceCollectionExtensions
     {
@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Extensions
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<DeviceManager>();
+            services.AddHostedService<DeviceManagerService>();
 
             services
                 .AddTransient<IElevatorHorizontalChainZeroConditionEvaluator, ElevatorHorizontalChainZeroConditionEvaluator>();

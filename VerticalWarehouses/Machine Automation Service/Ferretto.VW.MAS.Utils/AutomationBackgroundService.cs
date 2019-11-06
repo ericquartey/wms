@@ -23,13 +23,13 @@ namespace Ferretto.VW.MAS.Utils
 
         private readonly IServiceScope commandQueueScope;
 
-        private readonly Task commandReceiveTask;
+        private readonly Thread commandsDequeuingThread;
 
         private readonly BlockingConcurrentQueue<TNotificationMessage> notificationQueue = new BlockingConcurrentQueue<TNotificationMessage>();
 
         private readonly IServiceScope notificationQueueScope;
 
-        private readonly Task notificationReceiveTask;
+        private readonly Thread notificationsDequeuingThread;
 
         private SubscriptionToken commandEventSubscriptionToken;
 
@@ -53,8 +53,15 @@ namespace Ferretto.VW.MAS.Utils
             this.commandQueueScope = serviceScopeFactory.CreateScope();
             this.notificationQueueScope = serviceScopeFactory.CreateScope();
 
-            this.commandReceiveTask = new Task(async () => await this.DequeueCommandsAsync());
-            this.notificationReceiveTask = new Task(async () => await this.DequeueNotificationsAsync());
+            this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
+            {
+                Name = $"[commands] {this.GetType().Name}",
+            };
+
+            this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
+            {
+                Name = $"[notifications] {this.GetType().Name}",
+            };
 
             this.InitializeSubscriptions();
         }
@@ -78,11 +85,6 @@ namespace Ferretto.VW.MAS.Utils
         public override void Dispose()
         {
             this.Dispose(true);
-        }
-
-        public override async Task StartAsync(CancellationToken cancellationToken)
-        {
-            await base.StartAsync(cancellationToken);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)
@@ -116,12 +118,13 @@ namespace Ferretto.VW.MAS.Utils
 
             try
             {
-                this.commandReceiveTask.Start();
-                this.notificationReceiveTask.Start();
+                this.commandsDequeuingThread.Start(cancellationToken);
+                this.notificationsDequeuingThread.Start(cancellationToken);
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while starting service threads.", ex);
+                this.Logger.LogError(ex, $"Error while starting queue threads for {this.GetType().Name}");
+                throw;
             }
 
             return Task.CompletedTask;
@@ -131,57 +134,76 @@ namespace Ferretto.VW.MAS.Utils
 
         protected abstract bool FilterNotification(TNotificationMessage notification);
 
-        protected abstract void NotifyCommandError(TCommandMessage notificationData);
+        protected virtual void NotifyCommandError(TCommandMessage notificationData)
+        {
+            // Do nothing.
+            // Behaviour can be customized by inheriting class.
+        }
 
-        protected abstract void NotifyError(TNotificationMessage notificationData);
+        protected virtual void NotifyError(TNotificationMessage notificationData)
+        {
+            // Do nothing.
+            // Behaviour can be customized by inheriting class.
+        }
 
         protected abstract Task OnCommandReceivedAsync(TCommandMessage command, IServiceProvider serviceProvider);
 
         protected abstract Task OnNotificationReceivedAsync(TNotificationMessage message, IServiceProvider serviceProvider);
 
-        private async Task DequeueCommandsAsync()
+        private void DequeueCommands(object cancellationTokenObject)
         {
+            var cancellationToken = (CancellationToken)cancellationTokenObject;
+
             do
             {
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command);
-                    this.Logger.LogTrace($"Dequeued command {command}.");
+                    if (this.commandQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var command))
+                    {
+                        this.Logger.LogTrace($"Dequeued command {command}.");
 
-                    await this.OnCommandReceivedAsync(command, this.commandQueueScope.ServiceProvider);
+                        this.OnCommandReceivedAsync(command, this.commandQueueScope.ServiceProvider).Wait();
+                    }
                 }
-                catch (OperationCanceledException)
+                catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
-                    this.Logger.LogTrace("Operation Canceled.");
-                    return;
-                }
-            }
-            while (!this.CancellationToken.IsCancellationRequested);
-        }
-
-        private async Task DequeueNotificationsAsync()
-        {
-            do
-            {
-                try
-                {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification);
-                    this.Logger.LogTrace($"Dequeued notification {notification}");
-
-                    await this.OnNotificationReceivedAsync(notification, this.notificationQueueScope.ServiceProvider);
-                }
-                catch (OperationCanceledException)
-                {
-                    this.Logger.LogDebug("Operation canceled.");
-
+                    this.Logger.LogDebug($"Terminating commands thread for service {this.GetType().Name}.");
                     return;
                 }
                 catch (Exception ex)
                 {
-                    this.Logger.LogError(ex, "Error while processing the notification.");
+                    this.Logger.LogError(ex, "Error while processing a command.");
                 }
             }
-            while (!this.CancellationToken.IsCancellationRequested);
+            while (!cancellationToken.IsCancellationRequested);
+        }
+
+        private void DequeueNotifications(object cancellationTokenObject)
+        {
+            var cancellationToken = (CancellationToken)cancellationTokenObject;
+
+            do
+            {
+                try
+                {
+                    if (this.notificationQueue.TryDequeue(Timeout.Infinite, this.CancellationToken, out var notification))
+                    {
+                        this.Logger.LogTrace($"Dequeued notification {notification}");
+
+                        this.OnNotificationReceivedAsync(notification, this.notificationQueueScope.ServiceProvider).Wait();
+                    }
+                }
+                catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
+                {
+                    this.Logger.LogDebug($"Terminating notifications thread for service {this.GetType().Name}.");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    this.Logger.LogError(ex, "Error while processing a notification.");
+                }
+            }
+            while (!cancellationToken.IsCancellationRequested);
         }
 
         private void Dispose(bool disposing)
@@ -195,6 +217,9 @@ namespace Ferretto.VW.MAS.Utils
             {
                 this.commandQueueScope.Dispose();
                 this.notificationQueueScope.Dispose();
+
+                this.commandEventSubscriptionToken?.Dispose();
+                this.notificationEventSubscriptionToken?.Dispose();
             }
 
             base.Dispose();
@@ -210,7 +235,7 @@ namespace Ferretto.VW.MAS.Utils
                     command => this.commandQueue.Enqueue(command),
                     ThreadOption.PublisherThread,
                     false,
-                    command => this.FilterCommand(command));
+                    this.FilterCommand);
 
             this.Logger.LogTrace("Subscribed to command events.");
 
@@ -220,7 +245,7 @@ namespace Ferretto.VW.MAS.Utils
                     notification => this.notificationQueue.Enqueue(notification),
                     ThreadOption.PublisherThread,
                     false,
-                    notification => this.FilterNotification(notification));
+                    this.FilterNotification);
 
             this.Logger.LogTrace("Subscribed to notification events.");
         }

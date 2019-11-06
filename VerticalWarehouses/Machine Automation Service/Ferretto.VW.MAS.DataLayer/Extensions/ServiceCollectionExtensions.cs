@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
@@ -10,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.DataLayer.Extensions
+namespace Ferretto.VW.MAS.DataLayer
 {
     public static class ServiceCollectionExtensions
     {

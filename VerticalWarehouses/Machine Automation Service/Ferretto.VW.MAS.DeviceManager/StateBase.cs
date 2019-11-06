@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         protected StateBase(
             IStateMachine parentStateMachine,
-            ILogger<DeviceManager> logger)
+            ILogger logger)
         {
             this.ParentStateMachine = parentStateMachine;
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         #region Properties
 
-        public ILogger<DeviceManager> Logger { get; }
+        public ILogger Logger { get; }
 
         protected IStateMachine ParentStateMachine { get; }
 

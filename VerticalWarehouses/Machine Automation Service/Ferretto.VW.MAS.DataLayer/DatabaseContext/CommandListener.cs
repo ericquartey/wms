@@ -1,6 +1,5 @@
 using System;
 using System.Data.Common;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using Microsoft.Extensions.DiagnosticAdapter;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal class CommandListener<TDbContext>
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>

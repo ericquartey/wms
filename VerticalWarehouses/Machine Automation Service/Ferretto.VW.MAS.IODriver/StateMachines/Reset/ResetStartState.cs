@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data &&
                 message.ValidOutputs && message.OutputsCleared;
 
             if (this.status.MatchOutputs(message.Outputs))

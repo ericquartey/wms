@@ -1,7 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -18,12 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public LivelinessHealthCheck(IDbContextRedundancyService<DataLayerContext> redundancyService)
         {
-            if (redundancyService == null)
-            {
-                throw new System.ArgumentNullException(nameof(redundancyService));
-            }
-
-            this.redundancyService = redundancyService;
+            this.redundancyService = redundancyService ?? throw new System.ArgumentNullException(nameof(redundancyService));
         }
 
         #endregion

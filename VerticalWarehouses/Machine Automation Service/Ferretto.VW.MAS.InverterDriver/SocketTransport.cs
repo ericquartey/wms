@@ -46,9 +46,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         #region Constructors
 
-        public SocketTransport(
-            IConfiguration configuration
-            )
+        public SocketTransport(IConfiguration configuration)
         {
             this.readStopwatch = new Stopwatch();
 

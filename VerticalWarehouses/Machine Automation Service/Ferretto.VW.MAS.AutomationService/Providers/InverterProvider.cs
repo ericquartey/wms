@@ -8,7 +8,7 @@ using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public class InverterProvider : Interfaces.IInverterProvider
+    internal class InverterProvider : IInverterProvider
     {
         #region Fields
 

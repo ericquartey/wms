@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.DeviceManager.Extensions;
-using Ferretto.VW.MAS.InverterDriver.Extensions;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager;
+using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.MachineManager.Extensions;
-using Ferretto.VW.MAS.MissionManager.Extensions;
+using Ferretto.VW.MAS.MachineManager;
+using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -158,7 +157,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMachineManager()
                 .AddMissionManager();
 
-            services.AddHostedService<AutomationService>();
+            services.AddHostedService<NotificationRelayService>();
 
             services.AddTransient<IInverterProvider, InverterProvider>();
             services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();

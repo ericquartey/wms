@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         protected StateMachineBase(
             IEventAggregator eventAggregator,
-            ILogger<DeviceManager> logger,
+            ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public IEventAggregator EventAggregator { get; }
 
-        public ILogger<DeviceManager> Logger { get; }
+        public ILogger Logger { get; }
 
         public IServiceScopeFactory ServiceScopeFactory { get; }
 

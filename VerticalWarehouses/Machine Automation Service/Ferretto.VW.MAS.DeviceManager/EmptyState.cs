@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Constructors
 
-        public EmptyState(ILogger<DeviceManager> logger)
+        public EmptyState(ILogger logger)
             : base(null, logger)
         {
             logger.LogTrace("1:Method Start");
