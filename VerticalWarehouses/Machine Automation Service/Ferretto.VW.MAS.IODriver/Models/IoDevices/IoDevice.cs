@@ -537,8 +537,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.logger.LogError("3:Failed to connect to Modbus I/O master");
 
-                var ex = new Exception();
-                this.SendMessage(new IoExceptionFieldMessageData(ex, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
+                this.SendMessage(new IoExceptionFieldMessageData(null, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
             else
             {
