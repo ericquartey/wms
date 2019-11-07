@@ -444,6 +444,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineMissionOperationsWebService.ResetMachineAsync();
 
+                    await this.sensorsService.RefreshAsync();
+
+                    this.RaiseCanExecuteChanged();
+
                     this.ShowNotification("Reset macchina avvenuta con successo.", Services.Models.NotificationSeverity.Success);
                 }
                 catch (Exception ex)

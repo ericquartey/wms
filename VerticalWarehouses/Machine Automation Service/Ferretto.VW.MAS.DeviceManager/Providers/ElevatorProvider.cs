@@ -182,6 +182,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 direction,
                 waitContinue);
 
+            if (loadingUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadingUnitId;
+            }
+
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Horizontal} Positioning Command",

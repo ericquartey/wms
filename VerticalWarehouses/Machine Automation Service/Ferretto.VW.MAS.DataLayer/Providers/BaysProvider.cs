@@ -575,19 +575,22 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void ResetMachine()
         {
-            // TODO: Da verificare con Stefano
-            foreach (var bay in this.dataContext.Bays
-                                    .Include(i => i.Positions))
+            foreach (var bayPosition in this.dataContext.BayPositions
+                                            .Include(i => i.LoadingUnit))
             {
-                bay.CurrentMissionId = null;
-                bay.CurrentMissionOperationId = null;
-                foreach (var position in bay.Positions)
+                if (bayPosition.LoadingUnit != null)
                 {
-                    position.LoadingUnit = null;
+                    bayPosition.LoadingUnit = null;
+                    this.dataContext.BayPositions.Update(bayPosition);
                 }
             }
 
-            this.dataContext.SaveChanges();
+            foreach (var bay in this.dataContext.Bays)
+            {
+                bay.CurrentMissionId = null;
+                bay.CurrentMissionOperationId = null;
+                this.Update(bay);
+            }
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)

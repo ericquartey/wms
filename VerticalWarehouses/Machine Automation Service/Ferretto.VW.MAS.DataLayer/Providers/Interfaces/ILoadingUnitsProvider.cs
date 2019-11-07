@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();
 
+        void Insert(int loadingUnitsId);
+
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);

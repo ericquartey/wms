@@ -138,17 +138,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void ResetMachine()
         {
-            var elevator = this.dataContext.Elevators.Single();
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators.Single();
 
-            // Reset dati
-            elevator.LoadingUnit = null;
-            elevator.LoadingUnitId = null;
+                // Reset dati
+                elevator.LoadingUnit = null;
+                elevator.LoadingUnitId = null;
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
 
-            // Reset cache
-            this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+                // Reset cache
+                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
+                this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+            }
         }
 
         public MovementParameters ScaleMovementsByWeight(Orientation orientation)

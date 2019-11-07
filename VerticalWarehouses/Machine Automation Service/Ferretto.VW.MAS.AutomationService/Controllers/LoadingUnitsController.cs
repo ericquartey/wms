@@ -165,6 +165,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("insert-loading-unit-db")]
+        [ProducesDefaultResponseType]
+        public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
+        {
+            this.loadingUnitsProvider.Insert(loadingUnitId);
+            return this.Accepted();
+        }
+
         [HttpGet("pause-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
