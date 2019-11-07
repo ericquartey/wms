@@ -17,6 +17,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -80,7 +81,8 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             IoIndex index,
             bool isCarousel,
             ILogger logger,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            IHostingEnvironment env)
         {
             this.eventAggregator = eventAggregator;
             this.ipAddress = ipAddress;
@@ -93,7 +95,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
-            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
+            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction(env));
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
             this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
@@ -154,7 +156,7 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
             this.Dispose(true);
         }
 
-        public async Task ReceiveIoDataTaskFunction()
+        public async Task ReceiveIoDataTaskFunction(IHostingEnvironment env)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -354,6 +356,12 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                                 this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
 
                                 this.forceIoStatusPublish = false;
+
+                                if (env.IsEnvironment("Bender"))
+                                {
+                                    notificationMessage.Destination = FieldMessageActor.InverterDriver;
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                                }
                             }
 
                             var messageData = new IoReadMessage(
@@ -421,24 +429,24 @@ namespace Ferretto.VW.MAS.IODriver.IoDevices
                             switch (shdMessage.CodeOperation)
                             {
                                 case ShdCodeOperation.Data:
-                                {
-                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                    {
+                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                    this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
+                                        this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
 
-                                    break;
-                                }
+                                        break;
+                                    }
 
                                 case ShdCodeOperation.Configuration:
-                                {
-                                    var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                    result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                    {
+                                        var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
+                                        result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
-                                    this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
+                                        this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
 
-                                    break;
-                                }
+                                        break;
+                                    }
 
                                 case ShdCodeOperation.SetIP:
                                     throw new NotImplementedException();

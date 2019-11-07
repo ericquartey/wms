@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
+        private readonly IHostingEnvironment env;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly IIoDevicesProvider iIoDeviceService;
@@ -59,7 +61,8 @@ namespace Ferretto.VW.MAS.IODriver
             IBaysProvider baysProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IHostingEnvironment env)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -67,6 +70,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.env = env ?? throw new ArgumentNullException(nameof(env));
 
             this.commandReceiveTask = new Task(() => this.CommandReceiveTaskFunction());
             this.notificationReceiveTask = new Task(async () => await this.NotificationReceiveTaskFunction());
@@ -183,7 +187,8 @@ namespace Ferretto.VW.MAS.IODriver
                         ioDevice.Index,
                         isCarousel,
                         this.logger,
-                        this.stoppingToken));
+                        this.stoppingToken,
+                        this.env));
             }
         }
 

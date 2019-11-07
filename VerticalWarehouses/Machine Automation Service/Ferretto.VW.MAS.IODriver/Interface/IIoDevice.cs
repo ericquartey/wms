@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.Hosting;
 
 namespace Ferretto.VW.MAS.IODriver
 {
@@ -26,7 +27,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         void ExecuteSwitchAxis(FieldCommandMessage receivedMessage);
 
-        Task ReceiveIoDataTaskFunction();
+        Task ReceiveIoDataTaskFunction(IHostingEnvironment env);
 
         Task SendIoCommandTaskFunction();
 
