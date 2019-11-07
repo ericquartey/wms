@@ -2,6 +2,9 @@
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -16,13 +19,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
-        private string workingFolder;
-
         #endregion
 
         #region Constructors
 
-        public ParametersImportStep1ViewModel()
+        public ParametersImportStep1ViewModel(IBayManager bayManager)
+                : base(bayManager)
         {
         }
 
@@ -30,8 +32,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
+        public string DeviceWithFileConfiguration
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(this.ExistingPath))
+                {
+                    return string.Format(InstallationApp.InsertDeviceWithFileConfiguration, this.FileName);
+                }
+
+                return InstallationApp.DeviceFileFound;
+            }
+        }
+
         public ICommand RestoreConfigurationCommand =>
-            this.restoreConfigurationCommand
+                    this.restoreConfigurationCommand
                     ??
                     (this.restoreConfigurationCommand = new DelegateCommand(
                     async () => await this.RestoreAsync(), this.CanRestore));
@@ -41,12 +56,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    ??
                    (this.stopCommand = new DelegateCommand(
                        async () => await this.StopAsync(), this.CanStop));
-
-        public string WorkingFolder
-        {
-            get => this.workingFolder;
-            set => this.SetProperty(ref this.workingFolder, value);
-        }
 
         #endregion
 
@@ -75,21 +84,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public override void RaisePropertyChanged()
+        {
+            this.RaisePropertyChanged(nameof(this.DeviceWithFileConfiguration));
+            this.stopCommand.RaiseCanExecuteChanged();
+            this.restoreConfigurationCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanRestore()
         {
             return !this.IsBusy
                     &&
-                    !string.IsNullOrEmpty(this.WorkingFolder);
-        }
-
-        private bool CanSave()
-        {
-            return !this.IsBusy;
+                   !string.IsNullOrEmpty(this.ExistingPath);
         }
 
         private bool CanStop()
         {
-            return this.IsBusy;
+            return this.IsBusy
+                    &&
+                    !string.IsNullOrEmpty(this.ExistingPath);
         }
 
         private async Task RestoreAsync()
@@ -97,9 +110,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-                this.IsBackNavigationAllowed = false;
 
-                var configuration = JsonConvert.DeserializeObject<VertimagConfiguration>(File.ReadAllText(this.WorkingFolder));
+                var configuration = JsonConvert.DeserializeObject<VertimagConfiguration>(File.ReadAllText(this.ExistingPath), new JsonConverter[] { new IPAddressConverter() });
+
+                if (configuration is null)
+                {
+                    this.ShowNotification(InstallationApp.FileReadError, Services.Models.NotificationSeverity.Error);
+                    this.IsBusy = false;
+                    return;
+                }
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
@@ -114,7 +133,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
-                this.IsBackNavigationAllowed = true;
             }
         }
 

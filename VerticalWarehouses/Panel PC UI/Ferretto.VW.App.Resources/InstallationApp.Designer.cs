@@ -574,11 +574,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm file overwrite ?.
+        /// </summary>
+        public static string ConfirmFileOverwrite {
+            get {
+                return ResourceManager.GetString("ConfirmFileOverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
             get {
                 return ResourceManager.GetString("ConfirmResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm restore..
+        /// </summary>
+        public static string ConfirmRestore {
+            get {
+                return ResourceManager.GetString("ConfirmRestore", resourceCulture);
             }
         }
         
@@ -705,6 +723,33 @@ namespace Ferretto.VW.App.Resources {
         public static string DesiredMovement {
             get {
                 return ResourceManager.GetString("DesiredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device file found.
+        /// </summary>
+        public static string DeviceFileFound {
+            get {
+                return ResourceManager.GetString("DeviceFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device found.
+        /// </summary>
+        public static string DeviceFound {
+            get {
+                return ResourceManager.GetString("DeviceFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device not found.
+        /// </summary>
+        public static string DeviceNotFound {
+            get {
+                return ResourceManager.GetString("DeviceNotFound", resourceCulture);
             }
         }
         
@@ -979,6 +1024,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export successful.
+        /// </summary>
+        public static string ExportSuccessful {
+            get {
+                return ResourceManager.GetString("ExportSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Bay.
         /// </summary>
         public static string ExternalBay {
@@ -1002,6 +1056,24 @@ namespace Ferretto.VW.App.Resources {
         public static string FeedRate {
             get {
                 return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file is already present on device..
+        /// </summary>
+        public static string FileIsAlreadyPresent {
+            get {
+                return ResourceManager.GetString("FileIsAlreadyPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File read error.
+        /// </summary>
+        public static string FileReadError {
+            get {
+                return ResourceManager.GetString("FileReadError", resourceCulture);
             }
         }
         
@@ -1398,6 +1470,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InsertDestinationCellId {
             get {
                 return ResourceManager.GetString("InsertDestinationCellId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Insert device with file configuration - {0} -.
+        /// </summary>
+        public static string InsertDeviceWithFileConfiguration {
+            get {
+                return ResourceManager.GetString("InsertDeviceWithFileConfiguration", resourceCulture);
             }
         }
         

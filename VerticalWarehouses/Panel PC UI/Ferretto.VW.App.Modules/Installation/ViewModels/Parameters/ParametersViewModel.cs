@@ -140,7 +140,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
                 this.Configuration,
-                trackCurrentView: false);
+                trackCurrentView: true);
         }
 
         private void ShowImport()
@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
                 null,
-                trackCurrentView: false);
+                trackCurrentView: true);
         }
 
         #endregion

@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using System.Windows.Threading;
+using CommonServiceLocator;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -21,7 +24,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Constructors
 
-        public ParametersImportStep2ViewModel(IMachineConfigurationWebService machineConfigurationWebService)
+        public ParametersImportStep2ViewModel(IMachineConfigurationWebService machineConfigurationWebService, IBayManager bayManager)
+                : base(bayManager)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
@@ -83,13 +87,19 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
-                this.IsBackNavigationAllowed = false;
+
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(General.Apply, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult != DialogResult.Yes)
+                {
+                    return;
+                }
 
                 this.ClearNotifications();
 
                 await this.machineConfigurationWebService.SetAsync(this.configuration);
 
-                this.ShowNotification(Resources.InstallationApp.RestoreSuccessful);
+                this.ShowNotification(InstallationApp.RestoreSuccessful);
             }
             catch (Exception ex)
             {
@@ -98,7 +108,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             finally
             {
                 this.IsBusy = false;
-                this.IsBackNavigationAllowed = true;
             }
         }
 

@@ -52,7 +52,6 @@
                             Margin="4,0,15,4"
                             Command="{Binding GoToImport}"
                             Content="{x:Static res:InstallationApp.Restore}"
-                            IsBusy="{Binding IsBusy}"
                             />
 
         <controls:PpcButton 
@@ -61,7 +60,6 @@
                             Margin="4,0,15,4"
                             Command="{Binding GoToExport}"
                             Content="{x:Static res:InstallationApp.Export}"
-                            IsBusy="{Binding IsBusy}"
                             />
 
         <controls:PpcButton 

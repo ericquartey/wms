@@ -1212,4 +1212,31 @@
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
+  <data name="DeviceFileFound" xml:space="preserve">
+    <value>Device file found</value>
+  </data>
+  <data name="InsertDeviceWithFileConfiguration" xml:space="preserve">
+    <value>Insert device with file configuration - {0} -</value>
+  </data>
+  <data name="FileReadError" xml:space="preserve">
+    <value>File read error</value>
+  </data>
+  <data name="DeviceNotFound" xml:space="preserve">
+    <value>Device not found</value>
+  </data>
+  <data name="DeviceFound" xml:space="preserve">
+    <value>Device found</value>
+  </data>
+  <data name="ExportSuccessful" xml:space="preserve">
+    <value>Export successful</value>
+  </data>
+  <data name="ConfirmFileOverwrite" xml:space="preserve">
+    <value>Confirm file overwrite ?</value>
+  </data>
+  <data name="FileIsAlreadyPresent" xml:space="preserve">
+    <value>A file is already present on device.</value>
+  </data>
+  <data name="ConfirmRestore" xml:space="preserve">
+    <value>Confirm restore.</value>
+  </data>
 </root>

@@ -21,57 +21,58 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
         </Grid.ColumnDefinitions>
 
         <TextBlock Grid.Row="0"
+                   Grid.Column="1"
                    Grid.ColumnSpan="3"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader2}" />
 
+        <TextBlock Grid.Row="1"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   TextWrapping="Wrap"
+                   Margin="0 50 0 20"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding DeviceWithFileConfiguration}" />
 
-        <TreeView Grid.Row="1"
-                  Grid.ColumnSpan="2"
-                  Name="RootTreeView"
-                  Background="Transparent"
-                  Foreground="{StaticResource FerrettoPureWhite}">
-            <TreeViewItem Header="Browse">
-                <TreeViewItem.ItemsSource>
-                    <Binding Source="{StaticResource RootFolderDataProvider}">
-                        <Binding.Path>SubFolders</Binding.Path>
-                    </Binding>
-                </TreeViewItem.ItemsSource>
-            </TreeViewItem>
-        </TreeView>
-
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  TextBlock.LineStackingStrategy="BlockLineHeight"
-                                 ContentText="{Binding WorkingFolder}"
-                                 LabelText="{x:Static res:InstallationApp.SaveRestoreConfigSelectedFolder}" />
+                                 ContentText="{Binding ExistingPath}"
+                                 LabelText="{x:Static res:General.FilePath}" />
 
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Command="{Binding }"
+                            Margin="0 40 0 0"
+                            Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
-                            IsEnabled="False" />
+                             />
 
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="2"
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="3"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Command="{Binding }"
+                            Margin="0 40 0 0"
+                            Command="{Binding RestoreConfigurationCommand}"
                             Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
-                            IsEnabled="False" />
+                            />
 
     </Grid>
 </ctrls:View>

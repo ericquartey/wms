@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using System.Windows.Threading;
 using Ferretto.VW.App.Controls;
-using Newtonsoft.Json;
-using Prism.Commands;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -14,45 +12,52 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
-        private DispatcherTimer devicesFolderUpdateTimer;
+        private const string CONFIGURATIONNAME = "vertimag-configuration.{0}.json";
 
-        private ObservableCollection<Folder> folders;
+        private const string DEFAULTDEVICENAME = @"G";
+
+        private const string DEVICE = @"{0}:\";
+
+        private const int SECSUPDATEINTERVAL = 3;
+
+        private readonly IBayManager bayManager;
+
+        private DispatcherTimer devicesStatusUpdateTimer;
+
+        private string existingPath;
+
+        private string fullPath;
 
         private bool isBusy;
 
-        private string workingFolder;
+        private bool isDeviceReady;
 
         #endregion
 
         #region Constructors
 
-        public BaseParametersImportExportViewModel() : base(Services.PresentationMode.Installer)
+        public BaseParametersImportExportViewModel(IBayManager bayManager)
+            : base(Services.PresentationMode.Installer)
         {
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
 
         #region Properties
 
-        public ObservableCollection<Folder> Folders
+        public string ExistingPath
         {
-            get
-            {
-                this.folders = new ObservableCollection<Folder>();
+            get => this.existingPath;
+            set => this.SetProperty(ref this.existingPath, value);
+        }
 
-                var drives = DriveInfo.GetDrives();
-                foreach (var drive in drives)
-                {
-                    if (drive.DriveType == DriveType.Fixed)
-                    {
-                        var newFolder = new Folder();
-                        newFolder.FullPath = drive.Name;
-                        this.folders.Add(newFolder);
-                    }
-                }
+        public string FileName => string.Format(CONFIGURATIONNAME, this.bayManager.Identity.SerialNumber);
 
-                return this.folders;
-            }
+        public string FullPath
+        {
+            get => this.fullPath;
+            set => this.SetProperty(ref this.fullPath, value);
         }
 
         public bool IsBusy
@@ -68,10 +73,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public string WorkingFolder
+        public bool IsDeviceReady
         {
-            get => this.workingFolder;
-            set => this.SetProperty(ref this.workingFolder, value);
+            get => this.isDeviceReady;
+            set => this.SetProperty(ref this.isDeviceReady, value);
         }
 
         #endregion
@@ -80,8 +85,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.devicesFolderUpdateTimer.Stop();
-            this.devicesFolderUpdateTimer = null;
+            this.devicesStatusUpdateTimer.Stop();
+            this.devicesStatusUpdateTimer = null;
 
             base.Disappear();
         }
@@ -93,6 +98,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.IsBusy = true;
+
+                this.RefreshDevicesStatus();
 
                 this.StartMonitorDrive();
 
@@ -112,27 +119,41 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
         }
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private void devicesStatusUpdateTimer_Tick(object sender, EventArgs e)
         {
-            this.RaisePropertyChanged(nameof(this.Folders));
+            this.RefreshDevicesStatus();
+        }
+
+        private void RefreshDevicesStatus()
+        {
+            var deviceName = string.Format(DEVICE, DEFAULTDEVICENAME);
+
+            if (DriveInfo.GetDrives()
+                .Select(d => d.Name)
+                .FirstOrDefault(n => n.Equals(deviceName)) is string deviceFound)
+            {
+                var pathToCheck = $"{deviceFound}{this.FileName}";
+                this.FullPath = pathToCheck;
+                this.ExistingPath = File.Exists(pathToCheck) ? pathToCheck : null;
+                this.isDeviceReady = true;
+            }
+            else
+            {
+                this.FullPath = null;
+                this.ExistingPath = null;
+                this.isDeviceReady = false;
+            }
+
+            this.RaisePropertyChanged();
         }
 
         private void StartMonitorDrive()
         {
-            this.devicesFolderUpdateTimer = new System.Windows.Threading.DispatcherTimer();
-            this.devicesFolderUpdateTimer.Tick += new EventHandler(this.dispatcherTimer_Tick);
-            this.devicesFolderUpdateTimer.Interval = new TimeSpan(0, 5, 0);
-            this.devicesFolderUpdateTimer.Start();
+            this.devicesStatusUpdateTimer = new System.Windows.Threading.DispatcherTimer();
+            this.devicesStatusUpdateTimer.Tick += new EventHandler(this.devicesStatusUpdateTimer_Tick);
+            this.devicesStatusUpdateTimer.Interval = new TimeSpan(0, 0, SECSUPDATEINTERVAL);
+            this.devicesStatusUpdateTimer.Start();
         }
-
-        #endregion
-    }
-
-    public class Folder
-    {
-        #region Properties
-
-        public string FullPath { get; set; }
 
         #endregion
     }
