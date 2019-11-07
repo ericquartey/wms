@@ -136,12 +136,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this;
         }
 
-        protected virtual void OnDisposing()
-        {
-            // do nothing
-            // derived classes can customize the behaviour of this method
-        }
-
         protected abstract void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData);
 
         protected virtual void OnExit()

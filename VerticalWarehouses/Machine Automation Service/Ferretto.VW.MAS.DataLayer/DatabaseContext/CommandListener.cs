@@ -59,8 +59,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-#pragma warning restore IDE0060 // Remove unused parameter
-
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
         public void OnCommandExecuting(
             DbCommand command,
@@ -128,16 +126,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+#pragma warning restore IDE0060 // Remove unused parameter
+
         private static bool IsModifyingCommand(DbCommand command)
         {
-            var normalizedCommandText = command.CommandText.ToUpperInvariant();
-
             return
-                normalizedCommandText.Contains("UPDATE ")
+                command.CommandText.Contains("UPDATE ", StringComparison.InvariantCultureIgnoreCase)
                 ||
-                normalizedCommandText.Contains("INSERT ")
+                command.CommandText.Contains("INSERT ", StringComparison.InvariantCultureIgnoreCase)
                 ||
-                normalizedCommandText.Contains("DELETE ");
+                command.CommandText.Contains("DELETE ", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsActiveDbChannel(string connectionString)

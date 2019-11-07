@@ -229,7 +229,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return message;
         }
 
-        private object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
+        public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
             var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
@@ -289,7 +289,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return text.ToString();
         }
 
-        private string FormatBlockWrite(object[] blockValues)
+        public string FormatBlockWrite(object[] blockValues)
         {
             var text = new StringBuilder();
             foreach (var block in blockValues)

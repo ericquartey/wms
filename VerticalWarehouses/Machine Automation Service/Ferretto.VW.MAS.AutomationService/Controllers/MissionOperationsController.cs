@@ -20,9 +20,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IConfiguration configuration;
-
         private readonly IBaysProvider baysProvider;
+
+        private readonly IConfiguration configuration;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity)
         {
-            if (this.configuration.IsWmsEnabled())
+            if (!this.configuration.IsWmsEnabled())
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
