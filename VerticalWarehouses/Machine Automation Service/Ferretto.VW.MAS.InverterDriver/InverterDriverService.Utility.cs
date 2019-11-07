@@ -28,6 +28,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -208,6 +209,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                             // INFO The Overrun elevator must be inverted (WORKAROUND)
                             ioStatuses[6] = !ioStatuses[6];
 
+                            if (serviceProvider.GetRequiredService<IHostingEnvironment>().IsEnvironment("Bender"))
+                            {
+                                ioStatuses[7] = angInverter.ANG_ZeroCradleSensor;
+                            }
                             if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
                             {
                                 this.Logger.LogTrace("Sensor Update");
@@ -1099,7 +1104,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (!encodedWord.Equals("\0"))
                 {
-                    if (short.TryParse(encodedWord, out var values))
+                    if (int.TryParse(encodedWord, out var values))
                     {
                         var dataByte = inverterIndex % 2;
 
@@ -1110,7 +1115,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
                     else
                     {
-                        this.Logger.LogError(currentMessageStringPayload);
+                        this.Logger.LogError($"Not valid Sensors in inverter message: {currentMessageStringPayload}");
                     }
                 }
             }
