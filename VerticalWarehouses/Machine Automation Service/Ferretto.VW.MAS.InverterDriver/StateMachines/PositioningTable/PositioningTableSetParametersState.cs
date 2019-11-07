@@ -271,7 +271,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (this.stepId < this.data.SwitchPosition.Length)
             {
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelSet1 + this.stepId);
-#if BLOCK_WRITE
                 if (!this.isBlockDefined)
                 {
                     var definitions = new List<InverterBlockDefinition>
@@ -296,16 +295,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
                     this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
                 }
-#else
-                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-#endif
             }
             else
             {
                 this.stepId = 0;
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
-#if BLOCK_WRITE
                 var definitions = new List<InverterBlockDefinition>
                     {
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
@@ -320,10 +314,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
                 this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}");
                 this.isPositionDefined = true;
-#else
-                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-#endif
             }
         }
 
@@ -337,7 +327,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             else if (++this.stepId < this.data.SwitchPosition.Length - 1)
             {
                 this.tableIndex = (InverterTableIndex)((short)InverterTableIndex.TableTravelP1 + this.stepId);
-#if BLOCK_WRITE
                 var definitions = new List<InverterBlockDefinition>
                     {
                         new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.TableTravelTableIndex),
@@ -352,10 +341,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
                 this.Logger.LogDebug($"Set block definition: {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}, {InverterParameterId.TableTravelTableIndex}, {InverterParameterId.TableTravelTargetPosition}");
                 this.isPositionDefined = true;
-#else
-                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTableIndex, (short)this.tableIndex));
-                this.Logger.LogDebug($"Set table index: {this.tableIndex}");
-#endif
             }
             else
             {
