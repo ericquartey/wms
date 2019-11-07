@@ -406,11 +406,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         return true;
                     }
-                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
-                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
-                    {
-                        return true;
-                    }
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
@@ -418,11 +413,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
-                    {
-                        return true;
-                    }
-                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
-                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                     {
                         return true;
                     }
@@ -444,23 +434,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         return true;
                     }
-                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
-                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
-                    {
-                        return true;
-                    }
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
                     if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1]
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
-                        )
-                    {
-                        return true;
-                    }
-                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
-                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                         )
                     {
                         return true;
@@ -474,7 +453,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             if (this.machineData.MessageData.MovementMode == MovementMode.Position
                 && this.machineData.MessageData.MovementType == MovementType.TableTarget
-                && this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle == this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                && ((this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    || (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    )
                 )
             {
                 return true;
@@ -626,6 +607,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
                             this.Logger.LogError($"Zero sensor error after deposit");
                         }
+                        this.Stop(StopRequestReason.Stop);
+                    }
+                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                        && !this.machineData.MessageData.IsStartedOnBoard
+                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+                        this.Logger.LogError("Cradle not correctly loaded after pickup");
+                        this.Stop(StopRequestReason.Stop);
+                    }
+                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
+                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                        && this.machineData.MessageData.IsStartedOnBoard
+                        && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
+                        this.Logger.LogError("Cradle not correctly unloaded during deposit");
                         this.Stop(StopRequestReason.Stop);
                     }
                     else

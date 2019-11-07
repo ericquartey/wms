@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             {
                 // Send a field message to the Update of position axis to InverterDriver
-                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
+                var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, 250);
                 var inverterMessage = new FieldCommandMessage(
                     inverterDataMessage,
                     "Update Inverter digital input status",
