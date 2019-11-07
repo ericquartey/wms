@@ -29,6 +29,11 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
 
         public bool UpdateInputStates(bool[] newInputStates)
         {
+            if (newInputStates is null)
+            {
+                throw new ArgumentNullException(nameof(newInputStates));
+            }
+
             if (this.inputs.Length != newInputStates.Length)
             {
                 throw new InverterDriverException($"Input states length mismatch while updating I/O driver status");

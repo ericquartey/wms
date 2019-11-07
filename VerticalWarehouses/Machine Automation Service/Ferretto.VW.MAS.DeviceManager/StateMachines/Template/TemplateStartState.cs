@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Template
         #region Constructors
 
         public TemplateStartState(ITemplateStateData stateData)
-                    : base(stateData.ParentMachine, stateData.MachineData.Logger)
+            : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as ITemplateMachineData;

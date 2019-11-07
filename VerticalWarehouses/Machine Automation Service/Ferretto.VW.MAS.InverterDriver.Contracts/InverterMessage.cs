@@ -61,6 +61,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public InverterMessage(InverterMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             this.IsWriteMessage = message.IsWriteMessage;
             this.SystemIndex = message.SystemIndex;
             this.DataSetIndex = message.DataSetIndex;
@@ -222,95 +227,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return message;
-        }
-
-        public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
-        {
-            var blockValues = new object[blockDefinitions.Count];
-            var stringPayload = Encoding.ASCII.GetString(this.payload);
-            var start = 0;
-            for (var iblock = 0; iblock < blockValues.Length; iblock++)
-            {
-                int length;
-                switch (blockDefinitions[iblock].ParameterId)
-                {
-                    case InverterParameterId.TableTravelTableIndex:
-                        length = 4;
-                        break;
-
-                    case InverterParameterId.TableTravelTargetSpeeds:
-                    case InverterParameterId.TableTravelTargetAccelerations:
-                    case InverterParameterId.TableTravelTargetDecelerations:
-                    case InverterParameterId.PositionTargetPosition:
-                    case InverterParameterId.PositionTargetSpeed:
-                    case InverterParameterId.PositionAcceleration:
-                    case InverterParameterId.PositionDeceleration:
-                        length = 8;
-                        break;
-
-                    default:
-                        throw new InverterDriverException($"Block read parameter {blockValues[iblock].GetType().Name} not valid");
-                }
-
-                if (start + length > stringPayload.Length)
-                {
-                    throw new InverterDriverException("Received too short block message");
-                }
-
-                blockValues[iblock] = Convert.ToInt32(stringPayload.Substring(start, length), 16);
-                start += length;
-            }
-
-            return blockValues;
-        }
-
-        public string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
-        {
-            var text = new StringBuilder();
-            foreach (var block in blockDefinitions)
-            {
-                text.AppendFormat("{0}", (byte)block.SystemIndex);
-                text.AppendFormat("{0}", (byte)block.DataSetIndex);
-                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
-                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
-            }
-
-            if (text.Length > 80)
-            {
-                throw new InverterDriverException("Too many parameters for one block message");
-            }
-
-            return text.ToString();
-        }
-
-        public string FormatBlockWrite(object[] blockValues)
-        {
-            var text = new StringBuilder();
-            foreach (var block in blockValues)
-            {
-                switch (block.GetType().Name)
-                {
-                    case "Int16":
-                    case "UInt16":
-                        text.AppendFormat("{0:X4}", (short)block);
-                        break;
-
-                    case "Int32":
-                    case "UInt32":
-                        text.AppendFormat("{0:X8}", (int)block);
-                        break;
-
-                    default:
-                        throw new InverterDriverException($"Block write parameter {block.GetType().Name} not valid");
-                }
-            }
-
-            if (text.Length > 80)
-            {
-                throw new InverterDriverException("Too many parameters for one block message");
-            }
-
-            return text.ToString();
         }
 
         public byte[] GetHeartbeatMessage(bool setBit)
@@ -535,6 +451,46 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return definitions;
         }
 
+        private object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
+        {
+            var blockValues = new object[blockDefinitions.Count];
+            var stringPayload = Encoding.ASCII.GetString(this.payload);
+            var start = 0;
+            for (var iblock = 0; iblock < blockValues.Length; iblock++)
+            {
+                int length;
+                switch (blockDefinitions[iblock].ParameterId)
+                {
+                    case InverterParameterId.TableTravelTableIndex:
+                        length = 4;
+                        break;
+
+                    case InverterParameterId.TableTravelTargetSpeeds:
+                    case InverterParameterId.TableTravelTargetAccelerations:
+                    case InverterParameterId.TableTravelTargetDecelerations:
+                    case InverterParameterId.PositionTargetPosition:
+                    case InverterParameterId.PositionTargetSpeed:
+                    case InverterParameterId.PositionAcceleration:
+                    case InverterParameterId.PositionDeceleration:
+                        length = 8;
+                        break;
+
+                    default:
+                        throw new InverterDriverException($"Block read parameter {blockValues[iblock].GetType().Name} not valid");
+                }
+
+                if (start + length > stringPayload.Length)
+                {
+                    throw new InverterDriverException("Received too short block message");
+                }
+
+                blockValues[iblock] = Convert.ToInt32(stringPayload.Substring(start, length), 16);
+                start += length;
+            }
+
+            return blockValues;
+        }
+
         private int ConvertPayloadToInt()
         {
             var returnValue = default(int);
@@ -614,6 +570,55 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return returnValue;
+        }
+
+        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockDefinitions)
+            {
+                text.AppendFormat("{0}", (byte)block.SystemIndex);
+                text.AppendFormat("{0}", (byte)block.DataSetIndex);
+                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
+                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
+        }
+
+        private string FormatBlockWrite(object[] blockValues)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockValues)
+            {
+                switch (block.GetType().Name)
+                {
+                    case "Int16":
+                    case "UInt16":
+                        text.AppendFormat("{0:X4}", (short)block);
+                        break;
+
+                    case "Int32":
+                    case "UInt32":
+                        text.AppendFormat("{0:X8}", (int)block);
+                        break;
+
+                    default:
+                        throw new InverterDriverException($"Block write parameter {block.GetType().Name} not valid");
+                }
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
         }
 
         private void SetPayload(object payload)

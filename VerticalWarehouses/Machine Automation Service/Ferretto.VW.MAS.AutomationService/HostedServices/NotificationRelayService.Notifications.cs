@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
+            System.Diagnostics.Contracts.Contract.Requires(notification != null);
+
             return
                 notification.Destination is MessageActor.AutomationService
                 ||
@@ -21,6 +23,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
+            System.Diagnostics.Contracts.Contract.Requires(message != null);
+
             switch (message.Type)
             {
                 case MessageType.SensorsChanged:

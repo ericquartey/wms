@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Extensions;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Fields
 
         private readonly DataLayerContext dataContext;
+
+        private readonly ILogger<ErrorsProvider> logger;
 
         private readonly NotificationEvent notificationEvent;
 
@@ -32,7 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public ErrorsProvider(
             DataLayerContext dataContext,
             IServiceScopeFactory serviceScopeFactory,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            ILogger<ErrorsProvider> logger)
         {
             if (serviceScopeFactory is null)
             {
@@ -45,9 +49,9 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
-
             this.scope = serviceScopeFactory.CreateScope();
         }
 
@@ -138,6 +142,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     return existingUnresolvedError;
                 }
 
+                this.logger.LogError($"Triggering new user error '{code.ToString()}', code: {(int)code}");
                 this.dataContext.Errors.Add(newError);
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);

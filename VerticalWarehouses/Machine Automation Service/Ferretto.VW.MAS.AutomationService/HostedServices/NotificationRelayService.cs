@@ -75,6 +75,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
+            if (notificationData is null)
+            {
+                throw new ArgumentNullException(nameof(notificationData));
+            }
+
             this.Logger.LogDebug($"Notifying Automation Service service error");
 
             var msg = new NotificationMessage(

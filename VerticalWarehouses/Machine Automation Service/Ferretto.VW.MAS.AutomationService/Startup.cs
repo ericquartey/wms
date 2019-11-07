@@ -70,11 +70,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
-            SwaggerBuilderExtensions.UseSwagger(app);
-            app.UseSwaggerUI(config =>
+            if (!env.IsProduction())
             {
-                config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-            });
+                SwaggerBuilderExtensions.UseSwagger(app);
+                app.UseSwaggerUI(config =>
+                {
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                });
+            }
 
             if (this.Configuration.IsWmsEnabled())
             {
@@ -165,6 +168,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void InitialiseWmsInterfaces(IServiceCollection services)
         {
+            if (services is null)
+            {
+                throw new System.ArgumentNullException(nameof(services));
+            }
+
             var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
             services.AddWebApiServices(wmsServiceAddress);
 

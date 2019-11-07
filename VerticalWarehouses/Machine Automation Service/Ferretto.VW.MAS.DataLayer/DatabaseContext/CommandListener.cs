@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+#pragma warning disable IDE0060 // Remove unused parameter
+
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
         public void OnCommandError(
                 DbCommand command,
@@ -56,6 +58,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
             }
         }
+
+#pragma warning restore IDE0060 // Remove unused parameter
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandExecuting")]
         public void OnCommandExecuting(

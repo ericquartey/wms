@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable ParameterHidesMember
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
-    public abstract class StateBase : IState, IDisposable
+    public abstract class StateBase : IState
     {
         #region Fields
 
@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         private bool hasExited;
 
         private bool hasStopped;
-
-        private bool isDisposed;
 
         private IServiceProvider serviceProvider;
 
@@ -53,15 +51,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         public IState CommandReceived(CommandMessage commandMessage)
         {
             return this.OnCommandReceived(commandMessage);
-        }
-
-        public void Dispose()
-        {
-            if (!this.isDisposed)
-            {
-                this.OnDisposing();
-                this.isDisposed = true;
-            }
         }
 
         public void Enter(CommandMessage message, IServiceProvider serviceProvider, IFiniteStateMachineData machineData)

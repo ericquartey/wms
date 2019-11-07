@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await base.ExecuteAsync(stoppingToken);
+            await base.ExecuteAsync(stoppingToken).ConfigureAwait(true);
 
             this.stoppingToken = stoppingToken;
 
@@ -81,8 +81,6 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 this.SendCriticalErrorMessage(ex);
             }
-
-            await Task.CompletedTask;
         }
 
         protected override bool FilterCommand(CommandMessage command)

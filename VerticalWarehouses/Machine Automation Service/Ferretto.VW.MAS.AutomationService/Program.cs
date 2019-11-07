@@ -12,7 +12,7 @@ using NLog.Web;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public class Program
+    public static class Program
     {
         #region Fields
 
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public static int Main(string[] args)
         {
-            ILogger<Program> logger = null;
+            ILogger<Startup> logger = null;
             try
             {
                 var pathToContentRoot = Directory.GetCurrentDirectory();
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     .UseContentRoot(pathToContentRoot)
                     .Build();
 
-                logger = host.Services.GetRequiredService<ILogger<Program>>();
+                logger = host.Services.GetRequiredService<ILogger<Startup>>();
                 var versionString = GetVersion();
 
                 logger.LogInformation($"VertiMag Automation Service version {versionString}");
