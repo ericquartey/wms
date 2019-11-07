@@ -34,7 +34,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines
+                var entity =
+                this.dataContext.Machines
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.Axes)
                             .ThenInclude(a => a.EmptyLoadMovement)
@@ -65,6 +66,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single();
+
+                foreach (var axe in entity.Elevator.Axes.ToList())
+                {
+                    foreach (var profile in axe.Profiles.ToList())
+                    {
+                        profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList();
+                    }
+                }
+
+                return entity;
             }
         }
 
