@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILogger<ErrorsProvider> logger;
+        private readonly ILogger<DataLayerService> logger;
 
         private readonly NotificationEvent notificationEvent;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IServiceScopeFactory serviceScopeFactory,
             IEventAggregator eventAggregator,
-            ILogger<ErrorsProvider> logger)
+            ILogger<DataLayerService> logger)
         {
             if (serviceScopeFactory is null)
             {
