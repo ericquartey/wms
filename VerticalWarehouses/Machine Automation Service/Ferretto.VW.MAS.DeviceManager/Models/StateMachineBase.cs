@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             lock (this.CurrentState)
             {
                 this.CurrentState = newState;
-                this.CurrentState.Start();
+                newState.Start();
             }
 
             this.Logger.LogTrace($"1:{newState.GetType().Name}");
