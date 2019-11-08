@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double? GetSourceHeight(IMoveLoadingUnitMessageData messageData);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 

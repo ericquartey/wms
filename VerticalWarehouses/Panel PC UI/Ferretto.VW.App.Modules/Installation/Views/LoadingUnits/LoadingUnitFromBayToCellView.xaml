@@ -64,7 +64,7 @@
                            Grid.Column="1"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
 
@@ -72,7 +72,7 @@
                            Grid.Column="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
-                           EditValue="{Binding DestinationCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue='2'}"
+                           EditValue="{Binding DestinationCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.InsertDestinationCellId}" />
 

@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
         {
             this.Logger.LogTrace("1:Method Start");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data &&
                                message.ValidOutputs;
 
             if (this.status.MatchOutputs(message.Outputs) && checkMessage)

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             FieldMessageType type,
             MessageStatus status,
             byte deviceIndex,
-            ErrorLevel level = ErrorLevel.NoError)
+            ErrorLevel level = ErrorLevel.None)
         {
             this.Data = data;
             this.Description = description;
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.Utils.Messages
             FieldMessageType type,
             MessageStatus status,
             InverterIndex inverterIndex,
-            ErrorLevel level = ErrorLevel.NoError)
+            ErrorLevel level = ErrorLevel.None)
             : this(data, description, destination, source, type, status, (byte)inverterIndex, level)
         {
         }

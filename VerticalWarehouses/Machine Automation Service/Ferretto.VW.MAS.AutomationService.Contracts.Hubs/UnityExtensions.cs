@@ -12,6 +12,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             string operatorHubPath,
             string installationHubPath)
         {
+            if (container is null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
+            if (webServiceUrl is null)
+            {
+                throw new System.ArgumentNullException(nameof(webServiceUrl));
+            }
+
             var urlString = webServiceUrl.ToString();
 
             var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);

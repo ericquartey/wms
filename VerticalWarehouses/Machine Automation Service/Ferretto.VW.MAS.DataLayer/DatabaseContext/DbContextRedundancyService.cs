@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal class DbContextRedundancyService<TDbContext> : IDbContextRedundancyService<TDbContext>
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>

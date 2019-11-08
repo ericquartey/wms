@@ -65,7 +65,6 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
             ??
             (this.machineStatisticsButtonCommand = new DelegateCommand(() =>
                 {
-                    this.navigationService.NavigateToView<MachineStatisticsViewModel, IMachineStatisticsViewModel>();
                 }));
 
         #endregion

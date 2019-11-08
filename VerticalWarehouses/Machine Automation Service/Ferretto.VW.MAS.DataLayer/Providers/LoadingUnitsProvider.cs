@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -12,18 +11,20 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly DataLayerContext dataContext;
+        /// <summary>
+        /// TODO Consider transformomg this constant in configuration parameters.
+        /// </summary>
+        private const double MinimumLoadOnBoard = 10.0;
 
-        private readonly ILogger<LoadingUnitsProvider> logger;
+        private readonly DataLayerContext dataContext;
 
         #endregion
 
         #region Constructors
 
-        public LoadingUnitsProvider(DataLayerContext dataContext, ILogger<LoadingUnitsProvider> logger)
+        public LoadingUnitsProvider(DataLayerContext dataContext)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -92,6 +93,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Insert(int loadingUnitsId)
+        {
+            lock (this.dataContext)
+            {
+                LoadingUnit loadingUnits = new LoadingUnit
+                {
+                    Id = loadingUnitsId,
+                    Tare = 120,
+                    MaxNetWeight = 800,
+                };
+                this.dataContext.LoadingUnits.Add(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void SetHeight(int loadingUnitId, double height)
         {
             lock (this.dataContext)
@@ -108,13 +125,35 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
         {
+            if (loadingUnitGrossWeight < MinimumLoadOnBoard)
+            {
+                throw new ArgumentOutOfRangeException(
+                    $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
+            }
+
             lock (this.dataContext)
             {
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
+                }
+
                 loadingUnit.GrossWeight = loadingUnitGrossWeight;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
 
                 this.dataContext.SaveChanges();
             }

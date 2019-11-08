@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
-using Ferretto.VW.MAS.DataLayer.Extensions;
 using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer

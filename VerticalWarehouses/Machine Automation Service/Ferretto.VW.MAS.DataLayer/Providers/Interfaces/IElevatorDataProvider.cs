@@ -5,6 +5,14 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IElevatorDataProvider
     {
+        #region Properties
+
+        double HorizontalPosition { get; set; }
+
+        double VerticalPosition { get; set; }
+
+        #endregion
+
         #region Methods
 
         ElevatorAxis GetAxis(Orientation orientation);
@@ -20,6 +28,8 @@ namespace Ferretto.VW.MAS.DataLayer
         ElevatorAxis GetVerticalAxis();
 
         void LoadLoadingUnit(int loadingUnitId);
+
+        void ResetMachine();
 
         MovementParameters ScaleMovementsByWeight(Orientation orientation);
 

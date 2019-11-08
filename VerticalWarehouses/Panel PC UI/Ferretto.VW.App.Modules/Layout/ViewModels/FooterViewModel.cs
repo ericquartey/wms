@@ -57,14 +57,16 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.InitializeData();
 
-            var prev = this.GetInstance(nameof(PresentationNavigationStep));
+            var prev = this.GetInstance<PresentationNavigationStep>();
             prev.Type = PresentationTypes.Prev;
             this.States.Add(prev);
-            var next = this.GetInstance(nameof(PresentationNavigationStep));
+
+            var next = this.GetInstance<PresentationNavigationStep>();
             next.Type = PresentationTypes.Next;
             this.States.Add(next);
-            this.States.Add(this.GetInstance(nameof(PresentationAbort)));
-            this.States.Add(this.GetInstance(nameof(PresentationBack)));
+
+            this.States.Add(this.GetInstance<PresentationAbort>());
+            this.States.Add(this.GetInstance<PresentationBack>());
         }
 
         public void NotificationChanged(PresentationNotificationMessage message)

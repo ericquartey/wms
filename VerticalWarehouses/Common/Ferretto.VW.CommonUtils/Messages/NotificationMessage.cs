@@ -33,7 +33,7 @@ namespace Ferretto.VW.CommonUtils.Messages
             BayNumber requestingBay,
             BayNumber targetBay = BayNumber.None,
             MessageStatus status = MessageStatus.NotSpecified,
-            ErrorLevel level = ErrorLevel.NoError,
+            ErrorLevel level = ErrorLevel.None,
             MessageVerbosity verbosity = MessageVerbosity.Info)
         {
             this.Data = data;

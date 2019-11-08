@@ -54,8 +54,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Set(VertimagConfiguration vertimagConfiguration)
         {
+            if (vertimagConfiguration is null)
+            {
+                throw new System.ArgumentNullException(nameof(vertimagConfiguration));
+            }
+
             this.machineProvider.Update(vertimagConfiguration.Machine);
             this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures);
+            this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits);
 
             return this.Ok();
         }

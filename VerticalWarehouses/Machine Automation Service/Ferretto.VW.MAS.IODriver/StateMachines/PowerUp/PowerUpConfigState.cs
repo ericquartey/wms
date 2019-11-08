@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Ack)
+            if (message.FormatDataOperation == ShdFormatDataOperation.Ack)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
                 this.ParentStateMachine.ChangeState(new PowerUpClearOutputsState(this.ParentStateMachine, this.status, this.index, this.Logger));

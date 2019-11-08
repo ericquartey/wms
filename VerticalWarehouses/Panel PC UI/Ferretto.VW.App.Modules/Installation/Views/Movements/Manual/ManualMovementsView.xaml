@@ -10,7 +10,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="100,0,100,0">
+    <Grid Margin="30,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
             <RowDefinition Height="Auto" />
@@ -19,35 +19,42 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.26*" />
+            <ColumnDefinition Width="0.4*" />
             <ColumnDefinition Width="20" />
-            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="0.34*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="3"
-                   HorizontalAlignment="Left"
+        <TextBlock Grid.ColumnSpan="4"
+                   HorizontalAlignment="Center"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.ManualMovements}" />
 
+        <ctrls:SensorsPanel Grid.Row="1"
+                            Grid.RowSpan="5"
+                            Margin="0,0,5,0" />
+
         <views:EngineManualMovementsView Grid.Row="1"
+                                         Grid.Column="1"
                                          DataContext="{Binding EngineManualMovementsViewModel}" />
+
         <views:ShutterEngineManualMovementsView Grid.Row="1"
-                                                Grid.Column="2"
+                                                Grid.Column="3"
                                                 DataContext="{Binding ShutterEngineManualMovementsViewModel}" />
 
         <views:ExternalBayManualMovementsView Grid.Row="3"
-                                              Margin="0,0,0,0"
+                                              Grid.Column="1"
                                               DataContext="{Binding ExternalBayManualMovementsViewModel}"
-                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
+                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}"/>
 
         <views:CarouselManualMovementsView Grid.Row="3"
-                                           Grid.Column="2"
-                                           Margin="0,0,0,0"
+                                           Grid.Column="3"
                                            DataContext="{Binding CarouselManualMovementsViewModel}"
                                            Visibility="{Binding Path=DataContext.HasCarousel, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
 
         <Line Grid.Row="2"
+              Grid.Column="1"
               Margin="20,0,20,0"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Center"
@@ -60,7 +67,7 @@
               Y2="0" />
 
         <Line Grid.Row="2"
-              Grid.Column="2"
+              Grid.Column="3"
               Margin="20,0,20,0"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Center"
@@ -73,7 +80,7 @@
               Y2="0" />
 
         <Line Grid.Row="1"
-              Grid.Column="1"
+              Grid.Column="2"
               Margin="0,20,0,20"
               HorizontalAlignment="Center"
               VerticalAlignment="Stretch"
@@ -85,7 +92,7 @@
               Y1="0"
               Y2="1" />
         <Line Grid.Row="3"
-              Grid.Column="1"
+              Grid.Column="2"
               Margin="0,20,0,20"
               HorizontalAlignment="Center"
               VerticalAlignment="Stretch"

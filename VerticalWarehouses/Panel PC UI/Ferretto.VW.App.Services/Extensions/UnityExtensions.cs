@@ -1,4 +1,5 @@
-﻿using Prism.Events;
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
 using Unity;
@@ -32,6 +33,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<ISessionService, SessionService>();
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
+
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
             // Operator
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();

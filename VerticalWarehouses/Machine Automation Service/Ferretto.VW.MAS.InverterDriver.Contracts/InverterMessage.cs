@@ -61,6 +61,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public InverterMessage(InverterMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             this.IsWriteMessage = message.IsWriteMessage;
             this.SystemIndex = message.SystemIndex;
             this.DataSetIndex = message.DataSetIndex;
@@ -226,10 +231,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
-            object[] blockValues = new object[blockDefinitions.Count];
+            var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
-            int start = 0;
-            for (int iblock = 0; iblock < blockValues.Length; iblock++)
+            var start = 0;
+            for (var iblock = 0; iblock < blockValues.Length; iblock++)
             {
                 int length;
                 switch (blockDefinitions[iblock].ParameterId)
@@ -241,6 +246,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     case InverterParameterId.TableTravelTargetSpeeds:
                     case InverterParameterId.TableTravelTargetAccelerations:
                     case InverterParameterId.TableTravelTargetDecelerations:
+                    case InverterParameterId.TableTravelTargetPosition:
                     case InverterParameterId.PositionTargetPosition:
                     case InverterParameterId.PositionTargetSpeed:
                     case InverterParameterId.PositionAcceleration:
@@ -260,10 +266,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 blockValues[iblock] = Convert.ToInt32(stringPayload.Substring(start, length), 16);
                 start += length;
             }
+
             return blockValues;
         }
 
-        public string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
         {
             var text = new StringBuilder();
             foreach (var block in blockDefinitions)
@@ -512,8 +519,8 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         {
             var definitions = new List<InverterBlockDefinition>();
             var stringPayload = Encoding.ASCII.GetString(this.payload);
-            int start = 0;
-            for (int iblock = 0; (start + 5) <= stringPayload.Length; iblock++)
+            var start = 0;
+            for (var iblock = 0; (start + 5) <= stringPayload.Length; iblock++)
             {
                 try
                 {
@@ -523,12 +530,14 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2));
                     definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new InverterDriverException("Received not valid block definition message");
+                    throw new InverterDriverException("Received not valid block definition message", ex);
                 }
+
                 start += 5;
             }
+
             return definitions;
         }
 
@@ -621,6 +630,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                 this.payloadLength = 0;
                 return;
             }
+
             if (payload is List<InverterBlockDefinition> blockDefinitions)
             {
                 this.payload = Encoding.ASCII.GetBytes(this.FormatBlockDefinition(blockDefinitions));

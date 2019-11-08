@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.SensorsStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -21,9 +22,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ILogger<MachineResourcesProvider> logger;
+
         private readonly IMachineProvider machineProvider;
 
-        private readonly bool[] sensorStatus;
+        /// <summary>
+        /// It contains the Remote IO sensor status between index 0 and 47
+        /// followed by the Inverter sensor between index 48 and 111.
+        /// </summary>
+        private readonly bool[] sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
 
         private bool enableNotificatons;
 
@@ -33,13 +40,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
-            IBaysProvider baysProvider)
+            IBaysProvider baysProvider,
+            ILogger<MachineResourcesProvider> logger)
         {
-            //INFO hp: the sensorStatus array contains the Remote IO sensor status between index 0 and 47
-            // followed by the Inverter sensor between index 48 and 111
-            this.sensorStatus = new bool[3 * REMOTEIO_INPUTS + INVERTER_INPUTS * 8];
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.logger = logger;
         }
 
         #endregion
@@ -62,9 +68,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsAntiIntrusionBarrierBay3 => this.sensorStatus[(int)IOMachineSensors.AntiIntrusionBarrierBay3];
 
-        public bool IsDrawerCompletelyOffCradle => !this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && !this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+        public bool IsDrawerCompletelyOffCradle => !this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] && !this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-        public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+        public bool IsDrawerCompletelyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] && this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         public bool IsDrawerInBay1Bottom => this.sensorStatus[(int)IOMachineSensors.LUPresentMiddleBottomBay1];
 
@@ -78,7 +84,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsDrawerInBay3Top => this.sensorStatus[(int)IOMachineSensors.LUPresentInBay3];
 
-        public bool IsDrawerPartiallyOnCradleBay1 => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSideBay1] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+        public bool IsDrawerPartiallyOnCradle => this.sensorStatus[(int)IOMachineSensors.LuPresentInMachineSide] != this.sensorStatus[(int)IOMachineSensors.LuPresentInOperatorSide];
 
         public bool IsInverterInFault => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
@@ -282,84 +288,92 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         //INFO Inputs from the inverter
         public bool UpdateInputs(byte ioIndex, bool[] newSensorStatus, FieldMessageActor messageActor)
         {
+            if (newSensorStatus is null)
+            {
+                return false;
+            }
+
             try
             {
                 var requiredUpdate = false;
                 var updateDone = false;
 
-                if (newSensorStatus == null)
+                switch (messageActor)
                 {
-                    return false;
-                }
-
-                if (messageActor == FieldMessageActor.IoDriver)
-                {
-                    if (ioIndex > 2)
-                    {
-                        return false;
-                    }
-
-                    for (var index = 0; index < REMOTEIO_INPUTS; index++)
-                    {
-                        if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
+                    case FieldMessageActor.IoDriver:
                         {
-                            requiredUpdate = true;
-                            break;
-                        }
-                    }
-
-                    if (requiredUpdate)
-                    {
-                        if (ioIndex == 0 && this.enableNotificatons)
-                        {
-                            if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
-                                newSensorStatus[(int)IOMachineSensors.RunningState])
+                            if (ioIndex > 2)
                             {
-                                //During Fault Handling running status will be set off. This prevents double firing the power off procedure
-                                if (!this.IsInverterInFault)
+                                return false;
+                            }
+
+                            for (var index = 0; index < REMOTEIO_INPUTS; index++)
+                            {
+                                if (this.sensorStatus[(ioIndex * REMOTEIO_INPUTS) + index] != newSensorStatus[index])
                                 {
-                                    var args = new StatusUpdateEventArgs();
-                                    args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
-                                    this.OnRunningStateChanged(args);
+                                    requiredUpdate = true;
+                                    break;
                                 }
                             }
 
-                            if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
-                                newSensorStatus[(int)IOMachineSensors.InverterInFault1])
+                            if (requiredUpdate)
                             {
-                                var args = new StatusUpdateEventArgs();
-                                args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
-                                this.OnFaultStateChanged(args);
-                            }
-                        }
+                                if (ioIndex == 0 && this.enableNotificatons)
+                                {
+                                    if (this.sensorStatus[(int)IOMachineSensors.RunningState] !=
+                                        newSensorStatus[(int)IOMachineSensors.RunningState])
+                                    {
+                                        //During Fault Handling running status will be set off. This prevents double firing the power off procedure
+                                        if (!this.IsInverterInFault)
+                                        {
+                                            var args = new StatusUpdateEventArgs();
+                                            args.NewState = newSensorStatus[(int)IOMachineSensors.RunningState];
+                                            this.OnRunningStateChanged(args);
+                                        }
+                                    }
 
-                        Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
-                        updateDone = true;
-                    }
-                }
-                else if (messageActor == FieldMessageActor.InverterDriver)
-                {
-                    for (var index = 0; index < INVERTER_INPUTS; index++)
-                    {
-                        if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
-                        {
-                            requiredUpdate = true;
+                                    if (this.sensorStatus[(int)IOMachineSensors.InverterInFault1] !=
+                                        newSensorStatus[(int)IOMachineSensors.InverterInFault1])
+                                    {
+                                        var args = new StatusUpdateEventArgs();
+                                        args.NewState = newSensorStatus[(int)IOMachineSensors.InverterInFault1];
+                                        this.OnFaultStateChanged(args);
+                                    }
+                                }
+
+                                Array.Copy(newSensorStatus, 0, this.sensorStatus, (ioIndex * REMOTEIO_INPUTS), REMOTEIO_INPUTS);
+                                updateDone = true;
+                            }
+
                             break;
                         }
-                    }
 
-                    if (requiredUpdate)
-                    {
-                        Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
-                        updateDone = true;
-                    }
+                    case FieldMessageActor.InverterDriver:
+                        {
+                            for (var index = 0; index < INVERTER_INPUTS; index++)
+                            {
+                                if (this.sensorStatus[index + 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS)] != newSensorStatus[index])
+                                {
+                                    requiredUpdate = true;
+                                    break;
+                                }
+                            }
+
+                            if (requiredUpdate)
+                            {
+                                Array.Copy(newSensorStatus, 0, this.sensorStatus, 3 * REMOTEIO_INPUTS + (ioIndex * INVERTER_INPUTS), newSensorStatus.Length);
+                                updateDone = true;
+                            }
+
+                            break;
+                        }
                 }
 
                 return updateDone;
             }
-            catch (Exception exc)
+            catch (Exception ex)
             {
-                Console.WriteLine($@"{exc}");
+                this.logger.LogError(ex, "Error while updating inputs");
                 return false;
             }
         }

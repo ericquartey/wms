@@ -125,12 +125,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private bool antiIntrusionBarrierBay3;
 
-        private bool barrierCalibrationBay1;
-
-        private bool barrierCalibrationBay2;
-
-        private bool barrierCalibrationBay3;
-
         private bool cradleEngineSelectedBay1;
 
         private bool elevatorEngineSelectedBay1;
@@ -204,6 +198,12 @@ namespace Ferretto.VW.App.Controls.Controls
         private bool mushroomEmergencyButtonBay3;
 
         private bool powerOnOff;
+
+        private bool profileCalibrationBay1;
+
+        private bool profileCalibrationBay2;
+
+        private bool profileCalibrationBay3;
 
         private bool robotOptionBay1;
 
@@ -347,12 +347,6 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool AntiIntrusionBarrierBay3 { get => this.antiIntrusionBarrierBay3; set => this.SetProperty(ref this.antiIntrusionBarrierBay3, value); }
 
-        public bool BarrierCalibrationBay1 { get => this.barrierCalibrationBay1; set => this.SetProperty(ref this.barrierCalibrationBay1, value); }
-
-        public bool BarrierCalibrationBay2 { get => this.barrierCalibrationBay2; set => this.SetProperty(ref this.barrierCalibrationBay2, value); }
-
-        public bool BarrierCalibrationBay3 { get => this.barrierCalibrationBay3; set => this.SetProperty(ref this.barrierCalibrationBay3, value); }
-
         public bool CradleEngineSelectedBay1 { get => this.cradleEngineSelectedBay1; set => this.SetProperty(ref this.cradleEngineSelectedBay1, value); }
 
         public bool ElevatorEngineSelectedBay1 { get => this.elevatorEngineSelectedBay1; set => this.SetProperty(ref this.elevatorEngineSelectedBay1, value); }
@@ -405,9 +399,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool LUPresentInBay3 { get => this.lUPresentInBay3; set => this.SetProperty(ref this.lUPresentInBay3, value); }
 
-        public bool LuPresentInMachineSideBay1 { get => this.luPresentInMachineSideBay1; set => this.SetProperty(ref this.luPresentInMachineSideBay1, value); }
+        public bool LuPresentInMachineSide { get => this.luPresentInMachineSideBay1; set => this.SetProperty(ref this.luPresentInMachineSideBay1, value); }
 
-        public bool LuPresentInOperatorSideBay1 { get => this.luPresentInOperatorSideBay1; set => this.SetProperty(ref this.luPresentInOperatorSideBay1, value); }
+        public bool LuPresentInOperatorSide { get => this.luPresentInOperatorSideBay1; set => this.SetProperty(ref this.luPresentInOperatorSideBay1, value); }
 
         public bool LUPresentMiddleBottomBay1 { get => this.lUPresentMiddleBottomBay1; set => this.SetProperty(ref this.lUPresentMiddleBottomBay1, value); }
 
@@ -426,6 +420,12 @@ namespace Ferretto.VW.App.Controls.Controls
         public bool MushroomEmergencyButtonBay3 { get => this.mushroomEmergencyButtonBay3; set => this.SetProperty(ref this.mushroomEmergencyButtonBay3, value); }
 
         public bool PowerOnOff { get => this.powerOnOff; set => this.SetProperty(ref this.powerOnOff, value); }
+
+        public bool ProfileCalibrationBay1 { get => this.profileCalibrationBay1; set => this.SetProperty(ref this.profileCalibrationBay1, value); }
+
+        public bool ProfileCalibrationBay2 { get => this.profileCalibrationBay2; set => this.SetProperty(ref this.profileCalibrationBay2, value); }
+
+        public bool ProfileCalibrationBay3 { get => this.profileCalibrationBay3; set => this.SetProperty(ref this.profileCalibrationBay3, value); }
 
         public bool RobotOptionBay1 { get => this.robotOptionBay1; set => this.SetProperty(ref this.robotOptionBay1, value); }
 

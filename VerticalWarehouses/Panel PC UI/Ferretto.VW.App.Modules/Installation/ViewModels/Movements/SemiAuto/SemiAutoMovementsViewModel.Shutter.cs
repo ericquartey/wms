@@ -81,6 +81,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsShutterMoving
                 &&
+                this.BayIsShutterThreeSensors
+                &&
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
         }
 

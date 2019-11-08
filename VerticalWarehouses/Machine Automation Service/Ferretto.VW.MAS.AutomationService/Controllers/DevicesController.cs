@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public DevicesController(
-            IEventAggregator eventAggregator,
             IInverterProvider inverterProvider,
             IIoDeviceProvider ioDeviceProvider)
         {

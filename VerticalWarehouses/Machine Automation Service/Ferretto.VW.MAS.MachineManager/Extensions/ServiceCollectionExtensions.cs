@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.MAS.MachineManager.BackgroundServices;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.States.Interfaces;
@@ -11,7 +10,7 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.VW.MAS.MachineManager.Extensions
+namespace Ferretto.VW.MAS.MachineManager
 {
     public static class ServiceCollectionExtensions
     {

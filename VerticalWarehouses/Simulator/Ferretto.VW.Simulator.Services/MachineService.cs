@@ -509,16 +509,16 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.TableTravelTargetAccelerations:
-                {
-                    var replyMessage = message.ToBytes();
-                    if (message.UIntPayload == 0)
                     {
-                        replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
-                    }
+                        var replyMessage = message.ToBytes();
+                        if (message.UIntPayload == 0)
+                        {
+                            replyMessage = this.FormatMessage(replyMessage, (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)1), true);
+                        }
 
-                    result = client.Client.Send(replyMessage);
-                }
-                break;
+                        result = client.Client.Send(replyMessage);
+                    }
+                    break;
 
                 case InverterParameterId.TableTravelTargetDecelerations:
                     result = client.Client.Send(message.ToBytes());
@@ -578,6 +578,25 @@ namespace Ferretto.VW.Simulator.Services
 
                             case InverterParameterId.PositionDeceleration:
                                 inverter.TargetAcceleration[inverter.CurrentAxis] = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.TableTravelTableIndex:
+                                inverter.TableIndex = (int)blockRead[iblock];
+                                break;
+
+                            case InverterParameterId.TableTravelTargetPosition:
+                                if (inverter.TableIndex < (int)InverterTableIndex.TableTravelP1)
+                                {
+                                    inverter.TargetPosition[inverter.CurrentAxis] = inverter.Impulses2millimeters((int)blockRead[iblock]);
+                                    inverter.StartPosition[inverter.CurrentAxis] = inverter.AxisPosition;
+                                    inverter.IsStartedOnBoard = this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInMachineSide].Value
+                                        && this.remoteIOs[0].Inputs[(int)IoPorts.DrawerInOperatorSide].Value;
+                                }
+                                else
+                                {
+                                    var switchId = inverter.TableIndex - (int)InverterTableIndex.TableTravelP1;
+                                    inverter.SwitchPositions[inverter.CurrentAxis][switchId] = inverter.Impulses2millimeters((int)blockRead[iblock]);
+                                }
                                 break;
                         }
                     }

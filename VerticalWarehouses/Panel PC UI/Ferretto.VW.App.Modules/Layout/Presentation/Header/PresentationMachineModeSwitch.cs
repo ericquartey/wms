@@ -14,7 +14,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
-        private readonly MachineModeService machineModeService;
+        private readonly SubscriptionToken machineModeChangedToken;
+
+        private readonly IMachineModeService machineModeService;
 
         private readonly IMachineModeWebService machineModeWebService;
 
@@ -28,26 +30,35 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachineInAutomaticMode;
 
-        private bool isStatusUnknown;
+        private bool isUnknownState;
 
         private MachineMode machineMode;
+
+        private MachinePowerState machinePowerState;
 
         #endregion
 
         #region Constructors
 
         public PresentationMachineModeSwitch(
-            MachineModeService machineModeService,
+            IMachineModeService machineModeService,
             IMachineModeWebService machineModeWebService)
             : base(PresentationTypes.MachineMode)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
 
-            this.machinePowerChangedToken = this.EventAggregator
+            this.machineModeChangedToken = this.EventAggregator
               .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
               .Subscribe(
                   this.OnMachineModeChanged,
+                  ThreadOption.UIThread,
+                  false);
+
+            this.machinePowerChangedToken = this.EventAggregator
+              .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+              .Subscribe(
+                  this.OnMachinePowerChanged,
                   ThreadOption.UIThread,
                   false);
 
@@ -58,7 +69,8 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                     ThreadOption.UIThread,
                     false);
 
-            this.UpdateMode(this.machineModeService.MachineMode);
+            this.MachineMode = this.machineModeService.MachineMode;
+            this.MachinePowerState = this.machineModeService.MachinePower;
         }
 
         #endregion
@@ -68,13 +80,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsBusy
         {
             get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.isBusy, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachineInAutomaticMode
@@ -83,16 +89,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachineInAutomaticMode, value);
         }
 
-        public bool IsStatusUnknown
+        public bool IsUnknownState
         {
-            get => this.isStatusUnknown;
-            set
-            {
-                if (this.SetProperty(ref this.isStatusUnknown, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            get => this.isUnknownState;
+            set => this.SetProperty(ref this.isUnknownState, value, this.RaiseCanExecuteChanged);
         }
 
         private HealthStatus HealthStatus
@@ -102,12 +102,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 if (this.SetProperty(ref this.healthStatus, value))
                 {
-                    this.IsStatusUnknown =
-                        (this.HealthStatus != HealthStatus.Healthy
+                    this.IsUnknownState =
+                        this.HealthStatus != HealthStatus.Healthy
                         &&
-                        this.HealthStatus != HealthStatus.Degraded)
-                        ||
-                        this.MachineMode is MachineMode.NotSpecified;
+                        this.HealthStatus != HealthStatus.Degraded;
                 }
             }
         }
@@ -121,14 +119,18 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 {
                     this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
 
-                    this.IsStatusUnknown =
-                      (this.HealthStatus != HealthStatus.Healthy
-                      &&
-                      this.HealthStatus != HealthStatus.Degraded)
-                      ||
-                      this.MachineMode is MachineMode.NotSpecified;
+                    this.IsBusy =
+                        this.MachineMode is MachineMode.SwitchingToAutomatic
+                        ||
+                        this.MachineMode is MachineMode.SwitchingToManual;
                 }
             }
+        }
+
+        private MachinePowerState MachinePowerState
+        {
+            get => this.machinePowerState;
+            set => this.SetProperty(ref this.machinePowerState, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -164,7 +166,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             return
                 !this.IsBusy
                 &&
-                !this.IsStatusUnknown;
+                (this.MachineMode is MachineMode.Automatic
+                ||
+                this.MachineMode is MachineMode.Manual)
+                &&
+                this.MachinePowerState is MachinePowerState.Powered
+                &&
+                !this.IsUnknownState;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -176,6 +184,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
             if (disposing)
             {
+                this.machineModeChangedToken.Dispose();
                 this.machinePowerChangedToken.Dispose();
                 this.healthStatusChangedToken.Dispose();
             }
@@ -190,17 +199,12 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
-            this.UpdateMode(e.MachineMode);
+            this.MachineMode = e.MachineMode;
         }
 
-        private void UpdateMode(MachineMode machineMode)
+        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
         {
-            this.MachineMode = machineMode;
-
-            this.IsBusy =
-                machineMode is MachineMode.SwitchingToAutomatic
-                ||
-                machineMode is MachineMode.SwitchingToManual;
+            this.MachinePowerState = e.MachinePowerState;
         }
 
         #endregion

@@ -40,17 +40,18 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 return;
             }
 
-            if (machineMode is MachineMode.Automatic)
+            switch (machineMode)
             {
-                this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-            }
-            else if (machineMode is MachineMode.Manual)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
-            }
-            else
-            {
-                throw new ArgumentException(nameof(machineMode));
+                case MachineMode.Automatic:
+                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    break;
+
+                case MachineMode.Manual:
+                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
+                    break;
+
+                default:
+                    throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
 
             this.SendCommandToMissionManager(
@@ -59,6 +60,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 MessageActor.MissionManager,
                 MessageType.MachineMode,
                 BayNumber.All);
+
+            // HACK: this is a mocked implementation of the mode switch
+            // HACK: begin
+            if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToAutomatic)
+            {
+                this.machineModeDataProvider.Mode = MachineMode.Automatic;
+            }
+            else if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToManual)
+            {
+                this.machineModeDataProvider.Mode = MachineMode.Manual;
+            }
+
+            // HACK: end
         }
 
         #endregion

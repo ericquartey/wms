@@ -51,19 +51,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             string userName,
             string password)
         {
-            try
+            if (this.configuration.IsWmsEnabled())
             {
-                if (this.configuration.IsWmsEnabled())
+                try
                 {
                     this.logger.LogInformation($"Login requested for user '{userName}'. Forwarding authentication request to WMS ...");
 
                     return this.Ok(await this.usersDataService
                         .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
                 }
-            }
-            catch
-            {
-                this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS.");
+                catch
+                {
+                    this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS. Will use local credentials.");
+                }
             }
 
             var accessLevel = this.usersProvider.Authenticate(userName, password);

@@ -5,7 +5,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -572,6 +571,26 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
+        }
+
+        public void ResetMachine()
+        {
+            foreach (var bayPosition in this.dataContext.BayPositions
+                                            .Include(i => i.LoadingUnit))
+            {
+                if (bayPosition.LoadingUnit != null)
+                {
+                    bayPosition.LoadingUnit = null;
+                    this.dataContext.BayPositions.Update(bayPosition);
+                }
+            }
+
+            foreach (var bay in this.dataContext.Bays)
+            {
+                bay.CurrentMissionId = null;
+                bay.CurrentMissionOperationId = null;
+                this.Update(bay);
+            }
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)

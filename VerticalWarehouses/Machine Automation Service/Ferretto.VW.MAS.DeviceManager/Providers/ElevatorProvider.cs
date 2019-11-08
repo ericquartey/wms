@@ -6,13 +6,12 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
 {
-    internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider, IDisposable
+    internal sealed class ElevatorProvider : BaseProvider, IElevatorProvider
     {
         #region Fields
 
@@ -20,11 +19,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
-        private readonly ILogger<DeviceManager> logger;
+        private readonly ILogger<DeviceManagerService> logger;
 
         private readonly IMachineProvider machineProvider;
-
-        private readonly IServiceScope scope;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -32,36 +29,45 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ISetupStatusProvider setupStatusProvider;
 
-        private bool isDisposed = false;
-
         #endregion
 
         #region Constructors
 
         public ElevatorProvider(
-                    IEventAggregator eventAggregator,
-                    ILogger<DeviceManager> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IEventAggregator eventAggregator,
+            ILogger<DeviceManagerService> logger,
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            IElevatorDataProvider elevatorDataProvider,
+            ISetupStatusProvider setupStatusProvider,
+            IMachineProvider machineProvider,
+            ISensorsProvider sensorsProvider,
+            ILoadingUnitsProvider loadingUnitsProvider)
             : base(eventAggregator)
         {
-            this.scope = serviceScopeFactory.CreateScope();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-
-            this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-            this.setupStatusProvider = this.scope.ServiceProvider.GetRequiredService<ISetupStatusProvider>();
-            this.machineProvider = this.scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-            this.sensorsProvider = this.scope.ServiceProvider.GetRequiredService<ISensorsProvider>();
-            this.loadingUnitsProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.setupStatusProvider = setupStatusProvider ?? throw new ArgumentNullException(nameof(setupStatusProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
 
         #endregion
 
         #region Properties
 
-        public double HorizontalPosition { get; set; }
+        public double HorizontalPosition
+        {
+            get => this.elevatorDataProvider.HorizontalPosition;
+            set => this.elevatorDataProvider.HorizontalPosition = value;
+        }
 
-        public double VerticalPosition { get; set; }
+        public double VerticalPosition
+        {
+            get => this.elevatorDataProvider.VerticalPosition;
+            set => this.elevatorDataProvider.VerticalPosition = value;
+        }
 
         #endregion
 
@@ -77,15 +83,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.ContinueMovement,
                 requestingBay,
                 BayNumber.ElevatorBay);
-        }
-
-        /// <summary>
-        ///   This code added to correctly implement the disposable pattern.
-        /// </summary>
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
-            this.Dispose(true);
         }
 
         public AxisBounds GetVerticalBounds()
@@ -116,7 +113,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             BayNumber requestingBay,
             MessageActor sender)
         {
-            //measure = true;     // TEST
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
@@ -127,9 +123,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var isLoadingUnitOnBoard =
-                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                sensors[(int)IOMachineSensors.LuPresentInMachineSide]
                 &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
             if (isStartedOnBoard != isLoadingUnitOnBoard)
             {
@@ -181,6 +177,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switchPosition,
                 direction,
                 waitContinue);
+
+            if (loadingUnitId.HasValue)
+            {
+                messageData.LoadingUnitId = loadingUnitId;
+            }
 
             this.PublishCommand(
                 messageData,
@@ -296,9 +297,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
-                sensors[(int)IOMachineSensors.LuPresentInMachineSideBay1]
+                sensors[(int)IOMachineSensors.LuPresentInMachineSide]
                 &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSideBay1];
+                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
             if (measure && !isLoadingUnitOnBoard)
             {
                 this.logger.LogWarning($"Do not measure weight on empty elevator!");
@@ -611,19 +612,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 return MovementProfileType.ShortPickup;
-            }
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!this.isDisposed)
-            {
-                if (disposing)
-                {
-                    this.scope.Dispose();
-                }
-
-                this.isDisposed = true;
             }
         }
 

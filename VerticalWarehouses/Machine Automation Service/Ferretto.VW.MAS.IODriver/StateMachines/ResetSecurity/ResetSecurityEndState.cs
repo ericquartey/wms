@@ -60,7 +60,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
                 FieldMessageType.ResetSecurity,
                 this.hasError ? MessageStatus.OperationError : MessageStatus.OperationEnd,
                 (byte)this.index,
-                this.hasError ? ErrorLevel.Error : ErrorLevel.NoError);
+                this.hasError ? ErrorLevel.Error : ErrorLevel.None);
 
             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 

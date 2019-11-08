@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -19,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -28,11 +29,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public ElevatorDataProvider(
             DataLayerContext dataContext,
             IMemoryCache memoryCache,
+            IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
         }
 
         #endregion
@@ -40,6 +43,18 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Properties
 
         public object Context { get; private set; }
+
+        public double HorizontalPosition
+        {
+            get => this.elevatorVolatileDataProvider.HorizontalPosition;
+            set => this.elevatorVolatileDataProvider.HorizontalPosition = value;
+        }
+
+        public double VerticalPosition
+        {
+            get => this.elevatorVolatileDataProvider.VerticalPosition;
+            set => this.elevatorVolatileDataProvider.VerticalPosition = value;
+        }
 
         #endregion
 
@@ -137,17 +152,33 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void ResetMachine()
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators.Single();
+
+                // Reset dati
+                elevator.LoadingUnit = null;
+                elevator.LoadingUnitId = null;
+
+                this.dataContext.SaveChanges();
+
+                // Reset cache
+                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
+                this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+            }
+        }
+
         public MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
             var axis = orientation == Orientation.Horizontal
                 ? this.GetHorizontalAxis()
                 : this.GetVerticalAxis();
 
-            var structuralProperties = this.GetStructuralProperties();
-
             var loadingUnit = this.GetLoadingUnitOnBoard();
 
-            return axis.ScaleMovementsByWeight(loadingUnit?.GrossWeight ?? 0, structuralProperties.MaximumLoadOnBoard);
+            return axis.ScaleMovementsByWeight(loadingUnit);
         }
 
         public void UnloadLoadingUnit()

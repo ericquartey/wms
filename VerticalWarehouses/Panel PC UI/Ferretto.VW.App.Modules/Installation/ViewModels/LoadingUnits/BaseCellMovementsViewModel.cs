@@ -25,10 +25,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public BaseCellMovementsViewModel(
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineCellsWebService machineCellsWebService,
-                    Controls.Interfaces.ISensorsService sensorsService,
-                    IBayManager bayManagerService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
+            IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 bayManagerService)
@@ -120,6 +120,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
+
+                if (this.Cells.Count() > 0)
+                {
+                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                }
+                else
+                {
+                    this.DestinationCellId = null;
+                }
             }
             catch (Exception ex)
             {

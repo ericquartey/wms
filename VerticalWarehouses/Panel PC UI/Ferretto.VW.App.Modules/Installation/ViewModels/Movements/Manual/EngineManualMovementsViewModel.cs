@@ -219,6 +219,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void OnMachinePowerChanged()
+        {
+            this.RefreshCanExecuteCommands();
+        }
+
         protected override async Task StopMovementAsync()
         {
             this.IsStopping = true;
