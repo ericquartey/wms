@@ -1164,4 +1164,7 @@
   <data name="RestoreConfiguration" xml:space="preserve">
     <value>Ripristino configurazione</value>
   </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Sei sicuro di applicare la configurazione ?</value>
+  </data>
 </root>

@@ -1242,4 +1242,7 @@
   <data name="RestoreConfiguration" xml:space="preserve">
     <value>Restore configuration</value>
   </data>
+  <data name="SureToApplyConfiguration" xml:space="preserve">
+    <value>Sure to apply configuration ?</value>
+  </data>
 </root>

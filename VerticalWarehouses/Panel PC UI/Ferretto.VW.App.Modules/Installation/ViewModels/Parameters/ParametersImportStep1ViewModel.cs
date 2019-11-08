@@ -47,7 +47,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.restoreConfigurationCommand
                     ??
                     (this.restoreConfigurationCommand = new DelegateCommand(
-                    async () => await this.RestoreAsync(), this.CanRestore));
+                    this.Restore, this.CanRestore));
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    !string.IsNullOrEmpty(this.ExistingPath);
         }
 
-        private async Task RestoreAsync()
+        private void Restore()
         {
             try
             {
@@ -118,10 +118,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
-        }
-
-        private async Task StopAsync()
-        {
         }
 
         #endregion

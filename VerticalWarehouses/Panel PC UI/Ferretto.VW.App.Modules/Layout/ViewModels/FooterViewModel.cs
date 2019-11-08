@@ -97,10 +97,22 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     }
                     else
                     {
-                        this.NotificationMessage =
+                        if (swaggerException.Result.Detail is null)
+                        {
+                            this.NotificationMessage =
+                            swaggerException.Result.Title +
+                            System.Environment.NewLine +
+                            ((!(swaggerException.Result is null)
+                             &&
+                             swaggerException.Result.AdditionalProperties.Any()) ? swaggerException.Result.AdditionalProperties.First().Value : string.Empty);
+                        }
+                        else
+                        {
+                            this.NotificationMessage =
                             swaggerException.Result.Title +
                             System.Environment.NewLine +
                             swaggerException.Result.Detail?.Split('\n', '\r').FirstOrDefault();
+                        }
                     }
                 }
                 else if (message.Exception is SwaggerException)

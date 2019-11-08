@@ -41,10 +41,10 @@
 
         </dxprg:PropertyGridControl>
 
-        <StackPanel Orientation="Horizontal"
+        <StackPanel Orientation="Vertical"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
-                    Height="60">
+                    >
             
         <controls:PpcButton 
                             Height="60"

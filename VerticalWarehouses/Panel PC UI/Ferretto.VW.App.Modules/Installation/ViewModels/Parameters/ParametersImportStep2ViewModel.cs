@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -10,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class ParametersImportStep2ViewModel : BaseParametersImportExportViewModel
+    public class ParametersImportStep2ViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -20,12 +21,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand confirmSaveCommand;
 
+        private bool isBusy;
+
         #endregion
 
         #region Constructors
 
-        public ParametersImportStep2ViewModel(IMachineConfigurationWebService machineConfigurationWebService, IBayManager bayManager)
-                : base(bayManager)
+        public ParametersImportStep2ViewModel(IMachineConfigurationWebService machineConfigurationWebService)
+                : base(PresentationMode.Installer)
         {
             this.machineConfigurationWebService = machineConfigurationWebService ?? throw new ArgumentNullException(nameof(machineConfigurationWebService));
         }
@@ -41,6 +44,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                    ??
                    (this.confirmSaveCommand = new DelegateCommand(
                        async () => await this.SaveAsync(), this.CanSave));
+
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsBusy
+        {
+            get => this.isBusy;
+            set
+            {
+                if (this.SetProperty(ref this.isBusy, value))
+                {
+                    this.RaisePropertyChanged();
+                    this.IsBackNavigationAllowed = !this.isBusy;
+                }
+            }
+        }
 
         #endregion
 
@@ -89,7 +107,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = true;
 
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(General.Apply, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.SureToApplyConfiguration, InstallationApp.ConfirmRestore, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult != DialogResult.Yes)
                 {
                     return;

@@ -2842,6 +2842,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sure to apply configuration ?.
+        /// </summary>
+        public static string SureToApplyConfiguration {
+            get {
+                return ResourceManager.GetString("SureToApplyConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Engine Completed.
         /// </summary>
         public static string SwitchEngineCompleted {

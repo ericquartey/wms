@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -48,6 +49,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Set(VertimagConfiguration vertimagConfiguration)
         {
             this.machineProvider.Update(vertimagConfiguration.Machine);

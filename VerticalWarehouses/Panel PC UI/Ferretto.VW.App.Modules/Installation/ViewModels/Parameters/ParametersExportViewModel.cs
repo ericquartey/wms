@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand exportCommand;
 
-        private DelegateCommand stopCommand;
-
         #endregion
 
         #region Constructors
@@ -56,12 +54,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     (this.exportCommand = new DelegateCommand(
                     async () => await this.ExportAsync(), this.CanExport));
 
-        public ICommand StopCommand =>
-                    this.stopCommand
-                   ??
-                   (this.stopCommand = new DelegateCommand(
-                       async () => await this.StopAsync(), this.CanStop));
-
         #endregion
 
         #region Methods
@@ -75,19 +67,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.RaisePropertyChanged(nameof(this.DeviceInfo));
             ((DelegateCommand)this.exportCommand).RaiseCanExecuteChanged();
-            ((DelegateCommand)this.stopCommand).RaiseCanExecuteChanged();
         }
 
         private bool CanExport()
         {
             return !this.IsBusy
-                   &&
-                   !string.IsNullOrEmpty(this.FullPath);
-        }
-
-        private bool CanStop()
-        {
-            return this.IsBusy
                    &&
                    !string.IsNullOrEmpty(this.FullPath);
         }
@@ -125,11 +109,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBusy = false;
                 this.IsBackNavigationAllowed = true;
             }
-        }
-
-        private Task StopAsync()
-        {
-            return Task.CompletedTask;
         }
 
         #endregion

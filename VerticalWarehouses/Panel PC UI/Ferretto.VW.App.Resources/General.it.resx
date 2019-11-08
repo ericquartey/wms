@@ -246,7 +246,4 @@
   <data name="FilePath" xml:space="preserve">
     <value>Percorso file</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Applica ?</value>
-  </data>
 </root>

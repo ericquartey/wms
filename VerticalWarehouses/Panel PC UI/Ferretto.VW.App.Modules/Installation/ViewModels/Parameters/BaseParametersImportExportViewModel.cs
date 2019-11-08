@@ -14,11 +14,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CONFIGURATIONNAME = "vertimag-configuration.{0}.json";
 
-        private const string DEFAULTDEVICENAME = @"G";
+        private const string DEFAULTDEVICENAME = "D";
 
         private const string DEVICE = @"{0}:\";
 
-        private const int SECSUPDATEINTERVAL = 3;
+        private const int SECSUPDATEDEVICESSTATUSINTERVAL = 3;
 
         private readonly IBayManager bayManager;
 
@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public string ExistingPath
         {
@@ -85,7 +87,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public override void Disappear()
         {
-            this.devicesStatusUpdateTimer.Stop();
+            this.devicesStatusUpdateTimer?.Stop();
             this.devicesStatusUpdateTimer = null;
 
             base.Disappear();
@@ -151,7 +153,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             this.devicesStatusUpdateTimer = new System.Windows.Threading.DispatcherTimer();
             this.devicesStatusUpdateTimer.Tick += new EventHandler(this.DevicesStatusUpdateTimer_Tick);
-            this.devicesStatusUpdateTimer.Interval = new TimeSpan(0, 0, SECSUPDATEINTERVAL);
+            this.devicesStatusUpdateTimer.Interval = new TimeSpan(0, 0, SECSUPDATEDEVICESSTATUSINTERVAL);
             this.devicesStatusUpdateTimer.Start();
         }
 

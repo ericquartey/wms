@@ -262,7 +262,4 @@
   <data name="FilePath" xml:space="preserve">
     <value>File Path</value>
   </data>
-  <data name="Apply" xml:space="preserve">
-    <value>Apply ?</value>
-  </data>
 </root>

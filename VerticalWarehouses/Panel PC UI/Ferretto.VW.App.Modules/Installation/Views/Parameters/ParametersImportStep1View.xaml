@@ -61,8 +61,7 @@
                             VerticalAlignment="Center"
                             Margin="0 40 0 0"
                             Command="{Binding RestoreConfigurationCommand}"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}"
-                            />
+                            Content="{x:Static res:InstallationApp.SaveRestoreConfigRestoreButton}" />
 
     </Grid>
 </ctrls:View>

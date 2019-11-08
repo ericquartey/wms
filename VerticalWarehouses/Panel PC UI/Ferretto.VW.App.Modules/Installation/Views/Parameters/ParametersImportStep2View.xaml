@@ -25,13 +25,13 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        
+
         <TextBlock Margin="10 5 0 10"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.RestoreConfiguration}" />
-        
+
         <dxprg:PropertyGridControl Grid.Row="1"
                                    SelectedObject="{Binding Configuration}"
                                    ExpandCategoriesWhenSelectedObjectChanged="True"
