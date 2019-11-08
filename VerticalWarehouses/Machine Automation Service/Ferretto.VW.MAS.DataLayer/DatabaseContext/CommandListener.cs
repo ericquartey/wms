@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Methods
 
 #pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable CA1801 // Remove unused parameter
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
         public void OnCommandError(
@@ -127,6 +128,7 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
 #pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore CA1801 // Remove unused parameter
 
         private static bool IsModifyingCommand(DbCommand command)
         {
