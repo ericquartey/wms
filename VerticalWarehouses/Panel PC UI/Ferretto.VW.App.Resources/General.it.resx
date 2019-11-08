@@ -243,4 +243,7 @@
   <data name="NumberOnTotal" xml:space="preserve">
     <value>{0} di {1}</value>
   </data>
+  <data name="FilePath" xml:space="preserve">
+    <value>Percorso file</value>
+  </data>
 </root>
