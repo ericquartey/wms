@@ -29,34 +29,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
-        public void GetCells()
-        {
-            try
-            {
-                if (this.Cells.Count() > 0)
-                {
-                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
-                }
-                else
-                {
-                    this.DestinationCellId = null;
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-            }
-        }
-
         public async Task GetLoadingUnits()
         {
             try
             {
                 var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-
                 if (lst.Count() > 0)
                 {
                     this.LoadingUnitId = lst.Max(o => o.Id) + 1;
@@ -80,8 +57,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
 
             await this.GetLoadingUnits();
-
-            this.GetCells();
 
             this.SelectBayPositionDown();
         }

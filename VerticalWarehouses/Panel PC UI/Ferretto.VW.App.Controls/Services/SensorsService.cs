@@ -63,7 +63,7 @@ namespace Ferretto.VW.App.Services
 
         private double? embarkedLoadingUnitWeight;
 
-        private bool isShutterTwoSensors;
+        private bool isShutterThreeSensors;
 
         private string loadingUnitPositionDownInBayCode;
 
@@ -228,10 +228,10 @@ namespace Ferretto.VW.App.Services
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsShutterTwoSensors
+        public bool IsShutterThreeSensors
         {
-            get => this.isShutterTwoSensors;
-            set => this.SetProperty(ref this.isShutterTwoSensors, value);
+            get => this.isShutterThreeSensors;
+            set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
@@ -365,8 +365,7 @@ namespace Ferretto.VW.App.Services
 
         private void GetShutter()
         {
-            this.IsShutterTwoSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.TwoSensors;
-
+            this.IsShutterThreeSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
             this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
         }
 
