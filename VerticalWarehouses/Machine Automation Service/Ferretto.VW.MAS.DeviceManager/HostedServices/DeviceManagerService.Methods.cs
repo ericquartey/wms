@@ -283,8 +283,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                     return;
                 }
 
-                if (machineResourcesProvider.IsMachineInRunningState && !data.Enable ||
-                    !machineResourcesProvider.IsMachineInRunningState && data.Enable)
+                if (!data.Enable ||
+                    (!machineResourcesProvider.IsMachineInRunningState && data.Enable)
+                    )
                 {
                     message.TargetBay = BayNumber.BayOne;
 

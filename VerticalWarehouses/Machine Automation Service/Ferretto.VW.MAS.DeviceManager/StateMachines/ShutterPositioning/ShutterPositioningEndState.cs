@@ -143,7 +143,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Stop(StopRequestReason reason)
         {
-            // do nothing
+            this.Logger.LogDebug("Retry Stop Command");
+            this.Start();
         }
 
         #endregion
