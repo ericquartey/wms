@@ -88,8 +88,7 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}"
-                            IsBusy="{Binding IsStopping}" />
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
     </Grid>
 </ctrls:View>
