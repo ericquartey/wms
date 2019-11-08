@@ -12,16 +12,13 @@
             HorizontalAlignment="Center"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid IsEnabled="{Binding IsEnabled}">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
-
+    <Grid Margin="10"
+          IsEnabled="{Binding IsEnabled}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="2"
@@ -30,40 +27,33 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="0"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition}"
-                                 LabelText="{x:Static res:InstallationApp.ActualPosition}"
-                                 TextBlock.TextAlignment="Center" />
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    HorizontalAlignment="Center">
-            <controls:PpcButton Content="{x:Static res:InstallationApp.Up}"
-                                IsEnabled="{Binding CanExecuteMoveUpCommand}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewMouseDown">
-                        <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="PreviewMouseUp">
-                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </controls:PpcButton>
+        <controls:PpcButton Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Content="{x:Static res:InstallationApp.Up}"
+                            IsEnabled="{Binding CanExecuteMoveUpCommand}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseUp">
+                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </controls:PpcButton>
 
-            <controls:PpcButton Margin="0,70,0,0"
-                                Content="{x:Static res:InstallationApp.Down}"
-                                IsEnabled="{Binding CanExecuteMoveDownCommand}">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="PreviewMouseDown">
-                        <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
-                    </i:EventTrigger>
-                    <i:EventTrigger EventName="PreviewMouseUp">
-                        <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </controls:PpcButton>
-        </StackPanel>
+        <controls:PpcButton Grid.Row="2"
+                            Margin="0,20,0,0"
+                            HorizontalAlignment="Center"
+                            Content="{x:Static res:InstallationApp.Down}"
+                            IsEnabled="{Binding CanExecuteMoveDownCommand}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseDown">
+                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewMouseUp">
+                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </controls:PpcButton>
     </Grid>
 </ctrls:View>
