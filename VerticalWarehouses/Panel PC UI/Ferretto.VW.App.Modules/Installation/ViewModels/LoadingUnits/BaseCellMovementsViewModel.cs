@@ -120,6 +120,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
+
+                if (this.Cells.Count() > 0)
+                {
+                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                }
+                else
+                {
+                    this.DestinationCellId = null;
+                }
             }
             catch (Exception ex)
             {
