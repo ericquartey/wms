@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.MissionManager.Extensions
+namespace Ferretto.VW.MAS.MissionManager
 {
     public static class ConfigurationExtensions
     {

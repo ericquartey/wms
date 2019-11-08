@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -20,6 +21,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Fields
 
         private readonly IBaysProvider baysProvider;
+
+        private readonly IConfiguration configuration;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -36,31 +39,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public MissionOperationsController(
             IEventAggregator eventAggregator,
             ILogger<MissionOperationsController> logger,
+            IConfiguration configuration,
             IMissionOperationsDataService missionOperationsDataService,
             IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (logger is null)
-            {
-                throw new ArgumentNullException(nameof(logger));
-            }
-
-            if (missionOperationsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(missionOperationsDataService));
-            }
-
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-
-            this.eventAggregator = eventAggregator;
-            this.logger = logger;
-            this.missionOperationsDataService = missionOperationsDataService;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
         }
 
         #endregion
@@ -70,6 +59,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity)
         {
+            if (!this.configuration.IsWmsEnabled())
+            {
+                throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
+            }
+
             try
             {
                 await this.missionOperationsDataService.CompleteItemAsync(id, quantity);
@@ -98,8 +92,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        // Vorrei capire se è il punto giusto dove mettere il metodo, per oggi la lascio qui
-        [HttpPost("resetmachine")]
+        [HttpPost("reset-machine")]
+        [Obsolete("Vorrei capire se e' il punto giusto dove mettere il metodo, per oggi la lascio qui")]
         public ActionResult ResetMachine()
         {
             try

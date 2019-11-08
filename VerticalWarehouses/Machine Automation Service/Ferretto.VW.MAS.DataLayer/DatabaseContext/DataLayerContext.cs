@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerContext : DbContext
     {

@@ -26,16 +26,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         private readonly BlockingConcurrentQueue<CommandMessage> commandQueue =
             new BlockingConcurrentQueue<CommandMessage>();
 
+        private readonly Thread commandsDequeuingThread;
+
         private readonly NotificationEvent notificationEvent;
 
         private readonly BlockingConcurrentQueue<NotificationMessage> notificationQueue =
             new BlockingConcurrentQueue<NotificationMessage>();
 
+        private readonly Thread notificationsDequeuingThread;
+
         private IState activeState;
 
         private SubscriptionToken commandEventSubscriptionToken;
-
-        private Thread commandsDequeuingThread;
 
         /// <summary>
         /// To detect redundant calls.
@@ -46,8 +48,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private SubscriptionToken notificationEventSubscriptionToken;
 
-        private Thread notificationsDequeuingThread;
-
         private BayNumber requestingBay;
 
         private IServiceProvider serviceProvider;
@@ -57,8 +57,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         #region Constructors
 
         protected FiniteStateMachine(
-        IEventAggregator eventAggregator,
-        ILogger<StateBase> logger)
+            IEventAggregator eventAggregator,
+            ILogger<StateBase> logger)
         {
             if (eventAggregator is null)
             {
@@ -71,6 +71,16 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
             this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+
+            this.commandsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueCommands))
+            {
+                Name = $"[commands] {this.GetType().Name}",
+            };
+
+            this.notificationsDequeuingThread = new Thread(new ParameterizedThreadStart(this.DequeueNotifications))
+            {
+                Name = $"[notifications] {this.GetType().Name}",
+            };
         }
 
         #endregion
@@ -114,7 +124,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     catch (StateMachineException ex)
                     {
                         var eventArgs = new FiniteStateMachinesEventArgs
-                        { InstanceId = this.InstanceId, NotificationMessage = ex.NotificationMessage };
+                        {
+                            InstanceId = this.InstanceId,
+                            NotificationMessage = ex.NotificationMessage,
+                        };
+
                         this.RaiseCompleted(eventArgs);
                     }
 
@@ -128,7 +142,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 if (this.activeState is IEndState endState && endState.IsCompleted)
                 {
                     var eventArgs = new FiniteStateMachinesEventArgs
-                    { InstanceId = this.InstanceId, NotificationMessage = endState.EndMessage };
+                    {
+                        InstanceId = this.InstanceId,
+                        NotificationMessage = endState.EndMessage,
+                    };
+
                     this.RaiseCompleted(eventArgs);
                 }
             }
@@ -161,18 +179,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         /// </summary>
         public void Dispose()
         {
-            if (!this.isDisposed)
-            {
-                this.commandEventSubscriptionToken?.Dispose();
-                this.commandEventSubscriptionToken = null;
-
-                this.notificationEventSubscriptionToken?.Dispose();
-                this.notificationEventSubscriptionToken = null;
-
-                this.OnDisposing();
-
-                this.isDisposed = true;
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void Pause()
@@ -202,16 +210,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                 this.requestingBay = commandMessage.RequestingBay;
 
-                this.commandsDequeuingThread = new Thread(this.DequeueCommands)
-                {
-                    Name = $"MM Commands {this.GetType().Name}",
-                };
-
-                this.notificationsDequeuingThread = new Thread(this.DequeueNotifications)
-                {
-                    Name = $"MM Notifications {this.GetType().Name}",
-                };
-
                 this.commandsDequeuingThread.Start(cancellationToken);
                 this.notificationsDequeuingThread.Start(cancellationToken);
 
@@ -224,6 +222,22 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         public void Stop(StopRequestReason reason)
         {
             this.ActiveState = this.OnStop(reason);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            this.commandEventSubscriptionToken?.Dispose();
+            this.commandEventSubscriptionToken = null;
+
+            this.notificationEventSubscriptionToken?.Dispose();
+            this.notificationEventSubscriptionToken = null;
+
+            this.isDisposed = true;
         }
 
         protected abstract bool FilterCommand(CommandMessage command);
@@ -246,12 +260,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type}, {command.Description}");
 
             return this.ActiveState;
-        }
-
-        protected virtual void OnDisposing()
-        {
-            // do nothing
-            // derived classes can customize the behaviour of this method
         }
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
@@ -294,23 +302,22 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 try
                 {
-                    this.commandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var commandMessage);
-
-                    this.ActiveState = this.OnCommandReceived(commandMessage);
+                    if (this.commandQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var commandMessage)
+                        &&
+                        commandMessage != null)
+                    {
+                        this.ActiveState = this.OnCommandReceived(commandMessage);
+                    }
                 }
-                catch (OperationCanceledException)
+                catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
-                    return;
-                }
-                catch (ThreadAbortException)
-                {
+                    this.Logger.LogTrace($"Terminating commands thread for service {this.GetType().Name}.");
                     return;
                 }
                 catch (Exception ex)
                 {
+                    this.Logger.LogError(ex, "Error while processing a command.");
                     this.NotifyError(ex);
-
-                    return;
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -324,23 +331,22 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 try
                 {
-                    this.notificationQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var notificationMessage);
-
-                    this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                    if (this.notificationQueue.TryDequeue(Timeout.Infinite, cancellationToken, out var notificationMessage)
+                        &&
+                        notificationMessage != null)
+                    {
+                        this.ActiveState = this.OnNotificationReceived(notificationMessage);
+                    }
                 }
-                catch (OperationCanceledException)
+                catch (Exception ex) when (ex is ThreadAbortException || ex is OperationCanceledException)
                 {
-                    return;
-                }
-                catch (ThreadAbortException)
-                {
+                    this.Logger.LogTrace($"Terminating notifications thread for service {this.GetType().Name}.");
                     return;
                 }
                 catch (Exception ex)
                 {
+                    this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
-
-                    return;
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -365,20 +371,17 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         private void NotifyError(Exception ex)
         {
-            this.Logger.LogDebug($"Notifying error: {ex.Message}");
-
-            var msg = new NotificationMessage(
-                new FsmExceptionMessageData(ex, string.Empty, 0),
-                "FSM Error",
-                MessageActor.Any,
-                MessageActor.MachineManager,
-                MessageType.FsmException,
-                this.requestingBay,
-                BayNumber.None,
-                MessageStatus.OperationError,
-                ErrorLevel.Critical);
-
-            this.notificationEvent.Publish(msg);
+            this.notificationEvent.Publish(
+                new NotificationMessage(
+                    new FsmExceptionMessageData(ex, string.Empty, 0),
+                    "FSM Error",
+                    MessageActor.Any,
+                    MessageActor.MachineManager,
+                    MessageType.FsmException,
+                    this.requestingBay,
+                    BayNumber.None,
+                    MessageStatus.OperationError,
+                    ErrorLevel.Error));
         }
 
         #endregion

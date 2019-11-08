@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private readonly SubscriptionToken machineModeChangedToken;
 
-        private readonly MachineModeService machineModeService;
+        private readonly IMachineModeService machineModeService;
 
         private readonly IMachineModeWebService machineModeWebService;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         #region Constructors
 
         public PresentationMachineModeSwitch(
-            MachineModeService machineModeService,
+            IMachineModeService machineModeService,
             IMachineModeWebService machineModeWebService)
             : base(PresentationTypes.MachineMode)
         {
