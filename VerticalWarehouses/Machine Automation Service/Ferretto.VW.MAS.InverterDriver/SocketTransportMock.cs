@@ -106,6 +106,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
+            if (this.disposed)
+            {
+                throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
             await Task.Delay(5, stoppingToken);
 
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
@@ -486,6 +491,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task<int> ParseWriteMessage(byte[] messageBytes, CancellationToken cancellationToken)
         {
+
             var message = InverterMessage.FromBytes(messageBytes);
 
             lock (this.lastWriteMessage)

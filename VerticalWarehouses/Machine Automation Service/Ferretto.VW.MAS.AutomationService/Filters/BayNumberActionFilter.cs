@@ -19,6 +19,11 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (context.Controller is IRequestingBayController baseController)
             {
                 var bayNumberHeaders = context.HttpContext.Request.Headers[HeaderName];
@@ -48,9 +53,9 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
                 }
             }
 
-            if (context.Result is null)
+            if (context.Result is null && next != null)
             {
-                await next();
+                await next().ConfigureAwait(true);
             }
         }
 

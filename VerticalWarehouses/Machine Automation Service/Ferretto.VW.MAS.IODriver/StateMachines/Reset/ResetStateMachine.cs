@@ -61,8 +61,12 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
-                message.ValidOutputs && message.ResetSecurity;
+            var checkMessage =
+                message.FormatDataOperation is ShdFormatDataOperation.Data
+                &&
+                message.ValidOutputs
+                &&
+                message.ResetSecurity;
 
             if (this.CurrentState is ResetStartState && checkMessage && !this.pulseOneTime)
             {

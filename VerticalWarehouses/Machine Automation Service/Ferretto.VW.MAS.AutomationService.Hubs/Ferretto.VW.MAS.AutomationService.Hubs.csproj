@@ -3,9 +3,9 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.2;net471</TargetFrameworks>
   </PropertyGroup>
-  
+
   <ItemGroup>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>

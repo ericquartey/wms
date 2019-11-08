@@ -64,9 +64,9 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
             }
         }
 
-        public IPresentation GetInstance(string presentationName)
+        public TPresentation GetInstance<TPresentation>() where TPresentation : IPresentation
         {
-            return ServiceLocator.Current.GetInstance<IPresentation>(presentationName);
+            return ServiceLocator.Current.GetInstance<TPresentation>();
         }
 
         public virtual void InitializeData()

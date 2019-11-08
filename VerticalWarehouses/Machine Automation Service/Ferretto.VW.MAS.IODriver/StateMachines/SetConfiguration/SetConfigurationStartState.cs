@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
         {
             this.Logger.LogTrace("1:Method Start");
 
-            if (message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Ack)
+            if (message.FormatDataOperation == ShdFormatDataOperation.Ack)
             {
                 this.Logger.LogTrace($"2:Format data operation message={message.FormatDataOperation}");
 

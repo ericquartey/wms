@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IRedundancyDbContext<TDbContext>
         where TDbContext : DbContext

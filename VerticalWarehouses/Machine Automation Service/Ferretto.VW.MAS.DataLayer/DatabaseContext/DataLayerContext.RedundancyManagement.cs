@@ -1,12 +1,11 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerContext : IRedundancyDbContext<DataLayerContext>
     {

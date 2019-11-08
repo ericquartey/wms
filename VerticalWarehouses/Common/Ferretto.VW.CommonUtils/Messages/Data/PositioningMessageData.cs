@@ -79,6 +79,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public PositioningMessageData(IPositioningMessageData other)
         {
+            if (other is null)
+            {
+                throw new System.ArgumentNullException(nameof(other));
+            }
+
             this.AxisMovement = other.AxisMovement;
             this.MovementType = other.MovementType;
             this.MovementMode = other.MovementMode;
