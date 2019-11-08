@@ -447,12 +447,12 @@ namespace Ferretto.VW.MAS.DeviceManager
                             var notificationData = new PositioningMessageData();
                             var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
                             //TEMP Update X, Y axis positions
-                            if (dataInverters.CurrentAxis == Axis.Vertical)
+                            if (dataInverters.CurrentAxis is Axis.Vertical)
                             {
                                 elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
                                 notificationData.AxisMovement = dataInverters.CurrentAxis;
                             }
-                            else if (dataInverters.CurrentAxis == Axis.Horizontal)
+                            else if (dataInverters.CurrentAxis is Axis.Horizontal)
                             {
                                 elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                                 notificationData.AxisMovement = dataInverters.CurrentAxis;
