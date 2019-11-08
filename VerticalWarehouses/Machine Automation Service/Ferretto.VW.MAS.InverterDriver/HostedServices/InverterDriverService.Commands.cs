@@ -120,7 +120,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch (Exception ex)
             {
-                this.Logger.LogError($"3:Inverter number {receivedMessage.DeviceIndex} is not configured for this machine");
+                this.Logger.LogError(ex, "Received invalid command");
 
                 this.SendOperationErrorMessage(
                     (InverterIndex)receivedMessage.DeviceIndex,

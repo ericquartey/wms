@@ -59,11 +59,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             this.CurrentState?.Start();
         }
 
-        /// <inheritdoc />
-        public override void Stop()
+        protected override void OnStopLocked()
         {
             this.nextCommandMessage = null;
-            this.CurrentState?.Stop();
         }
 
         #endregion

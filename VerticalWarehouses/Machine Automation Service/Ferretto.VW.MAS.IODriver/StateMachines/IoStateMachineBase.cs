@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
     {
         #region Fields
 
+        private readonly object lockObj = new object();
+
         private bool isDisposed;
 
         #endregion
@@ -54,26 +56,29 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
                 throw new ArgumentNullException(nameof(newState));
             }
 
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, newState.GetType().Name, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"IoDriver current state {newState.GetType().Name}",
-                MessageActor.Any,
-                MessageActor.IoDriver,
-                MessageType.MachineStateActive,
-                BayNumber.None,
-                BayNumber.None,
-                MessageStatus.OperationStart);
-
-            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
-            if (this.CurrentState is IDisposable disposableState)
+            lock (this.lockObj)
             {
-                disposableState.Dispose();
-            }
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, newState.GetType().Name, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"IoDriver current state {newState.GetType().Name}",
+                    MessageActor.Any,
+                    MessageActor.IoDriver,
+                    MessageType.MachineStateActive,
+                    BayNumber.None,
+                    BayNumber.None,
+                    MessageStatus.OperationStart);
 
-            this.CurrentState = newState;
-            this.CurrentState.Start();
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+
+                if (this.CurrentState is IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
+
+                this.CurrentState = newState;
+                newState.Start();
+            }
         }
 
         public void Dispose()
@@ -88,12 +93,18 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         public virtual void ProcessMessage(IoMessage message)
         {
-            this.CurrentState?.ProcessMessage(message);
+            lock (this.lockObj)
+            {
+                this.CurrentState?.ProcessMessage(message);
+            }
         }
 
         public virtual void ProcessResponseMessage(IoReadMessage message)
         {
-            this.CurrentState?.ProcessResponseMessage(message);
+            lock (this.lockObj)
+            {
+                this.CurrentState?.ProcessResponseMessage(message);
+            }
         }
 
         public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
