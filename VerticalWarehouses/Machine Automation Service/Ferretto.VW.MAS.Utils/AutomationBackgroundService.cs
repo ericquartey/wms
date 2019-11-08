@@ -78,6 +78,7 @@ namespace Ferretto.VW.MAS.Utils
         public override void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public override async Task StopAsync(CancellationToken cancellationToken)

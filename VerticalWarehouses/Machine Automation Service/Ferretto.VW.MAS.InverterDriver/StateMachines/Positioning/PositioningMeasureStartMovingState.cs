@@ -16,8 +16,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     {
         #region Fields
 
-        private const int WeightTolerance = 50;
-
         private readonly IInverterPositioningFieldMessageData data;
 
         private readonly IElevatorDataProvider elevatorProvider;

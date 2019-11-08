@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly ManualResetEventSlim readCompleteEventSlim;
 
+        private readonly object syncRoot = new object();
+
         private byte[] responseMessage;
 
         #endregion
@@ -43,19 +45,16 @@ namespace Ferretto.VW.MAS.IODriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress ioAddress, int sendPort)
+        public Task ConnectAsync(IPAddress ioAddress, int sendPort)
         {
-        }
-
-        /// <inheritdoc />
-        public Task ConnectAsync()
-        {
+            // do nothing
             return Task.CompletedTask;
         }
 
         /// <inheritdoc />
         public void Disconnect()
         {
+            // do nothing
         }
 
         /// <inheritdoc />
@@ -65,7 +64,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (this.readCompleteEventSlim.Wait(Timeout.Infinite, stoppingToken))
             {
-                lock (this.responseMessage)
+                lock (this.syncRoot)
                 {
                     this.readCompleteEventSlim.Reset();
                     return this.responseMessage;
@@ -78,7 +77,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken)
         {
-            lock (this.responseMessage)
+            lock (this.syncRoot)
             {
                 this.BuildResponseMessage(dataMessage);
             }

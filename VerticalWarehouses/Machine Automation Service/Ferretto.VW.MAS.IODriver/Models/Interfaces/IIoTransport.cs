@@ -20,13 +20,6 @@ namespace Ferretto.VW.MAS.IODriver
         #region Methods
 
         /// <summary>
-        ///     Configures the SocketTransport to communicate with the remote IODevice host
-        /// </summary>
-        /// <param name="inverterAddress">Address of the IO device</param>
-        /// <param name="sendPort">TCP/IP Port for the IO device</param>
-        void Configure(IPAddress ioAddress, int sendPort);
-
-        /// <summary>
         ///     Creates the TCP client object and connects it to the remote IODevice host
         /// </summary>
         /// <returns>true if the connection successfully completed, false otherwise</returns>
@@ -43,7 +36,7 @@ namespace Ferretto.VW.MAS.IODriver
         ///     (1024-65535)
         /// </exception>
         /// <exception cref="IoDriverException">Connection operation Failed. Inspect exception details for more details</exception>
-        Task ConnectAsync();
+        Task ConnectAsync(IPAddress ipAddress, int port);
 
         /// <summary>
         ///     Disconnects from the remote host and closes communication sockets

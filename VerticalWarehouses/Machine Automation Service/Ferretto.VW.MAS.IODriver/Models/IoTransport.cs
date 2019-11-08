@@ -17,9 +17,9 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly byte[] receiveBuffer = new byte[1024];
 
-        private bool disposed;
-
         private IPAddress ioAddress;
+
+        private bool isDisposed;
 
         private int sendPort;
 
@@ -47,51 +47,37 @@ namespace Ferretto.VW.MAS.IODriver
         #region Methods
 
         /// <inheritdoc />
-        public void Configure(IPAddress hostAddress, int sendPort)
+        public async Task ConnectAsync(IPAddress hostAddress, int sendPort)
         {
-            this.ioAddress = hostAddress;
-            this.sendPort = sendPort;
-        }
-
-        /// <inheritdoc />
-        public async Task ConnectAsync()
-        {
-            if (this.ioAddress == null)
+            if (this.isDisposed)
             {
-                throw new ArgumentNullException(
-                    nameof(this.ioAddress),
-                    $"{nameof(this.ioAddress)} can't be null");
+                throw new ObjectDisposedException(this.GetType().Name);
             }
 
-            if (this.ioAddress.AddressFamily != AddressFamily.InterNetwork)
+            if (hostAddress is null)
             {
-                throw new ArgumentException(
-                    "IODevice Address is not a valid IPV4 address",
-                    nameof(this.ioAddress));
+                throw new ArgumentNullException(nameof(hostAddress));
             }
 
-            if (this.sendPort == 0)
+            if (hostAddress.AddressFamily != AddressFamily.InterNetwork)
             {
-                throw new ArgumentNullException(nameof(this.sendPort), $"{nameof(this.sendPort)} can't be zero");
+                throw new ArgumentException("IODevice Address is not a valid IPV4 address", nameof(hostAddress));
             }
 
-            if (this.sendPort < 1024 || this.sendPort > 65535)
+            if (sendPort < 1024 || sendPort > IPEndPoint.MaxPort)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} value must be between 1204 and 65535");
+                    $"{nameof(this.sendPort)} value must be between 1204 and {IPEndPoint.MaxPort}");
             }
 
-            if (this.transportClient != null || this.transportStream != null)
-            {
-                // throw new IoDriverException(
-                //    "Socket Transport is already open",
-                //    IoDriverExceptionCode.SocketOpen);
-                this.transportClient?.Dispose();
-                this.transportStream?.Dispose();
-                this.transportClient = null;
-                this.transportStream = null;
-            }
+            this.ioAddress = hostAddress;
+            this.sendPort = sendPort;
+
+            this.transportClient?.Dispose();
+            this.transportStream?.Dispose();
+            this.transportClient = null;
+            this.transportStream = null;
 
             try
             {
@@ -155,6 +141,11 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             if (this.transportStream == null)
             {
                 throw new IoDriverException(
@@ -224,7 +215,12 @@ namespace Ferretto.VW.MAS.IODriver
         /// <inheritdoc />
         public async ValueTask<int> WriteAsync(byte[] message, int delay, CancellationToken stoppingToken)
         {
-            if (this.transportStream == null)
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
+            if (this.transportStream is null)
             {
                 throw new IoDriverException(
                     "Transport Stream is null",
@@ -262,7 +258,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!this.disposed)
+            if (!this.isDisposed)
             {
                 if (disposing)
                 {
@@ -275,7 +271,7 @@ namespace Ferretto.VW.MAS.IODriver
                     this.transportClient = null;
                 }
 
-                this.disposed = true;
+                this.isDisposed = true;
             }
         }
 

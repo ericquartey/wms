@@ -156,7 +156,7 @@ namespace Ferretto.VW.MAS.IODriver
                     FieldMessageType.InverterException,
                     MessageStatus.OperationError,
                     (byte)this.deviceIndex,
-                    ErrorLevel.Critical);
+                    ErrorLevel.Error);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
                 throw new IoDriverException($"Exception: {ex.Message} ParsingDataBytes error", IoDriverExceptionCode.CreationFailure, ex);

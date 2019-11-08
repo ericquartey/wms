@@ -16,6 +16,14 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        private static void EnsureFolderExistence()
+        {
+            if (!System.IO.Directory.Exists("Database"))
+            {
+                System.IO.Directory.CreateDirectory("Database");
+            }
+        }
+
         private static string GetSeedFileName(string environmentName)
         {
             return environmentName is null
@@ -25,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private async Task ApplyMigrationsAsync()
         {
-            this.EnsureFolderExistence();
+            EnsureFolderExistence();
 
             try
             {
@@ -67,14 +75,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        private void EnsureFolderExistence()
-        {
-            if (!System.IO.Directory.Exists("Database"))
-            {
-                System.IO.Directory.CreateDirectory("Database");
-            }
-        }
-
         private async Task InitializeAsync()
         {
             await this.ApplyMigrationsAsync();
@@ -108,7 +108,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 catch (Exception ex)
                 {
                     this.Logger.LogError(ex, "Error while loading configuration values.");
-                    this.SendErrorMessage(new DLExceptionMessageData(ex));
+                    this.SendErrorMessage(new DLExceptionMessageData(ex, null, 0, MessageVerbosity.Fatal));
                 }
             }
         }

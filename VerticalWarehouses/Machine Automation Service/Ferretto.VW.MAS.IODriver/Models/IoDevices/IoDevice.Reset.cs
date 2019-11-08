@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 this.logger.LogInformation($"Io Driver already executing operation {this.CurrentStateMachine.GetType().Name}");
 
-                this.SendMessage(new IoExceptionFieldMessageData(null, "Io Driver already executing operation", 0));
+                this.SendOperationErrorMessage(new IoExceptionFieldMessageData(null, "Io Driver already executing operation", 0));
             }
             else
             {

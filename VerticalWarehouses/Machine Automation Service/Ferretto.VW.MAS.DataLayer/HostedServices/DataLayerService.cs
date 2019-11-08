@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()

@@ -92,8 +92,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             }
         }
 
-        // Vorrei capire se e' il punto giusto dove mettere il metodo, per oggi la lascio qui
-        [HttpPost("resetmachine")]
+        [HttpPost("reset-machine")]
+        [Obsolete("Vorrei capire se e' il punto giusto dove mettere il metodo, per oggi la lascio qui")]
         public ActionResult ResetMachine()
         {
             try

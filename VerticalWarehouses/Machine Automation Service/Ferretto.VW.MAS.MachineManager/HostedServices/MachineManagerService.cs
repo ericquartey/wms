@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 notificationData?.RequestingBay ?? BayNumber.None,
                 notificationData?.TargetBay ?? BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 notificationData?.RequestingBay ?? BayNumber.None,
                 notificationData?.TargetBay ?? BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }

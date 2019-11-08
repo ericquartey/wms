@@ -88,15 +88,6 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        private void OnDataLayerException(NotificationMessage receivedMessage)
-        {
-            if (receivedMessage.ErrorLevel is ErrorLevel.Critical)
-            {
-                this.Logger.LogCritical(receivedMessage.Description);
-                this.applicationLifetime.StopApplication();
-            }
-        }
-
         private void OnDataLayerReady()
         {
             this.baysProvider.AddElevatorPseudoBay();

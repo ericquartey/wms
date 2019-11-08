@@ -86,9 +86,9 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Axis currentAxis;
 
-        private bool disposed;
-
         private bool forceStatusPublish;
+
+        private bool isDisposed;
 
         private byte[] receiveBuffer;
 
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public void Dispose(bool disposing)
         {
-            if (this.disposed)
+            if (this.isDisposed)
             {
                 return;
             }
@@ -143,11 +143,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.writeEnableEvent?.Dispose();
             }
 
-            this.disposed = true;
+            this.isDisposed = true;
         }
 
         public override async Task StartAsync(CancellationToken cancellationToken)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             await base.StartAsync(cancellationToken);
 
             this.sensorStatusUpdateTimer?.Dispose();
@@ -453,7 +458,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                        FieldMessageType.InverterError,
                        MessageStatus.OperationError,
                         (byte)inverterIndex,
-                       ErrorLevel.Critical);
+                       ErrorLevel.Error);
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(errorMsg);
                     break;
 
@@ -466,7 +471,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     FieldMessageType.InverterException,
                     MessageStatus.OperationError,
                      (byte)inverterIndex,
-                    ErrorLevel.Critical);
+                    ErrorLevel.Error);
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(exceptionMsg);
                     break;
 
@@ -481,7 +486,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.CalibrateAxis,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(calibrateErrorNotification);
                     }
                     break;
@@ -497,7 +502,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterSwitchOff,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOffErrorNotification);
                     }
                     break;
@@ -513,7 +518,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterSwitchOn,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterSwitchOnErrorNotification);
                     }
                     break;
@@ -530,7 +535,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.Positioning,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(positioningErrorNotification);
                     }
                     break;
@@ -546,7 +551,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterPowerOff,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOfferrorNotification);
                     }
                     break;
@@ -562,7 +567,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterPowerOn,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterPowerOnerrorNotification);
                     }
                     break;
@@ -578,7 +583,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.ShutterPositioning,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(shutterPositioningErrorNotification);
                     }
                     break;
@@ -592,7 +597,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                    FieldMessageType.InverterStop,
                    MessageStatus.OperationError,
                    (byte)inverterIndex,
-                   ErrorLevel.Critical);
+                   ErrorLevel.Error);
                     this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterStopErrorNotification);
                     break;
 
@@ -607,7 +612,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterStatusUpdate,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
                     break;
@@ -623,7 +628,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         FieldMessageType.InverterSetTimer,
                         MessageStatus.OperationError,
                         (byte)inverterIndex,
-                        ErrorLevel.Critical);
+                        ErrorLevel.Error);
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
                     }
                     break;

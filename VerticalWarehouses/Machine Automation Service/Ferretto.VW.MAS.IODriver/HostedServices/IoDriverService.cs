@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
             if (message.Type is FieldMessageType.DataLayerReady)
             {
                 this.InitializeIoDevice();
-                await this.StartHardwareCommunications();
+                await this.StartHardwareCommunicationsAsync();
 
                 foreach (var ioDevice in this.ioDevices.Values)
                 {
@@ -158,7 +158,10 @@ namespace Ferretto.VW.MAS.IODriver
 
             foreach (var ioDevice in ioDevices)
             {
-                var transport = useMockedTransport ? (IIoTransport)new IoTransportMock() : new IoTransport(readTimeoutMilliseconds);
+                var transport = useMockedTransport
+                    ? (IIoTransport)new IoTransportMock()
+                    : new IoTransport(readTimeoutMilliseconds);
+
                 var isCarousel = this.baysProvider.GetByIoIndex(ioDevice.Index).Carousel != null;
 
                 this.ioDevices.Add(
@@ -176,26 +179,11 @@ namespace Ferretto.VW.MAS.IODriver
             }
         }
 
-        private void SendMessage(IFieldMessageData messageData, DataModels.IoIndex deviceIndex)
-        {
-            var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
-                messageData,
-                "Io Driver Error",
-                FieldMessageActor.Any,
-                FieldMessageActor.IoDriver,
-                FieldMessageType.IoDriverException,
-                MessageStatus.OperationError,
-                (byte)deviceIndex,
-                ErrorLevel.Critical);
-
-            this.EventAggregator.GetEvent<FieldNotificationEvent>().Publish(inverterUpdateStatusErrorNotification);
-        }
-
-        private async Task StartHardwareCommunications()
+        private async Task StartHardwareCommunicationsAsync()
         {
             foreach (var device in this.ioDevices.Values)
             {
-                await device.StartHardwareCommunications();
+                await device.StartHardwareCommunicationsAsync();
             }
         }
 

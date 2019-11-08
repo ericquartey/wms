@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
         }

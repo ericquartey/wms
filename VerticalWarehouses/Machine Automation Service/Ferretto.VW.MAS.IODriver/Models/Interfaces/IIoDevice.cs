@@ -34,9 +34,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         void SendIoPublish(object state);
 
-        void SendMessage(IFieldMessageData messageData);
-
-        Task StartHardwareCommunications();
+        Task StartHardwareCommunicationsAsync();
 
         void StartPollingIoMessage();
 

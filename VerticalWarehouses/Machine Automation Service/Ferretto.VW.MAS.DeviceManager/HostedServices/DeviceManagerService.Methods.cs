@@ -276,8 +276,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         MessageType.PowerEnable,
                         message.RequestingBay,
                         BayNumber.BayOne,
-                        MessageStatus.OperationError,
-                        ErrorLevel.Info);
+                        MessageStatus.OperationError);
 
                     this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
@@ -337,7 +336,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     message.RequestingBay,
                     BayNumber.BayOne,
                     MessageStatus.OperationError,
-                    ErrorLevel.Critical);
+                    ErrorLevel.Error);
 
                 this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
 

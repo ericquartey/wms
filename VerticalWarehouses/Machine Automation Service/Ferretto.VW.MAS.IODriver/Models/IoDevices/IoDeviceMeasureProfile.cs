@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.IODriver
                     this.logger.LogError($"ExecuteMeasureProfile: Io Driver already executing operation {this.CurrentStateMachine.GetType().Name}");
 
                     var ex = new Exception();
-                    this.SendMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+                    this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
                 }
                 else
                 {
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.IODriver
                     FieldMessageType.SensorsChanged,
                     MessageStatus.OperationError,
                     (byte)this.deviceIndex,
-                    ErrorLevel.Critical);
+                    ErrorLevel.Error);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
             }

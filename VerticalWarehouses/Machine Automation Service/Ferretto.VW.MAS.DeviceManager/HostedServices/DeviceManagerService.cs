@@ -545,7 +545,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 messageBayBayIndex,
                                 messageBayBayIndex,
                                 MessageStatus.OperationError,
-                                ErrorLevel.Critical));
+                                receivedMessage.ErrorLevel));
 
                     break;
 
@@ -565,7 +565,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 messageBayBayIndex,
                                 messageBayBayIndex,
                                 MessageStatus.OperationError,
-                                ErrorLevel.Critical));
+                                receivedMessage.ErrorLevel));
 
                     break;
 
@@ -655,7 +655,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         BayNumber.None,
                         BayNumber.None,
                         MessageStatus.OperationError,
-                        ErrorLevel.Critical));
+                        ErrorLevel.Error));
         }
 
         #endregion

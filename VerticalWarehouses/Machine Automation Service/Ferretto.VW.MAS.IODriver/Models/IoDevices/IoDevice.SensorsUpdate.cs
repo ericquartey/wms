@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.IODriver
                     FieldMessageType.SensorsChanged,
                     MessageStatus.OperationError,
                     (byte)this.deviceIndex,
-                    ErrorLevel.Critical);
+                    ErrorLevel.Error);
 
                 this.eventAggregator?.GetEvent<FieldNotificationEvent>().Publish(errorNotification);
             }

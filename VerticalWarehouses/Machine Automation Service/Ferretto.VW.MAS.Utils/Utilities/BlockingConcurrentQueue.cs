@@ -5,22 +5,15 @@ using System.Threading;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Utilities
 {
-    public class BlockingConcurrentQueue<T> : ConcurrentQueue<T>
+    public sealed class BlockingConcurrentQueue<T> : ConcurrentQueue<T>, IDisposable
     {
         #region Fields
 
-        private readonly ManualResetEventSlim dataReady;
+        private readonly ManualResetEventSlim dataReady = new ManualResetEventSlim(false);
 
         private readonly object syncRoot = new object();
 
-        #endregion
-
-        #region Constructors
-
-        public BlockingConcurrentQueue()
-        {
-            this.dataReady = new ManualResetEventSlim(false);
-        }
+        private bool isDisposed;
 
         #endregion
 
@@ -34,21 +27,43 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool Dequeue(out T result)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             lock (this.syncRoot)
             {
-                this.dataReady?.Reset();
+                this.dataReady.Reset();
                 return this.TryDequeue(out result);
             }
         }
 
+        public void Dispose()
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            this.dataReady.Dispose();
+
+            this.isDisposed = true;
+        }
+
         public new void Enqueue(T item)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             if (item != null)
             {
                 lock (this.syncRoot)
                 {
                     base.Enqueue(item);
-                    this.dataReady?.Set();
+                    this.dataReady.Set();
                 }
             }
         }
@@ -60,6 +75,11 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool TryDequeue(int timeout, CancellationToken cancellationToken, out T result)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             result = default(T);
 
             try
@@ -69,7 +89,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     return this.Dequeue(out result);
                 }
 
-                if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
+                if (this.dataReady.Wait(timeout, cancellationToken))
                 {
                     lock (this.syncRoot)
                     {
@@ -92,6 +112,11 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public bool TryPeek(int timeout, CancellationToken cancellationToken, out T result)
         {
+            if (this.isDisposed)
+            {
+                throw new ObjectDisposedException(this.GetType().Name);
+            }
+
             result = default(T);
 
             try
@@ -101,7 +126,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
                     return this.Peek(out result);
                 }
 
-                if (this.dataReady?.Wait(timeout, cancellationToken) ?? false)
+                if (this.dataReady.Wait(timeout, cancellationToken))
                 {
                     return this.TryPeek(out result);
                 }

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService
@@ -25,6 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             System.Diagnostics.Contracts.Contract.Requires(message != null);
 
+            if (message.ErrorLevel is ErrorLevel.Fatal)
+            {
+                this.Logger.LogCritical(message.Description);
+                this.applicationLifetime.StopApplication();
+            }
+
             switch (message.Type)
             {
                 case MessageType.SensorsChanged:
@@ -33,10 +40,6 @@ namespace Ferretto.VW.MAS.AutomationService
 
                 case MessageType.MachineMode:
                     this.OnMachineModeChanged(message);
-                    break;
-
-                case MessageType.DlException:
-                    this.OnDataLayerException(message);
                     break;
 
                 case MessageType.Homing:

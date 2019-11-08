@@ -674,10 +674,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        [System.Obsolete]
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        [System.Obsolete]
         System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken);
     
     }

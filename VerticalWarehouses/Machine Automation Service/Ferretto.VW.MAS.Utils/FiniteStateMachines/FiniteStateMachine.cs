@@ -179,18 +179,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         /// </summary>
         public void Dispose()
         {
-            if (!this.isDisposed)
-            {
-                this.commandEventSubscriptionToken?.Dispose();
-                this.commandEventSubscriptionToken = null;
-
-                this.notificationEventSubscriptionToken?.Dispose();
-                this.notificationEventSubscriptionToken = null;
-
-                this.OnDisposing();
-
-                this.isDisposed = true;
-            }
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void Pause()
@@ -234,6 +224,22 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.ActiveState = this.OnStop(reason);
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (this.isDisposed)
+            {
+                return;
+            }
+
+            this.commandEventSubscriptionToken?.Dispose();
+            this.commandEventSubscriptionToken = null;
+
+            this.notificationEventSubscriptionToken?.Dispose();
+            this.notificationEventSubscriptionToken = null;
+
+            this.isDisposed = true;
+        }
+
         protected abstract bool FilterCommand(CommandMessage command);
 
         protected abstract bool FilterNotification(NotificationMessage notification);
@@ -254,12 +260,6 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type}, {command.Description}");
 
             return this.ActiveState;
-        }
-
-        protected virtual void OnDisposing()
-        {
-            // do nothing
-            // derived classes can customize the behaviour of this method
         }
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
@@ -381,7 +381,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     this.requestingBay,
                     BayNumber.None,
                     MessageStatus.OperationError,
-                    ErrorLevel.Critical));
+                    ErrorLevel.Error));
         }
 
         #endregion
