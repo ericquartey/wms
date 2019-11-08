@@ -237,7 +237,7 @@
                                 HorizontalAlignment="Center"
                                 Command="{Binding IntermediateShutterCommand}"
                                 Content="{x:Static res:InstallationApp.IntermediatePosition}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="5"
@@ -249,7 +249,7 @@
                            TargetType="{x:Type controls:PpcButton}">
                         <Setter Property="Grid.Column" Value="2" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding BayIsMultiPosition}"
+                            <DataTrigger Binding="{Binding BayIsShutterThreeSensors}"
                                          Value="False">
                                 <Setter Property="Grid.Column" Value="1" />
                             </DataTrigger>

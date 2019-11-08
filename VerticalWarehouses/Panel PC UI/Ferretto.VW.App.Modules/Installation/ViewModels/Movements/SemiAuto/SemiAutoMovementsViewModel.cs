@@ -34,6 +34,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Bay bay;
 
+        private bool bayIsMultiPosition;
+
+        private bool bayIsShutterThreeSensors;
+
         private SubscriptionToken homingToken;
 
         private int? inputLoadingUnitCode;
@@ -86,6 +90,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
+
+        public bool BayIsShutterThreeSensors
+        {
+            get => this.bayIsShutterThreeSensors;
+            set => this.SetProperty(ref this.bayIsShutterThreeSensors, value);
+        }
 
         public int? InputLoadingUnitCode
         {
@@ -185,6 +201,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
 
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+
+                this.BayIsMultiPosition = this.bay.IsDouble;
+
+                this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
             }
             catch (Exception ex)
             {
@@ -428,6 +448,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.resetCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
