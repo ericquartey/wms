@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -16,6 +17,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 // ReSharper disable ArrangeThisQualifier
@@ -239,6 +241,41 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
                     }
 
+                    break;
+
+                // TODO - Only for Bender
+                case FieldMessageType.SensorsChanged:
+                    if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
+                    {
+                        var ioIndex = receivedMessage.DeviceIndex;
+                        if (ioIndex == 0)
+                        {
+                            var ioStatuses = new bool[8];
+                            ioStatuses[7] = (!dataIOs.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] && !dataIOs.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide]);
+
+                            var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
+                            var inverter = invertersProvider.GetByIndex(InverterIndex.MainInverter);
+                            if (inverter is AngInverterStatus angInverter)
+                            {
+                                ioStatuses[6] = angInverter.ANG_OverrunElevatorSensor;
+                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                                {
+                                    this.Logger.LogTrace("Sensor Update");
+
+                                    var msgNotification = new FieldNotificationMessage(
+                                        new InverterStatusUpdateFieldMessageData(angInverter.Inputs),
+                                        "Inverter Inputs update",
+                                        FieldMessageActor.DeviceManager,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.InverterStatusUpdate,
+                                        MessageStatus.OperationExecuting,
+                                        angInverter.SystemIndex);
+
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                }
+                            }
+                        }
+                    }
                     break;
             }
 

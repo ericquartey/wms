@@ -16,6 +16,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -79,7 +80,8 @@ namespace Ferretto.VW.MAS.IODriver
             IoIndex index,
             bool isCarousel,
             ILogger logger,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            IHostingEnvironment env)
         {
             this.eventAggregator = eventAggregator;
             this.ipAddress = ipAddress;
@@ -92,7 +94,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             this.writeEnableEvent = new ManualResetEventSlim(true);
 
-            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction());
+            this.ioReceiveTask = new Task(async () => await this.ReceiveIoDataTaskFunction(env));
             this.ioSendTask = new Task(async () => await this.SendIoCommandTaskFunction());
 
             this.mainIoDevice = ioDeviceService.Devices.SingleOrDefault(s => s.IoIndex == IoIndex.IoDevice1);
@@ -153,7 +155,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.Dispose(true);
         }
 
-        public async Task ReceiveIoDataTaskFunction()
+        public async Task ReceiveIoDataTaskFunction(IHostingEnvironment env)
         {
             this.logger.LogTrace("1:Method Start");
 
@@ -356,6 +358,12 @@ namespace Ferretto.VW.MAS.IODriver
                                 this.logger.LogTrace($"IoDevice {this.deviceIndex}, data {notificationMessage.Data.ToString()}");
 
                                 this.forceIoStatusPublish = false;
+
+                                if (env.IsEnvironment("Bender"))
+                                {
+                                    notificationMessage.Destination = FieldMessageActor.InverterDriver;
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                                }
                             }
 
                             var messageData = new IoReadMessage(
@@ -398,20 +406,27 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 try
                 {
-                    if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage)
+                   if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage)
                         &&
                         shdMessage != null)
                     {
                         this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
                     }
+                }
+                catch (OperationCanceledException)
+                {
+                    this.logger.LogDebug("2:Method End operation cancelled");
 
-                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                    return;
+                }
+
+                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
+                {
+                    if (this.ioTransport.IsConnected)
                     {
-                        if (this.ioTransport.IsConnected)
-                        {
-                            this.writeEnableEvent.Reset();
+                        this.writeEnableEvent.Reset();
 
-                            var result = false;
+                        var result = false;
 
                             try
                             {
@@ -474,7 +489,7 @@ namespace Ferretto.VW.MAS.IODriver
                 }
                 catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
                 {
-                    this.logger.LogDebug("2:Method End operation cancelled");
+                    this.logger.LogDebug("Terminating I/O device write thread.");
 
                     return;
                 }
@@ -553,7 +568,7 @@ namespace Ferretto.VW.MAS.IODriver
             }
             else
             {
-                this.logger.LogInformation($"Connected to I/O device {this.deviceIndex} on TCP address {this.ipAddress}:{this.port}");
+                this.logger.LogInformation($"Connection OK to I/O device {this.deviceIndex} on TCP address {this.ipAddress}:{this.port}");
             }
 
             try
