@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -27,11 +29,13 @@ namespace Ferretto.VW.MAS.DataLayer
         public ElevatorDataProvider(
             DataLayerContext dataContext,
             IMemoryCache memoryCache,
+            IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
         }
 
         #endregion
@@ -39,6 +43,18 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Properties
 
         public object Context { get; private set; }
+
+        public double HorizontalPosition
+        {
+            get => this.elevatorVolatileDataProvider.HorizontalPosition;
+            set => this.elevatorVolatileDataProvider.HorizontalPosition = value;
+        }
+
+        public double VerticalPosition
+        {
+            get => this.elevatorVolatileDataProvider.VerticalPosition;
+            set => this.elevatorVolatileDataProvider.VerticalPosition = value;
+        }
 
         #endregion
 

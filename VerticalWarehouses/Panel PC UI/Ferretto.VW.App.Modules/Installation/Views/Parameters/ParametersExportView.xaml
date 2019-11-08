@@ -1,0 +1,65 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Installation.Views.ParametersExportView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d" 
+            d:DesignHeight="450" d:DesignWidth="800">
+
+
+    <Grid Margin="50,15">
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="100" />
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.SaveRestoreConfigPageHeader}" />
+
+        <TextBlock Grid.Row="1"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Grid.Column="1"
+                   Grid.ColumnSpan="3"                   
+                   Margin="0 50 0 20"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding DeviceInfo}" />
+
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 Grid.ColumnSpan="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"                                 
+                                 ContentText="{Binding FullPath}"
+                                 LabelText="{x:Static res:General.FilePath}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ExportCommand}"
+                            Content="{x:Static res:InstallationApp.SaveRestoreConfigSaveButton}" />
+
+    </Grid>
+</ctrls:View>
