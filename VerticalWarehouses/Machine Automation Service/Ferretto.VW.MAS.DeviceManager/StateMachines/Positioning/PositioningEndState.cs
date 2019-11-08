@@ -151,7 +151,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            this.Logger.LogDebug("Retry Stop Command");
+            this.Start();
         }
 
         private void UpdateLoadingUnitLocation()
