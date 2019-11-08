@@ -4462,7 +4462,7 @@
       "FeedRate": 0.1,
       "PositiveTargetDirection": 30,
       "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.25
+      "FeedRateAfterZero": 0.2
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
