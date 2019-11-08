@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
+using Microsoft.Extensions.Hosting;
 
 // ReSharper disable ParameterHidesMember
 // ReSharper disable ArrangeThisQualifier
@@ -27,6 +28,8 @@ namespace Ferretto.VW.MAS.IODriver
         private readonly IConfiguration configuration;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
+        private readonly IHostingEnvironment env;
 
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
@@ -43,13 +46,15 @@ namespace Ferretto.VW.MAS.IODriver
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
             IConfiguration configuration,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IHostingEnvironment env)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.ioDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.env = env ?? throw new ArgumentNullException(nameof(env));
         }
 
         #endregion
@@ -175,7 +180,8 @@ namespace Ferretto.VW.MAS.IODriver
                         ioDevice.Index,
                         isCarousel,
                         this.Logger,
-                        this.CancellationToken));
+                        this.CancellationToken,
+                        this.env));
             }
         }
 
