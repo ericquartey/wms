@@ -55,16 +55,6 @@
                                  ContentText="{Binding ExistingPath}"
                                  LabelText="{x:Static res:General.FilePath}" />
 
-
-        <controls:PpcButton Grid.Row="3"
-                            Grid.Column="1"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Center"
-                            Margin="0 40 0 0"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.SaveRestoreConfigAbortRestoreButton}"
-                             />
-
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="3"
                             HorizontalAlignment="Center"

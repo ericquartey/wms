@@ -2437,6 +2437,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore configuration.
+        /// </summary>
+        public static string RestoreConfiguration {
+            get {
+                return ResourceManager.GetString("RestoreConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Restore successful.
         /// </summary>
         public static string RestoreSuccessful {

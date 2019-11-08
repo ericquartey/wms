@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
         }
 
-        private void devicesStatusUpdateTimer_Tick(object sender, EventArgs e)
+        private void DevicesStatusUpdateTimer_Tick(object sender, EventArgs e)
         {
             this.RefreshDevicesStatus();
         }
@@ -150,7 +150,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private void StartMonitorDrive()
         {
             this.devicesStatusUpdateTimer = new System.Windows.Threading.DispatcherTimer();
-            this.devicesStatusUpdateTimer.Tick += new EventHandler(this.devicesStatusUpdateTimer_Tick);
+            this.devicesStatusUpdateTimer.Tick += new EventHandler(this.DevicesStatusUpdateTimer_Tick);
             this.devicesStatusUpdateTimer.Interval = new TimeSpan(0, 0, SECSUPDATEINTERVAL);
             this.devicesStatusUpdateTimer.Start();
         }

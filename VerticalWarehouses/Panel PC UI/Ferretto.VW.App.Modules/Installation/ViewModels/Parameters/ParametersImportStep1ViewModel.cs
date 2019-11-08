@@ -17,8 +17,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private DelegateCommand restoreConfigurationCommand;
 
-        private DelegateCommand stopCommand;
-
         #endregion
 
         #region Constructors
@@ -51,12 +49,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     (this.restoreConfigurationCommand = new DelegateCommand(
                     async () => await this.RestoreAsync(), this.CanRestore));
 
-        public ICommand StopCommand =>
-                    this.stopCommand
-                   ??
-                   (this.stopCommand = new DelegateCommand(
-                       async () => await this.StopAsync(), this.CanStop));
-
         #endregion
 
         #region Methods
@@ -87,7 +79,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override void RaisePropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.DeviceWithFileConfiguration));
-            this.stopCommand.RaiseCanExecuteChanged();
             this.restoreConfigurationCommand.RaiseCanExecuteChanged();
         }
 
@@ -96,13 +87,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsBusy
                     &&
                    !string.IsNullOrEmpty(this.ExistingPath);
-        }
-
-        private bool CanStop()
-        {
-            return this.IsBusy
-                    &&
-                    !string.IsNullOrEmpty(this.ExistingPath);
         }
 
         private async Task RestoreAsync()

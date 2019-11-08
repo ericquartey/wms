@@ -1239,4 +1239,7 @@
   <data name="ConfirmRestore" xml:space="preserve">
     <value>Confirm restore.</value>
   </data>
+  <data name="RestoreConfiguration" xml:space="preserve">
+    <value>Restore configuration</value>
+  </data>
 </root>
