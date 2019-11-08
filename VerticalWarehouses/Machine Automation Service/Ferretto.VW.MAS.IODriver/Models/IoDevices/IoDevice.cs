@@ -406,27 +406,20 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 try
                 {
-                   if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage)
-                        &&
-                        shdMessage != null)
+                    if (this.ioCommandQueue.TryPeek(Timeout.Infinite, this.stoppingToken, out var shdMessage)
+                         &&
+                         shdMessage != null)
                     {
                         this.logger.LogTrace($"1:message={shdMessage}: index {this.deviceIndex}");
                     }
-                }
-                catch (OperationCanceledException)
-                {
-                    this.logger.LogDebug("2:Method End operation cancelled");
 
-                    return;
-                }
-
-                if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
-                {
-                    if (this.ioTransport.IsConnected)
+                    if (this.writeEnableEvent.Wait(Timeout.Infinite, this.stoppingToken))
                     {
-                        this.writeEnableEvent.Reset();
+                        if (this.ioTransport.IsConnected)
+                        {
+                            this.writeEnableEvent.Reset();
 
-                        var result = false;
+                            var isWriteSuccessful = false;
 
                             try
                             {
@@ -435,7 +428,7 @@ namespace Ferretto.VW.MAS.IODriver
                                     case ShdCodeOperation.Data:
                                         {
                                             var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                            result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                            isWriteSuccessful = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                             this.logger.LogTrace($"3:message={shdMessage}: index {this.deviceIndex}");
 
@@ -445,7 +438,7 @@ namespace Ferretto.VW.MAS.IODriver
                                     case ShdCodeOperation.Configuration:
                                         {
                                             var telegram = shdMessage.BuildSendTelegram(this.ioStatus.FwRelease);
-                                            result = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
+                                            isWriteSuccessful = await this.ioTransport.WriteAsync(telegram, this.stoppingToken) == telegram.Length;
 
                                             this.logger.LogTrace($"4:message={shdMessage}: index {this.deviceIndex}");
 
@@ -472,7 +465,7 @@ namespace Ferretto.VW.MAS.IODriver
                                 continue;
                             }
 
-                            if (result)
+                            if (isWriteSuccessful)
                             {
                                 this.ioCommandQueue.Dequeue(out _);
                             }

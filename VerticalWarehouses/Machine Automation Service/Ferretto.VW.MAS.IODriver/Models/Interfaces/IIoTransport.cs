@@ -49,6 +49,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <returns>A byte array containing the bytes read from the socket stream</returns>
         /// <exception cref="IoDriverException">Read operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when calling this method after the object has been disposed.</exception>
         ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken);
 
         /// <summary>
@@ -57,6 +58,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <param name="dataMessage">Byte array containing the message to be sent to the IO device hardware</param>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <exception cref="IoDriverException">Write operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when calling this method after the object has been disposed.</exception>
         ValueTask<int> WriteAsync(byte[] dataMessage, CancellationToken stoppingToken);
 
         /// <summary>
@@ -66,6 +68,7 @@ namespace Ferretto.VW.MAS.IODriver
         /// <param name="delay">Time on waiting to send data (ms).</param>
         /// <param name="stoppingToken">Cancellation token used to cancel wait operations</param>
         /// <exception cref="IoDriverException">Write operation Failed. Inspect exception details for more details</exception>
+        /// <exception cref="ObjectDisposedException">Thrown when calling this method after the object has been disposed.</exception>
         ValueTask<int> WriteAsync(byte[] dataMessage, int delay, CancellationToken stoppingToken);
 
         #endregion
