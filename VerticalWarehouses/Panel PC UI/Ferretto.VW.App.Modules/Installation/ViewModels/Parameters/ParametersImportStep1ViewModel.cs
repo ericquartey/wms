@@ -58,24 +58,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             base.Disappear();
         }
 
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            try
-            {
-                this.IsBusy = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsBusy = false;
-            }
-        }
-
         public override void RaisePropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.DeviceWithFileConfiguration));

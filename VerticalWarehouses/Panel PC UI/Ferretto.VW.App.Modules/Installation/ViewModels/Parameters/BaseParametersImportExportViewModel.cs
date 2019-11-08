@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private const string CONFIGURATIONNAME = "vertimag-configuration.{0}.json";
 
-        private const string DEFAULTDEVICENAME = "D";
+        private const string DEFAULTDEVICENAME = "G";
 
         private const string DEVICE = @"{0}:\";
 
@@ -104,8 +104,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.RefreshDevicesStatus();
 
                 this.StartMonitorDrive();
-
-                this.IsBackNavigationAllowed = true;
             }
             catch (Exception ex)
             {

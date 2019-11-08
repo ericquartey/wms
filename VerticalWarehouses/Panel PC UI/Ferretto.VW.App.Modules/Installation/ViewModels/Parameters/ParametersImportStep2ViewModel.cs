@@ -82,8 +82,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.configuration = vertimagConfiguration;
                     this.RaisePropertyChanged(nameof(this.Configuration));
                 }
-
-                this.IsBackNavigationAllowed = true;
             }
             catch (Exception ex)
             {
