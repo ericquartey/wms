@@ -5,6 +5,14 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IElevatorDataProvider
     {
+        #region Properties
+
+        double HorizontalPosition { get; set; }
+
+        double VerticalPosition { get; set; }
+
+        #endregion
+
         #region Methods
 
         ElevatorAxis GetAxis(Orientation orientation);

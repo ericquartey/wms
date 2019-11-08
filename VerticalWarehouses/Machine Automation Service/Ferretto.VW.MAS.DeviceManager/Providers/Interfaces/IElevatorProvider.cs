@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         AxisBounds GetVerticalBounds();
 
         void MoveHorizontalAuto(
-                    HorizontalMovementDirection direction,
+            HorizontalMovementDirection direction,
             bool isStartedOnBoard,
             int? loadingUnitId,
             double? loadingUnitGrossWeight,
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void StartBeltBurnishing(
-                    double upperBoundPosition,
+            double upperBoundPosition,
             double lowerBoundPosition,
             int delayStart, BayNumber
             requestingBay,
