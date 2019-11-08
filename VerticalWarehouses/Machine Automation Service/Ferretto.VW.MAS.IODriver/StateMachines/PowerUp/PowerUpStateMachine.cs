@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
-            if (message.CodeOperation == Enumerations.ShdCodeOperation.Data
+            if (message.CodeOperation == ShdCodeOperation.Data
                 &&
                 message.ValidOutputs
                 &&
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data
+            var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data
                 &&
                 message.ValidOutputs
                 &&

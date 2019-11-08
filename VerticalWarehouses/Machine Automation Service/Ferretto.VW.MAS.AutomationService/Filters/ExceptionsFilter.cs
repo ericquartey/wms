@@ -27,6 +27,11 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
+            if (context is null)
+            {
+                throw new ArgumentNullException(nameof(context));
+            }
+
             if (context.Exception != null
                 &&
                 context.ExceptionHandled == false)

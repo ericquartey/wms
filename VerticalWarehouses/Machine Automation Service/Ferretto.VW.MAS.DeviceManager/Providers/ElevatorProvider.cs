@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
-        private readonly ILogger<DeviceManager> logger;
+        private readonly ILogger<DeviceManagerService> logger;
 
         private readonly IMachineProvider machineProvider;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ElevatorProvider(
                     IEventAggregator eventAggregator,
-                    ILogger<DeviceManager> logger,
+                    ILogger<DeviceManagerService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator)
         {

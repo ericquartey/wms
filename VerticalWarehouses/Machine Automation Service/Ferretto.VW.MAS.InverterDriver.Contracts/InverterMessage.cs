@@ -61,6 +61,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public InverterMessage(InverterMessage message)
         {
+            if (message is null)
+            {
+                throw new ArgumentNullException(nameof(message));
+            }
+
             this.IsWriteMessage = message.IsWriteMessage;
             this.SystemIndex = message.SystemIndex;
             this.DataSetIndex = message.DataSetIndex;
@@ -265,7 +270,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return blockValues;
         }
 
-        public string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
         {
             var text = new StringBuilder();
             foreach (var block in blockDefinitions)
@@ -525,9 +530,9 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                     var parameterId2 = int.Parse(stringPayload.Substring(start + 3, 2));
                     definitions.Add(new InverterBlockDefinition((InverterIndex)systemIndex, (InverterParameterId)((parameterId1 * 100) + parameterId2), (InverterDataset)dataset));
                 }
-                catch
+                catch (Exception ex)
                 {
-                    throw new InverterDriverException("Received not valid block definition message");
+                    throw new InverterDriverException("Received not valid block definition message", ex);
                 }
 
                 start += 5;

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer.Extensions
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal static class ConfigurationExtensions
     {

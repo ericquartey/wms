@@ -1,13 +1,12 @@
 ﻿using System.Globalization;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Filters;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
-using Ferretto.VW.MAS.DataLayer.Extensions;
-using Ferretto.VW.MAS.DeviceManager.Extensions;
-using Ferretto.VW.MAS.InverterDriver.Extensions;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager;
+using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
-using Ferretto.VW.MAS.MachineManager.Extensions;
-using Ferretto.VW.MAS.MissionManager.Extensions;
+using Ferretto.VW.MAS.MachineManager;
+using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -71,11 +70,14 @@ namespace Ferretto.VW.MAS.AutomationService
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
 
-            SwaggerBuilderExtensions.UseSwagger(app);
-            app.UseSwaggerUI(config =>
+            if (!env.IsProduction())
             {
-                config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
-            });
+                SwaggerBuilderExtensions.UseSwagger(app);
+                app.UseSwaggerUI(config =>
+                {
+                    config.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                });
+            }
 
             if (this.Configuration.IsWmsEnabled())
             {
@@ -158,7 +160,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 .AddMachineManager()
                 .AddMissionManager();
 
-            services.AddHostedService<AutomationService>();
+            services.AddHostedService<NotificationRelayService>();
 
             services.AddTransient<IInverterProvider, InverterProvider>();
             services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
@@ -166,6 +168,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void InitialiseWmsInterfaces(IServiceCollection services)
         {
+            if (services is null)
+            {
+                throw new System.ArgumentNullException(nameof(services));
+            }
+
             var wmsServiceAddress = this.Configuration.GetWmsServiceUrl();
             services.AddWebApiServices(wmsServiceAddress);
 

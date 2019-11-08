@@ -2,13 +2,12 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection;
-using Ferretto.VW.MAS.AutomationService.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.IODriver;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
-    public class IoDeviceProvider : IIoDeviceProvider
+    internal class IoDeviceProvider : IIoDeviceProvider
     {
         #region Fields
 

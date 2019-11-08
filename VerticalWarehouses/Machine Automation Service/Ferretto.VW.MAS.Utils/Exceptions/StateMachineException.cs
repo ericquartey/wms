@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
 
         public StateMachineException(string description, CommandMessage command, MessageActor source)
         {
-            MessageType notificationType = MessageType.NotSpecified;
+            var notificationType = MessageType.NotSpecified;
 
             switch (source)
             {
@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
             }
 
             this.NotificationMessage = new NotificationMessage(
-                command.Data,
+                command?.Data,
                 description,
                 MessageActor.Any,
                 source,
@@ -35,7 +35,19 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
                 command.RequestingBay,
                 command.TargetBay,
                 MessageStatus.OperationError,
-                ErrorLevel.Critical);
+                ErrorLevel.Error);
+        }
+
+        public StateMachineException()
+        {
+        }
+
+        public StateMachineException(string message) : base(message)
+        {
+        }
+
+        public StateMachineException(string message, Exception innerException) : base(message, innerException)
+        {
         }
 
         #endregion

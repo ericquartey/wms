@@ -40,17 +40,18 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 return;
             }
 
-            if (machineMode is MachineMode.Automatic)
+            switch (machineMode)
             {
-                this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
-            }
-            else if (machineMode is MachineMode.Manual)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
-            }
-            else
-            {
-                throw new ArgumentException(nameof(machineMode));
+                case MachineMode.Automatic:
+                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    break;
+
+                case MachineMode.Manual:
+                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
+                    break;
+
+                default:
+                    throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
 
             this.SendCommandToMissionManager(

@@ -14,6 +14,16 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             System.Uri webServiceUrl,
             System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
         {
+            if (container is null)
+            {
+                throw new System.ArgumentNullException(nameof(container));
+            }
+
+            if (webServiceUrl is null)
+            {
+                throw new System.ArgumentNullException(nameof(webServiceUrl));
+            }
+
             var urlString = webServiceUrl.ToString();
 
             var resolveFunction = resolveHttpClientFunction ?? DefaultResolveHttpClientFunction;

@@ -26,14 +26,14 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         public override void InitializeData()
         {
             base.InitializeData();
-            this.States.Add(this.GetInstance(nameof(PresentationTheme)));
-            this.States.Add(this.GetInstance(nameof(PresentationShutdown)));
-            this.States.Add(this.GetInstance(nameof(PresentationHelp)));
-            this.States.Add(this.GetInstance(nameof(PresentationLogged)));
-            this.States.Add(this.GetInstance(nameof(PresentationMachineModeSwitch)));
-            this.States.Add(this.GetInstance(nameof(PresentationMachinePowerSwitch)));
-            this.States.Add(this.GetInstance(nameof(PresentationError)));
-            this.States.Add(this.GetInstance(nameof(PresentationDebug)));
+            this.States.Add(this.GetInstance<PresentationTheme>());
+            this.States.Add(this.GetInstance<PresentationShutdown>());
+            this.States.Add(this.GetInstance<PresentationHelp>());
+            this.States.Add(this.GetInstance<PresentationLogged>());
+            this.States.Add(this.GetInstance<PresentationMachineModeSwitch>());
+            this.States.Add(this.GetInstance<PresentationMachinePowerSwitch>());
+            this.States.Add(this.GetInstance<PresentationError>());
+            this.States.Add(this.GetInstance<PresentationDebug>());
         }
 
         public override void UpdateChanges(PresentationChangedMessage presentation)

@@ -11,6 +11,16 @@ namespace Ferretto.VW.MAS.AutomationService.Filters
 
         public void Apply(Operation operation, OperationFilterContext context)
         {
+            if (context is null)
+            {
+                throw new System.ArgumentNullException(nameof(context));
+            }
+
+            if (operation is null)
+            {
+                throw new System.ArgumentNullException(nameof(operation));
+            }
+
             if (operation.Parameters is null)
             {
                 operation.Parameters = new List<IParameter>();

@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         public MessageActor Destination { get; set; }
 
-        public ErrorLevel ErrorLevel { get; set; } = ErrorLevel.NoError;
+        public ErrorLevel ErrorLevel { get; set; } = ErrorLevel.None;
 
         public MessageActor Source { get; set; }
 

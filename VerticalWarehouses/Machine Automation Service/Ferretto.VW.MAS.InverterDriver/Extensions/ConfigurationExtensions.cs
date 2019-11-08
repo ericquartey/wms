@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.InverterDriver.Extensions
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public static class ConfigurationExtensions
     {

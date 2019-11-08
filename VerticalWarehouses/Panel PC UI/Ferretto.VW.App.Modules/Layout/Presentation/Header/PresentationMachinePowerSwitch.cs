@@ -100,8 +100,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override async Task ExecuteAsync()
         {
-            this.IsBusy = true;
-
             if (this.IsMachinePoweredOn)
             {
                 await this.machineModeService.PowerOffAsync();
@@ -113,10 +111,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();
-                }
-                else
-                {
-                    this.IsBusy = false;
                 }
             }
         }

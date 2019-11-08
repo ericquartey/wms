@@ -49,6 +49,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
+
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -62,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     m => this.OnDataLayerReady(),
                     ThreadOption.PublisherThread,
                     false,
-                    message => message.Type == CommonUtils.Messages.Enumerations.MessageType.DataLayerReady);
+                    message => message.Type is MessageType.DataLayerReady);
 
             try
             {
@@ -70,7 +71,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             catch
             {
-                // do nothing
+                // do nothing.
+                // it is ok to swallow the exception here.
             }
         }
 
