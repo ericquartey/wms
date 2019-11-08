@@ -60,7 +60,7 @@
                             Margin="0,15,0,0"
                             VerticalAlignment="Top"
                             Command="{Binding AbortCommand}"
-                            Content="{x:Static res:InstallationApp.Abort}" />
+                            Content="{x:Static res:InstallationApp.Stop}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
