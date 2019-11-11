@@ -936,13 +936,13 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void InverterInFault()
         {
             this.IsFault = !this.IsFault;
-            //if (this.IsFault)
-            //{
-            //    this.IsReadyToSwitchOn = false;
-            //    this.IsSwitchedOn = false;
-            //    this.IsVoltageEnabled = false;
-            //    this.IsOperationEnabled = false;
-            //}
+            if (this.IsFault)
+            {
+                this.IsReadyToSwitchOn = false;
+                this.IsSwitchedOn = false;
+                this.IsVoltageEnabled = false;
+                this.IsOperationEnabled = false;
+            }
         }
 
         private void ShutterTick(object state)
