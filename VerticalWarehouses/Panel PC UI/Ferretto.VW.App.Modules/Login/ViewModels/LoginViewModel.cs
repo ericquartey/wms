@@ -56,12 +56,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                .Subscribe(
-                    this.OnHealthStatusChanged,
-                    ThreadOption.UIThread,
-                    false);
-
 #if DEBUG
             this.UserLogin = new UserLogin
             {
@@ -163,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 ||
                 this.ServiceHealthStatus == HealthStatus.Healthy)
             {
-                this.ShowNotification("Connessione ai servizi ristabilita");
+                this.ClearNotifications();
             }
         }
 
@@ -173,6 +167,12 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
+                this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                    .Subscribe(
+                        this.OnHealthStatusChanged,
+                        ThreadOption.UIThread,
+                        false);
+
                 this.IsWaitingForResponse = true;
                 var bay = await this.bayManager.GetBayAsync();
                 if (!(bay is null))

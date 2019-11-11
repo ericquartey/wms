@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Configuration;
+
 #if DEBUG
 using System.Windows;
 
@@ -14,20 +16,12 @@ namespace Ferretto.VW.App.Services
 
         private readonly INavigationService navigationService;
 
-        public SessionService(IHealthProbeService healthProbeService, INavigationService navigationService)
+        public SessionService(
+            IHealthProbeService healthProbeService,
+            INavigationService navigationService)
         {
-            if (healthProbeService is null)
-            {
-                throw new ArgumentNullException(nameof(healthProbeService));
-            }
-
-            if (navigationService is null)
-            {
-                throw new ArgumentNullException(nameof(navigationService));
-            }
-
-            this.healthProbeService = healthProbeService;
-            this.navigationService = navigationService;
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             this.healthProbeService.HealthStatusChanged.Subscribe(
                 this.OnHealthStatusChanged,
@@ -39,15 +33,13 @@ namespace Ferretto.VW.App.Services
         {
             if (e.HealthStatus == HealthStatus.Unhealthy
                 &&
-                System.Configuration.ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
+                ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
                     Utils.Modules.Login.LOGIN);
             }
         }
-
-        #region Methods
 
         public bool Shutdown()
         {
@@ -68,7 +60,5 @@ namespace Ferretto.VW.App.Services
                 return false;
             }
         }
-
-        #endregion
     }
 }

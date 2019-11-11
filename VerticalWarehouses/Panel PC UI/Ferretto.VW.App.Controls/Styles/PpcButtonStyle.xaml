@@ -113,6 +113,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.On}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsUnknownState}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Unknown}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
