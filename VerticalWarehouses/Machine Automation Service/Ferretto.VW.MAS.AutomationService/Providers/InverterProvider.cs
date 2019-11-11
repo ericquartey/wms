@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         #region Properties
 
-        public IEnumerable<InverterDeviceInfo> GetStatuses => this.GetInvertersStatuses(this.invertersProvider.GetAll());
+        public IEnumerable<InverterDeviceInfo> GetStatuses => GetInvertersStatuses(this.invertersProvider.GetAll());
 
         #endregion
 
@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.AutomationService
             return bits;
         }
 
-        private IEnumerable<BitInfo> GetDigitalInputs(IInverterStatusBase status)
+        private static IEnumerable<BitInfo> GetDigitalInputs(IInverterStatusBase status)
         {
             PropertyInfo[] inverterInputsProperties = null;
             switch (status)
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService
             return GetBits(inverterInputsProperties, status, TotalInputs, SkipCharsFromName);
         }
 
-        private IEnumerable<InverterDeviceInfo> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
+        private static IEnumerable<InverterDeviceInfo> GetInvertersStatuses(IEnumerable<IInverterStatusBase> inverterStatuses)
         {
             var inverterDevices = new List<InverterDeviceInfo>();
             var controlWordProperties = typeof(IControlWord).GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 device.Id = (int)status.SystemIndex;
                 device.ControlWords = GetBits(controlWordProperties, status.CommonControlWord, WordSize);
                 device.StatusWords = GetBits(statusWordProperties, status.CommonStatusWord, WordSize);
-                device.DigitalInputs = this.GetDigitalInputs(status);
+                device.DigitalInputs = GetDigitalInputs(status);
                 device.Id = (byte)status.SystemIndex;
                 inverterDevices.Add(device);
             }

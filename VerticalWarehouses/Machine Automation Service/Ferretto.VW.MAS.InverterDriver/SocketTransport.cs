@@ -172,6 +172,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <inheritdoc />
@@ -311,7 +312,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
         }
 
-        private void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (this.isDisposed)
             {

@@ -91,19 +91,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             GC.SuppressFinalize(this);
         }
 
-        public void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    this.readCompleteEventSlim?.Dispose();
-                }
-
-                this.disposed = true;
-            }
-        }
-
         public async ValueTask<byte[]> ReadAsync(CancellationToken stoppingToken)
         {
             if (this.disposed)
@@ -148,6 +135,19 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             await Task.Delay(delay, stoppingToken);
             return await this.WriteAsync(inverterMessage, stoppingToken);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    this.readCompleteEventSlim?.Dispose();
+                }
+
+                this.disposed = true;
+            }
         }
 
         private byte[] BuildDigitalInputsMessage(InverterMessage currentMessage)
@@ -491,7 +491,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private async Task<int> ParseWriteMessage(byte[] messageBytes, CancellationToken cancellationToken)
         {
-
             var message = InverterMessage.FromBytes(messageBytes);
 
             lock (this.lastWriteMessage)
