@@ -647,18 +647,21 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsFault = true;
             }
-            else if ((inverter.ControlWord & 0x0080) > 0)   // Reset fault
+            else if ((inverter.ControlWord & 0x0080) > 0)   // Reset Fault
             {
                 inverter.IsFault = false;
                 this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = false;
             }
 
-            // Switch On
-            inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
-            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
+            if (!inverter.IsFault)
+            {
+                // Switch On
+                inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
+                inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
 
-            // Enable Voltage
-            inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;
+                // Enable Voltage
+                inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;
+            }
 
             // Quick Stop
             inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;

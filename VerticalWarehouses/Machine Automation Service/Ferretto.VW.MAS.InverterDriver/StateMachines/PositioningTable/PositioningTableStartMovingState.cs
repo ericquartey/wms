@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-                this.axisPositionUpdateTimer.Change(500, 500);
+                this.axisPositionUpdateTimer.Change(250, 250);
             }
             else
             {
