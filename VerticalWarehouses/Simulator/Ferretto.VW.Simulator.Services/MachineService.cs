@@ -698,14 +698,17 @@ namespace Ferretto.VW.Simulator.Services
             }
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value && this.remoteIOs.All(x => x.Inputs[(int)IoPorts.MushroomEmergency].Value))
             {
-                // Set run status
-                this.remoteIOs
-                     .Single(io => io.Id == 0)
-                     .Inputs[(int)IoPorts.NormalState]
-                     .Value = true;
+                if (!this.Inverters.Any(x => x.IsFault))
+                {
+                    // Set run status
+                    this.remoteIOs
+                         .Single(io => io.Id == 0)
+                         .Inputs[(int)IoPorts.NormalState]
+                         .Value = true;
 
-                // Power up inverters
-                this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
+                    // Power up inverters
+                    this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
+                }
             }
             foreach (var inverter in this.Inverters)
             {
