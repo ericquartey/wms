@@ -1103,7 +1103,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 var encodedWord = encodedValues[inverterIndex / 2];
 
-                if (!encodedWord.Equals("\0"))
+                if (!encodedWord.Equals("\0", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (int.TryParse(encodedWord, out var values))
                     {

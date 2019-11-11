@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+            var inverterIndex = this.InverterStatus.SystemIndex;
 
             var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
             var notificationMessage = new FieldNotificationMessage(
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOn,
                 MessageStatus.OperationStart,
-                this.InverterStatus.SystemIndex);
+                inverterIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

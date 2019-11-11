@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
             if (b == null)
             {
-                throw new ArgumentNullException("b");
+                throw new ArgumentNullException(nameof(b));
             }
 
             var c = new byte[a.Length + bytesRead];

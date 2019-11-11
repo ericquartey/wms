@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -13,8 +14,6 @@ namespace Ferretto.VW.MAS.IODriver
         private const int N_CONFIG_BYTES = 8;
 
         private const int NBYTES = 12;
-
-        private const byte RELEASE_PROTOCOL_01 = 0x01;
 
         private const int TotalInputs = 16;
 
@@ -207,7 +206,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.inputs = new bool[TotalInputs];
             this.outputs = new bool[TotalOutputs];
 
-            if (ipAddress != string.Empty)
+            if (!string.IsNullOrEmpty(ipAddress))
             {
                 var address = IPAddress.Parse(ipAddress);
                 var bytes = address.GetAddressBytes();
@@ -347,10 +346,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchCradleMotor(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
+            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             if (switchOn)
             {
@@ -371,10 +367,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchElevatorMotor(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
+            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             if (switchOn)
             {
@@ -395,10 +388,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchResetSecurity(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
+            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             this.outputs[(int)IoPorts.ResetSecurity] = switchOn;
 

@@ -9,16 +9,6 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private const byte RELEASE_FW_10 = 0x10;
-
-        private const byte RELEASE_FW_11 = 0x11;
-
-        private const int TOTAL_DATA_BYTES = 17;
-
-        private const int TOTAL_INPUTS = 16;
-
-        private const int TOTAL_OUTPUTS = 8;
-
         private readonly byte[] data;
 
         private readonly ShdFormatDataOperation formatDataOperation;
