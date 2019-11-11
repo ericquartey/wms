@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Controls.Controls.Keyboards
@@ -22,6 +23,8 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         private bool isClosed;
 
         private ICommand minPlusCommand;
+
+        private bool morePressKey;
 
         private string previousScreenText;
 
@@ -83,7 +86,7 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         public string ScreenText
         {
             get => this.screenText;
-            set => this.SetProperty(ref this.screenText, value);
+            set => this.SetProperty(ref this.screenText, value, this.OnScreenTextPropertyChanged);
         }
 
         public string Title
@@ -96,6 +99,13 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         #region Methods
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.morePressKey = false;
+        }
+
         public void Update(string title, string value)
         {
             this.Title = title;
@@ -107,13 +117,27 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         {
             if (!string.IsNullOrEmpty(this.ScreenText))
             {
-                this.ScreenText = this.ScreenText.Substring(0, this.ScreenText.Length - 1);
+                if (this.morePressKey)
+                {
+                    this.ScreenText = this.ScreenText.Substring(0, this.ScreenText.Length - 1);
+                }
+                else
+                {
+                    this.ScreenText = string.Empty;
+                }
             }
         }
 
         private void KeysCommandExecute(string key)
         {
-            this.ScreenText += key;
+            if (this.morePressKey)
+            {
+                this.ScreenText += key;
+            }
+            else
+            {
+                this.ScreenText = key;
+            }
         }
 
         private void MinPlusCommandExecute()
@@ -127,6 +151,11 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
             {
                 this.ScreenText = "-" + v;
             }
+        }
+
+        private void OnScreenTextPropertyChanged()
+        {
+            this.morePressKey = true;
         }
 
         #endregion
