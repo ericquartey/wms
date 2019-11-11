@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
 
             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+            var inverterIndex = this.InverterStatus.SystemIndex;
 
             var notificationMessage = new FieldNotificationMessage(
                 null,
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterStop,
                 MessageStatus.OperationStart,
-                this.InverterStatus.SystemIndex);
+                inverterIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 

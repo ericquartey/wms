@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Diagnostics
     {
         #region Fields
 
-        public static Dictionary<int, string> Errors = new Dictionary<int, string>()
+        private static readonly Dictionary<int, string> Errors = new Dictionary<int, string>()
         {
             { 0, "No fault" },
             // Overload

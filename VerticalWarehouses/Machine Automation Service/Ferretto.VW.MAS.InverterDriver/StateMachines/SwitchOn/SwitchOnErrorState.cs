@@ -36,17 +36,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         public override void Start()
         {
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+            var inverterIndex = this.InverterStatus.SystemIndex;
 
             var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,
-                "Inverter Switch On on axis {this.axisToSwitchOn} Error",
+                $"Inverter Switch On on axis {this.axisToSwitchOn} Error",
                 FieldMessageActor.Any,
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOn,
                 MessageStatus.OperationError,
-                this.InverterStatus.SystemIndex,
+                inverterIndex,
                 ErrorLevel.Error);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
