@@ -39,11 +39,11 @@
         "Number": 1,
         "Positions": [
           {
-            "Height": 645,
+            "Height": 350,
             "Location": "InternalBay1Down"
           },
           {
-            "Height": 1143,
+            "Height": 746,
             "Location": "InternalBay1Up"
           }
         ],
@@ -119,8 +119,9 @@
             "Speed": 550
           },
           "WeightMeasurement": {
-            "MeasureMultiply": 121.46,
-            "MeasureSum": -746.12,
+            "MeasureConst0": -1016.5,
+            "MeasureConst1": 250.87,
+            "MeasureConst2": -4.9791,
             "MeasureSpeed": 20,
             "MeasureTime": 15
           }

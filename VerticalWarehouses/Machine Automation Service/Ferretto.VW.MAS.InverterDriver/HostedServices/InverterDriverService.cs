@@ -128,6 +128,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             if (disposing)
             {
+                this.inverterCommandQueue?.Dispose();
+
+                this.heartbeatQueue?.Dispose();
+
                 this.sensorStatusUpdateTimer?.Dispose();
 
                 foreach (var timer in this.axisPositionUpdateTimer)

@@ -46,6 +46,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             return this.dataContext.Cells
                        .Include(c => c.LoadingUnit)
+                       .Include(c => c.Panel)
                        .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
         }
 
