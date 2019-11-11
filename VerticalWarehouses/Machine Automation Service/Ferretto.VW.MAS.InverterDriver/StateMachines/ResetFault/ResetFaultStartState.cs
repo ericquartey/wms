@@ -39,6 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Reset Fault Start Inverter {this.inverterIndex}");
             this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.FaultReset = true;
 
@@ -103,8 +104,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
                 {
                     this.ParentStateMachine.ChangeState(new ResetFaultEndState(this.ParentStateMachine, this.InverterStatus, this.inverterIndex, this.Logger));
                 }
-                else if (!this.InverterStatus.CommonStatusWord.IsFault ||
-                    DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000
+                else if (!this.InverterStatus.CommonStatusWord.IsFault
+                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000
                     )
                 {
                     if (this.InverterStatus.CommonStatusWord.IsFault)
