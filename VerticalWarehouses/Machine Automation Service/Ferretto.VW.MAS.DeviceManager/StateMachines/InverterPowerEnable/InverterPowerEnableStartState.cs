@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start with requested state: {this.machineData.Enable}");
+            this.Logger.LogDebug($"Start with requested state: {this.machineData.Enable} Bay: {this.machineData.TargetBay}");
 
             var commandMessage = new FieldCommandMessage(
                 null,
