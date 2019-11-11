@@ -176,6 +176,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             var position = elevatorProvider.VerticalPosition;
 
             var cell = cellProvider.GetCellByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
+            if (cell == null)
+            {
+                bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
+            }
 
             currentLoadingUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
 
@@ -187,8 +191,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else
                 {
-                    bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
-
                     currentLoadingUnit = bayProvider.GetLoadingUnitByDestination(bayLocation);
                 }
             }

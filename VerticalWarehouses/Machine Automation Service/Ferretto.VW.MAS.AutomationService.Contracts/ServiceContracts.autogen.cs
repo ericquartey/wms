@@ -1770,14 +1770,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class WeightMeasurement : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("measureMultiply", Required = Newtonsoft.Json.Required.Always)]
-        public double MeasureMultiply { get; set; }
+        [Newtonsoft.Json.JsonProperty("measureConst0", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst0 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureConst1", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureConst2", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst2 { get; set; }
     
         [Newtonsoft.Json.JsonProperty("measureSpeed", Required = Newtonsoft.Json.Required.Always)]
         public double MeasureSpeed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("measureSum", Required = Newtonsoft.Json.Required.Always)]
-        public double MeasureSum { get; set; }
     
         [Newtonsoft.Json.JsonProperty("measureTime", Required = Newtonsoft.Json.Required.Always)]
         public int MeasureTime { get; set; }
