@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private bool isMachinePoweredOn;
 
-        private bool isStatusUnknown;
+        private bool isUnknownState;
 
         #endregion
 
@@ -62,13 +62,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsBusy
         {
             get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.isBusy, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachinePoweredOn
@@ -77,16 +71,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachinePoweredOn, value);
         }
 
-        public bool IsStatusUnknown
+        public bool IsUnknownState
         {
-            get => this.isStatusUnknown;
-            set
-            {
-                if (this.SetProperty(ref this.isStatusUnknown, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            get => this.isUnknownState;
+            set => this.SetProperty(ref this.isUnknownState, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
@@ -120,7 +108,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             return
                 !this.isBusy
                 &&
-                !this.IsStatusUnknown;
+                !this.isUnknownState;
         }
 
         private void Dispose(bool disposing)
@@ -141,7 +129,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            this.IsStatusUnknown =
+            this.IsUnknownState =
                 e.HealthStatus != HealthStatus.Healthy
                 &&
                 e.HealthStatus != HealthStatus.Degraded;
