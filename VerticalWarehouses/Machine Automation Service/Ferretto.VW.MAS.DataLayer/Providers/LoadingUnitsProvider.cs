@@ -125,25 +125,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
         {
-            if (loadingUnitGrossWeight < MinimumLoadOnBoard)
-            {
-                throw new ArgumentOutOfRangeException(
-                    $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
-            }
-
             lock (this.dataContext)
             {
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.StructuralProperties)
+                    .Single();
+
+                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevator.StructuralProperties.ElevatorWeight)
+                {
+                    throw new ArgumentOutOfRangeException(
+                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
+                }
+
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevator.StructuralProperties.ElevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
                         $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
                 }
 
-                loadingUnit.GrossWeight = loadingUnitGrossWeight;
+                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevator.StructuralProperties.ElevatorWeight;
 
                 this.dataContext.SaveChanges();
             }
