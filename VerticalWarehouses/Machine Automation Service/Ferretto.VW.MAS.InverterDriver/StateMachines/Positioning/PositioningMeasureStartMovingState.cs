@@ -87,9 +87,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
-                this.data.MeasuredWeight = (message.UShortPayload * this.verticalParams.WeightMeasurement.MeasureMultiply / 10.0) + this.verticalParams.WeightMeasurement.MeasureSum;
+                var current = message.UShortPayload / 10.0;
+                this.data.MeasuredWeight = (current * current * this.verticalParams.WeightMeasurement.MeasureConst2)
+                    + (current * this.verticalParams.WeightMeasurement.MeasureConst1)
+                    + this.verticalParams.WeightMeasurement.MeasureConst0;
 
-                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {message.UShortPayload / 10.0}. kMul {this.verticalParams.WeightMeasurement.MeasureMultiply}. kSum {this.verticalParams.WeightMeasurement.MeasureSum}");
+                this.Logger.LogInformation($"Weight measured {this.data.MeasuredWeight}. Current {current}. k2 {this.verticalParams.WeightMeasurement.MeasureConst2}. k1 {this.verticalParams.WeightMeasurement.MeasureConst1}. k0 {this.verticalParams.WeightMeasurement.MeasureConst0}");
                 this.data.IsWeightMeasureDone = true;
 
                 if (this.data.LoadingUnitId.HasValue)
