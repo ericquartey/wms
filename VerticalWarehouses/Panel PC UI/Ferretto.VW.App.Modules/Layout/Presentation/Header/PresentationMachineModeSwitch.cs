@@ -98,33 +98,13 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         private HealthStatus HealthStatus
         {
             get => this.healthStatus;
-            set
-            {
-                if (this.SetProperty(ref this.healthStatus, value))
-                {
-                    this.IsUnknownState =
-                        this.HealthStatus != HealthStatus.Healthy
-                        &&
-                        this.HealthStatus != HealthStatus.Degraded;
-                }
-            }
+            set => this.SetProperty(ref this.healthStatus, value, this.OnHealthStatusPropertyChanged);
         }
 
         private MachineMode MachineMode
         {
             get => this.machineMode;
-            set
-            {
-                if (this.SetProperty(ref this.machineMode, value))
-                {
-                    this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
-
-                    this.IsBusy =
-                        this.MachineMode is MachineMode.SwitchingToAutomatic
-                        ||
-                        this.MachineMode is MachineMode.SwitchingToManual;
-                }
-            }
+            set => this.SetProperty(ref this.machineMode, value, this.OnMachineModePropertyChanged);
         }
 
         private MachinePowerState MachinePowerState
@@ -197,9 +177,27 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.HealthStatus = e.HealthStatus;
         }
 
+        private void OnHealthStatusPropertyChanged()
+        {
+            this.IsUnknownState =
+                this.HealthStatus != HealthStatus.Healthy
+                &&
+                this.HealthStatus != HealthStatus.Degraded;
+        }
+
         private void OnMachineModeChanged(MachineModeChangedEventArgs e)
         {
             this.MachineMode = e.MachineMode;
+        }
+
+        private void OnMachineModePropertyChanged()
+        {
+            this.IsMachineInAutomaticMode = this.MachineMode is MachineMode.Automatic;
+
+            this.IsBusy =
+                this.MachineMode is MachineMode.SwitchingToAutomatic
+                ||
+                this.MachineMode is MachineMode.SwitchingToManual;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)

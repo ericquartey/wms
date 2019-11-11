@@ -43,29 +43,15 @@ namespace Ferretto.VW.App.Services
             string readyHealthCheckPath,
             IEventAggregator eventAggregator)
         {
-            if (baseAddress is null)
-            {
-                throw new ArgumentNullException(nameof(baseAddress));
-            }
-
-            if (string.IsNullOrEmpty(liveHealthCheckPath))
-            {
-                throw new ArgumentException(ErrorMessage, nameof(liveHealthCheckPath));
-            }
-
-            if (string.IsNullOrEmpty(readyHealthCheckPath))
-            {
-                throw new ArgumentException(ErrorMessage, nameof(readyHealthCheckPath));
-            }
+            this.baseAddress = baseAddress ?? throw new ArgumentNullException(nameof(baseAddress));
+            this.liveHealthCheckPath = liveHealthCheckPath ?? throw new ArgumentNullException(nameof(liveHealthCheckPath));
+            this.readyHealthCheckPath = readyHealthCheckPath ?? throw new ArgumentNullException(nameof(readyHealthCheckPath));
 
             if (eventAggregator is null)
             {
                 throw new System.ArgumentNullException(nameof(eventAggregator));
             }
 
-            this.baseAddress = baseAddress;
-            this.liveHealthCheckPath = liveHealthCheckPath;
-            this.readyHealthCheckPath = readyHealthCheckPath;
             this.healthStatusChangedEvent = eventAggregator.GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>();
             this.logger = NLog.LogManager.GetCurrentClassLogger();
 
