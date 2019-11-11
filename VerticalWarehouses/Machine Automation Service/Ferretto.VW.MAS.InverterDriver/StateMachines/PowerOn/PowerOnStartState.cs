@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -12,6 +13,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 {
     internal class PowerOnStartState : InverterStateBase
     {
+        #region Fields
+
+        private DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public PowerOnStartState(
@@ -29,6 +36,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Power On Start Inverter {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.EnableVoltage = true;
             this.InverterStatus.CommonControlWord.QuickStop = true;
 
@@ -85,14 +94,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             else
             {
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
-
                 if (this.InverterStatus.CommonStatusWord.IsVoltageEnabled &
                     this.InverterStatus.CommonStatusWord.IsQuickStopTrue &
-                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn)
+                    this.InverterStatus.CommonStatusWord.IsReadyToSwitchOn
+                    )
                 {
                     this.ParentStateMachine.ChangeState(
                         new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     responseReceived = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:PowerOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(
+                        new PowerOnErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
             return responseReceived;
