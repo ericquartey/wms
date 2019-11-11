@@ -67,10 +67,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                            //if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService)
-                            //{
-                            //    this.UpdateLoadingUnitLocation();
-                            //}
+                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService)
+                            {
+                                this.UpdateLoadingUnitLocation();
+                            }
 
                             break;
 
@@ -118,10 +118,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
 
-                //if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                //{
-                //    this.UpdateLoadingUnitLocation();
-                //}
+                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                {
+                    this.UpdateLoadingUnitLocation();
+                }
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
