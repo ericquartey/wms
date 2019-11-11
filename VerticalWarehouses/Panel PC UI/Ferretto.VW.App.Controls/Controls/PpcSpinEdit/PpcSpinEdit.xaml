@@ -29,7 +29,8 @@
                     <dxe:EditorControl x:Name="PART_Content"
                                        Grid.Column="2"
                                        VerticalAlignment="Stretch"
-                                       MouseDoubleClick="OnMouseDoubleClickHandler"
+                                       MouseDoubleClick="OnKeyboardOpenHandler"
+                                       TouchEnter="OnKeyboardOpenHandler"
                                        Template="{TemplateBinding ActualEditorControlTemplate}" />
                     <dxe:ButtonsControl x:Name="PART_RightButtons"
                                         Grid.Column="3"
