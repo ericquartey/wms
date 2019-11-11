@@ -118,7 +118,7 @@ namespace Ferretto.VW.MAS.IODriver
 
             if (outputsState.Length != this.outputs.Length)
             {
-                throw new ArgumentException();
+                throw new ArgumentException($"{nameof(outputsState)} length should match {this.outputs} length", nameof(outputsState));
             }
 
             for (var index = 0; index < this.outputs.Length; index++)
