@@ -11,6 +11,8 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -20,17 +22,22 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private static readonly MemoryCacheEntryOptions CacheOptions = new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromMinutes(1));
-
         private readonly IMemoryCache cache;
+
+        private readonly MemoryCacheEntryOptions cacheOptions;
 
         private readonly DataLayerContext dataContext;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        /// <summary>
+        /// TODO move to configuration
+        /// </summary>
         private readonly double kMul = 0.090625;
 
+        /// <summary>
+        /// TODO move to configuration
+        /// </summary>
         private readonly double kSum = -181.25;
 
         private readonly IMachineProvider machineProvider;
@@ -45,6 +52,7 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
+            IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
             IMemoryCache memoryCache)
             : base(eventAggregator)
@@ -55,6 +63,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -370,7 +379,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new EntityNotFoundException(string.Empty);
                     }
 
-                    this.cache.Set(cacheKey, cacheEntry, CacheOptions);
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
                 }
 
                 return cacheEntry;

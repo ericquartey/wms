@@ -140,7 +140,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void Stop(StopRequestReason reason)
         {
-            this.Logger.LogDebug("1:Stop Method Empty");
+            this.Logger.LogDebug("Retry Stop Command");
+            this.Start();
         }
 
         protected void Dispose(bool disposing)

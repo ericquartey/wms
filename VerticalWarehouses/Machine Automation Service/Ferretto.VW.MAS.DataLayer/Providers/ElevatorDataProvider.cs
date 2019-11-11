@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -11,10 +12,9 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private static readonly MemoryCacheEntryOptions CacheOptions = new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromMinutes(1));
-
         private readonly IMemoryCache cache;
+
+        private readonly MemoryCacheEntryOptions cacheOptions;
 
         private readonly DataLayerContext dataContext;
 
@@ -29,6 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public ElevatorDataProvider(
             DataLayerContext dataContext,
             IMemoryCache memoryCache,
+            IConfiguration configuration,
             IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
@@ -36,6 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -80,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new EntityNotFoundException(orientation.ToString());
                     }
 
-                    this.cache.Set(cacheKey, cacheEntry, CacheOptions);
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
                 }
 
                 return cacheEntry;
