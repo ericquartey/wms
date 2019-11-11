@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
         public void Dispose()
         {
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public virtual void EndMachine()
