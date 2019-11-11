@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -260,10 +261,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchResetSecurity(bool switchOn)
         {
-            if (this.outputs == null)
-            {
-                throw new ArgumentNullException(nameof(this.Outputs), "Message Digital Outputs are not initialized correctly");
-            }
+            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             this.outputs[(int)IoPorts.ResetSecurity] = switchOn;
 
