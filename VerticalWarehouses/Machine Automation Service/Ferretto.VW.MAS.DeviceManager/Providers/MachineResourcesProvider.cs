@@ -212,6 +212,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     returnValue = this.IsDrawerInBay3Top;
                     break;
 
+                case LoadingUnitLocation.Elevator:
+                    returnValue = this.IsDrawerCompletelyOnCradle;
+                    break;
+
                 // If location can't be idientifies simply become a "no operation" function
                 default:
                     returnValue = true;

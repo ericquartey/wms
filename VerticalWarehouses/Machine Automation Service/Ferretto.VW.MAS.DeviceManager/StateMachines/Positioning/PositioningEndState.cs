@@ -211,7 +211,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             cellProvider.UnloadLoadingUnit(cell.Id);
                         }
-                        else
+                        else if (bayLocation != LoadingUnitLocation.NoLocation)
                         {
                             bayProvider.UnloadLoadingUnit(bayLocation);
                         }
@@ -224,7 +224,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             cellProvider.LoadLoadingUnit(currentLoadingUnit.Id, cell.Id);
                         }
-                        else
+                        else if (bayLocation != LoadingUnitLocation.NoLocation)
                         {
                             bayProvider.LoadLoadingUnit(currentLoadingUnit.Id, bayLocation);
                         }
