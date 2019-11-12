@@ -47,7 +47,7 @@
         <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding SelectedCell.Position}"
+                                 ContentText="{Binding SelectedCell.Position, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
         <controls:PpcLabeledText Grid.Row="4"
