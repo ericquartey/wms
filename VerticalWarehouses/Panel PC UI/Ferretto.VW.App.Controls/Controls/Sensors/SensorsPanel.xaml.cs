@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Controls
 
         private void SensorsPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.sensorsService.RefreshAsync();
+            this.sensorsService.RefreshAsync(true);
         }
 
         #endregion
