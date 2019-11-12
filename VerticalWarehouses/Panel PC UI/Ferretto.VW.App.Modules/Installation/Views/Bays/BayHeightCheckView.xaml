@@ -30,7 +30,7 @@
                    Text="{x:Static res:InstallationApp.BayHeightCheck}" />
 
         <controls:PpcLabeledText Grid.Row="1"
-                                 ContentText="{Binding PositionHeight}"
+                                 ContentText="{Binding PositionHeight, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.BayHeight}" />
 
         <StackPanel Grid.Row="1"
