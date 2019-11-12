@@ -427,6 +427,15 @@ namespace Ferretto.VW.App.Services
 
                         break;
                     }
+                case MessageStatus.OperationEnd:
+                    {
+                        if (message.Data.AxisMovement == Axis.Horizontal)
+                        {
+                            this.GetElevatorAsync().Wait();
+                        }
+
+                        break;
+                    }
                 default:
                     {
                         this.RaisePropertyChanged();
