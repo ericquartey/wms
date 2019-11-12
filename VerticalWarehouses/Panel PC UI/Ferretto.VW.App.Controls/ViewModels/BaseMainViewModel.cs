@@ -225,10 +225,6 @@ namespace Ferretto.VW.App.Controls
 
         private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode, HealthStatus healthStatus)
         {
-            //e.HealthStatus != HealthStatus.Healthy
-            //&&
-            //e.HealthStatus != HealthStatus.Degraded;
-
             var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
 
             var enableIfAutomatic = (this.EnableMask & EnableMask.MachineAutomaticMode) == EnableMask.MachineAutomaticMode;
@@ -237,11 +233,18 @@ namespace Ferretto.VW.App.Controls
 
             this.IsEnabled =
                 this.EnableMask == EnableMask.Any ||
+                //
                 (enabeIfPoweredOn &&
                  machinePower == MachinePowerState.Powered &&
                  healthStatus == HealthStatus.Healthy) ||
-                (enableIfAutomatic && machineMode == MachineMode.Automatic) ||
-                (enableIfManual && machineMode == MachineMode.Manual);
+                //
+                (enableIfAutomatic &&
+                 machinePower == MachinePowerState.Powered &&
+                 machineMode == MachineMode.Automatic) ||
+                //
+                (enableIfManual &&
+                 machinePower == MachinePowerState.Powered &&
+                 machineMode == MachineMode.Manual);
         }
 
         private void UpdatePresentation()
