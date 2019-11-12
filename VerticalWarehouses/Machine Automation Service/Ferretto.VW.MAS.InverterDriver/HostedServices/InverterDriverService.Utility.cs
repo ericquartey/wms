@@ -332,6 +332,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.forceStatusPublish = false;
                     }
+                    currentStateMachine?.ValidateCommandResponse(message);
                 }
             }
             else if (message.ParameterId == InverterParameterId.TorqueCurrent)
