@@ -27,8 +27,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingUp;
 
-        private int? lastCellId;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
@@ -179,13 +177,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cell = cell;
             }
 
-            if (!this.lastCellId.HasValue
-                ||
-                this.lastCellId.Value != this.cell.Id)
-            {
-                this.lastCellId = this.cell.Id;
-                this.InitialPosition = this.CurrentPosition;
-            }
+            this.InitialPosition = this.CurrentPosition;
 
             this.InputStepValue = this.ProcedureParameters.Step;
         }
