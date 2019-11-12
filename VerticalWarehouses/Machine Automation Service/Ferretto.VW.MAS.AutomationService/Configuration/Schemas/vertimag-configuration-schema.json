@@ -544,6 +544,7 @@
               "required": [
                 "BeltRigidity",
                 "BeltSpacing",
+                "ElevatorWeight",
                 "HalfShaftLength",
                 "PulleyDiameter",
                 "ShaftDiameter",
@@ -560,6 +561,12 @@
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/BeltSpacing",
                   "type": "integer",
                   "title": "The Beltspacing Schema",
+                  "default": 0
+                },
+                "ElevatorWeight": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ElevatorWeight",
+                  "type": "integer",
+                  "title": "The Elevatorweight Schema",
                   "default": 0
                 },
                 "HalfShaftLength": {

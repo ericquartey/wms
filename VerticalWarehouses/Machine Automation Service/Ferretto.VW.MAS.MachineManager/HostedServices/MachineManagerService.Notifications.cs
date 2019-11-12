@@ -70,7 +70,6 @@ namespace Ferretto.VW.MAS.MachineManager
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    // TODO Handle state change while starting / stopping machine
                     if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged

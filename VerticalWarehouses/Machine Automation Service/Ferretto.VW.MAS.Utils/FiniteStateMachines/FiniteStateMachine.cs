@@ -217,6 +217,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                 this.ActiveState = this.GetState<TStartState>();
             }
+            else
+            {
+                var eventArgs = new FiniteStateMachinesEventArgs
+                {
+                    InstanceId = this.InstanceId,
+                };
+                this.RaiseCompleted(eventArgs);
+            }
         }
 
         public void Stop(StopRequestReason reason)
