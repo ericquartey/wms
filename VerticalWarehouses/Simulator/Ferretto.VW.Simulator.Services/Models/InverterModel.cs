@@ -258,7 +258,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         private const int LOWER_SPEED_Y_AXIS = 17928;
 
-        private readonly Dictionary<Axis, int> axisPosition;
+        private readonly Dictionary<Axis, double> axisPosition;
 
         private readonly Timer homingTimer;
 
@@ -337,15 +337,15 @@ namespace Ferretto.VW.Simulator.Services.Models
 
             this.currentAxis = Axis.Horizontal;
 
-            this.axisPosition = new Dictionary<Axis, int>();
+            this.axisPosition = new Dictionary<Axis, double>();
             this.axisPosition.Add(Axis.Horizontal, 0);
             this.axisPosition.Add(Axis.Vertical, 0);
 
-            this.TargetPosition = new Dictionary<Axis, int>();
+            this.TargetPosition = new Dictionary<Axis, double>();
             this.TargetPosition.Add(Axis.Horizontal, 0);
             this.TargetPosition.Add(Axis.Vertical, 0);
 
-            this.StartPosition = new Dictionary<Axis, int>();
+            this.StartPosition = new Dictionary<Axis, double>();
             this.StartPosition.Add(Axis.Horizontal, 0);
             this.StartPosition.Add(Axis.Vertical, 0);
 
@@ -361,16 +361,16 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.TargetSpeed.Add(Axis.Horizontal, 0);
             this.TargetSpeed.Add(Axis.Vertical, 0);
 
-            this.SwitchPositions = new Dictionary<Axis, int[]>();
-            this.SwitchPositions.Add(Axis.Horizontal, new int[5]);
-            this.SwitchPositions.Add(Axis.Vertical, new int[5]);
+            this.SwitchPositions = new Dictionary<Axis, double[]>();
+            this.SwitchPositions.Add(Axis.Horizontal, new double[5]);
+            this.SwitchPositions.Add(Axis.Vertical, new double[5]);
         }
 
         #endregion
 
         #region Properties
 
-        public int AxisPosition
+        public double AxisPosition
         {
             get => this.axisPosition[this.IsHorizontalAxis ? Axis.Horizontal : Axis.Vertical];
             set
@@ -389,9 +389,9 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
+        public double AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
 
-        public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
+        public double AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
 
         public List<InverterBlockDefinition> BlockDefinitions { get; set; }
 
@@ -574,7 +574,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public int SpeedRate { get; set; }
 
-        public Dictionary<Axis, int> StartPosition { get; set; }
+        public Dictionary<Axis, double> StartPosition { get; set; }
 
         public int StatusWord
         {
@@ -591,7 +591,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                                               select new { Value = binary[x] == '1' ? true : false, Description = (15 - x).ToString(), Index = (15 - x) })
                                                .Select(x => new BitModel(x.Index.ToString("00"), x.Value, GetStatusWordSignalDescription(this.OperationMode, x.Index))).Reverse().ToArray();
 
-        public Dictionary<Axis, int[]> SwitchPositions { get; set; }
+        public Dictionary<Axis, double[]> SwitchPositions { get; set; }
 
         public int TableIndex { get; set; }
 
@@ -599,7 +599,7 @@ namespace Ferretto.VW.Simulator.Services.Models
 
         public Dictionary<Axis, int> TargetDeceleration { get; set; }
 
-        public Dictionary<Axis, int> TargetPosition { get; set; }
+        public Dictionary<Axis, double> TargetPosition { get; set; }
 
         public int TargetShutterPosition { get; set; }
 
@@ -727,16 +727,22 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
+            var increment = 1d;
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
+            {
+                increment = 0.1;
+            }
+
             if (this.AxisPosition < this.TargetPosition[this.currentAxis])
             {
-                this.AxisPosition++;
+                this.AxisPosition += increment;
             }
             else if (this.AxisPosition > this.TargetPosition[this.currentAxis])
             {
-                this.AxisPosition--;
+                this.AxisPosition -= increment;
             }
 
-            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) == 0)
+            if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 0.1)
             {
                 this.StatusWord |= 0x1000;          // Set TargetReached
                 if (this.currentAxis == Axis.Horizontal)
@@ -760,14 +766,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             }
         }
 
-        public int Impulses2millimeters(int value)
+        public double Impulses2millimeters(int value)
         {
-            return (int)(value / this.IMPULSES_ENCODER_PER_ROUND);
+            return value / this.IMPULSES_ENCODER_PER_ROUND;
         }
 
-        public int Millimeters2Impulses(int value)
+        public int Millimeters2Impulses(double value)
         {
-            return (int)(value * this.IMPULSES_ENCODER_PER_ROUND);
+            return (int)Math.Round(value * this.IMPULSES_ENCODER_PER_ROUND);
         }
 
         public BitModel[] RefreshControlWordArray()
@@ -1015,12 +1021,17 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 target += this.StartPosition[this.currentAxis];
             }
-            var increment = 1;
+            double increment = 1;
             if (this.TargetSpeed[this.currentAxis] >= LOWER_SPEED_Y_AXIS &&
                 Math.Abs(target - this.AxisPosition) > (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10)
             {
                 increment = (this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS) * 10;
             }
+            else if (Math.Abs(target - this.AxisPosition) < 1)
+            {
+                increment = 0.1;
+            }
+
             if (target > this.AxisPosition)
             {
                 this.AxisPosition += increment;
@@ -1148,7 +1159,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 }
             }
 
-            if (Math.Abs(target - this.AxisPosition) <= this.TargetSpeed[this.currentAxis] / LOWER_SPEED_Y_AXIS)
+            if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
                 this.AxisPosition = target;
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
