@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
+        ///   Looks up a localized string similar to Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string ConditionsNotMetForRunning {
             get {
@@ -385,7 +385,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
+        ///   Looks up a localized string similar to Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi..
         /// </summary>
         public static string SecurityWasTriggered {
             get {

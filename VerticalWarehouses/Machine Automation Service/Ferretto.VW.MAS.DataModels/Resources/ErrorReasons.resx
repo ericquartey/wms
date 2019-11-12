@@ -121,7 +121,7 @@
     <value>Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+    <value>Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
     <value>Il cassetto potrebbe essersi incastrato.</value>
@@ -184,7 +184,7 @@
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
+    <value>Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.</value>
   </data>
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
