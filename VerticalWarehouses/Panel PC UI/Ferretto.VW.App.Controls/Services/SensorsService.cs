@@ -269,13 +269,13 @@ namespace Ferretto.VW.App.Services
 
                 await this.GetBayAsync();
 
-                await this.GetElevatorAsync();
-
                 this.GetShutter();
 
                 await this.CheckZeroChainOnBays();
 
                 await this.InitializeSensors();
+
+                await this.GetElevatorAsync();
             }
             catch (Exception ex)
             {
@@ -386,11 +386,9 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnElevatorPositionChanged,
+                        async (m) => await this.OnElevatorPositionChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
-
-            this.RefreshAsync();
         }
 
         private async Task InitializeSensors()
@@ -406,7 +404,7 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged();
         }
 
-        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        private async Task OnElevatorPositionChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
             {
@@ -431,7 +429,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (message.Data.AxisMovement == Axis.Horizontal)
                         {
-                            this.GetElevatorAsync();
+                            await this.GetElevatorAsync();
                         }
 
                         break;

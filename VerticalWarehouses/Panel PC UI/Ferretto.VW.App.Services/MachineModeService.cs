@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -74,9 +75,8 @@ namespace Ferretto.VW.App.Services
                         false,
                         (m) =>
                         {
-                            //this.sensors.Update(m.Data.SensorsStates);
-                            //return m.Data.SensorsStates[] != null;
-                            return m.Data != null;
+                            return (!m.Data.SensorsStates[(int)IOMachineSensors.RunningState] && this.MachinePower == MachinePowerState.Powered) ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.RunningState] && this.MachinePower == MachinePowerState.Unpowered);
                         });
 
             this.GetMachineStatusAsync().ConfigureAwait(false);
