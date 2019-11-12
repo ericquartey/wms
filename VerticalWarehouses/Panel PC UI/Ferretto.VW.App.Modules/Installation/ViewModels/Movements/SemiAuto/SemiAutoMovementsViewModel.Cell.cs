@@ -288,8 +288,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     : this.LoadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
                 this.InputCellId = this.SelectedLoadingUnit?.CellId;
-
-                this.RaiseCanExecuteChanged();
             }
         }
 
