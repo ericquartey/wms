@@ -87,62 +87,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public int? InputCellId
         {
             get => this.inputCellId;
-            set
-            {
-                if (this.SetProperty(ref this.inputCellId, value)
-                    &&
-                    this.Cells != null)
-                {
-                    this.SelectedCell = value == null
-                        ? null
-                        : this.Cells.SingleOrDefault(c => c.Id == value);
-
-                    this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
-
-                    if (this.SelectedLoadingUnit?.CellId is null)
-                    {
-                        this.LoadingUnitInCell = null;
-                    }
-                    else
-                    {
-                        this.LoadingUnitInCell = this.SelectedLoadingUnit;
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputCellId, value, this.InputCellIdPropertyChanged);
         }
 
         public double? InputHeight
         {
             get => this.inputHeight;
-            set
-            {
-                if (this.SetProperty(ref this.inputHeight, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputHeight, value);
         }
 
         public int? InputLoadingUnitId
         {
             get => this.inputLoadingUnitId;
-            set
-            {
-                if (this.SetProperty(ref this.inputLoadingUnitId, value)
-                    &&
-                    this.LoadingUnits != null)
-                {
-                    this.SelectedLoadingUnit = value == null
-                        ? null
-                        : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
-
-                    this.InputCellId = this.SelectedLoadingUnit?.CellId;
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputLoadingUnitId, value, this.InputLoadingUnitIdPropertyChanged);
         }
 
         public bool IsElevatorMovingToCell
@@ -297,6 +254,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private void InputCellIdPropertyChanged()
+        {
+            if (this.Cells != null)
+            {
+                this.SelectedCell = this.inputCellId == null
+                    ? null
+                    : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
+
+                this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
+
+                if (this.SelectedLoadingUnit?.CellId is null)
+                {
+                    this.LoadingUnitInCell = null;
+                }
+                else
+                {
+                    this.LoadingUnitInCell = this.SelectedLoadingUnit;
+                }
+
+                this.RaiseCanExecuteChanged();
+            }
+        }
+
+        private void InputLoadingUnitIdPropertyChanged()
+        {
+            if (this.LoadingUnits != null)
+            {
+                this.SelectedLoadingUnit = this.inputLoadingUnitId == null
+                    ? null
+                    : this.LoadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+
+                this.InputCellId = this.SelectedLoadingUnit?.CellId;
+
+                this.RaiseCanExecuteChanged();
+            }
         }
 
         private async Task MoveToCellHeightAsync()

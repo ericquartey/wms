@@ -201,6 +201,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
 
                 this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.InputLoadingUnitIdPropertyChanged();
+                this.InputCellIdPropertyChanged();
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
@@ -450,11 +452,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
             this.setWeightControlCommand?.RaiseCanExecuteChanged();
-
-            var old = this.InputCellId;
-            this.InputCellId = null;
-            this.InputCellId = old;
-
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
