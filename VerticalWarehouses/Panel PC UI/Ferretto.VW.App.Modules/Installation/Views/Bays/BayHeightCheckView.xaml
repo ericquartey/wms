@@ -22,6 +22,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <TextBlock Grid.ColumnSpan="3"
@@ -63,16 +64,23 @@
                             Content="{x:Static res:InstallationApp.Stop}" />
 
         <controls:PpcLabeledText Grid.Row="3"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                 LabelText="{x:Static res:InstallationApp.InitialPosition}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="1"
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcTextBox Grid.Row="3"
+        <controls:PpcTextBox Grid.Row="4"
                              Grid.Column="1"
                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <StackPanel Grid.Row="3"
+                    Grid.RowSpan="2"
                     Grid.Column="2"
+                    VerticalAlignment="Bottom"
                     Orientation="Vertical">
             <controls:PpcButton Command="{Binding MoveUpCommand}"
                                 Content="{x:Static res:InstallationApp.Up}"
@@ -85,14 +93,14 @@
         </StackPanel>
 
 
-        <controls:PpcLabeledText Grid.Row="4"
+        <controls:PpcLabeledText Grid.Row="5"
                                  Grid.Column="1"
                                  Margin="0,30,0,0"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Displacement, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="5"
                             Grid.Column="2"
                             Margin="0,30,0,0"
                             VerticalAlignment="Top"

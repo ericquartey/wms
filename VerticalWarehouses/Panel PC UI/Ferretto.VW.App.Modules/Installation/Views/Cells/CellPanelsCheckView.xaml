@@ -9,11 +9,12 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="130,30,0,0">
+    <Grid Margin="100,30,0,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition Width="130" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
@@ -51,6 +52,7 @@
 
         <StackPanel Grid.Row="1"
                     Grid.Column="1"
+                    Grid.ColumnSpan="3"
                     Orientation="Horizontal">
 
             <controls:PpcButton Width="110"
@@ -69,7 +71,7 @@
 
 
         <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
+                                 Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPanel.Side, Converter={StaticResource EWSC}}"
@@ -100,6 +102,14 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Center"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}}"
+                                 LabelText="{x:Static res:InstallationApp.InitialPosition}" />
+
+        <controls:PpcLabeledText Grid.Row="4"
+                                 Grid.RowSpan="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Center"
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentHeight}" />
 
@@ -111,15 +121,15 @@
                             Content="{x:Static res:InstallationApp.Stop}" />
 
         <controls:PpcLabeledText Grid.Row="6"
-                                 Grid.Column="1"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Displacement}"
+                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
 
         <controls:PpcButton Grid.Row="3"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding GoToCellHeightCommand}"
@@ -127,7 +137,7 @@
                             IsBusy="{Binding IsElevatorMovingToCell}" />
 
         <controls:PpcButton Grid.Row="4"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding MoveUpCommand}"
@@ -135,7 +145,7 @@
                             IsBusy="{Binding IsElevatorMovingUp}" />
 
         <controls:PpcButton Grid.Row="5"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding MoveDownCommand}"
@@ -143,7 +153,7 @@
                             IsBusy="{Binding IsElevatorMovingDown}" />
 
         <controls:PpcButton Grid.Row="6"
-                            Grid.Column="2"
+                            Grid.Column="3"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding ApplyCorrectionCommand}"

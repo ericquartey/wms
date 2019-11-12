@@ -44,44 +44,56 @@
                                  ContentText="{Binding Cell.Id}"
                                  LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 HorizontalAlignment="Left"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
+                                 MinWidth="150"
                                  ContentText="{Binding Cell.Position, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
-        <controls:PpcLabeledText Grid.Row="4"
-                                 HorizontalAlignment="Left"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
+                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Cell.Side, Converter={StaticResource EWSC}}"
                                  LabelText="{x:Static res:InstallationApp.CellSide}" />
+        
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}}"
+                                 LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
-                                 HorizontalAlignment="Left"
+                                 MinWidth="150"
+                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CurrentPosition}" />
 
         <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Command="{Binding MoveUpCommand}"
                             Content="{x:Static res:InstallationApp.Up}"
                             IsBusy="{Binding IsElevatorMovingUp}" />
 
         <ctrls:PpcSpinEdit   Grid.Row="4"
-                             Grid.RowSpan="2"
+                             Grid.RowSpan="2"                            
+                             Grid.ColumnSpan="1"
                              Grid.Column="1"
-                             HorizontalAlignment="Left"
+                             HorizontalAlignment="Center"
                              VerticalAlignment="Center"
                              EditValue="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
         <controls:PpcButton Grid.Row="5"
                             Grid.Column="2"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Command="{Binding MoveDownCommand}"
                             Content="{x:Static res:InstallationApp.Down}"
@@ -95,14 +107,15 @@
 
         <controls:PpcLabeledText Grid.Row="6"
                                  Grid.Column="1"
-                                 HorizontalAlignment="Left"
+                                 HorizontalAlignment="Center"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Displacement}"
+                                 MinWidth="150"
+                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"
-                            HorizontalAlignment="Left"
+                            HorizontalAlignment="Center"
                             VerticalAlignment="Top"
                             Command="{Binding ApplyCorrectionCommand}"
                             Content="{x:Static res:InstallationApp.Correct}" />
