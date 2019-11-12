@@ -179,7 +179,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 mission.Dispose();
 
-                this.eventAggregator.GetEvent<NotificationEvent>().Publish(eventArgs.NotificationMessage);
+                if (eventArgs.NotificationMessage != null)
+                {
+                    this.eventAggregator.GetEvent<NotificationEvent>().Publish(eventArgs.NotificationMessage);
+                }
             }
         }
 

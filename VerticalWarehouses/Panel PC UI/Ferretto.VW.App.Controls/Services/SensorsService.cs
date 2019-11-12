@@ -431,7 +431,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (message.Data.AxisMovement == Axis.Horizontal)
                         {
-                            this.GetElevatorAsync().Wait();
+                            this.GetElevatorAsync();
                         }
 
                         break;

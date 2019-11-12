@@ -24,6 +24,11 @@
         public double BeltSpacing { get; set; }
 
         /// <summary>
+        /// Gets or sets the weight of the elevator structure in kg
+        /// </summary>
+        public double ElevatorWeight { get; set; }
+
+        /// <summary>
         /// Gets or sets the half-shaft length, in millimeters.
         /// </summary>
         public double HalfShaftLength { get; set; }

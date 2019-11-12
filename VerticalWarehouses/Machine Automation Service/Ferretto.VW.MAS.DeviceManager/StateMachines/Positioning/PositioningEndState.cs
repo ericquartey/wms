@@ -55,6 +55,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
+
+                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                            {
+                                this.UpdateLoadingUnitLocation();
+                            }
+
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
                                 this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Stopped" : "Belt Burninshing Stopped",
@@ -66,12 +72,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService)
-                            {
-                                this.UpdateLoadingUnitLocation();
-                            }
-
                             break;
 
                         case MessageStatus.OperationError:
@@ -106,6 +106,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
+                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                {
+                    this.UpdateLoadingUnitLocation();
+                }
+
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
                     this.machineData.MessageData.RequiredCycles == 0 ? "Positioning Completed" : "Belt Burninshing Completed",
@@ -117,11 +122,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
-
-                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                {
-                    this.UpdateLoadingUnitLocation();
-                }
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);

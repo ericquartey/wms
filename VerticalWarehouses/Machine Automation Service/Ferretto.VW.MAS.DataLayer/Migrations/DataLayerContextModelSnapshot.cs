@@ -226,6 +226,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("BeltSpacing");
 
+                    b.Property<double>("ElevatorWeight");
+
                     b.Property<double>("HalfShaftLength");
 
                     b.Property<double>("PulleyDiameter");
@@ -1096,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 11, 12, 8, 6, 822, DateTimeKind.Local).AddTicks(4559),
+                            InstallationDate = new DateTime(2017, 1, 11, 16, 37, 46, 861, DateTimeKind.Local).AddTicks(1102),
                             ServiceStatus = 86
                         });
                 });
