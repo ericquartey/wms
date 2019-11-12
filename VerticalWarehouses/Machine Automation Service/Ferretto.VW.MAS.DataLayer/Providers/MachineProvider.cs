@@ -1,5 +1,4 @@
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -9,8 +8,6 @@ namespace Ferretto.VW.MAS.DataLayer
     internal sealed class MachineProvider : IMachineProvider
     {
         #region Fields
-
-        private const int MaxDrawerGrossWeight = 990;
 
         private readonly IMemoryCache cache;
 
@@ -36,7 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.Machines
+                var entity =
+                this.dataContext.Machines
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.Axes)
                             .ThenInclude(a => a.EmptyLoadMovement)
@@ -45,12 +43,16 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.FullLoadMovement)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.WeightMeasurement)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
                         .ThenInclude(e => e.StructuralProperties)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Positions)
+                            .ThenInclude(b => b.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
                     .Include(m => m.Bays)
@@ -59,9 +61,20 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(b => b.IoDevice)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.Inverter)
                     .Include(m => m.Panels)
                         .ThenInclude(p => p.Cells)
                     .Single();
+
+                foreach (var axe in entity.Elevator.Axes.ToList())
+                {
+                    foreach (var profile in axe.Profiles.ToList())
+                    {
+                        profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList();
+                    }
+                }
+
+                return entity;
             }
         }
 
@@ -85,12 +98,13 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators
-                    .Include(e => e.StructuralProperties)
-                    .Single();
+                var elevatorInvertersCount = this.dataContext.ElevatorAxes
+                    .Where(a => a.Inverter != null)
+                    .Select(a => a.Inverter.Id)
+                    .Distinct()
+                    .Count();
 
-                var maximumLoadOnBoard = elevator.StructuralProperties.MaximumLoadOnBoard;
-                return maximumLoadOnBoard == MaxDrawerGrossWeight;
+                return elevatorInvertersCount > 1;
             }
         }
 
@@ -103,6 +117,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {

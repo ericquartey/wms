@@ -1,6 +1,5 @@
 using System;
 using System.Data.Common;
-using Ferretto.VW.MAS.DataLayer.Interfaces;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -8,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Sqlite.Infrastructure.Internal;
 using Microsoft.Extensions.DiagnosticAdapter;
 using Microsoft.Extensions.Logging;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     internal class CommandListener<TDbContext>
         where TDbContext : DbContext, IRedundancyDbContext<TDbContext>
@@ -36,6 +35,9 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         #endregion
 
         #region Methods
+
+#pragma warning disable IDE0060 // Remove unused parameter
+#pragma warning disable CA1801 // Remove unused parameter
 
         [DiagnosticName("Microsoft.EntityFrameworkCore.Database.Command.CommandError")]
         public void OnCommandError(
@@ -67,6 +69,8 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             bool async,
             DateTimeOffset startTime)
         {
+            this.logger.LogTrace(command.CommandText);
+
             lock (this.redundancyService)
             {
                 if (this.redundancyService.IsEnabled
@@ -92,6 +96,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
                         }
                         catch
                         {
+                            this.logger.LogWarning("Inhibiting database standby channel.");
                             this.redundancyService.InhibitStandbyDb();
                         }
 
@@ -122,16 +127,17 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
             }
         }
 
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore CA1801 // Remove unused parameter
+
         private static bool IsModifyingCommand(DbCommand command)
         {
-            var normalizedCommandText = command.CommandText.ToUpperInvariant();
-
             return
-                normalizedCommandText.Contains("UPDATE ")
+                command.CommandText.Contains("UPDATE ", StringComparison.InvariantCultureIgnoreCase)
                 ||
-                normalizedCommandText.Contains("INSERT ")
+                command.CommandText.Contains("INSERT ", StringComparison.InvariantCultureIgnoreCase)
                 ||
-                normalizedCommandText.Contains("DELETE ");
+                command.CommandText.Contains("DELETE ", StringComparison.InvariantCultureIgnoreCase);
         }
 
         private bool IsActiveDbChannel(string connectionString)

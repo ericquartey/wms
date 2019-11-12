@@ -9,13 +9,14 @@ using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoadingUnitsController : BaseAutomationController
+    public class LoadingUnitsController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -30,16 +31,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public LoadingUnitsController(
-            IEventAggregator eventAggregator,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             IMachinesDataService machinesDataService)
-            : base(eventAggregator)
         {
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -79,57 +84,66 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("statistics/space")]
-        public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync()
+        public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
+            [FromServices] IConfiguration configuration)
         {
             var statistics = this.loadingUnitsProvider.GetSpaceStatistics();
 
-            try
+            if (configuration.IsWmsEnabled())
             {
-                var machineId = 1; // TODO HACK remove this hardcoded value
-                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                try
                 {
-                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    var machineId = 1; // TODO HACK remove this hardcoded value and use machine serial number
+                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    foreach (var stat in statistics)
                     {
-                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
-                        if (loadingUnit.AreaFillRate != null)
+                        var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                        if (loadingUnit != null)
                         {
-                            stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                            stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                            if (loadingUnit.AreaFillRate != null)
+                            {
+                                stat.AreaFillPercentage = loadingUnit.AreaFillRate.Value * 100;
+                            }
                         }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                // do nothing:
-                // data from WMS will remain to its default values
+                catch (Exception)
+                {
+                    // do nothing:
+                    // data from WMS will remain to its default values
+                }
             }
 
             return this.Ok(statistics);
         }
 
         [HttpGet("statistics/weight")]
-        public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync()
+        public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync(
+            [FromServices] IConfiguration configuration)
         {
             var statistics = this.loadingUnitsProvider.GetWeightStatistics();
-            try
+
+            if (configuration.IsWmsEnabled())
             {
-                var machineId = 1; // TODO HACK remove this hardcoded value
-                var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
-                foreach (var stat in statistics)
+                try
                 {
-                    var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
-                    if (loadingUnit != null)
+                    var machineId = 1; // TODO HACK remove this hardcoded value
+                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    foreach (var stat in statistics)
                     {
-                        stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                        var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
+                        if (loadingUnit != null)
+                        {
+                            stat.CompartmentsCount = loadingUnit.CompartmentsCount;
+                        }
                     }
                 }
-            }
-            catch (Exception)
-            {
-                // do nothing:
-                // data from WMS will remain to its default values
+                catch (Exception)
+                {
+                    // do nothing:
+                    // data from WMS will remain to its default values
+                }
             }
 
             return this.Ok(statistics);
@@ -148,6 +162,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.moveLoadingUnitProvider.InsertToCell(source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
+            return this.Accepted();
+        }
+
+        [HttpPost("insert-loading-unit-db")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
+        {
+            this.loadingUnitsProvider.Insert(loadingUnitId);
             return this.Accepted();
         }
 

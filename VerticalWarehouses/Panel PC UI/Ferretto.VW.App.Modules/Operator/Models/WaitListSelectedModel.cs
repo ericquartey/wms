@@ -1,0 +1,14 @@
+﻿using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.WMS.Data.WebAPI.Contracts;
+
+namespace Ferretto.VW.App.Modules.Operator.Models
+{
+    public class WaitListSelectedModel : IWaitListSelectedModel
+    {
+        #region Properties
+
+        public ItemList SelectedList { get; set; }
+
+        #endregion
+    }
+}

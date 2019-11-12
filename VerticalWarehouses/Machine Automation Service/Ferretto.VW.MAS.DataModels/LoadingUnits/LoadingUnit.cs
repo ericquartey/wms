@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CellId { get; set; }
 
-        public string Code { get; set; }
+        public string Code => this.Id.ToString("00");
 
         public string Description { get; set; }
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.height;
             set
             {
-                if (value <= 0)
+                if (value < 0)
                 {
                     throw new System.ArgumentOutOfRangeException(nameof(value));
                 }

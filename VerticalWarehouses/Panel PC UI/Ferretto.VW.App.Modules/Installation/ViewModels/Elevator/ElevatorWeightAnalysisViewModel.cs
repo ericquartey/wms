@@ -314,8 +314,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false,
                         m => m.Data?.AxisMovement == Axis.Vertical);
 
-            this.bay = await this.bayManager.GetBayAsync();
-
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
@@ -361,7 +359,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     bayHeight,
                     this.procedureParameters.FeedRate,
-                    false);
+                    false,
+                    true);
             }
             catch (Exception ex)
             {
@@ -390,7 +389,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = false;
 
-                this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
+                if (this.measuredSamplesInCurrentSession.Any())
+                {
+                    this.AverageCurrent = this.measuredSamplesInCurrentSession.Average(s => s.Value);
+                }
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.ProcedureWasStopped,
@@ -432,6 +434,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.bay = await this.bayManager.GetBayAsync();
 
                 this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
             }

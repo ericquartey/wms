@@ -1,17 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -23,33 +24,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly Sensors sensors = new Sensors();
+        private readonly Controls.Interfaces.ISensorsService sensorsService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private Bay bay;
 
-        private bool bay1ZeroChainisVisible;
+        private bool bayIsMultiPosition;
 
-        private bool bay2ZeroChainisVisible;
-
-        private bool bay3ZeroChainisVisible;
+        private bool bayIsShutterThreeSensors;
 
         private SubscriptionToken homingToken;
 
         private int? inputLoadingUnitCode;
 
-        private bool isShutterTwoSensors;
-
         private bool isWaitingForResponse;
-
-        private bool isZeroChain;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private VerticalManualMovementsProcedure procedureParameters;
+
+        private DelegateCommand resetCommand;
 
         private SubscriptionToken sensorsToken;
 
@@ -71,6 +70,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             IMachineBaysWebService machineBaysWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
+            IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
@@ -82,32 +83,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
 
         #endregion
 
         #region Properties
 
-        public bool Bay1ZeroChainIsVisible { get => this.bay1ZeroChainisVisible; private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value); }
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
 
-        public bool Bay2ZeroChainIsVisible { get => this.bay2ZeroChainisVisible; private set => this.SetProperty(ref this.bay2ZeroChainisVisible, value); }
-
-        public bool Bay3ZeroChainIsVisible { get => this.bay3ZeroChainisVisible; private set => this.SetProperty(ref this.bay3ZeroChainisVisible, value); }
+        public bool BayIsShutterThreeSensors
+        {
+            get => this.bayIsShutterThreeSensors;
+            set => this.SetProperty(ref this.bayIsShutterThreeSensors, value);
+        }
 
         public int? InputLoadingUnitCode
         {
             get => this.inputLoadingUnitCode;
-            set
-            {
-                if (this.SetProperty(ref this.inputLoadingUnitCode, value)
-                    &&
-                    this.LoadingUnits != null)
-                {
-                    this.LoadingUnitInBay = value == null
-                        ? null
-                        : this.LoadingUnits.SingleOrDefault(l => l.Id == value);
-                }
-            }
+            set => this.SetProperty(ref this.inputLoadingUnitCode, value);
         }
 
         public bool IsMoving =>
@@ -121,14 +120,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsTuningBay
                 || this.IsCarouselMoving
                 || this.IsShutterMoving;
-
-        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
-
-        public bool IsShutterTwoSensors
-        {
-            get => this.isShutterTwoSensors;
-            set => this.SetProperty(ref this.isShutterTwoSensors, value);
-        }
 
         public bool IsWaitingForResponse
         {
@@ -149,7 +140,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
-        public Sensors Sensors => this.sensors;
+        public ICommand ResetCommand =>
+           this.resetCommand
+           ??
+           (this.resetCommand = new DelegateCommand(async () => await this.ResetCommandAsync(), this.CanResetCommand));
 
         public ICommand StopMovingCommand =>
            this.stopMovingCommand
@@ -194,14 +188,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
-                this.HasCarousel = this.bay.Carousel != null;
-                this.IsShutterTwoSensors = this.bay.Shutter.Type == ShutterType.TwoSensors;
-                this.BayIsMultiPosition = this.bay.Positions.Count() > 1;
 
-                await this.CheckZeroChainOnBays();
-                await this.InitializeSensorsAsync();
-
-                this.SelectBayPosition1();
+                this.SelectBayPositionDown();
 
                 this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
                 this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
@@ -213,6 +201,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
 
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+
+                this.BayIsMultiPosition = this.bay.IsDouble;
+
+                this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
             }
             catch (Exception ex)
             {
@@ -229,12 +221,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
+            await base.OnMachinePowerChangedAsync(e);
 
-            // reset all status if stop machine
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.IsElevatorMovingToCell = false;
                 this.IsElevatorMovingToHeight = false;
@@ -249,44 +240,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private bool CanResetCommand()
+        {
+            return !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+        }
+
         private bool CanStopMoving()
         {
             return this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
-        }
-
-        private async Task CheckZeroChainOnBays()
-        {
-            var bays = await this.machineBaysWebService.GetAllAsync();
-
-            this.Bay1ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayOne)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayOne;
-
-            this.Bay2ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayTwo)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayTwo;
-
-            this.Bay3ZeroChainIsVisible = bays
-                  .Where(b => b.Number == BayNumber.BayThree)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == BayNumber.BayThree;
-        }
-
-        private async Task InitializeSensorsAsync()
-        {
-            var sensorsStates = await this.machineSensorsWebService.GetAsync();
-            this.shutterSensors = new ShutterSensors((int)this.bay.Number);
-
-            this.sensors.Update(sensorsStates.ToArray());
-            this.shutterSensors.Update(sensorsStates.ToArray());
-
-            this.RaisePropertyChanged(nameof(this.ShutterSensors));
-
-            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
         }
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -386,9 +351,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
-            this.IsZeroChain = this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-            this.shutterSensors.Update(message.Data.SensorsStates);
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaiseCanExecuteChanged();
         }
@@ -483,11 +445,41 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closedShutterCommand?.RaiseCanExecuteChanged();
             this.carouselDownCommand?.RaiseCanExecuteChanged();
             this.carouselUpCommand?.RaiseCanExecuteChanged();
-            this.selectBayPosition1Command?.RaiseCanExecuteChanged();
-            this.selectBayPosition2Command?.RaiseCanExecuteChanged();
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.resetCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task ResetCommandAsync()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult == DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsWaitingForResponse = true;
+
+                    await this.machineMissionOperationsWebService.ResetMachineAsync();
+
+                    await this.sensorsService.RefreshAsync();
+
+                    this.RaiseCanExecuteChanged();
+
+                    this.ShowNotification("Reset macchina avvenuta con successo.", Services.Models.NotificationSeverity.Success);
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
+            }
         }
 
         private async Task StopMovingAsync()

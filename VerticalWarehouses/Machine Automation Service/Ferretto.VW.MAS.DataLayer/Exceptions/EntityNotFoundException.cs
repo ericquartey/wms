@@ -19,6 +19,14 @@ namespace Ferretto.VW.MAS.DataLayer
             this.EntityId = entityId;
         }
 
+        public EntityNotFoundException()
+        {
+        }
+
+        public EntityNotFoundException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
         #endregion
 
         #region Properties

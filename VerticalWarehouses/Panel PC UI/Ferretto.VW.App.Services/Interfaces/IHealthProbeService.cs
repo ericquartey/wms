@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.App.Services
+﻿using Prism.Events;
+
+namespace Ferretto.VW.App.Services
 {
     public interface IHealthProbeService
     {
@@ -6,7 +8,7 @@
 
         HealthStatus HealthStatus { get; }
 
-        HealthStatusChangedPubSubEvent HealthStatusChanged { get; }
+        PubSubEvent<HealthStatusChangedEventArgs> HealthStatusChanged { get; }
 
         #endregion
 

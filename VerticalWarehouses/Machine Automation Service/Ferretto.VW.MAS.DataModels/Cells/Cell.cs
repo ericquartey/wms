@@ -6,6 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        [JsonIgnore]
         public LoadingUnit LoadingUnit { get; set; }
 
         [JsonIgnore]

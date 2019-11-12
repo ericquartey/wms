@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? currentVerticalOffset;
 
         private double? displacement;
+
+        private double? initialPosition;
 
         private double inputStepValue;
 
@@ -76,6 +79,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public double? InitialPosition
+        {
+            get => this.initialPosition;
+            set => this.SetProperty(ref this.initialPosition, value);
         }
 
         public string Error => string.Join(
@@ -159,10 +168,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
+        public override void InitializeSteps()
         {
             this.ShowSteps();
+        }
 
+        public override async Task OnAppearedAsync()
+        {
             await base.OnAppearedAsync();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
@@ -172,11 +184,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.InputStepValue = this.ProcedureParameters.Step;
 
             await this.RetrieveVerticalOffset();
+
+            this.InitialPosition = this.CurrentPosition;
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             base.OnCurrentPositionChanged(message);
+
+            this.Displacement = this.CurrentPosition - this.initialPosition;
 
             switch (message?.Status)
             {
@@ -202,10 +218,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.IsWaitingForResponse = false;
                 this.IsElevatorMovingUp = false;
@@ -226,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var newOffset = this.CurrentVerticalOffset.Value - this.Displacement.Value;
+                var newOffset = this.CurrentVerticalOffset.Value + this.Displacement.Value;
                 await this.VerticalOffsetWebService.CompleteAsync(newOffset);
 
                 this.CurrentVerticalOffset = newOffset;
@@ -291,7 +308,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(-this.InputStepValue);
 
-                this.Displacement = (this.Displacement ?? 0) - this.InputStepValue;
+                this.Displacement = this.CurrentPosition - this.initialPosition;
             }
             catch (Exception ex)
             {
@@ -313,7 +330,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.MachineElevatorWebService.MoveVerticalOfDistanceAsync(this.InputStepValue);
 
-                this.Displacement = (this.Displacement ?? 0) + this.InputStepValue;
+                this.Displacement = this.CurrentPosition - this.initialPosition;
             }
             catch (Exception ex)
             {

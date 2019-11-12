@@ -1,14 +1,13 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -22,15 +21,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int bayNumber;
 
-        private double? currentBayChainPosition;
-
-        private double? currentHorizontalPosition;
-
-        private double? currentVerticalPosition;
-
         private SubscriptionToken movementsSubscriptionToken;
-
-        private SubscriptionToken notificationUIsubscriptionToken;
 
         private DelegateCommand stopMovementCommand;
 
@@ -55,24 +46,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.bayNumber;
             protected set => this.SetProperty(ref this.bayNumber, value);
-        }
-
-        public double? CurrentBayChainPosition
-        {
-            get => this.currentBayChainPosition;
-            protected set => this.SetProperty(ref this.currentBayChainPosition, value);
-        }
-
-        public double? CurrentHorizontalPosition
-        {
-            get => this.currentHorizontalPosition;
-            protected set => this.SetProperty(ref this.currentHorizontalPosition, value);
-        }
-
-        public double? CurrentVerticalPosition
-        {
-            get => this.currentVerticalPosition;
-            protected set => this.SetProperty(ref this.currentVerticalPosition, value);
         }
 
         public DelegateCommand StopMovementCommand =>
@@ -121,28 +94,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsBackNavigationAllowed = true;
 
-            this.notificationUIsubscriptionToken = this.notificationUIsubscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-
-            this.movementsSubscriptionToken = this.movementsSubscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<ManualMovementsChangedPubSubEvent>()
-                    .Subscribe(
-                        this.EnabledChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        message => message != null);
-
-            this.bay = await this.bayManagerService.GetBayAsync();
-            this.BayNumber = (int)this.bay.Number;
+            this.SubscribeToEvents();
 
             await this.RetrieveCurrentPositionAsync();
 
@@ -166,48 +118,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected abstract Task StopMovementAsync();
+        protected abstract void OnMachinePowerChanged();
 
-        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            switch (message.Data.AxisMovement)
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
-                case CommonUtils.Messages.Enumerations.Axis.Horizontal:
-                    if (message.Data.MovementMode < CommonUtils.Messages.Enumerations.MovementMode.BayChain)
-                    {
-                        this.CurrentHorizontalPosition = message.Data.CurrentPosition ?? this.CurrentHorizontalPosition;
-                    }
-                    else
-                    {
-                        this.CurrentBayChainPosition = message.Data.CurrentPosition ?? this.CurrentBayChainPosition;
-                    }
-
-                    break;
-
-                case CommonUtils.Messages.Enumerations.Axis.Vertical:
-                    this.CurrentVerticalPosition = message.Data.CurrentPosition ?? this.CurrentVerticalPosition;
-                    break;
-
-                case CommonUtils.Messages.Enumerations.Axis.BayChain:
-                    this.CurrentBayChainPosition = message?.Data?.CurrentPosition ?? this.CurrentBayChainPosition;
-                    break;
-
-                default:
-                    break;
             }
+
+            this.OnMachinePowerChanged();
         }
+
+        protected abstract Task StopMovementAsync();
 
         private async Task RetrieveCurrentPositionAsync()
         {
             try
             {
-                this.CurrentVerticalPosition = await this.MachineElevatorService.GetVerticalPositionAsync();
-                this.CurrentHorizontalPosition = await this.MachineElevatorService.GetHorizontalPositionAsync();
+                this.bay = await this.bayManagerService.GetBayAsync();
+                this.BayNumber = (int)this.bay.Number;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.movementsSubscriptionToken = this.movementsSubscriptionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<ManualMovementsChangedPubSubEvent>()
+                    .Subscribe(
+                        this.EnabledChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        message => message != null);
         }
 
         #endregion

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
     {
         #region Fields
 
-        private const int PULSE_INTERVAL = 350;
+        private const int PulseInterval = 350;
 
         private readonly IoIndex index;
 
@@ -49,11 +49,13 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
-            if (message.CodeOperation == Enumerations.ShdCodeOperation.Data &&
-                message.ValidOutputs &&
+            if (message.CodeOperation == ShdCodeOperation.Data
+                &&
+                message.ValidOutputs
+                &&
                 message.ResetSecurity)
             {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, Timeout.Infinite);
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
             }
 
             base.ProcessMessage(message);
@@ -63,14 +65,16 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset Security={message.ResetSecurity}");
 
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
-                               message.ValidOutputs &&
-                               message.ResetSecurity;
+            var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data
+                &&
+                message.ValidOutputs
+                &&
+                message.ResetSecurity;
 
             if (checkMessage && !this.pulseOneTime)
             {
                 // TEMP Start the timer for the PulseResetSecurity message in state ON according to the device specifications
-                this.delayTimer = new Timer(this.DelayElapsed, null, PULSE_INTERVAL, Timeout.Infinite);
+                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
                 this.pulseOneTime = true;
             }
 

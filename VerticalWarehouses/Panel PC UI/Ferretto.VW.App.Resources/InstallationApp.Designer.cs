@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Resources {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class InstallationApp {
@@ -286,20 +286,38 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 1.
+        ///   Looks up a localized string similar to Position down.
         /// </summary>
-        public static string BayPosition1 {
+        public static string BayPositionDown {
             get {
-                return ResourceManager.GetString("BayPosition1", resourceCulture);
+                return ResourceManager.GetString("BayPositionDown", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position 2.
+        ///   Looks up a localized string similar to Position down bay height [mm].
         /// </summary>
-        public static string BayPosition2 {
+        public static string BayPositionDownHeight {
             get {
-                return ResourceManager.GetString("BayPosition2", resourceCulture);
+                return ResourceManager.GetString("BayPositionDownHeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up.
+        /// </summary>
+        public static string BayPositionUp {
+            get {
+                return ResourceManager.GetString("BayPositionUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position up bay height [mm].
+        /// </summary>
+        public static string BayPositionUpHeight {
+            get {
+                return ResourceManager.GetString("BayPositionUpHeight", resourceCulture);
             }
         }
         
@@ -372,6 +390,15 @@ namespace Ferretto.VW.App.Resources {
         public static string CarouselUp {
             get {
                 return ResourceManager.GetString("CarouselUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cell.
+        /// </summary>
+        public static string Cell {
+            get {
+                return ResourceManager.GetString("Cell", resourceCulture);
             }
         }
         
@@ -547,11 +574,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm file overwrite ?.
+        /// </summary>
+        public static string ConfirmFileOverwrite {
+            get {
+                return ResourceManager.GetString("ConfirmFileOverwrite", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm new resolution or cancel action..
         /// </summary>
         public static string ConfirmResolution {
             get {
                 return ResourceManager.GetString("ConfirmResolution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm restore..
+        /// </summary>
+        public static string ConfirmRestore {
+            get {
+                return ResourceManager.GetString("ConfirmRestore", resourceCulture);
             }
         }
         
@@ -678,6 +723,33 @@ namespace Ferretto.VW.App.Resources {
         public static string DesiredMovement {
             get {
                 return ResourceManager.GetString("DesiredMovement", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device file found.
+        /// </summary>
+        public static string DeviceFileFound {
+            get {
+                return ResourceManager.GetString("DeviceFileFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device found.
+        /// </summary>
+        public static string DeviceFound {
+            get {
+                return ResourceManager.GetString("DeviceFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Device not found.
+        /// </summary>
+        public static string DeviceNotFound {
+            get {
+                return ResourceManager.GetString("DeviceNotFound", resourceCulture);
             }
         }
         
@@ -943,6 +1015,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export.
+        /// </summary>
+        public static string Export {
+            get {
+                return ResourceManager.GetString("Export", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Export successful.
+        /// </summary>
+        public static string ExportSuccessful {
+            get {
+                return ResourceManager.GetString("ExportSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to External Bay.
         /// </summary>
         public static string ExternalBay {
@@ -966,6 +1056,24 @@ namespace Ferretto.VW.App.Resources {
         public static string FeedRate {
             get {
                 return ResourceManager.GetString("FeedRate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A file is already present on device..
+        /// </summary>
+        public static string FileIsAlreadyPresent {
+            get {
+                return ResourceManager.GetString("FileIsAlreadyPresent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to File read error.
+        /// </summary>
+        public static string FileReadError {
+            get {
+                return ResourceManager.GetString("FileReadError", resourceCulture);
             }
         }
         
@@ -1366,6 +1474,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Insert device with file configuration - {0} -.
+        /// </summary>
+        public static string InsertDeviceWithFileConfiguration {
+            get {
+                return ResourceManager.GetString("InsertDeviceWithFileConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inserted weight [kg].
         /// </summary>
         public static string InsertedWeight {
@@ -1623,6 +1740,33 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingDrawersTotalDrawers {
             get {
                 return ResourceManager.GetString("LoadingDrawersTotalDrawers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code.
+        /// </summary>
+        public static string LoadingUnitCode {
+            get {
+                return ResourceManager.GetString("LoadingUnitCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position down.
+        /// </summary>
+        public static string LoadingUnitCodePositionDown {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePositionDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit code position up.
+        /// </summary>
+        public static string LoadingUnitCodePositionUp {
+            get {
+                return ResourceManager.GetString("LoadingUnitCodePositionUp", resourceCulture);
             }
         }
         
@@ -2284,6 +2428,33 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Restore.
+        /// </summary>
+        public static string Restore {
+            get {
+                return ResourceManager.GetString("Restore", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore configuration.
+        /// </summary>
+        public static string RestoreConfiguration {
+            get {
+                return ResourceManager.GetString("RestoreConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Restore successful.
+        /// </summary>
+        public static string RestoreSuccessful {
+            get {
+                return ResourceManager.GetString("RestoreSuccessful", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cancel loading.
         /// </summary>
         public static string SaveRestoreConfigAbortRestoreButton {
@@ -2374,7 +2545,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Save succssful.
+        ///   Looks up a localized string similar to Save successful.
         /// </summary>
         public static string SaveSuccessful {
             get {
@@ -2671,6 +2842,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Sure to apply configuration ?.
+        /// </summary>
+        public static string SureToApplyConfiguration {
+            get {
+                return ResourceManager.GetString("SureToApplyConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Switch Engine Completed.
         /// </summary>
         public static string SwitchEngineCompleted {
@@ -2752,6 +2932,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tray in position down.
+        /// </summary>
+        public static string TrayInBayPositionDown {
+            get {
+                return ResourceManager.GetString("TrayInBayPositionDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tray in position up.
+        /// </summary>
+        public static string TrayInBayPositionUp {
+            get {
+                return ResourceManager.GetString("TrayInBayPositionUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Tray in Cell.
         /// </summary>
         public static string TrayInCell {
@@ -2775,6 +2973,15 @@ namespace Ferretto.VW.App.Resources {
         public static string TrayWeight {
             get {
                 return ResourceManager.GetString("TrayWeight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unknown.
+        /// </summary>
+        public static string Unknown {
+            get {
+                return ResourceManager.GetString("Unknown", resourceCulture);
             }
         }
         

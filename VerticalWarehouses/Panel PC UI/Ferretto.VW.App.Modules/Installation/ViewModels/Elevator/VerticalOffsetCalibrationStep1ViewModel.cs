@@ -5,6 +5,7 @@ using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 
@@ -96,8 +97,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.ShowSteps();
-
             await base.OnAppearedAsync();
 
             try
@@ -110,6 +109,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -144,10 +148,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            base.OnMachineModeChanged(e);
-            if (e.MachinePower == Services.Models.MachinePowerState.Unpowered)
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
             {
                 this.IsWaitingForResponse = false;
                 this.IsElevatorMoving = false;
@@ -192,7 +197,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
                     this.ProcedureParameters.FeedRate,
-                    false);
+                    false,
+                    true);
 
                 this.IsElevatorMoving = true;
             }

@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.InverterDriver.Interface;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.VW.MAS.InverterDriver.Extensions
+namespace Ferretto.VW.MAS.InverterDriver
 {
     public static class ServiceCollectionExtensions
     {

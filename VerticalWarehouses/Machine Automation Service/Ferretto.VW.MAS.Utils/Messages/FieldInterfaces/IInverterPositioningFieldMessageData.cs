@@ -8,7 +8,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         Axis AxisMovement { get; set; }
 
+        bool ComputeElongation { get; set; }
+
         int Direction { get; set; }
+
+        double FeedRate { get; set; }
 
         bool IsTorqueCurrentSamplingEnabled { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -13,20 +12,15 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly DataLayerContext dataContext;
-
         private readonly ILogger<LogEntriesProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public LogEntriesProvider(
-            ILogger<LogEntriesProvider> logger,
-            DataLayerContext dataContext)
+        public LogEntriesProvider(ILogger<LogEntriesProvider> logger)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
         }
 
         #endregion
@@ -73,27 +67,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private static string SerializeMessageData(IMessageData messageData)
         {
-            var serializedData = "Message data could not be serialized.";
-
             try
             {
-                serializedData = JsonConvert.SerializeObject(messageData);
+                return JsonConvert.SerializeObject(messageData);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // do nothing
+                return ex.Message;
             }
-
-            return serializedData;
         }
 
         private void Create(LogEntry logEntry)
         {
             this.logger.LogDebug(logEntry.ToString());
-
-            //this.dataContext.LogEntries.Add(logEntry);
-
-            //this.dataContext.SaveChanges();
         }
 
         #endregion

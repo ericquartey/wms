@@ -42,19 +42,19 @@ namespace Ferretto.VW.App.Modules.Layout
         {
             containerRegistry.RegisterSingleton<Installation.ViewsAndViewModels.SingleViews.DiagnosticDetailsViewModel>();
 
-            containerRegistry.Register<IPresentation, PresentationError>(nameof(PresentationError));
-            containerRegistry.Register<IPresentation, PresentationMachinePowerSwitch>(nameof(PresentationMachinePowerSwitch));
-            containerRegistry.Register<IPresentation, PresentationMachineMode>(nameof(PresentationMachineMode));
-            containerRegistry.Register<IPresentation, PresentationLogged>(nameof(PresentationLogged));
-            containerRegistry.Register<IPresentation, PresentationHelp>(nameof(PresentationHelp));
+            containerRegistry.Register<PresentationError>();
+            containerRegistry.Register<PresentationMachinePowerSwitch>();
+            containerRegistry.Register<PresentationMachineModeSwitch>();
+            containerRegistry.Register<PresentationLogged>();
+            containerRegistry.Register<PresentationHelp>();
 
-            containerRegistry.Register<IPresentation, PresentationTheme>(nameof(PresentationTheme));
-            containerRegistry.Register<IPresentation, PresentationShutdown>(nameof(PresentationShutdown));
+            containerRegistry.Register<PresentationTheme>();
+            containerRegistry.Register<PresentationShutdown>();
 
-            containerRegistry.Register<IPresentation, PresentationNavigationStep>(nameof(PresentationNavigationStep));
-            containerRegistry.Register<IPresentation, PresentationAbort>(nameof(PresentationAbort));
-            containerRegistry.Register<IPresentation, PresentationBack>(nameof(PresentationBack));
-            containerRegistry.Register<IPresentation, PresentationDebug>(nameof(PresentationDebug));
+            containerRegistry.Register<PresentationNavigationStep>();
+            containerRegistry.Register<PresentationAbort>();
+            containerRegistry.Register<PresentationBack>();
+            containerRegistry.Register<PresentationDebug>();
         }
 
         #endregion

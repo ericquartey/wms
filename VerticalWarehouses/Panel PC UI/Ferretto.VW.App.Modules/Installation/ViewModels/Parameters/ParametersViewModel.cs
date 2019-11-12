@@ -13,9 +13,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineConfigurationWebService machineConfigurationWebService;
 
-        private readonly IMachineIdentityWebService machineIdentityWebService;
-
         private VertimagConfiguration configuration;
+
+        private DelegateCommand goToExport;
+
+        private DelegateCommand goToImport;
 
         private bool isBusy;
 
@@ -37,7 +39,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public VertimagConfiguration Configuration => this.configuration;
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand GoToExport => this.goToExport
+            ??
+            (this.goToExport = new DelegateCommand(
+                this.ShowExport, this.CanShowExport));
+
+        public ICommand GoToImport => this.goToImport
+                    ??
+            (this.goToImport = new DelegateCommand(
+                this.ShowImport, this.CanShowImport));
 
         public bool IsBusy
         {
@@ -66,13 +78,34 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
-
-            this.configuration = await this.machineConfigurationWebService.GetAsync();
-            this.RaisePropertyChanged(nameof(this.Configuration));
+            try
+            {
+                this.IsBusy = true;
+                this.IsBackNavigationAllowed = true;
+                this.configuration = await this.machineConfigurationWebService.GetAsync();
+                this.RaisePropertyChanged(nameof(this.Configuration));
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsBusy = false;
+            }
         }
 
         private bool CanSave()
+        {
+            return !this.IsBusy;
+        }
+
+        private bool CanShowExport()
+        {
+            return !this.IsBusy;
+        }
+
+        private bool CanShowImport()
         {
             return !this.IsBusy;
         }
@@ -99,6 +132,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
+        }
+
+        private void ShowExport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                this.Configuration,
+                trackCurrentView: true);
+        }
+
+        private void ShowImport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
+                null,
+                trackCurrentView: true);
         }
 
         #endregion

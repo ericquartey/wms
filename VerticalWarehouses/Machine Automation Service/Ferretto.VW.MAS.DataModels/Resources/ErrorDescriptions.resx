@@ -189,16 +189,58 @@
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
     <value>Errore Machine Manager</value>
   </data>
-  <data name="MachineManagerErrorLoadingUnitDestinationDb" xml:space="preserve">
-    <value>Inconsistenza database posizione destinazione cassetto</value>
+  <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
+    <value>Inconsistenza database cella destinazione cassetto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
-    <value />
+    <value>Culla elevatore occupata</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
     <value>Inconsistenza database posizione sorgente cassetto</value>
   </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
     <value>Nessun cassetto presente nella baia indicata</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
+    <value>Cassetto rilevato nella baia di estrazione</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitDestinationBay" xml:space="preserve">
+    <value>Baia di destinazione del cassetto occupata</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotFound" xml:space="preserve">
+    <value>Inconsistenza database cassetto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitNotLoaded" xml:space="preserve">
+    <value>Il cassetto selezionato non risulta caricato in magazzino</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceBay" xml:space="preserve">
+    <value>Baia sorgente del cassetto vuota</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
+    <value>Inconsistenza database cella sorgente cassetto</value>
+  </data>
+  <data name="BottomLevelBayOccupied" xml:space="preserve">
+    <value>BottomLevelBayOccupied</value>
+  </data>
+  <data name="InvalidPresenceSensors" xml:space="preserve">
+    <value>InvalidPresenceSensors</value>
+  </data>
+  <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
+    <value>LoadUnitPresentOnEmptyElevator</value>
+  </data>
+  <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
+    <value>MissingZeroSensorWithEmptyElevator</value>
+  </data>
+  <data name="SensoZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>SensoZeroBayNotActiveAtStart</value>
+  </data>
+  <data name="TopLevelBayOccupied" xml:space="preserve">
+    <value>TopLevelBayOccupied</value>
+  </data>
+  <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
+    <value>ZeroSensorActiveWithFullElevator</value>
+  </data>
+  <data name="LoadingUnitWeightExceeded" xml:space="preserve">
+    <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
   </data>
 </root>

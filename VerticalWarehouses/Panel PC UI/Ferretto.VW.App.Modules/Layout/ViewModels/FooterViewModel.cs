@@ -57,14 +57,16 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.InitializeData();
 
-            var prev = this.GetInstance(nameof(PresentationNavigationStep));
+            var prev = this.GetInstance<PresentationNavigationStep>();
             prev.Type = PresentationTypes.Prev;
             this.States.Add(prev);
-            var next = this.GetInstance(nameof(PresentationNavigationStep));
+
+            var next = this.GetInstance<PresentationNavigationStep>();
             next.Type = PresentationTypes.Next;
             this.States.Add(next);
-            this.States.Add(this.GetInstance(nameof(PresentationAbort)));
-            this.States.Add(this.GetInstance(nameof(PresentationBack)));
+
+            this.States.Add(this.GetInstance<PresentationAbort>());
+            this.States.Add(this.GetInstance<PresentationBack>());
         }
 
         public void NotificationChanged(PresentationNotificationMessage message)
@@ -97,10 +99,22 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     }
                     else
                     {
-                        this.NotificationMessage =
+                        if (swaggerException.Result.Detail is null)
+                        {
+                            this.NotificationMessage =
+                            swaggerException.Result.Title +
+                            System.Environment.NewLine +
+                            ((!(swaggerException.Result is null)
+                             &&
+                             swaggerException.Result.AdditionalProperties.Any()) ? swaggerException.Result.AdditionalProperties.First().Value : string.Empty);
+                        }
+                        else
+                        {
+                            this.NotificationMessage =
                             swaggerException.Result.Title +
                             System.Environment.NewLine +
                             swaggerException.Result.Detail?.Split('\n', '\r').FirstOrDefault();
+                        }
                     }
                 }
                 else if (message.Exception is SwaggerException)

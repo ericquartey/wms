@@ -229,13 +229,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.ShowSteps();
-
             await base.OnAppearedAsync();
 
             this.RetrieveWizardData();
 
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
+        }
+
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
         }
 
         protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -321,6 +324,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InitialPosition.Value,
                     this.ProcedureParameters.FeedRate,
+                    false,
                     false);
             }
             catch (Exception ex)

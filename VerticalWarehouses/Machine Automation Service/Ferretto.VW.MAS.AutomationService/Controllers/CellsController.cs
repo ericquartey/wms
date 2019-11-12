@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CellsController : BaseAutomationController
+    public class CellsController : ControllerBase
     {
         #region Fields
 
@@ -24,9 +24,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public CellsController(
             ICellsProvider cellsProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IEventAggregator eventAggregator)
-            : base(eventAggregator)
+            ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
@@ -68,6 +66,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var cell = this.cellsProvider.UpdateHeight(id, height);
 
             return this.Ok(cell);
+        }
+
+        [HttpPost("fromid/toid/height")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<IEnumerable<Cell>> UpdatesHeight(int fromid, int toid, WarehouseSide side, double height)
+        {
+            var cells = this.cellsProvider.UpdatesHeight(fromid, toid, side, height);
+
+            return this.Ok(cells);
         }
 
         #endregion

@@ -5,12 +5,14 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -20,13 +22,23 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private readonly IMemoryCache cache;
+
+        private readonly MemoryCacheEntryOptions cacheOptions;
+
         private readonly DataLayerContext dataContext;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly double kMul = 0.0739795918367347;
+        /// <summary>
+        /// TODO move to configuration
+        /// </summary>
+        private readonly double kMul = 0.090625;
 
-        private readonly double kSum = -14.79591836734694;
+        /// <summary>
+        /// TODO move to configuration
+        /// </summary>
+        private readonly double kSum = -181.25;
 
         private readonly IMachineProvider machineProvider;
 
@@ -40,14 +52,18 @@ namespace Ferretto.VW.MAS.DataLayer
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
-            IElevatorDataProvider elevatorDataProvider)
+            IConfiguration configuration,
+            IElevatorDataProvider elevatorDataProvider,
+            IMemoryCache memoryCache)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -117,7 +133,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         public double ConvertProfileToHeight(ushort profile)
         {
-            return profile * this.kMul + this.kSum;
+            return (profile * this.kMul) + this.kSum;
         }
 
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
@@ -170,8 +186,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Bays
-                    .Include(b => b.Shutter)
+                    .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                    .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
                     .ToArray();
             }
@@ -207,7 +226,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (bay is null)
                 {
-                    if (this.dataContext.ElevatorAxes.Any(a => a.Inverter.Index == inverterIndex))
+                    if (this.GetElevatorAxes().Any(a => a.Inverter.Index == inverterIndex))
                     {
                         return BayNumber.ElevatorBay;
                     }
@@ -250,6 +269,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
@@ -313,6 +333,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
+                    .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
@@ -340,6 +361,28 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 return bay.ChainOffset;
+            }
+        }
+
+        public IEnumerable<ElevatorAxis> GetElevatorAxes()
+        {
+            lock (this.dataContext)
+            {
+                var cacheKey = GetElevatorAxesCacheKey();
+                if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
+                {
+                    cacheEntry = this.dataContext.ElevatorAxes
+                        .Include(i => i.Inverter)
+                        .ToList();
+                    if (cacheEntry is null)
+                    {
+                        throw new EntityNotFoundException(string.Empty);
+                    }
+
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
+                }
+
+                return cacheEntry;
             }
         }
 
@@ -501,6 +544,17 @@ namespace Ferretto.VW.MAS.DataLayer
             return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
         }
 
+        public LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                           .Where(b => b.Number == bayNumber)
+                           .SelectMany(b => b.Positions)
+                           .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
+            }
+        }
+
         public double GetResolution(InverterIndex inverterIndex)
         {
             lock (this.dataContext)
@@ -526,6 +580,26 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.dataContext.BayPositions.Update(position);
             this.dataContext.SaveChanges();
+        }
+
+        public void ResetMachine()
+        {
+            foreach (var bayPosition in this.dataContext.BayPositions
+                                            .Include(i => i.LoadingUnit))
+            {
+                if (bayPosition.LoadingUnit != null)
+                {
+                    bayPosition.LoadingUnit = null;
+                    this.dataContext.BayPositions.Update(bayPosition);
+                }
+            }
+
+            foreach (var bay in this.dataContext.Bays)
+            {
+                bay.CurrentMissionId = null;
+                bay.CurrentMissionOperationId = null;
+                this.Update(bay);
+            }
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)
@@ -581,6 +655,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.GetByNumber(bayNumber);
             }
         }
+
+        internal static string GetElevatorAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
 
         private void Update(Bay bay)
         {

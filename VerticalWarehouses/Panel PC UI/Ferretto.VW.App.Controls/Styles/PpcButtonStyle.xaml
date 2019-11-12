@@ -106,12 +106,31 @@
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Content" Value="{x:Static res:InstallationApp.Off}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMachinePoweredOn}"
                          Value="True">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.On}" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding IsUnknownState}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Unknown}" />
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 
+    <Style x:Key="PpcButtonMachineModeHeaderStyle"
+           BasedOn="{StaticResource PpcHeaderButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Content" Value="{x:Static res:InstallationApp.Manual}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -119,7 +138,7 @@
     <Style x:Key="PpcButtonDebugHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
     </Style>
 
     <Style x:Key="PpcButtonMachineErrorHeaderStyle"
@@ -128,11 +147,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
     </Style>
 
-    <Style x:Key="PpcButtonMachineModeHeaderStyle"
-           BasedOn="{StaticResource PpcHeaderButtonStyle}"
-           TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-    </Style>
+
 
     <Style x:Key="PpcButtonHelpHeaderStyle"
            BasedOn="{StaticResource PpcButtonStyle}"

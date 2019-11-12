@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
+namespace Ferretto.VW.MAS.DataLayer
 {
     public partial class DataLayerContext : DbContext
     {
@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer.DatabaseContext
         public override void Dispose()
         {
             base.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

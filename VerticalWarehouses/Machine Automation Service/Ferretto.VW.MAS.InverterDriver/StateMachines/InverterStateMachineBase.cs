@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
     {
         #region Fields
 
+        private readonly object lockObj = new object();
+
         private readonly IServiceScopeFactory serviceScopeFactory;
 
         private bool isDisposed;
@@ -69,23 +71,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void ChangeState(IInverterState newState)
         {
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.InverterDriver, newState.GetType().Name, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"Inverter current state {newState.GetType().Name}",
-                MessageActor.Any,
-                MessageActor.InverterDriver,
-                MessageType.MachineStateActive,
-                BayNumber.None,
-                BayNumber.None,
-                MessageStatus.OperationStart);
+            lock (this.lockObj)
+            {
+                var notificationMessageData = new MachineStateActiveMessageData(MessageActor.InverterDriver, newState.GetType().Name, MessageVerbosity.Info);
+                var notificationMessage = new NotificationMessage(
+                    notificationMessageData,
+                    $"Inverter current state {newState.GetType().Name}",
+                    MessageActor.Any,
+                    MessageActor.InverterDriver,
+                    MessageType.MachineStateActive,
+                    BayNumber.None,
+                    BayNumber.None,
+                    MessageStatus.OperationStart);
 
-            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
 
-            this.Logger.LogTrace($"1:new State: {newState.GetType().Name}");
+                this.Logger.LogTrace($"1:new State: {newState.GetType().Name}");
 
-            this.CurrentState = newState;
-            this.CurrentState.Start();
+                this.CurrentState = newState;
+                newState.Start();
+            }
         }
 
         public virtual void Continue()
@@ -101,10 +106,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public void EnqueueCommandMessage(InverterMessage message)
         {
-            if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
+            lock (this.lockObj)
             {
-                this.Logger.LogTrace($"1:Enqueue message {message}");
-                this.InverterCommandQueue.Enqueue(message);
+                if (this.InverterCommandQueue.Count(x => x.ParameterId == message.ParameterId && x.SystemIndex == message.SystemIndex) < 2)
+                {
+                    this.Logger.LogTrace($"1:Enqueue message {message}");
+                    this.InverterCommandQueue.Enqueue(message);
+                }
             }
         }
 
@@ -117,27 +125,42 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
         /// <inheritdoc />
         public virtual void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
         {
-            this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+            lock (this.lockObj)
+            {
+                this.Logger.LogTrace($"2:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 
-            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+                this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
+            }
         }
 
         /// <inheritdoc />
         public abstract void Start();
 
-        /// <inheritdoc />
-        public abstract void Stop();
+        public void Stop()
+        {
+            lock (this.lockObj)
+            {
+                this.OnStopLocked();
+                this.CurrentState?.Stop();
+            }
+        }
 
         /// <inheritdoc />
         public bool ValidateCommandMessage(InverterMessage message)
         {
-            return this.CurrentState?.ValidateCommandMessage(message) ?? false;
+            lock (this.lockObj)
+            {
+                return this.CurrentState?.ValidateCommandMessage(message) ?? false;
+            }
         }
 
         /// <inheritdoc />
         public bool ValidateCommandResponse(InverterMessage message)
         {
-            return this.CurrentState?.ValidateCommandResponse(message) ?? false;
+            lock (this.lockObj)
+            {
+                return this.CurrentState?.ValidateCommandResponse(message) ?? false;
+            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -171,6 +194,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
             }
 
             this.isDisposed = true;
+        }
+
+        protected virtual void OnStopLocked()
+        {
         }
 
         #endregion

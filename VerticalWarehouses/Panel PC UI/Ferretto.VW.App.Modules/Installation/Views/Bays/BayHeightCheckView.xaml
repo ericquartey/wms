@@ -15,10 +15,11 @@
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="90" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -55,24 +56,31 @@
                             Content="{x:Static res:InstallationApp.GoToBay}"
                             IsBusy="{Binding IsElevatorMovingToHeight}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            Grid.Column="3"
+        <controls:PpcButton Grid.Row="2"
+                            Grid.Column="2"
+                            Margin="0,15,0,0"
                             VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
+                            Command="{Binding AbortCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
 
+        <controls:PpcLabeledText Grid.Row="3"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
+                                 LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
+                                 Grid.Column="1"
                                  ContentText="{Binding CurrentHeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcTextBox Grid.Row="2"
+        <controls:PpcTextBox Grid.Row="4"
                              Grid.Column="1"
                              InputText="{Binding InputStepValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnNotifyDataErrors=True}"
                              LabelText="{x:Static res:InstallationApp.StepValue}" />
 
-        <StackPanel Grid.Row="2"
+        <StackPanel Grid.Row="3"
+                    Grid.RowSpan="2"
                     Grid.Column="2"
+                    VerticalAlignment="Bottom"
                     Orientation="Vertical">
             <controls:PpcButton Command="{Binding MoveUpCommand}"
                                 Content="{x:Static res:InstallationApp.Up}"
@@ -85,13 +93,16 @@
         </StackPanel>
 
 
-        <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="5"
                                  Grid.Column="1"
+                                 Margin="0,30,0,0"
+                                 VerticalAlignment="Top"
                                  ContentText="{Binding Displacement, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
-        <controls:PpcButton Grid.Row="3"
+        <controls:PpcButton Grid.Row="5"
                             Grid.Column="2"
+                            Margin="0,30,0,0"
                             VerticalAlignment="Top"
                             Command="{Binding ApplyCorrectionCommand}"
                             Content="{x:Static res:InstallationApp.ApplyCorrection}" />

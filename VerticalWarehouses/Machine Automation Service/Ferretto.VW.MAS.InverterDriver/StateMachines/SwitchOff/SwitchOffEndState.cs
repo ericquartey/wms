@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 
         public override void Start()
         {
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+            var inverterIndex = this.InverterStatus.SystemIndex;
 
             var notificationMessageData = new InverterSwitchOffFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOff,
                 MessageStatus.OperationEnd,
-                this.InverterStatus.SystemIndex);
+                inverterIndex);
 
             this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
 

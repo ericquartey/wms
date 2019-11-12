@@ -1,127 +1,202 @@
 ﻿<UserControl x:Class="Ferretto.VW.App.Modules.Operator.HelpWindows.HelpDrawerActivityRefillingDetail"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Modules.Operator.HelpWindows"
-             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              mc:Ignorable="d">
 
-    <Grid Width="1024" Height="688"
+    <Grid Width="1024"
+          Height="688"
           Background="{DynamicResource VWAPP_BACKGROUND}">
 
-        <Image Width="200" Height="60"
-               HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,10,0,0"
+        <Image Width="200"
+               Height="60"
+               Margin="10,10,0,0"
+               HorizontalAlignment="Left"
+               VerticalAlignment="Top"
                Source="{DynamicResource Ferretto_Logo}"
                Stretch="Uniform" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,50,0,0"
-                    Width="670" Height="60"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailDescription}" />
+        <TextBlock Width="670"
+                   Height="60"
+                   Margin="320,50,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,120,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonList}" />
 
-        <TextBlock   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,120,0,0"
-                     Width="260" Height="70"
-                     Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                     Text="{x:Static res:HelpDescriptions.HelpCommonPosition}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,120,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonPosition}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,120,0,0" Width="180"
-                                               ContentText="V-00147"
-                                               LabelText="{x:Static res:OperatorApp.CommonListCode}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="V-00147"
+                                 LabelText="{x:Static res:OperatorApp.CommonListCode}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,330,0,0" Width="180"
-                                               ContentText="1258445984"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemCode}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,330,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="1258445984"
+                                 LabelText="{x:Static res:OperatorApp.CommonItemCode}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,120,0,0" Width="180"
-                                               ContentText="F-3"
-                                               LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,120,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="F-3"
+                                 LabelText="{x:Static res:OperatorApp.CommonCompartmentPosition}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,190,0,0" Width="180"
-                                               ContentText="Gruppo riduzione"
-                                               LabelText="{x:Static res:OperatorApp.CommonListDescription}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,190,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Gruppo riduzione"
+                                 LabelText="{x:Static res:OperatorApp.CommonListDescription}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,400,0,0" Width="180"
-                                               ContentText="Ingranaggio a denti"
-                                               LabelText="{x:Static res:OperatorApp.CommonItemDescription}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,400,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Ingranaggio a denti"
+                                 LabelText="{x:Static res:OperatorApp.CommonItemDescription}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,260,0,0" Width="180"
-                                               ContentText="4"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailListRow}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="4"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailListRow}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,470,0,0" Width="180"
-                                               ContentText="2019-02-12"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailProductionDate}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,470,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="2019-02-12"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailProductionDate}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="20,540,0,0" Width="180"
-                                               ContentText="Collaudato"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="20,540,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Collaudato"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,190,0,0" Width="180"
-                                               ContentText="045-25"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailLotto}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,190,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="045-25"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailLotto}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,260,0,0" Width="180"
-                                               ContentText="Boxed"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailPackagingType}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,260,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="Boxed"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailPackagingType}" />
 
-        <controls:PpcLabeledText  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="530,330,0,0" Width="180"
-                                               ContentText="8"
-                                               LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailQtyRequest}"/>
+        <controls:PpcLabeledText Width="180"
+                                 Margin="530,330,0,0"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="8"
+                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,190,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,190,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonListDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,260,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailListRow}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,260,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailListRow}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,330,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,330,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonItem}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,400,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,400,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpCommonItemDescription}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,470,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailProductionDate}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,470,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailProductionDate}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="220,540,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailMaterialStatus}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="220,540,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailMaterialStatus}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,190,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailLotto}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,190,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailLotto}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,260,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailPackaging}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,260,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailPackaging}" />
 
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="730,330,0,0"
-                    Width="260" Height="70"
-                    Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
-                    Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailQtyToRefill}" />
-        <TextBlock  HorizontalAlignment="Left" VerticalAlignment="Top" Margin="320,20,0,0"
-                    Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
-                    Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
+        <TextBlock Width="260"
+                   Height="70"
+                   Margin="730,330,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpDrawerActivityRefillingDetailQtyToRefill}" />
+        <TextBlock Margin="320,20,0,0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewHelpDescriptionTextBlockStyle}"
+                   Text="{x:Static res:OperatorApp.DrawerActivityRefillingDetailHeader}" />
 
     </Grid>
 </UserControl>

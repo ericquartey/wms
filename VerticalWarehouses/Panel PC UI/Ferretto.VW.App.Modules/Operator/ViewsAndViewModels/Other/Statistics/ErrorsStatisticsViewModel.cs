@@ -1,11 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -15,10 +13,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IMachineErrorsService errorsService;
+        private readonly IMachineErrorsWebService errorsService;
 
-        private readonly IStatusMessageService statusMessageService;
-
+        // private readonly IStatusMessageService statusMessageService;
         private int currentItemIndex;
 
         private ICustomControlErrorsDataGridViewModel dataGridViewModelRef;
@@ -34,11 +31,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public ErrorsStatisticsViewModel(
-            IStatusMessageService statusMessageService,
-            IMachineErrorsService errorsService,
+            IMachineErrorsWebService errorsService,
             ICustomControlErrorsDataGridViewModel errorsDataGridViewModel)
         {
-            this.statusMessageService = statusMessageService;
             this.errorsService = errorsService;
             this.dataGridViewModelRef = errorsDataGridViewModel;
             this.DataGridViewModel = this.dataGridViewModelRef;
@@ -100,9 +95,9 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
                 this.RaisePropertyChanged(nameof(this.Statistics));
             }
-            catch (Exception ex)
+            catch
             {
-                this.statusMessageService.Notify(ex, $"Cannot load data.");
+                // this.statusMessageService.Notify(ex, $"Cannot load data.");
             }
         }
 

@@ -24,9 +24,9 @@
 
         CradleEngineSelectedBay1 = 9,
 
-        LuPresentInOperatorSideBay1 = 10,
+        LuPresentInOperatorSide = 10,
 
-        LuPresentInMachineSideBay1 = 11,
+        LuPresentInMachineSide = 11,
 
         ProfileCalibrationBay1 = 12,
 

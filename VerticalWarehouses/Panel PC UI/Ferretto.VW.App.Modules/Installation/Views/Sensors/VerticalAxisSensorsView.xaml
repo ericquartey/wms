@@ -56,16 +56,16 @@
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensor}"
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                           Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVIC}}"/>
+                                           Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVIC}}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ZeroPawlSensorOneK}"
                                            Text="{x:Static res:InstallationApp.ZeroPawlSensor}"
-                                           Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVC}}"/>
+                                           Visibility="{Binding IsOneTonMachine, Converter={StaticResource BTVC}}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInMachineSideBay1}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInMachineSide}"
                                            Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradleSide}" />
 
-                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInOperatorSideBay1}"
+                <controls:PpcSensorControl SensorState="{Binding Sensors.LuPresentInOperatorSide}"
                                            Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradleSide}" />
             </StackPanel>
         </Grid>

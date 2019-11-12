@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.MAS.DataLayer.DatabaseContext;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -12,12 +12,13 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private static readonly MemoryCacheEntryOptions CacheOptions = new MemoryCacheEntryOptions()
-            .SetSlidingExpiration(TimeSpan.FromMinutes(1));
-
         private readonly IMemoryCache cache;
 
+        private readonly MemoryCacheEntryOptions cacheOptions;
+
         private readonly DataLayerContext dataContext;
+
+        private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -28,11 +29,15 @@ namespace Ferretto.VW.MAS.DataLayer
         public ElevatorDataProvider(
             DataLayerContext dataContext,
             IMemoryCache memoryCache,
+            IConfiguration configuration,
+            IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
+            this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
@@ -40,6 +45,18 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Properties
 
         public object Context { get; private set; }
+
+        public double HorizontalPosition
+        {
+            get => this.elevatorVolatileDataProvider.HorizontalPosition;
+            set => this.elevatorVolatileDataProvider.HorizontalPosition = value;
+        }
+
+        public double VerticalPosition
+        {
+            get => this.elevatorVolatileDataProvider.VerticalPosition;
+            set => this.elevatorVolatileDataProvider.VerticalPosition = value;
+        }
 
         #endregion
 
@@ -57,6 +74,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == orientation);
 
                     if (cacheEntry is null)
@@ -64,7 +82,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new EntityNotFoundException(orientation.ToString());
                     }
 
-                    this.cache.Set(cacheKey, cacheEntry, CacheOptions);
+                    this.cache.Set(cacheKey, cacheEntry, this.cacheOptions);
                 }
 
                 return cacheEntry;
@@ -136,6 +154,35 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void ResetMachine()
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators.Single();
+
+                // Reset dati
+                elevator.LoadingUnit = null;
+                elevator.LoadingUnitId = null;
+
+                this.dataContext.SaveChanges();
+
+                // Reset cache
+                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
+                this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+            }
+        }
+
+        public MovementParameters ScaleMovementsByWeight(Orientation orientation)
+        {
+            var axis = orientation == Orientation.Horizontal
+                ? this.GetHorizontalAxis()
+                : this.GetVerticalAxis();
+
+            var loadingUnit = this.GetLoadingUnitOnBoard();
+
+            return axis.ScaleMovementsByWeight(loadingUnit);
+        }
+
         public void UnloadLoadingUnit()
         {
             lock (this.dataContext)
@@ -155,16 +202,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis =
-                    this.dataContext.ElevatorAxes
-                        .Include(a => a.Profiles)
-                        .ThenInclude(p => p.Steps)
-                        .Include(a => a.FullLoadMovement)
-                        .Include(a => a.EmptyLoadMovement)
-                        .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Offset = newOffset;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);
@@ -179,16 +220,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var verticalAxis =
-                    this.dataContext.ElevatorAxes
-                        .Include(a => a.Profiles)
-                        .ThenInclude(p => p.Steps)
-                        .Include(a => a.FullLoadMovement)
-                        .Include(a => a.EmptyLoadMovement)
-                        .SingleOrDefault(a => a.Orientation == Orientation.Vertical);
-
                 var cacheKey = GetAxisCacheKey(Orientation.Vertical);
-                this.cache.Set(cacheKey, verticalAxis, CacheOptions);
+                this.cache.Remove(cacheKey);
+
+                var verticalAxis = this.GetAxis(Orientation.Vertical);
 
                 verticalAxis.Resolution = newResolution;
                 this.dataContext.ElevatorAxes.Update(verticalAxis);

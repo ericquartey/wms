@@ -11,6 +11,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BeltBurnishingPosition BeltBurnishingPosition { get; set; }
 
+        bool ComputeElongation { get; set; }
+
         double? CurrentPosition { get; set; }
 
         int Delay { get; set; }
@@ -18,6 +20,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
         HorizontalMovementDirection Direction { get; set; }
 
         int ExecutedCycles { get; set; }
+
+        double FeedRate { get; set; }
 
         bool IsOneKMachine { get; set; }
 

@@ -56,12 +56,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                .Subscribe(
-                    this.OnHealthStatusChanged,
-                    ThreadOption.UIThread,
-                    false);
-
 #if DEBUG
             this.UserLogin = new UserLogin
             {
@@ -77,7 +71,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand LoginCommand =>
             this.loginCommand
@@ -163,7 +157,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 ||
                 this.ServiceHealthStatus == HealthStatus.Healthy)
             {
-                this.ShowNotification("Connessione ai servizi ristabilita");
+                this.ClearNotifications();
             }
         }
 
@@ -171,10 +165,28 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             await base.OnAppearedAsync();
 
-            var bay = await this.bayManager.GetBayAsync();
-            if (!(bay is null))
+            try
             {
-                this.BayNumber = (int)bay.Number;
+                this.subscriptionToken = this.healthProbeService.HealthStatusChanged
+                    .Subscribe(
+                        this.OnHealthStatusChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+                this.IsWaitingForResponse = true;
+                var bay = await this.bayManager.GetBayAsync();
+                if (!(bay is null))
+                {
+                    this.BayNumber = (int)bay.Number;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
 
             this.machineErrorsService.AutoNavigateOnError = false;
@@ -263,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                "TODO", // Utils.Modules.Operator,
+                Utils.Modules.Operator.OPERATORMENU,
                 data: null,
                 trackCurrentView: true);
         }

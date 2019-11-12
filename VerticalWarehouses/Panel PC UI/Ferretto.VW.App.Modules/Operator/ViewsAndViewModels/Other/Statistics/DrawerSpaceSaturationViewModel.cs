@@ -1,12 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Controls.Utils;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
-using Ferretto.VW.App.Services.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -16,13 +14,11 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
     {
         #region Fields
 
-        private readonly IMachineIdentityService identityService;
+        private readonly IMachineIdentityWebService identityService;
 
-        private readonly IMachineLoadingUnitsService loadingUnitService;
+        private readonly IMachineLoadingUnitsWebService loadingUnitService;
 
-        private readonly IMachineStatisticsService machineStatisticsService;
-
-        private readonly IStatusMessageService statusMessageService;
+        // private readonly IMachineStatisticsService machineStatisticsService;
 
         private int currentItemIndex;
 
@@ -45,16 +41,16 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
         #region Constructors
 
         public DrawerSpaceSaturationViewModel(
-            IMachineLoadingUnitsService loadingUnitService,
-            IMachineIdentityService identityService,
-            IMachineStatisticsService machineStatisticsService,
-            IStatusMessageService statusMessageService,
+            IMachineLoadingUnitsWebService loadingUnitService,
+            IMachineIdentityWebService identityService,
+
+            // IMachineStatisticsService machineStatisticsService,
             ICustomControlDrawerSaturationDataGridViewModel drawerSaturationDataGridViewModel)
         {
             this.loadingUnitService = loadingUnitService;
             this.identityService = identityService;
-            this.statusMessageService = statusMessageService;
-            this.machineStatisticsService = machineStatisticsService;
+
+            // this.machineStatisticsService = machineStatisticsService;
             this.dataGridViewModel = drawerSaturationDataGridViewModel;
         }
 
@@ -123,15 +119,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
                 this.RaisePropertyChanged(nameof(this.DataGridViewModel));
 
+                /*
                 var machineStat = await this.machineStatisticsService.GetAsync();
                 if (machineStat.AreaFillPercentage.HasValue)
                 {
                     this.FillPercentage = machineStat.AreaFillPercentage.Value;
                 }
+                */
             }
-            catch (Exception ex)
+            catch
             {
-                this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
+                // this.statusMessageService.Notify($"Cannot load data. {ex.Message}");
             }
         }
 

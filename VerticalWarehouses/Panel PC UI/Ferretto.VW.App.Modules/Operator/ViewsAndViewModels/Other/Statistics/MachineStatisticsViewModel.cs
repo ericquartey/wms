@@ -1,16 +1,14 @@
-﻿using System;
-using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class MachineStatisticsViewModel : BaseViewModel, IMachineStatisticsViewModel
+    public class MachineStatisticsViewModel : BaseMainViewModel
     {
         #region Fields
 
-        private readonly IMachineStatisticsService statisticsService;
+        private readonly IMachineIdentityWebService identityService;
 
         private MachineStatistics model;
 
@@ -18,14 +16,10 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Constructors
 
-        public MachineStatisticsViewModel(IMachineStatisticsService statisticsService)
+        public MachineStatisticsViewModel(IMachineIdentityWebService identityService)
+            : base(Services.PresentationMode.Operator)
         {
-            if (statisticsService == null)
-            {
-                throw new ArgumentNullException(nameof(statisticsService));
-            }
-
-            this.statisticsService = statisticsService;
+            this.identityService = identityService ?? throw new System.ArgumentNullException(nameof(identityService));
         }
 
         #endregion
@@ -42,17 +36,17 @@ namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 
         #region Methods
 
-        public override async Task OnEnterViewAsync()
+        public override async Task OnAppearedAsync()
         {
+            await base.OnAppearedAsync();
+
             try
             {
-                this.Model = await this.statisticsService.GetAsync();
-
-                await base.OnEnterViewAsync();
+                this.Model = await this.identityService.GetStatisticsAsync();
             }
-            catch
+            catch (System.Exception ex)
             {
-                //TODO call toolbar notification service
+                this.ShowNotification(ex);
             }
         }
 

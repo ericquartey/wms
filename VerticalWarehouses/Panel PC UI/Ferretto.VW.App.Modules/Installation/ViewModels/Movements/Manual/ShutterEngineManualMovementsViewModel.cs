@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteMoveUpCommand;
 
-        private ShutterPosition? currentPosition;
-
         private bool isMovingDown;
 
         private bool isMovingUp;
@@ -33,8 +31,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
-
-        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -69,12 +65,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canExecuteMoveUpCommand;
             private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
-        }
-
-        public ShutterPosition? CurrentPosition
-        {
-            get => this.currentPosition;
-            private set => this.SetProperty(ref this.currentPosition, value);
         }
 
         public bool IsMovingDown
@@ -162,27 +152,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(ShutterMovementDirection.Up);
         }
 
-        public override async Task OnAppearedAsync()
+        protected override void OnMachinePowerChanged()
         {
-            await base.OnAppearedAsync();
-
-            this.subscriptionToken = this.subscriptionToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
-                    .Subscribe(
-                        this.OnShutterPositionChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-            try
-            {
-                this.CurrentPosition = await this.shuttersWebService.GetShutterPositionAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.RefreshCanExecuteCommands();
         }
 
         protected override async Task StopMovementAsync()
@@ -204,11 +176,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsStopping = false;
                 this.EnableAll();
             }
-        }
-
-        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
-        {
-            this.CurrentPosition = (ShutterPosition)message.Data.ShutterPosition;
         }
 
         private void RefreshCanExecuteCommands()

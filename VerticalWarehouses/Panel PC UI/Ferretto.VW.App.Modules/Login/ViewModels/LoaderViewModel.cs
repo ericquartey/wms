@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             set => this.SetProperty(ref this.applicationVersion, value);
         }
 
-        public override EnableMask EnableMask => EnableMask.None;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 

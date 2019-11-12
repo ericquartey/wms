@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
@@ -13,6 +14,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
+        private readonly ISensorsService sensorsService;
+
         private IEnumerable<Cell> cells;
 
         private int? destinationCellId;
@@ -22,17 +25,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public BaseCellMovementsViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
-                    IMachineCellsWebService machineCellsWebService,
-                    IBayManager bayManagerService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
+            IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 bayManagerService)
-
         {
             if (machineCellsWebService is null)
             {
@@ -40,6 +39,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
 
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
         }
 
         #endregion
@@ -90,6 +90,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
+        public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
+
         protected IEnumerable<Cell> Cells
         {
             get => this.cells;
@@ -118,6 +120,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
+
+                if (this.Cells.Count() > 0)
+                {
+                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                }
+                else
+                {
+                    this.DestinationCellId = null;
+                }
             }
             catch (Exception ex)
             {

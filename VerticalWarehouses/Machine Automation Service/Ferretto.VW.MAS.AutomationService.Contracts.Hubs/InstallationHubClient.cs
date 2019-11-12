@@ -1,0 +1,164 @@
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Hubs;
+using Microsoft.AspNetCore.SignalR.Client;
+
+namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
+{
+    public class InstallationHubClient : AutoReconnectHubClient, IInstallationHubClient
+    {
+        #region Constructors
+
+        public InstallationHubClient(string url, string installationHubPath)
+            : base(new Uri(new Uri(url), installationHubPath))
+        {
+        }
+
+        #endregion
+
+        #region Events
+
+        public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
+
+        public event EventHandler<MachinePowerChangedEventArgs> MachinePowerChanged;
+
+        public event EventHandler<MessageNotifiedEventArgs> MessageReceived;
+
+        #endregion
+
+        #region Methods
+
+        protected override void RegisterEvents(HubConnection connection)
+        {
+            connection.On<MachineMode>(
+                nameof(IInstallationHub.MachineModeChanged), this.OnMachineModeChanged);
+
+            connection.On<MachinePowerState>(
+                nameof(IInstallationHub.MachinePowerChanged), this.OnMachinePowerChanged);
+
+            connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
+                nameof(IInstallationHub.SensorsChanged), this.OnSensorsChanged);
+
+            connection.On<NotificationMessageUI<CalibrateAxisMessageData>>(
+                nameof(IInstallationHub.CalibrateAxisNotify), this.OnCalibrateAxisNotify);
+
+            connection.On<NotificationMessageUI<SwitchAxisMessageData>>(
+                 nameof(IInstallationHub.SwitchAxisNotify), this.OnSwitchAxisNotify);
+
+            connection.On<NotificationMessageUI<ShutterPositioningMessageData>>(
+                 nameof(IInstallationHub.ShutterPositioningNotify), this.OnShutterPositioningNotify);
+
+            connection.On<NotificationMessageUI<PositioningMessageData>>(
+                 nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
+
+            connection.On<NotificationMessageUI<CurrentPositionMessageData>>(
+                 nameof(IInstallationHub.CurrentPositionChanged), this.OnCurrentPositionChanged);
+
+            connection.On<NotificationMessageUI<HomingMessageData>>(
+                 nameof(IInstallationHub.HomingProcedureStatusChanged), this.OnHomingProcedureStatusChanged);
+
+            connection.On<NotificationMessageUI<ResolutionCalibrationMessageData>>(
+                 nameof(IInstallationHub.ResolutionCalibrationNotify), this.OnResolutionCalibrationNotify);
+
+            connection.On<NotificationMessageUI<InverterStatusWordMessageData>>(
+                 nameof(IInstallationHub.InverterStatusWordChanged), this.OnInverterStatusWordChanged);
+
+            connection.On<NotificationMessageUI<MachineStatusActiveMessageData>>(
+                 nameof(IInstallationHub.MachineStatusActiveNotify), this.OnMachineStatusActiveNotify);
+
+            connection.On<NotificationMessageUI<MachineStateActiveMessageData>>(
+                 nameof(IInstallationHub.MachineStateActiveNotify), this.OnMachineStateActiveNotify);
+
+            connection.On<NotificationMessageUI<PowerEnableMessageData>>(
+                 nameof(IInstallationHub.PowerEnableNotify), this.OnPowerEnableNotify);
+
+            connection.On<NotificationMessageUI<ElevatorWeightCheckMessageData>>(
+                 nameof(IInstallationHub.ElevatorWeightCheck), this.OnElavtorWeightCheck);
+
+            connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
+                nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
+        }
+
+        private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnCurrentPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnElavtorWeightCheck(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnInverterStatusWordChanged(NotificationMessageUI<InverterStatusWordMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineModeChanged(MachineMode machineMode)
+        {
+            this.MachineModeChanged?.Invoke(this, new MachineModeChangedEventArgs(machineMode));
+        }
+
+        private void OnMachinePowerChanged(MachinePowerState machinePowerState)
+        {
+            this.MachinePowerChanged?.Invoke(this, new MachinePowerChangedEventArgs(machinePowerState));
+        }
+
+        private void OnMachineStateActiveNotify(NotificationMessageUI<MachineStateActiveMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMachineStatusActiveNotify(NotificationMessageUI<MachineStatusActiveMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnMoveLoadingUnit(NotificationMessageUI<MoveLoadingUnitMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnPositioningNotify(NotificationMessageUI<PositioningMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnPowerEnableNotify(NotificationMessageUI<PowerEnableMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnResolutionCalibrationNotify(NotificationMessageUI<ResolutionCalibrationMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<CommonUtils.Messages.Data.SensorsChangedMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnShutterPositioningNotify(NotificationMessageUI<CommonUtils.Messages.Data.ShutterPositioningMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnSwitchAxisNotify(NotificationMessageUI<SwitchAxisMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        #endregion
+    }
+}

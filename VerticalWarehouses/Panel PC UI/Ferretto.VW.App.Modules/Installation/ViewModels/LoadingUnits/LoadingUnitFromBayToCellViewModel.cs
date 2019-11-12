@@ -1,10 +1,10 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
@@ -13,18 +13,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromBayToCellViewModel(
-                    IMachineElevatorWebService machineElevatorWebService,
-                    IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-                    IMachineSensorsWebService machineSensorsWebService,
-                    IMachineCellsWebService machineCellsWebService,
-                    IBayManager bayManagerService)
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
+            Controls.Interfaces.ISensorsService sensorsService,
+            IBayManager bayManagerService)
             : base(
-                machineElevatorWebService,
                 machineLoadingUnitsWebService,
-                machineSensorsWebService,
                 machineCellsWebService,
+                sensorsService,
                 bayManagerService)
-
         {
         }
 
@@ -32,13 +29,36 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Methods
 
+        public async Task GetLoadingUnits()
+        {
+            try
+            {
+                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
+                if (lst.Count() > 0)
+                {
+                    this.LoadingUnitId = lst.Max(o => o.Id) + 1;
+                }
+                else
+                {
+                    this.LoadingUnitId = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
-            this.LoadingUnitId = null;
+            await this.GetLoadingUnits();
 
-            this.SelectBayPosition1();
+            this.SelectBayPositionDown();
         }
 
         public override async Task StartAsync()
@@ -47,8 +67,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 if (!this.IsLoadingUnitIdValid)
                 {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
-                    return;
+                    await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
                 }
 
                 if (!this.IsCellIdValid)
@@ -63,6 +82,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
+                //if (!this.IsLoadingUnitInBay)
+                //{
+                //    this.ShowNotification("la baia non è occupata", Services.Models.NotificationSeverity.Warning);
+                //    return;
+                //}
+
                 var source = this.GetLoadingUnitSource();
 
                 if (source == LoadingUnitLocation.NoLocation)
@@ -75,6 +100,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 //await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
+
+                await this.GetLoadingUnits();
             }
             catch (Exception ex)
             {

@@ -62,6 +62,7 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC UI\Ferretto.VW.App\Ferretto.VW.App.csproj", "{14C716B7-67C9-40B1-8BC2-139B8CE16F02}"
 	ProjectSection(ProjectDependencies) = postProject
 		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {ED8D9E03-C5C4-4319-8207-122DA6C2D043}
+		{94F34409-DE62-439C-B597-679A5342EC92} = {94F34409-DE62-439C-B597-679A5342EC92}
 		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
 	EndProjectSection
@@ -83,7 +84,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.Resources",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.InverterDriver.Contracts", "Machine Automation Service\Ferretto.VW.MAS.InverterDriver.Contracts\Ferretto.VW.MAS.InverterDriver.Contracts.csproj", "{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ferretto.VW.MAS.MissionManager", "Machine Automation Service\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj", "{09A8D20C-7695-442F-A5F2-91BEC393222F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.MissionManager", "Machine Automation Service\Ferretto.VW.MAS.MIssionManager\Ferretto.VW.MAS.MissionManager.csproj", "{09A8D20C-7695-442F-A5F2-91BEC393222F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Ferretto.VW.App.Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{94F34409-DE62-439C-B597-679A5342EC92}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Contracts.Hubs", "Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj", "{0F709174-2F76-479B-A78B-A8E5EB318AEB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -638,6 +643,42 @@ Global
 		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x64.Build.0 = Release|Any CPU
 		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x86.ActiveCfg = Release|Any CPU
 		{09A8D20C-7695-442F-A5F2-91BEC393222F}.Release|x86.Build.0 = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|x64.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Debug|x86.Build.0 = Debug|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|x64.ActiveCfg = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|x64.Build.0 = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|x86.ActiveCfg = Release|Any CPU
+		{94F34409-DE62-439C-B597-679A5342EC92}.Release|x86.Build.0 = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|x64.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Debug|x86.Build.0 = Debug|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x64.ActiveCfg = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x64.Build.0 = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x86.ActiveCfg = Release|Any CPU
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -674,6 +715,8 @@ Global
 		{96D3417B-1043-4F63-85D1-073561F098E2} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{1A1461AC-6AAD-4DCE-A1D6-2C91749D2869} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{09A8D20C-7695-442F-A5F2-91BEC393222F} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{94F34409-DE62-439C-B597-679A5342EC92} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
+		{0F709174-2F76-479B-A78B-A8E5EB318AEB} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

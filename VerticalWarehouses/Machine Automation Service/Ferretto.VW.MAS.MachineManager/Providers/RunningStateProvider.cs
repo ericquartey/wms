@@ -9,7 +9,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.MachineManager.Providers
 {
-    internal class RunningStateProvider : BaseProvider, IRunningStateProvider
+    internal sealed class RunningStateProvider : BaseProvider, IRunningStateProvider
     {
         #region Fields
 
@@ -39,8 +39,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void SetRunningState(bool requestedState, BayNumber requestingBay, MessageActor sender)
         {
+            // TODO check this call...
             this.SendCommandToMissionManager(
-                new ChangeRunningStateMessageData(requestedState),
+                new ChangeRunningStateMessageData(requestedState, null, CommandAction.Start, requestedState ? StopRequestReason.NoReason : StopRequestReason.Stop),
                 $"Bay {requestingBay} requested setting Running State to {requestedState}",
                 sender,
                 MessageType.ChangeRunningState,

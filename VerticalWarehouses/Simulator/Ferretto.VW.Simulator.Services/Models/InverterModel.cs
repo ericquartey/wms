@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Input;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -391,6 +392,8 @@ namespace Ferretto.VW.Simulator.Services.Models
         public int AxisPositionX { get => this.axisPosition[Axis.Horizontal]; set { var item = this.axisPosition[Axis.Horizontal]; this.SetProperty(ref item, value); } }
 
         public int AxisPositionY { get => this.axisPosition[Axis.Vertical]; set { var item = this.axisPosition[Axis.Vertical]; this.SetProperty(ref item, value); } }
+
+        public List<InverterBlockDefinition> BlockDefinitions { get; set; }
 
         public InverterCalibrationMode CalibrationMode
         {
@@ -933,6 +936,13 @@ namespace Ferretto.VW.Simulator.Services.Models
         private void InverterInFault()
         {
             this.IsFault = !this.IsFault;
+            if (this.IsFault)
+            {
+                this.IsReadyToSwitchOn = false;
+                this.IsSwitchedOn = false;
+                this.IsVoltageEnabled = false;
+                this.IsOperationEnabled = false;
+            }
         }
 
         private void ShutterTick(object state)

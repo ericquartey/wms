@@ -62,9 +62,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
+                 notification.Type == MessageType.ShutterPositioning ||
+                 notification.Status == MessageStatus.OperationStop ||
+                 notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
-                 notification.Status == MessageStatus.OperationRunningStop ||
-                 notification.Type == MessageType.ShutterPositioning);
+                 notification.Status == MessageStatus.OperationRunningStop);
         }
 
         public double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
@@ -139,9 +141,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, null, null, openShutter, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, openShutter, requestingBay, sender);
 
             if (openShutter)
             {
@@ -156,7 +158,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         /// <summary>
@@ -175,17 +177,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, requestingBay, MessageActor.MachineManager);
+            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, true, requestingBay, MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning || message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.Positioning ||
+                message.Type == MessageType.ShutterPositioning ||
+                message.Type == MessageType.MachineManagerException)
             {
                 return message.Status;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public MessageStatus ShutterStatus(NotificationMessage message)
@@ -194,7 +198,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return message.Status;
             }
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         public void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay)
@@ -239,7 +243,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return MessageStatus.OperationEnd;
             }
 
-            return MessageStatus.NoStatus;
+            return MessageStatus.NotSpecified;
         }
 
         #endregion

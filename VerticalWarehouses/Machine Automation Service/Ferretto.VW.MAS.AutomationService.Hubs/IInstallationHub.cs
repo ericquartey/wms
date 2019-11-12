@@ -8,8 +8,6 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
-        Task ChangeRunningState(IBaseNotificationMessageUI message);
-
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
@@ -17,6 +15,10 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 
         Task InverterStatusWordChanged(IBaseNotificationMessageUI message);
+
+        Task MachineModeChanged(CommonUtils.Messages.MachineMode machineMode);
+
+        Task MachinePowerChanged(CommonUtils.Messages.MachinePowerState machinePowerState);
 
         Task MachineStateActiveNotify(IBaseNotificationMessageUI message);
 

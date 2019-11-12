@@ -5,6 +5,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
@@ -14,11 +16,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BaysController : BaseAutomationController
+    public class BaysController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
         private readonly IBaysProvider baysProvider;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -27,14 +31,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public BaysController(
-            IEventAggregator eventAggregator,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysProvider baysProvider)
-            : base(eventAggregator)
+            IBaysProvider baysProvider,
+            IEventAggregator eventAggregator)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.eventAggregator = eventAggregator;
         }
+
+        #endregion
+
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
 
         #endregion
 
@@ -140,6 +150,25 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var bay = this.baysProvider.UpdatePosition(this.BayNumber, position, height);
 
             return this.Ok(bay);
+        }
+
+        [Obsolete("Move message publishing to providers.")]
+        protected void PublishCommand(
+            IMessageData messageData,
+            string description,
+            MessageActor receiver,
+            MessageType messageType)
+        {
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        messageData,
+                        description,
+                        receiver,
+                        MessageActor.WebApi,
+                        messageType,
+                        this.BayNumber));
         }
 
         #endregion

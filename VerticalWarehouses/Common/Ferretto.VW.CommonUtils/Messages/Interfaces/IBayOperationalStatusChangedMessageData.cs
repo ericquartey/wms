@@ -8,8 +8,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         BayStatus BayStatus { get; }
 
-        BayType BayType { get; }
-
         int? CurrentMissionOperationId { get; }
 
         BayNumber Index { get; }

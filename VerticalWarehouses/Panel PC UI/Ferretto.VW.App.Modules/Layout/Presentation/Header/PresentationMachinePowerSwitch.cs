@@ -1,73 +1,58 @@
 ﻿using System;
-using System.Linq;
 using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.CommonUtils.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Layout.Presentation
 {
-    public class PresentationMachinePowerSwitch : BasePresentationViewModel
+    public class PresentationMachinePowerSwitch : BasePresentationViewModel, IDisposable
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly SubscriptionToken healthStatusChangedToken;
 
         private readonly IMachineModeService machineModeService;
 
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
-        private readonly SubscriptionToken runningStateSubscriptionToken;
-
-        private readonly SubscriptionToken sensorsSubscriptionToken;
-
-        private readonly SubscriptionToken subscriptionToken;
-
-        private bool emergencyButtonPressed;
+        private readonly SubscriptionToken machinePowerChangedToken;
 
         private bool isBusy;
 
+        private bool isDisposed;
+
         private bool isMachinePoweredOn;
+
+        private bool isUnknownState;
 
         #endregion
 
         #region Constructors
 
         public PresentationMachinePowerSwitch(
-            IMachineModeService machineModeService,
-            IMachineSensorsWebService machineSensorsWebService,
-            IEventAggregator eventAggregator)
+            IMachineModeService machineModeService)
             : base(PresentationTypes.MachineMarch)
         {
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            this.sensorsSubscriptionToken = this.eventAggregator
-               .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-               .Subscribe(
-                   message => this.OnSensorsChanged(message?.Data?.SensorsStates),
-                   ThreadOption.UIThread,
-                   false);
-
-            this.runningStateSubscriptionToken = this.eventAggregator
-                .GetEvent<NotificationEventUI<ChangeRunningStateMessageData>>()
+            this.machinePowerChangedToken = this.EventAggregator
+                .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
                 .Subscribe(
-                    message => this.OnRunningStateChanged(message),
+                    this.OnMachinePowerChanged,
                     ThreadOption.UIThread,
                     false);
 
-            this.subscriptionToken = this.machineModeService.MachineModeChangedEvent
+            this.healthStatusChangedToken = this.EventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
                 .Subscribe(
-                    this.OnMachineModeChanged,
+                    this.OnHealthStatusChanged,
                     ThreadOption.UIThread,
                     false);
+
+            this.UpdatePowerState(this.machineModeService.MachinePower);
         }
 
         #endregion
@@ -77,13 +62,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public bool IsBusy
         {
             get => this.isBusy;
-            set
-            {
-                if (this.SetProperty(ref this.isBusy, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.isBusy, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMachinePoweredOn
@@ -92,24 +71,23 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             set => this.SetProperty(ref this.isMachinePoweredOn, value);
         }
 
+        public bool IsUnknownState
+        {
+            get => this.isUnknownState;
+            set => this.SetProperty(ref this.isUnknownState, value, this.RaiseCanExecuteChanged);
+        }
+
         #endregion
 
         #region Methods
 
+        public void Dispose()
+        {
+            this.Dispose(true);
+        }
+
         public override async Task ExecuteAsync()
         {
-            var sensors = await this.machineSensorsWebService.GetAsync();
-            this.OnSensorsChanged(sensors.ToArray());
-
-            if (this.emergencyButtonPressed)
-            {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                dialogService.ShowMessage(Resources.VWApp.EnsureEmergencyIsOff, Resources.VWApp.EmergencyIsOn, DialogType.Exclamation, DialogButtons.OK);
-                return;
-            }
-
-            this.IsBusy = true;
-
             if (this.IsMachinePoweredOn)
             {
                 await this.machineModeService.PowerOffAsync();
@@ -122,60 +100,54 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 {
                     await this.machineModeService.PowerOnAsync();
                 }
-                else
-                {
-                    this.IsBusy = false;
-                }
-            }
-        }
-
-        public override async Task OnLoadedAsync()
-        {
-            await base.OnLoadedAsync();
-
-            try
-            {
-                var sensors = await this.machineSensorsWebService.GetAsync();
-                this.OnSensorsChanged(sensors.ToArray());
-            }
-            catch
-            {
             }
         }
 
         protected override bool CanExecute()
         {
-            return !this.isBusy;
+            return
+                !this.isBusy
+                &&
+                !this.isUnknownState;
         }
 
-        private void OnMachineModeChanged(MachineModeChangedEventArgs e)
+        private void Dispose(bool disposing)
         {
-            this.IsMachinePoweredOn = e.MachinePower == Services.Models.MachinePowerState.Powered;
-            this.IsBusy = false;
-        }
-
-        private void OnRunningStateChanged(NotificationMessageUI<ChangeRunningStateMessageData> message)
-        {
-            if (message.Status != CommonUtils.Messages.Enumerations.MessageStatus.OperationStart)
+            if (this.isDisposed)
             {
-                this.IsBusy = false;
+                return;
             }
+
+            if (disposing)
+            {
+                this.machinePowerChangedToken.Dispose();
+                this.healthStatusChangedToken.Dispose();
+            }
+
+            this.isDisposed = true;
         }
 
-        private void OnSensorsChanged(bool[] sensorsStates)
+        private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
-            var emergencyPressed =
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay1]
-                ||
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay2]
-                ||
-                sensorsStates[(int)IOMachineSensors.MushroomEmergencyButtonBay3];
+            this.IsUnknownState =
+                e.HealthStatus != HealthStatus.Healthy
+                &&
+                e.HealthStatus != HealthStatus.Degraded;
+        }
 
-            if (this.emergencyButtonPressed != emergencyPressed)
-            {
-                this.IsBusy = false;
-                this.emergencyButtonPressed = emergencyPressed;
-            }
+        private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
+        {
+            this.UpdatePowerState(e.MachinePowerState);
+        }
+
+        private void UpdatePowerState(MachinePowerState machinePowerState)
+        {
+            this.IsMachinePoweredOn = machinePowerState == MachinePowerState.Powered;
+
+            this.IsBusy =
+                machinePowerState == MachinePowerState.PoweringDown
+                ||
+                machinePowerState == MachinePowerState.PoweringUp;
         }
 
         #endregion

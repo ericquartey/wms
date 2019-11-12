@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void ProcessResponseMessage(IoReadMessage message)
         {
-            var checkMessage = message.FormatDataOperation == Enumerations.ShdFormatDataOperation.Data &&
+            var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data &&
                                message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn;
 
             if (checkMessage && !this.pulseOneTime)

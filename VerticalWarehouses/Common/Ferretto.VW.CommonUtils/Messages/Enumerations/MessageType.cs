@@ -2,7 +2,7 @@
 {
     public enum MessageType
     {
-        NoType,
+        NotSpecified,
 
         Homing,
 
@@ -11,6 +11,8 @@
         Movement,
 
         SensorsChanged,
+
+        MachineMode,
 
         DataLayerReady,
 

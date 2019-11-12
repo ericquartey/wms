@@ -20,15 +20,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingToBay;
 
-        private bool isPosition1Selected;
+        private bool isPositionDownSelected;
 
-        private bool isPosition2Selected;
+        private bool isPositionUpSelected;
 
         private LoadingUnit loadingUnitInBay;
 
-        private DelegateCommand selectBayPosition1Command;
+        private DelegateCommand selectBayPositionDownCommand;
 
-        private DelegateCommand selectBayPosition2Command;
+        private DelegateCommand selectBayPositionUpCommand;
 
         #endregion
 
@@ -59,26 +59,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsPosition1Selected
+        public bool IsPositionDownSelected
         {
-            get => this.isPosition1Selected;
+            get => this.isPositionDownSelected;
             set
             {
-                if (this.SetProperty(ref this.isPosition1Selected, value))
+                if (this.SetProperty(ref this.isPositionDownSelected, value))
                 {
-                    this.IsPosition2Selected = !this.IsPosition1Selected;
+                    this.IsPositionUpSelected = !this.IsPositionDownSelected;
                 }
             }
         }
 
-        public bool IsPosition2Selected
+        public bool IsPositionUpSelected
         {
-            get => this.isPosition2Selected;
+            get => this.isPositionUpSelected;
             set
             {
-                if (this.SetProperty(ref this.isPosition2Selected, value))
+                if (this.SetProperty(ref this.isPositionUpSelected, value))
                 {
-                    this.IsPosition1Selected = !this.IsPosition2Selected;
+                    this.IsPositionDownSelected = !this.IsPositionUpSelected;
                 }
             }
         }
@@ -90,27 +90,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand SelectBayPosition1Command =>
-            this.selectBayPosition1Command
+            this.selectBayPositionDownCommand
             ??
-            (this.selectBayPosition1Command = new DelegateCommand(this.SelectBayPosition1));
+            (this.selectBayPositionDownCommand = new DelegateCommand(this.SelectBayPositionDown));
 
         public ICommand SelectBayPosition2Command =>
-            this.selectBayPosition2Command
+            this.selectBayPositionUpCommand
             ??
-            (this.selectBayPosition2Command = new DelegateCommand(this.SelectBayPosition2));
+            (this.selectBayPositionUpCommand = new DelegateCommand(this.SelectBayPositionUp));
 
         #endregion
 
         #region Methods
-
-        private bool CanMoveToBayHeight()
-        {
-            return this.BayPositionHeight.HasValue
-              &&
-              !this.IsWaitingForResponse
-              &&
-              !this.IsElevatorMoving;
-        }
 
         private async Task MoveToBayHeightAsync()
         {
@@ -141,7 +132,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                         this.BayPositionHeight.Value,
                         this.procedureParameters.FeedRate,
-                        false);
+                        false,
+                        true);
 
                 this.IsElevatorMovingToBay = true;
             }
@@ -157,15 +149,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void SelectBayPosition1()
+        private void SelectBayPositionDown()
         {
-            this.IsPosition1Selected = true;
+            this.IsPositionDownSelected = true;
             this.BayPositionHeight = this.bay.Positions.First().Height;
         }
 
-        private void SelectBayPosition2()
+        private void SelectBayPositionUp()
         {
-            this.IsPosition2Selected = true;
+            this.IsPositionUpSelected = true;
             this.BayPositionHeight = this.bay.Positions.Last().Height;
         }
 

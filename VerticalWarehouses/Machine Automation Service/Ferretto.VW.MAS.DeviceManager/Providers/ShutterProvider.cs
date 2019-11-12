@@ -78,19 +78,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         // return true if movement is started
         public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
-            var direction = ShutterMovementDirection.None;
+            var direction = ShutterMovementDirection.NotSpecified;
             var position = this.sensorsProvider.GetShutterPosition(bayNumber);
             switch (targetPosition)
             {
                 case ShutterPosition.Closed:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Opened || position == ShutterPosition.Closed)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
                     break;
 
                 case ShutterPosition.Half:
-                    if (position == ShutterPosition.Opened)
+                    if (position == ShutterPosition.Opened || position == ShutterPosition.Half)
                     {
                         direction = ShutterMovementDirection.Down;
                     }
@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 case ShutterPosition.Opened:
-                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed)
+                    if (position == ShutterPosition.Half || position == ShutterPosition.Closed || position == ShutterPosition.Opened)
                     {
                         direction = ShutterMovementDirection.Up;
                     }
@@ -110,7 +110,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 default:
                     break;
             }
-            if (direction == ShutterMovementDirection.None)
+
+            if (direction == ShutterMovementDirection.NotSpecified)
             {
                 throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
             }
@@ -173,8 +174,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var delayInMilliseconds = delayInSeconds * 1000;
 
             var messageData = new ShutterPositioningMessageData(
-                ShutterPosition.None,
-                ShutterMovementDirection.None,
+                ShutterPosition.NotSpecified,
+                ShutterMovementDirection.NotSpecified,
                 bay.Shutter.Type,
                 speedRate,
                 MovementMode.ShutterTest,

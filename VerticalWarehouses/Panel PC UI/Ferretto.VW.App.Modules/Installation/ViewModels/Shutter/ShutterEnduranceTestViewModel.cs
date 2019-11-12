@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
@@ -276,8 +277,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
                 this.InputDelayBetweenCycles = 1;
-                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
-                this.CumulativePerformedCyclesBeforeStart = this.CumulativePerformedCycles;
+                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;                
 
                 this.sensors = new ShutterSensors(this.BayNumber);
 
@@ -349,6 +349,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
+
+                this.CumulativePerformedCyclesBeforeStart = this.CumulativePerformedCycles;
 
                 await this.shuttersWebService.RunTestAsync(
                     this.InputDelayBetweenCycles.Value,

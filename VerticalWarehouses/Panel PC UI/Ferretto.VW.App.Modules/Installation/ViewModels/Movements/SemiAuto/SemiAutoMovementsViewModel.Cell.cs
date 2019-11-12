@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ? null
                         : this.Cells.SingleOrDefault(c => c.Id == value);
 
-                    this.InputHeight = this.SelectedCell?.Position ?? 0;
+                    this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -125,7 +125,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ? null
                         : this.LoadingUnits.SingleOrDefault(c => c.Id == value);
 
-                    this.InputCellId = this.SelectedLoadingUnit?.CellId ?? 0;
+                    this.InputCellId = this.SelectedLoadingUnit?.CellId;
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -257,7 +257,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving;
+                !this.IsMoving
+                &&
+                !this.sensorsService.Sensors.LuPresentInMachineSide
+                &&
+                !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private async Task MoveToCellHeightAsync()
@@ -269,6 +273,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
                     this.procedureParameters.FeedRateAfterZero,
+                    true,
                     true);
 
                 this.IsElevatorMovingToCell = true;
@@ -294,6 +299,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
                     this.procedureParameters.FeedRateAfterZero,
+                    false,
                     false);
 
                 this.IsElevatorMovingToHeight = true;
@@ -319,7 +325,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedLoadingUnit.Cell?.Position ?? 0,
                     this.procedureParameters.FeedRateAfterZero,
-                    false);
+                    false,
+                    true);
 
                 this.IsElevatorMovingToLoadingUnit = true;
             }

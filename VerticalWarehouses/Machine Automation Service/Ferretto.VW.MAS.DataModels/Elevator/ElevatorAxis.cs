@@ -122,54 +122,32 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
-        /// <summary>
-        /// Gets or sets the kM value in the formula weight = kM * current + kS.
-        /// </summary>
-        public double WeightMeasureMultiply { get; set; }
-
-        /// <summary>
-        /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/meter.
-        /// </summary>
-        public double WeightMeasureSpeed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the kS value in the formula weight = kM * current + kS.
-        /// </summary>
-        public double WeightMeasureSum { get; set; }
-
-        /// <summary>
-        /// Gets or sets the time between the start of slow upward movement and the torque current request message, in tenth of seconds.
-        /// </summary>
-        public int WeightMeasureTime { get; set; }
+        public WeightMeasurement WeightMeasurement { get; set; }
 
         #endregion
 
         #region Methods
 
-        public MovementParameters ScaleMovementsByWeight(double grossWeight, double maximumLoadOnBoard)
+        public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit)
         {
-            if (grossWeight < 0)
+            if (loadingUnit is null)
             {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
+                return this.EmptyLoadMovement;
             }
 
-            if (maximumLoadOnBoard <= 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
-            }
+            var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;
 
-            if (grossWeight > maximumLoadOnBoard)
-            {
-                throw new ArgumentOutOfRangeException(nameof(grossWeight));
-            }
+            System.Diagnostics.Debug.Assert(
+                maxGrossWeight > 0,
+                "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
-            var scalingFactor = grossWeight / maximumLoadOnBoard;
+            var scalingFactor = loadingUnit.GrossWeight / maxGrossWeight;
 
             return new MovementParameters
             {
-                Speed = this.EmptyLoadMovement.Speed + ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
-                Acceleration = this.EmptyLoadMovement.Acceleration + ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
-                Deceleration = this.EmptyLoadMovement.Deceleration + ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
+                Speed = this.EmptyLoadMovement.Speed - ((this.EmptyLoadMovement.Speed - this.FullLoadMovement.Speed) * scalingFactor),
+                Acceleration = this.EmptyLoadMovement.Acceleration - ((this.EmptyLoadMovement.Acceleration - this.FullLoadMovement.Acceleration) * scalingFactor),
+                Deceleration = this.EmptyLoadMovement.Deceleration - ((this.EmptyLoadMovement.Deceleration - this.FullLoadMovement.Deceleration) * scalingFactor),
             };
         }
 

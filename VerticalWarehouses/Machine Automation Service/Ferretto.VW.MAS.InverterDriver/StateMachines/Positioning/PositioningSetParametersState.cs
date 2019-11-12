@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataLayer;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
@@ -40,8 +41,15 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         /// <inheritdoc />
         public override void Start()
         {
-            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.PositionTargetPosition, this.data.TargetPosition));
-            this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
+            var definitions = new List<InverterBlockDefinition>
+                    {
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.PositionTargetPosition),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.PositionTargetSpeed),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.PositionAcceleration),
+                        new InverterBlockDefinition(this.InverterStatus.SystemIndex, InverterParameterId.PositionDeceleration)
+                    };
+            this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockDefinition, definitions));
+            this.Logger.LogDebug($"Set block definition: {InverterParameterId.PositionTargetPosition}, {InverterParameterId.PositionTargetSpeed}, {InverterParameterId.PositionAcceleration}, {InverterParameterId.PositionDeceleration}");
         }
 
         /// <inheritdoc />
@@ -73,6 +81,18 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
                 switch (message.ParameterId)
                 {
+                    case InverterParameterId.BlockDefinition:
+                        object[] blockValues = new object[]
+                        {
+                            this.data.TargetPosition,
+                            this.data.TargetSpeed[0],
+                            this.data.TargetAcceleration[0],
+                            this.data.TargetDeceleration[0]
+                        };
+                        this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
+                        this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
+                        break;
+
                     case InverterParameterId.PositionTargetPosition:
                         //if (this.data.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
                         //{
@@ -107,6 +127,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         break;
 
                     case InverterParameterId.PositionDeceleration:
+                    case InverterParameterId.BlockWrite:
                         this.ParentStateMachine.ChangeState(
                             new PositioningEnableOperationState(
                                 this.ParentStateMachine,

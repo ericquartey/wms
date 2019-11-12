@@ -24,14 +24,14 @@
         public double BeltSpacing { get; set; }
 
         /// <summary>
+        /// Gets or sets the weight of the elevator structure in kg
+        /// </summary>
+        public double ElevatorWeight { get; set; }
+
+        /// <summary>
         /// Gets or sets the half-shaft length, in millimeters.
         /// </summary>
         public double HalfShaftLength { get; set; }
-
-        /// <summary>
-        /// Gets or sets the maximum weight, in kilograms, that can be loaded on the cradle.
-        /// </summary>
-        public double MaximumLoadOnBoard { get; set; }
 
         /// <summary>
         /// Gets or sets the diameter, in millimeters, of the pulley (belt wheel).

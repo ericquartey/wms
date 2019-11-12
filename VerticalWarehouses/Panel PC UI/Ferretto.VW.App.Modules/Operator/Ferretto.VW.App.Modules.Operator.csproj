@@ -4,11 +4,11 @@
     <LanguageTargets>$(MSBuildToolsPath)\Microsoft.CSharp.targets</LanguageTargets>
     <TargetFramework>net471</TargetFramework>
     <OutputType>Library</OutputType>
-    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup>
     <OutputPath>..\..\Ferretto.VW.App\bin\$(Configuration)</OutputPath>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,17 +23,12 @@
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
     <PackageReference Include="Unity" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Common\Common_Utils\Ferretto.VW.CommonUtils.csproj" />
-    <ProjectReference Include="..\..\..\Common\Resources\Ferretto.VW.App.Resources.csproj" />
-    <ProjectReference Include="..\..\..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
-    <ProjectReference Include="..\..\..\Machine Automation Service\AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
-    <ProjectReference Include="..\..\CustomControls\Ferretto.VW.App.Controls.csproj" />
-    <ProjectReference Include="..\..\Utils\Ferretto.VW.Utils.csproj" />
+     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+       <PrivateAssets>all</PrivateAssets>
+       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+     </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
@@ -48,8 +43,120 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (2).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (3).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (4).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (5).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (6).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (7).xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy.xaml" />
+    <None Remove="Views\DrawerOperations\DrawerWaitView.xaml" />
+    <None Remove="Views\EmptyView.xaml" />
+    <None Remove="Views\ItemSearch\WaitingListDetailView.xaml" />
+    <None Remove="Views\ItemSearch\WaitingListsView.xaml" />
+    <None Remove="Views\OperatorMenuView.xaml" />
+    <None Remove="Views\Others\DrawerCompactingDetailView.xaml" />
+    <None Remove="Views\Others\DrawerCompactingView.xaml" />
+    <None Remove="Views\Others\ImmediateDrawerCallView.xaml" />
+    <None Remove="Views\Others\MaintenanceView.xaml" />
+    <None Remove="Views\Others\MenuNavigationView.xaml" />
+    <None Remove="Views\Others\OthersNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsCellsView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsDrawersView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsErrorsView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsMachineView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsMenuNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsNavigationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsSpaceSaturationView.xaml" />
+    <None Remove="Views\Others\Statistics\StatisticsWeightSaturationView.xaml" />
+    <None Remove="Views\WaitingLists\ItemSearchDetailView.xaml" />
+    <None Remove="Views\WaitingLists\ItemSearchMainView.xaml" />
+    <None Remove="Views\WaitingLists\WaitingListsView - Copy.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
+    <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
+    <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %282%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %283%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %284%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %285%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %286%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %287%29.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DrawerOperations\DrawerWaitView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Maintenance\MaintenanceView - Copy.xaml.cs">
+      <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Statistics\StatisticsMenuNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WaitingLists\WaitingListsView - Copy.xaml.cs">
+      <DependentUpon>WaitingListsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\WaitingLists\WaitingListsView.xaml.cs">
+      <DependentUpon>WaitingListsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OperatorMenuView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\DrawerCompacting\DrawerCompactingDetailView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\ImmediateDrawerCallView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Maintenance\MaintenanceView.xaml.cs">
+      <DependentUpon>MaintenanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\DrawerCompacting\DrawerCompactingView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\MenuNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\OthersNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Others\Statistics\StatisticsNavigationView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchDetailView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ItemSearch\ItemSearchMainView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="cd ..\..\Ferretto.VW.App&#xD;&#xA;mkdir publish\$(ConfigurationName)&#xD;&#xA;copy bin\$(ConfigurationName)\net471\$(TargetFileName) publish\$(ConfigurationName)\" />
+  </Target>
+
 </Project>

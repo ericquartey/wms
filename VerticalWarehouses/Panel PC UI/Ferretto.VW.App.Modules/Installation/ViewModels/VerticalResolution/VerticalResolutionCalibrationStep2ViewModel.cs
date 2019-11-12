@@ -137,10 +137,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override async Task OnAppearedAsync()
+        public override void InitializeSteps()
         {
             this.ShowSteps();
+        }
 
+        public override async Task OnAppearedAsync()
+        {
             await base.OnAppearedAsync();
 
             this.RetrieveWizardData();
@@ -186,6 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
                     this.ProcedureParameters.FeedRate,
+                    false,
                     false);
             }
             catch (Exception ex)

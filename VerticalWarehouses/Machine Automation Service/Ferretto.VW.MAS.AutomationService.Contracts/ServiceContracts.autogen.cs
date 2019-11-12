@@ -188,6 +188,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Cell> UpdateHeightAsync(int id, double height, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.IEnumerable<Cell>> UpdatesHeightAsync(int fromid, int toid, WarehouseSide side, double height, System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
@@ -201,11 +208,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<VertimagConfiguration> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetAsync(VertimagConfiguration vertimagConfiguration);
+        System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> SetAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task SetAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -230,6 +237,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<LoadingUnit> GetLoadingUnitOnBoardAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<double> GetHorizontalPositionAsync();
@@ -295,11 +309,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task MoveHorizontalManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, bool computeElongation);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, bool computeElongation, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction);
@@ -363,13 +377,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ErrorStatisticsSummary> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineError> CreateAsync(MachineErrorCode code, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAsync(int id);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -389,11 +396,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<MachineIdentity> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineStatistics> Get2Async();
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MachineStatistics> Get2Async(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachineStatistics> GetStatisticsAsync(System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -441,6 +448,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
@@ -659,17 +673,52 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity, System.Threading.CancellationToken cancellationToken);
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        [System.Obsolete]
+        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        [System.Obsolete]
+        System.Threading.Tasks.Task<FileResponse> ResetMachineAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineModeWebService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineMode> GetAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineMode> GetAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAutomaticAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetAutomaticAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetManualAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task SetManualAsync(System.Threading.CancellationToken cancellationToken);
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachinePowerWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsPoweredOnAsync();
+        System.Threading.Tasks.Task<MachinePowerState> GetAsync();
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<bool> IsPoweredOnAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MachinePowerState> GetAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PowerOffAsync();
@@ -891,16 +940,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = MainInverter
-    /// 1 = Slave1
-    /// 2 = Slave2
-    /// 3 = Slave3
-    /// 4 = Slave4
-    /// 5 = Slave5
-    /// 6 = Slave6
-    /// 7 = Slave7
-    /// 16 = All
-    /// 255 = None</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterIndex
     {
@@ -926,37 +965,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Unspecified
-    /// 1 = Unix
-    /// 2 = InterNetwork
-    /// 3 = ImpLink
-    /// 4 = Pup
-    /// 5 = Chaos
-    /// 6 = Ipx
-    /// 6 = NS
-    /// 7 = Iso
-    /// 7 = Osi
-    /// 8 = Ecma
-    /// 9 = DataKit
-    /// 10 = Ccitt
-    /// 11 = Sna
-    /// 12 = DecNet
-    /// 13 = DataLink
-    /// 14 = Lat
-    /// 15 = HyperChannel
-    /// 16 = AppleTalk
-    /// 17 = NetBios
-    /// 18 = VoiceView
-    /// 19 = FireFox
-    /// 21 = Banyan
-    /// 22 = Atm
-    /// 23 = InterNetworkV6
-    /// 24 = Cluster
-    /// 25 = Ieee12844
-    /// 26 = Irda
-    /// 28 = NetworkDesigners
-    /// 29 = Max
-    /// -1 = Unknown</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum AddressFamily
     {
@@ -1024,10 +1032,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = Ang
-    /// 2 = Agl
-    /// 3 = Acu</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum InverterType
     {
@@ -1065,11 +1069,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = IoDevice1
-    /// 1 = IoDevice2
-    /// 2 = IoDevice3
-    /// 16 = All
-    /// 255 = None</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum IoIndex
     {
@@ -1085,12 +1084,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
-    /// 1 = BayOne
-    /// 2 = BayTwo
-    /// 3 = BayThree
-    /// 4 = ElevatorBay
-    /// 10 = All</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayNumber
     {
@@ -1108,8 +1101,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Idle
-    /// 1 = ExecutingMission</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
@@ -1194,9 +1185,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Cell : DataModel
     {
-        [Newtonsoft.Json.JsonProperty("loadingUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public LoadingUnit LoadingUnit { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("panelId", Required = Newtonsoft.Json.Required.Always)]
         public int PanelId { get; set; }
     
@@ -1224,9 +1212,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NotSpecified
-    /// 1 = Front
-    /// 2 = Back</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum WarehouseSide
     {
@@ -1238,10 +1223,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Free
-    /// 1 = Disabled
-    /// 2 = Occupied
-    /// 3 = Unusable</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum CellStatus
     {
@@ -1255,11 +1236,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = InBay
-    /// 2 = OnMovementToLocation
-    /// 3 = OnMovementToBay
-    /// 4 = InLocation</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitStatus
     {
@@ -1275,27 +1251,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = NoLocation
-    /// 1 = InternalBay1Up
-    /// 2 = InternalBay1Down
-    /// 3 = InternalBay2Up
-    /// 4 = InternalBay2Down
-    /// 5 = InternalBay3Up
-    /// 6 = InternalBay3Down
-    /// 7 = ExternalBay1Up
-    /// 8 = ExternalBay1Down
-    /// 9 = ExternalBay2Up
-    /// 10 = ExternalBay2Down
-    /// 11 = ExternalBay3Up
-    /// 12 = ExternalBay3Down
-    /// 13 = CarouselBay1Up
-    /// 14 = CarouselBay1Down
-    /// 15 = CarouselBay2Up
-    /// 16 = CarouselBay2Down
-    /// 17 = CarouselBay3Up
-    /// 18 = CarouselBay3Down
-    /// 19 = Cell
-    /// 20 = LoadingUnit</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum LoadingUnitLocation
     {
@@ -1367,13 +1322,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = TwoSensors
-    /// 2 = ThreeSensors</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterType
     {
-        Undefined = 0,
+        NotSpecified = 0,
     
         TwoSensors = 1,
     
@@ -1381,10 +1333,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Disconnected
-    /// 1 = Idle
-    /// 2 = Busy
-    /// 3 = Errored</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayStatus
     {
@@ -1476,14 +1424,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Forwards
-    /// 1 = Backwards</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum HorizontalMovementDirection
     {
-        Forwards = 0,
+        NotSpecified = 0,
     
-        Backwards = 1,
+        Forwards = 1,
+    
+        Backwards = 2,
     
     }
     
@@ -1706,17 +1654,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("upperBound", Required = Newtonsoft.Json.Required.Always)]
         public double UpperBound { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("weightMeasureMultiply", Required = Newtonsoft.Json.Required.Always)]
-        public double WeightMeasureMultiply { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("weightMeasureSpeed", Required = Newtonsoft.Json.Required.Always)]
-        public double WeightMeasureSpeed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("weightMeasureSum", Required = Newtonsoft.Json.Required.Always)]
-        public double WeightMeasureSum { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("weightMeasureTime", Required = Newtonsoft.Json.Required.Always)]
-        public int WeightMeasureTime { get; set; }
+        [Newtonsoft.Json.JsonProperty("weightMeasurement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public WeightMeasurement WeightMeasurement { get; set; }
     
         public string ToJson() 
         {
@@ -1754,9 +1693,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = Vertical
-    /// 2 = Horizontal</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum Orientation
     {
@@ -1795,11 +1731,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 1 = ShortPickup
-    /// 2 = ShortDeposit
-    /// 3 = LongDeposit
-    /// 4 = LongPickup</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MovementProfileType
     {
@@ -1837,6 +1768,36 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class WeightMeasurement : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("measureConst0", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst0 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureConst1", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst1 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureConst2", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureConst2 { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MeasureSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("measureTime", Required = Newtonsoft.Json.Required.Always)]
+        public int MeasureTime { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static WeightMeasurement FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<WeightMeasurement>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorStructuralProperties : DataModel
     {
         [Newtonsoft.Json.JsonProperty("beltRigidity", Required = Newtonsoft.Json.Required.Always)]
@@ -1845,11 +1806,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("beltSpacing", Required = Newtonsoft.Json.Required.Always)]
         public double BeltSpacing { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("elevatorWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double ElevatorWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("halfShaftLength", Required = Newtonsoft.Json.Required.Always)]
         public double HalfShaftLength { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("maximumLoadOnBoard", Required = Newtonsoft.Json.Required.Always)]
-        public double MaximumLoadOnBoard { get; set; }
     
         [Newtonsoft.Json.JsonProperty("pulleyDiameter", Required = Newtonsoft.Json.Required.Always)]
         public double PulleyDiameter { get; set; }
@@ -2199,8 +2160,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Up
-    /// 1 = Down</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum VerticalMovementDirection
     {
@@ -2355,98 +2314,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>100032 = CradleNotCompletelyLoaded
-    /// 100033 = ConditionsNotMetForPositioning
-    /// 100034 = ConditionsNotMetForRunning
-    /// 100035 = SecurityWasTriggered
-    /// 100036 = InverterFaultStateDetected
-    /// 100037 = CradleNotCorrectlyLoadedDuringPickup
-    /// 100038 = CradleNotCorrectlyUnloadedDuringDeposit
-    /// 100039 = ZeroSensorErrorAfterPickup
-    /// 100040 = ZeroSensorErrorAfterDeposit
-    /// 200000 = InverterErrorBaseCode
-    /// 200001 = InverterErrorInvalidParameter
-    /// 200002 = InverterErrorInvalidDataset
-    /// 200003 = InverterErrorParameterIsWriteOnly
-    /// 200004 = InverterErrorParameterIsReadOnly
-    /// 200005 = InverterErrorEepromReadError
-    /// 200006 = InverterErrorEepromWriteError
-    /// 200007 = InverterErrorEepromChecksumError
-    /// 200008 = InverterErrorCannotWriteParameterWhileRunning
-    /// 200009 = InverterErrorDatasetValuesAreDifferent
-    /// 200011 = InverterErrorUnknownParameter
-    /// 200013 = InverterErrorSyntaxError
-    /// 200014 = InverterErrorWrongPayloadLength
-    /// 200020 = InverterErrorNodeNotAvailable
-    /// 200030 = InverterErrorSyntaxError2
-    /// 300000 = MachineManagerErrorBaseCode
-    /// 300001 = MachineManagerErrorNoLoadingUnitInSource
-    /// 300002 = MachineManagerErrorLoadingUnitSourceDb
-    /// 300003 = MachineManagerErrorLoadingUnitDestinationDb
-    /// 300004 = MachineManagerErrorLoadingUnitElevator</summary>
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum MachineErrorCode
-    {
-        CradleNotCompletelyLoaded = 100032,
-    
-        ConditionsNotMetForPositioning = 100033,
-    
-        ConditionsNotMetForRunning = 100034,
-    
-        SecurityWasTriggered = 100035,
-    
-        InverterFaultStateDetected = 100036,
-    
-        CradleNotCorrectlyLoadedDuringPickup = 100037,
-    
-        CradleNotCorrectlyUnloadedDuringDeposit = 100038,
-    
-        ZeroSensorErrorAfterPickup = 100039,
-    
-        ZeroSensorErrorAfterDeposit = 100040,
-    
-        InverterErrorBaseCode = 200000,
-    
-        InverterErrorInvalidParameter = 200001,
-    
-        InverterErrorInvalidDataset = 200002,
-    
-        InverterErrorParameterIsWriteOnly = 200003,
-    
-        InverterErrorParameterIsReadOnly = 200004,
-    
-        InverterErrorEepromReadError = 200005,
-    
-        InverterErrorEepromWriteError = 200006,
-    
-        InverterErrorEepromChecksumError = 200007,
-    
-        InverterErrorCannotWriteParameterWhileRunning = 200008,
-    
-        InverterErrorDatasetValuesAreDifferent = 200009,
-    
-        InverterErrorUnknownParameter = 200011,
-    
-        InverterErrorSyntaxError = 200013,
-    
-        InverterErrorWrongPayloadLength = 200014,
-    
-        InverterErrorNodeNotAvailable = 200020,
-    
-        InverterErrorSyntaxError2 = 200030,
-    
-        MachineManagerErrorBaseCode = 300000,
-    
-        MachineManagerErrorNoLoadingUnitInSource = 300001,
-    
-        MachineManagerErrorLoadingUnitSourceDb = 300002,
-    
-        MachineManagerErrorLoadingUnitDestinationDb = 300003,
-    
-        MachineManagerErrorLoadingUnitElevator = 300004,
-    
-    }
-    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class MachineIdentity 
     {
@@ -2499,10 +2366,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = Undefined
-    /// 71 = Expiring
-    /// 86 = Valid
-    /// 88 = Expired</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum MachineServiceStatus
     {
@@ -2777,15 +2640,40 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
-    /// 1 = Opened
-    /// 2 = Half
-    /// 3 = Closed
-    /// 4 = Intermediate</summary>
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachineMode
+    {
+        NotSpecified = 0,
+    
+        Automatic = 1,
+    
+        Manual = 2,
+    
+        SwitchingToAutomatic = 3,
+    
+        SwitchingToManual = 4,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachinePowerState
+    {
+        NotSpecified = 0,
+    
+        Unpowered = 1,
+    
+        PoweringUp = 2,
+    
+        Powered = 3,
+    
+        PoweringDown = 4,
+    
+    }
+    
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterPosition
     {
-        None = 0,
+        NotSpecified = 0,
     
         Opened = 1,
     
@@ -2797,13 +2685,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = None
-    /// 1 = Up
-    /// 2 = Down</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum ShutterMovementDirection
     {
-        None = 0,
+        NotSpecified = 0,
     
         Up = 1,
     
@@ -2832,10 +2717,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
     }
     
-    /// <summary>0 = SuperUser
-    /// 1 = Admin
-    /// 2 = User
-    /// 3 = Base</summary>
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum UserAccessLevel
     {

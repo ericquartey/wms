@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private DelegateCommand abortCommand;
+
         private DelegateCommand applyCorrectionCommand;
 
         private Bay bay;
@@ -36,6 +38,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? currentHeight;
 
         private double? displacement;
+
+        private double? initialPosition;
 
         private double? inputStepValue;
 
@@ -57,8 +61,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private PositioningProcedure procedureParameters;
 
-        private DelegateCommand stopMovingCommand;
-
         private SubscriptionToken subscriptionToken;
 
         #endregion
@@ -71,12 +73,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Installer)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            this.bayManager = bayManager;
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
@@ -84,6 +81,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand AbortCommand =>
+           this.abortCommand
+           ??
+           (this.abortCommand = new DelegateCommand(
+               async () => await this.AbortAsync(),
+               this.CanAbort));
 
         public ICommand ApplyCorrectionCommand =>
             this.applyCorrectionCommand
@@ -151,6 +155,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string Error => string.Join(
             Environment.NewLine,
             this[nameof(this.InputStepValue)]);
+
+        public double? InitialPosition
+        {
+            get => this.initialPosition;
+            set => this.SetProperty(ref this.initialPosition, value);
+        }
 
         public double? InputStepValue
         {
@@ -255,11 +265,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ICommand StopCommand =>
-                                                                                                                                                           this.stopMovingCommand
-           ??
-           (this.stopMovingCommand = new DelegateCommand(async () => await this.StopMovingAsync(), this.CanStopMoving));
-
         #endregion
 
         #region Indexers
@@ -320,11 +325,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.Bay = await this.bayManager.GetBayAsync();
-
             await this.InitializeDataAsync();
-
-            this.ChangeDataFromBayPosition();
 
             try
             {
@@ -335,6 +336,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        private async Task AbortAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorWebService.StopAsync();
+
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsElevatorMovingToHeight = false;
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMovingToHeight = false;
             }
         }
 
@@ -364,6 +389,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private bool CanAbort()
+        {
+            return
+                this.IsElevatorMovingToHeight
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private bool CanApplyCorrectionCommand()
@@ -439,13 +472,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this[nameof(this.InputStepValue)]);
         }
 
-        private bool CanStopMoving()
-        {
-            return this.IsElevatorMovingToHeight
-                &&
-                !this.IsWaitingForResponse;
-        }
-
         private void ChangeDataFromBayPosition()
         {
             this.PositionHeight = this.CurrentBayPosition == 1
@@ -457,8 +483,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task InitializeDataAsync()
         {
-            this.CurrentBayPosition = 2;
-
             this.IsElevatorMovingDown = false;
             this.IsElevatorMovingUp = false;
             this.IsElevatorMovingToHeight = false;
@@ -466,7 +490,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+
+                this.Bay = await this.bayManager.GetBayAsync();
+
                 this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
+
+                this.CurrentBayPosition = 2;                
             }
             catch (Exception ex)
             {
@@ -486,7 +515,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingDown = true;
 
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.InputStepValue.Value);
-                this.Displacement = (this.Displacement ?? 0) - this.InputStepValue.Value;
+                this.Displacement = this.currentHeight - this.InitialPosition;                
             }
             catch (Exception ex)
             {
@@ -509,8 +538,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.PositionHeight,
                     this.procedureParameters.FeedRate,
-                    false);
+                    false,
+                    true);
 
+                this.InitialPosition = null;
                 this.Displacement = null;
             }
             catch (Exception ex)
@@ -532,7 +563,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.InputStepValue.Value);
-                this.Displacement = (this.Displacement ?? 0) + this.InputStepValue.Value;
+                this.Displacement = this.currentHeight - this.InitialPosition;
             }
             catch (Exception ex)
             {
@@ -547,6 +578,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
+
+            if (this.isElevatorMovingToHeight)
+            {
+                this.InitialPosition = this.currentHeight;
+            }
+
+            if (!this.IsElevatorMovingToHeight)
+            {
+                this.Displacement = this.currentHeight - this.initialPosition;
+            }
+
             if (message.IsNotRunning())
             {
                 this.IsElevatorMovingUp = false;
@@ -558,37 +601,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(message.Description);
                 }
             }
-
-            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
         }
 
         private void RaiseCanExecuteChanged()
         {
+            this.abortCommand?.RaiseCanExecuteChanged();
             this.moveDownCommand?.RaiseCanExecuteChanged();
             this.moveUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
             this.applyCorrectionCommand?.RaiseCanExecuteChanged();
             this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
             this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
-            this.stopMovingCommand?.RaiseCanExecuteChanged();
-        }
-
-        private async Task StopMovingAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineElevatorWebService.StopAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
         }
 
         private void ToggleBayPosition()
