@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
-        private double? bayChainHorizontalPosition;
+        //private double? bayChainHorizontalPosition;
 
         private DelegateCommand carouselDownCommand;
 
@@ -25,13 +25,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Properties
+        /*   public double? BayChainHorizontalPosition
+           {
+               get => this.bayChainHorizontalPosition;
+               private set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
+           }*/
 
-        public double? BayChainHorizontalPosition
-        {
-            get => this.bayChainHorizontalPosition;
-            private set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
-        }
+        #region Properties
 
         public ICommand CarouselDownCommand =>
             this.carouselDownCommand

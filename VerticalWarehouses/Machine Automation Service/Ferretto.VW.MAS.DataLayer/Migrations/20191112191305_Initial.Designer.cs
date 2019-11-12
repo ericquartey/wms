@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191112094502_Initial")]
+    [Migration("20191112191305_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -38,8 +38,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<bool>("IsActive");
 
                     b.Property<bool>("IsExternal");
-
-                    b.Property<double?>("LastKnownChainPosition");
 
                     b.Property<int?>("MachineId");
 
@@ -166,7 +164,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("BayPositionId");
 
-                    b.HasIndex("CellId");
+                    b.HasIndex("CellId")
+                        .IsUnique();
 
                     b.HasIndex("LoadingUnitId");
 
@@ -193,8 +192,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("FullLoadMovementId");
 
                     b.Property<int?>("InverterId");
-
-                    b.Property<double?>("LastKnownPosition");
 
                     b.Property<double>("LowerBound");
 
@@ -298,7 +295,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 3,
                             Code = 3,
                             Description = "Condizioni per la messa in marcia non soddisfatte.",
-                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
+                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
@@ -306,7 +303,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 4,
                             Code = 4,
                             Description = "È scattata la funzione di sicurezza.",
-                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
+                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
@@ -322,7 +319,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 6,
                             Code = 6,
                             Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
                             Severity = 0
                         },
                         new
@@ -330,7 +327,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 7,
                             Code = 7,
                             Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
                             Severity = 0
                         },
                         new
@@ -354,7 +351,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 10,
                             Code = 10,
                             Description = "InvalidPresenceSensors",
-                            Reason = "InvalidPresenceSensors",
+                            Reason = "Sensori di presenza invalidi",
                             Severity = 0
                         },
                         new
@@ -378,7 +375,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 13,
                             Code = 13,
                             Description = "LoadUnitPresentOnEmptyElevator",
-                            Reason = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
                             Severity = 0
                         },
                         new
@@ -386,7 +383,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 14,
                             Code = 14,
                             Description = "TopLevelBayOccupied",
-                            Reason = "TopLevelBayOccupied",
+                            Reason = "Livello alto baia occupato",
                             Severity = 0
                         },
                         new
@@ -394,7 +391,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 15,
                             Code = 15,
                             Description = "BottomLevelBayOccupied",
-                            Reason = "BottomLevelBayOccupied",
+                            Reason = "Livello basso baia occupato.",
                             Severity = 0
                         },
                         new
@@ -1112,7 +1109,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 12, 10, 45, 1, 436, DateTimeKind.Local).AddTicks(7854),
+                            InstallationDate = new DateTime(2017, 1, 12, 20, 13, 3, 718, DateTimeKind.Local).AddTicks(3354),
                             ServiceStatus = 86
                         });
                 });
@@ -1543,8 +1540,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .HasForeignKey("BayPositionId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
-                        .WithMany()
-                        .HasForeignKey("CellId");
+                        .WithOne("Elevator")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.Elevator", "CellId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()

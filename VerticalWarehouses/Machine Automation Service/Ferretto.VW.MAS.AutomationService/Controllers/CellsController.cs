@@ -75,7 +75,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<IEnumerable<Cell>> UpdatesHeight(int fromid, int toid, WarehouseSide side, double height)
         {
-            var cells = this.cellsProvider.UpdatesHeight(fromid, toid, side, height);
+            var cells = this.cellsProvider.UpdateHeights(fromid, toid, side, height);
 
             return this.Ok(cells);
         }

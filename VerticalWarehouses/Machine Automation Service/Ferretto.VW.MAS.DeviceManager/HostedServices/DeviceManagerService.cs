@@ -662,6 +662,8 @@ namespace Ferretto.VW.MAS.DeviceManager
         {
             this.Logger.LogCritical($"Exception detected: {data.ExceptionDescription} {data.InnerException?.Message}");
 
+            System.Diagnostics.Debug.Fail("Exception detected");
+
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
                 .Publish(

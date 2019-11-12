@@ -41,6 +41,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double[] TargetAcceleration { get; }
 
+        int? TargetBayPositionId { get; set; }
+
+        int? TargetCellId { get; set; }
+
         double[] TargetDeceleration { get; }
 
         double TargetPosition { get; }

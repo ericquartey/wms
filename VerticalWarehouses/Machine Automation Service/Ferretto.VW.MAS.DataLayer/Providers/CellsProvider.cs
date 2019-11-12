@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
+        public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
         {
             return this.dataContext.Cells
                        .Include(c => c.LoadingUnit)
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer
                        .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
         }
 
-        public Cell GetCellById(int cellId)
+        public Cell GetById(int cellId)
         {
             return this.dataContext.Cells
                 .Include(c => c.Panel)
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .SingleOrDefault(c => c.Id == cellId);
         }
 
-        public Cell GetCellByLoadingUnit(int loadingUnitId)
+        public Cell GetByLoadingUnitId(int loadingUnitId)
         {
             return this.dataContext.Cells
                 .Include(c => c.LoadingUnit)
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void LoadLoadingUnit(int loadingUnitId, int cellId)
         {
-            var cell = this.GetCellById(cellId);
+            var cell = this.GetById(cellId);
             cell.LoadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
 
             cell.Status = CellStatus.Occupied;
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UnloadLoadingUnit(int cellId)
         {
-            var cell = this.GetCellById(cellId);
+            var cell = this.GetById(cellId);
             cell.LoadingUnit = null;
             cell.Status = CellStatus.Free;
 
@@ -168,7 +168,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height)
+        public IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height)
         {
             lock (this.dataContext)
             {

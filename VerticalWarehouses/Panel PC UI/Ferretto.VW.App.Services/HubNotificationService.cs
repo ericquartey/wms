@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
@@ -10,6 +12,8 @@ namespace Ferretto.VW.App.Services
     internal class HubNotificationService : IHubNotificationService
     {
         #region Fields
+
+        private readonly BayNumber bayNumber;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -32,61 +36,36 @@ namespace Ferretto.VW.App.Services
             this.installationHubClient.MachineModeChanged += this.OnEventReceived;
             this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
             this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
-            this.installationHubClient.BayChainPositionChanged += this.OnEventReceived;
+            this.installationHubClient.BayChainPositionChanged += this.OnBayChainPositionChanged;
 
             this.logger = LogManager.GetCurrentClassLogger();
+
+            this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
 
         #endregion
 
         #region Methods
 
-        private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
-            where TEventArgs : EventArgs
+        private void OnBayChainPositionChanged(object sender, BayChainPositionChangedEventArgs e)
         {
-            this.logger.Trace($"SignalR message: {e.GetType().Name}");
+            if ((BayNumber)e.BayNumber != this.bayNumber)
+            {
+                return;
+            }
 
+            this.eventAggregator
+                .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                .Publish(e);
+        }
+
+        private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
+                    where TEventArgs : EventArgs
+        {
             this.eventAggregator
                 .GetEvent<PubSubEvent<TEventArgs>>()
                 .Publish(e);
         }
-
-        /*
-                private void OnCarouselChainPositionChanged(object sender, CarouselChainPositionChangedEventArgs e)
-                {
-                    this.eventAggregator
-                        .GetEvent<PubSubEvent<CarouselChainPositionChangedEventArgs>>()
-                        .Publish(e);
-                }
-
-                private void OnElevatorPositionChanged(object sender, ElevatorPositionChangedEventArgs e)
-                {
-                    this.eventAggregator
-                        .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                        .Publish(e);
-                }
-
-                private void OnExternalBayChainPositionChanged(object sender, ExternalBayChainPositionChangedEventArgs e)
-                {
-                    this.eventAggregator
-                        .GetEvent<PubSubEvent<ExternalBayChainPositionChangedEventArgs>>()
-                        .Publish(e);
-                }
-
-                private void OnMachineModeChanged(object sender, MachineModeChangedEventArgs e)
-                {
-                    this.eventAggregator
-                        .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
-                        .Publish(e);
-                }
-
-                private void OnMachinePowerChanged(object sender, MachinePowerChangedEventArgs e)
-                {
-                    this.eventAggregator
-                        .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-                        .Publish(e);
-                }
-                */
 
         private void OnMessageReceived(object sender, MessageNotifiedEventArgs e)
         {

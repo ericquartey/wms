@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -14,7 +16,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            System.Diagnostics.Contracts.Contract.Requires(notification != null);
+            Contract.Requires(notification != null);
 
             return
                 notification.Destination is MessageActor.AutomationService
@@ -24,7 +26,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
-            System.Diagnostics.Contracts.Contract.Requires(message != null);
+            Contract.Requires(message != null);
 
             if (message.ErrorLevel is ErrorLevel.Fatal)
             {
@@ -58,8 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.CalibrateAxisMethod(message);
                     break;
 
-                case MessageType.ElevatorPosition:
-                    this.OnElevatorPositionChanged(message);
+                case MessageType.ElevatorPosition when message.Data is ElevatorPositionMessageData:
+                    this.OnElevatorPositionChanged(message.Data as ElevatorPositionMessageData);
+                    break;
+
+                case MessageType.BayChainPosition when message.Data is BayChainPositionMessageData:
+                    this.OnBayChainPositionChanged(message.Data as BayChainPositionMessageData);
                     break;
 
                 case MessageType.Positioning:
@@ -70,7 +76,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.ResolutionCalibrationMethod(message);
                     break;
 
-                case MessageType.ExecuteMission:
+                case MessageType.ExecuteMission when message.Data is INewMissionOperationAvailable:
                     await this.OnNewMissionOperationAvailable(message.Data as INewMissionOperationAvailable);
                     break;
 
@@ -78,11 +84,11 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.ElevatorWeightCheckMethod(message);
                     break;
 
-                case MessageType.BayOperationalStatusChanged:
+                case MessageType.BayOperationalStatusChanged when message.Data is IBayOperationalStatusChangedMessageData:
                     this.OnBayConnected(message.Data as IBayOperationalStatusChangedMessageData);
                     break;
 
-                case MessageType.ErrorStatusChanged:
+                case MessageType.ErrorStatusChanged when message.Data is IErrorStatusMessageData:
                     this.OnErrorStatusChanged(message.Data as IErrorStatusMessageData);
                     break;
 

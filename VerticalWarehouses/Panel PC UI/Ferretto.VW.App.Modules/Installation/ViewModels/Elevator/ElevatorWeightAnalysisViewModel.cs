@@ -349,15 +349,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.IsExecutingProcedure = true;
 
-                var bayHeight = this.bay.Positions.First().Height;
+                var bayPosition = this.bay.Positions.Single(b => b.Height == this.bay.Positions.Max(p => p.Height));
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    bayHeight,
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                    bayPosition.Id,
                     this.procedureParameters.FeedRate,
-                    false,
-                    true);
+                    computeElongation: true);
+
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {

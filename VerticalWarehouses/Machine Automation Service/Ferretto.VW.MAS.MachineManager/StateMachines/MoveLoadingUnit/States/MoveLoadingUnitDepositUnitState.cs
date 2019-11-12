@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     case LoadingUnitLocation.Cell:
                         if (this.messageData.DestinationCellId != null)
                         {
-                            var cell = this.cellsProvider.GetCellById(this.messageData.DestinationCellId.Value);
+                            var cell = this.cellsProvider.GetById(this.messageData.DestinationCellId.Value);
 
                             direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         }

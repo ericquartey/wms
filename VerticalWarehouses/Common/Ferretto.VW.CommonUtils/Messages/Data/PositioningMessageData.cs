@@ -138,6 +138,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public double[] TargetAcceleration { get; set; }
 
+        public int? TargetBayPositionId { get; set; }
+
+        public int? TargetCellId { get; set; }
+
         public double[] TargetDeceleration { get; set; }
 
         public double TargetPosition { get; set; }

@@ -7,6 +7,9 @@ namespace Ferretto.VW.MAS.DataModels
         #region Properties
 
         [JsonIgnore]
+        public Elevator Elevator { get; set; }
+
+        [JsonIgnore]
         public LoadingUnit LoadingUnit { get; set; }
 
         [JsonIgnore]

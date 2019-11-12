@@ -130,29 +130,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.positioningOperationChangedToken = this.positioningOperationChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        this.OnPositioningOperationChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
+            this.SubscribeToEvents();
 
             this.CurrentPosition = this.machineElevatorService.Position.Vertical;
 
-            await this.RetrieveCellsAsync();
+            try
+            {
+                this.IsWaitingForResponse = true;
 
-            await this.RetrieveProcedureParametersAsync();
+                this.Cells = await this.MachineCellsWebService.GetAllAsync();
+                this.ProcedureParameters = await this.MachineCellsWebService.GetHeightCheckProcedureParametersAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         protected virtual void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -181,28 +177,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     trackCurrentView: false));
         }
 
-        private async Task RetrieveCellsAsync()
+        private void SubscribeToEvents()
         {
-            try
-            {
-                this.Cells = await this.MachineCellsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningOperationChanged,
+                        ThreadOption.UIThread,
+                        false);
 
-        private async Task RetrieveProcedureParametersAsync()
-        {
-            try
-            {
-                this.ProcedureParameters = await this.MachineCellsWebService.GetHeightCheckProcedureParametersAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

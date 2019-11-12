@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -75,6 +76,8 @@ namespace Ferretto.VW.App.Services
 
         private string loadingUnitPositionUpInBayCode;
 
+        private object positioningOperationChangedToken;
+
         private SubscriptionToken sensorsToken;
 
         private ShutterSensors shutterSensors;
@@ -100,7 +103,7 @@ namespace Ferretto.VW.App.Services
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
 
-            this.Initialize();
+            this.SubscribeToEvents();
         }
 
         #endregion
@@ -324,9 +327,9 @@ namespace Ferretto.VW.App.Services
                 this.Bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.Bay.Number;
 
-                this.Bay1IsVisible = this.BayNumber is BayNumber.BayOne;
-                this.Bay2IsVisible = this.BayNumber is BayNumber.BayTwo;
-                this.Bay3IsVisible = this.BayNumber is BayNumber.BayThree;
+                this.Bay1IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne;
+                this.Bay2IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                this.Bay3IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree;
 
                 if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
                 {
@@ -371,49 +374,8 @@ namespace Ferretto.VW.App.Services
 
         private void GetShutter()
         {
-            this.IsShutterThreeSensors = this.Bay.Shutter.Type == ShutterType.ThreeSensors;
+            this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
             this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
-        }
-
-        private void Initialize()
-        {
-            this.sensorsToken = this.sensorsToken
-                ??
-                this.eventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        async (m) => await this.OnSensorsChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-
-            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
-                ??
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnBayChainPositionChanged,
-                        ThreadOption.UIThread,
-                        false,
-                        e => e.BayNumber == this.BayNumber);
-
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-                ??
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnElevatorPositionChanged,
-                        ThreadOption.UIThread,
-                        false);
-
-            this.positioningOperationChangedToken = this.positioningOperationChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
-                    .Subscribe(
-                        async e => await this.OnPositioningOperationChangedAsync,
-                        ThreadOption.UIThread,
-                        false);
         }
 
         private async Task InitializeSensorsAsync()
@@ -444,29 +406,9 @@ namespace Ferretto.VW.App.Services
         {
             switch (message.Status)
             {
-                case MessageStatus.OperationExecuting:
+                case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
-                        if (message.Data.AxisMovement == Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data.AxisMovement == Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
-                        else if (message.Data.AxisMovement == Axis.BayChain)
-                        {
-                            this.BayChainPosition = message?.Data?.CurrentPosition ?? this.BayChainPosition;
-                        }
-
-                        break;
-                    }
-                case MessageStatus.OperationEnd:
-                    {
-                        if (message.Data.AxisMovement == Axis.Horizontal)
-                        {
-                            await this.GetElevatorAsync();
-                        }
+                        await this.GetElevatorAsync();
 
                         break;
                     }
@@ -513,6 +455,46 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(exception));
+        }
+
+        private void SubscribeToEvents()
+        {
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        async m => await this.OnSensorsChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        m => m?.Data != null);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async m => await this.OnPositioningOperationChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion

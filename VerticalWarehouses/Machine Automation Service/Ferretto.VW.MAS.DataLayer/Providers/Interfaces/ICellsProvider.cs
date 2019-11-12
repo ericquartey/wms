@@ -11,11 +11,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Cell> GetAll();
 
-        Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide);
+        Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide);
 
-        Cell GetCellById(int cellId);
+        Cell GetById(int cellId);
 
-        Cell GetCellByLoadingUnit(int loadingUnitId);
+        Cell GetByLoadingUnitId(int loadingUnitId);
 
         CellStatisticsSummary GetStatistics();
 
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Cell UpdateHeight(int cellId, double height);
 
-        IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height);
+        IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);
 
         #endregion
     }

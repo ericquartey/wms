@@ -136,13 +136,13 @@ namespace Ferretto.VW.MAS.DataLayer
         /// profile = 10000 ==> height = 725mm
         /// height = kMul * profile + kSum;
         /// </summary>
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public double ConvertProfileToHeight(ushort profile)
         {
             return (profile * this.kMul) + this.kSum;
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
         {
             if (pulses == 0)
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByAxis(IHomingMessageData data)
         {
             BayNumber targetBay;
@@ -249,7 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType)
         {
             // Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
@@ -306,7 +306,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByMovementType(IPositioningMessageData data)
         {
             BayNumber targetBay;
@@ -415,7 +415,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -439,7 +439,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -513,7 +513,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByProfile(BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -536,7 +536,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
-        [Obsolete("This method should not be in the DataLayer.")]
+        [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public IoIndex GetIoDevice(BayNumber bayNumber)
         {
             var returnValue = IoIndex.None;
@@ -577,10 +577,10 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.BayPositions
-                .AsNoTracking()
-                .Where(p => p.Location == location)
-                .Select(l => l.Height)
-                .SingleOrDefault();
+                    .AsNoTracking()
+                    .Where(p => p.Location == location)
+                    .Select(l => l.Height)
+                    .SingleOrDefault();
             }
         }
 
@@ -589,8 +589,8 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.BayPositions
-                .AsNoTracking()
-                .SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+                    .AsNoTracking()
+                    .SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
             }
         }
 
@@ -603,6 +603,20 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Where(b => b.Number == bayNumber)
                     .SelectMany(b => b.Positions)
                     .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
+            }
+        }
+
+        public BayPosition GetPositionById(int bayPositionId)
+        {
+            lock (this.dataContext)
+            {
+                var bayPosition = this.dataContext.BayPositions.SingleOrDefault(p => p.Id == bayPositionId);
+                if (bayPosition is null)
+                {
+                    throw new EntityNotFoundException(bayPositionId);
+                }
+
+                return bayPosition;
             }
         }
 
@@ -654,22 +668,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.CurrentMissionOperationId = null;
                     this.Update(bay);
                 }
-            }
-        }
-
-        public void SaveLastKnownChainPosition(BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
-                if (bay is null)
-                {
-                    throw new EntityNotFoundException(bayNumber.ToString());
-                }
-
-                bay.LastKnownChainPosition = this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
-
-                this.dataContext.SaveChanges();
             }
         }
 

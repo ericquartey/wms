@@ -151,7 +151,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand GoToCellHeightCommand =>
            this.goToCellHeightCommand
            ??
-           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeight(), this.CanGoToCellHeight));
+           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeightAsync(), this.CanGoToCellHeight));
 
         public ICommand GoToNextPanelCommand =>
            this.goToNextPanelCommand
@@ -248,7 +248,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand StopCommand =>
             this.stopCommand
             ??
-            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStoped));
+            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStop));
 
         private bool IsElevatorMoving
         {
@@ -418,14 +418,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
-        private bool CanStoped()
+        private bool CanStop()
         {
             return this.IsElevatorMoving
                 &&
                 !this.IsWaitingForResponse;
         }
 
-        private async Task GoToCellHeight()
+        private async Task GoToCellHeightAsync()
         {
             try
             {
@@ -433,11 +433,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.CurrentCell.Position,
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.CurrentCell.Id,
                     this.procedureParameters.FeedRate,
-                    false,
-                    true);
+                    computeElongation: true);
 
                 this.HasReachedCellPosition = true;
                 this.InitialPosition = this.CurrentHeight;

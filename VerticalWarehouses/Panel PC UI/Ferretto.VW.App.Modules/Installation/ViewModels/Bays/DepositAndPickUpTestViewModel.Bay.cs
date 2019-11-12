@@ -16,8 +16,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bayIsMultiPosition;
 
-        private double? bayPositionHeight;
-
         private bool isElevatorMovingToBay;
 
         private bool isPositionDownSelected;
@@ -30,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand selectBayPositionUpCommand;
 
+        private BayPosition selectedBayPosition;
+
         #endregion
 
         #region Properties
@@ -38,12 +38,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.bayIsMultiPosition;
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
-
-        public double? BayPositionHeight
-        {
-            get => this.bayPositionHeight;
-            set => this.SetProperty(ref this.bayPositionHeight, value);
         }
 
         public bool IsElevatorMovingToBay
@@ -99,6 +93,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(this.SelectBayPositionUp));
 
+        public BayPosition SelectedBayPosition
+        {
+            get => this.selectedBayPosition;
+            private set
+            {
+                if (this.SetProperty(ref this.selectedBayPosition, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -129,11 +135,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.currentState = DepositAndPickUpState.GotoBayAdjusted;
                 }
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                        this.BayPositionHeight.Value,
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                        this.SelectedBayPosition.Id,
                         this.procedureParameters.FeedRate,
-                        false,
-                        true);
+                        computeElongation: true);
 
                 this.IsElevatorMovingToBay = true;
             }
@@ -152,13 +157,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
-            this.BayPositionHeight = this.bay.Positions.First().Height;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
         }
 
         private void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
-            this.BayPositionHeight = this.bay.Positions.Last().Height;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
         }
 
         #endregion

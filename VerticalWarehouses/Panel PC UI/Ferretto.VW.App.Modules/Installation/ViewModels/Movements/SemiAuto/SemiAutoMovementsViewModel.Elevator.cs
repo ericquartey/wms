@@ -20,9 +20,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand disembarkForwardsCommand;
 
-        private double? elevatorHorizontalPosition;
+        // private double? elevatorHorizontalPosition;
 
-        private double? elevatorVerticalPosition;
+        //   private double? elevatorVerticalPosition;
 
         private DelegateCommand embarkBackwardsCommand;
 
@@ -56,17 +56,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.disembarkForwardsCommand = new DelegateCommand(async () => await this.Disembark(HorizontalMovementDirection.Forwards), this.CanDisembark));
 
-        public double? ElevatorHorizontalPosition
-        {
-            get => this.elevatorHorizontalPosition;
-            private set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
-        }
+        /*    public double? ElevatorHorizontalPosition
+            {
+                get => this.elevatorHorizontalPosition;
+                private set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+            }
 
-        public double? ElevatorVerticalPosition
-        {
-            get => this.elevatorVerticalPosition;
-            private set => this.SetProperty(ref this.elevatorVerticalPosition, value);
-        }
+            public double? ElevatorVerticalPosition
+            {
+                get => this.elevatorVerticalPosition;
+                private set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+            }*/
 
         public ICommand EmbarkBackwardsCommand =>
             this.embarkBackwardsCommand

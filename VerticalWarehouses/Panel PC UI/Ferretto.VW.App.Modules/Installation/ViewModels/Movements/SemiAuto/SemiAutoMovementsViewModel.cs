@@ -36,13 +36,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Bay bay;
 
-        private object bayChainPositionChangedToken;
+        // private object bayChainPositionChangedToken;
 
         private bool bayIsMultiPosition;
 
         private bool bayIsShutterThreeSensors;
 
-        private SubscriptionToken elevatorPositionChangedToken;
+        //private SubscriptionToken elevatorPositionChangedToken;
 
         private SubscriptionToken homingToken;
 
@@ -199,10 +199,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.SelectBayPositionDown();
 
-                this.ElevatorVerticalPosition = this.machineElevatorService.Position.Vertical;
-                this.ElevatorHorizontalPosition = this.machineElevatorService.Position.Horizontal;
+                // this.ElevatorVerticalPosition = this.machineElevatorService.Position.Vertical;
+                // this.ElevatorHorizontalPosition = this.machineElevatorService.Position.Horizontal;
 
-                this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
+                //  this.BayChainHorizontalPosition = this.bayManagerService.ChainPosition;
 
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
 
@@ -250,28 +250,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanResetCommand()
         {
-            return !this.IsMoving
+            return
+                !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
         }
 
         private bool CanStopMoving()
         {
-            return this.IsMoving
+            return
+                this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
         }
 
-        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
-        {
-            this.BayChainHorizontalPosition = e.Position;
-        }
+        /*
+                private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+                {
+                    this.BayChainHorizontalPosition = e.Position;
+                }
+                */
 
-        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-        {
-            this.ElevatorHorizontalPosition = e.HorizontalPosition;
-            this.ElevatorVerticalPosition = e.VerticalPosition;
-        }
+        /*   private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+           {
+               this.ElevatorHorizontalPosition = e.HorizontalPosition;
+               this.ElevatorVerticalPosition = e.VerticalPosition;
+           }*/
 
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
@@ -542,15 +546,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false,
                         m => m.Data != null);
 
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-              ??
-              this.EventAggregator
-                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                  .Subscribe(
-                      this.OnElevatorPositionChanged,
-                      ThreadOption.UIThread,
-                      false);
-
+            /* this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+               ??
+               this.EventAggregator
+                   .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                   .Subscribe(
+                       this.OnElevatorPositionChanged,
+                       ThreadOption.UIThread,
+                       false);*/
+            /*
             this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
                 ??
                 this.EventAggregator
@@ -558,8 +562,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         this.OnBayChainPositionChanged,
                         ThreadOption.UIThread,
-                        false,
-                        e => e.BayNumber == this.BayNumber);
+                        false);*/
         }
 
         #endregion

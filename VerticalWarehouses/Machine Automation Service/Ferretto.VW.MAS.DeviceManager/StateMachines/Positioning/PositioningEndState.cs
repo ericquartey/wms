@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -56,7 +57,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
 
-                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                            if (message.Status == MessageStatus.OperationEnd
+                                &&
+                                this.machineData.Requester == MessageActor.AutomationService
+                                &&
+                                this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                             {
                                 this.UpdateLoadingUnitLocation();
                             }
@@ -106,9 +111,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                if (this.machineData.Requester == MessageActor.AutomationService
+                    &&
+                    this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                 {
                     this.UpdateLoadingUnitLocation();
+                }
+
+                if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
+                {
+                    this.PersistElevatorPosition(
+                        this.machineData.MessageData.TargetBayPositionId,
+                        this.machineData.MessageData.TargetCellId,
+                        this.machineData.MessageData.TargetPosition);
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -120,6 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
             }
@@ -155,6 +171,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Start();
         }
 
+        private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
+        {
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            {
+                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+
+                elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                elevatorDataProvider.SetCurrentCell(targetCellId);
+            }
+        }
+
         private void UpdateLoadingUnitLocation()
         {
             LoadingUnit currentLoadingUnit;
@@ -175,7 +202,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             var position = elevatorProvider.VerticalPosition;
 
-            var cell = cellProvider.GetCellByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
+            var cell = cellProvider.GetByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
             if (cell == null)
             {
                 bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);

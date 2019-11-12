@@ -147,6 +147,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/move-to-bay-position")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation)
+        {
+            this.elevatorProvider.MoveToBayPosition(bayPositionId, feedRate, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
+        [HttpPost("vertical/move-to-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToCell(int cellId, double feedRate, bool computeElongation)
+        {
+            this.elevatorProvider.MoveToCell(cellId, feedRate, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -154,7 +176,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation)
         {
-            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRate, measure, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(targetPosition, feedRate, measure, computeElongation, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -172,7 +194,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVerticalOfDistance(double distance)
         {
-            this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToRelativeVerticalPosition(distance, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

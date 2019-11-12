@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -251,7 +252,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToLoadingUnitHeight()
         {
-            return this.SelectedLoadingUnit != null
+            return
+                this.SelectedLoadingUnit != null
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
@@ -270,11 +272,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.SelectedCell.Position,
+                Debug.Assert(
+                    this.SelectedCell != null,
+                    "The selected cell should be specified.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedCell.Id,
                     this.procedureParameters.FeedRateAfterZero,
-                    true,
-                    true);
+                    computeElongation: true);
 
                 this.IsElevatorMovingToCell = true;
             }
@@ -322,11 +327,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.SelectedLoadingUnit.Cell?.Position ?? 0,
+                Debug.Assert(this.SelectedLoadingUnit != null, "A loading unit should be selected.");
+                Debug.Assert(this.SelectedLoadingUnit.Cell != null, "The selected loading unit should specify a cell.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedLoadingUnit.Cell.Id,
                     this.procedureParameters.FeedRateAfterZero,
-                    false,
-                    true);
+                    computeElongation: true);
 
                 this.IsElevatorMovingToLoadingUnit = true;
             }

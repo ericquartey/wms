@@ -513,7 +513,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     IoDeviceId = table.Column<int>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     IsExternal = table.Column<bool>(nullable: false),
-                    LastKnownChainPosition = table.Column<double>(nullable: true),
                     Number = table.Column<int>(nullable: false),
                     Operation = table.Column<int>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
@@ -706,7 +705,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     FullLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
-                    LastKnownPosition = table.Column<double>(nullable: true),
                     LowerBound = table.Column<double>(nullable: false),
                     Offset = table.Column<double>(nullable: false),
                     Orientation = table.Column<int>(nullable: false),
@@ -877,12 +875,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 3, 3, "Condizioni per la messa in marcia non soddisfatte.", "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.", 0 });
+                values: new object[] { 3, 3, "Condizioni per la messa in marcia non soddisfatte.", "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 4, 4, "È scattata la funzione di sicurezza.", "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.", 0 });
+                values: new object[] { 4, 4, "È scattata la funzione di sicurezza.", "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -892,12 +890,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 6, 6, "CradleNotCorrectlyLoadedDuringPickup", "CradleNotCorrectlyLoadedDuringPickup", 0 });
+                values: new object[] { 6, 6, "CradleNotCorrectlyLoadedDuringPickup", "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 7, 7, "CradleNotCorrectlyUnloadedDuringDeposit", "CradleNotCorrectlyUnloadedDuringDeposit", 0 });
+                values: new object[] { 7, 7, "CradleNotCorrectlyUnloadedDuringDeposit", "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -922,22 +920,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 10, 10, "InvalidPresenceSensors", "InvalidPresenceSensors", 0 });
+                values: new object[] { 10, 10, "InvalidPresenceSensors", "Sensori di presenza invalidi", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 13, 13, "LoadUnitPresentOnEmptyElevator", "LoadUnitPresentOnEmptyElevator", 0 });
+                values: new object[] { 13, 13, "LoadUnitPresentOnEmptyElevator", "Presenza a bordo elevatore con elevatore logicamente scarico.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 14, 14, "TopLevelBayOccupied", "TopLevelBayOccupied", 0 });
+                values: new object[] { 14, 14, "TopLevelBayOccupied", "Livello alto baia occupato", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 15, 15, "BottomLevelBayOccupied", "BottomLevelBayOccupied", 0 });
+                values: new object[] { 15, 15, "BottomLevelBayOccupied", "Livello basso baia occupato.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -977,7 +975,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 12, 10, 45, 1, 436, DateTimeKind.Local).AddTicks(7854), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 12, 20, 13, 3, 718, DateTimeKind.Local).AddTicks(3354), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1293,7 +1291,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_CellId",
                 table: "Elevators",
-                column: "CellId");
+                column: "CellId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_LoadingUnitId",

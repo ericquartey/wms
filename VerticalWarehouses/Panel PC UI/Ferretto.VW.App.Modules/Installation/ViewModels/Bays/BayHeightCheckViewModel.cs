@@ -551,11 +551,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToHeight = true;
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.PositionHeight,
+                var bayPosition = this.CurrentBayPosition == 1
+                    ? this.Bay.Positions.Single(pos => pos.Height == this.Bay.Positions.Max(p => p.Height))
+                    : this.Bay.Positions.Single(pos => pos.Height == this.Bay.Positions.Min(p => p.Height));
+
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                    bayPosition.Id,
                     this.procedureParameters.FeedRate,
-                    false,
-                    true);
+                    computeElongation: true);
 
                 this.InitialPosition = null;
                 this.Displacement = null;

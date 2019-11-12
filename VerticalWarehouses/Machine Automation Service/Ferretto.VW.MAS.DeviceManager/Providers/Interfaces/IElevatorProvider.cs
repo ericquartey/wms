@@ -33,11 +33,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
+        void MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
+
+        void MoveToCell(int cellId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
+
+        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
 
         void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveVerticalOfDistance(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
+        void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
