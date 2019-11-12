@@ -150,19 +150,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("BayPositionId");
-
-                    b.Property<int?>("CellId");
-
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<int?>("StructuralPropertiesId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BayPositionId");
-
-                    b.HasIndex("CellId");
 
                     b.HasIndex("LoadingUnitId");
 
@@ -189,8 +181,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("FullLoadMovementId");
 
                     b.Property<int?>("InverterId");
-
-                    b.Property<double?>("LastKnownPosition");
 
                     b.Property<double>("LowerBound");
 
@@ -235,6 +225,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("BeltRigidity");
 
                     b.Property<double>("BeltSpacing");
+
+                    b.Property<double>("ElevatorWeight");
 
                     b.Property<double>("HalfShaftLength");
 
@@ -1106,7 +1098,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 11, 11, 47, 32, 113, DateTimeKind.Local).AddTicks(7),
+                            InstallationDate = new DateTime(2017, 1, 11, 16, 37, 46, 861, DateTimeKind.Local).AddTicks(1102),
                             ServiceStatus = 86
                         });
                 });
@@ -1372,11 +1364,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<double>("MeasureMultiply");
+                    b.Property<double>("MeasureConst0");
+
+                    b.Property<double>("MeasureConst1");
+
+                    b.Property<double>("MeasureConst2");
 
                     b.Property<double>("MeasureSpeed");
-
-                    b.Property<double>("MeasureSum");
 
                     b.Property<int>("MeasureTime");
 
@@ -1530,14 +1524,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
-                        .WithMany()
-                        .HasForeignKey("BayPositionId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
-                        .WithMany()
-                        .HasForeignKey("CellId");
-
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");

@@ -109,8 +109,9 @@
             "Speed": 550
           },
           "WeightMeasurement": {
-            "MeasureMultiply": 121.46,
-            "MeasureSum": -746.12,
+            "MeasureConst0": -603.53,
+            "MeasureConst1": 159.73,
+            "MeasureConst2": -1.8163,
             "MeasureSpeed": 20,
             "MeasureTime": 15
           }
@@ -306,6 +307,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
+        "ElevatorWeight": 230,
         "HalfShaftLength": 2084,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,

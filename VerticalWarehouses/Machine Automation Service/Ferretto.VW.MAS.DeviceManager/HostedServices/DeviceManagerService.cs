@@ -314,32 +314,35 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void MachineSensorsStatusOnFaultStateChanged(object sender, StatusUpdateEventArgs e)
         {
-            this.Logger.LogError($"Inverter Fault signal detected! Begin Stop machine procedure.");
-            var messageData = new StateChangedMessageData(e.NewState);
-            var msg = new NotificationMessage(
-                messageData,
-                "FSM Error",
-                MessageActor.Any,
-                MessageActor.DeviceManager,
-                MessageType.FaultStateChanged,
-                BayNumber.None);
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
+            if (e.NewState)
             {
-                var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
-                foreach (var inverter in inverterProvider.GetAll())
-                {
-                    var fieldMessageData = new InverterCurrentErrorFieldMessageData();
-                    var commandMessage = new FieldCommandMessage(
-                        fieldMessageData,
-                        $"Request Inverter Error Code",
-                        FieldMessageActor.InverterDriver,
-                        FieldMessageActor.DeviceManager,
-                        FieldMessageType.InverterCurrentError,
-                        (byte)inverter.SystemIndex);
+                this.Logger.LogError($"Inverter Fault signal detected! Begin Stop machine procedure.");
+                var messageData = new StateChangedMessageData(e.NewState);
+                var msg = new NotificationMessage(
+                    messageData,
+                    "FSM Error",
+                    MessageActor.Any,
+                    MessageActor.DeviceManager,
+                    MessageType.FaultStateChanged,
+                    BayNumber.None);
+                this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
 
-                    this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
+                    foreach (var inverter in inverterProvider.GetAll())
+                    {
+                        var fieldMessageData = new InverterCurrentErrorFieldMessageData();
+                        var commandMessage = new FieldCommandMessage(
+                            fieldMessageData,
+                            $"Request Inverter Error Code",
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageActor.DeviceManager,
+                            FieldMessageType.InverterCurrentError,
+                            (byte)inverter.SystemIndex);
+
+                        this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(commandMessage);
+                    }
                 }
             }
         }

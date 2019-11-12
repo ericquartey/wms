@@ -40,8 +40,29 @@
 
 
         </dxprg:PropertyGridControl>
-        <controls:PpcButton HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
+
+        <StackPanel Orientation="Vertical"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    >
+            
+        <controls:PpcButton 
+                            Height="60"
+                            Grid.Column="0"
+                            Margin="4,0,15,4"
+                            Command="{Binding GoToImport}"
+                            Content="{x:Static res:InstallationApp.Restore}"
+                            />
+
+        <controls:PpcButton 
+                            Height="60"
+                            Grid.Column="0"
+                            Margin="4,0,15,4"
+                            Command="{Binding GoToExport}"
+                            Content="{x:Static res:InstallationApp.Export}"
+                            />
+
+        <controls:PpcButton 
                             Height="60"
                             Grid.Column="0"
                             Margin="4,0,15,4"
@@ -49,5 +70,6 @@
                             Content="{x:Static res:General.Save}"
                             IsBusy="{Binding IsBusy}"
                             />
+        </StackPanel>
     </Grid>
 </ctrls:View>

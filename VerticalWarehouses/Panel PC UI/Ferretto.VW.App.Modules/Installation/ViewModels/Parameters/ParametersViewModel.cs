@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private VertimagConfiguration configuration;
 
+        private DelegateCommand goToExport;
+
+        private DelegateCommand goToImport;
+
         private bool isBusy;
 
         private DelegateCommand saveCommand;
@@ -36,6 +40,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public VertimagConfiguration Configuration => this.configuration;
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand GoToExport => this.goToExport
+            ??
+            (this.goToExport = new DelegateCommand(
+                this.ShowExport, this.CanShowExport));
+
+        public ICommand GoToImport => this.goToImport
+                    ??
+            (this.goToImport = new DelegateCommand(
+                this.ShowImport, this.CanShowImport));
 
         public bool IsBusy
         {
@@ -86,6 +100,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return !this.IsBusy;
         }
 
+        private bool CanShowExport()
+        {
+            return !this.IsBusy;
+        }
+
+        private bool CanShowImport()
+        {
+            return !this.IsBusy;
+        }
+
         private async Task SaveAsync()
         {
             try
@@ -108,6 +132,24 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsBusy = false;
             }
+        }
+
+        private void ShowExport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                this.Configuration,
+                trackCurrentView: true);
+        }
+
+        private void ShowImport()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Installation),
+                Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
+                null,
+                trackCurrentView: true);
         }
 
         #endregion

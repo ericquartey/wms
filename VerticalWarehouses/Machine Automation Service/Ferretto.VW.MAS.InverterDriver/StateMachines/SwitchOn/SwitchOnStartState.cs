@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private readonly Axis axisToSwitchOn;
 
+        private DateTime startTime;
+
         #endregion
 
         #region Constructors
@@ -37,6 +39,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Switch On Start Inverter {this.InverterStatus.SystemIndex}");
+            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.SwitchOn = true;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
                 this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()
@@ -49,7 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
 
-            Enum.TryParse(this.InverterStatus.SystemIndex.ToString(), out InverterIndex inverterIndex);
+            var inverterIndex = this.InverterStatus.SystemIndex;
 
             var notificationMessageData = new InverterSwitchOnFieldMessageData(this.axisToSwitchOn);
             var notificationMessage = new FieldNotificationMessage(
@@ -59,7 +63,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 FieldMessageActor.InverterDriver,
                 FieldMessageType.InverterSwitchOn,
                 MessageStatus.OperationStart,
-                this.InverterStatus.SystemIndex);
+                inverterIndex);
 
             this.Logger.LogTrace($"2:Publishing Field Notification Message {notificationMessage.Type} Destination {notificationMessage.Destination} Status {notificationMessage.Status}");
 
@@ -103,6 +107,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
                 {
                     this.ParentStateMachine.ChangeState(new SwitchOnEndState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                     returnValue = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:SwitchOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(new SwitchOnErrorState(this.ParentStateMachine, this.axisToSwitchOn, this.InverterStatus, this.Logger));
                 }
             }
             return returnValue;

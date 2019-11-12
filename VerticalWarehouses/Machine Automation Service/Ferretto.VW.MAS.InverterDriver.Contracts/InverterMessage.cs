@@ -170,6 +170,36 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         #region Methods
 
+        public static string FormatBlockWrite(object[] blockValues)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockValues)
+            {
+                switch (block.GetType().Name)
+                {
+                    case "Int16":
+                    case "UInt16":
+                        text.AppendFormat("{0:X4}", (short)block);
+                        break;
+
+                    case "Int32":
+                    case "UInt32":
+                        text.AppendFormat("{0:X8}", (int)block);
+                        break;
+
+                    default:
+                        throw new InverterDriverException($"Block write parameter {block.GetType().Name} not valid");
+                }
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
+        }
+
         public static InverterMessage FromBytes(byte[] messageBytes)
         {
             if (messageBytes is null)
@@ -231,11 +261,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
-            if (blockDefinitions is null)
-            {
-                throw new ArgumentNullException(nameof(blockDefinitions));
-            }
-
             var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
             var start = 0;
@@ -273,41 +298,6 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return blockValues;
-        }
-
-        public string FormatBlockWrite(object[] blockValues)
-        {
-            if (blockValues is null)
-            {
-                throw new ArgumentNullException(nameof(blockValues));
-            }
-
-            var text = new StringBuilder();
-            foreach (var block in blockValues)
-            {
-                switch (block.GetType().Name)
-                {
-                    case "Int16":
-                    case "UInt16":
-                        text.AppendFormat("{0:X4}", (short)block);
-                        break;
-
-                    case "Int32":
-                    case "UInt32":
-                        text.AppendFormat("{0:X8}", (int)block);
-                        break;
-
-                    default:
-                        throw new InverterDriverException($"Block write parameter {block.GetType().Name} not valid");
-                }
-            }
-
-            if (text.Length > 80)
-            {
-                throw new InverterDriverException("Too many parameters for one block message");
-            }
-
-            return text.ToString();
         }
 
         public byte[] GetHeartbeatMessage(bool setBit)
@@ -442,6 +432,25 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return returnString.ToString();
+        }
+
+        private static string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockDefinitions)
+            {
+                text.AppendFormat("{0}", (byte)block.SystemIndex);
+                text.AppendFormat("{0}", (byte)block.DataSetIndex);
+                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
+                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
         }
 
         private void BuildWriteMessage(byte systemIndex, short parameterId, object payload, byte dataSetIndex, int sendDelay = 0)
@@ -613,41 +622,22 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return returnValue;
         }
 
-        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
-        {
-            var text = new StringBuilder();
-            foreach (var block in blockDefinitions)
-            {
-                text.AppendFormat("{0}", (byte)block.SystemIndex);
-                text.AppendFormat("{0}", (byte)block.DataSetIndex);
-                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
-                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
-            }
-
-            if (text.Length > 80)
-            {
-                throw new InverterDriverException("Too many parameters for one block message");
-            }
-
-            return text.ToString();
-        }
-
         private void SetPayload(object payload)
         {
             if (payload is null)
             {
-                this.payload = new byte[0];
+                this.payload = Array.Empty<byte>();
                 this.payloadLength = 0;
                 return;
             }
 
             if (payload is List<InverterBlockDefinition> blockDefinitions)
             {
-                this.payload = Encoding.ASCII.GetBytes(this.FormatBlockDefinition(blockDefinitions));
+                this.payload = Encoding.ASCII.GetBytes(FormatBlockDefinition(blockDefinitions));
             }
             else if (payload is object[] blockValues)
             {
-                this.payload = Encoding.ASCII.GetBytes(this.FormatBlockWrite(blockValues));
+                this.payload = Encoding.ASCII.GetBytes(FormatBlockWrite(blockValues));
             }
             else
             {
@@ -689,7 +679,7 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
                             Debugger.Break();
                         }
 
-                        this.payload = new byte[0];
+                        this.payload = Array.Empty<byte>();
                         this.payloadLength = 0;
                         return;
                 }

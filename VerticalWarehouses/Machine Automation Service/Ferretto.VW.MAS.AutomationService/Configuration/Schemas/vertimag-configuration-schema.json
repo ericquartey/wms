@@ -417,22 +417,29 @@
                     "type": "object",
                     "title": "The Weightmeasurement Schema",
                     "required": [
-                      "MeasureMultiply",
-                      "MeasureSum",
+                      "MeasureConst0",
+                      "MeasureConst1",
+                      "MeasureConst2",
                       "MeasureSpeed",
                       "MeasureTime"
                     ],
                     "properties": {
-                      "MeasureMultiply": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureMultiply",
+                      "MeasureConst0": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst0",
                         "type": "number",
-                        "title": "The Measuremultiply Schema",
+                        "title": "The MeasureConst0 Schema",
                         "default": 0.0
                       },
-                      "MeasureSum": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSum",
+                      "MeasureConst1": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst1",
                         "type": "number",
-                        "title": "The Measuresum Schema",
+                        "title": "The MeasureConst1 Schema",
+                        "default": 0.0
+                      },
+                      "MeasureConst2": {
+                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst2",
+                        "type": "number",
+                        "title": "The MeasureConst2 Schema",
                         "default": 0.0
                       },
                       "MeasureSpeed": {
@@ -537,6 +544,7 @@
               "required": [
                 "BeltRigidity",
                 "BeltSpacing",
+                "ElevatorWeight",
                 "HalfShaftLength",
                 "PulleyDiameter",
                 "ShaftDiameter",
@@ -553,6 +561,12 @@
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/BeltSpacing",
                   "type": "integer",
                   "title": "The Beltspacing Schema",
+                  "default": 0
+                },
+                "ElevatorWeight": {
+                  "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ElevatorWeight",
+                  "type": "integer",
+                  "title": "The Elevatorweight Schema",
                   "default": 0
                 },
                 "HalfShaftLength": {

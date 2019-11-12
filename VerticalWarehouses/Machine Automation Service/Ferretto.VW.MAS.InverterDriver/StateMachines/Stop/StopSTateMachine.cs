@@ -40,12 +40,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
             this.CurrentState?.Start();
         }
 
-        /// <inheritdoc />
-        public override void Stop()
-        {
-            this.CurrentState?.Stop();
-        }
-
         #endregion
+
+        ///// <inheritdoc />
+        //public override void Stop()
+        //{
+        //    this.CurrentState?.Stop();
+        //}
     }
 }

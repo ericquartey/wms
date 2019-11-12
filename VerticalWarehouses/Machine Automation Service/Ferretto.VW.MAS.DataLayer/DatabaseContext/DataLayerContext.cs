@@ -92,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public override void Dispose()
         {
             base.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

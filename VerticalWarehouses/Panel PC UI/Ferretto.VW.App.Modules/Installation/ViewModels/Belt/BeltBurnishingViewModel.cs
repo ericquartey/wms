@@ -316,10 +316,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineUpperBound = bounds.Upper;
             this.InputLowerBound = bounds.Lower;
             this.machineLowerBound = bounds.Lower;
-
-            this.PerformedCyclesThisSession = 0;
-            this.InputRequiredCycles = procedureParameters.RequiredCycles;
-            this.totalPerformedCyclesBeforeStart = procedureParameters.PerformedCycles;
+            
+            this.InputRequiredCycles = procedureParameters.RequiredCycles;            
             this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
         }
 

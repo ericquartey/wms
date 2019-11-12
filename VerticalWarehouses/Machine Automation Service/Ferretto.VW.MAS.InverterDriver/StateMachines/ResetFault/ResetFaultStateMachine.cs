@@ -49,11 +49,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
             this.CurrentState?.Start();
         }
 
-        public override void Stop()
-        {
-            this.CurrentState?.Stop();
-        }
-
         #endregion
+
+        //public override void Stop()
+        //{
+        //    this.CurrentState?.Stop();
+        //}
     }
 }

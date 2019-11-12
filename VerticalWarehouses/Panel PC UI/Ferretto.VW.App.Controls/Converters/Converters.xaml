@@ -13,6 +13,8 @@
     <conv:BooleanNegationConverter x:Key="BNC" />
 
     <dxmvvm:ObjectToBooleanConverter x:Key="OTBC"/>
+    <dxmvvm:ObjectToBooleanConverter x:Key="OTBIC"
+                                     Inverse="True" />
 
     <conv:ReferenceToVisibilityConverter x:Key="RTVC" />
     <conv:ReferenceToVisibilityConverter x:Key="RTVIC"

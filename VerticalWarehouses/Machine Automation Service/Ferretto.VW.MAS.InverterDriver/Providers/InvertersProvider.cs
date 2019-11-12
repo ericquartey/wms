@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             if (pulses == 0)
             {
-                throw new ArgumentOutOfRangeException("Pulses must be different from zero.", nameof(pulses));
+                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
             }
 
             var axis = this.elevatorDataProvider.GetAxis(orientation);

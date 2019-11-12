@@ -225,16 +225,7 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        private void OnKeyDownHandler(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Return)
-            {
-                var b = this.GetBindingExpression(EditValueProperty);
-                b?.UpdateSource();
-            }
-        }
-
-        private void OnMouseDoubleClickHandler(object sender, MouseButtonEventArgs e)
+        private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
             switch (this.Keyboard)
             {
@@ -262,6 +253,15 @@ namespace Ferretto.VW.App.Controls
 
                 default:
                     break;
+            }
+        }
+
+        private void OnKeyDownHandler(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Return)
+            {
+                var b = this.GetBindingExpression(EditValueProperty);
+                b?.UpdateSource();
             }
         }
 

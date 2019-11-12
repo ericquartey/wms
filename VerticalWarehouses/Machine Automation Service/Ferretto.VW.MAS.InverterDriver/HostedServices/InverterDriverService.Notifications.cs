@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             }
 
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
-                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                             this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         if (messageCurrentStateMachine is CalibrateAxisStateMachine)
                         {
-                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 1000);
+                            this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                             this.currentStateMachines.Remove(inverterIndex);
                         }
                         else
@@ -231,7 +231,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             var inverter = invertersProvider.GetByIndex(inverterIndex);
                             if (inverter is AngInverterStatus || inverter is AcuInverterStatus)
                             {
-                                this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 1000);
+                                this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 10000);
                             }
                             this.currentStateMachines.Remove(inverterIndex);
                         }

@@ -9,19 +9,24 @@ namespace Ferretto.VW.MAS.DataModels
         #region Properties
 
         /// <summary>
-        /// Gets or sets the kM value in the formula weight = kM * current + kS.
+        /// Gets or sets the k0 value in the formula:  weight = k2 * current^2 + k1 * current + k0.
         /// </summary>
-        public double MeasureMultiply { get; set; }
+        public double MeasureConst0 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the k1 value in the formula:  weight = k2 * current^2 + k1 * current + k0.
+        /// </summary>
+        public double MeasureConst1 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the k2 value in the formula:  weight = k2 * current^2 + k1 * current + k0.
+        /// </summary>
+        public double MeasureConst2 { get; set; }
 
         /// <summary>
         /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/meter.
         /// </summary>
         public double MeasureSpeed { get; set; }
-
-        /// <summary>
-        /// Gets or sets the kS value in the formula weight = kM * current + kS.
-        /// </summary>
-        public double MeasureSum { get; set; }
 
         /// <summary>
         /// Gets or sets the time between the start of slow upward movement and the torque current request message, in tenth of seconds.

@@ -544,7 +544,7 @@ namespace Ferretto.VW.Simulator.Services
                     break;
 
                 case InverterParameterId.CurrentError:
-                    var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes((ushort)random.Next(1, 100)));
+                    var errorMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, BitConverter.GetBytes(inverter.IsFault ? (ushort)random.Next(1, 100) : (ushort)0));
                     result = client.Client.Send(errorMessage);
                     break;
 
@@ -627,7 +627,7 @@ namespace Ferretto.VW.Simulator.Services
                         }
                     }
                     {
-                        var replyMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(message.FormatBlockWrite(blockValues)));
+                        var replyMessage = this.FormatMessage(message.ToBytes(), (InverterRole)message.SystemIndex, message.DataSetIndex, Encoding.ASCII.GetBytes(InverterMessage.FormatBlockWrite(blockValues)));
                         result = client.Client.Send(replyMessage);
                     }
                     break;
@@ -647,18 +647,21 @@ namespace Ferretto.VW.Simulator.Services
             {
                 inverter.IsFault = true;
             }
-            else if ((inverter.ControlWord & 0x0080) > 0)   // Reset fault
+            else if ((inverter.ControlWord & 0x0080) > 0)   // Reset Fault
             {
                 inverter.IsFault = false;
                 this.remoteIOs[0].Inputs[(int)IoPorts.InverterInFault].Value = false;
             }
 
-            // Switch On
-            inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
-            inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
+            if (!inverter.IsFault)
+            {
+                // Switch On
+                inverter.IsReadyToSwitchOn = inverter.IsVoltageEnabled;
+                inverter.IsSwitchedOn = (inverter.ControlWord & 0x0001) > 0 && inverter.IsReadyToSwitchOn;
 
-            // Enable Voltage
-            inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;
+                // Enable Voltage
+                inverter.IsVoltageEnabled = (inverter.ControlWord & 0x0002) > 0;
+            }
 
             // Quick Stop
             inverter.IsQuickStopTrue = (inverter.ControlWord & 0x0004) > 0;
@@ -695,14 +698,17 @@ namespace Ferretto.VW.Simulator.Services
             }
             else if (this.RemoteIOs01.Outputs[(int)IoPorts.ResetSecurity].Value && this.remoteIOs.All(x => x.Inputs[(int)IoPorts.MushroomEmergency].Value))
             {
-                // Set run status
-                this.remoteIOs
-                     .Single(io => io.Id == 0)
-                     .Inputs[(int)IoPorts.NormalState]
-                     .Value = true;
+                if (!this.Inverters.Any(x => x.IsFault))
+                {
+                    // Set run status
+                    this.remoteIOs
+                         .Single(io => io.Id == 0)
+                         .Inputs[(int)IoPorts.NormalState]
+                         .Value = true;
 
-                // Power up inverters
-                this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
+                    // Power up inverters
+                    this.Inverters.ToList().ForEach(x => x.DigitalIO[(int)InverterSensors.ANG_HardwareSensorSTO].Value = true);
+                }
             }
             foreach (var inverter in this.Inverters)
             {
