@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Ferretto.VW.MAS.AutomationService;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -80,10 +81,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());
         }
 
-        [HttpGet("horizontal/position")]
-        public ActionResult<double> GetHorizontalPosition()
+        [HttpGet("position")]
+        public ActionResult<ElevatorPosition> GetPosition()
         {
-            return this.Ok(this.elevatorProvider.HorizontalPosition);
+            var elevatorPosition = new ElevatorPosition
+            {
+                Vertical = this.elevatorProvider.VerticalPosition,
+                Horizontal = this.elevatorProvider.HorizontalPosition,
+                CellId = this.elevatorDataProvider.GetCurrentCell()?.Id,
+                BayPositionId = this.elevatorDataProvider.GetCurrentBayPosition()?.Id
+            };
+
+            return this.Ok(elevatorPosition);
         }
 
         [HttpGet("vertical/bounds")]
@@ -102,12 +111,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public ActionResult<double> GetVerticalOffset()
         {
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Offset);
-        }
-
-        [HttpGet("vertical/position")]
-        public ActionResult<double> GetVerticalPosition()
-        {
-            return this.Ok(this.elevatorProvider.VerticalPosition);
         }
 
         [HttpGet("vertical/resolution")]

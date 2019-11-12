@@ -1,10 +1,9 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
-using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
-using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
 
 namespace Ferretto.VW.App.Services
 {
@@ -26,12 +25,14 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IInstallationHubClient installationHubClient)
         {
-            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            this.installationHubClient = installationHubClient ?? throw new System.ArgumentNullException(nameof(installationHubClient));
+            this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
             this.installationHubClient.MessageReceived += this.OnMessageReceived;
-            this.installationHubClient.MachineModeChanged += this.OnMachineModeChanged;
-            this.installationHubClient.MachinePowerChanged += this.OnMachinePowerChanged;
+            this.installationHubClient.MachineModeChanged += this.OnEventReceived;
+            this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
+            this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
+            this.installationHubClient.BayChainPositionChanged += this.OnEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
         }
@@ -40,19 +41,52 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        private void OnMachineModeChanged(object sender, MachineModeChangedEventArgs e)
+        private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
+            where TEventArgs : EventArgs
         {
+            this.logger.Trace($"SignalR message: {e.GetType().Name}");
+
             this.eventAggregator
-                .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                .GetEvent<PubSubEvent<TEventArgs>>()
                 .Publish(e);
         }
 
-        private void OnMachinePowerChanged(object sender, MachinePowerChangedEventArgs e)
-        {
-            this.eventAggregator
-                .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-                .Publish(e);
-        }
+        /*
+                private void OnCarouselChainPositionChanged(object sender, CarouselChainPositionChangedEventArgs e)
+                {
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<CarouselChainPositionChangedEventArgs>>()
+                        .Publish(e);
+                }
+
+                private void OnElevatorPositionChanged(object sender, ElevatorPositionChangedEventArgs e)
+                {
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                        .Publish(e);
+                }
+
+                private void OnExternalBayChainPositionChanged(object sender, ExternalBayChainPositionChangedEventArgs e)
+                {
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<ExternalBayChainPositionChangedEventArgs>>()
+                        .Publish(e);
+                }
+
+                private void OnMachineModeChanged(object sender, MachineModeChangedEventArgs e)
+                {
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                        .Publish(e);
+                }
+
+                private void OnMachinePowerChanged(object sender, MachinePowerChangedEventArgs e)
+                {
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                        .Publish(e);
+                }
+                */
 
         private void OnMessageReceived(object sender, MessageNotifiedEventArgs e)
         {
@@ -86,12 +120,6 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<HomingMessageData>>()
                         .Publish(h);
-                    break;
-
-                case NotificationMessageUI<CurrentPositionMessageData> cp:
-                    this.eventAggregator
-                        .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
-                        .Publish(cp);
                     break;
 
                 case NotificationMessageUI<InverterExceptionMessageData> ie:

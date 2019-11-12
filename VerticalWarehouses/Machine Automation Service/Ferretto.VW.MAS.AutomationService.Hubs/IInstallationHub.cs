@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
 {
@@ -10,7 +11,11 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
+        Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId);
+
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
+
+        Task BayChainPositionChanged(double position, BayNumber bayNumber);
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 

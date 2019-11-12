@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     if (resourceProvider.IsDrawerCompletelyOnCradle)
                     {
-                        elevatorDataProvider.LoadLoadingUnit(currentLoadingUnit.Id);
+                        elevatorDataProvider.SetLoadingUnit(currentLoadingUnit.Id);
 
                         if (cell != null)
                         {
@@ -215,7 +215,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     else
                     {
-                        elevatorDataProvider.UnloadLoadingUnit();
+                        elevatorDataProvider.SetLoadingUnit(null);
 
                         if (cell != null)
                         {

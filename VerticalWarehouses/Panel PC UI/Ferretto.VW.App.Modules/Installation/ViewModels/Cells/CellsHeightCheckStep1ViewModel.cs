@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -31,8 +32,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CellsHeightCheckStep1ViewModel(
             IMachineCellsWebService machineCellsWebService,
-            IMachineElevatorWebService machineElevatorWebService)
-            : base(machineCellsWebService, machineElevatorWebService)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(machineCellsWebService, machineElevatorWebService, machineElevatorService)
         {
         }
 
@@ -102,10 +104,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnCurrentPositionChanged(message);
-
             if (message.IsErrored())
             {
                 this.IsElevatorMoving = false;
@@ -131,7 +131,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsElevatorMoving = false;
 
                             this.ShowNotification(
-                                "Procedura di posizionamento interrotta.",
+                                VW.App.Resources.InstallationApp.ProcedureWasStopped,
                                 Services.Models.NotificationSeverity.Warning);
 
                             break;

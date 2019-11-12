@@ -110,8 +110,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool ComputeElongation { get; set; }
 
-        public double? CurrentPosition { get; set; }
-
         public int Delay { get; set; }
 
         public HorizontalMovementDirection Direction { get; set; }

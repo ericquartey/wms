@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
-        private readonly IMachineModeDataProvider machineModeDataProvider;
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
-            IMachineModeDataProvider machineModeDataProvider,
+            IMachineModeVolatileDataProvider machineModeDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {

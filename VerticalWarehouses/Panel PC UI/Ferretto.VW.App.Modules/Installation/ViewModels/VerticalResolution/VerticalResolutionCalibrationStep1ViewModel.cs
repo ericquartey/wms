@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -29,8 +30,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationStep1ViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService)
         {
         }
 
@@ -119,9 +121,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.GetParametersAsync();
         }
 
-        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnElevatorPositionChanged(message);
+            base.OnPositioningOperationChanged(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -48,8 +49,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationStep3ViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService)
         {
         }
 
@@ -149,8 +151,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToInitialPositionCommand
             ??
             (this.moveToInitialPositionCommand = new DelegateCommand(
-              async () => await this.MoveToInitialPositionAsync(),
-              this.CanMoveToInitialPosition));
+                async () => await this.MoveToInitialPositionAsync(),
+                this.CanMoveToInitialPosition));
 
         public decimal? NewResolution
         {
@@ -227,6 +229,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.NewResolution = null;
         }
 
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -236,12 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
-        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (this.IsExecutingProcedure)
             {
@@ -255,7 +257,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            base.OnElevatorPositionChanged(message);
+            base.OnPositioningOperationChanged(message);
         }
 
         protected override void RaiseCanExecuteChanged()

@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                 {
-                    this.elevatorDataProvider.UnloadLoadingUnit();
+                    this.elevatorDataProvider.SetLoadingUnit(null);
 
                     if (this.messageData.Destination == LoadingUnitLocation.Cell)
                     {

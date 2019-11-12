@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly SubscriptionToken healthStatusChangedToken;
 
-        private readonly Logger logger;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         private readonly SubscriptionToken machineModeChangedToken;
 
@@ -39,7 +39,6 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.machineModeWebService = machineModeWebService ?? throw new ArgumentNullException(nameof(machineModeWebService));
-            this.logger = LogManager.GetCurrentClassLogger();
 
             this.machinePowerChangedToken = this.eventAggregator
               .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()

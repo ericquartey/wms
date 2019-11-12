@@ -65,17 +65,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     if (dataInverters.CurrentPosition != null)
                     {
-                        var notificationData = new PositioningMessageData();
-                        notificationData.CurrentPosition = dataInverters.CurrentPosition.Value;
-                        notificationData.AxisMovement = dataInverters.CurrentAxis;
+                        var notificationData = new PositioningMessageData
+                        {
+                            AxisMovement = dataInverters.CurrentAxis
+                        };
+
                         if (this.machineData.AxisToCalibrate == Axis.BayChain)
                         {
                             notificationData.MovementMode = MovementMode.BayChain;
                         }
+
                         this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={notificationData.AxisMovement}; value={(int)dataInverters.CurrentPosition.Value}");
+
                         var notificationMessage = new NotificationMessage(
                             notificationData,
-                            $"Current Encoder position: {notificationData.CurrentPosition}",
+                            $"Current Encoder position: {dataInverters.CurrentPosition.Value}",
                             MessageActor.AutomationService,
                             MessageActor.DeviceManager,
                             MessageType.Positioning,

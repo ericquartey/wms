@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                 {
-                    this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
+                    this.elevatorDataProvider.SetLoadingUnit(this.moveData.LoadingUnitId);
 
                     if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
                     {

@@ -37,12 +37,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
-        #region Properties
-
-        public double HorizontalPosition { get; set; }
-
-        #endregion
-
         #region Methods
 
         public void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender)
@@ -146,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
-                "Stop Command",
+                $"Stop carousel on bay {bayNumber}",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,

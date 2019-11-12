@@ -5,6 +5,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer
     internal sealed class BaysProvider : BaseProvider, IBaysProvider
     {
         #region Fields
+
+        private readonly IBayChainVolatileDataProvider bayChainVolatileDataProvider;
 
         private readonly IMemoryCache cache;
 
@@ -54,12 +57,14 @@ namespace Ferretto.VW.MAS.DataLayer
             IMachineProvider machineProvider,
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
+            IBayChainVolatileDataProvider bayChainVolatileDataProvider,
             IMemoryCache memoryCache)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
@@ -131,11 +136,13 @@ namespace Ferretto.VW.MAS.DataLayer
         /// profile = 10000 ==> height = 725mm
         /// height = kMul * profile + kSum;
         /// </summary>
+        [Obsolete("This method should not be in the DataLayer.")]
         public double ConvertProfileToHeight(ushort profile)
         {
             return (profile * this.kMul) + this.kSum;
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex)
         {
             if (pulses == 0)
@@ -186,6 +193,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Bays
+                    .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
                     .ThenInclude(s => s.LoadingUnit)
@@ -196,6 +204,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public BayNumber GetByAxis(IHomingMessageData data)
         {
             BayNumber targetBay;
@@ -240,6 +249,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType)
         {
             // Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
@@ -251,6 +261,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
+                    .AsNoTracking()
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
 
                 if (bay is null)
@@ -267,6 +278,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
+                    .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
                     .ThenInclude(s => s.LoadingUnit)
@@ -286,9 +298,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Bay GetByLoadingUnitLocation(LoadingUnitLocation location)
         {
-            return this.dataContext.Bays.FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays
+                    .AsNoTracking()
+                    .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+            }
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public BayNumber GetByMovementType(IPositioningMessageData data)
         {
             BayNumber targetBay;
@@ -331,6 +349,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
+                    .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
                     .ThenInclude(s => s.LoadingUnit)
@@ -352,15 +371,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays
-                    .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
-
-                if (bay is null)
+                try
+                {
+                    return this.dataContext.Bays
+                        .AsNoTracking()
+                        .Where(b => b.Inverter.Index == inverterIndex)
+                        .Select(b => b.ChainOffset)
+                        .Single();
+                }
+                catch
                 {
                     throw new EntityNotFoundException(inverterIndex.ToString());
                 }
-
-                return bay.ChainOffset;
             }
         }
 
@@ -372,8 +394,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (!this.cache.TryGetValue(cacheKey, out IEnumerable<ElevatorAxis> cacheEntry))
                 {
                     cacheEntry = this.dataContext.ElevatorAxes
+                        .AsNoTracking()
                         .Include(i => i.Inverter)
                         .ToList();
+
                     if (cacheEntry is null)
                     {
                         throw new EntityNotFoundException(string.Empty);
@@ -386,6 +410,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -409,6 +434,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -482,6 +508,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public InverterIndex GetInverterIndexByProfile(BayNumber bayNumber)
         {
             var returnValue = InverterIndex.None;
@@ -504,6 +531,7 @@ namespace Ferretto.VW.MAS.DataLayer
             return returnValue;
         }
 
+        [Obsolete("This method should not be in the DataLayer.")]
         public IoIndex GetIoDevice(BayNumber bayNumber)
         {
             var returnValue = IoIndex.None;
@@ -529,19 +557,36 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public LoadingUnit GetLoadingUnitByDestination(LoadingUnitLocation location)
         {
-            return this.dataContext.BayPositions
-                       .Where(p => p.Location == location)
-                       .Select(p => p.LoadingUnit).SingleOrDefault();
+            lock (this.dataContext)
+            {
+                return this.dataContext.BayPositions
+                    .AsNoTracking()
+                    .Where(p => p.Location == location)
+                    .Select(p => p.LoadingUnit)
+                    .SingleOrDefault();
+            }
         }
 
         public double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location)
         {
-            return this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location)?.Height;
+            lock (this.dataContext)
+            {
+                return this.dataContext.BayPositions
+                .AsNoTracking()
+                .Where(p => p.Location == location)
+                .Select(l => l.Height)
+                .SingleOrDefault();
+            }
         }
 
         public LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId)
         {
-            return this.dataContext.BayPositions.SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+            lock (this.dataContext)
+            {
+                return this.dataContext.BayPositions
+                .AsNoTracking()
+                .SingleOrDefault(p => p.LoadingUnit.Id == loadingUnitId)?.Location ?? LoadingUnitLocation.NoLocation;
+            }
         }
 
         public LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber)
@@ -549,9 +594,10 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Bays
-                           .Where(b => b.Number == bayNumber)
-                           .SelectMany(b => b.Positions)
-                           .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
+                    .AsNoTracking()
+                    .Where(b => b.Number == bayNumber)
+                    .SelectMany(b => b.Positions)
+                    .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
             }
         }
 
@@ -560,7 +606,8 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
-                              .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
+                    .AsNoTracking()
+                    .SingleOrDefault(b => b.Inverter.Index == inverterIndex);
 
                 if (bay is null)
                 {
@@ -584,21 +631,40 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void ResetMachine()
         {
-            foreach (var bayPosition in this.dataContext.BayPositions
-                                            .Include(i => i.LoadingUnit))
+            lock (this.dataContext)
             {
-                if (bayPosition.LoadingUnit != null)
+                foreach (var bayPosition in this.dataContext.BayPositions
+                                            .Include(i => i.LoadingUnit))
                 {
-                    bayPosition.LoadingUnit = null;
-                    this.dataContext.BayPositions.Update(bayPosition);
+                    if (bayPosition.LoadingUnit != null)
+                    {
+                        bayPosition.LoadingUnit = null;
+                        this.dataContext.BayPositions.Update(bayPosition);
+                    }
+                }
+
+                foreach (var bay in this.dataContext.Bays)
+                {
+                    bay.CurrentMissionId = null;
+                    bay.CurrentMissionOperationId = null;
+                    this.Update(bay);
                 }
             }
+        }
 
-            foreach (var bay in this.dataContext.Bays)
+        public void SaveLastKnownChainPosition(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
             {
-                bay.CurrentMissionId = null;
-                bay.CurrentMissionOperationId = null;
-                this.Update(bay);
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.LastKnownChainPosition = this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
+
+                this.dataContext.SaveChanges();
             }
         }
 

@@ -37,14 +37,13 @@ namespace Ferretto.VW.MAS.DataLayer
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
+
             this.cacheOptions = configuration.GetMemoryCacheOptions();
         }
 
         #endregion
 
         #region Properties
-
-        public object Context { get; private set; }
 
         public double HorizontalPosition
         {
@@ -92,6 +91,26 @@ namespace Ferretto.VW.MAS.DataLayer
         public IDbContextTransaction GetContextTransaction()
         {
             return this.dataContext.Database.BeginTransaction();
+        }
+
+        public BayPosition GetCurrentBayPosition()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Elevators
+                    .Select(e => e.BayPosition)
+                    .Single();
+            }
+        }
+
+        public Cell GetCurrentCell()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Elevators
+                    .Select(e => e.Cell)
+                    .Single();
+            }
         }
 
         public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
@@ -160,15 +179,29 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var elevator = this.dataContext.Elevators.Single();
 
-                // Reset dati
                 elevator.LoadingUnit = null;
-                elevator.LoadingUnitId = null;
 
                 this.dataContext.SaveChanges();
 
-                // Reset cache
                 this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
                 this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+            }
+        }
+
+        public void SaveLastKnownPosition()
+        {
+            lock (this.dataContext)
+            {
+                this.cache.Remove(GetAxisCacheKey(Orientation.Vertical));
+                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
+
+                var verticalAxis = this.dataContext.ElevatorAxes.Single(a => a.Orientation == Orientation.Vertical);
+                verticalAxis.LastKnownPosition = this.elevatorVolatileDataProvider.VerticalPosition;
+
+                var horizontalAxis = this.dataContext.ElevatorAxes.Single(a => a.Orientation == Orientation.Vertical);
+                horizontalAxis.LastKnownPosition = this.elevatorVolatileDataProvider.HorizontalPosition;
+
+                this.dataContext.SaveChanges();
             }
         }
 
@@ -183,16 +216,37 @@ namespace Ferretto.VW.MAS.DataLayer
             return axis.ScaleMovementsByWeight(loadingUnit);
         }
 
-        public void UnloadLoadingUnit()
+        public void SetCurrentBayPosition(int? bayPositionId)
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext
-                    .Elevators
-                    .Include(e => e.LoadingUnit)
-                    .Single();
+                var elevator = this.dataContext.Elevators.Single();
 
-                elevator.LoadingUnitId = null;
+                elevator.BayPositionId = bayPositionId;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetCurrentCell(int? cellId)
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators.Single();
+
+                elevator.CellId = cellId;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetLoadingUnit(int? loadingUnitId)
+        {
+            lock (this.dataContext)
+            {
+                var elevator = this.dataContext.Elevators.Single();
+
+                elevator.LoadingUnitId = loadingUnitId;
 
                 this.dataContext.SaveChanges();
             }

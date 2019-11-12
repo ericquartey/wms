@@ -58,8 +58,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.CalibrateAxisMethod(message);
                     break;
 
-                case MessageType.CurrentPosition:
-                    this.CurrentPositionMethod(message);
+                case MessageType.ElevatorPosition:
+                    this.OnElevatorPositionChanged(message);
                     break;
 
                 case MessageType.Positioning:

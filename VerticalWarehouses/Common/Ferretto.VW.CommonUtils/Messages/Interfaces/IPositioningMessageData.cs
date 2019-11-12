@@ -13,8 +13,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool ComputeElongation { get; set; }
 
-        double? CurrentPosition { get; set; }
-
         int Delay { get; set; }
 
         HorizontalMovementDirection Direction { get; set; }

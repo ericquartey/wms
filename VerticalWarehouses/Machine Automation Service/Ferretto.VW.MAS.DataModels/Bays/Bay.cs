@@ -26,6 +26,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsExternal { get; set; }
 
+        /// <summary>
+        /// Gets or sets the last known position, in millimeters, of the bays's chain, or null, if the last position is unknown.
+        /// </summary>
+        public double? LastKnownChainPosition { get; set; }
+
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }
@@ -37,6 +42,7 @@ namespace Ferretto.VW.MAS.DataModels
         public Shutter Shutter { get; set; }
 
         public WarehouseSide Side { get; set; }
+
 
         public BayStatus Status
         {

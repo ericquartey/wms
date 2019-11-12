@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
@@ -93,6 +93,18 @@ namespace Ferretto.VW.MAS.AutomationService
             this.baysProvider.AddElevatorPseudoBay();
 
             this.baysProvider.GetAll().ToList(); // HACK why is this call needed?
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessage message)
+        {
+            if (message.Data is ElevatorPositionMessageData data)
+            {
+                this.installationHub.Clients.All.ElevatorPositionChanged(
+                    data.VerticalPosition,
+                    data.HorizontalPosition,
+                    data.CellId,
+                    data.BayPositionId);
+            }
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)

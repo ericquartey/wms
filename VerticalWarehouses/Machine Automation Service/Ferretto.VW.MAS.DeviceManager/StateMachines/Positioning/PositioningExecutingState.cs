@@ -368,7 +368,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.machineData.MessageData.BeltBurnishingPosition = beltBurnishingPosition;
 
-            this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
+            this.Logger.LogTrace(
+                $"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement};");
+
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 $"Current position {beltBurnishingPosition}",
@@ -504,19 +506,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
 
             if (message.Data is InverterStatusUpdateFieldMessageData data
-                && message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex
-                )
+                &&
+                message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
             {
-                if (data.CurrentPosition != null)
-                {
-                    this.machineData.MessageData.CurrentPosition = data.CurrentPosition;
-                }
                 this.machineData.MessageData.TorqueCurrentSample = data.TorqueCurrent;
 
-                this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
+                this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement};");
                 var notificationMessage = new NotificationMessage(
                     this.machineData.MessageData,
-                    $"Current Encoder position: {data.CurrentPosition}",
+                    $"Current Encoder position changed",
                     MessageActor.AutomationService,
                     MessageActor.DeviceManager,
                     MessageType.Positioning,
@@ -533,15 +531,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 if (machineResourcesProvider.IsProfileCalibratedBay(this.machineData.RequestingBay))
                 {
                     if (this.countProfileCalibrated == 0
-                        && !this.profileStartPosition.HasValue
-                        )
+                        && !this.profileStartPosition.HasValue)
                     {
                         this.profileStartPosition = this.machineData.MessageData.CurrentPosition.Value;
                         this.Logger.LogDebug($"profileStartPosition = {this.profileStartPosition.Value}");
                     }
                     else if (this.countProfileCalibrated == 1
-                        && !this.profileCalibratePosition.HasValue
-                        )
+                        && !this.profileCalibratePosition.HasValue)
                     {
                         this.profileCalibratePosition = this.machineData.MessageData.CurrentPosition.Value - this.profileStartPosition.Value;
 
@@ -552,8 +548,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                 }
                 else if (this.countProfileCalibrated == 0
-                    && this.profileStartPosition.HasValue
-                    )
+                    && this.profileStartPosition.HasValue)
                 {
                     // profileCalibrated signal is low after startPosion
                     this.countProfileCalibrated = 1;
@@ -571,8 +566,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
             {
                 if (message.Data is MeasureProfileFieldMessageData data
-                    && message.Source == FieldMessageActor.InverterDriver
-                    )
+                    && message.Source == FieldMessageActor.InverterDriver)
                 {
                     var profileHeight = this.baysProvider.ConvertProfileToHeight(data.Profile);
                     this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");

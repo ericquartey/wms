@@ -231,6 +231,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
+            if (blockDefinitions is null)
+            {
+                throw new ArgumentNullException(nameof(blockDefinitions));
+            }
+
             var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
             var start = 0;
@@ -270,27 +275,13 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             return blockValues;
         }
 
-        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
-        {
-            var text = new StringBuilder();
-            foreach (var block in blockDefinitions)
-            {
-                text.AppendFormat("{0}", (byte)block.SystemIndex);
-                text.AppendFormat("{0}", (byte)block.DataSetIndex);
-                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
-                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
-            }
-
-            if (text.Length > 80)
-            {
-                throw new InverterDriverException("Too many parameters for one block message");
-            }
-
-            return text.ToString();
-        }
-
         public string FormatBlockWrite(object[] blockValues)
         {
+            if (blockValues is null)
+            {
+                throw new ArgumentNullException(nameof(blockValues));
+            }
+
             var text = new StringBuilder();
             foreach (var block in blockValues)
             {
@@ -620,6 +611,25 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
             }
 
             return returnValue;
+        }
+
+        private string FormatBlockDefinition(List<InverterBlockDefinition> blockDefinitions)
+        {
+            var text = new StringBuilder();
+            foreach (var block in blockDefinitions)
+            {
+                text.AppendFormat("{0}", (byte)block.SystemIndex);
+                text.AppendFormat("{0}", (byte)block.DataSetIndex);
+                text.AppendFormat("{0:X1}", (short)block.ParameterId / 100);
+                text.AppendFormat("{0:00}", (short)block.ParameterId % 100);
+            }
+
+            if (text.Length > 80)
+            {
+                throw new InverterDriverException("Too many parameters for one block message");
+            }
+
+            return text.ToString();
         }
 
         private void SetPayload(object payload)

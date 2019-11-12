@@ -10,6 +10,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IBayManager bayManager;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
@@ -42,6 +45,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? currentPosition;
 
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private double? inputDisplacement;
 
         private string inputLoadingUnitCode;
@@ -58,13 +63,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveToBayCommand;
 
+        private SubscriptionToken positioningOperationChangedToken;
+
         private SetupProcedure procedureParameters;
 
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
-
-        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -75,34 +80,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineWeightAnalysisProcedureWebService weightAnalysisProcedureWebService,
+            IMachineElevatorService machineElevatorService,
             IBayManager bayManager)
-            : base(Services.PresentationMode.Installer)
+            : base(PresentationMode.Installer)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
-            if (machineLoadingUnitsWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
-            }
-
-            if (weightAnalysisProcedureWebService is null)
-            {
-                throw new ArgumentNullException(nameof(weightAnalysisProcedureWebService));
-            }
-
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService;
-            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService;
-            this.weightAnalysisProcedureWebService = weightAnalysisProcedureWebService;
-            this.bayManager = bayManager;
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
+            this.weightAnalysisProcedureWebService = weightAnalysisProcedureWebService ?? throw new ArgumentNullException(nameof(weightAnalysisProcedureWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
@@ -304,15 +291,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-            this.subscriptionToken = this.subscriptionToken
+
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnAutomationMessageReceived,
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false,
                         m => m.Data?.AxisMovement == Axis.Vertical);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
 
             await this.RetrieveCurrentPositionAsync();
 
@@ -373,10 +370,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
+            this.CurrentPosition = e.VerticalPosition;
+        }
 
+        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
             if (message.Status == MessageStatus.OperationExecuting
                 &&
                 message.Data.TorqueCurrentSample != null)
@@ -437,7 +437,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bay = await this.bayManager.GetBayAsync();
 
-                this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
             catch (Exception ex)
             {

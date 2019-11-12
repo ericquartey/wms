@@ -7,6 +7,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IBayManager bayManager;
 
         private readonly IMachineBaysWebService machineBaysWebService;
+
+        private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
@@ -38,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? currentHeight;
 
         private double? displacement;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private double? inputStepValue;
 
@@ -68,12 +73,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BayHeightCheckViewModel(
             IBayManager bayManager,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineBaysWebService machineBaysWebService)
+            IMachineBaysWebService machineBaysWebService,
+            IMachineElevatorService machineElevatorService)
             : base(PresentationMode.Installer)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -315,6 +322,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
             this.IsBackNavigationAllowed = true;
 
             await this.InitializeDataAsync();
@@ -485,7 +501,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Bay = await this.bayManager.GetBayAsync();
 
-                this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.CurrentHeight = this.machineElevatorService.Position.Vertical;
 
                 this.CurrentBayPosition = 2;
             }
@@ -580,8 +596,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(message.Description);
                 }
             }
+        }
 
-            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentHeight = e.VerticalPosition;
         }
 
         private void RaiseCanExecuteChanged()

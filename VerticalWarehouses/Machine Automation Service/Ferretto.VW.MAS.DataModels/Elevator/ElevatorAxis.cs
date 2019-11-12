@@ -33,6 +33,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
+        /// <summary>
+        /// Gets or sets the last known position of the elevator's axis, or null if the last position is not known.
+        /// </summary>
+        public double? LastKnownPosition { get; set; }
+
         public double LowerBound
         {
             get => this.lowerBound;

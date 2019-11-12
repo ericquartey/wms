@@ -22,12 +22,10 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 throw new System.ArgumentNullException(nameof(webServiceUrl));
             }
 
-            var urlString = webServiceUrl.ToString();
-
             var operatorHubUrl = new System.Uri(webServiceUrl, operatorHubPath);
 
             container.RegisterInstance<IOperatorHubClient>(new OperatorHubClient(operatorHubUrl));
-            container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(urlString, installationHubPath));
+            container.RegisterInstance<IInstallationHubClient>(new InstallationHubClient(webServiceUrl, installationHubPath));
 
             return container;
         }

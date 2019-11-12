@@ -8,6 +8,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
@@ -29,13 +32,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private decimal? currentResolution;
 
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
-        private DelegateCommand stopCommand;
+        private SubscriptionToken positioningOperationChangedToken;
 
-        private SubscriptionToken subscriptionToken;
+        private DelegateCommand stopCommand;
 
         #endregion
 
@@ -44,12 +49,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BaseVerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
-            : base(Services.PresentationMode.Installer)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
             this.InitializeNavigationMenu();
         }
@@ -140,21 +147,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.subscriptionToken
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.eventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnElevatorPositionChanged,
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false);
 
-            await this.RetrieveCurrentPositionAsync();
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
+            this.CurrentPosition = this.machineElevatorService.Position.Vertical;
 
             await this.RetrieveProcedureParametersAsync();
         }
 
-        protected virtual void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected virtual void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message.IsErrored())
             {
@@ -171,10 +187,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
-            }
-            else
-            {
-                this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
             }
         }
 
@@ -215,22 +227,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     trackCurrentView: false));
         }
 
-        private async Task RetrieveCurrentPositionAsync()
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.CurrentPosition = e.VerticalPosition;
         }
 
         private async Task RetrieveProcedureParametersAsync()

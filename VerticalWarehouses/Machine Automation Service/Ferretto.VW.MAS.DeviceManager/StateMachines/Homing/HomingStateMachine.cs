@@ -122,27 +122,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 }
             }
 
-            if (message.Type == FieldMessageType.InverterStatusUpdate &&
-                message.Status == MessageStatus.OperationExecuting)
-            {
-                if (message.Data is InverterStatusUpdateFieldMessageData data &&
-                    data.CurrentPosition.HasValue)
-                {
-                    var notificationMessageData = new CurrentPositionMessageData(data.CurrentPosition.Value);
-                    var notificationMessage = new NotificationMessage(
-                        notificationMessageData,
-                        $"Current Encoder position: {data.CurrentPosition}",
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        MessageType.CurrentPosition,
-                        this.machineData.RequestingBay,
-                        this.machineData.TargetBay,
-                        MessageStatus.OperationExecuting);
-
-                    this.PublishNotificationMessage(notificationMessage);
-                }
-            }
-
             lock (this.CurrentState)
             {
                 this.CurrentState.ProcessFieldNotificationMessage(message);

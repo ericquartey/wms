@@ -8,6 +8,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellPanelsWebService machineCellPanelsWebService;
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand applyCorrectionCommand;
@@ -31,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private CellPanel currentPanel;
 
         private int currentPanelNumber;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private DelegateCommand goToCellHeightCommand;
 
@@ -70,11 +75,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CellPanelsCheckViewModel(
             IMachineCellPanelsWebService machineCellPanelsWebService,
-            IMachineElevatorWebService machineElevatorWebService)
-            : base(Services.PresentationMode.Installer)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -267,6 +274,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
             this.subscriptionToken = this.subscriptionToken
                 ??
                 this.EventAggregator
@@ -282,7 +298,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
-                this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.CurrentHeight = this.machineElevatorService.Position.Vertical;
 
                 this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
 
@@ -499,8 +515,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
-
             if (message.IsErrored())
             {
                 this.IsElevatorMoving = false;
@@ -524,6 +538,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
                 }
             }
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentHeight = e.VerticalPosition;
         }
 
         private void RaiseCanExecuteChanged()

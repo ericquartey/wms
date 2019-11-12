@@ -22,21 +22,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
-        private readonly Controls.Interfaces.ISensorsService sensorsService;
+        private readonly ISensorsService sensorsService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private Bay bay;
 
+        private object bayChainPositionChangedToken;
+
         private bool bayIsMultiPosition;
 
         private bool bayIsShutterThreeSensors;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private SubscriptionToken homingToken;
 
@@ -45,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isWaitingForResponse;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken positioningOperationChangedToken;
 
         private VerticalManualMovementsProcedure procedureParameters;
 
@@ -55,8 +63,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken shutterPositionToken;
 
         private DelegateCommand stopMovingCommand;
-
-        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -70,7 +76,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             IMachineBaysWebService machineBaysWebService,
-            Controls.Interfaces.ISensorsService sensorsService,
+            ISensorsService sensorsService,
+            IMachineElevatorService machineElevatorService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
@@ -84,6 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
 
@@ -191,8 +199,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.SelectBayPositionDown();
 
-                this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+                this.ElevatorVerticalPosition = this.machineElevatorService.Position.Vertical;
+                this.ElevatorHorizontalPosition = this.machineElevatorService.Position.Horizontal;
 
                 this.BayChainHorizontalPosition = await this.machineCarouselWebService.GetPositionAsync();
 
@@ -254,44 +262,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.BayChainHorizontalPosition = e.Position;
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.ElevatorHorizontalPosition = e.HorizontalPosition;
+            this.ElevatorVerticalPosition = e.VerticalPosition;
+        }
+
+        private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsTuningChain = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsTuningChain = false;
+                        this.IsTuningBay = false;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
+
+        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
                     {
                         this.ShowNotification(string.Empty);
-
-                        if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
-                        {
-                            this.BayChainHorizontalPosition = message.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
-                        }
-                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
-
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationExecuting:
-                    {
-                        if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
-                        {
-                            this.ElevatorVerticalPosition = message.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
-                        }
-                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
-                        {
-                            this.BayChainHorizontalPosition = message.Data?.CurrentPosition ?? this.BayChainHorizontalPosition;
-                        }
-                        else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                        {
-                            this.ElevatorHorizontalPosition = message.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
-                        }
 
                         break;
                     }
@@ -311,32 +325,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                             this.IsCarouselMoving = false;
                         }
 
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        this.OperationWarningOrError(message.Status, message.Description);
-                        break;
-                    }
-            }
-        }
-
-        private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
-        {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.IsTuningChain = true;
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.IsTuningChain = false;
-                        this.IsTuningBay = false;
                         break;
                     }
 
@@ -402,7 +390,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else
             {
                 this.ShowNotification(
-                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    InstallationApp.ProcedureWasStopped,
                     Services.Models.NotificationSeverity.Warning);
             }
         }
@@ -535,12 +523,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            this.subscriptionToken = this.subscriptionToken
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnElevatorPositionChanged,
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false);
 
@@ -553,6 +541,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => m.Data != null);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        e => e.BayNumber == this.BayNumber);
         }
 
         #endregion

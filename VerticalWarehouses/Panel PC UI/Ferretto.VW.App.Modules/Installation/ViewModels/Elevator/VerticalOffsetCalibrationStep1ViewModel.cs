@@ -34,8 +34,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalOffsetCalibrationStep1ViewModel(
             IMachineCellsWebService machineCellsWebService,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
-            : base(machineCellsWebService, machineElevatorWebService, verticalOffsetWebService)
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(machineCellsWebService, machineElevatorWebService, verticalOffsetWebService, machineElevatorService)
         {
         }
 
@@ -95,6 +96,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -111,14 +117,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override void InitializeSteps()
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            this.ShowSteps();
+            await base.OnMachinePowerChangedAsync(e);
+
+            if (e.MachinePowerState != MachinePowerState.Powered)
+            {
+                this.IsWaitingForResponse = false;
+                this.IsElevatorMoving = false;
+                this.CanInputCellId = true;
+                this.isOperationCompleted = false;
+            }
         }
 
-        protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnCurrentPositionChanged(message);
+            base.OnPositioningOperationChanged(message);
 
             switch (message?.Status)
             {
@@ -140,24 +154,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.isOperationCompleted = false;
 
                         this.ShowNotification(
-                            "Procedura di posizionamento interrotta.",
+                            VW.App.Resources.InstallationApp.ProcedureWasStopped,
                             Services.Models.NotificationSeverity.Warning);
 
                         break;
                     }
-            }
-        }
-
-        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
-        {
-            await base.OnMachinePowerChangedAsync(e);
-
-            if (e.MachinePowerState != MachinePowerState.Powered)
-            {
-                this.IsWaitingForResponse = false;
-                this.IsElevatorMoving = false;
-                this.CanInputCellId = true;
-                this.isOperationCompleted = false;
             }
         }
 
