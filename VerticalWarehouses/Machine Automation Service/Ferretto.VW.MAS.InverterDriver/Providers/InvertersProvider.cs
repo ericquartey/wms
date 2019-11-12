@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (position < 0)
                 {
-                    throw new Exception($"The requested target position ({positioningData.TargetPosition}) is below the axis lower bound ({axis.LowerBound}).");
+                    throw new Exception($"The requested position ({position}) is below the axis lower bound ({axis.LowerBound}).");
                 }
 
                 if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
