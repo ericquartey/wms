@@ -429,6 +429,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? HorizontalMovementDirection.Forwards
                 : HorizontalMovementDirection.Backwards;
 
+            this.logger.LogDebug($"MoveVerticalOfDistance: " +
+                $"distance: {distance}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]}; ");
+
             var messageData = new PositioningMessageData(
                 Axis.Vertical,
                 MovementType.Relative,

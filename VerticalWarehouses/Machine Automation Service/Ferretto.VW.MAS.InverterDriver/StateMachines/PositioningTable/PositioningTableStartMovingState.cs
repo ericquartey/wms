@@ -103,7 +103,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus is IPositioningInverterStatus currentStatus)
                 {
-                    if (currentStatus.TableTravelStatusWord.MotionBlockInProgress && currentStatus.TableTravelStatusWord.TargetReached)
+                    if (currentStatus.TableTravelStatusWord.MotionBlockInProgress
+                        && currentStatus.TableTravelStatusWord.TargetReached
+                        && message.ParameterId == InverterParameterId.ActualPositionShaft
+                        )
                     {
                         this.axisPositionUpdateTimer.Change(Timeout.Infinite, Timeout.Infinite);
                         this.ParentStateMachine.ChangeState(new PositioningTableDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.Logger));
