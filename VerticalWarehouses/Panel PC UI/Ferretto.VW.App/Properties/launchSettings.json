@@ -3,19 +3,22 @@
     "PanelPC (Bay 1)": {
       "commandName": "Project",
       "environmentVariables": {
-        "BAY_NUMBER": "1"
+        "BAY_NUMBER": "1",
+        "LOGOUTWHENUNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 2)": {
       "commandName": "Project",
       "environmentVariables": {
-        "BAY_NUMBER": "2"
+        "BAY_NUMBER": "2",
+        "LOGOUTWHENUNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 3)": {
       "commandName": "Project",
       "environmentVariables": {
-        "BAY_NUMBER": "3"
+        "BAY_NUMBER": "3",
+        "LOGOUTWHENUNHEALTHY": "False"
       }
     }
   }

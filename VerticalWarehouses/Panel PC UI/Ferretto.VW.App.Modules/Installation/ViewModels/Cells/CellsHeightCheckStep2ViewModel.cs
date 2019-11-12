@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Cell cell;
 
+        private double? initialPosition;
+
         private double? inputCellHeight;
 
         private double inputStepValue;
@@ -25,6 +27,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isElevatorMovingDown;
 
         private bool isElevatorMovingUp;
+
+        private int? lastCellId;
 
         private DelegateCommand moveDownCommand;
 
@@ -62,6 +66,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public string Error => string.Join(
               Environment.NewLine,
               this[nameof(this.InputCellHeight)]);
+
+        public double? InitialPosition
+        {
+            get => this.initialPosition;
+            private set => this.SetProperty(ref this.initialPosition, value);
+        }
 
         public double? InputCellHeight
         {
@@ -171,11 +181,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Cell = cell;
             }
 
+            if (!this.lastCellId.HasValue
+                ||
+                this.lastCellId.Value != this.cell.Id)
+            {
+                this.lastCellId = this.cell.Id;
+                this.InitialPosition = this.CurrentPosition;
+            }
+
             this.InputStepValue = this.ProcedureParameters.Step;
         }
 
         protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
+            this.InputCellHeight = this.CurrentPosition - this.initialPosition;
+
             switch (message?.Status)
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
@@ -212,7 +232,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.Cell = await this.MachineCellsWebService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
+                this.Cell = await this.MachineCellsWebService.UpdateHeightAsync(this.Cell.Id, this.CurrentPosition.Value);
 
                 this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
             }

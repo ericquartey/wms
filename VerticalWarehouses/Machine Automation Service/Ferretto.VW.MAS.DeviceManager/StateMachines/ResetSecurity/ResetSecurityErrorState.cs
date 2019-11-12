@@ -39,23 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         public override void ProcessFieldNotificationMessage(FieldNotificationMessage message)
         {
-            this.Logger.LogTrace($"1:Process NotificationMessage {message.Type} Source {message.Source} Status {message.Status}");
-
-            if (message.Type == FieldMessageType.ResetSecurity && message.Status != MessageStatus.OperationStart)
-            {
-                var notificationMessage = new NotificationMessage(
-                    null,
-                    "Reset Security Stopped due to an error",
-                    MessageActor.DeviceManager,
-                    MessageActor.DeviceManager,
-                    MessageType.ResetSecurity,
-                    this.machineData.RequestingBay,
-                    this.machineData.TargetBay,
-                    MessageStatus.OperationError,
-                    ErrorLevel.Error);
-
-                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-            }
+            // do nothing
         }
 
         /// <inheritdoc/>
@@ -66,17 +50,18 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         public override void Start()
         {
-            var stopMessage = new FieldCommandMessage(
+            var notificationMessage = new NotificationMessage(
                 null,
-                $"Reset Security",
-                FieldMessageActor.IoDriver,
-                FieldMessageActor.DeviceManager,
-                FieldMessageType.ResetSecurity,
-                (byte)IoIndex.IoDevice1);
+                "Reset Security Stopped due to an error",
+                MessageActor.DeviceManager,
+                MessageActor.DeviceManager,
+                MessageType.ResetSecurity,
+                this.machineData.RequestingBay,
+                this.machineData.TargetBay,
+                MessageStatus.OperationError,
+                ErrorLevel.Error);
 
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
-
-            this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
+            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
         }
 
         public override void Stop(StopRequestReason reason)

@@ -150,6 +150,11 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                             isMarchPossible = false;
                             reason.Append("Emergency Active Bay1; ");
                         }
+                        else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
+                        {
+                            isMarchPossible = false;
+                            reason.Append("Anti Intrusion Barrier Active Bay1; ");
+                        }
 
                         break;
 
@@ -159,6 +164,11 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                             isMarchPossible = false;
                             reason.Append("Emergency Active Bay2; ");
                         }
+                        else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
+                        {
+                            isMarchPossible = false;
+                            reason.Append("Anti Intrusion Barrier Active Bay2; ");
+                        }
 
                         break;
 
@@ -167,6 +177,11 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                         {
                             isMarchPossible = false;
                             reason.Append("Emergency Active Bay3; ");
+                        }
+                        else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
+                        {
+                            isMarchPossible = false;
+                            reason.Append("Anti Intrusion Barrier Active Bay3; ");
                         }
 
                         break;

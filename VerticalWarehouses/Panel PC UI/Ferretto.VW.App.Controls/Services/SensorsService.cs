@@ -275,13 +275,13 @@ namespace Ferretto.VW.App.Services
 
                 await this.GetBayAsync();
 
-                await this.GetElevatorAsync();
-
                 this.GetShutter();
 
                 await this.CheckZeroChainOnBays();
 
                 await this.InitializeSensorsAsync();
+
+                await this.GetElevatorAsync();
             }
             catch (Exception ex)
             {
@@ -406,7 +406,14 @@ namespace Ferretto.VW.App.Services
                         ThreadOption.UIThread,
                         false);
 
-            this.RefreshAsync();
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async e => await this.OnPositioningOperationChangedAsync,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         private async Task InitializeSensorsAsync()
@@ -431,6 +438,44 @@ namespace Ferretto.VW.App.Services
         {
             this.ElevatorVerticalPosition = e.VerticalPosition;
             this.ElevatorHorizontalPosition = e.HorizontalPosition;
+        }
+
+        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationExecuting:
+                    {
+                        if (message.Data.AxisMovement == Axis.Vertical)
+                        {
+                            this.ElevatorVerticalPosition = message?.Data?.CurrentPosition ?? this.ElevatorVerticalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.Horizontal)
+                        {
+                            this.ElevatorHorizontalPosition = message?.Data?.CurrentPosition ?? this.ElevatorHorizontalPosition;
+                        }
+                        else if (message.Data.AxisMovement == Axis.BayChain)
+                        {
+                            this.BayChainPosition = message?.Data?.CurrentPosition ?? this.BayChainPosition;
+                        }
+
+                        break;
+                    }
+                case MessageStatus.OperationEnd:
+                    {
+                        if (message.Data.AxisMovement == Axis.Horizontal)
+                        {
+                            await this.GetElevatorAsync();
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        this.RaisePropertyChanged();
+                        break;
+                    }
+            }
         }
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)

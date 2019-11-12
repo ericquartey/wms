@@ -45,6 +45,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool hasReachedCellPosition;
 
+        private double? initialPosition;
+
         private bool isElevatorMovingDown;
 
         private bool isElevatorMovingToCell;
@@ -169,6 +171,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.hasReachedCellPosition;
             private set => this.SetProperty(ref this.hasReachedCellPosition, value);
+        }
+
+        public double? InitialPosition
+        {
+            get => this.initialPosition;
+            private set => this.SetProperty(ref this.initialPosition, value);
         }
 
         public bool IsElevatorMovingDown
@@ -303,6 +311,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
 
                 this.StepValue = this.procedureParameters.Step;
+
+                this.InitialPosition = (this.initialPosition is null) ? this.currentHeight : this.initialPosition;
             }
             catch (Exception ex)
             {
@@ -430,6 +440,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     true);
 
                 this.HasReachedCellPosition = true;
+                this.InitialPosition = this.CurrentHeight;
             }
             catch (Exception ex)
             {
@@ -476,7 +487,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(-this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) - this.StepValue.Value;
+                this.Displacement = this.currentHeight - this.initialPosition;
             }
             catch (Exception ex)
             {
@@ -499,7 +510,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveVerticalOfDistanceAsync(this.StepValue.Value);
 
-                this.Displacement = (this.Displacement ?? 0) + this.StepValue.Value;
+                this.Displacement = this.currentHeight - this.initialPosition;
             }
             catch (Exception ex)
             {
@@ -543,6 +554,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
             this.CurrentHeight = e.VerticalPosition;
+
+            if (this.isElevatorMovingToCell)
+            {
+                this.InitialPosition = this.CurrentHeight;
+            }
+
+            if (this.isElevatorMovingUp
+                ||
+                this.isElevatorMovingDown)
+            {
+                this.Displacement = this.currentHeight - this.initialPosition;
+            }
         }
 
         private void RaiseCanExecuteChanged()

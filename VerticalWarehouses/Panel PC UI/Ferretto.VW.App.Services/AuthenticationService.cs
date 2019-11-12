@@ -43,23 +43,16 @@ namespace Ferretto.VW.App.Services
 
         public async Task<UserClaims> LogInAsync(string userName, string password)
         {
-            try
-            {
-                var userClaims = await this.usersService
-                    .AuthenticateWithResourceOwnerPasswordAsync(
-                        userName,
-                        password);
+            var userClaims = await this.usersService
+                .AuthenticateWithResourceOwnerPasswordAsync(
+                    userName,
+                    password);
 
-                this.UserName = userName;
-                this.AccessLevel = userClaims.AccessLevel;
-                this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
+            this.UserName = userName;
+            this.AccessLevel = userClaims.AccessLevel;
+            this.UserAuthenticated?.Invoke(this, new UserAuthenticatedEventArgs(userName, this.AccessLevel));
 
-                return userClaims;
-            }
-            catch
-            {
-                return null;
-            }
+            return userClaims;
         }
 
         public Task LogOutAsync()
