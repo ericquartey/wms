@@ -243,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var newOffset = this.CurrentVerticalOffset.Value - this.Displacement.Value;
+                var newOffset = this.CurrentVerticalOffset.Value + this.Displacement.Value;
                 await this.VerticalOffsetWebService.CompleteAsync(newOffset);
 
                 this.CurrentVerticalOffset = newOffset;

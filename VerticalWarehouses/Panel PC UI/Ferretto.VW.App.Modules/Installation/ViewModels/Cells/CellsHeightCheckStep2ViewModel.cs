@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.lastCellId.Value != this.cell.Id)
             {
                 this.lastCellId = this.cell.Id;
-                this.InitialPosition =  this.CurrentPosition;
+                this.InitialPosition = this.CurrentPosition;
             }
 
             this.InputStepValue = this.ProcedureParameters.Step;
@@ -232,7 +232,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.Cell = await this.MachineCellsWebService.UpdateHeightAsync(this.Cell.Id, this.InputCellHeight.Value);
+                this.Cell = await this.MachineCellsWebService.UpdateHeightAsync(this.Cell.Id, this.CurrentPosition.Value);
 
                 this.ShowNotification("Altezza cella aggiornata.", Services.Models.NotificationSeverity.Success);
             }

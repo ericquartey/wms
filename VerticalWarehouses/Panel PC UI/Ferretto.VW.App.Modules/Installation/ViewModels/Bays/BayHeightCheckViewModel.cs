@@ -578,6 +578,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnAutomationMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
+            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
+
+            if (this.isElevatorMovingToHeight)
+            {
+                this.InitialPosition = this.currentHeight;
+            }
+
+            if (!this.IsElevatorMovingToHeight)
+            {
+                this.Displacement = this.currentHeight - this.initialPosition;
+            }
+
             if (message.IsNotRunning())
             {
                 this.IsElevatorMovingUp = false;
@@ -588,20 +600,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.ShowNotification(message.Description);
                 }
-            }
-
-            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
-
-            if (this.isElevatorMovingToHeight)
-            {
-                this.InitialPosition = this.currentHeight;
-            }
-
-            if (this.isElevatorMovingUp
-                ||
-                this.isElevatorMovingDown)
-            {
-                this.Displacement = this.currentHeight - this.initialPosition;
             }
         }
 

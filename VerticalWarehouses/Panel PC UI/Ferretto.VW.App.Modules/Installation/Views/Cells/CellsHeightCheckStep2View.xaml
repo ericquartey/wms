@@ -49,7 +49,7 @@
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Cell.Position}"
+                                 ContentText="{Binding Cell.Position, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
         <controls:PpcLabeledText Grid.Row="2"

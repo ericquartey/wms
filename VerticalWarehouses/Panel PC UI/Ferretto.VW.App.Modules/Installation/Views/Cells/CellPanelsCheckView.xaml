@@ -124,7 +124,7 @@
                                  Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding Displacement}"
+                                 ContentText="{Binding Displacement, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.Displacement}" />
 
 
