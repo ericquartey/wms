@@ -645,6 +645,10 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void SendCriticalErrorMessage(IFsmExceptionMessageData data)
         {
             this.Logger.LogCritical($"Exception detected: {data.ExceptionDescription} {data.InnerException?.Message}");
+            if (data.InnerException != null)
+            {
+                this.Logger.LogError(data.InnerException, data.InnerException.Message);
+            }
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
