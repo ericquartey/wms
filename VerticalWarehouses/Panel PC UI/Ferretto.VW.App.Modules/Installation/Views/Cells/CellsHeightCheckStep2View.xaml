@@ -45,17 +45,25 @@
                                  ContentText="{Binding Cell.Id}"
                                  LabelText="{x:Static res:InstallationApp.CurrentCell}" />
 
-        <controls:PpcLabeledText Grid.Row="3"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Cell.Position}"
                                  LabelText="{x:Static res:InstallationApp.CellHeight}" />
 
-        <controls:PpcLabeledText Grid.Row="4"
+        <controls:PpcLabeledText Grid.Row="2"
+                                 Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Cell.Side, Converter={StaticResource EWSC}}"
                                  LabelText="{x:Static res:InstallationApp.CellSide}" />
+
+        <controls:PpcLabeledText Grid.Row="3"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InitialPosition, StringFormat={}{0:F1}}"
+                                 LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
         <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
@@ -86,13 +94,14 @@
                             Content="{x:Static res:InstallationApp.Down}"
                             IsBusy="{Binding IsElevatorMovingDown}" />
 
-        <controls:PpcTextBox Grid.Row="6"
-                             Grid.Column="1"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputText="{Binding InputCellHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             LabelText="{x:Static res:InstallationApp.CellCorrection}" />
+        <controls:PpcLabeledText Grid.Row="6"
+                                 Grid.Column="1"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 ContentText="{Binding InputCellHeight, StringFormat={}{0:F1}}"
+                                 LabelText="{x:Static res:InstallationApp.CellCorrection}" />
 
+       
         <controls:PpcButton Grid.Row="6"
                             Grid.Column="2"
                             HorizontalAlignment="Left"
