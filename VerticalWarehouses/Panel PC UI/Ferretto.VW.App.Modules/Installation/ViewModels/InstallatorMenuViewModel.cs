@@ -59,7 +59,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.Any;
+        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
 

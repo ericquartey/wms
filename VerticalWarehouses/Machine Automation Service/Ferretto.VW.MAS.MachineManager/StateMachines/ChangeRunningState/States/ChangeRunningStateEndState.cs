@@ -94,8 +94,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             {
                 this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
 
-                var newMessageData = new StopMessageData(this.StopRequestReason);
-                this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                {
+                    var newMessageData = new ChangeRunningStateMessageData(false);
+
+                    this.machineControlProvider.StartChangePowerStatus(newMessageData, MessageActor.MachineManager, commandMessage.RequestingBay);
+                }
+                {
+                    var newMessageData = new StopMessageData(this.StopRequestReason);
+                    this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                }
             }
         }
 
@@ -103,23 +110,37 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         {
             IState returnValue = this;
 
-            var notificationStatus = this.machineControlProvider.StopOperationStatus(notification);
+            var notificationStatus = this.machineControlProvider.PowerStatusChangeStatus(notification);
 
             if (notificationStatus != MessageStatus.NotSpecified)
             {
                 switch (notificationStatus)
                 {
-                    // STate machine is in error, any response from device manager state machines will do to complete state machine shutdown
-                    case MessageStatus.OperationError:
                     case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationError:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
                 }
+            }
+            else
+            {
+                notificationStatus = this.machineControlProvider.StopOperationStatus(notification);
 
-                if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
+                if (notificationStatus != MessageStatus.NotSpecified)
                 {
-                    this.IsCompleted = true;
+                    switch (notificationStatus)
+                    {
+                        // State machine is in error, any response from device manager state machines will do to complete state machine shutdown
+                        case MessageStatus.OperationError:
+                        case MessageStatus.OperationEnd:
+                            this.UpdateResponseList(notificationStatus, notification.TargetBay);
+                            break;
+                    }
                 }
+            }
+            if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
+            {
+                this.IsCompleted = true;
             }
 
             return returnValue;

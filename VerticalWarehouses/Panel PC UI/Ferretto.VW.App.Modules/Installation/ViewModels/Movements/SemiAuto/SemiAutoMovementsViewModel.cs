@@ -465,7 +465,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     await this.machineMissionOperationsWebService.ResetMachineAsync();
 
-                    await this.sensorsService.RefreshAsync();
+                    await this.sensorsService.RefreshAsync(false);
 
                     this.RaiseCanExecuteChanged();
 
