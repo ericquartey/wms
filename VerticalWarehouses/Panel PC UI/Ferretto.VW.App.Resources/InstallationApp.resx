@@ -1257,4 +1257,7 @@
   <data name="Rear" xml:space="preserve">
     <value>Rear</value>
   </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Use weight control</value>
+  </data>
 </root>
