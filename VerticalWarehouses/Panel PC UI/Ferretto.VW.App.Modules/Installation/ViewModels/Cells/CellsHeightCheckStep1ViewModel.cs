@@ -55,11 +55,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.Cells != null)
                 {
-                    this.SelectedCell = value == null
-                        ? null
-                        : this.Cells.SingleOrDefault(c => c.Id == value);
+                    this.UpdateSelectedCell();
                 }
             }
+        }
+
+        private void UpdateSelectedCell()
+        {
+            this.SelectedCell = this.inputCellId == null
+                        ? null
+                        : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
         }
 
         public bool IsElevatorMoving
@@ -100,6 +105,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.UpdateSelectedCell();
         }
 
         protected override void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)

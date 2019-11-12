@@ -7,6 +7,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -23,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
-        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
-
         private int? completedCyclesThisSession;
 
         private double? currentPosition;
@@ -36,6 +35,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private int? inputRequiredCycles;
 
         private double? inputUpperBound;
+
+        private bool isCompleted;
 
         private bool isExecutingProcedure;
 
@@ -62,13 +63,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineSetupStatusWebService machineSetupStatusWebService,
             IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
             : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
-            this.machineSetupStatusWebService = machineSetupStatusWebService ?? throw new ArgumentNullException(nameof(machineSetupStatusWebService));
             this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
         }
 
@@ -97,7 +96,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.MachineManualMode;
 
         public string Error => string.Join(
-                Environment.NewLine,
                 this[nameof(this.InputLowerBound)],
                 this[nameof(this.InputUpperBound)],
                 this[nameof(this.InputRequiredCycles)],
@@ -313,8 +311,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineUpperBound = bounds.Upper;
             this.InputLowerBound = bounds.Lower;
             this.machineLowerBound = bounds.Lower;
-            
-            this.InputRequiredCycles = procedureParameters.RequiredCycles;            
+
+            this.InputRequiredCycles = procedureParameters.RequiredCycles;
             this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
         }
 
@@ -349,6 +347,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnPositioningMessageReceived,
                         ThreadOption.UIThread,
                         false);
+        }
+
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            await base.OnMachinePowerChangedAsync(e);
+
+            this.ClearNotifications();
         }
 
         private bool CanStartTest()
@@ -386,6 +391,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
             }
+
+            if (message.Status == MessageStatus.OperationEnd &&
+                message.Data?.MovementMode == MovementMode.BeltBurnishing &&
+                message.Data?.ExecutedCycles == message.Data.RequiredCycles)
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
+                this.isCompleted = true;
+            }
+            else if (!message.IsNotRunning() && !this.isCompleted && this.IsEnabled)
+            {
+                this.ShowNotification(VW.App.Resources.InstallationApp.TestProgress, Services.Models.NotificationSeverity.Info);
+            }
         }
 
         private void RaiseCanExecuteChanged()
@@ -406,6 +423,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var totalCyclesToPerform = this.InputRequiredCycles.Value - this.CumulativePerformedCycles.Value;
                 if (totalCyclesToPerform <= 0)
                 {
+                    this.isCompleted = true;
                     this.ShowNotification("Required amount of cycles was completed.", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
@@ -416,6 +434,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.totalPerformedCyclesBeforeStart = this.CumulativePerformedCycles ?? 0;
                 this.PerformedCyclesThisSession = 0;
                 this.RaisePropertyChanged(nameof(this.PerformedCyclesThisSession));
+
+                this.isCompleted = false;
 
                 await this.beltBurnishingWebService.StartAsync(
                     this.InputUpperBound.Value,
