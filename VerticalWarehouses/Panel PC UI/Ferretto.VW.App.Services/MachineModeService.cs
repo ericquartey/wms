@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
 
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Services
         private readonly SubscriptionToken machinePowerChangedToken;
 
         private readonly IMachinePowerWebService machinePowerWebService;
+
+        private readonly SubscriptionToken sensorsToken;
 
         private bool isDisposed;
 
@@ -62,7 +66,20 @@ namespace Ferretto.VW.App.Services
                     ThreadOption.UIThread,
                     false);
 
-            this.GetMachineStatusAsync();
+            this.sensorsToken = this.eventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        async (m) => await this.OnSensorsChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        (m) =>
+                        {
+                            //this.sensors.Update(m.Data.SensorsStates);
+                            //return m.Data.SensorsStates[] != null;
+                            return m.Data != null;
+                        });
+
+            this.GetMachineStatusAsync().ConfigureAwait(false);
         }
 
         #endregion
@@ -191,6 +208,11 @@ namespace Ferretto.VW.App.Services
             this.logger.Debug($"Machine power state changed to '{e.MachinePowerState}'.");
 
             this.MachinePower = e.MachinePowerState;
+        }
+
+        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            await this.GetMachineStatusAsync();
         }
 
         private void ShowError(Exception ex)
