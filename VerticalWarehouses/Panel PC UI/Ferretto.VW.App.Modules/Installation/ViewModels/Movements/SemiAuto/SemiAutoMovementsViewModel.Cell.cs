@@ -34,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingToLoadingUnit;
 
+        private bool isUseWeightControl;
+
         private LoadingUnit loadingUnitInCell;
 
         private DelegateCommand moveToCellHeightCommand;
@@ -45,6 +47,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private Cell selectedCell;
 
         private LoadingUnit selectedLoadingUnit;
+
+        private DelegateCommand setWeightControlCommand;
 
         #endregion
 
@@ -94,6 +98,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         : this.Cells.SingleOrDefault(c => c.Id == value);
 
                     this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
+
+                    if (this.SelectedLoadingUnit?.CellId is null)
+                    {
+                        this.LoadingUnitInCell = null;
+                    }
+                    else
+                    {
+                        this.LoadingUnitInCell = this.SelectedLoadingUnit;
+                    }
 
                     this.RaiseCanExecuteChanged();
                 }
@@ -171,6 +184,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsUseWeightControl
+        {
+            get => this.isUseWeightControl;
+            private set => this.SetProperty(ref this.isUseWeightControl, value);
+        }
+
         public LoadingUnit LoadingUnitInCell
         {
             get => this.loadingUnitInCell;
@@ -227,6 +246,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand SetWeightControlCommand =>
+           this.setWeightControlCommand
+           ??
+           (this.setWeightControlCommand = new DelegateCommand(
+               () => this.SetWeightControl(),
+               this.CanSetWeightControl));
+
         #endregion
 
         #region Methods
@@ -264,6 +290,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
+        private bool CanSetWeightControl()
+        {
+            return this.SelectedCell != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+        }
+
         private async Task MoveToCellHeightAsync()
         {
             try
@@ -273,7 +308,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedCell.Position,
                     this.procedureParameters.FeedRateAfterZero,
-                    true,
+                    this.isUseWeightControl,
                     true);
 
                 this.IsElevatorMovingToCell = true;
@@ -299,7 +334,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.InputHeight.Value,
                     this.procedureParameters.FeedRateAfterZero,
-                    false,
+                    this.isUseWeightControl,
                     false);
 
                 this.IsElevatorMovingToHeight = true;
@@ -325,7 +360,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToVerticalPositionAsync(
                     this.SelectedLoadingUnit.Cell?.Position ?? 0,
                     this.procedureParameters.FeedRateAfterZero,
-                    false,
+                    this.isUseWeightControl,
                     true);
 
                 this.IsElevatorMovingToLoadingUnit = true;
@@ -340,6 +375,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SetWeightControl()
+        {
+            this.IsUseWeightControl = !this.IsUseWeightControl;
         }
 
         #endregion

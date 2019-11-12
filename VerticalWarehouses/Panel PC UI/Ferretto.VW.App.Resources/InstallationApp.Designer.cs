@@ -3040,6 +3040,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use weight control.
+        /// </summary>
+        public static string UseWeightControl {
+            get {
+                return ResourceManager.GetString("UseWeightControl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Value inserted not valid.
         /// </summary>
         public static string ValueNotValid {
