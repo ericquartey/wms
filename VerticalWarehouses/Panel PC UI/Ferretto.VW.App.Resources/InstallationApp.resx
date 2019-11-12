@@ -1254,4 +1254,7 @@
   <data name="TestProgress" xml:space="preserve">
     <value>Test in progress...</value>
   </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Rear</value>
+  </data>
 </root>

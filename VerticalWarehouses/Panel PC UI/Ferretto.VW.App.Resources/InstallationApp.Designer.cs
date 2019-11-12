@@ -2365,6 +2365,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rear.
+        /// </summary>
+        public static string Rear {
+            get {
+                return ResourceManager.GetString("Rear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference&apos;s cell position [mm].
         /// </summary>
         public static string ReferenceCellHeight {
