@@ -131,7 +131,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             if (positioningData.AxisMovement == Axis.BayChain)
             {
-                targetPosition = (int)(this.baysProvider.GetResolution(inverter.SystemIndex) * position);
+                targetPosition = (int)Math.Round(this.baysProvider.GetResolution(inverter.SystemIndex) * position);
             }
             else
             {
@@ -181,7 +181,7 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var axis = this.elevatorDataProvider.GetAxis(orientation);
 
-            return (int)(axis.Resolution * (decimal)millimeters);
+            return (int)Math.Round(axis.Resolution * (decimal)millimeters);
         }
 
         public double ConvertPulsesToMillimeters(int pulses, Orientation orientation)
