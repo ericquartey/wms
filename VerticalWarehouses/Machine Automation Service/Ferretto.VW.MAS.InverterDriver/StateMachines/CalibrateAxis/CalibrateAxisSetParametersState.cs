@@ -162,8 +162,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             }
                             else if (this.axisToCalibrate == Axis.BayChain)
                             {
-                                offset = (int)(this.ParentStateMachine.GetRequiredService<IBaysProvider>().GetChainOffset(this.InverterStatus.SystemIndex)
-                                    * this.ParentStateMachine.GetRequiredService<IBaysProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                                offset = (int)(this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetChainOffset(this.InverterStatus.SystemIndex)
+                                    * this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
                             }
                             else
                             {

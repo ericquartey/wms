@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        double GetPosition(BayNumber bayNumber);
+
         void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender);
 
         void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender);

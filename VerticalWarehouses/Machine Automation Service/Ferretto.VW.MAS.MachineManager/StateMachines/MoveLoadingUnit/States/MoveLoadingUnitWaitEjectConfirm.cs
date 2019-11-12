@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         #region Constructors
 
         public MoveLoadingUnitWaitEjectConfirm(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)

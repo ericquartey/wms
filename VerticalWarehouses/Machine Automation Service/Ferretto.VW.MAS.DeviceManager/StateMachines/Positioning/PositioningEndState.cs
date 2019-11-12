@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
 
-            var bayProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var bayProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             var cellProvider = serviceProvider.GetRequiredService<ICellsProvider>();
 

@@ -19,7 +19,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class BaysProvider : BaseProvider, IBaysProvider
+    internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
         #region Fields
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public BaysProvider(
+        public BaysDataProvider(
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
@@ -386,6 +386,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public double GetChainPosition(BayNumber bayNumber)
+        {
+            return this.bayChainVolatileDataProvider.GetPositionByBayNumber(bayNumber);
+        }
+
         public IEnumerable<ElevatorAxis> GetElevatorAxes()
         {
             lock (this.dataContext)
@@ -666,6 +671,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void SetChainPosition(BayNumber bayNumber, double value)
+        {
+            this.bayChainVolatileDataProvider.SetPosition(bayNumber, value);
         }
 
         public Bay SetCurrentOperation(BayNumber targetBay, BayOperation newOperation)

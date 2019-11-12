@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface IBaysProvider
+    public interface IBaysDataProvider
     {
         #region Methods
 
@@ -41,6 +41,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         double GetChainOffset(InverterIndex inverterIndex);
 
+        double GetChainPosition(BayNumber bayNumber);
+
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByMovementType(IPositioningMessageData data, BayNumber bayNumber);
@@ -62,6 +64,8 @@ namespace Ferretto.VW.MAS.DataLayer
         void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
 
         void ResetMachine();
+
+        void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 

@@ -96,11 +96,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     $"{nameof(this.sendPort)} can't be zero");
             }
 
-            if (this.sendPort < 1024 || this.sendPort > 65535)
+            if (this.sendPort < 1024 || this.sendPort > IPEndPoint.MaxPort)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} value must be between 1204 and 65535");
+                    $"{nameof(this.sendPort)} value must be between 1204 and {IPEndPoint.MaxPort}");
             }
 
             if (this.transportClient != null || this.transportStream != null)

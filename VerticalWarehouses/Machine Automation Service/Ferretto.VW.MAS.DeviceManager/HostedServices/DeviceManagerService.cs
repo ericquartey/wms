@@ -384,7 +384,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             BayNumber bayNumber;
             switch (receivedMessage.Source)
@@ -392,14 +392,14 @@ namespace Ferretto.VW.MAS.DeviceManager
                 case FieldMessageActor.IoDriver:
                     {
                         var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                        bayNumber = baysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                        bayNumber = baysDataProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
                         break;
                     }
 
                 case FieldMessageActor.InverterDriver:
                     {
                         var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-                        bayNumber = baysProvider.GetByInverterIndex(messageInverterIndex);
+                        bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex);
                         break;
                     }
 
@@ -476,8 +476,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                         }
                         else
                         {
-                            var bayChainProvider = serviceProvider.GetRequiredService<IBayChainVolatileDataProvider>();
-                            bayChainProvider.SetPosition(bayNumber, inverterData.CurrentPosition.Value);
+                            baysDataProvider.SetChainPosition(bayNumber, inverterData.CurrentPosition.Value);
+
                             notificationData.AxisMovement = Axis.BayChain;
                             notificationData.MovementMode = MovementMode.BayChain;
                         }

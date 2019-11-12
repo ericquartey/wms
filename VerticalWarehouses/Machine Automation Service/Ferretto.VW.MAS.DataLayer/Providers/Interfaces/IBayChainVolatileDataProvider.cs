@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.MAS.DataLayer.Providers
 {
-    public interface IBayChainVolatileDataProvider
+    internal interface IBayChainVolatileDataProvider
     {
         #region Methods
 

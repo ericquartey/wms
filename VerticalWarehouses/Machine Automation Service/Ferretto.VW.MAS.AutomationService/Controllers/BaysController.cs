@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BaysController(
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IEventAggregator eventAggregator)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));

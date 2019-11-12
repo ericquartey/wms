@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public CarouselProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
@@ -38,6 +38,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public double GetPosition(BayNumber bayNumber)
+        {
+            return this.baysProvider.GetChainPosition(bayNumber);
+        }
 
         public void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender)
         {

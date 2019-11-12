@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly IConfiguration configuration;
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.IODriver
         public IoDriverService(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
             IConfiguration configuration,

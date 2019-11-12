@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<double> GetPosition()
         {
-            return this.Ok(this.carouselProvider.HorizontalPosition);
+            return this.Ok(this.carouselProvider.GetPosition(this.BayNumber));
         }
 
         [HttpPost("homing")]

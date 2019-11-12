@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<bool>("IsExternal");
 
+                    b.Property<double?>("LastKnownChainPosition");
+
                     b.Property<int?>("MachineId");
 
                     b.Property<int>("Number");
@@ -150,11 +152,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BayPositionId");
+
+                    b.Property<int?>("CellId");
+
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<int?>("StructuralPropertiesId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BayPositionId");
+
+                    b.HasIndex("CellId");
 
                     b.HasIndex("LoadingUnitId");
 
@@ -181,6 +191,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("FullLoadMovementId");
 
                     b.Property<int?>("InverterId");
+
+                    b.Property<double?>("LastKnownPosition");
 
                     b.Property<double>("LowerBound");
 
@@ -1098,7 +1110,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 11, 16, 37, 46, 861, DateTimeKind.Local).AddTicks(1102),
+                            InstallationDate = new DateTime(2017, 1, 12, 10, 45, 1, 436, DateTimeKind.Local).AddTicks(7854),
                             ServiceStatus = 86
                         });
                 });
@@ -1524,6 +1536,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
+                        .WithMany()
+                        .HasForeignKey("BayPositionId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
+                        .WithMany()
+                        .HasForeignKey("CellId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");

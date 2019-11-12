@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public ShutterProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)

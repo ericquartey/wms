@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IApplicationLifetime applicationLifetime;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly IConfiguration configuration;
 
@@ -47,7 +47,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {

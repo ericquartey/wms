@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         #region Constructors
 
         public MoveLoadingUnitStateMachine(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             ICellsProvider cellsProvider,

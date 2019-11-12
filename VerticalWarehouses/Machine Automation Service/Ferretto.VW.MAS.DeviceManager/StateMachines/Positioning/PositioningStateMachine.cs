@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {

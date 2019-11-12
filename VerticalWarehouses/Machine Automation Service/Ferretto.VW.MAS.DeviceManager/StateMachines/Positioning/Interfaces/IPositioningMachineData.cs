@@ -10,7 +10,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces
     {
         #region Properties
 
-        IBaysProvider BaysProvider { get; }
+        IBaysDataProvider BaysProvider { get; }
 
         InverterIndex CurrentInverterIndex { get; }
 

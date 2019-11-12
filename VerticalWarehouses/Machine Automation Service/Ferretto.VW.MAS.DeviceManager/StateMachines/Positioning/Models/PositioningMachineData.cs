@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Models
             InverterIndex currentInverterIndex,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
         {
             this.Requester = requester;
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning.Models
 
         #region Properties
 
-        public IBaysProvider BaysProvider { get; }
+        public IBaysDataProvider BaysProvider { get; }
 
         public InverterIndex CurrentInverterIndex { get; }
 

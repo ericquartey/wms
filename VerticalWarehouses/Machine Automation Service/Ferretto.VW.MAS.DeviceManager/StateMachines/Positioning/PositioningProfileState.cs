@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int MAX_RETRIES = 3;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly ILoadingUnitsProvider loadingUnitProvider;
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
-            this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+            this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
         }
 

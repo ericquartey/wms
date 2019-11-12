@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         public MoveLoadingUnitDepositUnitState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             ICellsProvider cellsProvider,
             ILogger<StateBase> logger)
             : base(logger)

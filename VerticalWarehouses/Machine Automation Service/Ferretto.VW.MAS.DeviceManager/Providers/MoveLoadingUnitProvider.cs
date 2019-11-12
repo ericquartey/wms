@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public LoadingUnitMovementProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
