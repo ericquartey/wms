@@ -32,6 +32,8 @@ namespace Ferretto.VW.App.Services
 
         private bool isDisposed;
 
+        private bool? runningState;
+
         #endregion
 
         #region Constructors
@@ -75,8 +77,10 @@ namespace Ferretto.VW.App.Services
                         false,
                         (m) =>
                         {
-                            return (!m.Data.SensorsStates[(int)IOMachineSensors.RunningState] && this.MachinePower == MachinePowerState.Powered) ||
-                                   (m.Data.SensorsStates[(int)IOMachineSensors.RunningState] && this.MachinePower == MachinePowerState.Unpowered);
+                            var res = !this.runningState.HasValue ||
+                                      (m.Data.SensorsStates[(int)IOMachineSensors.RunningState] != this.runningState.Value);
+                            this.runningState = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+                            return res;
                         });
 
             this.GetMachineStatusAsync().ConfigureAwait(false);

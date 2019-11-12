@@ -33,6 +33,7 @@
         <Style x:Key="TextBlockContentStyle"
                TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource FerrettoPureWhite}" />
+            <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Width" Value="40" />
             <Setter Property="Margin" Value="3,0,0,0" />
         </Style>
@@ -87,7 +88,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ZeroPawlSensor}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding IsZeroChain}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
@@ -95,7 +97,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.LuPresenceOnMachineCradle}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding Sensors.LuPresentInMachineSide}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
@@ -103,7 +106,8 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.LuPresenceOnOperatorCradle}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding Sensors.LuPresentInOperatorSide}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
@@ -150,7 +154,8 @@
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionUp}"
                                            Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentInBay1}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
                             </StackPanel>
@@ -159,7 +164,8 @@
                                         Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionDown}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentMiddleBottomBay1}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
 
@@ -175,7 +181,8 @@
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionUp}"
                                            Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentMiddleBottomBay2}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
                             </StackPanel>
@@ -184,7 +191,8 @@
                                         Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionDown}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentInBay1}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
                             </StackPanel>
@@ -199,7 +207,8 @@
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionUp}"
                                            Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentMiddleBottomBay3}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
 
@@ -209,7 +218,8 @@
                                         Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionDown}" />
-                                <controls:PpcSensorControl Margin="0"
+                                <controls:PpcSensorControl Margin="2,0"
+                                                           VerticalAlignment="Center"
                                                            SensorState="{Binding Sensors.LUPresentInBay3}"
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
                             </StackPanel>
@@ -237,15 +247,18 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ZeroChain}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding Sensors.ACUBay1S3IND}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}"
                                                        Visibility="{Binding Bay1ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding Sensors.ACUBay2S3IND}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}"
                                                        Visibility="{Binding Bay2ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding Sensors.ACUBay3S3IND}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}"
                                                        Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
@@ -260,7 +273,8 @@
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ShutterOpen}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding ShutterSensors.Open}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
@@ -270,7 +284,8 @@
                                        Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ShutterMidWay}"
                                        Visibility="{Binding IsShutterThreeSensors, Converter={StaticResource BTVC}}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding ShutterSensors.MidWay}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
@@ -278,7 +293,8 @@
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ShutterClosed}" />
-                            <controls:PpcSensorControl Margin="0"
+                            <controls:PpcSensorControl Margin="2,0"
+                                                       VerticalAlignment="Center"
                                                        SensorState="{Binding ShutterSensors.Closed}"
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
