@@ -1806,6 +1806,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("beltSpacing", Required = Newtonsoft.Json.Required.Always)]
         public double BeltSpacing { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("elevatorWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double ElevatorWeight { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("halfShaftLength", Required = Newtonsoft.Json.Required.Always)]
         public double HalfShaftLength { get; set; }
     

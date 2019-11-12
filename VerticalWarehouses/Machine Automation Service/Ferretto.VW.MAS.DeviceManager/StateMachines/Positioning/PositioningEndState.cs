@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService)
+                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                             {
                                 this.UpdateLoadingUnitLocation();
                             }

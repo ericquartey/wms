@@ -323,6 +323,7 @@
       "StructuralProperties": {
         "BeltRigidity": 7000000,
         "BeltSpacing": 300,
+        "ElevatorWeight": 230,
         "HalfShaftLength": 2084,
         "PulleyDiameter": 160,
         "ShaftDiameter": 45,

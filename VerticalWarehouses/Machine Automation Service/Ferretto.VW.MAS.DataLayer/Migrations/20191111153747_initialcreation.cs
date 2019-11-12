@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BeltRigidity = table.Column<int>(nullable: false),
                     BeltSpacing = table.Column<double>(nullable: false),
+                    ElevatorWeight = table.Column<double>(nullable: false),
                     HalfShaftLength = table.Column<double>(nullable: false),
                     PulleyDiameter = table.Column<double>(nullable: false),
                     ShaftDiameter = table.Column<double>(nullable: false),
@@ -954,7 +955,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 11, 12, 8, 6, 822, DateTimeKind.Local).AddTicks(4559), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 11, 16, 37, 46, 861, DateTimeKind.Local).AddTicks(1102), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
