@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to BottomLevelBayOccupied.
+        ///   Looks up a localized string similar to Livello basso baia occupato..
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {
@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CradleNotCorrectlyLoadedDuringPickup.
+        ///   Looks up a localized string similar to Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico..
         /// </summary>
         public static string CradleNotCorrectlyLoadedDuringPickup {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to CradleNotCorrectlyUnloadedDuringDeposit.
+        ///   Looks up a localized string similar to Il cassetto non sembra essere completamente fuori dall&apos;elevatore dopo la fase di scarico..
         /// </summary>
         public static string CradleNotCorrectlyUnloadedDuringDeposit {
             get {
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InvalidPresenceSensors.
+        ///   Looks up a localized string similar to Sensori di presenza invalidi.
         /// </summary>
         public static string InvalidPresenceSensors {
             get {
@@ -268,7 +268,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LoadUnitPresentOnEmptyElevator.
+        ///   Looks up a localized string similar to Presenza a bordo elevatore con elevatore logicamente scarico..
         /// </summary>
         public static string LoadUnitPresentOnEmptyElevator {
             get {
@@ -403,7 +403,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TopLevelBayOccupied.
+        ///   Looks up a localized string similar to Livello alto baia occupato.
         /// </summary>
         public static string TopLevelBayOccupied {
             get {

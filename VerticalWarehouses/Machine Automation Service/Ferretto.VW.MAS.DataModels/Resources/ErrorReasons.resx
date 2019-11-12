@@ -127,10 +127,10 @@
     <value>Il cassetto potrebbe essersi incastrato.</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+    <value>Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+    <value>Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
     <value>ZeroSensorErrorAfterDeposit</value>
@@ -220,13 +220,13 @@
     <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>BottomLevelBayOccupied</value>
+    <value>Livello basso baia occupato.</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>InvalidPresenceSensors</value>
+    <value>Sensori di presenza invalidi</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>LoadUnitPresentOnEmptyElevator</value>
+    <value>Presenza a bordo elevatore con elevatore logicamente scarico.</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
     <value>MissingZeroSensorWithEmptyElevator</value>
@@ -235,7 +235,7 @@
     <value>SensoZeroBayNotActiveAtStart</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>TopLevelBayOccupied</value>
+    <value>Livello alto baia occupato</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
     <value>ZeroSensorActiveWithFullElevator</value>
