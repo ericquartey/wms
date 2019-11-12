@@ -261,7 +261,7 @@ namespace Ferretto.VW.App.Services
             return true;
         }
 
-        public async Task RefreshAsync()
+        public async Task RefreshAsync(bool forceRefresh)
         {
             try
             {
@@ -275,7 +275,7 @@ namespace Ferretto.VW.App.Services
 
                 await this.InitializeSensors();
 
-                await this.GetElevatorAsync();
+                await this.GetElevatorAsync(forceRefresh);
             }
             catch (Exception ex)
             {
@@ -344,7 +344,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task GetElevatorAsync()
+        private async Task GetElevatorAsync(bool forceRefresh)
         {
             try
             {
@@ -353,7 +353,7 @@ namespace Ferretto.VW.App.Services
                     &&
                     this.sensors.LuPresentInOperatorSide;
 
-                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked
+                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked || forceRefresh
                     ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
                     : null;
             }
@@ -429,7 +429,7 @@ namespace Ferretto.VW.App.Services
                     {
                         if (message.Data.AxisMovement == Axis.Horizontal)
                         {
-                            await this.GetElevatorAsync();
+                            await this.GetElevatorAsync(false);
                         }
 
                         break;
@@ -449,7 +449,7 @@ namespace Ferretto.VW.App.Services
 
             await this.GetBayAsync();
 
-            await this.GetElevatorAsync();
+            await this.GetElevatorAsync(false);
 
             this.RaisePropertyChanged();
         }

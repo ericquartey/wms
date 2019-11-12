@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Controls.Interfaces
 
         #region Methods
 
-        Task RefreshAsync();
+        Task RefreshAsync(bool forceRefresh);
 
         #endregion
     }
