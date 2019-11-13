@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -18,6 +19,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
         private ShutterPosition oldShutterPosition;
+
+        private DateTime startTime;
 
         #endregion
 
@@ -52,6 +55,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 this.oldShutterPosition = currentStatus.CurrentShutterPosition;
             }
+            this.startTime = DateTime.UtcNow;
         }
 
         /// <inheritdoc />
@@ -99,10 +103,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         if (//this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
                             (//currentStatus.ProfileVelocityStatusWord.TargetReached &&
                                 currentStatus.CurrentShutterPosition == this.shutterDestination
+                                && (this.shutterPositionData.MovementDuration == 0
+                                    || DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.shutterPositionData.MovementDuration * 100
+                                    )
                                 )
                             )
                         {
-                            this.Logger.LogDebug($"Shutter positioning end: destination= {this.shutterDestination}; current = {currentStatus.CurrentShutterPosition}");
+                            this.Logger.LogDebug($"Shutter positioning end: destination= {this.shutterDestination}; current = {currentStatus.CurrentShutterPosition}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
                             this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                             returnValue = true;
                         }
