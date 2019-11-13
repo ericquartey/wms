@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILogger<InverterDriverService> logger;
 
         private readonly IMachineProvider machineProvider;
@@ -42,6 +44,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IMachineProvider machineProvider,
             IBaysProvider baysProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
+            IErrorsProvider errorsProvider,
             ILogger<InverterDriverService> logger
             )
         {
@@ -56,6 +59,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
 
             eventAggregator
                 .GetEvent<NotificationEvent>()
@@ -119,7 +123,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (position < 0)
                 {
-                    throw new Exception($"The requested position ({position}) is below the axis lower bound ({axis.LowerBound}).");
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
+                    throw new Exception($"The requested position ({position+axis.Offset}) is below the axis lower bound ({axis.Offset}).");
                 }
 
                 if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)

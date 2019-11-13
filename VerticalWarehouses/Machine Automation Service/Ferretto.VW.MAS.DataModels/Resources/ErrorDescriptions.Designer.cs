@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DestinationBelowLowerBound.
+        /// </summary>
+        public static string DestinationBelowLowerBound {
+            get {
+                return ResourceManager.GetString("DestinationBelowLowerBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidPresenceSensors.
         /// </summary>
         public static string InvalidPresenceSensors {

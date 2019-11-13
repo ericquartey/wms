@@ -243,4 +243,7 @@
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
     <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.</value>
   </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>DestinationBelowLowerBound</value>
+  </data>
 </root>

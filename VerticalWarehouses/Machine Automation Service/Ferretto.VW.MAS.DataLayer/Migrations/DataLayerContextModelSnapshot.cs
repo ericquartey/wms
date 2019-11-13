@@ -284,7 +284,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 3,
                             Code = 3,
                             Description = "Condizioni per la messa in marcia non soddisfatte.",
-                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
+                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
@@ -292,7 +292,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 4,
                             Code = 4,
                             Description = "È scattata la funzione di sicurezza.",
-                            Reason = "Controllare che i funghi di mergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
+                            Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
                         new
@@ -308,7 +308,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 6,
                             Code = 6,
                             Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
                             Severity = 0
                         },
                         new
@@ -316,7 +316,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 7,
                             Code = 7,
                             Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
                             Severity = 0
                         },
                         new
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 10,
                             Code = 10,
                             Description = "InvalidPresenceSensors",
-                            Reason = "InvalidPresenceSensors",
+                            Reason = "Sensori di presenza invalidi",
                             Severity = 0
                         },
                         new
@@ -364,7 +364,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 13,
                             Code = 13,
                             Description = "LoadUnitPresentOnEmptyElevator",
-                            Reason = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
                             Severity = 0
                         },
                         new
@@ -372,7 +372,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 14,
                             Code = 14,
                             Description = "TopLevelBayOccupied",
-                            Reason = "TopLevelBayOccupied",
+                            Reason = "Livello alto baia occupato",
                             Severity = 0
                         },
                         new
@@ -380,7 +380,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 15,
                             Code = 15,
                             Description = "BottomLevelBayOccupied",
-                            Reason = "BottomLevelBayOccupied",
+                            Reason = "Livello basso baia occupato.",
                             Severity = 0
                         },
                         new
@@ -397,6 +397,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Code = 17,
                             Description = "Il peso massimo caricato sul cassetto è eccessivo.",
                             Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Code = 18,
+                            Description = "DestinationBelowLowerBound",
+                            Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
@@ -703,6 +711,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 17,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 18,
                             TotalErrors = 0
                         },
                         new
@@ -1098,7 +1111,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 11, 16, 37, 46, 861, DateTimeKind.Local).AddTicks(1102),
+                            InstallationDate = new DateTime(2017, 1, 13, 10, 50, 24, 761, DateTimeKind.Local).AddTicks(5978),
                             ServiceStatus = 86
                         });
                 });
