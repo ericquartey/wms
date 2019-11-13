@@ -13,7 +13,11 @@ namespace Ferretto.VW.App.Controls
     {
         #region Fields
 
+        private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
+
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
+
+        private SubscriptionToken healthStatusChangedToken;
 
         private bool isEnabled;
 
@@ -77,11 +81,26 @@ namespace Ferretto.VW.App.Controls
             */
         }
 
+        public virtual void InitializeSteps()
+        {
+            this.ShowPrevStep(false, false);
+            this.ShowNextStep(false, false);
+            this.ShowAbortStep(false, false);
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.UpdatePresentation();
 
             this.InitializeSteps();
+
+            this.healthStatusChangedToken = this.healthStatusChangedToken
+                ?? this.EventAggregator
+                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                .Subscribe(
+                    async e => await this.OnHealthStatusChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
 
             this.machineModeChangedToken = this.machineModeChangedToken
                 ??
@@ -103,7 +122,8 @@ namespace Ferretto.VW.App.Controls
 
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
-                this.machineModeService.MachineMode);
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthStatus);
 
             this.UpdateNotifications();
 
@@ -119,13 +139,6 @@ namespace Ferretto.VW.App.Controls
         public void ShowAbortStep(bool isEnabled, bool isVisible)
         {
             this.ShowStep(PresentationTypes.Abort, isEnabled, isVisible);
-        }
-
-        public virtual void InitializeSteps()
-        {
-            this.ShowPrevStep(false, false);
-            this.ShowNextStep(false, false);
-            this.ShowAbortStep(false, false);
         }
 
         public void ShowNextStep(bool isEnabled, bool isVisible, string moduleName = null, string viewName = null)
@@ -189,21 +202,28 @@ namespace Ferretto.VW.App.Controls
             this.ClearNotifications();
         }
 
+        protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, e.HealthStatus);
+
+            return Task.CompletedTask;
+        }
+
         protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, e.MachineMode);
+            this.UpdateIsEnabled(this.machineModeService.MachinePower, e.MachineMode, this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
 
         protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            this.UpdateIsEnabled(e.MachinePowerState, this.machineModeService.MachineMode);
+            this.UpdateIsEnabled(e.MachinePowerState, this.machineModeService.MachineMode, this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
 
-        private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode)
+        private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode, HealthStatus healthStatus)
         {
             var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
 
@@ -212,13 +232,19 @@ namespace Ferretto.VW.App.Controls
             var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
 
             this.IsEnabled =
-                this.EnableMask == EnableMask.Any
-                ||
-                (enabeIfPoweredOn && machinePower == MachinePowerState.Powered)
-                ||
-                (enableIfAutomatic && machineMode == MachineMode.Automatic)
-                ||
-                (enableIfManual && machineMode == MachineMode.Manual);
+                this.EnableMask == EnableMask.Any ||
+                //
+                (enabeIfPoweredOn &&
+                 machinePower == MachinePowerState.Powered &&
+                 healthStatus == HealthStatus.Healthy) ||
+                //
+                (enableIfAutomatic &&
+                 machinePower == MachinePowerState.Powered &&
+                 machineMode == MachineMode.Automatic) ||
+                //
+                (enableIfManual &&
+                 machinePower == MachinePowerState.Powered &&
+                 machineMode == MachineMode.Manual);
         }
 
         private void UpdatePresentation()

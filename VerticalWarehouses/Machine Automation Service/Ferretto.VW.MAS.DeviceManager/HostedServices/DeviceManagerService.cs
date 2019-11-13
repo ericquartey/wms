@@ -481,6 +481,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             notificationData.AxisMovement = Axis.BayChain;
                             notificationData.MovementMode = MovementMode.BayChain;
                         }
+                            this.Logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; Movement={notificationData.AxisMovement}; value={dataInverters.CurrentPosition.Value:0.0000}");
 
                         this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0}");
 
@@ -661,6 +662,10 @@ namespace Ferretto.VW.MAS.DeviceManager
         private void SendCriticalErrorMessage(IFsmExceptionMessageData data)
         {
             this.Logger.LogCritical($"Exception detected: {data.ExceptionDescription} {data.InnerException?.Message}");
+            if (data.InnerException != null)
+            {
+                this.Logger.LogError(data.InnerException, data.InnerException.Message);
+            }
 
             System.Diagnostics.Debug.Fail("Exception detected");
 

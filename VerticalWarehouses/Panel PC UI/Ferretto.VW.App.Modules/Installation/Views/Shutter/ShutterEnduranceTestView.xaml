@@ -52,7 +52,8 @@
                                        Text="{x:Static res:InstallationApp.ShutterOpen}" />
             <!--  optional sensor  -->
             <controls:PpcSensorControl SensorState="{Binding Sensors.MidWay}"
-                                       Text="{x:Static res:InstallationApp.ShutterMidWay}" />
+                                       Text="{x:Static res:InstallationApp.ShutterMidWay}"
+                                       Visibility="{Binding IsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
             <controls:PpcSensorControl SensorState="{Binding Sensors.Closed}"
                                        Text="{x:Static res:InstallationApp.ShutterClosed}" />

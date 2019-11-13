@@ -43,5 +43,7 @@
         Cell,
 
         LoadingUnit,
+
+        Elevator
     }
 }

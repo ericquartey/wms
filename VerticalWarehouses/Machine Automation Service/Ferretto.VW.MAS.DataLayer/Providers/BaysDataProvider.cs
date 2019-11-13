@@ -708,7 +708,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.GetByNumber(bayNumber);
-                if (positionIndex < 0 || positionIndex > bay.Positions.Count())
+                if (positionIndex < 1 || positionIndex > bay.Positions.Count())
                 {
                     throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
                 }
@@ -720,7 +720,17 @@ namespace Ferretto.VW.MAS.DataLayer
                         string.Format(Resources.Bays.TheBayHeightMustBeInRange, height, verticalAxis.LowerBound, verticalAxis.UpperBound));
                 }
 
-                var position = positionIndex == 0 ? bay.Positions.First() : bay.Positions.Last();
+                BayPosition position = null;
+
+                if (positionIndex == 1)
+                {
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Max(e => e.Height));
+                }
+
+                if (positionIndex == 2)
+                {
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Min(e => e.Height));
+                }
 
                 position.Height = height;
 

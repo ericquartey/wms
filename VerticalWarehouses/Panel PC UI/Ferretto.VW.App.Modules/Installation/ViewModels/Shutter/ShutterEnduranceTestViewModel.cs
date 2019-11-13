@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
+        private bool isShutterThreeSensors;
+
         private bool isWaitingForResponse;
 
         private int? performedCyclesThisSession;
@@ -139,6 +141,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public bool IsShutterThreeSensors
+        {
+            get => this.isShutterThreeSensors;
+            set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
         public bool IsWaitingForResponse
@@ -277,12 +285,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var procedureParameters = await this.shuttersWebService.GetTestParametersAsync();
                 this.InputRequiredCycles = procedureParameters.RequiredCycles;
                 this.InputDelayBetweenCycles = 1;
-                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;                
+                this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
 
                 this.sensors = new ShutterSensors(this.BayNumber);
 
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
                 this.sensors.Update(sensorsStates.ToArray());
+
+                this.IsShutterThreeSensors = bay.Shutter.Type == ShutterType.ThreeSensors;
 
                 this.RaisePropertyChanged(nameof(this.Sensors));
             }

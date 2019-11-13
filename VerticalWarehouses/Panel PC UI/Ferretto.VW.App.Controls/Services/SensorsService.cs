@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Services
 
         private string loadingUnitPositionUpInBayCode;
 
-        private object positioningOperationChangedToken;
+        private SubscriptionToken positioningOperationChangedToken;
 
         private SubscriptionToken sensorsToken;
 
@@ -270,7 +270,7 @@ namespace Ferretto.VW.App.Services
             return true;
         }
 
-        public async Task RefreshAsync()
+        public async Task RefreshAsync(bool forceRefresh)
         {
             try
             {
@@ -284,7 +284,7 @@ namespace Ferretto.VW.App.Services
 
                 await this.InitializeSensorsAsync();
 
-                await this.GetElevatorAsync();
+                await this.GetElevatorAsync(forceRefresh);
             }
             catch (Exception ex)
             {
@@ -311,14 +311,6 @@ namespace Ferretto.VW.App.Services
                   .Select(b => b.Carousel != null || b.IsExternal)
                   .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
         }
-
-        //private bool Embarked()
-        //{
-        //    return
-        //        this.sensors.LuPresentInMachineSideBay1
-        //        &&
-        //        this.sensors.LuPresentInOperatorSideBay1;
-        //}
 
         private async Task GetBayAsync()
         {
@@ -353,7 +345,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task GetElevatorAsync()
+        private async Task GetElevatorAsync(bool forceRefresh)
         {
             try
             {
@@ -362,7 +354,7 @@ namespace Ferretto.VW.App.Services
                     &&
                     this.sensors.LuPresentInOperatorSide;
 
-                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked
+                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked || forceRefresh
                     ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
                     : null;
             }
@@ -408,7 +400,7 @@ namespace Ferretto.VW.App.Services
             {
                 case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
-                        await this.GetElevatorAsync();
+                        await this.GetElevatorAsync(false);
 
                         break;
                     }
@@ -427,7 +419,7 @@ namespace Ferretto.VW.App.Services
 
             await this.GetBayAsync();
 
-            await this.GetElevatorAsync();
+            await this.GetElevatorAsync(false);
 
             this.RaisePropertyChanged();
         }

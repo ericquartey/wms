@@ -1303,6 +1303,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         LoadingUnit = 20,
     
+        Elevator = 21,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]

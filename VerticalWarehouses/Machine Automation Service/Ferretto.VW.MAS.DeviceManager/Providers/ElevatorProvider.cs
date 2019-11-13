@@ -561,6 +561,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 switchPosition,
                 direction);
 
+            this.logger.LogDebug($"MoveVerticalOfDistance: " +
+                $"distance: {distance}; " +
+                $"speed: {speed[0]}; " +
+                $"acceleration: {acceleration[0]}; " +
+                $"deceleration: {deceleration[0]}; ");
+
             this.PublishCommand(
                 messageData,
                 $"Execute {Axis.Vertical} Positioning Command",

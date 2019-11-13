@@ -113,14 +113,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.changeToLowerBayPositionCommand
             ??
             (this.changeToLowerBayPositionCommand = new DelegateCommand(
-                this.ToggleBayPosition,
+                this.ToggleBayPositionDown,
                 this.CanChangeCurrentPosition2));
 
         public ICommand ChangeToUpperBayPositionCommand =>
             this.changeToUpperBayPositionCommand
             ??
             (this.changeToUpperBayPositionCommand = new DelegateCommand(
-                this.ToggleBayPosition,
+                this.ToggleBayPositionUp,
                 this.CanChangeCurrentPosition1));
 
         public int CurrentBayPosition
@@ -511,7 +511,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.CurrentHeight = this.machineElevatorService.Position.Vertical;
 
-                this.CurrentBayPosition = 2;
+                this.ToggleBayPositionDown();
             }
             catch (Exception ex)
             {
@@ -636,9 +636,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
-        private void ToggleBayPosition()
+        private void ToggleBayPositionDown()
         {
-            this.CurrentBayPosition = this.CurrentBayPosition == 1 ? 2 : 1;
+            this.CurrentBayPosition = 2;
+        }
+
+        private void ToggleBayPositionUp()
+        {
+            this.CurrentBayPosition = 1;
         }
 
         #endregion
