@@ -1111,7 +1111,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 13, 10, 50, 24, 761, DateTimeKind.Local).AddTicks(5978),
+                            InstallationDate = new DateTime(2017, 1, 13, 14, 55, 43, 174, DateTimeKind.Local).AddTicks(5302),
                             ServiceStatus = 86
                         });
                 });
