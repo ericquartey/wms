@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineProvider machineProvider;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -46,6 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             IMachineProvider machineProvider,
+            IMachineResourcesProvider machineResourcesProvider,
             ISensorsProvider sensorsProvider,
             ILoadingUnitsProvider loadingUnitsProvider)
             : base(eventAggregator)
@@ -57,6 +60,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
@@ -81,6 +85,155 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber)
+        {
+            // check #1: elevator must be located opposite to the specified bay position
+            var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            if (bayPosition?.Id != bayPositionId)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition };
+            }
+
+            // check #2: a loading unit must be present in the bay position
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var isUpperPosition = bayPosition.Height == bay.Positions.Max(p => p.Height);
+
+            var arePresenceSensorsActive = isUpperPosition
+                ? this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                : this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
+
+            if (bayPosition.LoadingUnit is null
+                ||
+                !arePresenceSensorsActive)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
+            }
+
+            // check #3: no loading unit must be on board of the elevator
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+            }
+
+            // check #4: the shutter must be completely open
+            if (this.machineResourcesProvider.GetShutterPosition(bayNumber) != ShutterPosition.Opened)
+            {
+                return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+            }
+
+            return new ActionPolicy { IsAllowed = true };
+        }
+
+        public ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber)
+        {
+            // check #1: elevator must be located opposite to the specified cell
+            var cell = this.elevatorDataProvider.GetCurrentCell();
+            if (cell?.Id != cellId)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedCell };
+            }
+
+            // check #2: a loading unit must be present in the cell
+            if (cell.LoadingUnit is null)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedCell };
+            }
+
+            // check #3: no loading unit must be on board of the elevator
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() != null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOffCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
+            }
+
+            return new ActionPolicy { IsAllowed = true };
+        }
+
+        public ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber)
+        {
+            // check #1: elevator must be located opposite to the specified bay position
+            var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            if (bayPosition?.Id != bayPositionId)
+            {
+                return new ActionPolicy
+                {
+                    Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition
+                };
+            }
+
+            // check #2: the bay position must not contain a loading unit
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var isUpperPosition = bayPosition.Height == bay.Positions.Max(p => p.Height);
+
+            var arePresenceSensorsActive = isUpperPosition
+                ? this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                : this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
+
+            if (bayPosition.LoadingUnit != null
+                ||
+                arePresenceSensorsActive)
+            {
+                return new ActionPolicy
+                {
+                    Reason = Resources.Elevator.ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition
+                };
+            }
+
+            // check #3: a loading unit must be on board of the elevator
+            if (this.elevatorDataProvider.GetLoadingUnitOnBoard() is null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOnCradle)
+            {
+                return new ActionPolicy
+                {
+                    Reason = Resources.Elevator.NoLoadingUnitIsOnBoardOfTheElevator
+                };
+            }
+
+            // check #4: the shutter must be completely open
+            if (this.machineResourcesProvider.GetShutterPosition(bayNumber) != ShutterPosition.Opened)
+            {
+                return new ActionPolicy
+                {
+                    Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen
+                };
+            }
+
+            return new ActionPolicy { IsAllowed = true };
+        }
+
+        public ActionPolicy CanUnloadToCell(int cellId, BayNumber bayNumber)
+        {
+            // check #1: elevator must be located opposite to the specified cell
+            var cell = this.elevatorDataProvider.GetCurrentCell();
+            if (cell?.Id != cellId)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedCell };
+            }
+
+            // check #2: a loading unit must be on board of the elevator
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnit is null
+                ||
+                !this.machineResourcesProvider.IsDrawerCompletelyOnCradle)
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsOnBoardOfTheElevator };
+            }
+
+            // check #2: there is enough space to host the loading unit in the specified cell
+            if (!this.cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnit.Id))
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.TheLoadingUnitDoesNotFitInTheSpecifiedCell };
+            }
+
+            return new ActionPolicy { IsAllowed = true };
+        }
+
         public void ContinuePositioning(BayNumber requestingBay, MessageActor sender)
         {
             this.PublishCommand(
@@ -100,12 +253,65 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
+        public void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
+        {
+            var policy = this.CanLoadFromBay(bayPositionId, bayNumber);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            var direction = bay.Side is WarehouseSide.Front
+                ? HorizontalMovementDirection.Backwards
+                : HorizontalMovementDirection.Forwards;
+
+            var supposedLoadingUnitNetWeight = bayPosition.LoadingUnit.MaxNetWeight;
+
+            this.MoveHorizontalAuto(
+                direction,
+                elevatorHasLoadingUnit: false,
+                bayPosition.LoadingUnit.Id,
+                supposedLoadingUnitNetWeight,
+                waitContinue: false,
+                measure: false,
+                bayNumber,
+                sender);
+        }
+
+        public void LoadFromCell(int cellId, BayNumber bayNumber, MessageActor sender)
+        {
+            var policy = this.CanLoadFromCell(cellId, bayNumber);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var cell = this.cellsProvider.GetById(cellId);
+
+            var direction = cell.Side is WarehouseSide.Front
+                ? HorizontalMovementDirection.Backwards
+                : HorizontalMovementDirection.Forwards;
+
+            this.MoveHorizontalAuto(
+                direction,
+                elevatorHasLoadingUnit: false,
+                cell.LoadingUnit.Id,
+                cell.LoadingUnit.NetWeight,
+                waitContinue: false,
+                measure: false,
+                bayNumber,
+                sender);
+        }
+
         /// <summary>
         /// Moves the horizontal chain of the elevator to load or unload a LoadUnit.
         /// It uses a Table target movement, mapped by 4 Profiles sets of parameters selected by direction and loading status
         /// </summary>
         /// <param name="direction">Forwards: from elevator to Bay 1 side</param>
-        /// <param name="isStartedOnBoard">true: elevator is full before the movement. It must match the presence sensors</param>
+        /// <param name="elevatorHasLoadingUnit">true: elevator is full before the movement. It must match the presence sensors</param>
         /// <param name="loadingUnitId">This id is stored in Elevator table before the movement. null means no LoadUnit</param>
         /// <param name="loadingUnitNetWeight">This weight is stored in LoadingUnits table before the movement.</param>
         /// <param name="waitContinue">true: the inverter positioning state machine stops after the transmission of parameters and waits for a Continue command before enabling inverter</param>
@@ -113,7 +319,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="sender"></param>
         public void MoveHorizontalAuto(
             HorizontalMovementDirection direction,
-            bool isStartedOnBoard,
+            bool elevatorHasLoadingUnit,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
             bool waitContinue,
@@ -135,10 +341,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
-            if (isStartedOnBoard != isLoadingUnitOnBoard)
+            if (elevatorHasLoadingUnit != isLoadingUnitOnBoard)
             {
                 throw new InvalidOperationException(
-                    "Invalid " + (isStartedOnBoard ? "Deposit" : "Pickup") + " command for " + (isStartedOnBoard ? "empty" : "full") + " elevator");
+                    "Invalid " + (elevatorHasLoadingUnit ? "Deposit" : "Pickup") + " command for " + (elevatorHasLoadingUnit ? "empty" : "full") + " elevator");
             }
 
             var zeroSensor = this.machineProvider.IsOneTonMachine()
@@ -156,7 +362,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 measure = false;
             }
 
-            var profileType = SelectProfileType(direction, isStartedOnBoard);
+            var profileType = SelectProfileType(direction, elevatorHasLoadingUnit);
             this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
             var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
@@ -278,12 +484,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void MoveToAbsoluteVerticalPosition(
-            double targetPosition,
-            double feedRate,
-            bool measure,
-            bool computeElongation,
-            BayNumber requestingBay,
-            MessageActor sender)
+                    double targetPosition,
+                    double feedRate,
+                    bool measure,
+                    bool computeElongation,
+                    BayNumber requestingBay,
+                    MessageActor sender)
         {
             this.MoveToVerticalPosition(targetPosition, feedRate, measure, computeElongation, requestingBay, sender, null, null);
         }
@@ -366,14 +572,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void MoveToVerticalPosition(
-            double targetPosition,
-            double feedRate,
-            bool measure,
-            bool computeElongation,
-            BayNumber requestingBay,
-            MessageActor sender,
-            int? targetBayPositionId,
-            int? targetCellId)
+                    double targetPosition,
+                    double feedRate,
+                    bool measure,
+                    bool computeElongation,
+                    BayNumber requestingBay,
+                    MessageActor sender,
+                    int? targetBayPositionId,
+                    int? targetCellId)
         {
             if (feedRate <= 0 || feedRate > 1)
             {
@@ -505,11 +711,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void RunTorqueCurrentSampling(
-            double displacement,
-            double netWeight,
-            int? loadingUnitId,
-            BayNumber requestingBay,
-            MessageActor sender)
+                    double displacement,
+                    double netWeight,
+                    int? loadingUnitId,
+                    BayNumber requestingBay,
+                    MessageActor sender)
         {
             if (displacement <= 0)
             {
@@ -560,11 +766,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void StartBeltBurnishing(
-            double upperBoundPosition,
-            double lowerBoundPosition,
-            int delayStart,
-            BayNumber requestingBay,
-            MessageActor sender)
+                    double upperBoundPosition,
+                    double lowerBoundPosition,
+                    int delayStart,
+                    BayNumber requestingBay,
+                    MessageActor sender)
         {
             if (upperBoundPosition <= 0)
             {
@@ -643,23 +849,74 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        private static MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool isStartedOnBoard)
+        public void UnloadToBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
+        {
+            var policy = this.CanUnloadToBay(bayPositionId, bayNumber);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var currentBayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+            var direction = bay.Side is WarehouseSide.Front
+                ? HorizontalMovementDirection.Forwards
+                : HorizontalMovementDirection.Backwards;
+
+            this.MoveHorizontalAuto(
+                direction,
+                elevatorHasLoadingUnit: true,
+                currentBayPosition.LoadingUnit.Id,
+                currentBayPosition.LoadingUnit.NetWeight,
+                waitContinue: false,
+                measure: false,
+                bayNumber,
+                sender);
+        }
+
+        public void UnloadToCell(int cellId, BayNumber bayNumber, MessageActor sender)
+        {
+            var policy = this.CanUnloadToCell(cellId, bayNumber);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+
+            var cell = this.cellsProvider.GetById(cellId);
+            var direction = cell.Side is WarehouseSide.Front
+               ? HorizontalMovementDirection.Forwards
+               : HorizontalMovementDirection.Backwards;
+
+            this.MoveHorizontalAuto(
+                direction,
+                elevatorHasLoadingUnit: true,
+                loadingUnit.Id,
+                loadingUnit.NetWeight,
+                waitContinue: false,
+                measure: false,
+                bayNumber,
+                sender);
+        }
+
+        private static MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit)
         {
             // the total length is splitted in two unequal distances
             var isLongerDistance =
-                (isStartedOnBoard && direction == HorizontalMovementDirection.Forwards)
+                (elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Forwards)
                 ||
-                (!isStartedOnBoard && direction == HorizontalMovementDirection.Backwards);
+                (!elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Backwards);
 
-            if (isLongerDistance && isStartedOnBoard)
+            if (isLongerDistance && elevatorHasLoadingUnit)
             {
                 return MovementProfileType.LongDeposit;
             }
-            else if (isLongerDistance && !isStartedOnBoard)
+            else if (isLongerDistance && !elevatorHasLoadingUnit)
             {
                 return MovementProfileType.LongPickup;
             }
-            else if (!isLongerDistance && isStartedOnBoard)
+            else if (!isLongerDistance && elevatorHasLoadingUnit)
             {
                 return MovementProfileType.ShortDeposit;
             }

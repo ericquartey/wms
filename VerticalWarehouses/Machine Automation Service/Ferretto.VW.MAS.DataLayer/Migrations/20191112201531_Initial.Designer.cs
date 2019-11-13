@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191112191305_Initial")]
+    [Migration("20191112201531_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -162,7 +162,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BayPositionId");
+                    b.HasIndex("BayPositionId")
+                        .IsUnique();
 
                     b.HasIndex("CellId")
                         .IsUnique();
@@ -1109,7 +1110,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 12, 20, 13, 3, 718, DateTimeKind.Local).AddTicks(3354),
+                            InstallationDate = new DateTime(2017, 1, 12, 21, 15, 30, 150, DateTimeKind.Local).AddTicks(5472),
                             ServiceStatus = 86
                         });
                 });
@@ -1536,8 +1537,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
-                        .WithMany()
-                        .HasForeignKey("BayPositionId");
+                        .WithOne("Elevator")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.Elevator", "BayPositionId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("Elevator")

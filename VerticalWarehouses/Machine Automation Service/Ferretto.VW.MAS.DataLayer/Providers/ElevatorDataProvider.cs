@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -143,14 +144,16 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (!this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition))
-                {
-                    currentBayPosition = this.dataContext.Elevators
-                        .Select(e => e.BayPosition)
-                        .SingleOrDefault();
+                // if (!this.cache.TryGetValue(ElevatorCurrentBayPositionCacheKey, out BayPosition currentBayPosition))
+                //{
+                var currentBayPosition = this.dataContext.Elevators
+                    .Select(e => e.BayPosition)
+                    .Include(p => p.LoadingUnit)
+                    .SingleOrDefault();
 
-                    this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
-                }
+                System.Diagnostics.Debug.WriteLine($">>> DB bayPosition {currentBayPosition?.Id}");
+                this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
+                //  }
 
                 return currentBayPosition;
             }
@@ -160,14 +163,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
-                {
-                    currentCell = this.dataContext.Elevators
-                        .Select(e => e.Cell)
-                        .SingleOrDefault();
-
-                    this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
-                }
+                //  if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
+                // {
+                var currentCell = this.dataContext.Elevators
+                    .Select(e => e.Cell)
+                    .Include(c => c.LoadingUnit)
+                    .SingleOrDefault();
+                System.Diagnostics.Debug.WriteLine($">>> DB cell {currentCell?.Id}");
+                this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
+                // }
 
                 return currentCell;
             }
@@ -263,7 +267,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators.Single();
+                var elevator = this.dataContext.Elevators.Include(e => e.BayPosition).Single();
+                Debug.WriteLine($">>> set db pos from '{elevator.BayPositionId}' to '{bayPositionId}'.");
 
                 if (elevator.BayPositionId != bayPositionId)
                 {
@@ -283,7 +288,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var elevator = this.dataContext.Elevators.Single();
-
+                Debug.WriteLine($">>> set db cell from '{elevator.CellId}' to '{cellId}'.");
                 if (elevator.CellId != cellId)
                 {
                     elevator.CellId = cellId;

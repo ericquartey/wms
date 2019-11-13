@@ -32,6 +32,32 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public bool CanFitLoadingUnit(int cellId, int loadingUnitId)
+        {
+            var cell = this.GetById(cellId);
+
+            if (cell.LoadingUnit != null)
+            {
+                return false;
+            }
+
+            var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+            if (loadingUnit is null)
+            {
+                throw new EntityNotFoundException(loadingUnitId);
+            }
+
+            return this.dataContext.Cells
+                .Any(c =>
+                    c.Panel.Side == cell.Side
+                    &&
+                    c.Position >= cell.Position
+                    &&
+                    c.Position <= cell.Position + loadingUnit.Height
+                    &&
+                    c.Status != CellStatus.Free);
+        }
+
         public IEnumerable<Cell> GetAll()
         {
             lock (this.dataContext)
@@ -45,9 +71,9 @@ namespace Ferretto.VW.MAS.DataLayer
         public Cell GetByHeight(double cellHeight, double tolerance, WarehouseSide machineSide)
         {
             return this.dataContext.Cells
-                       .Include(c => c.LoadingUnit)
-                       .Include(c => c.Panel)
-                       .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
+                .Include(c => c.LoadingUnit)
+                .Include(c => c.Panel)
+                .SingleOrDefault(c => c.Position < cellHeight + tolerance && c.Position > cellHeight - tolerance && c.Panel.Side == machineSide);
         }
 
         public Cell GetById(int cellId)

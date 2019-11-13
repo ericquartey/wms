@@ -143,7 +143,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, openShutter, requestingBay, sender);
+            //TODO***********REFACTOR THIS
+            this.elevatorProvider.MoveHorizontalAuto(
+                direction,
+                !moveToCradle,
+                loadUnitId,
+                null,
+                openShutter,
+                openShutter,
+                requestingBay,
+                sender);
 
             if (openShutter)
             {

@@ -975,7 +975,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 12, 20, 13, 3, 718, DateTimeKind.Local).AddTicks(3354), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 12, 21, 15, 30, 150, DateTimeKind.Local).AddTicks(5472), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1286,7 +1286,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_BayPositionId",
                 table: "Elevators",
-                column: "BayPositionId");
+                column: "BayPositionId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Elevators_CellId",

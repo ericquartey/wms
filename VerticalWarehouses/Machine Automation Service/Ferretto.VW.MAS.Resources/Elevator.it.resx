@@ -117,11 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ALoadingUnitIsAlreadyOnBoardOfTheElevator" xml:space="preserve">
+    <value>È già presente un cassetto a bordo elevatore.</value>
+  </data>
+  <data name="ALoadingUnitIsAlreadyPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>È già presente un cassetto nella posizione baia specificata.</value>
+  </data>
   <data name="MovementDistanceCannotBeZero" xml:space="preserve">
     <value>La distanza di movimento non può essere zero.</value>
   </data>
+  <data name="NoLoadingUnitIsOnBoardOfTheElevator" xml:space="preserve">
+    <value>Nessun cassetto è presente sull'elevatore.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedBayPosition" xml:space="preserve">
+    <value>Nessun cassetto è presente nella baia specificata.</value>
+  </data>
+  <data name="NoLoadingUnitIsPresentInTheSpecifiedCell" xml:space="preserve">
+    <value>Nessun cassetto è presente nella cella specificata.</value>
+  </data>
   <data name="TargetPositionMustBeInRange" xml:space="preserve">
-    <value>La posizione di destinazione ({0}) deve essere compresa nell'intervallo [{1}; {2}].</value>
+    <value>La posizione di destinazione ({0}mm) deve essere compresa nell'intervallo [{1}mm; {2}mm].</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>L'elevatore non è situato di fronte alla posizione baia specificata.</value>
+  </data>
+  <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>L'elevatore non è situato di fronte alla cella specificata.</value>
+  </data>
+  <data name="TheLoadingUnitDoesNotFitInTheSpecifiedCell" xml:space="preserve">
+    <value>Non è disponibile abbastanza spazio nella cella specificata per alloggiare il cassetto.</value>
   </data>
   <data name="VerticalOriginCalibrationMustBePerformed" xml:space="preserve">
     <value>La calibrazione dell'asse verticale va eseguita prima di tentare un movimento assoluto dell'elevatore.</value>

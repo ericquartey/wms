@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
+        private Bay bay;
+
+        private bool bayIsMultiPosition;
+
         private BayNumber bayNumber;
 
         private bool isElevatorMovingToBay;

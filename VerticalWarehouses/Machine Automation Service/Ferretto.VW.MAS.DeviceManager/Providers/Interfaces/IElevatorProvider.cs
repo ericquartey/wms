@@ -15,15 +15,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber);
+
+        ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
+
+        ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber);
+
+        ActionPolicy CanUnloadToCell(int cellId, BayNumber bayNumber);
+
         void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
 
         AxisBounds GetVerticalBounds();
 
+        void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor automationService);
+
+        void LoadFromCell(int cellId, BayNumber bayNumber, MessageActor automationService);
+
         void MoveHorizontalAuto(
-            HorizontalMovementDirection direction,
-            bool isStartedOnBoard,
+                                                                            HorizontalMovementDirection direction,
+            bool elevatorHasLoadingUnit,
             int? loadingUnitId,
-            double? loadingUnitGrossWeight,
+            double? loadingUnitNetWeight,
             bool waitContinue,
             bool measure,
             BayNumber requestingBay,
@@ -33,15 +45,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
+        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
+
         void MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
 
         void MoveToCell(int cellId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
 
-        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
+        void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 
         void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
-
-        void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
@@ -53,6 +65,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             MessageActor sender);
 
         void Stop(BayNumber requestingBay, MessageActor sender);
+
+        void UnloadToBay(int bayPosition, BayNumber bayNumber, MessageActor automationService);
+
+        void UnloadToCell(int cellId, BayNumber bayNumber, MessageActor automationService);
 
         #endregion
     }

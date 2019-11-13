@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -8,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     public interface ICellsProvider
     {
         #region Methods
+
+        bool CanFitLoadingUnit(int cellId, int loadingUnitId);
 
         IEnumerable<Cell> GetAll();
 

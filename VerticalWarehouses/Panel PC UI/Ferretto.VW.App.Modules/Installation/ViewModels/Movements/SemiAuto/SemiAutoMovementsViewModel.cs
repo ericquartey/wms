@@ -20,29 +20,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineBaysWebService machineBaysWebService;
-
-        private readonly IMachineElevatorService machineElevatorService;
-
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
-
-        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly ISensorsService sensorsService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
-        private Bay bay;
-
-        // private object bayChainPositionChangedToken;
-
-        private bool bayIsMultiPosition;
-
         private bool bayIsShutterThreeSensors;
-
-        //private SubscriptionToken elevatorPositionChangedToken;
 
         private SubscriptionToken homingToken;
 
@@ -53,8 +39,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken positioningOperationChangedToken;
-
-        private VerticalManualMovementsProcedure procedureParameters;
 
         private DelegateCommand resetCommand;
 
@@ -72,26 +56,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineCellsWebService machineCellsWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IMachineSensorsWebService machineSensorsWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineBaysWebService machineBaysWebService,
             ISensorsService sensorsService,
-            IMachineElevatorService machineElevatorService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
-            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
-            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
-            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
 
@@ -199,11 +177,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.SelectBayPositionDown();
 
-                // this.ElevatorVerticalPosition = this.machineElevatorService.Position.Vertical;
-                // this.ElevatorHorizontalPosition = this.machineElevatorService.Position.Horizontal;
-
-                //  this.BayChainHorizontalPosition = this.bayManagerService.ChainPosition;
-
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
 
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
@@ -263,19 +236,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse;
         }
-
-        /*
-                private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
-                {
-                    this.BayChainHorizontalPosition = e.Position;
-                }
-                */
-
-        /*   private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-           {
-               this.ElevatorHorizontalPosition = e.HorizontalPosition;
-               this.ElevatorVerticalPosition = e.VerticalPosition;
-           }*/
 
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
         {
@@ -449,7 +409,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
             var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
-            if (messageBoxResult == DialogResult.Yes)
+            if (messageBoxResult is DialogResult.Yes)
             {
                 try
                 {
@@ -545,24 +505,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         m => m.Data != null);
-
-            /* this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-               ??
-               this.EventAggregator
-                   .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                   .Subscribe(
-                       this.OnElevatorPositionChanged,
-                       ThreadOption.UIThread,
-                       false);*/
-            /*
-            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                    .Subscribe(
-                        this.OnBayChainPositionChanged,
-                        ThreadOption.UIThread,
-                        false);*/
         }
 
         #endregion

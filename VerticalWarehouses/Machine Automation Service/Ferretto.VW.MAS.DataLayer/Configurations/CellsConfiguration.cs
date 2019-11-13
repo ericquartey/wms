@@ -26,7 +26,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder
                .HasOne(c => c.Elevator)
                .WithOne(e => e.Cell)
-               .HasForeignKey<Elevator>(e => e.CellId);
+               .HasForeignKey<Elevator>(e => e.CellId)
+               .OnDelete(DeleteBehavior.ClientSetNull);
 
             builder.Property(c => c.Status)
                 .HasColumnType("text")

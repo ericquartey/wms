@@ -119,21 +119,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution);
         }
 
-        [HttpPost("horizontal/move-auto")]
+        [HttpPost("horizontal/load-from-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
+        public IActionResult LoadFromBay(int bayPosition)
         {
-            // this.elevatorProvider.MoveHorizontalProfileCalibration(direction, this.BayNumber, MessageActor.AutomationService);  // TEST
-            this.elevatorProvider.MoveHorizontalAuto(
-                direction,
-                isStartedOnBoard,
-                loadingUnitId,
-                loadingUnitGrossWeight,
-                false,
-                false,
-                this.BayNumber,
-                MessageActor.AutomationService);
+            this.elevatorProvider.LoadFromBay(bayPosition, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/load-from-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult LoadFromCell(int cellId)
+        {
+            this.elevatorProvider.LoadFromCell(cellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -229,6 +230,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult StopWeightCheck()
         {
             this.elevatorWeightCheckProvider.Stop();
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/unload-to-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UnloadToBay(int bayPosition)
+        {
+            this.elevatorProvider.UnloadToBay(bayPosition, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/unload-to-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UnloadToCell(int cellId)
+        {
+            this.elevatorProvider.UnloadToCell(cellId, this.BayNumber, MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
