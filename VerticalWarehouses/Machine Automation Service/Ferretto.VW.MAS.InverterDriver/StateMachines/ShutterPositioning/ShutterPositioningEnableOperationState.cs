@@ -102,6 +102,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                                 )
                             )
                         {
+                            this.Logger.LogDebug($"Shutter positioning end: destination= {this.shutterDestination}; current = {currentStatus.CurrentShutterPosition}");
                             this.ParentStateMachine.ChangeState(new ShutterPositioningDisableOperationState(this.ParentStateMachine, this.InverterStatus, this.shutterPositionData, this.Logger));
                             returnValue = true;
                         }
