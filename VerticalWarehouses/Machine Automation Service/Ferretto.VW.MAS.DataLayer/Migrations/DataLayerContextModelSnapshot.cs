@@ -614,6 +614,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Baia sorgente del cassetto vuota",
                             Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300011,
+                            Code = 300011,
+                            Description = "MachineManagerErrorLoadingUnitShutterOpen",
+                            Reason = "MachineManagerErrorLoadingUnitShutterOpen",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300012,
+                            Code = 300012,
+                            Description = "MachineManagerErrorLoadingUnitShutterClosed",
+                            Reason = "MachineManagerErrorLoadingUnitShutterClosed",
+                            Severity = 1
                         });
                 });
 
@@ -846,6 +862,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300010,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300011,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300012,
                             TotalErrors = 0
                         });
                 });

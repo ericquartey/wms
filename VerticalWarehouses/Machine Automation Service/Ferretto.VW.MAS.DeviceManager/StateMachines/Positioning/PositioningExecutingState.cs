@@ -409,7 +409,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
+                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 1.1
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
@@ -437,7 +437,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
+                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 1.1
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )

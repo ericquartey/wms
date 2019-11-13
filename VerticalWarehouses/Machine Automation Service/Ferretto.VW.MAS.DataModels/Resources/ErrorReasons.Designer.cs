@@ -349,6 +349,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterClosed {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterOpen.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterOpen {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitSourceBay {
