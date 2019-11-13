@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -9,10 +11,39 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    public class FirstLetterPropertyNameResolver : CamelCasePropertyNamesContractResolver
+    {
+        #region Methods
+
+        public static string FirstCharToUpper(string input)
+        {
+            switch (input)
+            {
+                case null: throw new ArgumentNullException(nameof(input));
+                case "": throw new ArgumentException($"{nameof(input)} cannot be empty", nameof(input));
+                default: return input.First().ToString().ToUpper() + input.Substring(1);
+            }
+        }
+
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
+        {
+            var property = base.CreateProperty(member, memberSerialization);
+            if (member.GetCustomAttribute<JsonPropertyAttribute>() is JsonPropertyAttribute jsonProperty)
+            {
+                property.PropertyName = FirstCharToUpper(jsonProperty.PropertyName);
+            }
+
+            return property;
+        }
+
+        #endregion
+    }
+
     public class ParametersExportViewModel : BaseParametersImportExportViewModel
     {
         #region Fields
@@ -94,9 +125,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
 
+                var settings = new JsonSerializerSettings();
+                settings.ContractResolver = new FirstLetterPropertyNameResolver();
+                settings.Converters.Add(new IPAddressConverter());
+                settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+
                 File.WriteAllText(
                     this.FullPath,
-                    JsonConvert.SerializeObject(configuration, new JsonConverter[] { new IPAddressConverter() }));
+                    JsonConvert.SerializeObject(configuration, settings));
 
                 this.ShowNotification(Resources.InstallationApp.ExportSuccessful);
             }
