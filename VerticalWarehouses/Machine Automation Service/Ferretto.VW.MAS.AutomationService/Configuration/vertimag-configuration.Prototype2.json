@@ -573,9 +573,9 @@
             "Speed": 420
           },
           "WeightMeasurement": {
-            "MeasureConst0": -1136.5,
-            "MeasureConst1": 250.87,
-            "MeasureConst2": -4.9791,
+            "MeasureConst0": -1130.6,
+            "MeasureConst1": 249.75,
+            "MeasureConst2": -4.9268,
             "MeasureSpeed": 20,
             "MeasureTime": 15
           }
