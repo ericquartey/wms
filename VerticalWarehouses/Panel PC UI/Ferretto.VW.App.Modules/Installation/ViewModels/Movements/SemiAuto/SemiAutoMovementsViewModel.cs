@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
 
-                this.SelectBayPositionDown();
+                this.SelectBayPositionUp();
 
                 this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
                 this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
