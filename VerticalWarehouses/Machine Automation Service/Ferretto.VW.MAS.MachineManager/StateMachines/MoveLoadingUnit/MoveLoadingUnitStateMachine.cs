@@ -207,6 +207,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
             }
+            else
+            {
+                returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
+            }
+            if (!returnValue)
+            {
+                this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
+            }
 
             return returnValue;
         }

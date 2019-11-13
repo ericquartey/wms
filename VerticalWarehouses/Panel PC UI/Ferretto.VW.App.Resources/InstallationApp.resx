@@ -1248,4 +1248,16 @@
   <data name="Unknown" xml:space="preserve">
     <value>Unknown</value>
   </data>
+  <data name="CompletedTest" xml:space="preserve">
+    <value>Test completed successfully</value>
+  </data>
+  <data name="TestProgress" xml:space="preserve">
+    <value>Test in progress...</value>
+  </data>
+  <data name="Rear" xml:space="preserve">
+    <value>Rear</value>
+  </data>
+  <data name="UseWeightControl" xml:space="preserve">
+    <value>Use weight control</value>
+  </data>
 </root>
