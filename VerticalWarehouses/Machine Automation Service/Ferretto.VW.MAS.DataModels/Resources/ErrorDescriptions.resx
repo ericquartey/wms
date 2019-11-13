@@ -243,4 +243,7 @@
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
     <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
   </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>DestinationBelowLowerBound</value>
+  </data>
 </root>

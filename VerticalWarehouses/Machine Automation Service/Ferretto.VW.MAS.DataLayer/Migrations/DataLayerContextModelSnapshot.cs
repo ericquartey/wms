@@ -401,6 +401,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 18,
+                            Code = 18,
+                            Description = "DestinationBelowLowerBound",
+                            Reason = "DestinationBelowLowerBound",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -703,6 +711,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 17,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 18,
                             TotalErrors = 0
                         },
                         new
@@ -1098,7 +1111,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 13, 14, 55, 43, 174, DateTimeKind.Local).AddTicks(5302),
+                            InstallationDate = new DateTime(2017, 1, 13, 15, 38, 16, 266, DateTimeKind.Local).AddTicks(7213),
                             ServiceStatus = 86
                         });
                 });
