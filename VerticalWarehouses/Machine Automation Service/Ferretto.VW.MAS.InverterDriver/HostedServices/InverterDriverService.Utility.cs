@@ -293,7 +293,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         axis = Axis.BayChain;
                     }
 
-                    this.Logger.LogTrace($"ActualPositionShaft inverter={message.SystemIndex}; axis={axis}; value={message.IntPayload}");
+                    this.Logger.LogTrace($"ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
 
                     if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish))
@@ -757,7 +757,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
                         var targetPosition = invertersProvider.ComputePositioningValues(inverter, positioningData, axisOrientation, currentPosition, this.refreshTargetTable, out var positioningFieldData);
 
-                        this.Logger.LogDebug($"Current axis: {this.currentAxis}; " +
+                        this.Logger.LogDebug($"Inverter: {inverter.SystemIndex}; " +
+                            $"Current axis: {this.currentAxis}; " +
                             $"current position: {currentPosition}; " +
                             $"target: {positioningData.TargetPosition} mm [{targetPosition} impulses]; " +
                             $"speed: {positioningFieldData.TargetSpeed[0]}; " +
@@ -799,7 +800,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 break;
 
                             case MovementType.Relative:
-                            case MovementType.TableTarget:
                                 if (positioningFieldData.TargetPosition == 0)
                                 {
                                     var msgNotification = new FieldNotificationMessage(
@@ -815,34 +815,46 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 }
                                 else
                                 {
-                                    //this.axisPositionUpdateTimer[(int)inverter.SystemIndex]?.Change(AXIS_POSITION_UPDATE_INTERVAL, 500);
-                                    if (positioningData.MovementType == MovementType.TableTarget)
-                                    {
-                                        var currentStateMachine = new PositioningTableStateMachine(
-                                            positioningFieldData,
-                                            this.dataOld,
-                                            inverter,
-                                            this.Logger,
-                                            this.eventAggregator,
-                                            this.inverterCommandQueue,
-                                            this.ServiceScopeFactory);
+                                    var currentStateMachine = new PositioningStateMachine(
+                                        positioningFieldData,
+                                        inverter,
+                                        this.Logger,
+                                        this.eventAggregator,
+                                        this.inverterCommandQueue,
+                                        this.ServiceScopeFactory);
 
-                                        this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
-                                        currentStateMachine.Start();
-                                    }
-                                    else
-                                    {
-                                        var currentStateMachine = new PositioningStateMachine(
-                                            positioningFieldData,
-                                            inverter,
-                                            this.Logger,
-                                            this.eventAggregator,
-                                            this.inverterCommandQueue,
-                                            this.ServiceScopeFactory);
+                                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+                                    currentStateMachine.Start();
+                                }
+                                break;
 
-                                        this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
-                                        currentStateMachine.Start();
-                                    }
+                            case MovementType.TableTarget:
+                                if (currentPosition == positioningFieldData.TargetPosition)
+                                {
+                                    var msgNotification = new FieldNotificationMessage(
+                                        null,
+                                        "Axis already in position",
+                                        FieldMessageActor.DeviceManager,
+                                        FieldMessageActor.InverterDriver,
+                                        FieldMessageType.Positioning,
+                                        MessageStatus.OperationEnd,
+                                        inverter.SystemIndex);
+
+                                    this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
+                                }
+                                else
+                                {
+                                    var currentStateMachine = new PositioningTableStateMachine(
+                                        positioningFieldData,
+                                        this.dataOld,
+                                        inverter,
+                                        this.Logger,
+                                        this.eventAggregator,
+                                        this.inverterCommandQueue,
+                                        this.ServiceScopeFactory);
+
+                                    this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
+                                    currentStateMachine.Start();
                                 }
                                 break;
                         }
