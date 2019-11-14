@@ -68,7 +68,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                     this.ParentStateMachine,
                     this.InverterStatus,
                     this.shutterPositionData,
-                    this.Logger));
+                    this.Logger,
+                    true));
         }
 
         /// <inheritdoc/>
@@ -100,6 +101,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                 {
                     if (this.InverterStatus is AglInverterStatus currentStatus)
                     {
+                        // we cannot use TargetReached with this kind of movement
                         if (//this.InverterStatus.CommonStatusWord.IsOperationEnabled &&
                             (//currentStatus.ProfileVelocityStatusWord.TargetReached &&
                                 currentStatus.CurrentShutterPosition == this.shutterDestination
@@ -131,6 +133,10 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                             this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
 
                             this.ParentStateMachine.PublishNotificationEvent(endNotification);
+                        }
+                        else if (currentStatus.CurrentShutterPosition == this.shutterDestination)
+                        {
+                            this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
                         }
                     }
                 }

@@ -2805,7 +2805,7 @@
     "HorizontalManualMovements": {
       "FeedRate": 0.04,
       "InitialTargetPosition": 30,
-      "RecoveryTargetPosition": 200
+      "RecoveryTargetPosition": 1410
     },
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
@@ -2815,10 +2815,10 @@
     },
     "ShutterManualMovements": {
       "FeedRate": 0.2,
-      "MaxSpeed": 31500,
-      "MinSpeed": 2500,
-      "HighSpeedDurationOpen": 16,
-      "HighSpeedDurationClose": 17
+      "MaxSpeed": 32000,
+      "MinSpeed": 5000,
+      "HighSpeedDurationOpen": 17,
+      "HighSpeedDurationClose": 18
     },
     "ShutterTest": {
       "FeedRate": 1.0,
