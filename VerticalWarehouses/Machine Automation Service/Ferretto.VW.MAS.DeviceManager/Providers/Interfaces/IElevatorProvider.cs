@@ -19,9 +19,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
 
+        ActionPolicy CanMoveToBayPosition(int bayPositionId, BayNumber bayNumber);
+
+        ActionPolicy CanMoveToCell(int cellId);
+
         ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber);
 
-        ActionPolicy CanUnloadToCell(int cellId, BayNumber bayNumber);
+        ActionPolicy CanUnloadToCell(int cellId);
 
         void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
 
@@ -32,24 +36,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void LoadFromCell(int cellId, BayNumber bayNumber, MessageActor automationService);
 
         void MoveHorizontalAuto(
-                                                                            HorizontalMovementDirection direction,
+            HorizontalMovementDirection direction,
             bool elevatorHasLoadingUnit,
             int? loadingUnitId,
             double? loadingUnitNetWeight,
             bool waitContinue,
-            bool measure,
+            bool performWeighting,
             BayNumber requestingBay,
-            MessageActor sender);
+            MessageActor sender,
+            int? targetCellId = null,
+            int? targetBayPositionId = null,
+            int? sourceCellId = null,
+            int? sourceBayPositionId = null);
 
         void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation, BayNumber requestingBay, MessageActor sender);
+        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool performWeighting, bool computeElongation, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
+        void MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor automationService);
 
-        void MoveToCell(int cellId, double feedRate, bool computeElongation, BayNumber bayNumber, MessageActor automationService);
+        void MoveToCell(int cellId, double feedRate, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor automationService);
 
         void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
 

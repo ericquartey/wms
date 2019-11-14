@@ -37,6 +37,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int RequiredCycles { get; }
 
+        int? SourceBayPositionId { get; set; }
+
+        int? SourceCellId { get; set; }
+
         double[] SwitchPosition { get; set; }
 
         double[] TargetAcceleration { get; }

@@ -138,6 +138,18 @@
   <data name="TargetPositionMustBeInRange" xml:space="preserve">
     <value>Target position ({0}mm) must be in the range [{1}mm; {2}mm].</value>
   </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>The elevator is already located opposite to the specified bay position.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>The elevator is already located opposite to the specified cell.</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>The elevator is not empty, but the pawl is in zero position.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>The elevator is not full, but the pawl is not in zero position.</value>
+  </data>
   <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
     <value>The elevator is not located opposite to the specified bay position.</value>
   </data>

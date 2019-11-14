@@ -4,19 +4,19 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 3
     }
   ],

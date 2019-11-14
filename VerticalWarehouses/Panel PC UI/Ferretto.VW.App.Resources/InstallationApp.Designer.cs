@@ -1681,6 +1681,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Carica da baia.
+        /// </summary>
+        public static string LoadFromBay {
+            get {
+                return ResourceManager.GetString("LoadFromBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Carica da cella.
+        /// </summary>
+        public static string LoadFromCell {
+            get {
+                return ResourceManager.GetString("LoadFromCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Load Drawers.
         /// </summary>
         public static string LoadingDrawersButton {
@@ -3009,6 +3027,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scarica in baia.
+        /// </summary>
+        public static string UnloadToBay {
+            get {
+                return ResourceManager.GetString("UnloadToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Scarica in cella.
+        /// </summary>
+        public static string UnloadToCell {
+            get {
+                return ResourceManager.GetString("UnloadToCell", resourceCulture);
             }
         }
         

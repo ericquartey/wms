@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
 using Ferretto.VW.MAS.AutomationService;
+using Ferretto.VW.MAS.DeviceManager;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -58,6 +59,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("horizontal/can-load-from-cell/{cellId}")]
+        public ActionResult<ActionPolicy> CanLoadFromCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanLoadFromCell(cellId, this.BayNumber));
+        }
+
+        [HttpGet("vertical/can-move-to-bay-position")]
+        public ActionResult<ActionPolicy> CanMoveToBayPosition(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanMoveToBayPosition(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("vertical/can-move-to-cell")]
+        public ActionResult<ActionPolicy> CanMoveToCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanMoveToCell(cellId));
+        }
+
+        [HttpGet("horizontal/can-unload-to-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("horizontal/can-unload-to-cell/{cellId}")]
+        public ActionResult<ActionPolicy> CanUnloadToCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanUnloadToCell(cellId));
+        }
 
         [HttpPost("horizontal/find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
@@ -122,9 +159,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/load-from-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult LoadFromBay(int bayPosition)
+        public IActionResult LoadFromBay(int bayPositionId)
         {
-            this.elevatorProvider.LoadFromBay(bayPosition, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.LoadFromBay(bayPositionId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -153,9 +190,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation)
+        public IActionResult MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, bool performWeighting)
         {
-            this.elevatorProvider.MoveToBayPosition(bayPositionId, feedRate, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToBayPosition(
+                bayPositionId,
+                feedRate,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
@@ -164,9 +208,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToCell(int cellId, double feedRate, bool computeElongation)
+        public IActionResult MoveToCell(int cellId, double feedRate, bool computeElongation, bool performWeighting)
         {
-            this.elevatorProvider.MoveToCell(cellId, feedRate, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToCell(
+                cellId,
+                feedRate,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
@@ -175,9 +226,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation)
+        public IActionResult MoveToVerticalPosition(
+            double targetPosition,
+            double feedRate,
+            bool performWeighting,
+            bool computeElongation)
         {
-            this.elevatorProvider.MoveToAbsoluteVerticalPosition(targetPosition, feedRate, measure, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                targetPosition,
+                feedRate,
+                performWeighting,
+                computeElongation,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
@@ -236,9 +298,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpPost("horizontal/unload-to-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult UnloadToBay(int bayPosition)
+        public IActionResult UnloadToBay(int bayPositionId)
         {
-            this.elevatorProvider.UnloadToBay(bayPosition, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.UnloadToBay(bayPositionId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }

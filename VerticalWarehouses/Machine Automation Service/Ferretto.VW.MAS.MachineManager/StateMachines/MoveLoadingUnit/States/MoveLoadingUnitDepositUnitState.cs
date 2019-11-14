@@ -129,18 +129,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 {
                     this.elevatorDataProvider.SetLoadingUnit(null);
 
-                    if (this.messageData.Destination == LoadingUnitLocation.Cell)
+                    if (this.messageData.Destination is LoadingUnitLocation.Cell)
                     {
-                        var moveDataLoadingUnitCellSourceId = this.messageData.DestinationCellId;
-
-                        if (moveDataLoadingUnitCellSourceId != null)
+                        var destinationCellId = this.messageData.DestinationCellId;
+                        if (destinationCellId.HasValue)
                         {
-                            this.cellsProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, moveDataLoadingUnitCellSourceId.Value);
+                            this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.moveData.LoadingUnitId);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Loading unit movement to target cell has no target cell specified.");
                         }
                     }
                     else
                     {
-                        this.baysProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, this.messageData.Destination);
+                        var bayPosition = this.baysProvider.GetPositionByLocation(this.messageData.Destination);
+                        this.baysProvider.SetLoadingUnit(bayPosition.Id, this.moveData.LoadingUnitId);
                     }
 
                     transaction.Commit();

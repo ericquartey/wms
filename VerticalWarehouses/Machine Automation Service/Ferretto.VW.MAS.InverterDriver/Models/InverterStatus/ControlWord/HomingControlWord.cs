@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 // ReSharper disable ArrangeThisQualifier
@@ -13,17 +14,17 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
         }
 
         public HomingControlWord(ushort controlWordValue)
-        : base(controlWordValue)
+            : base(controlWordValue)
         {
         }
 
         public HomingControlWord(IControlWord otherControlWord)
-            : base(otherControlWord.Value)
+            : base(otherControlWord?.Value ?? throw new ArgumentNullException(nameof(otherControlWord)))
         {
         }
 
         public HomingControlWord(IHomingControlWord otherControlWord)
-         : base(otherControlWord.Value)
+         : base(otherControlWord?.Value ?? throw new ArgumentNullException(nameof(otherControlWord)))
         {
         }
 

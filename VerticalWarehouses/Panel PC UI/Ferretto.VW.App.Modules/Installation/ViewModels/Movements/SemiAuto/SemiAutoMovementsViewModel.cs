@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool bayIsShutterThreeSensors;
 
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private SubscriptionToken homingToken;
 
         private int? inputLoadingUnitCode;
@@ -95,17 +97,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.inputLoadingUnitCode, value);
         }
 
-        public bool IsMoving =>
-                   this.IsElevatorMovingToCell
+        public bool IsMoving
+        {
+            get => this.IsElevatorMovingToCell
                 || this.IsElevatorMovingToHeight
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
-                || this.IsElevatorDisembarking
-                || this.IsElevatorEmbarking
+                || this.IsBusyLoadingFromBay
+                || this.IsBusyLoadingFromCell
+                || this.IsBusyUnloadingToBay
+                || this.IsBusyUnloadingToCell
                 || this.IsTuningChain
                 || this.IsTuningBay
                 || this.IsCarouselMoving
                 || this.IsShutterMoving;
+            set
+            {
+                this.IsElevatorMovingToCell = false;
+                this.IsElevatorMovingToHeight = false;
+                this.IsElevatorMovingToLoadingUnit = false;
+                this.IsElevatorMovingToBay = false;
+                this.IsBusyLoadingFromBay = false;
+                this.IsBusyLoadingFromCell = false;
+                this.IsBusyUnloadingToBay = false;
+                this.IsBusyUnloadingToCell = false;
+                this.IsTuningChain = false;
+                this.IsCarouselMoving = false;
+                this.IsTuningBay = false;
+                this.IsShutterMoving = false;
+            }
+        }
 
         public bool IsWaitingForResponse
         {
@@ -124,17 +145,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
-
         public ICommand ResetCommand =>
            this.resetCommand
            ??
-           (this.resetCommand = new DelegateCommand(async () => await this.ResetCommandAsync(), this.CanResetCommand));
+           (this.resetCommand = new DelegateCommand(
+               async () => await this.ResetCommandAsync(),
+               this.CanResetCommand));
 
         public ICommand StopMovingCommand =>
            this.stopMovingCommand
            ??
-           (this.stopMovingCommand = new DelegateCommand(async () => await this.StopMovingAsync(), this.CanStopMoving));
+           (this.stopMovingCommand = new DelegateCommand(
+               async () => await this.StopMovingAsync(),
+               this.CanStopMoving));
 
         #endregion
 
@@ -164,30 +187,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsBackNavigationAllowed = true;
+            await base.OnAppearedAsync();
 
-            this.SubscribeToEvents();
+            this.IsBackNavigationAllowed = true;
 
             try
             {
                 this.IsWaitingForResponse = true;
 
                 this.bay = await this.bayManagerService.GetBayAsync();
-                this.BayNumber = this.bay.Number;
-
-                this.SelectBayPositionUp();
-
+                this.cells = await this.machineCellsWebService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
 
-                this.Cells = await this.machineCellsWebService.GetAllAsync();
-
-                this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.SelectBayPositionUp();
                 this.InputLoadingUnitIdPropertyChanged();
                 this.InputCellIdPropertyChanged();
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
-                this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
+                this.BayIsShutterThreeSensors = this.bay.Shutter.Type is ShutterType.ThreeSensors;
+
+                this.SubscribeToEvents();
+
+                this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+                this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {
@@ -197,11 +221,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-
-            await base.OnAppearedAsync();
-
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
-            this.RaiseCanExecuteChanged();
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -210,16 +229,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
-                this.IsElevatorMovingToCell = false;
-                this.IsElevatorMovingToHeight = false;
-                this.IsElevatorMovingToLoadingUnit = false;
-                this.IsElevatorMovingToBay = false;
-                this.IsElevatorDisembarking = false;
-                this.IsElevatorEmbarking = false;
-                this.IsTuningChain = false;
-                this.IsCarouselMoving = false;
-                this.IsTuningBay = false;
-                this.IsShutterMoving = false;
+                this.IsMoving = false;
             }
         }
 
@@ -278,19 +288,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        this.IsElevatorDisembarking = false;
-                        this.IsElevatorEmbarking = false;
-                        this.IsElevatorMovingToCell = false;
-                        this.IsElevatorMovingToHeight = false;
-                        this.IsElevatorMovingToLoadingUnit = false;
-                        this.IsElevatorMovingToBay = false;
-                        this.IsTuningChain = false;
-                        this.IsTuningBay = false;
+                        this.IsMoving = false;
+
+                        /***
+                         * WHY??
                         if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
-
+    */
                         break;
                     }
 
@@ -336,16 +342,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OperationWarningOrError(CommonUtils.Messages.Enumerations.MessageStatus status, string errorDescription)
         {
-            this.IsElevatorDisembarking = false;
-            this.IsElevatorEmbarking = false;
-            this.IsElevatorMovingToCell = false;
-            this.IsElevatorMovingToHeight = false;
-            this.IsElevatorMovingToLoadingUnit = false;
-            this.IsElevatorMovingToBay = false;
-            this.IsTuningChain = false;
-            this.IsCarouselMoving = false;
-            this.IsShutterMoving = false;
-            this.IsTuningBay = false;
+            this.IsMoving = false;
 
             if (status == CommonUtils.Messages.Enumerations.MessageStatus.OperationError)
             {
@@ -364,7 +361,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void RaiseCanExecuteChanged()
         {
             this.CanInputCellId =
-                this.Cells != null
+                this.cells != null
                 &&
                 !this.IsMoving
                 &&
@@ -376,24 +373,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
 
             this.CanInputLoadingUnitId =
-                this.LoadingUnits != null
+                this.loadingUnits != null
                 &&
-                this.Cells != null
+                this.cells != null
                 &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
 
-            this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            this.RefreshActionPoliciesAsync();
+
             this.moveToHeightCommand?.RaiseCanExecuteChanged();
             this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
             this.tuningBayCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
-            this.embarkForwardsCommand?.RaiseCanExecuteChanged();
-            this.embarkBackwardsCommand?.RaiseCanExecuteChanged();
-            this.disembarkForwardsCommand?.RaiseCanExecuteChanged();
-            this.disembarkBackwardsCommand?.RaiseCanExecuteChanged();
-            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
@@ -497,6 +491,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+             ??
+             this.EventAggregator
+                 .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                 .Subscribe(
+                     this.OnElevatorPositionChanged,
+                     ThreadOption.UIThread,
+                     false);
 
             this.sensorsToken = this.sensorsToken
                 ??

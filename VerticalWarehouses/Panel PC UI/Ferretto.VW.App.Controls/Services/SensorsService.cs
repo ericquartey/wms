@@ -414,8 +414,11 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data.SensorsStates);
-            this.shutterSensors.Update(message.Data.SensorsStates);
+            if (message?.Data?.SensorsStates != null)
+            {
+                this.sensors.Update(message.Data.SensorsStates);
+                this.shutterSensors?.Update(message.Data.SensorsStates);
+            }
 
             await this.GetBayAsync();
 
@@ -433,8 +436,8 @@ namespace Ferretto.VW.App.Services
 
         private void RetrieveElevatorPosition()
         {
-            this.ElevatorVerticalPosition = this.machineElevatorService.Position.Vertical;
-            this.ElevatorHorizontalPosition = this.machineElevatorService.Position.Horizontal;
+            this.ElevatorVerticalPosition = this.machineElevatorService.Position?.Vertical;
+            this.ElevatorHorizontalPosition = this.machineElevatorService.Position?.Horizontal;
         }
 
         private void ShowNotification(Exception exception)

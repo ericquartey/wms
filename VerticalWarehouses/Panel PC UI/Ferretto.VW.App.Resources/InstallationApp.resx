@@ -1260,4 +1260,16 @@
   <data name="UseWeightControl" xml:space="preserve">
     <value>Use weight control</value>
   </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Carica da baia</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Carica da cella</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Scarica in baia</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Scarica in cella</value>
+  </data>
 </root>

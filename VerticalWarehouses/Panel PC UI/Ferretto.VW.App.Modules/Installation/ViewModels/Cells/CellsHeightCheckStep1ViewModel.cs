@@ -62,13 +62,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void UpdateSelectedCell()
-        {
-            this.SelectedCell = this.inputCellId == null
-                        ? null
-                        : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
-        }
-
         public bool IsElevatorMoving
         {
             get => this.isElevatorMoving;
@@ -187,7 +180,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineElevatorWebService.MoveToCellAsync(
                     this.SelectedCell.Id,
                     this.ProcedureParameters.FeedRate,
-                    computeElongation: true);
+                    computeElongation: true,
+                    performWeighting: false);
 
                 this.IsElevatorMoving = true;
             }
@@ -232,6 +226,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private void UpdateSelectedCell()
+        {
+            this.SelectedCell = this.inputCellId == null
+                        ? null
+                        : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
         }
 
         #endregion

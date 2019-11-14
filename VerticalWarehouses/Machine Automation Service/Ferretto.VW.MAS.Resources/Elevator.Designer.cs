@@ -124,6 +124,42 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The elevator is already located opposite to the specified bay position..
+        /// </summary>
+        public static string TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition {
+            get {
+                return ResourceManager.GetString("TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The elevator is already located opposite to the specified cell..
+        /// </summary>
+        public static string TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell {
+            get {
+                return ResourceManager.GetString("TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The elevator is not empty, but the pawl is in zero position..
+        /// </summary>
+        public static string TheElevatorIsNotEmptyButThePawlIsInZeroPosition {
+            get {
+                return ResourceManager.GetString("TheElevatorIsNotEmptyButThePawlIsInZeroPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The elevator is not full, but the pawl is not in zero position..
+        /// </summary>
+        public static string TheElevatorIsNotFullButThePawlIsNotInZeroPosition {
+            get {
+                return ResourceManager.GetString("TheElevatorIsNotFullButThePawlIsNotInZeroPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The elevator is not located opposite to the specified bay position..
         /// </summary>
         public static string TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition {

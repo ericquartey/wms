@@ -436,7 +436,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.MoveToCellAsync(
                     this.CurrentCell.Id,
                     this.procedureParameters.FeedRate,
-                    computeElongation: true);
+                    computeElongation: true,
+                    performWeighting: false);
 
                 this.HasReachedCellPosition = true;
                 this.InitialPosition = this.CurrentHeight;

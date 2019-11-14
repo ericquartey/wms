@@ -16,14 +16,8 @@ namespace Ferretto.VW.App.Controls.Converters
                 case CellStatus.Free:
                     return Resources.OperatorApp.Cell_Status_Free;
 
-                case CellStatus.Disabled:
-                    return Resources.OperatorApp.Cell_Status_Disabled;
-
                 case CellStatus.Occupied:
                     return Resources.OperatorApp.Cell_Status_Occupied;
-
-                case CellStatus.Unusable:
-                    return Resources.OperatorApp.Cell_Status_Unusable;
             }
 
             return string.Empty;

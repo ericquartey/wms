@@ -155,6 +155,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         public bool WaitContinue { get; set; }
+        public int? SourceCellId { get; set; }
+        public int? SourceBayPositionId { get; set; }
 
         #endregion
 

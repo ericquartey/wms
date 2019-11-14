@@ -481,9 +481,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                             notificationData.AxisMovement = Axis.BayChain;
                             notificationData.MovementMode = MovementMode.BayChain;
                         }
-                            this.Logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; Movement={notificationData.AxisMovement}; value={dataInverters.CurrentPosition.Value:0.0000}");
 
-                        this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0}");
+                        this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0000}");
 
                         this.currentStateMachines.TryGetValue(bayNumber, out var tempStateMachine);
                         if (tempStateMachine is null ||

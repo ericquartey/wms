@@ -73,18 +73,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
         }
 
-        public IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public int? InputCellId
         {
             get => this.inputCellId;
@@ -184,7 +172,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.selectedCell != null)
                     {
-                        this.LoadingUnitInCell = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
+                        this.LoadingUnitInCell = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -217,11 +205,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToCellHeight()
         {
-            return this.SelectedCell != null
+            return
+                this.SelectedCell != null
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving;
+                !this.IsMoving
+                &&
+                this.moveToCellPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveToHeight()
@@ -260,11 +251,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputCellIdPropertyChanged()
         {
-            if (this.Cells != null)
+            if (this.cells != null)
             {
                 this.SelectedCell = this.inputCellId == null
                     ? null
-                    : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
+                    : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
 
                 this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
 
@@ -283,11 +274,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputLoadingUnitIdPropertyChanged()
         {
-            if (this.LoadingUnits != null)
+            if (this.loadingUnits != null)
             {
                 this.SelectedLoadingUnit = this.inputLoadingUnitId == null
                     ? null
-                    : this.LoadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+                    : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
 
                 this.InputCellId = this.SelectedLoadingUnit?.CellId;
             }

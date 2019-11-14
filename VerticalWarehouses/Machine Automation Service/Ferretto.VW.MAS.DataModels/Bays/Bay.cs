@@ -52,5 +52,14 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Number.ToString();
+        }
+
+        #endregion
     }
 }

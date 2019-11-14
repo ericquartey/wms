@@ -198,7 +198,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.MachineElevatorWebService.MoveToCellAsync(
                     this.SelectedCell.Id,
                     this.ProcedureParameters.FeedRate,
-                    computeElongation: true);
+                    computeElongation: true,
+                    performWeighting: false);
 
                 this.IsElevatorMoving = true;
             }

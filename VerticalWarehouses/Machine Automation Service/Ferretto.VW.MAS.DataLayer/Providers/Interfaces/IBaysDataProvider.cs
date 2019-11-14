@@ -57,13 +57,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
-        LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber);
-
         BayPosition GetPositionById(int bayPositionId);
 
-        double GetResolution(InverterIndex inverterIndex);
+        BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
-        void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
+        double GetResolution(InverterIndex inverterIndex);
 
         void ResetMachine();
 
@@ -71,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
-        void UnloadLoadingUnit(LoadingUnitLocation location);
+        void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 

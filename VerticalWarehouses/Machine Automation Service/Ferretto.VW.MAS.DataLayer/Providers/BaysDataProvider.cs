@@ -594,18 +594,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber)
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.Bays
-                    .AsNoTracking()
-                    .Where(b => b.Number == bayNumber)
-                    .SelectMany(b => b.Positions)
-                    .SingleOrDefault(p => p.Height > position - tolerance && p.Height < position + tolerance)?.Location ?? LoadingUnitLocation.NoLocation;
-            }
-        }
-
         public BayPosition GetPositionById(int bayPositionId)
         {
             lock (this.dataContext)
@@ -618,6 +606,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bayPosition;
             }
+        }
+
+        public BayPosition GetPositionByLocation(LoadingUnitLocation location)
+        {
+            var bayPosition = this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location);
+            if (bayPosition is null)
+            {
+                throw new EntityNotFoundException(location.ToString());
+            }
+
+            return bayPosition;
         }
 
         public double GetResolution(InverterIndex inverterIndex)
@@ -635,17 +634,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay.Resolution;
             }
-        }
-
-        public void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation destination)
-        {
-            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
-            var loadingUnit = this.dataContext.LoadingUnits.Single(l => l.Id == loadingUnitId);
-
-            position.LoadingUnit = loadingUnit;
-
-            this.dataContext.BayPositions.Update(position);
-            this.dataContext.SaveChanges();
         }
 
         public void ResetMachine()
@@ -694,12 +682,29 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UnloadLoadingUnit(LoadingUnitLocation destination)
+        public void SetLoadingUnit(int bayPositionId, int? loadingUnitId)
         {
-            var position = this.dataContext.BayPositions.Single(p => p.Location == destination);
-            position.LoadingUnit = null;
+            var position = this.dataContext.BayPositions.SingleOrDefault(p => p.Id == bayPositionId);
+            if (position is null)
+            {
+                throw new EntityNotFoundException($"BayPosition ID={bayPositionId}");
+            }
 
-            this.dataContext.BayPositions.Update(position);
+            if (loadingUnitId is null)
+            {
+                position.LoadingUnit = null;
+            }
+            else
+            {
+                var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
+                }
+
+                position.LoadingUnit = loadingUnit;
+            }
+
             this.dataContext.SaveChanges();
         }
 

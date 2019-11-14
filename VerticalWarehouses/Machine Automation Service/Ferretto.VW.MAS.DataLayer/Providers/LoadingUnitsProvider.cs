@@ -131,23 +131,25 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(e => e.StructuralProperties)
                     .Single();
 
-                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevator.StructuralProperties.ElevatorWeight)
+                var elevatorWeight = elevator.StructuralProperties.ElevatorWeight;
+
+                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
+                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard + elevatorWeight}kg).");
                 }
 
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevator.StructuralProperties.ElevatorWeight)
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
                         $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
                 }
 
-                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevator.StructuralProperties.ElevatorWeight;
+                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 
                 this.dataContext.SaveChanges();
             }

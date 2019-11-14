@@ -110,6 +110,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsDeactivated");
+
+                    b.Property<bool>("IsUnusable");
+
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
@@ -407,6 +411,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Code = 17,
                             Description = "Il peso massimo caricato sul cassetto è eccessivo.",
                             Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Code = 18,
+                            Description = "DestinationBelowLowerBound",
+                            Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
@@ -713,6 +725,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 17,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 18,
                             TotalErrors = 0
                         },
                         new
@@ -1108,7 +1125,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 12, 21, 15, 30, 150, DateTimeKind.Local).AddTicks(5472),
+                            InstallationDate = new DateTime(2017, 1, 14, 16, 52, 9, 319, DateTimeKind.Local).AddTicks(1230),
                             ServiceStatus = 86
                         });
                 });

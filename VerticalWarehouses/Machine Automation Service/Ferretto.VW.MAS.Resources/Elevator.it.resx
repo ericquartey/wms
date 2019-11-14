@@ -138,6 +138,18 @@
   <data name="TargetPositionMustBeInRange" xml:space="preserve">
     <value>La posizione di destinazione ({0}mm) deve essere compresa nell'intervallo [{1}mm; {2}mm].</value>
   </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
+    <value>L'elevatore si trova già di fronte alla posizione baia specificata.</value>
+  </data>
+  <data name="TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell" xml:space="preserve">
+    <value>L'elevatore si trova già di fronte alla cella specificata.</value>
+  </data>
+  <data name="TheElevatorIsNotEmptyButThePawlIsInZeroPosition" xml:space="preserve">
+    <value>L'elevatore non è vuoto, ma il nottolino è in posizione di zero.</value>
+  </data>
+  <data name="TheElevatorIsNotFullButThePawlIsNotInZeroPosition" xml:space="preserve">
+    <value>L'elevatore non è pieno, ma il nottolino non è in posizione di zero.</value>
+  </data>
   <data name="TheElevatorIsNotLocatedOppositeToTheSpecifiedBayPosition" xml:space="preserve">
     <value>L'elevatore non è situato di fronte alla posizione baia specificata.</value>
   </data>
