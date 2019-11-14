@@ -23,17 +23,17 @@
         "AlphaNumericBar": null,
         "Inverter": {
           "Type": "Acu",
-          "Index": 3
+          "Index": "Slave3"
         },
         "Side": "Front",
         "IoDevice": {
-          "Index": 0,
+          "Index": "IoDevice1",
           "IpAddress": "192.168.0.1",
           "TcpPort": 19550
         },
         "IsExternal": true,
         "ChainOffset": 0,
-        "Number": 1,
+        "Number": "BayOne",
         "Positions": [
           {
             "Height": 645,
@@ -44,14 +44,14 @@
         "Shutter": {
           "Inverter": {
             "Type": "Agl",
-            "Index": 2
+            "Index": "Slave2"
           },
           "Type": "TwoSensors"
         }
       },
       {
         "IoDevice": {
-          "Index": 1,
+          "Index": "IoDevice2",
           "IpAddress": "192.168.0.2",
           "TcpPort": 19550
         },
@@ -61,7 +61,7 @@
         "LaserPointer": {
           "Heights": [ 680, 1080 ]
         },
-        "Number": 2,
+        "Number": "BayTwo",
         "Positions": [
           {
             "Height": 645,
@@ -76,7 +76,7 @@
           "Type": "TwoSensors",
           "Inverter": {
             "Type": "Agl",
-            "Index": 4
+            "Index": "Slave4"
           }
         }
       }
@@ -85,7 +85,7 @@
       "Axes": [
         {
           "Inverter": {
-            "Index": 0,
+            "Index": "MainInverter",
             "Type": "Ang",
             "IpAddress": "192.168.0.100",
             "TcpPort": 17221

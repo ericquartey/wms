@@ -68,7 +68,7 @@
             "type": "object",
             "title": "The Items Schema",
             "minItems": 1,
-            "additionalProperties": false,
+            "additionalProperties": true,
             "required": [
               "Side",
               "IoDevice",
@@ -109,10 +109,10 @@
                   },
                   "Index": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter/properties/Index",
-                    "type": [ "string", "integer" ],
+                    "type": [ "string" ],
                     "title": "The Index Schema",
-                    "default": 0,
-                    "enum": [ "sostituire1", "sostituire2" ]
+                    "default": "MainInverter",
+                    "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                   }
                 }
               },
@@ -135,10 +135,10 @@
                 "properties": {
                   "Index": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/Index",
-                    "type": "integer",
+                    "type": [ "string" ],
                     "title": "The Index Schema",
-                    "default": 0,
-                    "minimum": 0
+                    "default": "IoDevice1",
+                    "enum": [ "IoDevice1", "IoDevice2", "IoDevice3" ]
                   },
                   "IpAddress": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/IpAddress",
@@ -171,11 +171,10 @@
               },
               "Number": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
-                "type": "integer",
+                "type": "string",
                 "title": "The Number Schema",
-                "minimum": 1,
-                "maximum": 3,
-                "default": 1
+                "default": "BayOne",
+                "enum": [ "BayOne", "BayTwo", "BayThree", "ElevatorBay" ]
               },
               "Resolution": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Resolution",
@@ -260,11 +259,10 @@
                       },
                       "Index": {
                         "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Inverter/properties/Index",
-                        "type": "integer",
+                        "type": [ "string" ],
                         "title": "The Index Schema",
-                        "default": 0,
-                        "minimum": 0,
-                        "maximum": 7
+                        "default": "MainInverter",
+                        "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                       }
                     }
                   },
@@ -334,11 +332,10 @@
                     "properties": {
                       "Index": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Index",
-                        "type": "integer",
+                        "type": "string",
                         "title": "The Index Schema",
-                        "default": 0,
-                        "minimum": 0,
-                        "maximum": 7
+                        "default": "MainInverter",
+                        "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                       },
                       "Type": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Type",
