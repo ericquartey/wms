@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191113143816_initialcreation")]
+    [Migration("20191113160929_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -616,6 +616,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Baia sorgente del cassetto vuota",
                             Reason = "Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300011,
+                            Code = 300011,
+                            Description = "MachineManagerErrorLoadingUnitShutterOpen",
+                            Reason = "MachineManagerErrorLoadingUnitShutterOpen",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300012,
+                            Code = 300012,
+                            Description = "MachineManagerErrorLoadingUnitShutterClosed",
+                            Reason = "MachineManagerErrorLoadingUnitShutterClosed",
+                            Severity = 1
                         });
                 });
 
@@ -848,6 +864,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300010,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300011,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300012,
                             TotalErrors = 0
                         });
                 });
@@ -1113,7 +1139,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 13, 15, 38, 16, 266, DateTimeKind.Local).AddTicks(7213),
+                            InstallationDate = new DateTime(2017, 1, 13, 17, 9, 28, 924, DateTimeKind.Local).AddTicks(5715),
                             ServiceStatus = 86
                         });
                 });

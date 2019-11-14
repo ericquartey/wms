@@ -75,8 +75,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 &&
                 this.machineData?.MessageData.MovementType == MovementType.TableTarget)
             {
-                this.fullPosition = this.machineData.MessageData.SwitchPosition[3];
-                this.fullPosition += (this.machineData.MessageData.SwitchPosition[4] - this.machineData.MessageData.SwitchPosition[3]) / 2;
+                this.fullPosition = this.machineData.MessageData.SwitchPosition[1];
+                this.fullPosition += (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 2;
             }
 
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
@@ -399,7 +399,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1] * 1.1
+                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
                         && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
@@ -409,7 +409,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
+                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
@@ -427,7 +427,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1] * 1.1
+                    if (this.elevatorProvider.HorizontalPosition > this.fullPosition
                         && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
@@ -437,7 +437,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
+                    if (this.elevatorProvider.HorizontalPosition < this.fullPosition
                         && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
