@@ -62,25 +62,17 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                             Array.Copy(this.machineData.MachineSensorsStatus.DisplayedInputs, sensorStart, inverterStatus.Inputs, 0, inverterStatus.Inputs.Length);
                             notificationMessageData.ShutterPosition = inverterStatus.CurrentShutterPosition;
 
-                            if (inverterStatus.CurrentShutterPosition == this.machineData.PositioningMessageData.ShutterPosition)
-                            {
-                                var notificationMessage = new NotificationMessage(
-                                    notificationMessageData,
-                                    "ShutterPositioning Stopped",
-                                    MessageActor.DeviceManager,
-                                    MessageActor.DeviceManager,
-                                    MessageType.ShutterPositioning,
-                                    this.machineData.RequestingBay,
-                                    this.machineData.TargetBay,
-                                    StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+                            var notificationMessage = new NotificationMessage(
+                                notificationMessageData,
+                                "ShutterPositioning Stopped",
+                                MessageActor.DeviceManager,
+                                MessageActor.DeviceManager,
+                                MessageType.ShutterPositioning,
+                                this.machineData.RequestingBay,
+                                this.machineData.TargetBay,
+                                StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
-                                this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-                            }
-                            else
-                            {
-                                this.stateData.FieldMessage = message;
-                                this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
-                            }
+                            this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                             break;
 
                         case MessageStatus.OperationError:

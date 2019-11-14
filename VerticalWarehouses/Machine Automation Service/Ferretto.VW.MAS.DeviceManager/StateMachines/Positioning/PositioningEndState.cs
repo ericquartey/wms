@@ -56,10 +56,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
 
-                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                            {
-                                this.UpdateLoadingUnitLocation();
-                            }
+                            //if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                            //{
+                            //    this.UpdateLoadingUnitLocation();
+                            //}
 
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,

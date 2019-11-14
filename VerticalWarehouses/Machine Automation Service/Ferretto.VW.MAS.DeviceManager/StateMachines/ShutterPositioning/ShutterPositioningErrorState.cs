@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     MessageActor.DeviceManager,
                     MessageType.ShutterPositioning,
                     this.machineData.RequestingBay,
-                    this.machineData.RequestingBay,
+                    this.machineData.TargetBay,
                     MessageStatus.OperationError,
                     ErrorLevel.Error);
 
