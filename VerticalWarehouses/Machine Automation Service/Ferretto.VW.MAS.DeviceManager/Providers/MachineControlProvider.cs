@@ -57,7 +57,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.PowerEnable)
+            if (message.Type == MessageType.PowerEnable
+                || message.Type == MessageType.InverterPowerEnable)
             {
                 return message.Status;
             }

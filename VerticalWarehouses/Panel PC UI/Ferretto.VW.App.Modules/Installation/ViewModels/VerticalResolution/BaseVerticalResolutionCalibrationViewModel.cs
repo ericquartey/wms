@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
@@ -44,12 +46,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BaseVerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IHealthProbeService healthProbeService)
             : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
             this.InitializeNavigationMenu();
         }
@@ -117,6 +121,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
+        internal IEventAggregator EventAggregator => this.eventAggregator;
+
+        internal IHealthProbeService HealthProbeService => this.healthProbeService;
+
         protected VerticalResolutionCalibrationProcedure ProcedureParameters { get; private set; }
 
         #endregion
@@ -142,7 +150,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.subscriptionToken = this.subscriptionToken
                 ??
-                this.eventAggregator
+                this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         this.OnElevatorPositionChanged,
