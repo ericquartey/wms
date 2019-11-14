@@ -55,7 +55,6 @@
         "MaxGrossWeight",
         "ModelName",
         "Panels",
-        "ProductionDate",
         "SerialNumber"
       ],
       "properties": {
@@ -626,18 +625,18 @@
             "type": "object",
             "title": "The Items Schema",
             "required": [
-              "side",
-              "cells"
+              "Side",
+              "Cells"
             ],
             "properties": {
-              "side": {
+              "Side": {
                 "$id": "#/properties/Machine/properties/Panels/items/properties/side",
                 "type": "string",
                 "title": "The Side Schema",
                 "default": "",
-                "enum": [ "front", "back" ]
+                "enum": [ "Front", "Back" ]
               },
-              "cells": {
+              "Cells": {
                 "$id": "#/properties/Machine/properties/Panels/items/properties/cells",
                 "type": "array",
                 "title": "The Cells Schema",
@@ -646,32 +645,32 @@
                   "type": "object",
                   "title": "The Items Schema",
                   "required": [
-                    "id",
-                    "position",
-                    "priority",
-                    "status"
+                    "Id",
+                    "Position",
+                    "Priority",
+                    "Status"
                   ],
                   "properties": {
-                    "id": {
+                    "Id": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/id",
                       "type": "integer",
                       "title": "The Id Schema",
                       "default": 0
                     },
-                    "position": {
+                    "Position": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
                       "type": "number",
                       "title": "The Position Schema",
                       "minimum": 0,
                       "exclusiveMinimum": true
                     },
-                    "priority": {
+                    "Priority": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/priority",
                       "type": "integer",
                       "title": "The Priority Schema",
                       "default": 0
                     },
-                    "status": {
+                    "Status": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/status",
                       "type": "string",
                       "title": "The Status Schema",

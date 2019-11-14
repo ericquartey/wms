@@ -111,11 +111,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmFileOverwrite, InstallationApp.FileIsAlreadyPresent, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult != DialogResult.Yes)
+                if (File.Exists(this.FullPath))
                 {
-                    return;
+                    var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                    var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmFileOverwrite, InstallationApp.FileIsAlreadyPresent, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult != DialogResult.Yes)
+                    {
+                        return;
+                    }
                 }
 
                 this.IsBusy = true;
