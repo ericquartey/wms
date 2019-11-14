@@ -32,6 +32,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
 
         public int LowerSpeed { get; set; }
 
+        public short MovementDuration { get; set; }
+
         public MovementType MovementType { get; }
 
         public ShutterMovementDirection ShutterMovementDirection { get; }

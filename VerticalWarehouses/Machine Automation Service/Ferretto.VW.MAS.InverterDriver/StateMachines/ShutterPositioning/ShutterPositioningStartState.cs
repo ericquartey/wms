@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private InverterDataset dataset;
 
-        private short duration;
-
         #endregion
 
         #region Constructors
@@ -34,6 +32,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.shutterPositionData = shutterPositionData;
         }
+
+        #endregion
+
+        #region Properties
+
+        private short Duration { get => this.shutterPositionData.MovementDuration; set => this.shutterPositionData.MovementDuration = value; }
 
         #endregion
 
@@ -139,12 +143,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
                 case InverterParameterId.ShutterLowVelocity:
                     {
-                        if (this.duration > 0)
+                        if (this.Duration > 0)
                         {
-                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.duration);
+                            var data = new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.ShutterHighVelocityDuration, this.Duration);
 
                             this.ParentStateMachine.EnqueueCommandMessage(data);
-                            this.Logger.LogDebug($"Set duration: {this.duration}");
+                            this.Logger.LogDebug($"Set duration: {this.Duration}");
 
                             returnValue = true;
                         }
@@ -179,26 +183,26 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         private void CalculateDatasetAndDuration()
         {
             this.dataset = InverterDataset.ActualDataset;
-            this.duration = 0;
+            this.Duration = 0;
             if (this.shutterPositionData.MovementType == MovementType.Absolute)
             {
                 switch (this.shutterPositionData.ShutterPosition)
                 {
                     case ShutterPosition.Opened:
                         this.dataset = InverterDataset.ShutterAbsoluteOpen;
-                        this.duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
+                        this.Duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
                         if (this.currentShutterPosition != ShutterPosition.Closed)
                         {
-                            this.duration = (short)(this.duration * 0.45);
+                            this.Duration = (short)(this.Duration * 0.45);
                         }
                         break;
 
                     case ShutterPosition.Closed:
                         this.dataset = InverterDataset.ShutterAbsoluteClose;
-                        this.duration = (short)this.shutterPositionData.HighSpeedDurationClose;
+                        this.Duration = (short)this.shutterPositionData.HighSpeedDurationClose;
                         if (this.currentShutterPosition != ShutterPosition.Opened)
                         {
-                            this.duration = (short)(this.duration * 0.45);
+                            this.Duration = (short)(this.Duration * 0.45);
                         }
                         break;
 
@@ -206,13 +210,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         this.dataset = InverterDataset.ShutterAbsoluteHalf;
                         if (this.shutterPositionData.ShutterMovementDirection == ShutterMovementDirection.Down)
                         {
-                            this.duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
+                            this.Duration = (short)this.shutterPositionData.HighSpeedDurationOpen;
                         }
                         else
                         {
-                            this.duration = (short)this.shutterPositionData.HighSpeedDurationClose;
+                            this.Duration = (short)this.shutterPositionData.HighSpeedDurationClose;
                         }
-                        this.duration = (short)(this.duration * 0.45);
+                        this.Duration = (short)(this.Duration * 0.45);
                         break;
 
                     default:
