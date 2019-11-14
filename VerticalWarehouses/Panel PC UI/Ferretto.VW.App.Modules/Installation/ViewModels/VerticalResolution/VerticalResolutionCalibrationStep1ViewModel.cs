@@ -1,8 +1,12 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
+using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -16,9 +20,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineElevatorWebService machineElevatorWebService;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
+
         private double? inputInitialPosition;
 
+        private bool isLoadingUnitOnBoard;
+
         private bool isOperationCompleted;
+
+        private LoadingUnit loadingUnitOnBoard;
+
+        private bool? luPresentInMachineSide;
+
+        private bool? luPresentInOperatorSide;
+
+        private SubscriptionToken sensorsToken;
 
         private DelegateCommand startCommand;
 
@@ -29,9 +47,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public VerticalResolutionCalibrationStep1ViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, healthProbeService)
         {
+            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
         }
 
         #endregion
@@ -54,8 +76,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsLoadingUnitOnBoard
+        {
+            get => this.isLoadingUnitOnBoard;
+            private set => this.SetProperty(ref this.isLoadingUnitOnBoard, value);
+        }
+
         public ICommand StartCommand =>
-            this.startCommand
+                    this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.StartAsync(),
@@ -93,6 +121,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
+        }
+
         public async Task GetParametersAsync()
         {
             try
@@ -117,6 +153,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             await this.GetParametersAsync();
+
+            this.sensorsToken = this.sensorsToken ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        async (m) => await this.OnSensorsChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false,
+                        (m) =>
+                        {
+                            var res = !this.luPresentInOperatorSide.HasValue ||
+                                      !this.luPresentInMachineSide.HasValue ||
+                                      (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
+                                      (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
+                            this.luPresentInOperatorSide = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+                            this.luPresentInMachineSide = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+                            return res;
+                        });
         }
 
         protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -147,6 +201,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 string.IsNullOrWhiteSpace(this.Error);
         }
 
+        private async Task GetSensorsAndLoadingUnitOnBoardAsync()
+        {
+            if (this.HealthProbeService.HealthStatus != HealthStatus.Healthy)
+            {
+                return;
+            }
+
+            try
+            {
+                this.loadingUnitOnBoard = await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync();
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+                var sensors = new Sensors();
+                sensors.Update(sensorsStates.ToArray());
+
+                this.SetIsLoadingUnitOnBord(sensors);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         private void NavigateToNextStep()
         {
             if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1))
@@ -164,6 +240,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     wizardData,
                     trackCurrentView: false);
             }
+        }
+
+        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+        }
+
+        private void SetIsLoadingUnitOnBord(Sensors sensors)
+        {
+            this.IsLoadingUnitOnBoard = sensors.LuPresentInMachineSide || sensors.LuPresentInOperatorSide;
         }
 
         private void ShowSteps()

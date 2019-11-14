@@ -2,11 +2,13 @@
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosition;
 
 // ReSharper disable ArrangeThisQualifier
@@ -22,15 +24,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteMoveUpCommand;
 
+        private bool isCompleted;
+
         private bool isMovingDown;
 
         private bool isMovingUp;
 
-        private bool isStopping;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
+
+        private SubscriptionToken shutterPositionToken;
 
         #endregion
 
@@ -48,7 +52,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.shuttersWebService = shuttersWebService;
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -74,7 +78,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -86,19 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -123,13 +115,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.subscriptionToken?.Dispose();
-            this.subscriptionToken = null;
-            */
+            this.shutterPositionToken?.Dispose();
+            this.shutterPositionToken = null;
         }
 
         public async Task MoveDownAsync()
@@ -152,13 +139,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(ShutterMovementDirection.Up);
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.shutterPositionToken = this.shutterPositionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.isCompleted = false;
+        }
+
         protected override void OnMachinePowerChanged()
         {
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
+            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
         protected override async Task StopMovementAsync()
         {
+            // In caso di fine operazione
+            if (this.isCompleted)
+            {
+                return;
+            }
+
             try
             {
                 this.IsStopping = true;
@@ -167,21 +190,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
+                this.CloseOperation();
                 this.ShowNotification(ex);
             }
             finally
             {
-                this.IsMovingDown = false;
-                this.IsMovingUp = false;
-                this.IsStopping = false;
-                this.EnableAll();
             }
         }
 
-        private void RefreshCanExecuteCommands()
+        private void CloseOperation()
         {
-            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
-            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
+            this.StopMoving();
+            this.IsStopping = false;
+            this.EnableAll();
+            this.isCompleted = true;
+        }
+
+        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.ShowNotification("Movimento serranda in corso..", Services.Models.NotificationSeverity.Info);
+                    this.isCompleted = false;
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.ShowNotification("Movimento serranda in corso..", Services.Models.NotificationSeverity.Info);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+                    break;
+            }
         }
 
         private async Task StartMovementAsync(ShutterMovementDirection direction)
@@ -192,11 +244,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.IsMovingDown = false;
-                this.IsMovingUp = false;
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
+        }
+
+        private void StopMoving()
+        {
+            this.IsMovingUp = false;
+            this.IsMovingDown = false;
         }
 
         #endregion

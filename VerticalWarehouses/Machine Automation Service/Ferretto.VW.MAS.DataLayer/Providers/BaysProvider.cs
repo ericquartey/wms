@@ -650,12 +650,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (positionIndex == 1)
                 {
-                    position = bay.Positions.Single(p => p.Height == bay.Positions.Max(p => p.Height));
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Max(e => e.Height));
                 }
 
                 if (positionIndex == 2)
                 {
-                    position = bay.Positions.Single(p => p.Height == bay.Positions.Min(p => p.Height));
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Min(e => e.Height));
                 }
 
                 position.Height = height;

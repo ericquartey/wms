@@ -31,11 +31,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly double fullPosition;
+        private readonly double firstPosition;
 
         private readonly IPositioningMachineData machineData;
 
         private readonly IServiceScope scope;
+
+        private readonly double secondPosition;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -75,8 +77,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 &&
                 this.machineData?.MessageData.MovementType == MovementType.TableTarget)
             {
-                this.fullPosition = this.machineData.MessageData.SwitchPosition[3];
-                this.fullPosition += (this.machineData.MessageData.SwitchPosition[4] - this.machineData.MessageData.SwitchPosition[3]) / 2;
+                this.firstPosition = this.machineData.MessageData.SwitchPosition[1]
+                                    + (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 2;
+                this.secondPosition = this.machineData.MessageData.SwitchPosition[2]
+                                    + (this.machineData.MessageData.SwitchPosition[2] - this.machineData.MessageData.SwitchPosition[1]) / 2;
             }
 
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
@@ -399,8 +403,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1] * 1.1
-                        && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition > this.firstPosition
+                        && this.elevatorProvider.HorizontalPosition < this.secondPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
@@ -409,8 +413,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
-                        && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition < this.firstPosition
+                        && this.elevatorProvider.HorizontalPosition > this.secondPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
@@ -427,8 +431,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition > this.machineData.MessageData.SwitchPosition[1] * 1.1
-                        && this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition > this.firstPosition
+                        && this.elevatorProvider.HorizontalPosition < this.secondPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {
@@ -437,8 +441,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else if (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards)
                 {
-                    if (this.elevatorProvider.HorizontalPosition < this.machineData.MessageData.SwitchPosition[1] * 0.9
-                        && this.elevatorProvider.HorizontalPosition >= this.machineData.MessageData.SwitchPosition[2]
+                    if (this.elevatorProvider.HorizontalPosition < this.firstPosition
+                        && this.elevatorProvider.HorizontalPosition > this.secondPosition
                         && !this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
                         )
                     {

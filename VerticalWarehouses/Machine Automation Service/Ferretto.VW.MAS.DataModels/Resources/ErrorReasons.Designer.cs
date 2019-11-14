@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DestinationBelowLowerBound.
+        /// </summary>
+        public static string DestinationBelowLowerBound {
+            get {
+                return ResourceManager.GetString("DestinationBelowLowerBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sensori di presenza invalidi.
         /// </summary>
         public static string InvalidPresenceSensors {
@@ -336,6 +345,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string MachineManagerErrorLoadingUnitNotRemoved {
             get {
                 return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterClosed {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterOpen.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterOpen {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
             }
         }
         

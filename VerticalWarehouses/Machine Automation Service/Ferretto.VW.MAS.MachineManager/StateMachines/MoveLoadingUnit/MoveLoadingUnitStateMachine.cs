@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                 if (returnValue)
                 {
-                    returnValue = this.IsSourceOk(messageData);
+                    returnValue = this.IsSourceOk(messageData, commandMessage.RequestingBay);
                 }
 
                 if (returnValue)
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             return returnValue;
         }
 
-        private bool IsSourceOk(IMoveLoadingUnitMessageData messageData)
+        private bool IsSourceOk(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay)
         {
             var machineData = (IMoveLoadingUnitMachineData)this.MachineData;
 
@@ -311,11 +311,24 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     if (unitToMove == null)
                     {
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
                     {
+                        unitToMove = null;
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
+                    }
+                    else if (messageData.InsertLoadingUnit && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed)
+                    {
+                        unitToMove = null;
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                    }
+                    if (unitToMove == null)
+                    {
+                        return false;
                     }
 
                     machineData.LoadingUnitSource = messageData.Source;
