@@ -26,34 +26,21 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.ExternalBayManualMovements}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Forwards}"
-                            IsEnabled="{Binding CanExecuteMoveForwardsCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveForwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Forwards}"
+                                           IsEnabled="{Binding CanExecuteMoveForwardsCommand}"
+                                           PressCommand="{Binding MoveForwardsCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Margin="0,15,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Backwards}"
-                            IsEnabled="{Binding CanExecuteMoveBackwardsCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+
+        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                           Margin="0,15,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Backwards}"
+                                           IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"
+                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
 
     </Grid>
 
