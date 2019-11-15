@@ -286,7 +286,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Bay GetByLoadingUnitLocation(LoadingUnitLocation location)
         {
-            return this.dataContext.Bays.FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+            return this.dataContext.Bays
+                .Include(b => b.Shutter)
+                .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)
