@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BayInvertersBusy.
+        /// </summary>
+        public static string BayInvertersBusy {
+            get {
+                return ResourceManager.GetString("BayInvertersBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Livello basso baia occupato..
         /// </summary>
         public static string BottomLevelBayOccupied {
