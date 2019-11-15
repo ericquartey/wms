@@ -528,7 +528,7 @@
                         "Location": "InternalBay1Down"
                     },
                     {
-                        "Height": 776,
+                        "Height": 755,
                         "Location": "InternalBay1Up"
                     }
                 ],
@@ -564,7 +564,7 @@
                     "LowerBound": 350,
                     "EmptyLoadMovement": {
                         "Acceleration": 1000,
-                        "Deceleration": 1000,
+                        "Deceleration": 0,
                         "Speed": 600 //420
                     },
                     "FullLoadMovement": {
@@ -588,7 +588,7 @@
                     "Orientation": "Horizontal",
                     "Resolution": 88.3038556,
                     "Offset": 0,
-                    "ChainOffset": -10.3,
+                    "ChainOffset": -10,
                     "ProfileCalibratePosition": 300,
                     "ProfileCalibrateSpeed": 30,
                     "ProfileCalibrateLength": 900,
@@ -617,28 +617,28 @@
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 100,
                                     "Number": 1,
                                     "Position": 450
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Number": 2,
                                     "Position": 900
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Number": 3,
                                     "Position": 1100
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
                                     "Number": 4,
                                     "Position": 1252
@@ -652,36 +652,36 @@
                             "Steps": [
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
                                     "Number": 0,
                                     "Position": 200
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 100,
                                     "Number": 1,
                                     "Position": 350
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Number": 2,
                                     "Position": 750
                                 },
                                 {
-                                    "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
                                     "Number": 3,
-                                    "Position": 1150
+                                    "Position": 1020
                                 },
                                 {
-                                    "Acceleration": 1500,
-                                    "Deceleration": 1500,
-                                    "Speed": 500,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
+                                    "Speed": 730,
                                     "Number": 4,
                                     "Position": 1252
                                 }
@@ -693,36 +693,36 @@
                             "Correction": 20,
                             "Steps": [
                                 {
-                                    "Acceleration": 1500,
-                                    "Deceleration": 1500,
-                                    "Speed": 300,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
+                                    "Speed": 730,
                                     "Position": 150,
                                     "Number": 0
                                 },
                                 {
-                                    "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
                                     "Speed": 100,
                                     "Position": 450,
                                     "Number": 1
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Position": 900,
                                     "Number": 2
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Position": 1100,
                                     "Number": 3
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
                                     "Position": 1252,
                                     "Number": 4
@@ -736,36 +736,36 @@
                             "Steps": [
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
                                     "Position": 200,
                                     "Number": 0
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 100,
                                     "Position": 350,
                                     "Number": 1
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Deceleration": 0,
                                     "Speed": 500,
                                     "Position": 750,
                                     "Number": 2
                                 },
                                 {
-                                    "Acceleration": 1000,
-                                    "Deceleration": 1000,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
                                     "Speed": 200,
-                                    "Position": 1050,
+                                    "Position": 1020,
                                     "Number": 3
                                 },
                                 {
-                                    "Acceleration": 1500,
-                                    "Deceleration": 1500,
-                                    "Speed": 500,
+                                    "Acceleration": 3000,
+                                    "Deceleration": 0,
+                                    "Speed": 730,
                                     "Position": 1252,
                                     "Number": 4
                                 }
@@ -4441,7 +4441,7 @@
         "HorizontalManualMovements": {
             "FeedRate": 0.04,
             "InitialTargetPosition": 30,
-            "RecoveryTargetPosition": 200
+            "RecoveryTargetPosition": 1252
         },
         "LoadFirstDrawerTest": {
             "FeedRate": 0.2
