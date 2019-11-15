@@ -175,7 +175,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             var position = elevatorProvider.VerticalPosition;
 
-            var cell = cellProvider.GetCellByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
+            var side = (this.machineData.MessageData.IsStartedOnBoard ?
+                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ? WarehouseSide.Front : WarehouseSide.Back) :
+                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back));
+
+            var cell = cellProvider.GetCellByHeight(position, 10, side);
             if (cell == null)
             {
                 bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
