@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
                         }
                         else if (currentStatus.CurrentShutterPosition == this.shutterDestination)
                         {
-                            this.Logger.LogError($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
+                            this.Logger.LogWarning($"Shutter positioning reached too early: destination= {this.shutterDestination}; time = {DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds}");
                         }
                     }
                 }
