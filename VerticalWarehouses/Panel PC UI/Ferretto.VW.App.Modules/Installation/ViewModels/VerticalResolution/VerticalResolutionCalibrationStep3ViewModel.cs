@@ -52,6 +52,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineElevatorService machineElevatorService)
             : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IHealthProbeService healthProbeService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, healthProbeService)
         {
         }
 

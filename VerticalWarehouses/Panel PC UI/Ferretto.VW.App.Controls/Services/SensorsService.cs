@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
@@ -66,10 +68,6 @@ namespace Ferretto.VW.App.Services
 
         private LoadingUnit embarkedLoadingUnit;
 
-        private string embarkedLoadingUnitCode;
-
-        private double? embarkedLoadingUnitWeight;
-
         private bool isShutterThreeSensors;
 
         private string loadingUnitPositionDownInBayCode;
@@ -91,6 +89,7 @@ namespace Ferretto.VW.App.Services
             IMachineElevatorWebService machineElevatorWebService,
             IMachineSensorsWebService machineSensorsWebService,
             IMachineCarouselWebService machineCarouselWebService,
+            IHealthProbeService healthProbeService,
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
             IBayManager bayManagerService)
@@ -102,6 +101,7 @@ namespace Ferretto.VW.App.Services
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
             this.SubscribeToEvents();
         }
@@ -185,26 +185,7 @@ namespace Ferretto.VW.App.Services
         public LoadingUnit EmbarkedLoadingUnit
         {
             get => this.embarkedLoadingUnit;
-            private set
-            {
-                if (this.SetProperty(ref this.embarkedLoadingUnit, value))
-                {
-                    this.EmbarkedLoadingUnitCode = this.embarkedLoadingUnit?.Code;
-                    this.EmbarkedLoadingUnitWeight = this.embarkedLoadingUnit?.GrossWeight;
-                }
-            }
-        }
-
-        public string EmbarkedLoadingUnitCode
-        {
-            get => this.embarkedLoadingUnitCode;
-            set => this.SetProperty(ref this.embarkedLoadingUnitCode, value);
-        }
-
-        public double? EmbarkedLoadingUnitWeight
-        {
-            get => this.embarkedLoadingUnitWeight;
-            set => this.SetProperty(ref this.embarkedLoadingUnitWeight, value);
+            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public bool IsLoadingUnitInBay
@@ -261,6 +242,8 @@ namespace Ferretto.VW.App.Services
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
 
+        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
+
         #endregion
 
         #region Methods
@@ -316,28 +299,31 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                this.Bay = await this.bayManagerService.GetBayAsync();
-                this.BayNumber = this.Bay.Number;
-
-                this.Bay1IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne;
-                this.Bay2IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo;
-                this.Bay3IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree;
-
-                if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+                if (this.IsHealthy)
                 {
-                    this.BayPositionDownHeight = bayPositionDown.Height;
-                    this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
+                    this.Bay = await this.bayManagerService.GetBayAsync();
+                    this.BayNumber = this.Bay.Number;
+
+                    this.Bay1IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne;
+                    this.Bay2IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo;
+                    this.Bay3IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree;
+
+                    if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+                    {
+                        this.BayPositionDownHeight = bayPositionDown.Height;
+                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
+                    }
+
+                    if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
+                    {
+                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
+                        this.BayPositionUpHeight = bayPositionUp.Height;
+                    }
+
+                    this.BayIsMultiPosition = this.Bay.IsDouble;
+
+                    this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
                 }
-
-                if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
-                {
-                    this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
-                    this.BayPositionUpHeight = bayPositionUp.Height;
-                }
-
-                this.BayIsMultiPosition = this.Bay.IsDouble;
-
-                this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
             }
             catch (Exception ex)
             {
@@ -349,14 +335,20 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var isLoadingUnitEmbarked =
-                    this.sensors.LuPresentInMachineSide
-                    &&
-                    this.sensors.LuPresentInOperatorSide;
+                if (this.IsHealthy)
+                {
+                    this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                    this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
 
-                this.EmbarkedLoadingUnit = isLoadingUnitEmbarked || forceRefresh
-                    ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
-                    : null;
+                    var isLoadingUnitEmbarked =
+                        this.sensors.LuPresentInMachineSide
+                        &&
+                        this.sensors.LuPresentInOperatorSide;
+
+                    this.EmbarkedLoadingUnit = isLoadingUnitEmbarked || forceRefresh
+                        ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
+                        : null;
+                }
             }
             catch (Exception ex)
             {
@@ -401,6 +393,7 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
                         await this.GetElevatorAsync(false);
+                            await this.GetElevatorAsync(false);
 
                         break;
                     }

@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.Positioning ||
                  notification.Type == MessageType.Stop ||
+                 notification.Type == MessageType.InverterStop ||
                  notification.Type == MessageType.ShutterPositioning ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
@@ -241,7 +242,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus StopOperationStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Stop)
+            if (message.Type == MessageType.Stop
+                || message.Type == MessageType.InverterStop)
             {
                 return message.Status;
             }

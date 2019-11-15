@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineElevatorService machineElevatorService;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
@@ -52,10 +54,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineElevatorService machineElevatorService)
             : base(PresentationMode.Installer)
+            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IHealthProbeService healthProbeService)
+            : base(Services.PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
             this.InitializeNavigationMenu();
@@ -124,6 +130,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.StopAsync(),
                 this.CanStop));
 
+        internal IEventAggregator EventAggregator => this.eventAggregator;
+
+        internal IHealthProbeService HealthProbeService => this.healthProbeService;
+
         protected VerticalResolutionCalibrationProcedure ProcedureParameters { get; private set; }
 
         #endregion
@@ -149,7 +159,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
-                this.eventAggregator
+                this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         this.OnPositioningOperationChanged,

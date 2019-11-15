@@ -21,6 +21,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int bayNumber;
 
+        private bool isStopping;
+
+        private bool isWaitingForResponse;
+
         private SubscriptionToken movementsSubscriptionToken;
 
         private DelegateCommand stopMovementCommand;
@@ -48,10 +52,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.bayNumber, value);
         }
 
+        public bool IsStopping
+        {
+            get => this.isStopping;
+            protected set
+            {
+                if (this.SetProperty(ref this.isStopping, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            private set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public DelegateCommand StopMovementCommand =>
             this.stopMovementCommand
             ??
-            (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync()));
+            (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync(), this.CanExecuteStopMovment));
 
         protected IMachineElevatorWebService MachineElevatorService { get; }
 
@@ -103,6 +136,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.EnableAll();
         }
 
+        protected virtual bool CanExecuteStopMovment()
+        {
+            return true;
+        }
+
         protected virtual void EnabledChanged(ManualMovementsChangedMessage message)
         {
             if (string.IsNullOrEmpty(message.ViewModelName))
@@ -129,6 +167,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.OnMachinePowerChanged();
+        }
+
+        protected virtual void RaiseCanExecuteChanged()
+        {
         }
 
         protected abstract Task StopMovementAsync();

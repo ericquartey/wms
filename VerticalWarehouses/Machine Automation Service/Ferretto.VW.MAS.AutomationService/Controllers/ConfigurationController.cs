@@ -2,6 +2,7 @@
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -52,16 +53,29 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public IActionResult Set(VertimagConfiguration vertimagConfiguration)
+        public IActionResult Set(VertimagConfiguration vertimagConfiguration, [FromServices] IServiceScopeFactory serviceScopeFactory)
         {
             if (vertimagConfiguration is null)
             {
                 throw new System.ArgumentNullException(nameof(vertimagConfiguration));
             }
 
-            this.machineProvider.Update(vertimagConfiguration.Machine);
-            this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures);
-            this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits);
+            // 3 scopes, avoid cross reference of same object on save
+
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Update(vertimagConfiguration.Machine);
+            }
+
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Update(vertimagConfiguration.SetupProcedures);
+            }
+
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().UpdateRange(vertimagConfiguration.LoadingUnits);
+            }
 
             return this.Ok();
         }
