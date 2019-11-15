@@ -206,7 +206,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.ShowNotification("Movimento giostra in corso..", Services.Models.NotificationSeverity.Info);
+                    this.ShowNotification("Movimento giostra in corso...", Services.Models.NotificationSeverity.Info);
                     this.isCompleted = false;
 
                     break;
@@ -214,7 +214,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationExecuting:
                     if (!this.isCompleted)
                     {
-                        this.ShowNotification("Movimento giostra in corso..", Services.Models.NotificationSeverity.Info);
+                        this.ShowNotification("Movimento giostra in corso...", Services.Models.NotificationSeverity.Info);
                     }
 
                     break;

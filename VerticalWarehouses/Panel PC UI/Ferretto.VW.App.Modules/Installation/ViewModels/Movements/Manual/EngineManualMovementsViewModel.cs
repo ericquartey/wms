@@ -157,10 +157,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            base.Disappear();
-
             this.positioningToken?.Dispose();
             this.positioningToken = null;
+
+            base.Disappear();
         }
 
         public async Task MoveBackwardsAsync()
@@ -365,11 +365,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             if (axisMovement.HasValue && axisMovement == Axis.Vertical)
             {
-                this.ShowNotification("Movimento asse verticale in corso..", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
             }
             else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
             {
-                this.ShowNotification("Movimento asse orizzontale in corso..", Services.Models.NotificationSeverity.Info);
+                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
             }
         }
 
