@@ -237,7 +237,8 @@
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding OpenShutterCommand}"
-                                Content="{x:Static res:InstallationApp.GateOpen}" />
+                                Content="{x:Static res:InstallationApp.GateOpen}"
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="1"
@@ -250,6 +251,7 @@
             <controls:PpcButton Grid.Row="5"
                                 Margin="5"
                                 HorizontalAlignment="Center"
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" 
                                 Command="{Binding ClosedShutterCommand}"
                                 Content="{x:Static res:InstallationApp.GateClose}">
                 <controls:PpcButton.Style>

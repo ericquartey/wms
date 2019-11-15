@@ -12,7 +12,8 @@
     </ItemsControl.ItemsPanel>
     <ItemsControl.ItemTemplate>
         <DataTemplate DataType="{x:Type controls:NavigationMenuItem}">
-            <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Vertical"
+                        Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <TextBlock Margin="0,0,15,0"
                            Style="{DynamicResource VWAPP_CustomLabel_ContentTextBlockStyle}"
                            Text="{Binding Description}" />

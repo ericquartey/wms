@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? InputHeight
         {
             get => this.inputHeight;
-            set => this.SetProperty(ref this.inputHeight, value);
+            set => this.SetProperty(ref this.inputHeight, value, this.RaiseCanExecuteChanged);
         }
 
         public int? InputLoadingUnitId
@@ -249,7 +249,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanSetWeightControl()
         {
-            return this.SelectedCell != null
+            return (this.SelectedCell != null ||
+                    (this.InputHeight.HasValue && this.InputHeight > 0))
                 &&
                 !this.IsMoving
                 &&
