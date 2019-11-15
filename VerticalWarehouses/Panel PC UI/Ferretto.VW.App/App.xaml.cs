@@ -1,6 +1,7 @@
 using System;
 using System.Configuration;
 using System.Reflection;
+using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
@@ -71,8 +72,34 @@ namespace Ferretto.VW.App
             return this.Container.Resolve<Shell>();
         }
 
+        protected override void OnInitialized()
+        {
+            try
+            {
+                SplashScreenService.SetMessage(DesktopApp.InitializingLogin);
+                SplashScreenService.Hide();
+
+                var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
+                navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
+
+                var assembly = typeof(App).Assembly;
+                var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+
+                this.logger.Info($"Starting application, version '{versionInfo.ProductVersion}'.");
+            }
+            catch (System.Exception ex)
+            {
+                this.logger.Error(ex, "An error occurred on application startup.");
+            }
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
+            if (!AppCheck.Start())
+            {
+                this.Shutdown(1);
+            }
+
             this.HACK_ForceItalianLanguage();
 
             base.OnStartup(e);
@@ -140,6 +167,17 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
+        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            Exception ex = e.Exception.InnerException != null ? e.Exception.InnerException : e.Exception;
+            MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            AppCheck.End();
+        }
+
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             this.logger.Error(e.ExceptionObject as Exception, "An unhandled exception was thrown.");
@@ -148,10 +186,24 @@ namespace Ferretto.VW.App
             NLog.LogManager.Shutdown();
         }
 
+        private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            Exception ex = (Exception)e.ExceptionObject;
+            Exception exi = ex.InnerException != null ? ex.InnerException : ex;
+
+            MessageBox.Show(exi.Message + "\n" + exi.StackTrace);
+        }
+
         private void HACK_ForceItalianLanguage()
         {
             System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
             System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
+        }
+
+        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            var ex = e.Exception.InnerException != null ? e.Exception.InnerException : e.Exception;
+            MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
         }
 
         #endregion
