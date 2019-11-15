@@ -628,7 +628,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                        this.Logger.LogError("Cradle not correctly unloaded during deposit");
+                        this.Logger.LogError("Cradle not correctly unloaded after deposit");
                         this.Stop(StopRequestReason.Stop);
                     }
                     else

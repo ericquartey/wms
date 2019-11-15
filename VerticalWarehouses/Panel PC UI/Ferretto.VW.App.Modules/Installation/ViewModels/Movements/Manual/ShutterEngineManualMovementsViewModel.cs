@@ -211,14 +211,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.ShowNotification("Movimento serranda in corso..", Services.Models.NotificationSeverity.Info);
+                    this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
                     this.isCompleted = false;
                     break;
 
                 case MessageStatus.OperationExecuting:
                     if (!this.isCompleted)
                     {
-                        this.ShowNotification("Movimento serranda in corso..", Services.Models.NotificationSeverity.Info);
+                        this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
                     }
 
                     break;

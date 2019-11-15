@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.OnButtonUp();
             };
-            this.TouchEnter += (o, a) =>
+            this.TouchLeave += (o, a) =>
             {
                 this.OnButtonUp();
             };
@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.OnButtonDown();
             };
-            this.TouchLeave += (o, a) =>
+            this.TouchEnter += (o, a) =>
             {
                 this.OnButtonDown();
             };
