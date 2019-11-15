@@ -208,7 +208,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var freeCells = this.dataContext.Cells
                    .Include(c => c.LoadingUnit)
                    .Where(c =>
-                       c.Side == cell.Side
+                       c.Panel.Side == cell.Side
                        &&
                        c.Position >= cell.Position
                        &&

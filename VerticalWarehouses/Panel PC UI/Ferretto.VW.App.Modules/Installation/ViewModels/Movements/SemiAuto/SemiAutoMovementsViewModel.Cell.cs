@@ -251,36 +251,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputCellIdPropertyChanged()
         {
-            if (this.cells != null)
+            if (this.cells is null)
             {
-                this.SelectedCell = this.inputCellId == null
-                    ? null
-                    : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
-
-                this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
-
-                if (this.SelectedLoadingUnit?.CellId is null)
-                {
-                    this.LoadingUnitInCell = null;
-                }
-                else
-                {
-                    this.LoadingUnitInCell = this.SelectedLoadingUnit;
-                }
-
-                this.RaiseCanExecuteChanged();
+                return;
             }
+
+            this.SelectedCell = this.inputCellId is null
+                ? null
+                : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
+
+            if (this.SelectedCell != null)
+            {
+                this.InputHeight = this.SelectedCell.Position;
+                this.InputLoadingUnitId = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
+            }
+
+            if (this.SelectedLoadingUnit?.CellId is null)
+            {
+                this.LoadingUnitInCell = null;
+            }
+            else
+            {
+                this.LoadingUnitInCell = this.SelectedLoadingUnit;
+            }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private void InputLoadingUnitIdPropertyChanged()
         {
-            if (this.loadingUnits != null)
+            if (this.loadingUnits is null)
             {
-                this.SelectedLoadingUnit = this.inputLoadingUnitId == null
-                    ? null
-                    : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+                return;
+            }
 
-                this.InputCellId = this.SelectedLoadingUnit?.CellId;
+            this.SelectedLoadingUnit = this.inputLoadingUnitId == null
+                ? null
+                : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+
+            if (this.SelectedLoadingUnit != null)
+            {
+                this.InputCellId = this.SelectedLoadingUnit.CellId;
             }
         }
 

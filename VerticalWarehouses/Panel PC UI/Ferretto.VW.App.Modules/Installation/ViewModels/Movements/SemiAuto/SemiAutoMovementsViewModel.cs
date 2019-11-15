@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -199,6 +200,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.cells = await this.machineCellsWebService.GetAllAsync();
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
+
+                var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
+                this.IsElevatorInCell = elevatorPosition.CellId != null;
+                this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
+                if (this.IsElevatorInCell)
+                {
+                    this.InputCellId = elevatorPosition.CellId;
+                }
+                else if (this.IsElevatorInBay)
+                {
+                    this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
+                }
 
                 this.SelectBayPositionUp();
                 this.InputLoadingUnitIdPropertyChanged();
