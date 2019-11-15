@@ -252,4 +252,7 @@
   <data name="DestinationBelowLowerBound" xml:space="preserve">
     <value>DestinationBelowLowerBound</value>
   </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>BayInvertersBusy</value>
+  </data>
 </root>
