@@ -75,14 +75,21 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.LoadingUnitCode}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding EmbarkedLoadingUnitCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.TrayWeight}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding EmbarkedLoadingUnitWeight, StringFormat={}{0:0.0}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                       Text="Altezza cassetto" />
+                            <TextBlock Style="{StaticResource TextBlockContentStyle}"
+                                       Text="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -142,7 +149,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="Posizione Catena" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding BayChainPosition, StringFormat={}{0:0.0}}" />
+                                       Text="{Binding BayChainPosition, StringFormat={}{0:F1}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical"
@@ -263,6 +270,7 @@
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}"
                                                        Visibility="{Binding Bay3ZeroChainIsVisible, Converter={StaticResource BTVC}}" />
                         </StackPanel>
+
                     </StackPanel>
 
                     <StackPanel Orientation="Vertical">

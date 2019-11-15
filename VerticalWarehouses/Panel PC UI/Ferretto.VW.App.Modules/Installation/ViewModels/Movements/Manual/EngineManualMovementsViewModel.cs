@@ -157,10 +157,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override void Disappear()
         {
-            base.Disappear();
-
             this.positioningToken?.Dispose();
             this.positioningToken = null;
+
+            base.Disappear();
         }
 
         public async Task MoveBackwardsAsync()
