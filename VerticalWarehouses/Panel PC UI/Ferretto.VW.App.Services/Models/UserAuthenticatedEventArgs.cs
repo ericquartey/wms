@@ -2,7 +2,7 @@
 
 namespace Ferretto.VW.App.Services
 {
-    public class UserAuthenticatedEventArgs : EventArgs
+    public class UserAuthenticatedEventArgs : System.EventArgs
     {
         #region Constructors
 

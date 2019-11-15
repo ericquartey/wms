@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Events;
@@ -19,9 +20,17 @@ namespace Ferretto.VW.App.Controls
 
         private SubscriptionToken healthStatusChangedToken;
 
+        private bool isBayMovement;
+
+        private bool isElevatorMovement;
+
         private bool isEnabled;
 
+        private bool isShutterMovement;
+
         private SubscriptionToken machineModeChangedToken;
+
+        private SubscriptionToken machineMovementModeChangedToken;
 
         private SubscriptionToken machinePowerChangedToken;
 
@@ -42,10 +51,28 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public bool IsBayMovement
+        {
+            get => this.isBayMovement;
+            private set => this.SetProperty(ref this.isBayMovement, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsElevatorMovement
+        {
+            get => this.isElevatorMovement;
+            private set => this.SetProperty(ref this.isElevatorMovement, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsEnabled
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
+        }
+
+        public bool IsShutterMovement
+        {
+            get => this.isShutterMovement;
+            private set => this.SetProperty(ref this.isShutterMovement, value, this.RaiseCanExecuteChanged);
         }
 
         public PresentationMode Mode
@@ -53,6 +80,8 @@ namespace Ferretto.VW.App.Controls
             get => this.mode;
             set => this.SetProperty(ref this.mode, value);
         }
+
+        protected MachineMovementMode MachineMovementMode { get; private set; }
 
         #endregion
 
@@ -119,6 +148,19 @@ namespace Ferretto.VW.App.Controls
                        async e => await this.OnMachinePowerChangedAsync(e),
                        ThreadOption.UIThread,
                        false);
+
+            this.machineMovementModeChangedToken = this.machineMovementModeChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<MachineMovementModeChangedPubSubEvent>()
+                    .Subscribe(
+                       async e => await this.OnMachineMovementModeChangedMessageAsync(e),
+                       ThreadOption.UIThread,
+                       false);
+
+            this.IsShutterMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.ShutterMovement);
+            this.IsBayMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.BayMovement);
+            this.IsElevatorMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.ElevatorMovement);
 
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
@@ -204,26 +246,53 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, e.HealthStatus);
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                e.HealthStatus);
 
             return Task.CompletedTask;
         }
 
         protected virtual Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
-            this.UpdateIsEnabled(this.machineModeService.MachinePower, e.MachineMode, this.healthProbeService.HealthStatus);
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                e.MachineMode,
+                this.healthProbeService.HealthStatus);
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnMachineMovementModeChangedMessageAsync(MachineMovementModeChangedMessage e)
+        {
+            this.MachineMovementMode = e.MachineMovementMode;
+
+            this.IsShutterMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.ShutterMovement);
+            this.IsBayMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.BayMovement);
+            this.IsElevatorMovement = this.MachineMovementMode.IsFlagSet(MachineMovementMode.ElevatorMovement);
 
             return Task.CompletedTask;
         }
 
         protected virtual Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
-            this.UpdateIsEnabled(e.MachinePowerState, this.machineModeService.MachineMode, this.healthProbeService.HealthStatus);
+            this.UpdateIsEnabled(
+                e.MachinePowerState,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
 
-        private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode, HealthStatus healthStatus)
+        protected virtual void RaiseCanExecuteChanged()
+        {
+        }
+
+        private void UpdateIsEnabled(
+            MachinePowerState machinePower,
+            MachineMode machineMode,
+            HealthStatus healthStatus)
         {
             var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
 

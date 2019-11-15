@@ -8,10 +8,12 @@ using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
+using ShutterType = Ferretto.VW.MAS.AutomationService.Contracts.ShutterType;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -306,9 +308,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.startTestCommand.RaiseCanExecuteChanged();
+            this.stopTestCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteStartCommand()
         {
             return
+                !this.IsShutterMovement
+                &&
                 !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
@@ -319,7 +331,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteStopCommand()
         {
             return
-                this.IsExecutingProcedure
+                (this.IsExecutingProcedure || this.IsShutterMovement)
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -345,12 +357,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startTestCommand.RaiseCanExecuteChanged();
-            this.stopTestCommand.RaiseCanExecuteChanged();
         }
 
         private async Task StartTestAsync()
@@ -381,6 +387,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
+                this.IsExecutingProcedure = true;
                 this.IsWaitingForResponse = true;
 
                 await this.shuttersWebService.StopAsync();
