@@ -87,6 +87,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.carouselManualMovementsViewModel.Disappear();
+            this.engineManualMovementsViewModel.Disappear();
+            this.externalBayManualMovementsViewModel.Disappear();
+            this.shutterEngineManualMovementsViewModel.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();

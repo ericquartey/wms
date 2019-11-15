@@ -200,7 +200,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             // metterlo nel filtro della subscription
-            if (message.Data?.AxisMovement != Axis.HorizontalAndVertical)
+            if (message.Data?.AxisMovement != Axis.BayChain)
             {
                 return;
             }
@@ -208,7 +208,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.ShowNotification("Movimento baia in corso..", Services.Models.NotificationSeverity.Info);
+                    this.ShowNotification("Movimento baia in corso...", Services.Models.NotificationSeverity.Info);
                     this.isCompleted = false;
 
                     break;
@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationExecuting:
                     if (!this.isCompleted)
                     {
-                        this.ShowNotification("Movimento baia in corso..", Services.Models.NotificationSeverity.Info);
+                        this.ShowNotification("Movimento baia in corso...", Services.Models.NotificationSeverity.Info);
                     }
 
                     break;
