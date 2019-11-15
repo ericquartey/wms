@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {

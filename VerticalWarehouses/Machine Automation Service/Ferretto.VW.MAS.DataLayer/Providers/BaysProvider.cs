@@ -19,7 +19,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
+    internal sealed class BaysProvider : BaseProvider, IBaysProvider
     {
         #region Fields
 
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public BaysDataProvider(
+        public BaysProvider(
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,

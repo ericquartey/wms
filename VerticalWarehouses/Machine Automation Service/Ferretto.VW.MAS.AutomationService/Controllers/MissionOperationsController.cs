@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IConfiguration configuration;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILogger<MissionOperationsController> logger,
             IConfiguration configuration,
             IMissionOperationsDataService missionOperationsDataService,
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));

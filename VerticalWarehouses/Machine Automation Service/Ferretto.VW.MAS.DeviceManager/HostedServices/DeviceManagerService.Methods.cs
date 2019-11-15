@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (receivedMessage.Data is IHomingMessageData data)
             {
-                var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
                 var targetBay = baysProvider.GetByAxis(data);
                 if (targetBay == BayNumber.None)
                 {
@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
-            var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
             var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
@@ -292,7 +292,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
                         machineResourcesProvider,
-                        serviceProvider.GetRequiredService<IBaysDataProvider>(),
+                        serviceProvider.GetRequiredService<IBaysProvider>(),
                         this.EventAggregator,
                         this.Logger,
                         this.ServiceScopeFactory);
@@ -410,7 +410,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
-                    var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
 
                     message.TargetBay = message.RequestingBay;
                     currentStateMachine = new ShutterPositioningStateMachine(data,

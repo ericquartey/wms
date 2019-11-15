@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IPowerEnableMachineData machineData;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
         public PowerEnableStateMachine(
             CommandMessage receivedMessage,
             IMachineResourcesProvider machineResourcesProvider,
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)

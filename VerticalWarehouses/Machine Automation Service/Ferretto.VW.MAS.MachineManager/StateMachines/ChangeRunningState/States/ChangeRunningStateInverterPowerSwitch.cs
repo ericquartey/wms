@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IMachineControlProvider machineControlProvider;
 
@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateInverterPowerSwitch(
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             ILogger<StateBase> logger)
             : base(logger)

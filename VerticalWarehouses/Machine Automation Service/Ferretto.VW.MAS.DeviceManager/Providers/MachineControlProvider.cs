@@ -14,14 +14,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         #endregion
 
         #region Constructors
 
         public MachineControlProvider(
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {

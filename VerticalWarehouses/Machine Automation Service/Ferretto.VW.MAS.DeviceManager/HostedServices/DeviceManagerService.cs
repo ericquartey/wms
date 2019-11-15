@@ -384,7 +384,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysProvider>();
 
             BayNumber bayNumber;
             switch (receivedMessage.Source)

@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IErrorsProvider errorsProvider,
             ILogger<InverterDriverService> logger

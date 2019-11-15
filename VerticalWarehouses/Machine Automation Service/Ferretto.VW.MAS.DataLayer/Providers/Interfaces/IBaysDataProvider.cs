@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface IBaysDataProvider
+    public interface IBaysProvider
     {
         #region Methods
 

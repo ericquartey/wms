@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
                 var idleBays = bayProvider
                     .GetAll()
@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     using (var scope = this.ServiceScopeFactory.CreateScope())
                     {
-                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
                         if (missionOperation != null)
                         {

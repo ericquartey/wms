@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
                 var bay = bayProvider.GetAll()
                                      .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)

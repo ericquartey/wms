@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitEndState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
             : base(logger)

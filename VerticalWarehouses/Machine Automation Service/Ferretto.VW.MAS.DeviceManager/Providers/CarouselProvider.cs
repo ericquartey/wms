@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public CarouselProvider(
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)

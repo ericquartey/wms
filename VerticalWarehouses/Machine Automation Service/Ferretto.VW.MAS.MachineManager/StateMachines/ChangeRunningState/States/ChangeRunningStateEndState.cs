@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysProvider;
+        private readonly IBaysProvider baysProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateEndState(
-            IBaysDataProvider baysProvider,
+            IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
             IMachineModeVolatileDataProvider machineModeDataProvider,

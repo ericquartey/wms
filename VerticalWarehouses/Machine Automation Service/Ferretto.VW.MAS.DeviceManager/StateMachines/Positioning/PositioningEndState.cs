@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var elevatorCurrentBayPositionId = elevatorDataProvider.GetCurrentBayPosition()?.Id;
                 if (targetBayPositionId == elevatorCurrentBayPositionId)
                 {
-                    var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
 
                     baysProvider.SetLoadingUnit(
                         targetBayPositionId.Value,
@@ -236,7 +236,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (sourceBayPositionId.HasValue)
             {
-                var baysProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
 
                 var bayPosition = baysProvider.GetPositionById(sourceBayPositionId.Value);
                 if (bayPosition.LoadingUnit?.Id == loadingUnitId)

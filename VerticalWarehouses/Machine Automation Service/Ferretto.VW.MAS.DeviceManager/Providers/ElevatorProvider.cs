@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysDataProvider baysDataProvider;
+        private readonly IBaysProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IElevatorDataProvider elevatorDataProvider,
             ISetupStatusProvider setupStatusProvider,
-            IBaysDataProvider baysDataProvider,
+            IBaysProvider baysDataProvider,
             ICellsProvider cellsProvider,
             IMachineProvider machineProvider,
             IMachineResourcesProvider machineResourcesProvider,
