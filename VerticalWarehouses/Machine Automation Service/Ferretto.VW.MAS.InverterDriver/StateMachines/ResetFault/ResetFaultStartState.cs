@@ -41,6 +41,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ResetFault
         {
             this.Logger.LogDebug($"Reset Fault Start Inverter {this.inverterIndex}");
             this.startTime = DateTime.UtcNow;
+            this.InverterStatus.CommonControlWord.Value = 0;
             this.InverterStatus.CommonControlWord.FaultReset = true;
 
             var inverterMessage = new InverterMessage(
