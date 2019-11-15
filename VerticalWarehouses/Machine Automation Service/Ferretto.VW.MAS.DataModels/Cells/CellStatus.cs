@@ -23,6 +23,9 @@
         /// <remarks>
         /// It shall be used for e.g. broken cells.
         /// </remarks>
+        ///
+
+        // TODO please rename to Blocked
         Unusable,
     }
 }

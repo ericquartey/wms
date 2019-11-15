@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
+        private readonly IBaysProvider baysProvider;
+
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
         private readonly Dictionary<MessageType, MessageStatus> stateMachineResponses;
@@ -28,10 +31,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitMoveToTargetState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IBaysProvider baysProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
 
             this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
 
@@ -48,7 +53,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 if (machineMoveData.LoadingUnitSource != LoadingUnitLocation.Cell)
                 {
-                    this.closeShutter = true;
+                    var bay = this.baysProvider.GetByLoadingUnitLocation(machineMoveData.LoadingUnitSource);
+                    this.closeShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                 }
             }
 

@@ -123,6 +123,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var bay = this.baysProvider.GetByNumber(bayNumber);
 
+            if (bay.Shutter.Type == ShutterType.NotSpecified)
+            {
+                throw new InvalidOperationException(Resources.Shutters.TheShutterTypeIsNotValid);
+            }
+
             // speed is negative to go up
             speedRate *= direction == ShutterMovementDirection.Up ? -1 : 1;
             lowSpeed *= direction == ShutterMovementDirection.Up ? -1 : 1;
