@@ -151,10 +151,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var profileType = SelectProfileType(direction, isStartedOnBoard);
             this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
-            var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
+            var axis = this.elevatorDataProvider.GetHorizontalAxis();
+            var profileSteps = axis.Profiles
                 .Single(p => p.Name == profileType)
                 .Steps
                 .OrderBy(s => s.Number);
+
+            if (isLoadingUnitOnBoard)
+            {
+                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0)
+                {
+                    var scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                    foreach (var profileStep in profileSteps)
+                    {
+                        profileStep.ScaleMovementsByWeight(scalingFactor, axis);
+                    }
+                }
+            }
 
             // if direction is Forwards then height increments, otherwise it decrements
             var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
