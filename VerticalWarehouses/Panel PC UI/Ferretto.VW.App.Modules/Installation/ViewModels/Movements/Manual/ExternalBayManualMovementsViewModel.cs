@@ -121,7 +121,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => m.Data?.AxisMovement == Axis.BayChain);
 
             this.isCompleted = false;
         }
@@ -199,12 +200,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            // metterlo nel filtro della subscription
-            if (message.Data?.AxisMovement != Axis.BayChain)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:

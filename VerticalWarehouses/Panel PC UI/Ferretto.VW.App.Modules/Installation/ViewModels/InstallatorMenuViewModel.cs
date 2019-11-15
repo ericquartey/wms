@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int bayNumber;
 
+        private bool hasShutter;
+
         #endregion
 
         #region Constructors
@@ -83,6 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 var bay = await this.bayManager.GetBayAsync();
                 this.bayNumber = (int)bay.Number;
+                this.hasShutter = bay.Shutter.Type != ShutterType.NotSpecified;
             }
             catch (Exception ex)
             {
@@ -217,6 +220,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         menuItem.IsActive = itemStatus.IsCompleted && this.areItemsEnabled;
                     }
                 }
+
+                this.installatorItems.Single(s => s.ViewModelName.Equals(Utils.Modules.Installation.SHUTTERENDURANCETEST))
+                    .IsVisible = this.hasShutter;
 
                 foreach (var menuItem in this.otherItems)
                 {

@@ -10,6 +10,7 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using ShutterType = Ferretto.VW.MAS.AutomationService.Contracts.ShutterType;
 
 namespace Ferretto.VW.App.Services
 {
@@ -60,6 +61,8 @@ namespace Ferretto.VW.App.Services
         private double? elevatorVerticalPosition;
 
         private LoadingUnit embarkedLoadingUnit;
+
+        private bool hasShutter;
 
         private bool isShutterThreeSensors;
 
@@ -177,6 +180,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.embarkedLoadingUnit;
             private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+        }
+
+        public bool HasShutter
+        {
+            get => this.hasShutter;
+            set => this.SetProperty(ref this.hasShutter, value);
         }
 
         public bool IsLoadingUnitInBay
@@ -312,6 +321,8 @@ namespace Ferretto.VW.App.Services
                     }
 
                     this.BayIsMultiPosition = this.Bay.IsDouble;
+
+                    this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
 
                     this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
                 }

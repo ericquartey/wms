@@ -41,12 +41,13 @@
 
         <views:ShutterEngineManualMovementsView Grid.Row="1"
                                                 Grid.Column="3"
-                                                DataContext="{Binding ShutterEngineManualMovementsViewModel}" />
+                                                DataContext="{Binding ShutterEngineManualMovementsViewModel}"
+                                                Visibility="{Binding Path=DataContext.HasShutter, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
 
         <views:ExternalBayManualMovementsView Grid.Row="3"
                                               Grid.Column="1"
                                               DataContext="{Binding ExternalBayManualMovementsViewModel}"
-                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}"/>
+                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
 
         <views:CarouselManualMovementsView Grid.Row="3"
                                            Grid.Column="3"

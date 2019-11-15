@@ -273,7 +273,8 @@
 
                     </StackPanel>
 
-                    <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Vertical" 
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                         <TextBlock Style="{StaticResource TextBlockMainTitleStyle}"
                                    Text="{x:Static res:InstallationApp.Shutter}" />
                         <Border Style="{StaticResource BorderSeparatorStyle}" />
