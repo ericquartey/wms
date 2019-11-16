@@ -49,12 +49,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            bool measure = false;
             if (machineData is IMoveLoadingUnitMachineData machineMoveData)
             {
                 if (machineMoveData.LoadingUnitSource != LoadingUnitLocation.Cell)
                 {
                     var bay = this.baysProvider.GetByLoadingUnitLocation(machineMoveData.LoadingUnitSource);
                     this.closeShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                    measure = true;
                 }
             }
 
@@ -68,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                 }
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, MessageActor.MachineManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay);
             }
             else
             {

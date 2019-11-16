@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, MessageActor.MachineManager, commandMessage.RequestingBay, null);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, false, MessageActor.MachineManager, commandMessage.RequestingBay, null);
             }
             else
             {
