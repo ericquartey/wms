@@ -115,6 +115,7 @@ namespace Ferretto.VW.App.Controls
                 isChildOfMainWindow)
             {
                 ppcDialog.Owner = Application.Current.MainWindow;
+                ppcDialog.SetSize(new Size(1024, 768));
                 ppcDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             }
             else

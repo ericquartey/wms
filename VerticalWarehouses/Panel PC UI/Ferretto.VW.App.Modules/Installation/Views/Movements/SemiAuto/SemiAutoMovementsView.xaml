@@ -86,7 +86,6 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputHeight}"
-                               Keyboard="Numpad"
                                LabelText="{x:Static res:InstallationApp.Position}"
                                Mask="####0"
                                WidthNumber="210" />

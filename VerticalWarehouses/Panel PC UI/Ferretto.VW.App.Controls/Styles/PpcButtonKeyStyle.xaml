@@ -96,6 +96,9 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Height" Value="Auto" />
+        <Setter Property="Margin" Value="4" />
+        <Setter Property="FontSize" Value="26" />
+        <Setter Property="FontWeight" Value="Bold" />
     </Style>
 
 </ResourceDictionary>
