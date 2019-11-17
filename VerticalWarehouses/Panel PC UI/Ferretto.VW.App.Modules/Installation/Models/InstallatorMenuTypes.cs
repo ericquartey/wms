@@ -9,5 +9,9 @@
         Sensors,
 
         Others,
+
+        Cell,
+
+        LoadingUnit,
     }
 }

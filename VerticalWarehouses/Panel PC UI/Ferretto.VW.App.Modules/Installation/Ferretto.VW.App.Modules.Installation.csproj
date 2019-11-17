@@ -53,8 +53,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

@@ -52,6 +52,19 @@
             #endregion
         }
 
+        public static class CellsLoadingUnitsMenu
+        {
+            #region Fields
+
+            public const string CELLES = "CellsViewModel";
+
+            public const string LOADINGUNITS = "LoadingUnitsViewModel";
+
+            public const string MENU = "CellsLoadingUnitsMenuViewModel";
+
+            #endregion
+        }
+
         public static class Devices
         {
             #region Fields
