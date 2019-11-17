@@ -205,9 +205,11 @@
                                  Grid.RowSpan="2"
                                  Grid.Column="4"
                                  Command="{Binding EnterCommand}"
-                                 CommandParameter="7"
-                                 Content="Enter"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
+                                 Style="{StaticResource PpcButtonNumKeyStyle}">
+                    <iconPacks:PackIconMaterial Width="50"
+                                                Height="30"
+                                                Kind="KeyboardReturn" />
+                </ctrls:PpcButton>
 
                 <ctrls:PpcButton Grid.Row="4"
                                  Grid.Column="0"
