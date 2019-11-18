@@ -1,5 +1,7 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,7 +36,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
-        [HttpPost("findzero")]
+        [HttpPost("can-move")]
+        public ActionResult<ActionPolicy> CanMove(VerticalMovementDirection direction)
+        {
+            return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber));
+        }
+
+        [HttpPost("find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
@@ -62,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult Move(HorizontalMovementDirection direction)
+        public IActionResult Move(VerticalMovementDirection direction)
         {
             this.carouselProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
 
@@ -71,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("move-manual")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult MoveManual(HorizontalMovementDirection direction)
+        public IActionResult MoveManual(VerticalMovementDirection direction)
         {
             this.carouselProvider.MoveManual(direction, this.BayNumber, MessageActor.AutomationService);
 

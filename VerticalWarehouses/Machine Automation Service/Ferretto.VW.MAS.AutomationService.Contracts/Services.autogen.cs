@@ -509,78 +509,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction)
-        {
-            return MoveAsync(direction, System.Threading.CancellationToken.None);
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
-        {
-            if (direction == null)
-                throw new System.ArgumentNullException("direction");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/move?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
-    
-            var client_ = _httpClient;
-            try
-            {
-                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            return;
-                        }
-                        else
-                        if (status_ == "404") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-            }
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height)
         {
             return UpdateHeightAsync(position, height, System.Threading.CancellationToken.None);
@@ -790,6 +718,77 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction)
+        {
+            return CanMoveAsync(direction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        {
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/can-move?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
@@ -800,7 +799,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/findzero");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/find-zero");
     
             var client_ = _httpClient;
             try
@@ -977,14 +976,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction)
+        public System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction)
         {
             return MoveAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
@@ -1044,14 +1043,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction)
+        public System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction)
         {
             return MoveManualAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");

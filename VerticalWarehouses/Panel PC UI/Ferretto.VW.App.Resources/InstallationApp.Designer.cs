@@ -529,6 +529,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell {0}.
+        /// </summary>
+        public static string CellWithNumber {
+            get {
+                return ResourceManager.GetString("CellWithNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chain calibration.
         /// </summary>
         public static string ChainCalibration {
@@ -1434,6 +1443,24 @@ namespace Ferretto.VW.App.Resources {
         public static string HorizontalHomingStarted {
             get {
                 return ResourceManager.GetString("HorizontalHomingStarted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to in Bay.
+        /// </summary>
+        public static string InBay {
+            get {
+                return ResourceManager.GetString("InBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to in Bay {0}.
+        /// </summary>
+        public static string InBayWithNumber {
+            get {
+                return ResourceManager.GetString("InBayWithNumber", resourceCulture);
             }
         }
         

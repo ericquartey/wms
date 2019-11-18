@@ -1277,4 +1277,13 @@
   <data name="ElevatorLogicalPosition" xml:space="preserve">
     <value>Position</value>
   </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Cell {0}</value>
+  </data>
+  <data name="InBay" xml:space="preserve">
+    <value>in Bay</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>in Bay {0}</value>
+  </data>
 </root>

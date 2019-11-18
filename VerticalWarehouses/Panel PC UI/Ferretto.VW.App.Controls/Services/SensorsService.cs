@@ -393,21 +393,30 @@ namespace Ferretto.VW.App.Services
             this.BayChainPosition = e.Position;
         }
 
-        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        private async Task OnElevatorPositionChangedAsync(ElevatorPositionChangedEventArgs e)
         {
             this.ElevatorVerticalPosition = e.VerticalPosition;
             this.ElevatorHorizontalPosition = e.HorizontalPosition;
 
             if (e.CellId != null && this.elevatorCellId != e.CellId)
             {
-                this.ElevatorLogicalPosition = $"Cella {e.CellId}";
+                this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, e.CellId);
                 this.elevatorCellId = e.CellId;
             }
             else if (e.BayPositionId != null && this.elevatorBayPositionId != e.BayPositionId)
             {
-                this.ElevatorLogicalPosition = $"Baia {e.BayPositionId}";
-                //   this.machineBaysWebService.get
                 this.elevatorBayPositionId = e.BayPositionId;
+
+                try
+                {
+                    var bays = await this.machineBaysWebService.GetAllAsync();
+                    var bay = bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == e.BayPositionId));
+                    this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                }
+                catch
+                {
+                    this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
+                }
             }
             else
             {
@@ -500,7 +509,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
                     .Subscribe(
-                        this.OnElevatorPositionChanged,
+                        async m => await this.OnElevatorPositionChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
 

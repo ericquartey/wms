@@ -401,6 +401,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
                     System.Diagnostics.Debug.WriteLine($"ELEV ^ CELL: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
                 }
+
+                this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up);
+                this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down);
+                this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {

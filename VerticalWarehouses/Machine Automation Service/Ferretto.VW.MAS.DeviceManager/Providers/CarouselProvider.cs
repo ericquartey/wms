@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
+        private readonly IMachineResourcesProvider machineResourcesProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         #endregion
@@ -26,18 +29,61 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public CarouselProvider(
             IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IMachineResourcesProvider machineResourcesProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
         #endregion
 
         #region Methods
+
+        public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber)
+        {
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+            if (bay.Carousel is null)
+            {
+                throw new InvalidOperationException(Resources.Bays.TheSpecifiedBayHasNoCarousel);
+            }
+
+            var isLoadingUnitInLowerPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
+            var isLoadingUnitInUpperPosition = this.machineResourcesProvider.IsDrawerInBayTop(bayNumber);
+
+            switch (direction)
+            {
+                case VerticalMovementDirection.Down:
+                    if (isLoadingUnitInLowerPosition || isLoadingUnitInUpperPosition)
+                    {
+                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
+                    }
+
+                    break;
+
+                case VerticalMovementDirection.Up:
+                    if (isLoadingUnitInUpperPosition)
+                    {
+                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
+                    }
+
+                    break;
+
+                default:
+                    throw new InvalidEnumArgumentException(nameof(direction), (int)direction, typeof(VerticalMovementDirection));
+            }
+
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
+            }
+
+            return ActionPolicy.Allowed;
+        }
 
         public double GetPosition(BayNumber bayNumber)
         {
@@ -57,17 +103,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)
+            var policy = this.CanMove(direction, bayNumber);
+            if (!policy.IsAllowed)
             {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {bayNumber} because it has no carousel.");
+                throw new InvalidOperationException(policy.Reason);
             }
 
+            var bay = this.baysProvider.GetByNumber(bayNumber);
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
 
@@ -88,7 +135,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             this.PublishCommand(
                 messageData,
@@ -100,17 +147,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveManual(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void MoveManual(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)
+            var policy = this.CanMove(direction, bayNumber);
+            if (!policy.IsAllowed)
             {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {bayNumber} because it has no carousel.");
+                throw new InvalidOperationException(policy.Reason);
             }
 
+            var bay = this.baysProvider.GetByNumber(bayNumber);
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
@@ -128,7 +176,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             this.PublishCommand(
                 messageData,

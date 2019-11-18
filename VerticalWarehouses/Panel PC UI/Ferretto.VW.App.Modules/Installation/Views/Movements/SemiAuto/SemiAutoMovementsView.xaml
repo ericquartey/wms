@@ -82,7 +82,7 @@
             </Grid.ColumnDefinitions>
 
             <ctrls:PpcSpinEdit Grid.Column="0"
-                               Margin="4,4,4,0"
+                               Margin="4,4,4,4"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
                                EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -94,6 +94,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -113,6 +114,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -132,6 +134,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -141,15 +144,17 @@
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding UnloadToBayCommand}"
                                 Content="{x:Static res:InstallationApp.UnloadToBay}"
                                 IsBusy="{Binding IsBusyUnloadingToBay}"
-                                Visibility="{Binding IsElevatorInBay, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding UnloadToCellCommand}"
@@ -160,15 +165,17 @@
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding LoadFromBayCommand}"
                                 Content="{x:Static res:InstallationApp.LoadFromBay}"
                                 IsBusy="{Binding IsBusyLoadingFromBay}"
-                                Visibility="{Binding IsElevatorInBay, Converter={StaticResource BTVC}}" />
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding LoadFromCellCommand}"
@@ -178,6 +185,7 @@
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding SetWeightControlCommand}"
@@ -186,6 +194,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningChainCommand}"
@@ -194,6 +203,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningBayCommand}"
@@ -202,6 +212,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding ResetCommand}"
@@ -209,6 +220,7 @@
 
             <controls:PpcButton Grid.Row="4"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding MoveToBayPositionCommand}"
@@ -235,6 +247,7 @@
             </StackPanel>
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding OpenShutterCommand}"
@@ -242,6 +255,7 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding IntermediateShutterCommand}"
@@ -249,6 +263,7 @@
                                 Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding ClosedShutterCommand}"
@@ -270,6 +285,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselUpCommand}"
@@ -278,6 +294,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselDownCommand}"
@@ -286,6 +303,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding StopMovingCommand}"

@@ -69,13 +69,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction);
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -87,6 +80,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.2.0 (NJsonSchema v10.0.24.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineCarouselWebService
     {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+    
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FindZeroAsync();
     
@@ -109,18 +109,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task HomingAsync(System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction);
+        System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction);
+        System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task StopAsync();
@@ -1505,13 +1505,32 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum HorizontalMovementDirection
+    public partial class ActionPolicy 
     {
-        NotSpecified = 0,
+        [Newtonsoft.Json.JsonProperty("isAllowed", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsAllowed { get; set; }
     
-        Forwards = 1,
+        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Reason { get; set; }
     
-        Backwards = 2,
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static ActionPolicy FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ActionPolicy>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum VerticalMovementDirection
+    {
+        Up = 0,
+    
+        Down = 1,
     
     }
     
@@ -2226,27 +2245,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ActionPolicy 
-    {
-        [Newtonsoft.Json.JsonProperty("isAllowed", Required = Newtonsoft.Json.Required.Always)]
-        public bool IsAllowed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("reason", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Reason { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static ActionPolicy FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ActionPolicy>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class ElevatorPosition 
     {
         [Newtonsoft.Json.JsonProperty("bayPositionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
@@ -2295,11 +2293,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum VerticalMovementDirection
+    public enum HorizontalMovementDirection
     {
-        Up = 0,
+        NotSpecified = 0,
     
-        Down = 1,
+        Forwards = 1,
+    
+        Backwards = 2,
     
     }
     

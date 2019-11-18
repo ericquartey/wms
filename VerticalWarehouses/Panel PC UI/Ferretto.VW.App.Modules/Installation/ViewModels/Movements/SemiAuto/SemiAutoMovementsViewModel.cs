@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
@@ -30,6 +32,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private bool bayIsShutterThreeSensors;
+
+        private IEnumerable<Bay> bays;
 
         private SubscriptionToken elevatorPositionChangedToken;
 
@@ -62,6 +66,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             ISensorsService sensorsService,
+            IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
@@ -73,6 +78,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }
 
@@ -196,10 +202,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                this.bay = await this.bayManagerService.GetBayAsync();
-                this.cells = await this.machineCellsWebService.GetAllAsync();
-                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                await this.RefreshMachineInfoAsync();
+
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
+                this.bays = await this.machineBaysWebService.GetAllAsync();
 
                 var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
                 this.IsElevatorInCell = elevatorPosition.CellId != null;
@@ -288,7 +294,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
+        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
             {
@@ -303,19 +309,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.IsMoving = false;
 
-                        /***
-                         * WHY??
                         if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
-    */
+
+                        await this.RefreshMachineInfoAsync();
+
                         break;
                     }
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
+                        await this.RefreshMachineInfoAsync();
+
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
@@ -404,14 +412,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
-            this.carouselDownCommand?.RaiseCanExecuteChanged();
-            this.carouselUpCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
             this.setWeightControlCommand?.RaiseCanExecuteChanged();
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
+        private async Task RefreshMachineInfoAsync()
+        {
+            try
+            {
+                this.bay = await this.bayManagerService.GetBayAsync();
+                this.cells = await this.machineCellsWebService.GetAllAsync();
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private async Task ResetCommandAsync()
@@ -501,7 +523,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnPositioningOperationChanged,
+                        async m => await this.OnPositioningOperationChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
 

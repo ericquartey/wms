@@ -67,7 +67,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand CloseCommand =>
             this.closeCommand
             ??
-            (this.closeCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
+            (this.closeCommand = new DelegateCommand(async () => await this.MoveCarouselDownAsync()));
 
         public bool IsClosing
         {
@@ -102,21 +102,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public async Task CloseCarouselAsync()
-        {
-            this.IsClosing = true;
-
-            this.DisableAllExceptThis();
-
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
-        }
-
         public override void Disappear()
         {
             base.Disappear();
 
             this.positioningToken?.Dispose();
             this.positioningToken = null;
+        }
+
+        public async Task MoveCarouselDownAsync()
+        {
+            this.IsClosing = true;
+
+            this.DisableAllExceptThis();
+
+            await this.StartMovementAsync(VerticalMovementDirection.Down);
         }
 
         public override async Task OnAppearedAsync()
@@ -141,7 +141,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+            await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
         protected override void OnMachinePowerChanged()
@@ -234,7 +234,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        private async Task StartMovementAsync(VerticalMovementDirection direction)
         {
             try
             {

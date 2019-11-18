@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -240,7 +241,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                await this.machineBaysWebService.MoveAsync(direction);
+                throw new NotImplementedException();
+                //  await this.machineBaysWebService.MoveChainAsync(direction);
             }
             catch (System.Exception ex)
             {
