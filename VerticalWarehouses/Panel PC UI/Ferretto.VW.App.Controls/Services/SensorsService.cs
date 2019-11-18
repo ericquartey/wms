@@ -279,11 +279,10 @@ namespace Ferretto.VW.App.Services
             {
                 await this.RetrieveElevatorPositionAsync();
 
-                await this.GetBayAsync();
+                await this.GetBayAsync()
+                    .ContinueWith(async (m) => await this.InitializeSensors());
 
                 this.GetShutter();
-
-                await this.InitializeSensors();
 
                 await this.GetElevatorAsync(forceRefresh);
             }
@@ -357,7 +356,6 @@ namespace Ferretto.VW.App.Services
         private void GetShutter()
         {
             this.IsShutterThreeSensors = this.Bay.Shutter.Type == MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
-            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
         }
 
         private void Initialize()
@@ -387,6 +385,11 @@ namespace Ferretto.VW.App.Services
             var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
             this.sensors.Update(sensorsStates.ToArray());
+
+            if (this.shutterSensors is null)
+            {
+                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+            }
             this.shutterSensors.Update(sensorsStates.ToArray());
 
             this.RaisePropertyChanged(nameof(this.Sensors));
@@ -437,6 +440,11 @@ namespace Ferretto.VW.App.Services
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
+
+            if (this.shutterSensors is null)
+            {
+                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+            }
             this.shutterSensors.Update(message.Data.SensorsStates);
 
             await this.GetBayAsync();

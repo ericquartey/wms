@@ -153,10 +153,12 @@
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal"
+                                        Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBay}"
                                            Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                            Text="{x:Static res:InstallationApp.TrayInBayPositionUp}"
                                            Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
@@ -166,10 +168,14 @@
                                                            Template="{StaticResource PpcSensorControlSmallTemplate}" />
                             </StackPanel>
 
-                            <StackPanel Orientation="Horizontal"
-                                        Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}">
+                            <StackPanel Orientation="Horizontal">
                                 <TextBlock Style="{StaticResource TextBlockTitleStyle}"
-                                           Text="{x:Static res:InstallationApp.TrayInBayPositionDown}" />
+                                           Text="{x:Static res:InstallationApp.TrayInBay}"
+                                           Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVIC}}" />
+
+                                <TextBlock Style="{StaticResource TextBlockTitleStyle}"
+                                           Text="{x:Static res:InstallationApp.TrayInBayPositionDown}"
+                                           Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                                 <controls:PpcSensorControl Margin="2,0"
                                                            VerticalAlignment="Center"
                                                            SensorState="{Binding IsLoadingUnitInMiddleBottomBay}"

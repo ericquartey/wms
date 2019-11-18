@@ -39,9 +39,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel(
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineElevatorWebService machineElevatorWebService,
-            IBayManager bayManagerService)
-            : base(machineElevatorWebService, bayManagerService)
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
+            IBayManager bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             this.machineCarouselWebService = machineCarouselWebService;
 
@@ -104,8 +109,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task CloseCarouselAsync()
         {
-            this.IsClosing = true;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
@@ -138,11 +141,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task OpenCarouselAsync()
         {
-            this.IsOpening = true;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+        }
+
+        protected override void OnErrorStatusChanged()
+        {
+            this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
         }
 
         protected override void OnMachinePowerChanged()
@@ -231,9 +243,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
+            if (this.IsClosing || this.IsOpening)
+            {
+                return;
+            }
+
             try
             {
                 await this.machineCarouselWebService.MoveManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsClosing = true;
+                }
+                else
+                {
+                    this.IsOpening = true;
+                }
             }
             catch (System.Exception ex)
             {

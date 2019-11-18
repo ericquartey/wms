@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineError Resolve(int id);
 
-        IEnumerable<MachineError> ResolveAll();
+        void ResolveAll();
 
         #endregion
     }

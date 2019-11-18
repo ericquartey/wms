@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Prism.Events;
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ISensorsProvider sensorsProvider;
 
         #endregion
@@ -21,10 +24,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public RunningStateProvider(
             ISensorsProvider sensorsProvider,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IErrorsProvider errorsProvider)
             : base(eventAggregator)
         {
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -39,6 +44,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void SetRunningState(bool requestedState, BayNumber requestingBay, MessageActor sender)
         {
+            this.errorsProvider.ResolveAll();
+
             // TODO check this call...
             this.SendCommandToMissionManager(
                 new ChangeRunningStateMessageData(requestedState, null, CommandAction.Start, requestedState ? StopRequestReason.NoReason : StopRequestReason.Stop),
