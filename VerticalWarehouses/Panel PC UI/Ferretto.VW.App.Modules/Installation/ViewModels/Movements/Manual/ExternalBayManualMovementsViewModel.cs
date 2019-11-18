@@ -38,10 +38,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Constructors
 
         public ExternalBayManualMovementsViewModel(
-            IMachineElevatorWebService elevatorWebService,
             IMachineBaysWebService machineBaysWebService,
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(elevatorWebService, bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new System.ArgumentNullException(nameof(machineBaysWebService));
 
@@ -127,6 +132,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.isCompleted = false;
         }
 
+        protected override void OnErrorStatusChanged()
+        {
+            this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
+        }
+
         protected override void OnMachinePowerChanged()
         {
             this.RaiseCanExecuteChanged();
@@ -161,13 +177,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CloseOperation();
                 this.ShowNotification(ex);
             }
-            finally
-            {
-                this.IsMovingForwards = false;
-                this.IsMovingBackwards = false;
-                this.IsStopping = false;
-                this.EnableAll();
-            }
         }
 
         private void CloseOperation()
@@ -180,9 +189,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task MoveBackwardsAsync()
         {
-            this.IsMovingBackwards = true;
-            this.IsMovingForwards = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
@@ -190,9 +196,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task MoveForwardsAsync()
         {
-            this.IsMovingForwards = true;
-            this.IsMovingBackwards = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
@@ -233,9 +236,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
+            if (this.IsMovingBackwards || this.IsMovingForwards)
+            {
+                return;
+            }
+
             try
             {
                 await this.machineBaysWebService.MoveAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsMovingBackwards = true;
+                }
+                else
+                {
+                    this.IsMovingForwards = true;
+                }
             }
             catch (System.Exception ex)
             {

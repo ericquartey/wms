@@ -42,9 +42,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEngineManualMovementsViewModel(
             IMachineShuttersWebService shuttersWebService,
-            IMachineElevatorWebService machineElevatorWebService,
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(machineElevatorWebService, bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             if (shuttersWebService is null)
             {
@@ -121,9 +126,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveDownAsync()
         {
-            this.IsMovingDown = true;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(ShutterMovementDirection.Down);
@@ -131,9 +133,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveUpAsync()
         {
-            this.IsMovingUp = true;
-            this.IsMovingDown = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(ShutterMovementDirection.Up);
@@ -153,6 +152,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false);
 
             this.isCompleted = false;
+        }
+
+        protected override void OnErrorStatusChanged()
+        {
+            this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
         }
 
         protected override void OnMachinePowerChanged()
@@ -185,7 +195,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsStopping = true;
-
                 await this.shuttersWebService.StopAsync();
             }
             catch (System.Exception ex)
@@ -238,9 +247,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StartMovementAsync(ShutterMovementDirection direction)
         {
+            if (this.IsMovingUp || this.IsMovingDown)
+            {
+                return;
+            }
+
             try
             {
                 await this.shuttersWebService.MoveAsync(direction);
+                if (direction == ShutterMovementDirection.Down)
+                {
+                    this.IsMovingDown = true;
+                }
+                else
+                {
+                    this.IsMovingUp = true;
+                }
             }
             catch (System.Exception ex)
             {
