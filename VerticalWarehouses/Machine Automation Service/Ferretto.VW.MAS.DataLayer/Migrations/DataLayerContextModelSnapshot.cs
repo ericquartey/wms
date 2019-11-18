@@ -198,6 +198,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Orientation");
 
+                    b.Property<double>("PositioningCompensation");
+
                     b.Property<double>("ProfileCalibrateLength");
 
                     b.Property<int>("ProfileCalibratePosition");
@@ -1162,7 +1164,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 18, 10, 52, 40, 532, DateTimeKind.Local).AddTicks(7271),
+                            InstallationDate = new DateTime(2017, 1, 18, 16, 9, 43, 226, DateTimeKind.Local).AddTicks(2699),
                             ServiceStatus = 86
                         });
                 });

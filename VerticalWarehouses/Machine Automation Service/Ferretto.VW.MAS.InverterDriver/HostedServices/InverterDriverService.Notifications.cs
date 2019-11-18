@@ -2,8 +2,11 @@
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
@@ -37,6 +40,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 case FieldMessageType.DataLayerReady:
 
+                    this.ReloadRealTimeValues(serviceProvider);
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     this.InitializeTimers();
 
@@ -293,6 +297,41 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.eventAggregator?
                     .GetEvent<FieldNotificationEvent>()
                     .Publish(notificationMessageToFsm);
+            }
+        }
+
+        private void ReloadRealTimeValues(IServiceProvider serviceProvider)
+        {
+            var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            //var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            foreach (var inverter in invertersProvider.GetAll())
+            {
+                if ((inverter is AngInverterStatus || inverter is AcuInverterStatus)
+                    && inverter is IPositioningInverterStatus positioningInverter)
+                {
+                    if (inverter.SystemIndex == InverterIndex.MainInverter)
+                    {
+                        var axis = elevatorDataProvider.GetVerticalAxis();
+                        var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetVerticalAxis().Offset, Orientation.Vertical);
+                        positioningInverter.UpdateInverterCurrentPosition(Axis.Vertical, currentAxisPosition);
+                        //if()
+                        //{
+                        //}
+                    }
+                    // for future use
+                    //else if (inverter.SystemIndex == InverterIndex.Slave1)
+                    //{
+                    //    var axis = elevatorDataProvider.GetHorizontalAxis();
+                    //    var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
+                    //    positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
+                    //}
+                    //else
+                    //{
+                    //    var currentAxisPosition = (int)Math.Round(baysProvider.GetResolution(inverter.SystemIndex) * baysProvider.GetByInverterIndex(inverter.SystemIndex).);
+                    //    positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
+                    //}
+                }
             }
         }
 

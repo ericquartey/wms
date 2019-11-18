@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -109,6 +111,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                 {
                     this.UpdateLoadingUnitLocation();
+                    this.UpdateErrorCompensation();
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -153,6 +156,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug("Retry Stop Command");
             this.Start();
+        }
+
+        private void UpdateErrorCompensation()
+        {
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+
+            var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+            if (resourceProvider.IsDrawerCompletelyOffCradle)
+            {
+                var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                var axis = elevatorDataProvider.GetHorizontalAxis();
+                var totalDistance = axis.Profiles
+                    .Where(p => p.Name == MovementProfileType.ShortPickup || p.Name == MovementProfileType.LongDeposit)
+                    .Select(s => s.TotalDistance)
+                    .Sum();
+
+                var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
+
+                var compensation = elevatorProvider.HorizontalPosition % totalDistance;
+                elevatorDataProvider.UpdatePositioningCompensation(Orientation.Horizontal, compensation);
+            }
         }
 
         private void UpdateLoadingUnitLocation()

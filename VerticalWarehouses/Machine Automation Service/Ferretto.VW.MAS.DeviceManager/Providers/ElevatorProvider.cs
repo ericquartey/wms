@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var speed = profileSteps.Select(s => s.Speed).ToArray();
             var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
             var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
-            var switchPosition = profileSteps.Select(s => this.HorizontalPosition + (s.Position * directionMultiplier)).ToArray();
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - axis.PositioningCompensation + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
 

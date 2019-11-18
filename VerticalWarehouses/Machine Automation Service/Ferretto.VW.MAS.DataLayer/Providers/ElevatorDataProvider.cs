@@ -198,6 +198,22 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void UpdatePositioningCompensation(Orientation orientation, double compensation)
+        {
+            lock (this.dataContext)
+            {
+                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
+                if (axis is null)
+                {
+                    throw new EntityNotFoundException(orientation.ToString());
+                }
+
+                axis.PositioningCompensation = compensation;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public void UpdateRealTimePosition(Orientation orientation, double position)
         {
             lock (this.dataContext)

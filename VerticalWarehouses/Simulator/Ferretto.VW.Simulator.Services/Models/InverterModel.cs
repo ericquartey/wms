@@ -1196,6 +1196,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
                 this.AxisPosition = target;
+                if (this.OperationMode == InverterOperationMode.TableTravel)
+                {
+                    // simulate positioning error
+                    this.AxisPosition += (ushort)(new Random().Next(0, 3));
+                }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack
                 this.IsTargetReached = true;
