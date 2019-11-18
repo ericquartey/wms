@@ -315,17 +315,16 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var axis = elevatorDataProvider.GetVerticalAxis();
                         var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetVerticalAxis().Offset, Orientation.Vertical);
                         positioningInverter.UpdateInverterCurrentPosition(Axis.Vertical, currentAxisPosition);
-                        //if()
-                        //{
-                        //}
+                        if ()
+                        {
+                        }
                     }
-                    // for future use
-                    //else if (inverter.SystemIndex == InverterIndex.Slave1)
-                    //{
-                    //    var axis = elevatorDataProvider.GetHorizontalAxis();
-                    //    var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
-                    //    positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
-                    //}
+                    else if (inverter.SystemIndex == InverterIndex.Slave1)
+                    {
+                        var axis = elevatorDataProvider.GetHorizontalAxis();
+                        var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
+                        positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
+                    }
                     //else
                     //{
                     //    var currentAxisPosition = (int)Math.Round(baysProvider.GetResolution(inverter.SystemIndex) * baysProvider.GetByInverterIndex(inverter.SystemIndex).);
