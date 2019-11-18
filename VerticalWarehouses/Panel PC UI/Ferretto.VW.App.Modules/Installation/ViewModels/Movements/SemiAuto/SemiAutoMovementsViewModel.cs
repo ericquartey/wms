@@ -206,6 +206,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
+                this.HasCarousel = this.bay.Carousel != null;
                 this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
                 this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
             }
