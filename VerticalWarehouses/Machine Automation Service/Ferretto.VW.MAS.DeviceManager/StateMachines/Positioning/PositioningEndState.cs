@@ -175,7 +175,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
 
-                var compensation = elevatorProvider.HorizontalPosition % totalDistance;
+                var compensation = (elevatorProvider.HorizontalPosition > 0) ? elevatorProvider.HorizontalPosition % totalDistance : elevatorProvider.HorizontalPosition % -totalDistance;
                 elevatorDataProvider.UpdatePositioningCompensation(Orientation.Horizontal, compensation);
             }
         }

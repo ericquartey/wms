@@ -459,7 +459,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                             {
                                 elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
                                 // for future use
-                                //serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(Orientation.Vertical, dataInverters.CurrentPosition.Value);
+                                serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(Orientation.Vertical, dataInverters.CurrentPosition.Value);
                                 notificationData.AxisMovement = dataInverters.CurrentAxis;
                             }
                             else if (dataInverters.CurrentAxis is Axis.Horizontal)
@@ -476,7 +476,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 var carouselProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
                                 carouselProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
                                 // for future use
-                                //carouselProvider.UpdateRealTimePosition(messageBayBayIndex, dataInverters.CurrentPosition.Value);
+                                carouselProvider.UpdateRealTimePosition(messageBayBayIndex, dataInverters.CurrentPosition.Value);
                                 notificationData.AxisMovement = Axis.BayChain;
                                 notificationData.MovementMode = MovementMode.BayChain;
                             }

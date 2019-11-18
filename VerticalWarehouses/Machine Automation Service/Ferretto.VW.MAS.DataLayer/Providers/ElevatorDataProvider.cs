@@ -211,6 +211,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 axis.PositioningCompensation = compensation;
 
                 this.dataContext.SaveChanges();
+                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
             }
         }
 

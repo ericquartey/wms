@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -304,8 +305,10 @@ namespace Ferretto.VW.MAS.InverterDriver
         {
             var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            //var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-            foreach (var inverter in invertersProvider.GetAll())
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var inverterList = invertersProvider.GetAll();
+            var bayList = baysProvider.GetAll();
+            foreach (var inverter in inverterList)
             {
                 if ((inverter is AngInverterStatus || inverter is AcuInverterStatus)
                     && inverter is IPositioningInverterStatus positioningInverter)
@@ -315,8 +318,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var axis = elevatorDataProvider.GetVerticalAxis();
                         var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetVerticalAxis().Offset, Orientation.Vertical);
                         positioningInverter.UpdateInverterCurrentPosition(Axis.Vertical, currentAxisPosition);
-                        if ()
+                        if (!inverterList.Any(x => x.SystemIndex == InverterIndex.Slave1))
                         {
+                            axis = elevatorDataProvider.GetHorizontalAxis();
+                            currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
+                            positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
                         }
                     }
                     else if (inverter.SystemIndex == InverterIndex.Slave1)
@@ -325,11 +331,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                         var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
                         positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
                     }
-                    //else
-                    //{
-                    //    var currentAxisPosition = (int)Math.Round(baysProvider.GetResolution(inverter.SystemIndex) * baysProvider.GetByInverterIndex(inverter.SystemIndex).);
-                    //    positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
-                    //}
+                    else
+                    {
+                        var bay = bayList.FirstOrDefault(x => x.Inverter.Index == inverter.SystemIndex);
+                        var currentAxisPosition = (int)Math.Round(bay.Resolution * bay.RealTimePosition);
+                        positioningInverter.UpdateInverterCurrentPosition(Axis.BayChain, currentAxisPosition);
+                    }
                 }
             }
         }
