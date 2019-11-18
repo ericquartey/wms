@@ -15,8 +15,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IErrorsProvider errorsProvider;
-
         private readonly IRunningStateProvider runningStateProvider;
 
         #endregion
@@ -24,11 +22,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public PowerController(
-            IRunningStateProvider runningStateProvider,
-            IErrorsProvider errorsProvider)
+            IRunningStateProvider runningStateProvider)
         {
             this.runningStateProvider = runningStateProvider ?? throw new ArgumentNullException(nameof(runningStateProvider));
-            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
         #endregion
@@ -63,7 +59,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public IActionResult PowerOn()
         {
-            this.errorsProvider.ResolveAll();
             this.runningStateProvider.SetRunningState(true, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
