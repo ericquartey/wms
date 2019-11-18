@@ -284,20 +284,6 @@ namespace Ferretto.VW.App.Controls
             }
         }
 
-        // private void KeyboardClosed()
-        // {
-        //     this.EventAggregator
-        //.GetEvent<KeyboardEventsPubSubEvent>()
-        //.Publish(new KeyboardEventsMessage(false));
-        // }
-
-        // private void KeyboardOpen()
-        // {
-        //     this.EventAggregator
-        //.GetEvent<KeyboardEventsPubSubEvent>()
-        //.Publish(new KeyboardEventsMessage(true));
-        // }
-
         private void OnKeyDownHandler(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
