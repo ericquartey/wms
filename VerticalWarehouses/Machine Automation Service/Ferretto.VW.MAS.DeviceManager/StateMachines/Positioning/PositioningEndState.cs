@@ -245,10 +245,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                           sourceBayPositionId.Value,
                           null);
                 }
-
-                baysProvider.SetLoadingUnit(
-                    sourceBayPositionId.Value,
-                    null);
+                else
+                {
+                    throw new InvalidOperationException(
+                        $"The source bay position for pickup (id={sourceCellId}) contains a loading unit (id={bayPosition.LoadingUnit?.Id}) that is different from the requested one (id={loadingUnitId}).");
+                }
             }
             else if (sourceCellId.HasValue)
             {

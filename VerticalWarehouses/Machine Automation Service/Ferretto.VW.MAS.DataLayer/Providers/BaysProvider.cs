@@ -598,7 +598,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var bayPosition = this.dataContext.BayPositions.SingleOrDefault(p => p.Id == bayPositionId);
+                var bayPosition = this.dataContext.BayPositions
+                    .Include(b => b.LoadingUnit)
+                    .SingleOrDefault(p => p.Id == bayPositionId);
+
                 if (bayPosition is null)
                 {
                     throw new EntityNotFoundException(bayPositionId);

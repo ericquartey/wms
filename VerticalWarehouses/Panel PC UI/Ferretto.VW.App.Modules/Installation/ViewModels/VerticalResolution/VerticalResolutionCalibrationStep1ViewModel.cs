@@ -50,11 +50,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineSensorsWebService machineSensorsWebService,
-            IHealthProbeService healthProbeService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, healthProbeService)
-            IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IHealthProbeService healthProbeService,
             IMachineElevatorService machineElevatorService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService, healthProbeService)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));

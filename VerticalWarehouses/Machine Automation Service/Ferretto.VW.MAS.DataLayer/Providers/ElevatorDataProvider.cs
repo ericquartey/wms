@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -24,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <summary>
         /// The position tolerance, in millimeters, used to validate the logical positionin of the elevator when located opposite a bay or a cell.
         /// </summary>
-        private const double VerticalPositionValidationTolerance = 3;
+        private const double VerticalPositionValidationTolerance = 5;
 
         private readonly IMemoryCache cache;
 
@@ -35,6 +36,8 @@ namespace Ferretto.VW.MAS.DataLayer
         private readonly IElevatorVolatileDataProvider elevatorVolatileDataProvider;
 
         private readonly IEventAggregator eventAggregator;
+
+        private readonly ILogger<ElevatorDataProvider> logger;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -48,11 +51,13 @@ namespace Ferretto.VW.MAS.DataLayer
             IConfiguration configuration,
             IEventAggregator eventAggregator,
             IElevatorVolatileDataProvider elevatorVolatileDataProvider,
-            ISetupProceduresDataProvider setupProceduresDataProvider)
+            ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILogger<ElevatorDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.elevatorVolatileDataProvider = elevatorVolatileDataProvider ?? throw new ArgumentNullException(nameof(elevatorVolatileDataProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
@@ -89,13 +94,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     var currentCell = this.GetCurrentCell();
                     if (currentCell != null && !this.IsVerticalPositionWithinTolerance(currentCell.Position))
                     {
-                        System.Diagnostics.Debug.WriteLine($"********* set current cell null");
+                        this.logger.LogDebug($"Elevator is leaving cell id={currentCell.Id}");
                         this.SetCurrentCell(null);
                     }
 
                     var currentBayPosition = this.GetCurrentBayPosition();
                     if (currentBayPosition != null && !this.IsVerticalPositionWithinTolerance(currentBayPosition.Height))
                     {
+                        this.logger.LogDebug($"Elevator is leaving bay position id={currentBayPosition.Id}");
                         this.SetCurrentBayPosition(null);
                     }
 
@@ -151,7 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(p => p.LoadingUnit)
                     .SingleOrDefault();
 
-                System.Diagnostics.Debug.WriteLine($">>> DB bayPosition {currentBayPosition?.Id}");
+                Debug.WriteLine($">>> Elevator.Bay = '{currentBayPosition?.Id}'.");
                 this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
                 //  }
 
@@ -169,7 +175,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Select(e => e.Cell)
                     .Include(c => c.LoadingUnit)
                     .SingleOrDefault();
-                System.Diagnostics.Debug.WriteLine($">>> DB cell {currentCell?.Id}");
+                Debug.WriteLine($">>> Elevator.Cell = '{currentCell?.Id}'.");
                 this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
                 // }
 
@@ -267,12 +273,28 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators.Include(e => e.BayPosition).Single();
-                Debug.WriteLine($">>> set db pos from '{elevator.BayPositionId}' to '{bayPositionId}'.");
+                var currentBayPosition = this.GetCurrentBayPosition();
 
-                if (elevator.BayPositionId != bayPositionId)
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.BayPosition)
+                    .Single();
+
+                if (currentBayPosition?.Id != bayPositionId)
                 {
-                    elevator.BayPositionId = bayPositionId;
+                    if (bayPositionId.HasValue)
+                    {
+                        var newBayPosition = this.dataContext.BayPositions.SingleOrDefault(b => b.Id == bayPositionId);
+                        if (newBayPosition is null)
+                        {
+                            throw new EntityNotFoundException(bayPositionId.Value);
+                        }
+
+                        elevator.BayPosition = newBayPosition;
+                    }
+                    else
+                    {
+                        elevator.BayPosition = null;
+                    }
 
                     this.dataContext.SaveChanges();
 
@@ -287,11 +309,28 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var elevator = this.dataContext.Elevators.Single();
-                Debug.WriteLine($">>> set db cell from '{elevator.CellId}' to '{cellId}'.");
-                if (elevator.CellId != cellId)
+                var currentCell = this.GetCurrentCell();
+
+                var elevator = this.dataContext.Elevators
+                    .Include(e => e.Cell)
+                    .Single();
+
+                if (currentCell?.Id != cellId)
                 {
-                    elevator.CellId = cellId;
+                    if (cellId.HasValue)
+                    {
+                        var newCell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+                        if (newCell is null)
+                        {
+                            throw new EntityNotFoundException(cellId.Value);
+                        }
+
+                        elevator.Cell = newCell;
+                    }
+                    else
+                    {
+                        elevator.Cell = null;
+                    }
 
                     this.dataContext.SaveChanges();
 

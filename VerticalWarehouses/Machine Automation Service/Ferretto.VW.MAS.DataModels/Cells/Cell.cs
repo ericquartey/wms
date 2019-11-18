@@ -6,9 +6,6 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        [JsonIgnore]
-        public Elevator Elevator { get; set; }
-
         /// <summary>
         /// When set to True, it means that no loading unit can be layed on the cell, but a loading unit content can be placed in front of the cell.
         /// </summary>

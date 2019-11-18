@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public SocketTransport(IConfiguration configuration)
         {
-            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
+            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
         }
 
         #endregion

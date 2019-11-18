@@ -375,15 +375,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id);
                     this.loadFromBayCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"loadFromBayPolicy: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
 
                     this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id);
                     this.unloadToBayCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"unloadToBayPolicy: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV -> BAY: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
 
                     this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id);
                     this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"moveToBayPositionPolicy: {this.moveToBayPositionPolicy.IsAllowed} {this.moveToBayPositionPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV ^ BAY: {this.moveToBayPositionPolicy.IsAllowed} {this.moveToBayPositionPolicy.Reason}");
                 }
 
                 var selectedCell = this.SelectedCell;
@@ -391,15 +391,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.loadFromCellPolicy = await this.machineElevatorWebService.CanLoadFromCellAsync(selectedCell.Id);
                     this.loadFromCellCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"loadFromCellPolicy: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV <- CELL: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
 
                     this.unloadToCellPolicy = await this.machineElevatorWebService.CanUnloadToCellAsync(selectedCell.Id);
                     this.unloadToCellCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"unloadToCellPolicy: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV -> CELL: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
 
                     this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id);
                     this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
-                    System.Diagnostics.Debug.WriteLine($"moveToCellPolicy: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
+                    System.Diagnostics.Debug.WriteLine($"ELEV ^ CELL: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
                 }
             }
             catch (Exception ex)

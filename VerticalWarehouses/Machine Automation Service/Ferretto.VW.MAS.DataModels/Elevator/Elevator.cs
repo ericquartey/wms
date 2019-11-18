@@ -14,19 +14,9 @@ namespace Ferretto.VW.MAS.DataModels
         public BayPosition BayPosition { get; set; }
 
         /// <summary>
-        /// Gets or sets the id of the bay located opposite to the elevator, or null if the elevator is not aligned to a bay.
-        /// </summary>
-        public int? BayPositionId { get; set; }
-
-        /// <summary>
         /// Gets or sets the cell located opposite to the elevator, or null if the elevator is not aligned to a cell.
         /// </summary>
         public Cell Cell { get; set; }
-
-        /// <summary>
-        /// Gets or sets the id of the cell located opposite to the elevator, or null if the elevator is not aligned to a cell.
-        /// </summary>
-        public int? CellId { get; set; }
 
         /// <summary>
         /// Gets or sets the loading unit currently loaded on the elevator.

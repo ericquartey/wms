@@ -18,12 +18,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             }
 
             builder
-               .HasOne(p => p.Elevator)
-               .WithOne(e => e.BayPosition)
-               .HasForeignKey<Elevator>(e => e.BayPositionId)
-               .OnDelete(DeleteBehavior.ClientSetNull);
-
-            builder
                 .Property(b => b.Location)
                 .HasColumnType("text")
                 .HasConversion(

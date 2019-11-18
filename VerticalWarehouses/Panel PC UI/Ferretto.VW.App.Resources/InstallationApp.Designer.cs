@@ -961,6 +961,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string ElevatorLogicalPosition {
+            get {
+                return ResourceManager.GetString("ElevatorLogicalPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Vertical Position [mm].
         /// </summary>
         public static string ElevatorVerticalPosition {
@@ -1681,7 +1690,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carica da baia.
+        ///   Looks up a localized string similar to Load.
         /// </summary>
         public static string LoadFromBay {
             get {
@@ -1690,7 +1699,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Carica da cella.
+        ///   Looks up a localized string similar to Load.
         /// </summary>
         public static string LoadFromCell {
             get {
@@ -3031,7 +3040,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scarica in baia.
+        ///   Looks up a localized string similar to Unload.
         /// </summary>
         public static string UnloadToBay {
             get {
@@ -3040,7 +3049,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Scarica in cella.
+        ///   Looks up a localized string similar to Unload.
         /// </summary>
         public static string UnloadToCell {
             get {

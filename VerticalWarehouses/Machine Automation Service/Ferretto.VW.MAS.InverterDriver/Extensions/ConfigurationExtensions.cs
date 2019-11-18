@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private const string VertimagInverterDriverUseMockKey = "Vertimag:InverterDriver:UseMock";
+        private const string VertimagInverterDriverUseMockKey = "Vertimag:Drivers:Inverter:UseMock";
 
         #endregion
 

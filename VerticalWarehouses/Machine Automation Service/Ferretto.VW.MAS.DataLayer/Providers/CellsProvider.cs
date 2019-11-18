@@ -55,7 +55,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 c =>
                     c.Panel.Side == cell.Side
                     &&
-                    c.Position >= cell.Position);
+                    c.Position >= cell.Position
+                    &&
+                    c.Position <= cell.Position + loadingUnit.Height);
 
             return !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable);
         }
@@ -154,7 +156,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var occupiedCells = this.dataContext.Cells
                     .Include(c => c.LoadingUnit)
                     .Where(c =>
-                        c.Side == cell.Side
+                        c.Panel.Side == cell.Side
                         &&
                         c.Position >= cell.Position
                         &&
@@ -179,7 +181,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             else
             {
-                if (cell.IsDeactivated || cell.IsUnusable)
+                if (cell.IsDeactivated)
                 {
                     throw new InvalidOperationException(Resources.Cells.TheTargetCellIsDeactivated);
                 }

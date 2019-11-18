@@ -60,7 +60,13 @@ namespace Ferretto.VW.App.Services
 
         private double? bayPositionUpHeight;
 
+        private int? elevatorBayPositionId;
+
+        private int? elevatorCellId;
+
         private double? elevatorHorizontalPosition;
+
+        private string elevatorLogicalPosition;
 
         private SubscriptionToken elevatorPositionChangedToken;
 
@@ -174,6 +180,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.elevatorHorizontalPosition;
             set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+        }
+
+        public string ElevatorLogicalPosition
+        {
+            get => this.elevatorLogicalPosition;
+            private set => this.SetProperty(ref this.elevatorLogicalPosition, value);
         }
 
         public double? ElevatorVerticalPosition
@@ -337,8 +349,9 @@ namespace Ferretto.VW.App.Services
             {
                 if (this.IsHealthy)
                 {
-                    this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                    this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+                    var position = await this.machineElevatorWebService.GetPositionAsync();
+                    this.ElevatorVerticalPosition = position.Vertical;
+                    this.ElevatorHorizontalPosition = position.Horizontal;
 
                     var isLoadingUnitEmbarked =
                         this.sensors.LuPresentInMachineSide
@@ -384,6 +397,22 @@ namespace Ferretto.VW.App.Services
         {
             this.ElevatorVerticalPosition = e.VerticalPosition;
             this.ElevatorHorizontalPosition = e.HorizontalPosition;
+
+            if (e.CellId != null && this.elevatorCellId != e.CellId)
+            {
+                this.ElevatorLogicalPosition = $"Cella {e.CellId}";
+                this.elevatorCellId = e.CellId;
+            }
+            else if (e.BayPositionId != null && this.elevatorBayPositionId != e.BayPositionId)
+            {
+                this.ElevatorLogicalPosition = $"Baia {e.BayPositionId}";
+                //   this.machineBaysWebService.get
+                this.elevatorBayPositionId = e.BayPositionId;
+            }
+            else
+            {
+                this.ElevatorLogicalPosition = null;
+            }
         }
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
@@ -393,7 +422,7 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
                         await this.GetElevatorAsync(false);
-                            await this.GetElevatorAsync(false);
+                        await this.GetElevatorAsync(false);
 
                         break;
                     }

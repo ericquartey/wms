@@ -23,12 +23,6 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasForeignKey<LoadingUnit>(l => l.CellId)
                 .OnDelete(DeleteBehavior.ClientSetNull);
 
-            builder
-               .HasOne(c => c.Elevator)
-               .WithOne(e => e.Cell)
-               .HasForeignKey<Elevator>(e => e.CellId)
-               .OnDelete(DeleteBehavior.ClientSetNull);
-
             builder.Property(c => c.Status)
                 .HasColumnType("text")
                 .HasConversion(
