@@ -34,18 +34,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly Sensors sensors = new Sensors();
 
-        private bool bay1IsVisible;
-
-        private bool bay1ZeroChainisVisible;
-
-        private bool bay2IsVisible;
-
-        private bool bay2ZeroChainisVisible;
-
-        private bool bay3IsVisible;
-
-        private bool bay3ZeroChainisVisible;
-
         private double? bayChainPosition;
 
         private bool bayIsMultiPosition;
@@ -55,6 +43,8 @@ namespace Ferretto.VW.App.Services
         private double? bayPositionDownHeight;
 
         private double? bayPositionUpHeight;
+
+        private bool bayZeroChainIsVisible;
 
         private double? elevatorHorizontalPosition;
 
@@ -106,34 +96,6 @@ namespace Ferretto.VW.App.Services
 
         public Bay Bay { get; private set; }
 
-        public bool Bay1IsVisible
-        {
-            get => this.bay1IsVisible;
-            set => this.SetProperty(ref this.bay1IsVisible, value);
-        }
-
-        public bool Bay1ZeroChainIsVisible
-        {
-            get => this.bay1ZeroChainisVisible;
-            private set => this.SetProperty(ref this.bay1ZeroChainisVisible, value);
-        }
-
-        public bool Bay2IsVisible
-        {
-            get => this.bay2IsVisible;
-            set => this.SetProperty(ref this.bay2IsVisible, value);
-        }
-
-        public bool Bay2ZeroChainIsVisible { get => this.bay2ZeroChainisVisible; private set => this.SetProperty(ref this.bay2ZeroChainisVisible, value); }
-
-        public bool Bay3IsVisible
-        {
-            get => this.bay3IsVisible;
-            set => this.SetProperty(ref this.bay3IsVisible, value);
-        }
-
-        public bool Bay3ZeroChainIsVisible { get => this.bay3ZeroChainisVisible; private set => this.SetProperty(ref this.bay3ZeroChainisVisible, value); }
-
         public double? BayChainPosition
         {
             get => this.bayChainPosition;
@@ -162,6 +124,38 @@ namespace Ferretto.VW.App.Services
         {
             get => this.bayPositionUpHeight;
             private set => this.SetProperty(ref this.bayPositionUpHeight, value);
+        }
+
+        public bool BayZeroChain
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.ACUBay1S3IND;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.ACUBay2S3IND;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.ACUBay3S3IND;
+                }
+
+                return false;
+            }
+        }
+
+        public bool BayZeroChainIsVisible
+        {
+            get => this.bayZeroChainIsVisible;
+            set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
         public double? ElevatorHorizontalPosition
@@ -197,17 +191,43 @@ namespace Ferretto.VW.App.Services
                     return false;
                 }
 
-                if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
                 {
                     return this.Sensors.LUPresentInBay1;
                 }
-                else if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
                 {
                     return this.Sensors.LUPresentInBay2;
                 }
-                else if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
                 {
                     return this.Sensors.LUPresentInBay3;
+                }
+
+                return false;
+            }
+        }
+
+        public bool IsLoadingUnitInMiddleBottomBay
+        {
+            get
+            {
+                if (this.Bay is null)
+                {
+                    return false;
+                }
+
+                if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+                {
+                    return this.Sensors.LUPresentMiddleBottomBay1;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+                {
+                    return this.Sensors.LUPresentMiddleBottomBay2;
+                }
+                else if (this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+                {
+                    return this.Sensors.LUPresentMiddleBottomBay3;
                 }
 
                 return false;
@@ -263,8 +283,6 @@ namespace Ferretto.VW.App.Services
 
                 this.GetShutter();
 
-                await this.CheckZeroChainOnBays();
-
                 await this.InitializeSensors();
 
                 await this.GetElevatorAsync(forceRefresh);
@@ -275,26 +293,6 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private async Task CheckZeroChainOnBays()
-        {
-            var bays = await this.machineBaysWebService.GetAllAsync();
-
-            this.Bay1ZeroChainIsVisible = bays
-                  .Where(b => b.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne;
-
-            this.Bay2ZeroChainIsVisible = bays
-                  .Where(b => b.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo;
-
-            this.Bay3ZeroChainIsVisible = bays
-                  .Where(b => b.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
-                  .Select(b => b.Carousel != null || b.IsExternal)
-                  .SingleOrDefault() && this.BayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree;
-        }
-
         private async Task GetBayAsync()
         {
             try
@@ -303,10 +301,6 @@ namespace Ferretto.VW.App.Services
                 {
                     this.Bay = await this.bayManagerService.GetBayAsync();
                     this.BayNumber = this.Bay.Number;
-
-                    this.Bay1IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne;
-                    this.Bay2IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo;
-                    this.Bay3IsVisible = this.BayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree;
 
                     if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
                     {
@@ -323,6 +317,8 @@ namespace Ferretto.VW.App.Services
                     this.BayIsMultiPosition = this.Bay.IsDouble;
 
                     this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
+
+                    this.BayZeroChainIsVisible = this.Bay.IsExternal || this.Bay.Carousel != null;
 
                     this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
                 }
@@ -454,7 +450,11 @@ namespace Ferretto.VW.App.Services
         {
             this.RaisePropertyChanged(nameof(this.Sensors));
             this.RaisePropertyChanged(nameof(this.IsZeroChain));
+            this.RaisePropertyChanged(nameof(this.BayZeroChain));
+            this.RaisePropertyChanged(nameof(this.BayZeroChainIsVisible));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
+            this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));
         }
 
         private async Task RetrieveElevatorPositionAsync()

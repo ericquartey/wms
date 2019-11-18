@@ -72,6 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.moveData = machineMoveData;
 
                 var direction = HorizontalMovementDirection.Backwards;
+                bool measure = false;
                 switch (this.moveData.LoadingUnitSource)
                 {
                     case LoadingUnitLocation.Cell:
@@ -88,10 +89,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         var bay = this.baysProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                        measure = true;
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
             }
             else
             {
