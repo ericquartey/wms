@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
 using DevExpress.Xpf.Core;
-using Ferretto.WMS.App.Controls;
 
 namespace Ferretto.VW.App.Services
 {
@@ -36,7 +35,7 @@ namespace Ferretto.VW.App.Services
 
         public static void Show()
         {
-            DXSplashScreen.Show<SplashScreen>();
+            DXSplashScreen.Show<Controls.SplashScreen>();
         }
 
         #endregion

@@ -5,50 +5,20 @@ using System.Windows.Threading;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 
-public partial class SplashScreen : UserControl
+namespace Ferretto.VW.App.Controls
 {
-    #region Fields
-
-    private static readonly TimeSpan TimerInterval = new TimeSpan(0, 0, 0, 0, 200);
-
-    private DateTime startTime;
-
-    #endregion
-
-    #region Constructors
-
-    public SplashScreen()
+    public partial class SplashScreen : UserControl
     {
-        this.InitializeComponent();
+        #region Constructors
 
-        this.copyrightText.Text = SplashScreenService.Copyright;
-        this.versionText.Text = string.Format(VWApp.Version, SplashScreenService.Version);
+        public SplashScreen()
+        {
+            this.InitializeComponent();
 
-#if DEBUG
-        this.SetupTimer();
-#endif
+            this.copyrightText.Text = SplashScreenService.Copyright;
+            this.versionText.Text = string.Format(VWApp.Version, SplashScreenService.Version);
+        }
+
+        #endregion
     }
-
-    #endregion
-
-    #region Methods
-
-    private void SetupTimer()
-    {
-        this.startTime = Process.GetCurrentProcess().StartTime;
-        var timer = new DispatcherTimer();
-        timer.Interval = TimerInterval;
-        timer.Tick += this.Timer_Tick;
-
-        timer.Start();
-    }
-
-    private void Timer_Tick(object sender, EventArgs e)
-    {
-        var elapsedSeconds = (DateTime.Now - this.startTime).TotalSeconds;
-        this.Timing.Text = $"{DesktopApp.ElapsedTime}: {elapsedSeconds.ToString("#")}s";
-    }
-
-    #endregion
-}
 }

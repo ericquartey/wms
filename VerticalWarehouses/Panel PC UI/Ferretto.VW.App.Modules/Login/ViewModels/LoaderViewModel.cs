@@ -85,6 +85,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            SplashScreenService.Hide();
+
             await base.OnAppearedAsync();
 
             this.subscriptionToken = this.healthProbeService.HealthStatusChanged

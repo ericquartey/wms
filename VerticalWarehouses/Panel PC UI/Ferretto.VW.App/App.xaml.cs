@@ -72,33 +72,14 @@ namespace Ferretto.VW.App
             return this.Container.Resolve<Shell>();
         }
 
-        protected override void OnInitialized()
-        {
-            try
-            {
-                SplashScreenService.SetMessage(DesktopApp.InitializingLogin);
-                SplashScreenService.Hide();
-
-                var navigationService = ServiceLocator.Current.GetInstance<INavigationService>();
-                navigationService.Appear(nameof(Common.Utils.Modules.Layout), Common.Utils.Modules.Layout.LOGINVIEW);
-
-                var assembly = typeof(App).Assembly;
-                var versionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
-                this.logger.Info($"Starting application, version '{versionInfo.ProductVersion}'.");
-            }
-            catch (System.Exception ex)
-            {
-                this.logger.Error(ex, "An error occurred on application startup.");
-            }
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             if (!AppCheck.Start())
             {
                 this.Shutdown(1);
             }
+
+            SplashScreenService.Show();
 
             this.HACK_ForceItalianLanguage();
 
