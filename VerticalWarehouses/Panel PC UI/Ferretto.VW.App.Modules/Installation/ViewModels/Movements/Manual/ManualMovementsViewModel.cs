@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -19,11 +20,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly ExternalBayManualMovementsViewModel externalBayManualMovementsViewModel;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly IMachineBaysWebService machineBayWebService;
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly IMachineShuttersWebService machineShutterWebService;
 
@@ -46,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineCarouselWebService machineCarouselWebService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineBaysWebService machineBayWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
@@ -54,11 +61,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineElevatorWebService = machineElevatorWebService ?? throw new System.ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBayWebService = machineBayWebService ?? throw new System.ArgumentNullException(nameof(machineBayWebService));
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
-            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.bayManager);
-            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);
-            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorWebService, this.machineBayWebService, this.bayManager);
-            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.bayManager);
+            this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
+            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
+            this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineBayWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
+            this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
         }
 
         #endregion
