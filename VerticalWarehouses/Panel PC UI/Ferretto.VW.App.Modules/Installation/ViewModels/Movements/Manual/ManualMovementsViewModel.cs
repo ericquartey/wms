@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using CommonServiceLocator;
+using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
@@ -41,6 +44,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool hasShutter;
 
         private bool isBayExternal;
+
+        private bool unsafeRelease;
+
+        private DelegateCommand unsafeReleaseCommand;
 
         #endregion
 
@@ -100,6 +107,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEngineManualMovementsViewModel ShutterEngineManualMovementsViewModel => this.shutterEngineManualMovementsViewModel;
 
+        public bool UnsafeRelease
+        {
+            get => this.unsafeRelease;
+            private set => this.SetProperty(ref this.unsafeRelease, value, this.UpdateUnsafeRelease);
+        }
+
+        public ICommand UnsafeReleaseCommand =>
+            this.unsafeReleaseCommand
+            ??
+            (this.unsafeReleaseCommand = new DelegateCommand(this.UnsafeReleaseAsync));
+
         #endregion
 
         #region Methods
@@ -136,9 +154,31 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.IsBayExternal));
         }
 
+        public void UnsafeReleaseAsync()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<Controls.Interfaces.IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(
+                InstallationApp.ConfirmationOperation,
+                "Movimenti manuali",
+                Controls.Interfaces.DialogType.Question,
+                Controls.Interfaces.DialogButtons.YesNo);
+            if (messageBoxResult == Controls.Interfaces.DialogResult.Yes)
+            {
+                this.UnsafeRelease = !this.UnsafeRelease;
+            }
+        }
+
         public override void UpdateNotifications()
         {
             this.ShowNotification(InstallationApp.LSMTComandNote, Services.Models.NotificationSeverity.Info);
+        }
+
+        private void UpdateUnsafeRelease()
+        {
+            this.carouselManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
+            this.engineManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
+            this.externalBayManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
+            this.shutterEngineManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
         }
 
         #endregion
