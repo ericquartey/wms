@@ -70,11 +70,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
+            // if weight is unknown we move as full weight
             double scalingFactor = 1;
             if (loadingUnitId.HasValue)
             {
                 var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
-                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0)
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
                 {
                     scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
                 }

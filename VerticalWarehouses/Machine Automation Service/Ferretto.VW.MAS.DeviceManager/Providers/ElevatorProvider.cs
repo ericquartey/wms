@@ -166,14 +166,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
+            // if weight is unknown we move as full weight
             double scalingFactor = 1;
             if (loadingUnitId.HasValue)
             {
                 var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
-                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0)
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
                 {
-                    // if weight is unknown we move as full weight
-                    scalingFactor = (loadUnit.GrossWeight == 0) ? 1 : (loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare));
+                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
                 }
             }
             foreach (var profileStep in profileSteps)
