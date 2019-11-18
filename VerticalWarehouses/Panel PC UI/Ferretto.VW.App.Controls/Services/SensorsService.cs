@@ -279,11 +279,10 @@ namespace Ferretto.VW.App.Services
             {
                 await this.RetrieveElevatorPositionAsync();
 
-                await this.GetBayAsync();
+                await this.GetBayAsync()
+                    .ContinueWith(async (m) => await this.InitializeSensors());
 
                 this.GetShutter();
-
-                await this.InitializeSensors();
 
                 await this.GetElevatorAsync(forceRefresh);
             }
