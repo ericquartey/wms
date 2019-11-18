@@ -440,14 +440,22 @@ namespace Ferretto.VW.App.Services
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             this.sensors.Update(message.Data.SensorsStates);
-
             if (this.shutterSensors is null)
             {
-                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                await this.GetBayAsync()
+                    .ContinueWith(m =>
+                    {
+                        if (this.Bay != null)
+                        {
+                            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                            this.shutterSensors.Update(message.Data.SensorsStates);
+                        }
+                    });
             }
-            this.shutterSensors.Update(message.Data.SensorsStates);
-
-            await this.GetBayAsync();
+            else
+            {
+                this.shutterSensors.Update(message.Data.SensorsStates);
+            }
 
             await this.GetElevatorAsync(false);
 
