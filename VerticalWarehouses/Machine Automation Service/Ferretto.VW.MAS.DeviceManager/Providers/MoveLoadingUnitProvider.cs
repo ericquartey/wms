@@ -142,9 +142,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, openShutter, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, measure, requestingBay, sender);
 
             if (openShutter)
             {
@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, MessageActor sender, BayNumber requestingBay)
+        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay)
         {
             var parameters = this.setupProceduresDataProvider.GetVerticalManualMovements();
 
@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, closeShutter, true, requestingBay, MessageActor.MachineManager);
+            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, measure, true, requestingBay, MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)
