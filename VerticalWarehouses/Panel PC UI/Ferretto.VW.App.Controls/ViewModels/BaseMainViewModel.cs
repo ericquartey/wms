@@ -15,6 +15,8 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
+        private readonly IMachineErrorsService machineErrorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineErrorsService>();
+
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
         private SubscriptionToken healthStatusChangedToken;
@@ -47,6 +49,8 @@ namespace Ferretto.VW.App.Controls
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
         }
+
+        public MachineError MachineError => this.machineErrorsService.ActiveError;
 
         public PresentationMode Mode
         {
@@ -119,6 +123,11 @@ namespace Ferretto.VW.App.Controls
                        async e => await this.OnMachinePowerChangedAsync(e),
                        ThreadOption.UIThread,
                        false);
+
+            this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
+            {
+                await this.OnErrorStatusChangedAsync(e);
+            };
 
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
@@ -202,6 +211,13 @@ namespace Ferretto.VW.App.Controls
             this.ClearNotifications();
         }
 
+        protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
+        {
+            this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, this.healthProbeService.HealthStatus);
+
+            return Task.CompletedTask;
+        }
+
         protected virtual Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             this.UpdateIsEnabled(this.machineModeService.MachinePower, this.machineModeService.MachineMode, e.HealthStatus);
@@ -232,19 +248,22 @@ namespace Ferretto.VW.App.Controls
             var enableIfManual = (this.EnableMask & EnableMask.MachineManualMode) == EnableMask.MachineManualMode;
 
             this.IsEnabled =
-                this.EnableMask == EnableMask.Any ||
+                (this.EnableMask == EnableMask.Any) ||
                 //
                 (enabeIfPoweredOn &&
                  machinePower == MachinePowerState.Powered &&
-                 healthStatus == HealthStatus.Healthy) ||
+                 healthStatus == HealthStatus.Healthy &&
+                 this.MachineError is null) ||
                 //
                 (enableIfAutomatic &&
                  machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Automatic) ||
+                 machineMode == MachineMode.Automatic &&
+                 this.MachineError is null) ||
                 //
                 (enableIfManual &&
                  machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Manual);
+                 machineMode == MachineMode.Manual &&
+                 this.MachineError is null);
         }
 
         private void UpdatePresentation()
