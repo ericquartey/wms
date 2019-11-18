@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<Cell> Cells { get; set; }
 
+        public Machine Machine { get; set; }
+
         public WarehouseSide Side { get; set; }
 
         #endregion

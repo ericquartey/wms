@@ -15,6 +15,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? LoadingUnitId { get; set; }
 
+        public Machine Machine { get; set; }
+
+        public int MachineId { get; set; }
+
         /// <summary>
         /// Gets or sets the structural properties of the elevator.
         /// </summary>

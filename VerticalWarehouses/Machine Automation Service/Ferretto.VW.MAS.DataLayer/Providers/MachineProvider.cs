@@ -124,6 +124,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
+
                 this.dataContext.Machines.Update(machine);
 
                 this.dataContext.SaveChanges();

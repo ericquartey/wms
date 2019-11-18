@@ -134,6 +134,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new BayPositionsConfiguration())
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
+                .ApplyConfiguration(new MachineConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
