@@ -44,6 +44,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
+
+        private bool keyboardOpened;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private VerticalManualMovementsProcedure procedureParameters;
@@ -136,6 +142,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.RaiseCanExecuteChanged();
                 }
             }
+        }
+
+        public ICommand KeyboardCloseCommand =>
+           this.keyboardCloseCommand
+           ??
+           (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
+
+        public bool KeyboardOpened
+        {
+            get => this.keyboardOpened;
+            set => this.SetProperty(ref this.keyboardOpened, value, this.RaiseCanExecuteChanged);
         }
 
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
@@ -246,16 +268,32 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanResetCommand()
         {
-            return !this.IsMoving
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
         }
 
         private bool CanStopMoving()
         {
-            return this.IsMoving
+            return
+                !this.KeyboardOpened
+                &&
+                this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private void KeyboardClose()
+        {
+            this.KeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.KeyboardOpened = true;
         }
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -414,6 +452,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void RaiseCanExecuteChanged()
         {
             this.CanInputCellId =
+                !this.KeyboardOpened
+                &&
                 this.Cells != null
                 &&
                 !this.IsMoving
@@ -421,11 +461,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
 
             this.CanInputHeight =
+                !this.KeyboardOpened
+                &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
 
             this.CanInputLoadingUnitId =
+                !this.KeyboardOpened
+                &&
                 this.LoadingUnits != null
                 &&
                 this.Cells != null
