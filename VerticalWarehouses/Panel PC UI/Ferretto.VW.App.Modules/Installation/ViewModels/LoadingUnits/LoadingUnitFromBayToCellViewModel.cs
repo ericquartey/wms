@@ -82,12 +82,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                //if (!this.IsLoadingUnitInBay)
-                //{
-                //    this.ShowNotification("la baia non è occupata", Services.Models.NotificationSeverity.Warning);
-                //    return;
-                //}
-
                 var source = this.GetLoadingUnitSource();
 
                 if (source == LoadingUnitLocation.NoLocation)
@@ -98,8 +92,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                //await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
+
+                await this.RetrieveCellsAsync();
 
                 await this.GetLoadingUnits();
             }
