@@ -1,7 +1,6 @@
 using System;
 using System.Configuration;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
