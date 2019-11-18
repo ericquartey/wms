@@ -977,14 +977,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction)
+        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, int? loadingUnitId)
         {
-            return MoveAsync(direction, System.Threading.CancellationToken.None);
+            return MoveAsync(direction, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, int? loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
@@ -992,6 +992,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/move?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(loadingUnitId != null ? ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;

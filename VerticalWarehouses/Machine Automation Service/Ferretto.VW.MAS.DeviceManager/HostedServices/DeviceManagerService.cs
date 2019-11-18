@@ -252,6 +252,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 // TEMP Retrieve the current configuration of IO devices
                 this.RetrieveIoDevicesConfigurationAsync(serviceProvider);
 
+                this.ReloadRealTimeValues(serviceProvider);
+
                 var fieldNotification = new FieldNotificationMessage(
                     null,
                     "Data Layer Ready",
@@ -456,17 +458,25 @@ namespace Ferretto.VW.MAS.DeviceManager
                             if (dataInverters.CurrentAxis is Axis.Vertical)
                             {
                                 elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
+                                // for future use
+                                //serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(Orientation.Vertical, dataInverters.CurrentPosition.Value);
                                 notificationData.AxisMovement = dataInverters.CurrentAxis;
                             }
                             else if (dataInverters.CurrentAxis is Axis.Horizontal)
                             {
                                 elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
+                                if (inverterIndex == Inverter.MasterIndex)
+                                {
+                                    serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(Orientation.Horizontal, dataInverters.CurrentPosition.Value);
+                                }
                                 notificationData.AxisMovement = dataInverters.CurrentAxis;
                             }
                             else
                             {
                                 var carouselProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
                                 carouselProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
+                                // for future use
+                                //carouselProvider.UpdateRealTimePosition(messageBayBayIndex, dataInverters.CurrentPosition.Value);
                                 notificationData.AxisMovement = Axis.BayChain;
                                 notificationData.MovementMode = MovementMode.BayChain;
                             }
@@ -582,6 +592,45 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
             messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
+        }
+
+        private void ReloadRealTimeValues(IServiceProvider serviceProvider)
+        {
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            var carouselProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
+            foreach (var bay in baysProvider.GetAll())
+            {
+                var inverterList = serviceProvider.GetRequiredService<IDigitalDevicesDataProvider>().GetAllInvertersByBay(bay.Number);
+                foreach (var inverter in inverterList)
+                {
+                    switch (inverter.Type)
+                    {
+                        case InverterType.Ang:
+                            {
+                                var axis = elevatorDataProvider.GetVerticalAxis();
+                                elevatorProvider.VerticalPosition = axis.RealTimePosition;
+
+                                axis = elevatorDataProvider.GetHorizontalAxis();
+                                elevatorProvider.HorizontalPosition = axis.RealTimePosition;
+                            }
+                            break;
+
+                        case InverterType.Acu:
+                            if (bay.Number == BayNumber.ElevatorBay)
+                            {
+                                var axis = elevatorDataProvider.GetHorizontalAxis();
+                                elevatorProvider.HorizontalPosition = axis.RealTimePosition;
+                            }
+                            else
+                            {
+                                carouselProvider.HorizontalPosition = bay.RealTimePosition;
+                            }
+                            break;
+                    }
+                }
+            }
         }
 
         private void RetrieveIoDevicesConfigurationAsync(IServiceProvider serviceProvider)

@@ -480,12 +480,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ChainOffset = table.Column<double>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
                     CurrentMissionOperationId = table.Column<int>(nullable: true),
+                    EmptyLoadMovementId = table.Column<int>(nullable: true),
+                    FullLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
                     IoDeviceId = table.Column<int>(nullable: true),
                     IsActive = table.Column<bool>(nullable: false),
                     IsExternal = table.Column<bool>(nullable: false),
                     Number = table.Column<int>(nullable: false),
                     Operation = table.Column<int>(nullable: false),
+                    RealTimePosition = table.Column<double>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
                     Side = table.Column<string>(type: "text", nullable: false),
@@ -658,6 +661,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     Deceleration = table.Column<double>(nullable: false),
                     Speed = table.Column<double>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
+                    AdjustByWeight = table.Column<bool>(nullable: true),
                     Number = table.Column<int>(nullable: true),
                     Position = table.Column<double>(nullable: true),
                     MovementProfileId = table.Column<int>(nullable: true)
@@ -691,6 +695,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ProfileCalibrateLength = table.Column<double>(nullable: false),
                     ProfileCalibratePosition = table.Column<int>(nullable: false),
                     ProfileCalibrateSpeed = table.Column<double>(nullable: false),
+                    RealTimePosition = table.Column<double>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
@@ -975,7 +980,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 15, 11, 55, 10, 993, DateTimeKind.Local).AddTicks(1837), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 18, 10, 52, 40, 532, DateTimeKind.Local).AddTicks(7271), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1243,6 +1248,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "CarouselId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Bays_EmptyLoadMovementId",
+                table: "Bays",
+                column: "EmptyLoadMovementId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bays_FullLoadMovementId",
+                table: "Bays",
+                column: "FullLoadMovementId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Bays_InverterId",
                 table: "Bays",
                 column: "InverterId");
@@ -1471,6 +1486,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Bays_MovementParameters_EmptyLoadMovementId",
+                table: "Bays",
+                column: "EmptyLoadMovementId",
+                principalTable: "MovementParameters",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Bays_MovementParameters_FullLoadMovementId",
+                table: "Bays",
+                column: "FullLoadMovementId",
+                principalTable: "MovementParameters",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Bays_Machines_MachineId",
                 table: "Bays",
                 column: "MachineId",
@@ -1500,14 +1531,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Elevators_LoadingUnits_LoadingUnitId",
                 table: "Elevators");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_Inverters_InverterId",
-                table: "ElevatorAxes");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_ElevatorAxes_Elevators_ElevatorId",
-                table: "ElevatorAxes");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_ElevatorAxes_MovementParameters_EmptyLoadMovementId",
@@ -1581,15 +1604,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Machines");
 
             migrationBuilder.DropTable(
-                name: "Inverters");
-
-            migrationBuilder.DropTable(
-                name: "Elevators");
-
-            migrationBuilder.DropTable(
-                name: "ElevatorStructuralProperties");
-
-            migrationBuilder.DropTable(
                 name: "MovementParameters");
 
             migrationBuilder.DropTable(
@@ -1599,7 +1613,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "ElevatorAxes");
 
             migrationBuilder.DropTable(
+                name: "Elevators");
+
+            migrationBuilder.DropTable(
+                name: "Inverters");
+
+            migrationBuilder.DropTable(
                 name: "WeightMeasurement");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorStructuralProperties");
         }
     }
 }

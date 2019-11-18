@@ -90,7 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Backwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Backwards, null);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)
@@ -109,7 +109,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Forwards);
+                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Forwards, null);
                 this.IsCarouselMoving = true;
             }
             catch (System.Exception ex)

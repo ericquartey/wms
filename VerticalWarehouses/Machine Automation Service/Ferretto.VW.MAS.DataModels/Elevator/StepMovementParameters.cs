@@ -1,4 +1,6 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+
+namespace Ferretto.VW.MAS.DataModels
 {
     public class StepMovementParameters : MovementParameters
     {
@@ -16,11 +18,37 @@
 
         public void ScaleMovementsByWeight(double scalingFactor, ElevatorAxis axis)
         {
+            if (axis is null)
+            {
+                throw new ArgumentNullException(nameof(axis));
+            }
             if (this.AdjustByWeight)
             {
-                this.Speed = axis.EmptyLoadMovement.Speed - ((axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor);
-                this.Acceleration = axis.EmptyLoadMovement.Acceleration - ((axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor);
-                this.Deceleration = axis.EmptyLoadMovement.Deceleration - ((axis.EmptyLoadMovement.Deceleration - axis.FullLoadMovement.Deceleration) * scalingFactor);
+                var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
+                if (deltaSpeed < this.Speed)
+                {
+                    this.Speed -= deltaSpeed;
+                }
+                else
+                {
+                    this.Speed = axis.FullLoadMovement.Speed;
+                }
+
+                var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;
+                if (deltaAcceleration < this.Acceleration)
+                {
+                    this.Acceleration -= deltaAcceleration;
+                }
+                else
+                {
+                    this.Acceleration = axis.FullLoadMovement.Acceleration;
+                }
+
+                //var deltaDeceleration = (axis.EmptyLoadMovement.Deceleration - axis.FullLoadMovement.Deceleration) * scalingFactor;
+                //if (deltaDeceleration > this.Deceleration)
+                //{
+                //    this.Deceleration -= deltaDeceleration;
+                //}
             }
         }
 

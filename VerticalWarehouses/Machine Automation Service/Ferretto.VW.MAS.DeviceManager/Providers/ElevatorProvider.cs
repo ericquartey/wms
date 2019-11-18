@@ -157,17 +157,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 .Steps
                 .OrderBy(s => s.Number);
 
-            if (isLoadingUnitOnBoard)
+            if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
             {
                 var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit != null)
+                {
+                    loadingUnitId = loadUnit.Id;
+                }
+            }
+
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight + loadUnit.Tare > 0)
                 {
-                    var scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
-                    foreach (var profileStep in profileSteps)
-                    {
-                        profileStep.ScaleMovementsByWeight(scalingFactor, axis);
-                    }
+                    // if weight is unknown we move as full weight
+                    scalingFactor = (loadUnit.GrossWeight == 0) ? 1 : (loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare));
                 }
+            }
+            foreach (var profileStep in profileSteps)
+            {
+                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
             }
 
             // if direction is Forwards then height increments, otherwise it decrements
@@ -219,11 +230,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
+            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -255,11 +266,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var speed = new[] { procedureParameters.ProfileCalibrateSpeed };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(

@@ -35,6 +35,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void UnloadLoadingUnit();
 
+        void UpdateRealTimePosition(Orientation orientation, double position);
+
         void UpdateVerticalOffset(double newOffset);
 
         void UpdateVerticalResolution(decimal newResolution);

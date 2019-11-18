@@ -192,6 +192,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
                     .ToArray();
             }
         }
@@ -273,6 +275,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                     .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.IoDevice.Index == ioIndex);
 
                 if (bay is null)
@@ -335,10 +339,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
-                    .ThenInclude(s => s.LoadingUnit)
+                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                    .ThenInclude(s => s.Inverter)
+                        .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
+                    .Include(b => b.EmptyLoadMovement)
+                    .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
 
                 if (bay is null)
@@ -666,6 +672,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return this.GetByNumber(bayNumber);
             }
+        }
+
+        public void UpdateRealTimePosition(Bay bay, double position)
+        {
+            if (bay is null)
+            {
+                throw new ArgumentNullException(nameof(bay));
+            }
+            bay.RealTimePosition = position;
+            this.dataContext.Bays.Update(bay);
+
+            this.dataContext.SaveChanges();
         }
 
         internal static string GetElevatorAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
