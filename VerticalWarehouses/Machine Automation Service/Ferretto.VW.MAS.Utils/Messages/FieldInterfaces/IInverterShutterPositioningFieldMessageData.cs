@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldInterfaces
 
         int LowerSpeed { get; set; }
 
+        short MovementDuration { get; set; }
+
         MovementType MovementType { get; }
 
         ShutterMovementDirection ShutterMovementDirection { get; }

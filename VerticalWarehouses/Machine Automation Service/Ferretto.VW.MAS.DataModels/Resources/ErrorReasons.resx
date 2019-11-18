@@ -243,4 +243,16 @@
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
     <value>Scaricare il cassetto in baia e rimuovere il peso in eccesso.</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
+    <value>MachineManagerErrorLoadingUnitShutterClosed</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
+    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+  </data>
+  <data name="DestinationBelowLowerBound" xml:space="preserve">
+    <value>DestinationBelowLowerBound</value>
+  </data>
+  <data name="BayInvertersBusy" xml:space="preserve">
+    <value>BayInvertersBusy</value>
+  </data>
 </root>

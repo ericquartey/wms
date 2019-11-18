@@ -1,9 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
+using Prism.Events;
+using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -19,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteMoveUpCommand;
 
+        private bool isCompleted;
+
         private bool isMovingBackwards;
 
         private bool isMovingDown;
@@ -27,8 +34,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isMovingUp;
 
-        private bool isStopping;
-
         private DelegateCommand moveBackwardsCommand;
 
         private DelegateCommand moveDownCommand;
@@ -36,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand moveForwardsCommand;
 
         private DelegateCommand moveUpCommand;
+
+        private SubscriptionToken positioningToken;
 
         #endregion
 
@@ -46,7 +53,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IBayManager bayManager)
             : base(elevatorWebService, bayManager)
         {
-            this.RefreshCanExecuteCommands();
         }
 
         #endregion
@@ -84,7 +90,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingBackwards, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -96,7 +102,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -108,7 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingForwards, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -120,19 +126,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -160,6 +154,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            this.positioningToken?.Dispose();
+            this.positioningToken = null;
+
+            base.Disappear();
+        }
 
         public async Task MoveBackwardsAsync()
         {
@@ -209,6 +211,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.positioningToken = this.positioningToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.AxisMovement == Axis.Vertical ||
+                             m.Data?.AxisMovement == Axis.Horizontal);
+
+            this.isCompleted = false;
+
+            this.RaiseCanExecuteChanged();
+        }
+
         protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
@@ -216,40 +238,87 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!this.IsEnabled)
             {
                 this.StopMoving();
+                this.IsStopping = false;
             }
         }
 
         protected override void OnMachinePowerChanged()
         {
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
         }
 
-        protected override async Task StopMovementAsync()
+        protected override void RaiseCanExecuteChanged()
         {
-            this.IsStopping = true;
+            base.RaiseCanExecuteChanged();
 
-            try
-            {
-                await this.MachineElevatorService.StopAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.StopMoving();
-                this.IsStopping = false;
-                this.EnableAll();
-            }
-        }
-
-        private void RefreshCanExecuteCommands()
-        {
             this.CanExecuteMoveBackwardsCommand = !this.IsMovingForwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveForwardsCommand = !this.IsMovingBackwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
+        }
+
+        protected override async Task StopMovementAsync()
+        {
+            // In caso di fine operazione
+            if (this.isCompleted)
+            {
+                return;
+            }
+
+            try
+            {
+                this.IsStopping = true;
+                await this.MachineElevatorService.StopAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+            }
+        }
+
+        private void CloseOperation()
+        {
+            this.StopMoving();
+            this.IsStopping = false;
+            this.EnableAll();
+            this.isCompleted = true;
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.WriteInfo(message.Data?.AxisMovement);
+                    this.isCompleted = false;
+
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.WriteInfo(message.Data?.AxisMovement);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+
+                    break;
+            }
         }
 
         private async Task StartMovementAsync(HorizontalMovementDirection direction)
@@ -260,7 +329,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.StopMoving();
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
@@ -274,7 +343,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
-                this.StopMoving();
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
@@ -286,6 +355,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingDown = false;
             this.IsMovingForwards = false;
             this.IsMovingBackwards = false;
+        }
+
+        private void WriteInfo(Axis? axisMovement)
+        {
+            if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+            {
+                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
+            }
+            else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+            {
+                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
+            }
         }
 
         #endregion

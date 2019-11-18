@@ -48,7 +48,8 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus
         public bool ACU_ZeroSensor => this.Inputs?[(int)InverterSensors.ACU_ZeroSensor] ?? false;
         //public bool ACU_HardwareSensorSTOB => this.Inputs?[(int)InverterSensors.ACU_HardwareSensorSTOB] ?? false;
 
-        public int CurrentPosition { get; internal set; }
+        public int CurrentPosition => this.currentPosition;
+
 
         public IHomingControlWord HomingControlWord
         {

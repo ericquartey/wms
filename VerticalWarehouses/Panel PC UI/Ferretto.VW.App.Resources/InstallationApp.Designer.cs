@@ -556,6 +556,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test completed successfully.
+        /// </summary>
+        public static string CompletedTest {
+            get {
+                return ResourceManager.GetString("CompletedTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirmation operation?.
         /// </summary>
         public static string ConfirmationOperation {
@@ -2356,6 +2365,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Rear.
+        /// </summary>
+        public static string Rear {
+            get {
+                return ResourceManager.GetString("Rear", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reference&apos;s cell position [mm].
         /// </summary>
         public static string ReferenceCellHeight {
@@ -2887,6 +2905,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Test in progress....
+        /// </summary>
+        public static string TestProgress {
+            get {
+                return ResourceManager.GetString("TestProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Test run.
         /// </summary>
         public static string TestRun {
@@ -3009,6 +3036,15 @@ namespace Ferretto.VW.App.Resources {
         public static string UpperBound {
             get {
                 return ResourceManager.GetString("UpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use weight control.
+        /// </summary>
+        public static string UseWeightControl {
+            get {
+                return ResourceManager.GetString("UseWeightControl", resourceCulture);
             }
         }
         

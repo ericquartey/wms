@@ -82,12 +82,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     default:
                         var bay = this.baysProvider.GetByLoadingUnitLocation(this.messageData.Destination);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
-                        this.openShutter = true;
+                        this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
 
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, MessageActor.MachineManager, commandMessage.RequestingBay, null);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, false, MessageActor.MachineManager, commandMessage.RequestingBay, null);
             }
             else
             {

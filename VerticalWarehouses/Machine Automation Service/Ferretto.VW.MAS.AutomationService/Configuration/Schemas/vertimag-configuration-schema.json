@@ -24,7 +24,7 @@
         "properties": {
           "Tare": {
             "$id": "#/properties/LoadingUnits/items/properties/Tare",
-            "type": "integer",
+            "type": "number",
             "title": "The Tare Schema",
             "minimum": 0,
             "exclusiveMinimum": true
@@ -36,7 +36,7 @@
           },
           "MaxNetWeight": {
             "$id": "#/properties/LoadingUnits/items/properties/MaxNetWeight",
-            "type": "integer",
+            "type": "number",
             "title": "The Maxnetweight Schema",
             "minimum": 0,
             "exclusiveMinimum": true
@@ -55,7 +55,6 @@
         "MaxGrossWeight",
         "ModelName",
         "Panels",
-        "ProductionDate",
         "SerialNumber"
       ],
       "properties": {
@@ -68,7 +67,7 @@
             "type": "object",
             "title": "The Items Schema",
             "minItems": 1,
-            "additionalProperties": false,
+            "additionalProperties": true,
             "required": [
               "Side",
               "IoDevice",
@@ -109,9 +108,10 @@
                   },
                   "Index": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/Inverter/properties/Index",
-                    "type": "integer",
+                    "type": [ "string" ],
                     "title": "The Index Schema",
-                    "default": 0
+                    "default": "MainInverter",
+                    "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                   }
                 }
               },
@@ -134,10 +134,10 @@
                 "properties": {
                   "Index": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/Index",
-                    "type": "integer",
+                    "type": [ "string" ],
                     "title": "The Index Schema",
-                    "default": 0,
-                    "minimum": 0
+                    "default": "IoDevice1",
+                    "enum": [ "IoDevice1", "IoDevice2", "IoDevice3" ]
                   },
                   "IpAddress": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/IoDevice/properties/IpAddress",
@@ -162,7 +162,7 @@
               },
               "ChainOffset": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/ChainOffset",
-                "type": "integer",
+                "type": "number",
                 "title": "The ChainOffset Schema",
                 "minimum": -10000,
                 "maximum": 10000,
@@ -170,11 +170,10 @@
               },
               "Number": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
-                "type": "integer",
+                "type": "string",
                 "title": "The Number Schema",
-                "minimum": 1,
-                "maximum": 3,
-                "default": 1
+                "default": "BayOne",
+                "enum": [ "BayOne", "BayTwo", "BayThree", "ElevatorBay" ]
               },
               "Resolution": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Resolution",
@@ -197,7 +196,7 @@
                   "properties": {
                     "Height": {
                       "$id": "#/properties/Machine/properties/Bays/items/properties/Positions/items/properties/Height",
-                      "type": "integer",
+                      "type": "number",
                       "title": "The Height Schema",
                       "default": 0,
                       "minimum": 0,
@@ -259,11 +258,10 @@
                       },
                       "Index": {
                         "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Inverter/properties/Index",
-                        "type": "integer",
+                        "type": [ "string" ],
                         "title": "The Index Schema",
-                        "default": 0,
-                        "minimum": 0,
-                        "maximum": 7
+                        "default": "MainInverter",
+                        "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                       }
                     }
                   },
@@ -286,7 +284,7 @@
                 "properties": {
                   "ElevatorDistance": {
                     "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ElevatorDistance",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The Elevatordistance Schema",
                     "default": 0
                   }
@@ -333,11 +331,10 @@
                     "properties": {
                       "Index": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Index",
-                        "type": "integer",
+                        "type": "string",
                         "title": "The Index Schema",
-                        "default": 0,
-                        "minimum": 0,
-                        "maximum": 7
+                        "default": "MainInverter",
+                        "enum": [ "MainInverter", "Slave1", "Slave2", "Slave3", "Slave4", "Slave5", "Slave6", "Slave7" ]
                       },
                       "Type": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Inverter/properties/Type",
@@ -388,7 +385,7 @@
                   },
                   "Offset": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/Offset",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The Offset Schema",
                     "default": 0
                   },
@@ -402,13 +399,13 @@
                   },
                   "UpperBound": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/UpperBound",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The Upperbound Schema",
                     "default": 0
                   },
                   "LowerBound": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/LowerBound",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The Lowerbound Schema",
                     "default": 0
                   },
@@ -444,13 +441,13 @@
                       },
                       "MeasureSpeed": {
                         "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSpeed",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Measurespeed Schema",
                         "default": 0
                       },
                       "MeasureTime": {
                         "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureTime",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Measuretime Schema",
                         "default": 0
                       }
@@ -458,19 +455,19 @@
                   },
                   "ProfileCalibrateLength": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The ProfileCalibrateLength Schema",
                     "default": 0
                   },
                   "ProfileCalibratePosition": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibratePosition",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The ProfileCalibratePosition Schema",
                     "default": 0
                   },
                   "ProfileCalibrateSpeed": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateSpeed",
-                    "type": "integer",
+                    "type": "number",
                     "title": "The ProfileCalibrateSpeed Schema",
                     "default": 0
                   },
@@ -486,19 +483,19 @@
                     "properties": {
                       "Acceleration": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Acceleration",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Acceleration Schema",
                         "default": 0
                       },
                       "Deceleration": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Deceleration",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Deceleration Schema",
                         "default": 0
                       },
                       "Speed": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Speed",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Speed Schema",
                         "default": 0
                       }
@@ -516,19 +513,19 @@
                     "properties": {
                       "Acceleration": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Acceleration",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Acceleration Schema",
                         "default": 0
                       },
                       "Deceleration": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Deceleration",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Deceleration Schema",
                         "default": 0
                       },
                       "Speed": {
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Speed",
-                        "type": "integer",
+                        "type": "number",
                         "title": "The Speed Schema",
                         "default": 0
                       }
@@ -559,37 +556,37 @@
                 },
                 "BeltSpacing": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/BeltSpacing",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Beltspacing Schema",
                   "default": 0
                 },
                 "ElevatorWeight": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ElevatorWeight",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Elevatorweight Schema",
                   "default": 0
                 },
                 "HalfShaftLength": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/HalfShaftLength",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Halfshaftlength Schema",
                   "default": 0
                 },
                 "PulleyDiameter": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/PulleyDiameter",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Pulleydiameter Schema",
                   "default": 0
                 },
                 "ShaftDiameter": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ShaftDiameter",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Shaftdiameter Schema",
                   "default": 0
                 },
                 "ShaftElasticity": {
                   "$id": "#/properties/Machine/properties/Elevator/properties/StructuralProperties/properties/ShaftElasticity",
-                  "type": "integer",
+                  "type": "number",
                   "title": "The Shaftelasticity Schema",
                   "default": 0
                 }
@@ -599,7 +596,7 @@
         },
         "Height": {
           "$id": "#/properties/Machine/properties/Height",
-          "type": "integer",
+          "type": "number",
           "title": "The Height Schema",
           "default": 0,
           "minimum": 0,
@@ -608,7 +605,7 @@
         },
         "MaxGrossWeight": {
           "$id": "#/properties/Machine/properties/MaxGrossWeight",
-          "type": "integer",
+          "type": "number",
           "title": "The Maxgrossweight Schema",
           "minimum": 0,
           "exclusiveMinimum": true
@@ -628,18 +625,18 @@
             "type": "object",
             "title": "The Items Schema",
             "required": [
-              "side",
-              "cells"
+              "Side",
+              "Cells"
             ],
             "properties": {
-              "side": {
+              "Side": {
                 "$id": "#/properties/Machine/properties/Panels/items/properties/side",
                 "type": "string",
                 "title": "The Side Schema",
                 "default": "",
-                "enum": [ "front", "back" ]
+                "enum": [ "Front", "Back" ]
               },
-              "cells": {
+              "Cells": {
                 "$id": "#/properties/Machine/properties/Panels/items/properties/cells",
                 "type": "array",
                 "title": "The Cells Schema",
@@ -648,32 +645,32 @@
                   "type": "object",
                   "title": "The Items Schema",
                   "required": [
-                    "id",
-                    "position",
-                    "priority",
-                    "status"
+                    "Id",
+                    "Position",
+                    "Priority",
+                    "Status"
                   ],
                   "properties": {
-                    "id": {
+                    "Id": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/id",
                       "type": "integer",
                       "title": "The Id Schema",
                       "default": 0
                     },
-                    "position": {
+                    "Position": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
                       "type": "number",
                       "title": "The Position Schema",
                       "minimum": 0,
                       "exclusiveMinimum": true
                     },
-                    "priority": {
+                    "Priority": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/priority",
                       "type": "integer",
                       "title": "The Priority Schema",
                       "default": 0
                     },
-                    "status": {
+                    "Status": {
                       "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/status",
                       "type": "string",
                       "title": "The Status Schema",
@@ -956,13 +953,13 @@
             },
             "MaxSpeed": {
               "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MaxSpeed",
-              "type": "integer",
+              "type": "number",
               "title": "The Maxspeed Schema",
               "default": 0
             },
             "MinSpeed": {
               "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MinSpeed",
-              "type": "integer",
+              "type": "number",
               "title": "The Minspeed Schema",
               "default": 0
             },

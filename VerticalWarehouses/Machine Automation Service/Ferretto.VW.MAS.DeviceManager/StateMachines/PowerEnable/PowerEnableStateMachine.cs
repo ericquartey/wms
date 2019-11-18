@@ -152,7 +152,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                         }
                         else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay1])
                         {
-                            isMarchPossible = false;
+                            //isMarchPossible = false;
                             reason.Append("Anti Intrusion Barrier Active Bay1; ");
                         }
 
@@ -166,7 +166,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                         }
                         else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay2])
                         {
-                            isMarchPossible = false;
+                            //isMarchPossible = false;
                             reason.Append("Anti Intrusion Barrier Active Bay2; ");
                         }
 
@@ -180,7 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                         }
                         else if (this.machineData.MachineSensorStatus.DisplayedInputs[(int)IOMachineSensors.AntiIntrusionBarrierBay3])
                         {
-                            isMarchPossible = false;
+                            //isMarchPossible = false;
                             reason.Append("Anti Intrusion Barrier Active Bay3; ");
                         }
 

@@ -27,33 +27,20 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LSMTGateEngineTitle}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Up}"
-                            IsEnabled="{Binding CanExecuteMoveUpCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Up}"
+                                           IsEnabled="{Binding CanExecuteMoveUpCommand}"
+                                           PressCommand="{Binding MoveUpCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Margin="0,20,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Down}"
-                            IsEnabled="{Binding CanExecuteMoveDownCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                           Margin="0,20,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Down}"
+                                           IsEnabled="{Binding CanExecuteMoveDownCommand}"
+                                           PressCommand="{Binding MoveDownCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
+
     </Grid>
 </ctrls:View>

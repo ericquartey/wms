@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Controls
 
         private bool isEnabled;
 
+        private bool isVisible = true;
+
         private string moduleName;
 
         private ICommand navigateCommand;
@@ -69,6 +71,18 @@ namespace Ferretto.VW.App.Controls
             set
             {
                 if (this.SetProperty(ref this.isEnabled, value))
+                {
+                    ((DelegateCommand)this.NavigateCommand).RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsVisible
+        {
+            get => this.isVisible;
+            set
+            {
+                if (this.SetProperty(ref this.isVisible, value))
                 {
                     ((DelegateCommand)this.NavigateCommand).RaiseCanExecuteChanged();
                 }

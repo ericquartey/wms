@@ -56,10 +56,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
 
-                            if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                            {
-                                this.UpdateLoadingUnitLocation();
-                            }
+                            //if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                            //{
+                            //    this.UpdateLoadingUnitLocation();
+                            //}
 
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
@@ -175,7 +175,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             var position = elevatorProvider.VerticalPosition;
 
-            var cell = cellProvider.GetCellByHeight(position, 10, this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back);
+            var side = (this.machineData.MessageData.IsStartedOnBoard ?
+                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ? WarehouseSide.Front : WarehouseSide.Back) :
+                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back));
+
+            var cell = cellProvider.GetCellByHeight(position, 10, side);
             if (cell == null)
             {
                 bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
@@ -211,7 +215,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             cellProvider.UnloadLoadingUnit(cell.Id);
                         }
-                        else
+                        else if (bayLocation != LoadingUnitLocation.NoLocation)
                         {
                             bayProvider.UnloadLoadingUnit(bayLocation);
                         }
@@ -224,7 +228,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         {
                             cellProvider.LoadLoadingUnit(currentLoadingUnit.Id, cell.Id);
                         }
-                        else
+                        else if (bayLocation != LoadingUnitLocation.NoLocation)
                         {
                             bayProvider.LoadLoadingUnit(currentLoadingUnit.Id, bayLocation);
                         }

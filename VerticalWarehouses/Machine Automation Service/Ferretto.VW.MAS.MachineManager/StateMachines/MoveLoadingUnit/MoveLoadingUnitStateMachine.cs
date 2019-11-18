@@ -132,12 +132,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                 if (returnValue)
                 {
-                    returnValue = this.IsSourceOk(messageData);
+                    returnValue = this.IsSourceOk(messageData, commandMessage.RequestingBay);
                 }
 
                 if (returnValue)
                 {
-                    returnValue = this.IsDestinationOk(messageData);
+                    returnValue = this.IsDestinationOk(messageData, commandMessage.RequestingBay);
                 }
 
                 if (returnValue)
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             return returnValue;
         }
 
-        private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData)
+        private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay)
         {
             bool returnValue = false;
             switch (messageData.Destination)
@@ -185,11 +185,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     {
                         returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
                     }
-
                     if (!returnValue)
                     {
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
+                    }
+                    else if (this.baysProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
+                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
+                        )
+                    {
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                        returnValue = false;
                     }
 
                     break;
@@ -206,6 +213,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             {
                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
+            }
+            else
+            {
+                returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
+            }
+            if (!returnValue)
+            {
+                this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
             }
 
             return returnValue;
@@ -224,7 +240,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             return returnValue;
         }
 
-        private bool IsSourceOk(IMoveLoadingUnitMessageData messageData)
+        private bool IsSourceOk(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay)
         {
             var machineData = (IMoveLoadingUnitMachineData)this.MachineData;
 
@@ -302,11 +318,26 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     if (unitToMove == null)
                     {
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
                     {
+                        unitToMove = null;
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
+                    }
+                    else if (this.baysProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
+                        && messageData.InsertLoadingUnit && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
+                        )
+                    {
+                        unitToMove = null;
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                    }
+                    if (unitToMove == null)
+                    {
+                        return false;
                     }
 
                     machineData.LoadingUnitSource = messageData.Source;

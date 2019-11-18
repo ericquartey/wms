@@ -480,7 +480,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.CalibrateAxis:
-                    if (messageData is ICalibrateAxisFieldMessageData calibrateData)
+                    if (messageData is InverterExceptionFieldMessageData calibrateData)
                     {
                         var calibrateErrorNotification = new FieldNotificationMessage(
                         calibrateData,
@@ -496,7 +496,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterSwitchOff:
-                    if (messageData is IInverterSwitchOffFieldMessageData switchOffData)
+                    if (messageData is InverterExceptionFieldMessageData switchOffData)
                     {
                         var inverterSwitchOffErrorNotification = new FieldNotificationMessage(
                         switchOffData,
@@ -512,7 +512,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterSwitchOn:
-                    if (messageData is IInverterSwitchOnFieldMessageData switchOnData)
+                    if (messageData is InverterExceptionFieldMessageData switchOnData)
                     {
                         var inverterSwitchOnErrorNotification = new FieldNotificationMessage(
                         switchOnData,
@@ -529,11 +529,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 case FieldMessageType.Positioning:
 
-                    if (messageData is IPositioningFieldMessageData positioningData)
+                    if (messageData is InverterExceptionFieldMessageData positioningData)
                     {
                         var positioningErrorNotification = new FieldNotificationMessage(
-                        positioningData,
-                        "Requested Inverter is not configured",
+                        null,
+                        positioningData.ExceptionDescription,
                         FieldMessageActor.Any,
                         FieldMessageActor.InverterDriver,
                         FieldMessageType.Positioning,
@@ -545,7 +545,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterPowerOff:
-                    if (messageData is IInverterPowerOffFieldMessageData powerOffData)
+                    if (messageData is InverterExceptionFieldMessageData powerOffData)
                     {
                         var inverterPowerOfferrorNotification = new FieldNotificationMessage(
                         powerOffData,
@@ -561,7 +561,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterPowerOn:
-                    if (messageData is IInverterPowerOnFieldMessageData powerOnData)
+                    if (messageData is InverterExceptionFieldMessageData powerOnData)
                     {
                         var inverterPowerOnerrorNotification = new FieldNotificationMessage(
                         powerOnData,
@@ -577,7 +577,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.ShutterPositioning:
-                    if (messageData is IShutterPositioningFieldMessageData shutterPositioningData)
+                    if (messageData is InverterExceptionFieldMessageData shutterPositioningData)
                     {
                         var shutterPositioningErrorNotification = new FieldNotificationMessage(
                         shutterPositioningData,
@@ -606,7 +606,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterStatusUpdate:
-                    if (messageData is IInverterStatusUpdateFieldMessageData updateData)
+                    if (messageData is InverterExceptionFieldMessageData updateData)
                     {
                         var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
                         updateData,
@@ -622,7 +622,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     break;
 
                 case FieldMessageType.InverterSetTimer:
-                    if (messageData is IInverterSetTimerFieldMessageData setTimerData)
+                    if (messageData is InverterExceptionFieldMessageData setTimerData)
                     {
                         var inverterUpdateStatusErrorNotification = new FieldNotificationMessage(
                         setTimerData,

@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool hasCarousel;
 
+        private bool hasShutter;
+
         private bool isBayExternal;
 
         #endregion
@@ -75,6 +77,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.hasCarousel, value);
         }
 
+        public bool HasShutter
+        {
+            get => this.hasShutter;
+            set => this.SetProperty(ref this.hasShutter, value);
+        }
+
         public bool IsBayExternal
         {
             get => this.isBayExternal;
@@ -87,6 +95,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.carouselManualMovementsViewModel.Disappear();
+            this.engineManualMovementsViewModel.Disappear();
+            this.externalBayManualMovementsViewModel.Disappear();
+            this.shutterEngineManualMovementsViewModel.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -96,6 +114,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManager.GetBayAsync();
 
                 this.HasCarousel = this.bay.Carousel != null;
+
+                this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
+
                 this.IsBayExternal = this.bay.IsExternal;
             }
             catch (System.Exception ex)

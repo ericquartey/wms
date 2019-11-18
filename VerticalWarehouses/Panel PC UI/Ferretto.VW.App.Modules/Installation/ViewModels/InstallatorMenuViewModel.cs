@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly IHealthProbeService healthProbeService;
+
         private readonly BindingList<MainNavigationMenuItem> installatorItems = new BindingList<MainNavigationMenuItem>();
 
         private readonly IMachineModeService machineModeService;
@@ -38,6 +40,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int bayNumber;
 
+        private bool hasShutter;
+
         #endregion
 
         #region Constructors
@@ -45,11 +49,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public InstallatorMenuViewModel(
             IMachineSetupStatusWebService setupStatusWebService,
             IMachineModeService machineModeService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
             this.setupStatusWebService = setupStatusWebService ?? throw new ArgumentNullException(nameof(setupStatusWebService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.InitializeData();
@@ -59,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public BindingList<MainNavigationMenuItem> InstallatorItems => this.installatorItems;
 
@@ -79,11 +85,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 var bay = await this.bayManager.GetBayAsync();
                 this.bayNumber = (int)bay.Number;
+                this.hasShutter = bay.Shutter.Type != ShutterType.NotSpecified;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
+
+            await this.UpdateMenuItemsStatusAsync();
+        }
+
+        protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            await base.OnHealthStatusChangedAsync(e);
 
             await this.UpdateMenuItemsStatusAsync();
         }
@@ -194,16 +208,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                var setupStatus = await this.setupStatusWebService.GetAsync();
-
                 this.areItemsEnabled = this.machineModeService.MachinePower is MachinePowerState.Powered;
 
-                foreach (var menuItem in this.installatorItems)
+                if (this.healthProbeService.HealthStatus == HealthStatus.Healthy)
                 {
-                    var itemStatus = this.GetItemStatus(menuItem, setupStatus);
-                    menuItem.IsEnabled = itemStatus.CanBePerformed && this.areItemsEnabled;
-                    menuItem.IsActive = itemStatus.IsCompleted && this.areItemsEnabled;
+                    var setupStatus = await this.setupStatusWebService.GetAsync();
+                    foreach (var menuItem in this.installatorItems)
+                    {
+                        var itemStatus = this.GetItemStatus(menuItem, setupStatus);
+                        menuItem.IsEnabled = itemStatus.CanBePerformed && this.areItemsEnabled;
+                        menuItem.IsActive = itemStatus.IsCompleted && this.areItemsEnabled;
+                    }
                 }
+
+                this.installatorItems.Single(s => s.ViewModelName.Equals(Utils.Modules.Installation.SHUTTERENDURANCETEST))
+                    .IsVisible = this.hasShutter;
 
                 foreach (var menuItem in this.otherItems)
                 {
@@ -211,7 +230,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ||
                         menuItem.ViewModelName == Utils.Modules.Installation.Sensors.VERTICALAXIS)
                     {
-                        menuItem.IsEnabled = true;
+                        menuItem.IsEnabled = this.healthProbeService.HealthStatus == HealthStatus.Healthy;
                     }
                     else
                     {
@@ -225,7 +244,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ||
                         menuItem.ViewModelName == Utils.Modules.Installation.Sensors.VERTICALAXIS)
                     {
-                        menuItem.IsEnabled = true;
+                        menuItem.IsEnabled = this.healthProbeService.HealthStatus == HealthStatus.Healthy;
                     }
                     else
                     {

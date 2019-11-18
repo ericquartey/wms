@@ -189,7 +189,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = this.bay.Number;
 
-                this.SelectBayPositionDown();
+                this.SelectBayPositionUp();
 
                 this.ElevatorVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
                 this.ElevatorHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
@@ -200,10 +200,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
 
-                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.InputLoadingUnitIdPropertyChanged();
+                this.InputCellIdPropertyChanged();
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
+                this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
                 this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
             }
             catch (Exception ex)
@@ -449,7 +452,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
-
+            this.setWeightControlCommand?.RaiseCanExecuteChanged();
             this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
