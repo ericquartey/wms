@@ -252,18 +252,21 @@ namespace Ferretto.VW.App.Controls
                 //
                 (enabeIfPoweredOn &&
                  machinePower == MachinePowerState.Powered &&
-                 healthStatus == HealthStatus.Healthy &&
-                 this.MachineError is null) ||
+                 healthStatus == HealthStatus.Healthy
+                 //&& this.MachineError is null
+                 ) ||
                 //
                 (enableIfAutomatic &&
                  machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Automatic &&
-                 this.MachineError is null) ||
+                 machineMode == MachineMode.Automatic
+                 //&& this.MachineError is null
+                 ) ||
                 //
                 (enableIfManual &&
                  machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Manual &&
-                 this.MachineError is null);
+                 machineMode == MachineMode.Manual
+                 //&& this.MachineError is null
+                 );
         }
 
         private void UpdatePresentation()
