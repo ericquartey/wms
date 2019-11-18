@@ -148,12 +148,6 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
         }
 
-        private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
-        {
-            Exception ex = e.Exception.InnerException != null ? e.Exception.InnerException : e.Exception;
-            MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
-        }
-
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             AppCheck.End();
@@ -167,24 +161,10 @@ namespace Ferretto.VW.App
             NLog.LogManager.Shutdown();
         }
 
-        private void CurrentDomainUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Exception ex = (Exception)e.ExceptionObject;
-            Exception exi = ex.InnerException != null ? ex.InnerException : ex;
-
-            MessageBox.Show(exi.Message + "\n" + exi.StackTrace);
-        }
-
         private void HACK_ForceItalianLanguage()
         {
             System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
             System.Globalization.CultureInfo.CurrentUICulture = System.Globalization.CultureInfo.GetCultureInfo("it-IT");
-        }
-
-        private void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
-        {
-            var ex = e.Exception.InnerException != null ? e.Exception.InnerException : e.Exception;
-            MessageBox.Show(ex.Message + "\n" + ex.StackTrace);
         }
 
         #endregion
