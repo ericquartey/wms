@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.requestingBay = commandMessage.RequestingBay;
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
@@ -58,8 +59,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override IState OnResume()
         {
             IState returnValue = this;
-
+#if CHECK_BAY_SENSOR
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
+#endif
             {
                 this.baysProvider.UnloadLoadingUnit(this.ejectBay);
 
@@ -67,11 +69,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
             }
+#if CHECK_BAY_SENSOR
             else
             {
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotRemoved, this.requestingBay);
             }
-
+#endif
             return returnValue;
         }
 

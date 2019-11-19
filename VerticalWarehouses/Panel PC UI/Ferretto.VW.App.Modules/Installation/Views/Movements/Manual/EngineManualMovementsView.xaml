@@ -36,35 +36,35 @@
                                            Margin="0,0,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Up}"
-                                           IsEnabled="{Binding CanExecuteMoveUpCommand}"
                                            PressCommand="{Binding MoveUpCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveUpCommand}"-->
 
         <controls:PpcPressAndReleaseButton Grid.Row="2"
                                            Margin="0,15,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Backwards}"
-                                           IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"
                                            PressCommand="{Binding MoveBackwardsCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"-->
 
         <controls:PpcPressAndReleaseButton Grid.Row="2"
                                            Grid.Column="1"
                                            Margin="15,15,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Forwards}"
-                                           IsEnabled="{Binding CanExecuteMoveForwardsCommand}"
                                            PressCommand="{Binding MoveForwardsCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveForwardsCommand}"-->
 
         <controls:PpcPressAndReleaseButton Grid.Row="3"
                                            Grid.ColumnSpan="2"
                                            Margin="15,15,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Down}"
-                                           IsEnabled="{Binding CanExecuteMoveDownCommand}"
                                            PressCommand="{Binding MoveDownCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveDownCommand}"-->
     </Grid>
 
 </ctrls:View>

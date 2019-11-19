@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
+                case FieldMessageType.InverterSwitchOn:
+                case FieldMessageType.InverterSwitchOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:

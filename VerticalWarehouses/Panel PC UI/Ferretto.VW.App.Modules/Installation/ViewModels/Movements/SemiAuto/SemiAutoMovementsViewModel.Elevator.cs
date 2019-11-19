@@ -172,6 +172,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanDisembark()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -184,6 +186,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -198,6 +202,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuneBay()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -209,7 +215,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningChain()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&

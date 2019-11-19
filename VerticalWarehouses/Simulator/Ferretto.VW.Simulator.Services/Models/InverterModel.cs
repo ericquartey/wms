@@ -340,7 +340,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.axisPosition = new Dictionary<Axis, double>();
             this.axisPosition.Add(Axis.Horizontal, 0);
             this.axisPosition.Add(Axis.Vertical, 0);
-            this.HorizontalZeroSensor(true);
+            if (inverterType != InverterType.Agl)
+            {
+                this.HorizontalZeroSensor(true);
+            }
 
             this.TargetPosition = new Dictionary<Axis, double>();
             this.TargetPosition.Add(Axis.Horizontal, 0);

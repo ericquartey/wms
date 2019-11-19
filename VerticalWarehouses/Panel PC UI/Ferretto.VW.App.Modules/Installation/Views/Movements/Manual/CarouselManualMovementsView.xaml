@@ -28,17 +28,17 @@
         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Up}"
-                                           IsEnabled="{Binding CanExecuteOpenCommand}"
                                            PressCommand="{Binding OpenCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteOpenCommand}"-->
 
         <controls:PpcPressAndReleaseButton Grid.Row="2"
                                            Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Down}"
-                                           IsEnabled="{Binding CanExecuteCloseCommand}"
                                            PressCommand="{Binding CloseCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteCloseCommand}"-->
 
     </Grid>
 </ctrls:View>
