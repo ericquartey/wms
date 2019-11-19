@@ -1,6 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Prism.Commands;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls.Controls.Keyboards
 {

@@ -264,6 +264,8 @@ namespace Ferretto.VW.App.Controls
                     PpcMessagePopup.ShowDialog(ppcMessagePopup);
                     this.KeyboardCloseCommand?.Execute(null);
                     this.EditValue = vm.ScreenText;
+                    vm.Dispose();
+                    vm = null;
                     break;
 
                 case KeyboardType.Numpad:
@@ -277,6 +279,8 @@ namespace Ferretto.VW.App.Controls
                     PpcMessagePopup.ShowAnchorDialog(ppcNumpadPopup);
                     this.KeyboardCloseCommand?.Execute(null);
                     this.EditValue = vmNumpad.ScreenText;
+                    vmNumpad.Dispose();
+                    vmNumpad = null;
                     break;
 
                 default:
