@@ -72,7 +72,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
 
             this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
-            this.engineManualMovementsViewModel = new ElevatorManualMovementsViewModel(this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
+            this.elevatorManualMovementsViewModel = new ElevatorManualMovementsViewModel(this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
             this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineBayWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
             this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.machineSensorsWebService, this.healthProbeService, this.bayManager);
         }
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel CarouselManualMovementsViewModel => this.carouselManualMovementsViewModel;
 
-        public ElevatorManualMovementsViewModel ElevatorManualMovementsViewModel => this.engineManualMovementsViewModel;
+        public ElevatorManualMovementsViewModel ElevatorManualMovementsViewModel => this.elevatorManualMovementsViewModel;
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 
@@ -127,7 +127,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             base.Disappear();
 
             this.carouselManualMovementsViewModel.Disappear();
-            this.engineManualMovementsViewModel.Disappear();
+            this.elevatorManualMovementsViewModel.Disappear();
             this.externalBayManualMovementsViewModel.Disappear();
             this.shutterEngineManualMovementsViewModel.Disappear();
         }
@@ -176,7 +176,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void UpdateUnsafeRelease()
         {
             this.carouselManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
-            this.engineManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
+            this.elevatorManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
             this.externalBayManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
             this.shutterEngineManualMovementsViewModel.UnsafeRelease = this.unsafeRelease;
         }

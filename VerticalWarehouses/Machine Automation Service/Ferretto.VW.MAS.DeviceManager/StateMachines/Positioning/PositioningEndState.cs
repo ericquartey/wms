@@ -107,13 +107,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.Requester == MessageActor.AutomationService
-                    &&
-                    this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                {
-                    this.UpdateLoadingUnitLocation();
-                }
-
                 if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
                 {
                     this.PersistElevatorPosition(
@@ -134,6 +127,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
+            }
+
+            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+            {
+                this.UpdateLoadingUnitLocation();
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
@@ -292,46 +290,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                // check if elevator is opposite a bay or a cell
-
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+                var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
                 var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
                 var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
 
+                // 1. check if elevator is opposite a bay or a cell
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
+                var cell = elevatorDataProvider.GetCurrentCell();
+
                 if (bayPosition != null)
                 {
+                    var bay = baysProvider.GetByBayPositionId(bayPosition.Id);
+                    var isDrawerInBay = bayPosition.IsUpper
+                         ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+                         : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+
                     if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
                     // possible pickup from bay
                     {
-                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && /* drawer is not in bay */)
+                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
                         {
-                            // update db
-                            ******************
+                            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                            baysProvider.SetLoadingUnit(bayPosition.Id, null);
                         }
                     }
                     else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
                     // possible deposit to bay
                     {
-                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && /* drawer is in bay */)
+                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
                         {
-                            // update db
-                            *************
+                            elevatorDataProvider.SetLoadingUnit(null);
+                            baysProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
                         }
                     }
                 }
-
-                var cell = elevatorDataProvider.GetCurrentCell();
-                if (cell != null)
+                else if (cell != null)
                 {
                     if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
                     // possible pickup from cell
                     {
                         if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
                         {
-                            // update db
-                            *****************
+                            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                            cellsProvider.SetLoadingUnit(cell.Id, null);
                         }
                     }
                     else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
@@ -339,8 +343,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
                         {
-                            // update db
-                            ***************
+                            if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                            {
+                                elevatorDataProvider.SetLoadingUnit(null);
+                                cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                            }
+                            else
+                            {
+                                this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                            }
                         }
                     }
                 }

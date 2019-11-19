@@ -224,6 +224,20 @@ namespace Ferretto.VW.MAS.DataLayer
             return targetBay;
         }
 
+        public Bay GetByBayPositionId(int bayPositionId)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == bayPositionId));
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayPositionId);
+                }
+
+                return bay;
+            }
+        }
+
         public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
         {
             lock (this.dataContext)
@@ -241,7 +255,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     else
                     {
-                        throw new ArgumentOutOfRangeException($"No inverter with index {inverterIndex} is configured.");
+                        throw new EntityNotFoundException(inverterIndex.ToString());
                     }
                 }
 
@@ -253,7 +267,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType)
         {
             // Hack required to handle exceptions (like axis switch on 800Kg machine) in order to fix device/bay association
-            if (messageType == FieldMessageType.SwitchAxis)
+            if (messageType is FieldMessageType.SwitchAxis)
             {
                 return BayNumber.ElevatorBay;
             }

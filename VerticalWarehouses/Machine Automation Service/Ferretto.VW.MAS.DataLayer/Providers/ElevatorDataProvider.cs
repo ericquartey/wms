@@ -157,9 +157,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(p => p.LoadingUnit)
                     .SingleOrDefault();
 
-                Debug.WriteLine($">>> Elevator.Bay = '{currentBayPosition?.Id}'.");
                 this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
-                //  }
+                // }
 
                 return currentBayPosition;
             }
@@ -169,15 +168,15 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                //  if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
-                // {
+                //    if (!this.cache.TryGetValue(ElevatorCurrentCellCacheKey, out Cell currentCell))
+                //    {
                 var currentCell = this.dataContext.Elevators
                     .Select(e => e.Cell)
                     .Include(c => c.LoadingUnit)
                     .SingleOrDefault();
-                Debug.WriteLine($">>> Elevator.Cell = '{currentCell?.Id}'.");
+
                 this.cache.Set(ElevatorCurrentCellCacheKey, currentCell, this.cacheOptions);
-                // }
+                //    }
 
                 return currentCell;
             }

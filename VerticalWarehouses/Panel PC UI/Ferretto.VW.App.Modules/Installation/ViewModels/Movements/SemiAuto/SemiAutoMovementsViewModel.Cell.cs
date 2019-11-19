@@ -288,7 +288,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaiseCanExecuteChanged();
         }
-            }
 
         private void InputLoadingUnitIdPropertyChanged()
         {

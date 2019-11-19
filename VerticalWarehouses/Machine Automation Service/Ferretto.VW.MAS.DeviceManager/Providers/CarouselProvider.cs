@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var bay = this.baysProvider.GetByNumber(bayNumber);
             if (bay.Carousel is null)
             {
-                throw new InvalidOperationException(Resources.Bays.TheSpecifiedBayHasNoCarousel);
+                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
             }
 
             var isLoadingUnitInLowerPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);

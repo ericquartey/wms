@@ -51,9 +51,9 @@
         </Grid>
 
 
-        <views:EngineManualMovementsView Grid.Row="1"
-                                         Grid.Column="1"
-                                         DataContext="{Binding EngineManualMovementsViewModel}" />
+        <views:ElevatorManualMovementsView Grid.Row="1"
+                                           Grid.Column="1"
+                                           DataContext="{Binding ElevatorManualMovementsViewModel}" />
 
         <views:ShutterEngineManualMovementsView Grid.Row="1"
                                                 Grid.Column="3"

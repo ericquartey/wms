@@ -77,25 +77,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsClosing
         {
             get => this.isClosing;
-            private set
-            {
-                if (this.SetProperty(ref this.isClosing, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isClosing, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsOpening
         {
             get => this.isOpening;
-            private set
-            {
-                if (this.SetProperty(ref this.isOpening, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isOpening, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand OpenCommand =>
@@ -117,7 +105,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveCarouselDownAsync()
         {
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(VerticalMovementDirection.Down);
@@ -149,7 +136,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnErrorStatusChanged()
         {
-            //if (!this.IsEnabled)
             if (!(this.MachineError is null))
             {
                 this.StopMoving();
@@ -251,14 +237,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 await this.machineCarouselWebService.MoveManualAsync(direction);
-                if (direction == HorizontalMovementDirection.Backwards)
-                {
-                    this.IsClosing = true;
-                }
-                else
-                {
-                    this.IsOpening = true;
-                }
+
+                this.IsClosing = direction is VerticalMovementDirection.Down;
+                this.IsOpening = direction is VerticalMovementDirection.Up;
             }
             catch (System.Exception ex)
             {

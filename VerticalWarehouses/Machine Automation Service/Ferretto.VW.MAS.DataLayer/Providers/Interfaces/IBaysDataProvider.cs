@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByAxis(IHomingMessageData data);
 
+        Bay GetByBayPositionId(int id);
+
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);

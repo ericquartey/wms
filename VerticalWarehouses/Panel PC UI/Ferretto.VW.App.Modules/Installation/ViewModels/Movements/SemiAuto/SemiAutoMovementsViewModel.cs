@@ -247,11 +247,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
-                      this.HasCarousel = this.bay.Carousel != null;
+                this.HasCarousel = this.bay.Carousel != null;
                 this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
                 this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
 
-            this.SubscribeToEvents();
+                this.SubscribeToEvents();
 
                 this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                 this.RaiseCanExecuteChanged();
@@ -306,7 +306,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.KeyboardOpened = true;
         }
 
-        private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
+        private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
         {
             switch (message.Status)
             {
@@ -320,7 +320,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        await this.RefreshMachineInfoAsync();
+                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
@@ -328,13 +329,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                  message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
                         {
                             this.RefreshMachineInfoAsync().ConfigureAwait(false);
-                        }
+                        }*/
                         break;
                     }
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
+                        await this.RefreshMachineInfoAsync();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
                     }
@@ -558,7 +560,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                        this.OnHomingChanged,
+                        async m => await this.OnHomingChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
 

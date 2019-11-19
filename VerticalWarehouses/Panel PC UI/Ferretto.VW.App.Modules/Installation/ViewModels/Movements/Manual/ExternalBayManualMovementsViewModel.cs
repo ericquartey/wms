@@ -243,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineBaysWebService.MoveAsync(direction);
+                // await this.machineBaysWebService.MoveAsync(direction);
                 if (direction == HorizontalMovementDirection.Backwards)
                 {
                     this.IsMovingBackwards = true;
