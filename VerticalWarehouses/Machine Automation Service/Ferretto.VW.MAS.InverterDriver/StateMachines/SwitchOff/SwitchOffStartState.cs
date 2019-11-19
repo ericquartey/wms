@@ -13,14 +13,21 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
 {
     internal class SwitchOffStartState : InverterStateBase
     {
+        #region Fields
+
+        private readonly DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public SwitchOffStartState(
-            IInverterStateMachine parentStateMachine,
+                    IInverterStateMachine parentStateMachine,
             IInverterStatusBase inverterStatus,
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -90,6 +97,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOff
                 {
                     this.ParentStateMachine.ChangeState(new SwitchOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:SwitchOffStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(new SwitchOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
             return returnValue;
