@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                 {
                     this.UpdateLoadingUnitLocation();
-                    this.UpdateErrorCompensation();
+                    this.UpdateLastIdealPosition();
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -160,24 +160,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Start();
         }
 
-        private void UpdateErrorCompensation()
+        private void UpdateLastIdealPosition()
         {
             var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
             elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
-
-            //var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-
-            //    var axis = elevatorDataProvider.GetHorizontalAxis();
-            //    var totalDistance = axis.Profiles
-            //        .Where(p => p.Name == MovementProfileType.ShortPickup || p.Name == MovementProfileType.LongDeposit)
-            //        .Select(s => s.TotalDistance)
-            //        .Sum();
-
-            //    var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
-
-            //    var compensation = (elevatorProvider.HorizontalPosition > 0) ? elevatorProvider.HorizontalPosition % totalDistance : elevatorProvider.HorizontalPosition % -totalDistance;
-            //}
         }
 
         private void UpdateLoadingUnitLocation()
