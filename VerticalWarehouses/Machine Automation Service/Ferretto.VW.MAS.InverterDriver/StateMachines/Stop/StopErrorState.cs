@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Stop
         public override void Start()
         {
             var inverterIndex = this.InverterStatus.SystemIndex;
+            this.Logger.LogError($"Stop Error state. Inverter {inverterIndex}");
+
             var notificationMessageData = new InverterPowerOffFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,

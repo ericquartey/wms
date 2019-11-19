@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.requestingBay = commandMessage.RequestingBay;
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)

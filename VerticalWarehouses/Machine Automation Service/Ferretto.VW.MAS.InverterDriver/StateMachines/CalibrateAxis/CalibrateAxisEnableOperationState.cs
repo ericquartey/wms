@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
@@ -14,6 +15,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         private readonly Calibration calibration;
 
+        private readonly DateTime startTime;
+
         #endregion
 
         #region Constructors
@@ -28,6 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -98,6 +102,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                             this.Logger));
 
                     returnValue = true; // EvaluateReadMessage will stop sending StatusWordParam
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:CalibrateAxisEnableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(new CalibrateAxisErrorState(this.ParentStateMachine, this.axisToCalibrate, this.calibration, this.InverterStatus, this.Logger));
                 }
             }
 

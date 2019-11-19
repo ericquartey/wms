@@ -240,6 +240,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             if (message.Status == MessageStatus.OperationFaultStop ||
+                message.Status == MessageStatus.OperationStop ||
                 message.Status == MessageStatus.OperationRunningStop)
             {
                 return MessageStatus.OperationEnd;
