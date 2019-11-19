@@ -1666,6 +1666,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double LastIdealPosition { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("lowerBound", Required = Newtonsoft.Json.Required.Always)]
         public double LowerBound { get; set; }
     
@@ -1674,9 +1677,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("orientation", Required = Newtonsoft.Json.Required.Always)]
         public Orientation Orientation { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("positioningCompensation", Required = Newtonsoft.Json.Required.Always)]
-        public double PositioningCompensation { get; set; }
     
         [Newtonsoft.Json.JsonProperty("profileCalibrateLength", Required = Newtonsoft.Json.Required.Always)]
         public double ProfileCalibrateLength { get; set; }

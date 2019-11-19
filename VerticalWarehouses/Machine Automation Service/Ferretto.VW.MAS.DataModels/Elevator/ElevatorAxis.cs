@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
+        public double LastIdealPosition { get; set; }
+
         public double LowerBound
         {
             get => this.lowerBound;
@@ -62,8 +64,6 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         public Orientation Orientation { get; set; }
-
-        public double PositioningCompensation { get; set; }
 
         /// <summary>
         /// Gets or sets the target position for the horizontal movement in the profile calibration procedure.

@@ -163,23 +163,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         private void UpdateErrorCompensation()
         {
             var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
 
-            var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
+            //var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-            if (resourceProvider.IsDrawerCompletelyOffCradle)
-            {
-                var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-                var axis = elevatorDataProvider.GetHorizontalAxis();
-                var totalDistance = axis.Profiles
-                    .Where(p => p.Name == MovementProfileType.ShortPickup || p.Name == MovementProfileType.LongDeposit)
-                    .Select(s => s.TotalDistance)
-                    .Sum();
+            //    var axis = elevatorDataProvider.GetHorizontalAxis();
+            //    var totalDistance = axis.Profiles
+            //        .Where(p => p.Name == MovementProfileType.ShortPickup || p.Name == MovementProfileType.LongDeposit)
+            //        .Select(s => s.TotalDistance)
+            //        .Sum();
 
-                var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
+            //    var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
 
-                var compensation = (elevatorProvider.HorizontalPosition > 0) ? elevatorProvider.HorizontalPosition % totalDistance : elevatorProvider.HorizontalPosition % -totalDistance;
-                elevatorDataProvider.UpdatePositioningCompensation(Orientation.Horizontal, compensation);
-            }
+            //    var compensation = (elevatorProvider.HorizontalPosition > 0) ? elevatorProvider.HorizontalPosition % totalDistance : elevatorProvider.HorizontalPosition % -totalDistance;
+            //}
         }
 
         private void UpdateLoadingUnitLocation()

@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var cacheKey = GetAxisCacheKey(orientation);
                 if (!this.cache.TryGetValue(cacheKey, out ElevatorAxis cacheEntry))
                 {
-                    cacheEntry = this.dataContext.ElevatorAxes
+                    cacheEntry = this.dataContext.ElevatorAxes.AsNoTracking()
                         .Include(a => a.Profiles)
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdatePositioningCompensation(Orientation orientation, double compensation)
+        public void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal)
         {
             lock (this.dataContext)
             {
@@ -208,14 +208,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(orientation.ToString());
                 }
 
-                axis.PositioningCompensation = compensation;
+                axis.LastIdealPosition = position;
 
                 this.dataContext.SaveChanges();
-                this.cache.Remove(GetAxisCacheKey(Orientation.Horizontal));
+                this.cache.Remove(GetAxisCacheKey(orientation));
             }
         }
 
-        public void UpdateRealTimePosition(Orientation orientation, double position)
+        public void UpdateRealTimePosition(double position, Orientation orientation = Orientation.Horizontal)
         {
             lock (this.dataContext)
             {

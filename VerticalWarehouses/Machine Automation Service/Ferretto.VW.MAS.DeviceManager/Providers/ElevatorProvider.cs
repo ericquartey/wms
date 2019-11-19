@@ -116,16 +116,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
-                &&
-                loadingUnitNetWeight.HasValue)
+                && loadingUnitNetWeight.HasValue
+                )
             {
                 this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight.Value);
             }
 
             var isLoadingUnitOnBoard =
                 sensors[(int)IOMachineSensors.LuPresentInMachineSide]
-                &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
+                && sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
             if (isStartedOnBoard != isLoadingUnitOnBoard)
             {
@@ -149,7 +148,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
             var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var profileSteps = axis.Profiles
@@ -168,7 +166,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // if weight is unknown we move as full weight
             double scalingFactor = 1;
-            if (loadingUnitId.HasValue)
+            if (loadingUnitId.HasValue && !measure)
             {
                 var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
@@ -182,14 +180,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // if direction is Forwards then height increments, otherwise it decrements
-            var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
 
             var speed = profileSteps.Select(s => s.Speed).ToArray();
             var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
             var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
-            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - axis.PositioningCompensation + (s.Position * directionMultiplier)).ToArray();
+
+            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
+
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; " +
+                $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
+                $"direction: {direction}; " +
+                $"measure: {measure}; " +
+                $"waitContinue: {waitContinue}; " +
+                $"loadUnitId: {loadingUnitId}; " +
+                $"scalingFactor: {scalingFactor}; " +
+                $"compensation: {compensation}");
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,

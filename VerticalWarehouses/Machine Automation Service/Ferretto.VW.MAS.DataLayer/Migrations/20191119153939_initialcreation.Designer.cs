@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191118150943_initialcreation")]
+    [Migration("20191119153939_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,13 +194,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("InverterId");
 
+                    b.Property<double>("LastIdealPosition");
+
                     b.Property<double>("LowerBound");
 
                     b.Property<double>("Offset");
 
                     b.Property<int>("Orientation");
-
-                    b.Property<double>("PositioningCompensation");
 
                     b.Property<double>("ProfileCalibrateLength");
 
@@ -1166,7 +1166,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 18, 16, 9, 43, 226, DateTimeKind.Local).AddTicks(2699),
+                            InstallationDate = new DateTime(2017, 1, 19, 16, 39, 38, 467, DateTimeKind.Local).AddTicks(5324),
                             ServiceStatus = 86
                         });
                 });
