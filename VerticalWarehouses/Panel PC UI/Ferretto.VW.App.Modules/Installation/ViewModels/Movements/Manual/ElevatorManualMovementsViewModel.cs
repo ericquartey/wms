@@ -12,7 +12,7 @@ using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class EngineManualMovementsViewModel : BaseManualMovementsViewModel
+    internal sealed class ElevatorManualMovementsViewModel : BaseManualMovementsViewModel
     {
         #region Fields
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Constructors
 
-        public EngineManualMovementsViewModel(
+        public ElevatorManualMovementsViewModel(
             IMachineElevatorWebService elevatorWebService,
             IBayManager bayManager)
             : base(elevatorWebService, bayManager)
@@ -59,25 +59,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool CanExecuteMoveBackwardsCommand
+        public bool CanMoveBackwards
         {
             get => this.canExecuteMoveBackwardsCommand;
             private set => this.SetProperty(ref this.canExecuteMoveBackwardsCommand, value);
         }
 
-        public bool CanExecuteMoveDownCommand
+        public bool CanMoveDown
         {
             get => this.canExecuteMoveDownCommand;
             private set => this.SetProperty(ref this.canExecuteMoveDownCommand, value);
         }
 
-        public bool CanExecuteMoveForwardsCommand
+        public bool CanMoveForwards
         {
             get => this.canExecuteMoveForwardCommand;
             private set => this.SetProperty(ref this.canExecuteMoveForwardCommand, value);
         }
 
-        public bool CanExecuteMoveUpCommand
+        public bool CanMoveUp
         {
             get => this.canExecuteMoveUpCommand;
             private set => this.SetProperty(ref this.canExecuteMoveUpCommand, value);
@@ -86,49 +86,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingBackwards
         {
             get => this.isMovingBackwards;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingBackwards, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingBackwards, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingDown
         {
             get => this.isMovingDown;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingDown, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingDown, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingForwards
         {
             get => this.isMovingForwards;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingForwards, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingForwards, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingUp
         {
             get => this.isMovingUp;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingUp, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingUp, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand MoveBackwardsCommand =>
@@ -249,10 +225,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
-            this.CanExecuteMoveBackwardsCommand = !this.IsMovingForwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
-            this.CanExecuteMoveForwardsCommand = !this.IsMovingBackwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
-            this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
-            this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
+            this.CanMoveBackwards = !this.IsMovingForwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
+            this.CanMoveForwards = !this.IsMovingBackwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
+            this.CanMoveUp = !this.IsMovingDown && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
+            this.CanMoveDown = !this.IsMovingUp && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
         }
 
         protected override async Task StopMovementAsync()

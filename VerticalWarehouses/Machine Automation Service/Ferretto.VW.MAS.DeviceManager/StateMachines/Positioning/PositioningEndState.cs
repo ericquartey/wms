@@ -57,11 +57,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
 
-                            if (message.Status == MessageStatus.OperationEnd
+                            if (message.Status is MessageStatus.OperationEnd
                                 &&
-                                this.machineData.Requester == MessageActor.AutomationService
-                                &&
-                                this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                                this.machineData.MessageData.AxisMovement is Axis.Horizontal)
                             {
                                 this.UpdateLoadingUnitLocation();
                             }
@@ -290,10 +288,70 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
+        private void UpdateLoadingUnitForManualMovement()
+        {
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            {
+                // check if elevator is opposite a bay or a cell
+
+                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+                var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
+
+                var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
+                if (bayPosition != null)
+                {
+                    if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+                    // possible pickup from bay
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && /* drawer is not in bay */)
+                        {
+                            // update db
+                            ******************
+                        }
+                    }
+                    else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+                    // possible deposit to bay
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && /* drawer is in bay */)
+                        {
+                            // update db
+                            *************
+                        }
+                    }
+                }
+
+                var cell = elevatorDataProvider.GetCurrentCell();
+                if (cell != null)
+                {
+                    if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
+                    // possible pickup from cell
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
+                        {
+                            // update db
+                            *****************
+                        }
+                    }
+                    else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
+                    // possible deposit to cell
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
+                        {
+                            // update db
+                            ***************
+                        }
+                    }
+                }
+            }
+        }
+
         private void UpdateLoadingUnitLocation()
         {
             if (!this.machineData.MessageData.LoadingUnitId.HasValue)
             {
+                this.UpdateLoadingUnitForManualMovement();
                 return;
             }
 
@@ -304,8 +362,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
                 if (loadingUnitOnBoard is null)
                 {
-                    this.Logger.LogInformation("Update for pickup");
-
                     UpdateLoadingUnitForPickup(
                         this.machineData.MessageData.LoadingUnitId.Value,
                         this.machineData.MessageData.SourceBayPositionId,
@@ -314,8 +370,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else
                 {
-                    this.Logger.LogInformation("Update for deposit");
-
                     UpdateLoadingUnitForDeposit(
                         this.machineData.MessageData.LoadingUnitId.Value,
                         this.machineData.MessageData.TargetBayPositionId,

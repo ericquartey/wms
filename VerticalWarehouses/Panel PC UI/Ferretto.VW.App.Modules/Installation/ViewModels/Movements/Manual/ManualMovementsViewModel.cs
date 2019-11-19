@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly CarouselManualMovementsViewModel carouselManualMovementsViewModel;
 
-        private readonly EngineManualMovementsViewModel engineManualMovementsViewModel;
+        private readonly ElevatorManualMovementsViewModel engineManualMovementsViewModel;
 
         private readonly ExternalBayManualMovementsViewModel externalBayManualMovementsViewModel;
 
@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
 
             this.carouselManualMovementsViewModel = new CarouselManualMovementsViewModel(this.machineCarouselWebService, this.machineElevatorWebService, this.bayManager);
-            this.engineManualMovementsViewModel = new EngineManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);
+            this.engineManualMovementsViewModel = new ElevatorManualMovementsViewModel(this.machineElevatorWebService, this.bayManager);
             this.externalBayManualMovementsViewModel = new ExternalBayManualMovementsViewModel(this.machineElevatorWebService, this.machineBayWebService, this.bayManager);
             this.shutterEngineManualMovementsViewModel = new ShutterEngineManualMovementsViewModel(this.machineShutterWebService, this.machineElevatorWebService, this.bayManager);
         }
@@ -65,7 +65,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel CarouselManualMovementsViewModel => this.carouselManualMovementsViewModel;
 
-        public EngineManualMovementsViewModel EngineManualMovementsViewModel => this.engineManualMovementsViewModel;
+        public ElevatorManualMovementsViewModel EngineManualMovementsViewModel => this.engineManualMovementsViewModel;
 
         public ExternalBayManualMovementsViewModel ExternalBayManualMovementsViewModel => this.externalBayManualMovementsViewModel;
 

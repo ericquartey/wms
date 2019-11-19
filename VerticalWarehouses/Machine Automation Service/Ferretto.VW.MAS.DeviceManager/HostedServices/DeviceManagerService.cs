@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ProcessShutterPositioningMessage(command, serviceProvider);
                     break;
 
-                case MessageType.Positioning:
+                case MessageType.Positioning when command.Data is IPositioningMessageData:
                     this.ProcessPositioningMessage(command, serviceProvider);
                     break;
 
