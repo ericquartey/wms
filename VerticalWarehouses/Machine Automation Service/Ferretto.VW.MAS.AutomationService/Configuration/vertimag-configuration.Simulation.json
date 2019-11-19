@@ -41,10 +41,6 @@
           {
             "Height": 350,
             "Location": "InternalBay1Down"
-          },
-          {
-            "Height": 746,
-            "Location": "InternalBay1Up"
           }
         ],
         "Resolution": 369.8453,
@@ -54,9 +50,6 @@
             "Index": "Slave2"
           },
           "Type": "TwoSensors"
-        },
-        "Carousel": {
-          "ElevatorDistance": 460
         }
       },
       {
@@ -127,17 +120,11 @@
           }
         },
         {
-          "Inverter": {
-            "Index": "Slave1",
-            "Type": "Acu"
-          },
           "Orientation": "Horizontal",
           "Resolution": 77.6722,
           "Offset": 0,
           "ChainOffset": -6.4,
-          "ProfileCalibratePosition": 300,
-          "ProfileCalibrateSpeed": 30,
-          "ProfileCalibrateLength": 900,
+          "Inverter": null,
           "FullLoadMovement": {
             "Acceleration": 350,
             "Deceleration": 350,
@@ -151,49 +138,49 @@
           "Profiles": [
             {
               "Name": "ShortPickup",
-              "TotalDistance": 1415,
+              "TotalDistance": 1252,
               "Correction": 20,
               "Steps": [
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Number": 0,
+                  "Position": 150
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 100,
+                  "Number": 1,
+                  "Position": 450
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 500,
+                  "Number": 2,
+                  "Position": 900
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 500,
+                  "Number": 3,
+                  "Position": 1100
+                },
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
                   "Speed": 200,
-                  "Number": 0,
-                  "Position": 200
-                },
-                {
-                  "Acceleration": 500,
-                  "Deceleration": 1000,
-                  "Speed": 100,
-                  "Number": 1,
-                  "Position": 550
-                },
-                {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 500,
-                  "Number": 2,
-                  "Position": 950
-                },
-                {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 250,
-                  "Number": 3,
-                  "Position": 1350
-                },
-                {
-                  "Acceleration": 800,
-                  "Deceleration": 1000,
-                  "Speed": 50,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1252
                 }
               ]
             },
             {
               "Name": "ShortDeposit",
-              "TotalDistance": 1415,
+              "TotalDistance": 1252,
               "Correction": 20,
               "Steps": [
                 {
@@ -204,115 +191,115 @@
                   "Position": 200
                 },
                 {
-                  "Acceleration": 500,
-                  "Deceleration": 1000,
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 100,
                   "Number": 1,
-                  "Position": 550
+                  "Position": 350
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 500,
                   "Number": 2,
-                  "Position": 950
+                  "Position": 750
                 },
                 {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 250,
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 200,
                   "Number": 3,
-                  "Position": 1350
+                  "Position": 1020
                 },
                 {
-                  "Acceleration": 800,
-                  "Deceleration": 1000,
-                  "Speed": 50,
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
                   "Number": 4,
-                  "Position": 1415
+                  "Position": 1252
                 }
               ]
             },
             {
               "Name": "LongPickup",
-              "TotalDistance": 1310,
+              "TotalDistance": 1252,
               "Correction": 20,
               "Steps": [
                 {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 200,
-                  "Number": 0,
-                  "Position": 100
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Position": 150,
+                  "Number": 0
                 },
                 {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
                   "Speed": 100,
-                  "Position": 200,
+                  "Position": 450,
                   "Number": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 500,
-                  "Position": 300,
+                  "Position": 900,
                   "Number": 2
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 500,
-                  "Position": 985,
+                  "Position": 1100,
                   "Number": 3
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 200,
-                  "Position": 1310,
+                  "Position": 1252,
                   "Number": 4
                 }
               ]
             },
             {
               "Name": "LongDeposit",
-              "TotalDistance": 1310,
+              "TotalDistance": 1252,
               "Correction": 20,
               "Steps": [
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 200,
-                  "Position": 100,
+                  "Position": 200,
                   "Number": 0
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 100,
-                  "Position": 200,
+                  "Position": 350,
                   "Number": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 1000,
+                  "Deceleration": 0,
                   "Speed": 500,
-                  "Position": 300,
+                  "Position": 750,
                   "Number": 2
                 },
                 {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 500,
-                  "Position": 985,
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Position": 1020,
                   "Number": 3
                 },
                 {
-                  "Acceleration": 1000,
-                  "Deceleration": 1000,
-                  "Speed": 200,
-                  "Position": 1310,
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Position": 1252,
                   "Number": 4
                 }
               ]
@@ -330,9 +317,9 @@
         "ShaftElasticity": 210000
       }
     },
-    "Height": 9460,
+    "Height": 4563,
     "MaxGrossWeight": 50000,
-    "ModelName": "Simulation Vertimag 1000kg",
+    "ModelName": "Simulation Vertimag 800kg",
     "Panels": [
       {
         "Side": "Front",

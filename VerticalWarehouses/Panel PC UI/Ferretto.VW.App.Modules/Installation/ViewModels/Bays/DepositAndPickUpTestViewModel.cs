@@ -349,8 +349,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
+#if CHECK_BAY_SENSOR
                 &&
                 this.sensorsService.IsLoadingUnitInBay
+#endif
                 &&
                 !this.sensorsService.IsLoadingUnitOnElevator;
         }

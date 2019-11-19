@@ -39,9 +39,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel(
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineElevatorWebService machineElevatorWebService,
-            IBayManager bayManagerService)
-            : base(machineElevatorWebService, bayManagerService)
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
+            IBayManager bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             this.machineCarouselWebService = machineCarouselWebService;
 
@@ -112,7 +117,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveCarouselDownAsync()
         {
-            this.IsClosing = true;
 
             this.DisableAllExceptThis();
 
@@ -130,18 +134,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => m.Data?.AxisMovement == Axis.BayChain);
 
             this.isCompleted = false;
         }
 
         public async Task OpenCarouselAsync()
         {
-            this.IsOpening = true;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(VerticalMovementDirection.Up);
+        }
+
+        protected override void OnErrorStatusChanged()
+        {
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
         }
 
         protected override void OnMachinePowerChanged()
@@ -197,12 +210,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            // metterlo nel filtro della subscription
-            if (message.Data?.AxisMovement != Axis.BayChain)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
@@ -236,9 +243,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task StartMovementAsync(VerticalMovementDirection direction)
         {
+            if (this.IsClosing || this.IsOpening)
+            {
+                return;
+            }
+
             try
             {
                 await this.machineCarouselWebService.MoveManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsClosing = true;
+                }
+                else
+                {
+                    this.IsOpening = true;
+                }
             }
             catch (System.Exception ex)
             {

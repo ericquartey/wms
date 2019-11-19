@@ -43,6 +43,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
+
+        private bool keyboardOpened;
+
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private SubscriptionToken positioningOperationChangedToken;
@@ -152,6 +158,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand KeyboardCloseCommand =>
+           this.keyboardCloseCommand
+           ??
+           (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
+
+        public bool KeyboardOpened
+        {
+            get => this.keyboardOpened;
+            set => this.SetProperty(ref this.keyboardOpened, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand ResetCommand =>
            this.resetCommand
            ??
@@ -225,9 +247,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
-                this.BayIsShutterThreeSensors = this.bay.Shutter.Type is ShutterType.ThreeSensors;
+                      this.HasCarousel = this.bay.Carousel != null;
+                this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
+                this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
 
-                this.SubscribeToEvents();
+            this.SubscribeToEvents();
 
                 this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
                 this.RaiseCanExecuteChanged();
@@ -255,6 +279,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanResetCommand()
         {
             return
+               !this.KeyboardOpened
+                &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
@@ -263,9 +289,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStopMoving()
         {
             return
+               !this.KeyboardOpened
+                &&
                 this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
+        }
+
+        private void KeyboardClose()
+        {
+            this.KeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.KeyboardOpened = true;
         }
 
         private void OnHomingChanged(NotificationMessageUI<HomingMessageData> message)
@@ -282,6 +320,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     {
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
+                        if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
+                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
+                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
+                        }
                         break;
                     }
 
@@ -382,6 +429,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void RaiseCanExecuteChanged()
         {
             this.CanInputCellId =
+                !this.KeyboardOpened
+                &&
                 this.cells != null
                 &&
                 !this.IsMoving
@@ -389,11 +438,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
 
             this.CanInputHeight =
+                !this.KeyboardOpened
+                &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
 
             this.CanInputLoadingUnitId =
+                !this.KeyboardOpened
+                &&
                 this.loadingUnits != null
                 &&
                 this.cells != null

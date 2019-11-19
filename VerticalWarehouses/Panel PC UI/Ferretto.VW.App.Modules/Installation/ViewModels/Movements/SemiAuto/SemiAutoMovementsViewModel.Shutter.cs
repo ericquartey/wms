@@ -12,6 +12,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand closedShutterCommand;
 
+        private bool hasShutter;
+
         private DelegateCommand intermediateShutterCommand;
 
         private bool isShutterMoving;
@@ -29,8 +31,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
 
+        public bool HasShutter
+        {
+            get => this.hasShutter;
+            set => this.SetProperty(ref this.hasShutter, value);
+        }
+
         public ICommand IntermediateShutterCommand =>
-            this.intermediateShutterCommand
+                    this.intermediateShutterCommand
             ??
             (this.intermediateShutterCommand = new DelegateCommand(
                 async () => await this.IntermediateShutterAsync(),
@@ -63,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCloseShutter()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -75,6 +85,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteIntermediateCommand()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -89,6 +101,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanOpenShutter()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -17,6 +19,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
+        private readonly IHealthProbeService healthProbeService;
+
+        private readonly IMachineSensorsWebService machineSensorsWebService;
+
+        private readonly Sensors sensors = new Sensors();
+
         private Bay bay;
 
         private int bayNumber;
@@ -27,7 +35,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken movementsSubscriptionToken;
 
+        private SubscriptionToken sensorsToken;
+
+        private ShutterSensors shutterSensors;
+
         private DelegateCommand stopMovementCommand;
+
+        private bool unsafeRelease;
 
         #endregion
 
@@ -35,11 +49,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected BaseManualMovementsViewModel(
             IMachineElevatorWebService machineElevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
             this.MachineElevatorService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
         }
 
         #endregion
@@ -51,6 +69,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.bayNumber;
             protected set => this.SetProperty(ref this.bayNumber, value);
         }
+
+        public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
         public bool IsStopping
         {
@@ -81,10 +101,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
+
+        public Sensors Sensors => this.sensors;
+
+        public ShutterSensors ShutterSensors => this.shutterSensors;
+
         public DelegateCommand StopMovementCommand =>
             this.stopMovementCommand
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync(), this.CanExecuteStopMovment));
+
+        public bool UnsafeRelease
+        {
+            get => this.unsafeRelease;
+            set => this.SetProperty(ref this.unsafeRelease, value, this.RaiseCanExecuteChanged);
+        }
 
         protected IMachineElevatorWebService MachineElevatorService { get; }
 
@@ -104,16 +136,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.notificationUIsubscriptionToken?.Dispose();
-            this.notificationUIsubscriptionToken = null;
-
             this.movementsSubscriptionToken?.Dispose();
             this.movementsSubscriptionToken = null;
-            */
+
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
         }
 
         public void EnableAll()
@@ -129,11 +156,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.SubscribeToEvents();
 
-            await this.RetrieveCurrentPositionAsync();
+            await this.RetrieveCurrentPositionAsync()
+                .ContinueWith(async (w) =>
+                {
+                    if (!w.IsFaulted)
+                    {
+                        await this.InitializeSensors();
+                    }
+                });
 
             await base.OnAppearedAsync();
 
             this.EnableAll();
+
+            this.RaiseCanExecuteChanged();
         }
 
         protected virtual bool CanExecuteStopMovment()
@@ -156,6 +192,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected abstract void OnErrorStatusChanged();
+
+        protected override async Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
+        {
+            await base.OnErrorStatusChangedAsync(e);
+
+            this.OnErrorStatusChanged();
+        }
+
         protected abstract void OnMachinePowerChanged();
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -171,9 +216,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void RaiseCanExecuteChanged()
         {
+            this.RaisePropertyChanged(nameof(this.Sensors));
+            this.RaisePropertyChanged(nameof(this.ShutterSensors));
         }
 
         protected abstract Task StopMovementAsync();
+
+        private async Task InitializeSensors()
+        {
+            if (this.healthProbeService.HealthStatus == HealthStatus.Healthy)
+            {
+                var sensorsStates = await this.machineSensorsWebService.GetAsync();
+
+                this.sensors.Update(sensorsStates.ToArray());
+
+                if (this.shutterSensors is null)
+                {
+                    this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+                }
+
+                this.shutterSensors?.Update(sensorsStates.ToArray());
+
+                this.RaisePropertyChanged();
+            }
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.sensors.Update(message.Data.SensorsStates.ToArray());
+
+            if (this.shutterSensors is null)
+            {
+                this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+            }
+
+            this.shutterSensors?.Update(message.Data.SensorsStates.ToArray());
+
+            this.RaiseCanExecuteChanged();
+        }
 
         private async Task RetrieveCurrentPositionAsync()
         {
@@ -199,6 +279,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false,
                         message => message != null);
+
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion

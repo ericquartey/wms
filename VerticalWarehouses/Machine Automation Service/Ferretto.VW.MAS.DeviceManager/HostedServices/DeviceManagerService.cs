@@ -131,6 +131,9 @@ namespace Ferretto.VW.MAS.DeviceManager
                     .GetEvent<NotificationEvent>()
                     .Publish(errorNotification);
 
+                var errorsProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
+                errorsProvider.RecordNew(DataModels.MachineErrorCode.BayInvertersBusy, command.RequestingBay);
+
                 return Task.CompletedTask;
             }
 

@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveCarouselUpPolicy;
 
+        private bool hasCarousel;
+
         private bool isCarouselMoving;
 
         private DelegateCommand moveCarouselDownCommand;
@@ -43,6 +45,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.MoveCarouselUpAsync(),
                 this.CanMoveCarouselUp));
 
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
+
         public bool IsCarouselMoving
         {
             get => this.isCarouselMoving;
@@ -55,7 +63,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveCarouselDown()
         {
-            return !this.IsMoving
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
               &&
               !this.IsWaitingForResponse
               &&
@@ -64,7 +75,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveCarouselUp()
         {
-            return !this.IsMoving
+            return
+                !this.KeyboardOpened
+                &&
+            !this.IsMoving
               &&
               !this.IsWaitingForResponse
               &&

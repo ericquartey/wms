@@ -17,7 +17,8 @@
                                 Margin="15,0,15,15"
                                 Command="{Binding NavigateCommand}"
                                 Content="{Binding Description}"
-                                IsEnabled="{Binding IsEnabled}" />
+                                IsEnabled="{Binding IsEnabled}"
+                                Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
         </DataTemplate>
     </ItemsControl.ItemTemplate>
 </ItemsControl>

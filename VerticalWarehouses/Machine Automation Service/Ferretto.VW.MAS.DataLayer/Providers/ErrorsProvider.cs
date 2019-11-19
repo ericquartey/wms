@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Extensions;
 using Ferretto.VW.MAS.Utils.Events;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -187,18 +188,18 @@ namespace Ferretto.VW.MAS.DataLayer
             return error;
         }
 
-        public IEnumerable<MachineError> ResolveAll()
+        public void ResolveAll()
         {
             IEnumerable<int> errors;
             lock (this.dataContext)
             {
-                errors = this.dataContext.Errors
+                errors = this.dataContext.Errors.AsNoTracking()
                    .Where(e => e.ResolutionDate == null)
                    .Select(e => e.Id)
                    .ToArray();
             }
 
-            return errors.Select(id => this.Resolve(id));
+            errors.ToList().ForEach(id => this.Resolve(id));
         }
 
         private void Dispose(bool disposing)

@@ -9,6 +9,8 @@ namespace Ferretto.VW.App.Controls.Interfaces
 
         bool IsLoadingUnitInBay { get; }
 
+        bool IsLoadingUnitInMiddleBottomBay { get; }
+
         bool IsLoadingUnitOnElevator { get; }
 
         bool IsZeroChain { get; }

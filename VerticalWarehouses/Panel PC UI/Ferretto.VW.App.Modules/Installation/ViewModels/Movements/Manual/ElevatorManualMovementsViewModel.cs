@@ -50,8 +50,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ElevatorManualMovementsViewModel(
             IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(elevatorWebService, bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
         }
 
@@ -141,50 +146,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveBackwardsAsync()
         {
-            this.IsMovingBackwards = true;
-            this.IsMovingForwards = false;
-            this.IsMovingDown = false;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
         public async Task MoveDownAsync()
         {
-            this.IsMovingDown = true;
-            this.IsMovingUp = false;
-            this.IsMovingBackwards = false;
-            this.IsMovingForwards = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(VerticalMovementDirection.Down);
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Down);
         }
 
         public async Task MoveForwardsAsync()
         {
-            this.IsMovingForwards = true;
-            this.IsMovingBackwards = false;
-            this.IsMovingDown = false;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         public async Task MoveUpAsync()
         {
-            this.IsMovingUp = true;
-            this.IsMovingDown = false;
-            this.IsMovingForwards = false;
-            this.IsMovingBackwards = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(VerticalMovementDirection.Up);
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
         }
 
         public override async Task OnAppearedAsync()
@@ -198,18 +183,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => m.Data?.AxisMovement == Axis.Vertical ||
+                             m.Data?.AxisMovement == Axis.Horizontal);
 
             this.isCompleted = false;
 
             this.RaiseCanExecuteChanged();
         }
 
-        protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
+        protected override void OnErrorStatusChanged()
         {
-            await base.OnMachineModeChangedAsync(e);
-
-            if (!this.IsEnabled)
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
             {
                 this.StopMoving();
                 this.IsStopping = false;
@@ -219,6 +205,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override void OnMachinePowerChanged()
         {
             this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -241,16 +233,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                this.IsStopping = true;
                 await this.MachineElevatorService.StopAsync();
+                this.IsStopping = true;
             }
             catch (System.Exception ex)
             {
                 this.CloseOperation();
                 this.ShowNotification(ex);
-            }
-            finally
-            {
             }
         }
 
@@ -264,12 +253,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            // metterlo nel filtro della subscription
-            if (message.Data?.AxisMovement != Axis.Vertical && message.Data?.AxisMovement != Axis.Horizontal)
-            {
-                return;
-            }
-
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
@@ -301,11 +284,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        private async Task StartHorizontalMovementAsync(HorizontalMovementDirection direction)
         {
+            if (this.IsMovingForwards || this.IsMovingBackwards)
+            {
+                return;
+            }
+
             try
             {
                 await this.MachineElevatorService.MoveHorizontalManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsMovingBackwards = true;
+                }
+                else
+                {
+                    this.IsMovingForwards = true;
+                }
             }
             catch (System.Exception ex)
             {
@@ -315,11 +311,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StartMovementAsync(VerticalMovementDirection direction)
+        private async Task StartVerticalMovementAsync(VerticalMovementDirection direction)
         {
+            if (this.IsMovingUp || this.IsMovingDown)
+            {
+                return;
+            }
+
             try
             {
                 await this.MachineElevatorService.MoveVerticalAsync(direction);
+                if (direction == VerticalMovementDirection.Down)
+                {
+                    this.IsMovingDown = true;
+                }
+                else
+                {
+                    this.IsMovingUp = true;
+                }
             }
             catch (System.Exception ex)
             {

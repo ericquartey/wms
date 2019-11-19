@@ -83,8 +83,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 if (this.currentState == DepositAndPickUpState.GotoBay
-                    &&
-                    !this.sensorsService.IsLoadingUnitInBay)
+#if CHECK_BAY_SENSOR
+                    && !this.sensorsService.IsLoadingUnitInBay
+#endif
+                    )
                 {
                     this.IsExecutingProcedure = false;
                     this.ShowNotification($"Imbarco non eseguito causa Cassetto mancante");

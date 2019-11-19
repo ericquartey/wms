@@ -225,6 +225,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanEmbark()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -239,6 +241,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromBay()
         {
             return
+                !this.KeyboardOpened
+                &&
                 this.SelectedBayPosition != null
                 &&
                 !this.IsMoving
@@ -251,6 +255,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromCell()
         {
             return
+                !this.KeyboardOpened
+                &&
                 this.SelectedCell != null
                 &&
                 !this.IsMoving
@@ -263,6 +269,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuneBay()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -274,7 +282,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanTuningChain()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&
@@ -290,6 +301,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             return
+                !this.KeyboardOpened
+                &&
                 this.SelectedBayPosition != null
                 &&
                 !this.IsMoving
@@ -302,6 +315,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToCell()
         {
             return
+                !this.KeyboardOpened
+                &&
                 this.SelectedCell != null
                 &&
                 !this.IsMoving

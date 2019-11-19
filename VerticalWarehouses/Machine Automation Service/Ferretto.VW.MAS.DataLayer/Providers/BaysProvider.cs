@@ -302,6 +302,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Bays
                     .AsNoTracking()
+                     .Include(b => b.Shutter)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -349,7 +350,6 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var bay = this.dataContext.Bays
-                    .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
                     .ThenInclude(s => s.LoadingUnit)

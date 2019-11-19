@@ -185,6 +185,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else if (this.machineData.MessageData.MovementMode == MovementMode.BayChain)
             {
+#if CHECK_BAY_SENSOR
                 ok = (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ?
                         !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay) :
                         !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay));
@@ -198,6 +199,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         DataModels.MachineErrorCode.BottomLevelBayOccupied);
                 }
                 else
+#endif
                 {
                     ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
                     if (!ok)

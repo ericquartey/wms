@@ -340,6 +340,10 @@ namespace Ferretto.VW.Simulator.Services.Models
             this.axisPosition = new Dictionary<Axis, double>();
             this.axisPosition.Add(Axis.Horizontal, 0);
             this.axisPosition.Add(Axis.Vertical, 0);
+            if (inverterType != InverterType.Agl)
+            {
+                this.HorizontalZeroSensor(true);
+            }
 
             this.TargetPosition = new Dictionary<Axis, double>();
             this.TargetPosition.Add(Axis.Horizontal, 0);
@@ -939,6 +943,37 @@ namespace Ferretto.VW.Simulator.Services.Models
             return "Free";
         }
 
+        private void HorizontalZeroSensor(bool force)
+        {
+            if ((this.OperationMode != InverterOperationMode.TableTravel &&
+                this.CurrentAxis == Axis.Horizontal) ||
+                force)
+            {
+                if (this.AxisPosition > -3 && this.AxisPosition < 3)
+                {
+                    if (this.InverterType == InverterType.Ang)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = true;
+                    }
+                    else
+                    {
+                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
+                    }
+                }
+                else
+                {
+                    if (this.InverterType == InverterType.Ang)
+                    {
+                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                    }
+                    else
+                    {
+                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                    }
+                }
+            }
+        }
+
         private void InverterInFault()
         {
             this.IsFault = !this.IsFault;
@@ -1158,6 +1193,8 @@ namespace Ferretto.VW.Simulator.Services.Models
                     }
                 }
             }
+
+            this.HorizontalZeroSensor(false);
 
             if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
