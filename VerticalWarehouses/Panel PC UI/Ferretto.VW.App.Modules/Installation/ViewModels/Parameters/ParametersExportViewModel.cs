@@ -6,6 +6,7 @@ using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.ContractResolver;
 using Ferretto.VW.CommonUtils.Converters;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Newtonsoft.Json;
@@ -80,11 +81,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmFileOverwrite, InstallationApp.FileIsAlreadyPresent, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult != DialogResult.Yes)
+                if (File.Exists(this.FullPath))
                 {
-                    return;
+                    var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                    var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmFileOverwrite, InstallationApp.FileIsAlreadyPresent, DialogType.Question, DialogButtons.YesNo);
+                    if (messageBoxResult != DialogResult.Yes)
+                    {
+                        return;
+                    }
                 }
 
                 this.IsBusy = true;
@@ -94,9 +98,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 var configuration = await this.machineConfigurationWebService.GetAsync();
 
+                var settings = new JsonSerializerSettings();
+                settings.ContractResolver = new FirstLetterPropertyNameResolver();
+                settings.Converters.Add(new IPAddressConverter());
+                settings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+
                 File.WriteAllText(
                     this.FullPath,
-                    JsonConvert.SerializeObject(configuration, new JsonConverter[] { new IPAddressConverter() }));
+                    JsonConvert.SerializeObject(configuration, settings));
 
                 this.ShowNotification(Resources.InstallationApp.ExportSuccessful);
             }

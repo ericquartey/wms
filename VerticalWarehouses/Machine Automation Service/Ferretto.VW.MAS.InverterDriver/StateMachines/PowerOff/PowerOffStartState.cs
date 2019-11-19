@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
@@ -12,6 +13,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
 {
     internal class PowerOffStartState : InverterStateBase
     {
+        #region Fields
+
+        private DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public PowerOffStartState(
@@ -20,6 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -87,6 +95,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
                 {
                     this.ParentStateMachine.ChangeState(new PowerOffEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:PowerOffStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(
+                        new PowerOffErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
             return returnValue;

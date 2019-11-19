@@ -271,6 +271,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     errorText = "Find Zero not possible with full elevator";
                 }
             }
+#if CHECK_BAY_SENSOR
             else
             {
                 if (this.machineData.CalibrationType == Calibration.FindSensor &&
@@ -288,6 +289,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     errorText = "Find Zero not possible: Bottom position occupied";
                 }
             }
+#endif
             return ok;
         }
 

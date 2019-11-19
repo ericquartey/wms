@@ -44,6 +44,12 @@ namespace Ferretto.VW.App.Services
 
         #endregion
 
+        #region Events
+
+        public event EventHandler<MachineErrorEventArgs> ErrorStatusChanged;
+
+        #endregion
+
         #region Properties
 
         public MachineError ActiveError
@@ -147,7 +153,8 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMachineErrorStatusChangedAsync()
         {
-            await this.CheckErrorsPresenceAsync();
+            await this.CheckErrorsPresenceAsync()
+                .ContinueWith((m) => this.ErrorStatusChanged?.Invoke(null, new MachineErrorEventArgs(this.ActiveError)));
         }
 
         #endregion

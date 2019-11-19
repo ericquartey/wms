@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="20" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.26*" />
@@ -31,9 +31,25 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.ManualMovements}" />
 
-        <ctrls:SensorsPanel Grid.Row="1"
-                            Grid.RowSpan="5"
-                            Margin="0,0,5,0" />
+        <Grid Grid.Row="1"
+              Grid.RowSpan="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <ctrls:SensorsPanel Grid.Row="0"
+                                Margin="0,0,5,0" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Margin="5,5,5,0"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding UnsafeReleaseCommand}"
+                                Content="Unsafe release"
+                                IsActive="{Binding UnsafeRelease}"
+                                Visibility="Collapsed" />
+        </Grid>
+
 
         <views:EngineManualMovementsView Grid.Row="1"
                                          Grid.Column="1"
@@ -41,12 +57,13 @@
 
         <views:ShutterEngineManualMovementsView Grid.Row="1"
                                                 Grid.Column="3"
-                                                DataContext="{Binding ShutterEngineManualMovementsViewModel}" />
+                                                DataContext="{Binding ShutterEngineManualMovementsViewModel}"
+                                                Visibility="{Binding Path=DataContext.HasShutter, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
 
         <views:ExternalBayManualMovementsView Grid.Row="3"
                                               Grid.Column="1"
                                               DataContext="{Binding ExternalBayManualMovementsViewModel}"
-                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}"/>
+                                              Visibility="{Binding Path=DataContext.IsBayExternal, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ctrls:View}}}" />
 
         <views:CarouselManualMovementsView Grid.Row="3"
                                            Grid.Column="3"

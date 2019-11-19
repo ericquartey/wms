@@ -1,8 +1,13 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
+using Prism.Events;
+using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -20,11 +25,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isClosing;
 
+        private bool isCompleted;
+
         private bool isOpening;
 
-        private bool isStopping;
-
         private DelegateCommand openCommand;
+
+        private SubscriptionToken positioningToken;
 
         #endregion
 
@@ -32,13 +39,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CarouselManualMovementsViewModel(
             IMachineCarouselWebService machineCarouselWebService,
-            IMachineElevatorWebService machineElevatorWebService,
-            IBayManager bayManagerService)
-            : base(machineElevatorWebService, bayManagerService)
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
+            IBayManager bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             this.machineCarouselWebService = machineCarouselWebService;
 
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -69,7 +81,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isClosing, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -81,19 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isOpening, value))
                 {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -109,31 +109,80 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task CloseCarouselAsync()
         {
-            this.IsClosing = true;
-            this.IsOpening = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
+        public override void Disappear()
+        {
+            base.Disappear();
+
+            this.positioningToken?.Dispose();
+            this.positioningToken = null;
+        }
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.positioningToken = this.positioningToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.AxisMovement == Axis.BayChain);
+
+            this.isCompleted = false;
+        }
+
         public async Task OpenCarouselAsync()
         {
-            this.IsOpening = true;
-            this.IsClosing = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
+        protected override void OnErrorStatusChanged()
+        {
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
+        }
+
         protected override void OnMachinePowerChanged()
         {
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
+
+            if (!this.IsEnabled)
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.CanExecuteCloseCommand = !this.IsOpening && !this.IsStopping;
+            this.CanExecuteOpenCommand = !this.IsClosing && !this.IsStopping;
         }
 
         protected override async Task StopMovementAsync()
         {
+            // In caso di fine operazione
+            if (this.isCompleted)
+            {
+                return;
+            }
+
             try
             {
                 this.IsStopping = true;
@@ -142,36 +191,86 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             catch (System.Exception ex)
             {
+                this.CloseOperation();
                 this.ShowNotification(ex);
             }
             finally
             {
-                this.IsOpening = false;
-                this.IsClosing = false;
-                this.IsStopping = false;
-                this.EnableAll();
             }
         }
 
-        private void RefreshCanExecuteCommands()
+        private void CloseOperation()
         {
-            this.CanExecuteCloseCommand = !this.IsOpening && !this.IsStopping;
-            this.CanExecuteOpenCommand = !this.IsClosing && !this.IsStopping;
+            this.StopMoving();
+            this.IsStopping = false;
+            this.EnableAll();
+            this.isCompleted = true;
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.ShowNotification("Movimento giostra in corso...", Services.Models.NotificationSeverity.Info);
+                    this.isCompleted = false;
+
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.ShowNotification("Movimento giostra in corso...", Services.Models.NotificationSeverity.Info);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+
+                    break;
+            }
         }
 
         private async Task StartMovementAsync(HorizontalMovementDirection direction)
         {
+            if (this.IsClosing || this.IsOpening)
+            {
+                return;
+            }
+
             try
             {
                 await this.machineCarouselWebService.MoveManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsClosing = true;
+                }
+                else
+                {
+                    this.IsOpening = true;
+                }
             }
             catch (System.Exception ex)
             {
-                this.IsClosing = false;
-                this.IsOpening = false;
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
+        }
+
+        private void StopMoving()
+        {
+            this.IsClosing = false;
+            this.IsOpening = false;
         }
 
         #endregion

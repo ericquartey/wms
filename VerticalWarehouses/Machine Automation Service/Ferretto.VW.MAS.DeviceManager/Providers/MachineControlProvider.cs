@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return (notification.Destination == MessageActor.Any || notification.Destination == destination) &&
                 (notification.Type == MessageType.PowerEnable ||
                 notification.Type == MessageType.Stop ||
+                notification.Type == MessageType.InverterStop ||
                 notification.Type == MessageType.InverterFaultReset ||
                 notification.Type == MessageType.InverterPowerEnable ||
                 notification.Type == MessageType.ResetSecurity ||
@@ -57,7 +58,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus PowerStatusChangeStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.PowerEnable)
+            if (message.Type == MessageType.PowerEnable
+                || message.Type == MessageType.InverterPowerEnable)
             {
                 return message.Status;
             }
@@ -205,7 +207,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus StopOperationStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Stop)
+            if (message.Type == MessageType.Stop
+                || message.Type == MessageType.InverterStop)
             {
                 return message.Status;
             }

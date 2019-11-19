@@ -2,11 +2,13 @@
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 using ShutterPosition = Ferretto.VW.MAS.AutomationService.Contracts.ShutterPosition;
 
 // ReSharper disable ArrangeThisQualifier
@@ -22,15 +24,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteMoveUpCommand;
 
+        private bool isCompleted;
+
         private bool isMovingDown;
 
         private bool isMovingUp;
 
-        private bool isStopping;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
+
+        private SubscriptionToken shutterPositionToken;
 
         #endregion
 
@@ -38,9 +42,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ShutterEngineManualMovementsViewModel(
             IMachineShuttersWebService shuttersWebService,
-            IMachineElevatorWebService machineElevatorWebService,
+            IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(machineElevatorWebService, bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
             if (shuttersWebService is null)
             {
@@ -48,7 +57,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
 
             this.shuttersWebService = shuttersWebService;
-            this.RefreshCanExecuteCommands();
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion
@@ -74,7 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingDown, value))
                 {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -86,19 +95,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isMovingUp, value))
                 {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -123,20 +120,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.subscriptionToken?.Dispose();
-            this.subscriptionToken = null;
-            */
+            this.shutterPositionToken?.Dispose();
+            this.shutterPositionToken = null;
         }
 
         public async Task MoveDownAsync()
         {
-            this.IsMovingDown = true;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(ShutterMovementDirection.Down);
@@ -144,59 +133,148 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public async Task MoveUpAsync()
         {
-            this.IsMovingUp = true;
-            this.IsMovingDown = false;
-
             this.DisableAllExceptThis();
 
             await this.StartMovementAsync(ShutterMovementDirection.Up);
         }
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.shutterPositionToken = this.shutterPositionToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnShutterPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.isCompleted = false;
+        }
+
+        protected override void OnErrorStatusChanged()
+        {
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
+            {
+                this.StopMoving();
+                this.IsStopping = false;
+            }
+        }
+
         protected override void OnMachinePowerChanged()
         {
-            this.RefreshCanExecuteCommands();
-        }
+            this.RaiseCanExecuteChanged();
 
-        protected override async Task StopMovementAsync()
-        {
-            try
+            if (!this.IsEnabled)
             {
-                this.IsStopping = true;
-
-                await this.shuttersWebService.StopAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsMovingDown = false;
-                this.IsMovingUp = false;
+                this.StopMoving();
                 this.IsStopping = false;
-                this.EnableAll();
             }
         }
 
-        private void RefreshCanExecuteCommands()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(ShutterMovementDirection direction)
+        protected override async Task StopMovementAsync()
         {
+            // In caso di fine operazione
+            if (this.isCompleted)
+            {
+                return;
+            }
+
             try
             {
-                await this.shuttersWebService.MoveAsync(direction);
+                this.IsStopping = true;
+                await this.shuttersWebService.StopAsync();
             }
             catch (System.Exception ex)
             {
-                this.IsMovingDown = false;
-                this.IsMovingUp = false;
+                this.CloseOperation();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+            }
+        }
+
+        private void CloseOperation()
+        {
+            this.StopMoving();
+            this.IsStopping = false;
+            this.EnableAll();
+            this.isCompleted = true;
+        }
+
+        private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
+                    this.isCompleted = false;
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+                    break;
+            }
+        }
+
+        private async Task StartMovementAsync(ShutterMovementDirection direction)
+        {
+            if (this.IsMovingUp || this.IsMovingDown)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.shuttersWebService.MoveAsync(direction);
+                if (direction == ShutterMovementDirection.Down)
+                {
+                    this.IsMovingDown = true;
+                }
+                else
+                {
+                    this.IsMovingUp = true;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
+        }
+
+        private void StopMoving()
+        {
+            this.IsMovingUp = false;
+            this.IsMovingDown = false;
         }
 
         #endregion

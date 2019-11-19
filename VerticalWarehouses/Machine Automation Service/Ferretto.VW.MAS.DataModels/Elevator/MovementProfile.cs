@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public double Correction { get; set; }
+        public double Correction { get; set; }      // TODO remove this unused parameter
 
         public MovementProfileType Name { get; set; }
 

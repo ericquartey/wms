@@ -1,9 +1,14 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
+using Prism.Events;
+using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -19,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteMoveUpCommand;
 
+        private bool isCompleted;
+
         private bool isMovingBackwards;
 
         private bool isMovingDown;
@@ -26,8 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isMovingForwards;
 
         private bool isMovingUp;
-
-        private bool isStopping;
 
         private DelegateCommand moveBackwardsCommand;
 
@@ -37,16 +42,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand moveUpCommand;
 
+        private SubscriptionToken positioningToken;
+
         #endregion
 
         #region Constructors
 
         public EngineManualMovementsViewModel(
             IMachineElevatorWebService elevatorWebService,
+            IMachineSensorsWebService machineSensorsWebService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(elevatorWebService, bayManager)
+            : base(elevatorWebService,
+                   machineSensorsWebService,
+                   healthProbeService,
+                   bayManager)
         {
-            this.RefreshCanExecuteCommands();
         }
 
         #endregion
@@ -80,61 +91,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMovingBackwards
         {
             get => this.isMovingBackwards;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingBackwards, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingBackwards, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingDown
         {
             get => this.isMovingDown;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingDown, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingDown, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingForwards
         {
             get => this.isMovingForwards;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingForwards, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingForwards, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsMovingUp
         {
             get => this.isMovingUp;
-            private set
-            {
-                if (this.SetProperty(ref this.isMovingUp, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
-        }
-
-        public bool IsStopping
-        {
-            get => this.isStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isStopping, value))
-                {
-                    this.RefreshCanExecuteCommands();
-                }
-            }
+            private set => this.SetProperty(ref this.isMovingUp, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand MoveBackwardsCommand =>
@@ -161,120 +136,203 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public override void Disappear()
+        {
+            this.positioningToken?.Dispose();
+            this.positioningToken = null;
+
+            base.Disappear();
+        }
+
         public async Task MoveBackwardsAsync()
         {
-            this.IsMovingBackwards = true;
-            this.IsMovingForwards = false;
-            this.IsMovingDown = false;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(HorizontalMovementDirection.Backwards);
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Backwards);
         }
 
         public async Task MoveDownAsync()
         {
-            this.IsMovingDown = true;
-            this.IsMovingUp = false;
-            this.IsMovingBackwards = false;
-            this.IsMovingForwards = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(VerticalMovementDirection.Down);
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Down);
         }
 
         public async Task MoveForwardsAsync()
         {
-            this.IsMovingForwards = true;
-            this.IsMovingBackwards = false;
-            this.IsMovingDown = false;
-            this.IsMovingUp = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(HorizontalMovementDirection.Forwards);
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Forwards);
         }
 
         public async Task MoveUpAsync()
         {
-            this.IsMovingUp = true;
-            this.IsMovingDown = false;
-            this.IsMovingForwards = false;
-            this.IsMovingBackwards = false;
-
             this.DisableAllExceptThis();
 
-            await this.StartMovementAsync(VerticalMovementDirection.Up);
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
         }
 
-        protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
+        public override async Task OnAppearedAsync()
         {
-            await base.OnMachineModeChangedAsync(e);
+            await base.OnAppearedAsync();
 
-            if (!this.IsEnabled)
+            this.positioningToken = this.positioningToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data?.AxisMovement == Axis.Vertical ||
+                             m.Data?.AxisMovement == Axis.Horizontal);
+
+            this.isCompleted = false;
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        protected override void OnErrorStatusChanged()
+        {
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
             {
                 this.StopMoving();
+                this.IsStopping = false;
             }
         }
 
         protected override void OnMachinePowerChanged()
         {
-            this.RefreshCanExecuteCommands();
-        }
+            this.RaiseCanExecuteChanged();
 
-        protected override async Task StopMovementAsync()
-        {
-            this.IsStopping = true;
-
-            try
-            {
-                await this.MachineElevatorService.StopAsync();
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
+            if (!this.IsEnabled)
             {
                 this.StopMoving();
                 this.IsStopping = false;
-                this.EnableAll();
             }
         }
 
-        private void RefreshCanExecuteCommands()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.CanExecuteMoveBackwardsCommand = !this.IsMovingForwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveForwardsCommand = !this.IsMovingBackwards && !this.IsMovingUp && !this.IsMovingDown && !this.IsStopping;
             this.CanExecuteMoveUpCommand = !this.IsMovingDown && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
             this.CanExecuteMoveDownCommand = !this.IsMovingUp && !this.isMovingForwards && !this.IsMovingBackwards && !this.IsStopping;
         }
 
-        private async Task StartMovementAsync(HorizontalMovementDirection direction)
+        protected override async Task StopMovementAsync()
         {
+            // In caso di fine operazione
+            if (this.isCompleted)
+            {
+                return;
+            }
+
             try
             {
-                await this.MachineElevatorService.MoveHorizontalManualAsync(direction);
+                await this.MachineElevatorService.StopAsync();
+                this.IsStopping = true;
             }
             catch (System.Exception ex)
             {
-                this.StopMoving();
+                this.CloseOperation();
+                this.ShowNotification(ex);
+            }
+        }
+
+        private void CloseOperation()
+        {
+            this.StopMoving();
+            this.IsStopping = false;
+            this.EnableAll();
+            this.isCompleted = true;
+        }
+
+        private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.WriteInfo(message.Data?.AxisMovement);
+                    this.isCompleted = false;
+
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.WriteInfo(message.Data?.AxisMovement);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+
+                    break;
+            }
+        }
+
+        private async Task StartHorizontalMovementAsync(HorizontalMovementDirection direction)
+        {
+            if (this.IsMovingForwards || this.IsMovingBackwards)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.MachineElevatorService.MoveHorizontalManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsMovingBackwards = true;
+                }
+                else
+                {
+                    this.IsMovingForwards = true;
+                }
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
         }
 
-        private async Task StartMovementAsync(VerticalMovementDirection direction)
+        private async Task StartVerticalMovementAsync(VerticalMovementDirection direction)
         {
+            if (this.IsMovingUp || this.IsMovingDown)
+            {
+                return;
+            }
+
             try
             {
                 await this.MachineElevatorService.MoveVerticalAsync(direction);
+                if (direction == VerticalMovementDirection.Down)
+                {
+                    this.IsMovingDown = true;
+                }
+                else
+                {
+                    this.IsMovingUp = true;
+                }
             }
             catch (System.Exception ex)
             {
-                this.StopMoving();
+                this.CloseOperation();
 
                 this.ShowNotification(ex);
             }
@@ -286,6 +344,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingDown = false;
             this.IsMovingForwards = false;
             this.IsMovingBackwards = false;
+        }
+
+        private void WriteInfo(Axis? axisMovement)
+        {
+            if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+            {
+                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
+            }
+            else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+            {
+                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
+            }
         }
 
         #endregion

@@ -67,6 +67,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,
                 commandMessage.Description,
@@ -118,6 +119,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationError:
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationRunningStop:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
                 }

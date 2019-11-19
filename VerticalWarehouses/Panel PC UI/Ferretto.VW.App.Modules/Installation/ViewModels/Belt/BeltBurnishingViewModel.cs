@@ -354,6 +354,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachinePowerChangedAsync(e);
 
             this.ClearNotifications();
+
+            if (e.MachinePowerState == MachinePowerState.Unpowered)
+            {
+                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
+                this.RaiseCanExecuteChanged();
+            }
         }
 
         private bool CanStartTest()
@@ -379,11 +386,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.IsNotRunning())
             {
                 this.IsExecutingProcedure = false;
+                this.isCompleted = true;
             }
 
             if (message.IsErrored())
             {
                 this.ShowNotification(VW.App.Resources.InstallationApp.ProcedureWasStopped, Services.Models.NotificationSeverity.Warning);
+                this.IsExecutingProcedure = false;
             }
 
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
@@ -398,6 +407,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
+                this.IsExecutingProcedure = false;
             }
             else if (!message.IsNotRunning() && !this.isCompleted && this.IsEnabled)
             {
@@ -407,8 +417,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
+            this.startCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task RetrieveCurrentPositionAsync()
@@ -458,13 +468,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
+                this.IsExecutingProcedure = true;
 
                 await this.beltBurnishingWebService.StopAsync();
+
+                this.isCompleted = true;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
                 this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
             finally
             {

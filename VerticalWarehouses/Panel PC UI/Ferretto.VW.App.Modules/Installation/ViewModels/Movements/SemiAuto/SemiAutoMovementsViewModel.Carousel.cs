@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand carouselUpCommand;
 
+        private bool hasCarousel;
+
         private bool isCarouselMoving;
 
         #endregion
@@ -47,6 +49,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.CarouselUpAsync(),
                 this.CanExecuteCarouselUpCommand));
 
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
+
         public bool IsCarouselMoving
         {
             get => this.isCarouselMoving;
@@ -66,20 +74,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteCarouselDownCommand()
         {
-            return !this.IsMoving
-              &&
-              !this.IsWaitingForResponse;
-
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
             // &&
             // (this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
         }
 
         private bool CanExecuteCarouselUpCommand()
         {
-            return !this.IsMoving
-              &&
-              !this.IsWaitingForResponse;
-
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
             // &&
             // IoStatus.LoadingUnitInLowerBay;
         }

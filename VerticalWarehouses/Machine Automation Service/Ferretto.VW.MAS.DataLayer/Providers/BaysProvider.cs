@@ -286,7 +286,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public Bay GetByLoadingUnitLocation(LoadingUnitLocation location)
         {
-            return this.dataContext.Bays.FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
+            return this.dataContext.Bays
+                .Include(b => b.Shutter)
+                .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
         }
 
         public BayNumber GetByMovementType(IPositioningMessageData data)
@@ -650,12 +652,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (positionIndex == 1)
                 {
-                    position = bay.Positions.Single(p => p.Height == bay.Positions.Max(p => p.Height));
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Max(e => e.Height));
                 }
 
                 if (positionIndex == 2)
                 {
-                    position = bay.Positions.Single(p => p.Height == bay.Positions.Min(p => p.Height));
+                    position = bay.Positions.Single(p => p.Height == bay.Positions.Min(e => e.Height));
                 }
 
                 position.Height = height;

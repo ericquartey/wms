@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to BayInvertersBusy.
+        /// </summary>
+        public static string BayInvertersBusy {
+            get {
+                return ResourceManager.GetString("BayInvertersBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Livello basso baia occupato..
         /// </summary>
         public static string BottomLevelBayOccupied {
@@ -111,6 +120,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string CradleNotCorrectlyUnloadedDuringDeposit {
             get {
                 return ResourceManager.GetString("CradleNotCorrectlyUnloadedDuringDeposit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to DestinationBelowLowerBound.
+        /// </summary>
+        public static string DestinationBelowLowerBound {
+            get {
+                return ResourceManager.GetString("DestinationBelowLowerBound", resourceCulture);
             }
         }
         
@@ -336,6 +354,24 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string MachineManagerErrorLoadingUnitNotRemoved {
             get {
                 return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterClosed {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterOpen.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitShutterOpen {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitShutterOpen", resourceCulture);
             }
         }
         

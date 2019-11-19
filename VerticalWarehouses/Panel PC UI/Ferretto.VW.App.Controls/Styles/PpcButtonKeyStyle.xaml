@@ -96,6 +96,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="Auto" />
         <Setter Property="Height" Value="Auto" />
+        <Setter Property="Focusable" Value="False" />
     </Style>
 
 </ResourceDictionary>

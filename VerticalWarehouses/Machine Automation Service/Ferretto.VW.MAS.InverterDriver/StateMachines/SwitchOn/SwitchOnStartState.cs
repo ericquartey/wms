@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
 
         private readonly Axis axisToSwitchOn;
 
-        private DateTime startTime;
+        private readonly DateTime startTime;
 
         #endregion
 
@@ -31,6 +31,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.axisToSwitchOn = axisToSwitchOn;
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -40,7 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.SwitchOn
         public override void Start()
         {
             this.Logger.LogDebug($"Switch On Start Inverter {this.InverterStatus.SystemIndex}");
-            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.SwitchOn = true;
             this.InverterStatus.CommonControlWord.HorizontalAxis =
                 this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine()

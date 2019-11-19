@@ -50,6 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
                 var inverterMessageData = new InverterPowerEnableMessageData(messageData.Enable);

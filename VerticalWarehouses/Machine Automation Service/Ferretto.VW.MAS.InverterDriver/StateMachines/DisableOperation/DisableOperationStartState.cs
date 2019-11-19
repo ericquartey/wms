@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -10,6 +11,12 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 {
     internal sealed class DisableOperationStartState : InverterStateBase
     {
+        #region Fields
+
+        private readonly DateTime startTime;
+
+        #endregion
+
         #region Constructors
 
         public DisableOperationStartState(
@@ -18,6 +25,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
             ILogger logger)
             : base(parentStateMachine, inverterStatus, logger)
         {
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -83,6 +91,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
                 {
                     this.ParentStateMachine.ChangeState(new DisableOperationEndState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     returnValue = true;
+                }
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                {
+                    this.Logger.LogError($"2:SwitchOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
+                    this.ParentStateMachine.ChangeState(new DisableOperationErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                 }
             }
 

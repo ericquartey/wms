@@ -31,93 +31,40 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.LSMTEngineTitle}" />
 
-        <controls:PpcButton Grid.Row="1"
-                            Grid.ColumnSpan="2"
-                            Margin="0,0,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Up}"
-                            IsEnabled="{Binding CanExecuteMoveUpCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchDown">
-                    <i:InvokeCommandAction Command="{Binding MoveUpCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                           Grid.ColumnSpan="2"
+                                           Margin="0,0,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Up}"
+                                           PressCommand="{Binding MoveUpCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveUpCommand}"-->
 
-        <controls:PpcButton Grid.Row="2"
-                            Margin="0,15,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Backwards}"
-                            IsEnabled="{Binding CanExecuteMoveBackwardsCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchDown">
-                    <i:InvokeCommandAction Command="{Binding MoveBackwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                           Margin="0,15,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Backwards}"
+                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"-->
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Forwards}"
-                            IsEnabled="{Binding CanExecuteMoveForwardsCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveForwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchDown">
-                    <i:InvokeCommandAction Command="{Binding MoveForwardsCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
+        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                           Grid.Column="1"
+                                           Margin="15,15,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Forwards}"
+                                           PressCommand="{Binding MoveForwardsCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveForwardsCommand}"-->
 
-        <controls:PpcButton Grid.Row="3"
-                            Grid.ColumnSpan="2"
-                            Margin="15,15,0,0"
-                            HorizontalAlignment="Center"
-                            Content="{x:Static res:InstallationApp.Down}"
-                            IsEnabled="{Binding CanExecuteMoveDownCommand}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="PreviewMouseDown">
-                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewMouseUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchDown">
-                    <i:InvokeCommandAction Command="{Binding MoveDownCommand}" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="TouchUp">
-                    <i:InvokeCommandAction Command="{Binding StopMovementCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-        </controls:PpcButton>
-
+        <controls:PpcPressAndReleaseButton Grid.Row="3"
+                                           Grid.ColumnSpan="2"
+                                           Margin="15,15,0,0"
+                                           HorizontalAlignment="Center"
+                                           Content="{x:Static res:InstallationApp.Down}"
+                                           PressCommand="{Binding MoveDownCommand}"
+                                           ReleaseCommand="{Binding StopMovementCommand}" />
+        <!--IsEnabled="{Binding CanExecuteMoveDownCommand}"-->
     </Grid>
 
 </ctrls:View>
