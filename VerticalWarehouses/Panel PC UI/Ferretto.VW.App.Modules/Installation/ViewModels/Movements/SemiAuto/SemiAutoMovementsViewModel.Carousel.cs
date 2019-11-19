@@ -74,20 +74,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanExecuteCarouselDownCommand()
         {
-            return !this.IsMoving
-              &&
-              !this.IsWaitingForResponse;
-
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
             // &&
             // (this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
         }
 
         private bool CanExecuteCarouselUpCommand()
         {
-            return !this.IsMoving
-              &&
-              !this.IsWaitingForResponse;
-
+            return
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
             // &&
             // IoStatus.LoadingUnitInLowerBay;
         }

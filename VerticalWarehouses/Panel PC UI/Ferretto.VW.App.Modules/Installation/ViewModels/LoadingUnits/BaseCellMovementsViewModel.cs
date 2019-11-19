@@ -51,9 +51,33 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.destinationCellId;
             set
             {
+                int? old = this.destinationCellId;
                 if (this.SetProperty(ref this.destinationCellId, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    if (this.IsCellFree)
+                    {
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else
+                    {
+                        bool increment = !old.HasValue || old < this.destinationCellId;
+                        if (increment)
+                        {
+                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && old.HasValue && w.Id > old.Value);
+                            if (l.Any())
+                            {
+                                this.DestinationCellId = l.Min(o => o.Id);
+                            }
+                        }
+                        else
+                        {
+                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && old.HasValue && w.Id < old.Value);
+                            if (l.Any())
+                            {
+                                this.DestinationCellId = l.Max(o => o.Id);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -115,7 +139,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        private async Task RetrieveCellsAsync()
+        protected async Task RetrieveCellsAsync()
         {
             try
             {

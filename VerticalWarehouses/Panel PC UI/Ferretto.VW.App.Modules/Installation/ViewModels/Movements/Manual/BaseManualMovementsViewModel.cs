@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopMovementCommand;
 
+        private bool unsafeRelease;
+
         #endregion
 
         #region Constructors
@@ -103,10 +105,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public Sensors Sensors => this.sensors;
 
+        public ShutterSensors ShutterSensors => this.shutterSensors;
+
         public DelegateCommand StopMovementCommand =>
             this.stopMovementCommand
             ??
             (this.stopMovementCommand = new DelegateCommand(async () => await this.StopMovementAsync(), this.CanExecuteStopMovment));
+
+        public bool UnsafeRelease
+        {
+            get => this.unsafeRelease;
+            set => this.SetProperty(ref this.unsafeRelease, value, this.RaiseCanExecuteChanged);
+        }
 
         protected IMachineElevatorWebService MachineElevatorService { get; }
 
@@ -158,6 +168,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnAppearedAsync();
 
             this.EnableAll();
+
+            this.RaiseCanExecuteChanged();
         }
 
         protected virtual bool CanExecuteStopMovment()
@@ -204,6 +216,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected virtual void RaiseCanExecuteChanged()
         {
+            this.RaisePropertyChanged(nameof(this.Sensors));
+            this.RaisePropertyChanged(nameof(this.ShutterSensors));
         }
 
         protected abstract Task StopMovementAsync();
@@ -215,7 +229,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
 
                 this.sensors.Update(sensorsStates.ToArray());
-                this.shutterSensors.Update(sensorsStates.ToArray());
+
+                if (this.shutterSensors is null)
+                {
+                    this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+                }
+
+                this.shutterSensors?.Update(sensorsStates.ToArray());
 
                 this.RaisePropertyChanged();
             }
@@ -223,8 +243,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.sensors.Update(message.Data?.SensorsStates.ToArray());
-            this.shutterSensors.Update(message.Data?.SensorsStates.ToArray());
+            this.sensors.Update(message.Data.SensorsStates.ToArray());
+
+            if (this.shutterSensors is null)
+            {
+                this.shutterSensors = new ShutterSensors((int)this.bay.Number);
+            }
+
+            this.shutterSensors?.Update(message.Data.SensorsStates.ToArray());
 
             this.RaiseCanExecuteChanged();
         }
@@ -235,7 +261,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.BayNumber = (int)this.bay.Number;
-                this.shutterSensors = new ShutterSensors((int)this.bay.Number);
             }
             catch (Exception ex)
             {

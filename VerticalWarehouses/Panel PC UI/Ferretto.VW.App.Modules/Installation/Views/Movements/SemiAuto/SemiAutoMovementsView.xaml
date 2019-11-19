@@ -86,7 +86,8 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputHeight}"
-                               Keyboard="Numpad"
+                               KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                               KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                LabelText="{x:Static res:InstallationApp.Position}"
                                Mask="####0"
                                WidthNumber="210" />
@@ -106,6 +107,8 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputCellId}"
+                               KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                               KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                LabelText="{x:Static res:InstallationApp.CellNumber}"
                                Mask="##0"
                                WidthNumber="210" />
@@ -125,6 +128,8 @@
                                VerticalAlignment="Top"
                                EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
+                               KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                               KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                LabelText="{x:Static res:InstallationApp.DrawerNumber}"
                                Mask="#0"
                                WidthNumber="210" />
@@ -251,9 +256,9 @@
             <controls:PpcButton Grid.Row="5"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" 
                                 Command="{Binding ClosedShutterCommand}"
-                                Content="{x:Static res:InstallationApp.GateClose}">
+                                Content="{x:Static res:InstallationApp.GateClose}"
+                                Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                 <controls:PpcButton.Style>
                     <Style BasedOn="{StaticResource PpcButtonStyle}"
                            TargetType="{x:Type controls:PpcButton}">

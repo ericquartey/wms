@@ -134,9 +134,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnErrorStatusChanged()
         {
-            this.RaiseCanExecuteChanged();
-
-            if (!this.IsEnabled)
+            //if (!this.IsEnabled)
+            if (!(this.MachineError is null))
             {
                 this.StopMoving();
                 this.IsStopping = false;

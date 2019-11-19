@@ -23,6 +23,12 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Bender"
       }
+    },
+    "MAS (Simulation Prototype #2)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "SimulationP2"
+      }
     }
   }
 }

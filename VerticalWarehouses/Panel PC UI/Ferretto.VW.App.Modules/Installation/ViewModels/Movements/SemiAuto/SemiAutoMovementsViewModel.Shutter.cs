@@ -71,6 +71,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCloseShutter()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -83,6 +85,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteIntermediateCommand()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -97,6 +101,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanOpenShutter()
         {
             return
+                !this.KeyboardOpened
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
