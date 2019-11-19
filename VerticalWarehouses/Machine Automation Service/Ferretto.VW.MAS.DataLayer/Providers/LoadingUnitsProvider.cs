@@ -157,6 +157,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
                 this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
 
                 this.dataContext.SaveChanges();

@@ -124,7 +124,49 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                this.dataContext.Machines.Update(machine);
+                this.dataContext.Database.ExecuteSqlCommand("PRAGMA foreign_keys = OFF");
+                this.dataContext.Database.ExecuteSqlCommand("PRAGMA ignore_check_constraints = ON;");
+                this.dataContext.SaveChanges();
+
+                this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
+                this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
+                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
+
+                this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
+
+                this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
+                this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
+                this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
+
+                this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
+                this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
+
+                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
+                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
+
+                //this.dataContext.Carousels.RemoveRange(this.dataContext.Carousels);
+                //this.dataContext.ErrorDefinitions.RemoveRange(this.dataContext.ErrorDefinitions);
+                //this.dataContext.Errors.RemoveRange(this.dataContext.Errors);
+                //this.dataContext.ErrorStatistics.RemoveRange(this.dataContext.ErrorStatistics);
+                //this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
+                //this.dataContext.LogEntries.RemoveRange(this.dataContext.LogEntries);
+                //this.dataContext.MachineStatistics.RemoveRange(this.dataContext.MachineStatistics);
+                //this.dataContext.ServicingInfo.RemoveRange(this.dataContext.ServicingInfo);
+                //this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
+                //this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                //this.dataContext.SetupStatus.RemoveRange(this.dataContext.SetupStatus);
+                //this.dataContext.TorqueCurrentMeasurementSessions.RemoveRange(this.dataContext.TorqueCurrentMeasurementSessions);
+                //this.dataContext.TorqueCurrentSamples.RemoveRange(this.dataContext.TorqueCurrentSamples);
+                //this.dataContext.Users.RemoveRange(this.dataContext.Users);
+
+                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
+
+                this.dataContext.SaveChanges();
+
+                //this.dataContext.Machines.Update(machine);
+
+                this.dataContext.Database.ExecuteSqlCommand("PRAGMA foreign_keys = ON");
+                this.dataContext.Database.ExecuteSqlCommand("PRAGMA ignore_check_constraints = ON;");
 
                 this.dataContext.SaveChanges();
             }

@@ -250,6 +250,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
+                this.dataContext.RemoveRange(this.dataContext.SetupProceduresSets);
                 this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
                 this.dataContext.SaveChanges();
             }
