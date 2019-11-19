@@ -88,7 +88,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 var current = message.UShortPayload / 10.0;
-                this.data.MeasuredWeight = (current * current * this.verticalParams.WeightMeasurement.MeasureConst2)
+                this.data.MeasuredWeight = (Math.Pow(current, 2) * this.verticalParams.WeightMeasurement.MeasureConst2)
                     + (current * this.verticalParams.WeightMeasurement.MeasureConst1)
                     + this.verticalParams.WeightMeasurement.MeasureConst0;
 

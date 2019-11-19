@@ -106,6 +106,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The shutter of bay {0} is not completely closed..
+        /// </summary>
+        public static string TheShutterOfBayIsNotCompletelyClosed {
+            get {
+                return ResourceManager.GetString("TheShutterOfBayIsNotCompletelyClosed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The Shutter Type is not valid.
         /// </summary>
         public static string TheShutterTypeIsNotValid {

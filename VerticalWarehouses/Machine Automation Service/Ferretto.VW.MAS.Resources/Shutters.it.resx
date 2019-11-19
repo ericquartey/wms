@@ -138,4 +138,7 @@
   <data name="TheSpeedRateIsNotValid" xml:space="preserve">
     <value>La Velocità alta non è valida</value>
   </data>
+  <data name="TheShutterOfBayIsNotCompletelyClosed" xml:space="preserve">
+    <value>La serranda della baia {0} non è completamente chiusa.</value>
+  </data>
 </root>

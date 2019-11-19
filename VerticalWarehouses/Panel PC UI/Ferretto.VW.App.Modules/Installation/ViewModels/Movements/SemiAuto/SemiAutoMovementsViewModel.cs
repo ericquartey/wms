@@ -356,6 +356,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
+                        this.ShowNotification(InstallationApp.ProcedureCompleted);
+
                         this.IsMoving = false;
 
                         if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
@@ -484,6 +486,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.bay = await this.bayManagerService.GetBayAsync();
                 this.cells = await this.machineCellsWebService.GetAllAsync();
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+
+                this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
             {

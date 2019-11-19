@@ -152,6 +152,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition };
             }
 
+            // check #5: the shutters on the same side of the cell must be completely closed
+            //           TODO: this is a conservative approach and it could be optimized by inhibiting the operation
+            //                 only for cells that are actually obscured by the shutter
+            var baysOnSameSide = this.baysDataProvider.GetAll().Where(b => b.Side == cell.Side);
+            foreach (var bayOnSameSide in baysOnSameSide)
+            {
+                if (bayOnSameSide.Shutter != null
+                    &&
+                    this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number) != ShutterPosition.Closed)
+                {
+                    return new ActionPolicy
+                    {
+                        Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+                    };
+                }
+            }
+
             return ActionPolicy.Allowed;
         }
 
@@ -315,6 +332,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (this.machineResourcesProvider.IsSensorZeroOnCradle)
             {
                 return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotEmptyButThePawlIsInZeroPosition };
+            }
+
+            // check #4: the shutters on the same side of the cell must be completely closed
+            //           TODO: this is a conservative approach and it could be optimized by inhibiting the operation
+            //                 only for cells that are actually obscured by the shutter
+            var baysOnSameSide = this.baysDataProvider
+                .GetAll()
+                .Where(b => b.Side == cell.Side);
+            foreach (var bayOnSameSide in baysOnSameSide)
+            {
+                if (bayOnSameSide.Shutter != null
+                    &&
+                    this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number) != ShutterPosition.Closed)
+                {
+                    return new ActionPolicy
+                    {
+                        Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+                    };
+                }
             }
 
             return ActionPolicy.Allowed;

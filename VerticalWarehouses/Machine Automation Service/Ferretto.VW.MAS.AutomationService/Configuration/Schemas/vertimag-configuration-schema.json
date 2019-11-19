@@ -647,8 +647,7 @@
                   "required": [
                     "Id",
                     "Position",
-                    "Priority",
-                    "Status"
+                    "Priority"
                   ],
                   "properties": {
                     "Id": {
@@ -676,10 +675,18 @@
                       "title": "The Status Schema",
                       "enum": [
                         "Free",
-                        "Disabled",
-                        "Occupied",
-                        "Unusable"
+                        "Occupied"
                       ]
+                    },
+                    "IsUnusable": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsUnusable",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
+                    },
+                    "IsDeactivated": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsDeactivated",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
                     }
                   }
                 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExpress.Xpf.Data.Native;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -49,9 +51,7 @@ namespace Ferretto.VW.App.Services
 
         private double? bayPositionUpHeight;
 
-        private int? elevatorBayPositionId;
-
-        private int? elevatorCellId;
+        private IEnumerable<Bay> bays;
 
         private bool bayZeroChainIsVisible;
 
@@ -298,7 +298,9 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                this.RetrieveElevatorPosition();
+                this.bays = await this.machineBaysWebService.GetAllAsync();
+
+                this.RetrieveElevatorPosition(this.machineElevatorService.Position);
 
                 await this.GetBayAsync()
                     .ContinueWith(async (m) => await this.InitializeSensorsAsync());
@@ -403,35 +405,16 @@ namespace Ferretto.VW.App.Services
             this.BayChainPosition = e.Position;
         }
 
-        private async Task OnElevatorPositionChangedAsync(ElevatorPositionChangedEventArgs e)
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.ElevatorVerticalPosition = e.VerticalPosition;
-            this.ElevatorHorizontalPosition = e.HorizontalPosition;
-
-            if (e.CellId != null && this.elevatorCellId != e.CellId)
-            {
-                this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, e.CellId);
-                this.elevatorCellId = e.CellId;
-            }
-            else if (e.BayPositionId != null && this.elevatorBayPositionId != e.BayPositionId)
-            {
-                this.elevatorBayPositionId = e.BayPositionId;
-
-                try
+            this.RetrieveElevatorPosition(
+                new ElevatorPosition
                 {
-                    var bays = await this.machineBaysWebService.GetAllAsync();
-                    var bay = bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == e.BayPositionId));
-                    this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
-                }
-                catch
-                {
-                    this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
-                }
-            }
-            else
-            {
-                this.ElevatorLogicalPosition = null;
-            }
+                    Horizontal = e.HorizontalPosition,
+                    Vertical = e.VerticalPosition,
+                    BayPositionId = e.BayPositionId,
+                    CellId = e.CellId
+                });
         }
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
@@ -440,7 +423,6 @@ namespace Ferretto.VW.App.Services
             {
                 case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
-                        await this.GetElevatorAsync(false);
                         await this.GetElevatorAsync(false);
 
                         break;
@@ -492,10 +474,37 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));
         }
 
-        private void RetrieveElevatorPosition()
+        private void RetrieveElevatorPosition(ElevatorPosition position)
         {
-            this.ElevatorVerticalPosition = this.machineElevatorService.Position?.Vertical;
-            this.ElevatorHorizontalPosition = this.machineElevatorService.Position?.Horizontal;
+            if (position is null)
+            {
+                return;
+            }
+
+            this.ElevatorVerticalPosition = position.Vertical;
+            this.ElevatorHorizontalPosition = position.Horizontal;
+
+            if (position.CellId != null)
+            {
+                this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
+            }
+            else if (position.BayPositionId != null)
+            {
+                if (this.bays != null)
+                {
+                    var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
+                    System.Diagnostics.Debug.Assert(bay != null);
+                    this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                }
+                else
+                {
+                    this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
+                }
+            }
+            else
+            {
+                this.ElevatorLogicalPosition = null;
+            }
         }
 
         private void ShowNotification(Exception exception)
@@ -536,7 +545,7 @@ namespace Ferretto.VW.App.Services
                 this.eventAggregator
                     .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
                     .Subscribe(
-                        async m => await this.OnElevatorPositionChangedAsync(m),
+                        this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
                         false);
 
