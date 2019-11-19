@@ -64,7 +64,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                         bool increment = !old.HasValue || old < this.destinationCellId;
                         if (increment)
                         {
-                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && old.HasValue && w.Id > old.Value);
+                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && w.Id > (old ?? 0));
                             if (l.Any())
                             {
                                 this.DestinationCellId = l.Min(o => o.Id);
@@ -76,6 +76,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                             if (l.Any())
                             {
                                 this.DestinationCellId = l.Max(o => o.Id);
+                            }
+                            else
+                            {
+                                this.DestinationCellId = null;
                             }
                         }
                     }
@@ -117,7 +121,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
 
-        public bool KeepAlive => false;
+        public bool KeepAlive => true;
 
         protected IEnumerable<Cell> Cells
         {
@@ -147,14 +151,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             try
             {
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
-
-                if (this.Cells.Count() > 0)
+                if (this.DestinationCellId is null)
                 {
-                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
-                }
-                else
-                {
-                    this.DestinationCellId = null;
+                    if (this.Cells.Count() > 0)
+                    {
+                        this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                    }
+                    else
+                    {
+                        this.DestinationCellId = null;
+                    }
                 }
             }
             catch (Exception ex)
