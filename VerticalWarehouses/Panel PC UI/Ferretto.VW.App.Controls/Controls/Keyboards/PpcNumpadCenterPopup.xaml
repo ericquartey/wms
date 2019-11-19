@@ -1,74 +1,79 @@
-﻿<dialog:PpcDialogView x:Class="Ferretto.VW.App.Controls.Controls.Keyboards.PpcNumpadCenterPopup"
-                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                      xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls"
-                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                      xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
-                      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-                      Width="1024"
-                      Height="750"
-                      AllowsTransparency="True"
-                      IsClosed="{Binding IsClosed}"
-                      ResizeMode="CanResizeWithGrip"
-                      WindowStyle="None"
-                      mc:Ignorable="d">
+﻿<dialog:PpcDialogView
+    x:Class="Ferretto.VW.App.Controls.Controls.Keyboards.PpcNumpadCenterPopup"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialog="clr-namespace:Ferretto.VW.App.Controls"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Width="1024"
+    Height="750"
+    AllowsTransparency="True"
+    IsClosed="{Binding IsClosed}"
+    ResizeMode="CanResizeWithGrip"
+    WindowStyle="None"
+    mc:Ignorable="d">
     <dialog:PpcDialogView.Background>
-        <SolidColorBrush Opacity="0.5"
-                         Color="Snow" />
+        <SolidColorBrush Opacity="0.5" Color="Snow" />
     </dialog:PpcDialogView.Background>
 
     <dialog:PpcDialogView.InputBindings>
-        <KeyBinding Key="Esc"
-                    Command="{Binding EscCommand}" />
-        <KeyBinding Key="Backspace"
-                    Command="{Binding BackspaceCommand}" />
-        <KeyBinding Key="Decimal"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="." />
-        <KeyBinding Key="OemPlus"
-                    Command="{Binding MinPlusCommand}" />
-        <KeyBinding Key="OemMinus"
-                    Command="{Binding MinPlusCommand}" />
-        <KeyBinding Key="Return"
-                    Command="{Binding EnterCommand}" />
-        <KeyBinding Key="NumPad0"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="0" />
-        <KeyBinding Key="NumPad1"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="1" />
-        <KeyBinding Key="NumPad2"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="2" />
-        <KeyBinding Key="NumPad3"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="3" />
-        <KeyBinding Key="NumPad4"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="4" />
-        <KeyBinding Key="NumPad5"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="5" />
-        <KeyBinding Key="NumPad6"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="6" />
-        <KeyBinding Key="NumPad7"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="7" />
-        <KeyBinding Key="NumPad8"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="8" />
-        <KeyBinding Key="NumPad9"
-                    Command="{Binding CommandKey}"
-                    CommandParameter="9" />
+        <KeyBinding Key="Esc" Command="{Binding EscCommand}" />
+        <KeyBinding Key="Backspace" Command="{Binding BackspaceCommand}" />
+        <KeyBinding
+            Key="Decimal"
+            Command="{Binding CommandKey}"
+            CommandParameter="." />
+        <KeyBinding Key="OemPlus" Command="{Binding MinPlusCommand}" />
+        <KeyBinding Key="OemMinus" Command="{Binding MinPlusCommand}" />
+        <KeyBinding Key="Return" Command="{Binding EnterCommand}" />
+        <KeyBinding
+            Key="NumPad0"
+            Command="{Binding CommandKey}"
+            CommandParameter="0" />
+        <KeyBinding
+            Key="NumPad1"
+            Command="{Binding CommandKey}"
+            CommandParameter="1" />
+        <KeyBinding
+            Key="NumPad2"
+            Command="{Binding CommandKey}"
+            CommandParameter="2" />
+        <KeyBinding
+            Key="NumPad3"
+            Command="{Binding CommandKey}"
+            CommandParameter="3" />
+        <KeyBinding
+            Key="NumPad4"
+            Command="{Binding CommandKey}"
+            CommandParameter="4" />
+        <KeyBinding
+            Key="NumPad5"
+            Command="{Binding CommandKey}"
+            CommandParameter="5" />
+        <KeyBinding
+            Key="NumPad6"
+            Command="{Binding CommandKey}"
+            CommandParameter="6" />
+        <KeyBinding
+            Key="NumPad7"
+            Command="{Binding CommandKey}"
+            CommandParameter="7" />
+        <KeyBinding
+            Key="NumPad8"
+            Command="{Binding CommandKey}"
+            CommandParameter="8" />
+        <KeyBinding
+            Key="NumPad9"
+            Command="{Binding CommandKey}"
+            CommandParameter="9" />
     </dialog:PpcDialogView.InputBindings>
 
     <Grid Margin="5,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="80" />
-            <RowDefinition Height="*"
-                           MinHeight="200" />
+            <RowDefinition Height="*" MinHeight="200" />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -77,30 +82,34 @@
             <ColumnDefinition Width="0.25*" />
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0"
-              Grid.ColumnSpan="4"
-              Margin="50,15"
-              Background="DimGray"
-              Opacity="1">
-            <TextBlock x:Name="TitleTB"
-                       Margin="50,0"
-                       HorizontalAlignment="Center"
-                       VerticalAlignment="Center"
-                       FontSize="20"
-                       Text="{Binding Title}"
-                       TextAlignment="Center" />
+        <Grid
+            Grid.Column="0"
+            Grid.ColumnSpan="4"
+            Margin="50,15"
+            Background="DimGray"
+            Opacity="1">
+            <TextBlock
+                x:Name="TitleTB"
+                Margin="50,0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Focusable="True"
+                FontSize="20"
+                Text="{Binding Title}"
+                TextAlignment="Center" />
         </Grid>
 
 
-        <Border Grid.Row="1"
-                Grid.Column="1"
-                Width="350"
-                Height="400"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Background="DimGray"
-                CornerRadius="4"
-                Opacity="1">
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            Width="350"
+            Height="400"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="DimGray"
+            CornerRadius="4"
+            Opacity="1">
 
             <Grid Margin="4">
                 <Grid.RowDefinitions>
@@ -117,116 +126,135 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
 
-                <Grid Grid.ColumnSpan="4"
-                      Margin="4"
-                      HorizontalAlignment="Stretch"
-                      VerticalAlignment="Stretch"
-                      Background="White">
-                    <TextBlock Margin="8"
-                               HorizontalAlignment="Stretch"
-                               VerticalAlignment="Center"
-                               Background="White"
-                               FontSize="40"
-                               Foreground="Black"
-                               Text="{Binding ScreenText}"
-                               TextAlignment="Right" />
+                <Grid
+                    Grid.ColumnSpan="4"
+                    Margin="4"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    Background="White">
+                    <TextBlock
+                        Margin="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Center"
+                        Background="White"
+                        FontSize="40"
+                        Foreground="Black"
+                        Text="{Binding ScreenText}"
+                        TextAlignment="Right" />
                 </Grid>
 
-                <ctrls:PpcButton Grid.Row="1"
-                                 Grid.Column="0"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="7"
-                                 Content="7"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="1"
-                                 Grid.Column="1"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="8"
-                                 Content="8"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="1"
-                                 Grid.Column="2"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="9"
-                                 Content="9"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="1"
-                                 Grid.Column="3"
-                                 Command="{Binding EscCommand}"
-                                 Content="Esc"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="7"
+                    Content="7"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="8"
+                    Content="8"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="1"
+                    Grid.Column="2"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="9"
+                    Content="9"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="1"
+                    Grid.Column="3"
+                    Command="{Binding EscCommand}"
+                    Content="Esc"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
 
-                <ctrls:PpcButton Grid.Row="2"
-                                 Grid.Column="0"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="4"
-                                 Content="4"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="2"
-                                 Grid.Column="1"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="5"
-                                 Content="5"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="2"
-                                 Grid.Column="2"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="6"
-                                 Content="6"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="2"
-                                 Grid.Column="3"
-                                 Command="{Binding BackspaceCommand}"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}">
-                    <iconPacks:PackIconMaterial Width="50"
-                                                Height="20"
-                                                Kind="Backspace" />
+                <ctrls:PpcButton
+                    Grid.Row="2"
+                    Grid.Column="0"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="4"
+                    Content="4"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="5"
+                    Content="5"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="6"
+                    Content="6"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    Command="{Binding BackspaceCommand}"
+                    Style="{StaticResource PpcButtonNumKeyStyle}">
+                    <iconPacks:PackIconMaterial
+                        Width="50"
+                        Height="20"
+                        Kind="Backspace" />
                 </ctrls:PpcButton>
 
-                <ctrls:PpcButton Grid.Row="3"
-                                 Grid.Column="0"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="1"
-                                 Content="1"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="3"
-                                 Grid.Column="1"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="2"
-                                 Content="2"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="3"
-                                 Grid.Column="2"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="3"
-                                 Content="3"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="3"
-                                 Grid.RowSpan="2"
-                                 Grid.Column="4"
-                                 Command="{Binding EnterCommand}"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}">
-                    <iconPacks:PackIconMaterial Width="50"
-                                                Height="30"
-                                                Kind="KeyboardReturn" />
+                <ctrls:PpcButton
+                    Grid.Row="3"
+                    Grid.Column="0"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="1"
+                    Content="1"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="2"
+                    Content="2"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="3"
+                    Grid.Column="2"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="3"
+                    Content="3"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="3"
+                    Grid.RowSpan="2"
+                    Grid.Column="4"
+                    Command="{Binding EnterCommand}"
+                    Style="{StaticResource PpcButtonNumKeyStyle}">
+                    <iconPacks:PackIconMaterial
+                        Width="50"
+                        Height="30"
+                        Kind="KeyboardReturn" />
                 </ctrls:PpcButton>
 
-                <ctrls:PpcButton Grid.Row="4"
-                                 Grid.Column="0"
-                                 Command="{Binding CommandKey}"
-                                 CommandParameter="0"
-                                 Content="0"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="4"
-                                 Grid.Column="1"
-                                 Command="{Binding DotCommand}"
-                                 Content="."
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
-                <ctrls:PpcButton Grid.Row="4"
-                                 Grid.Column="2"
-                                 Command="{Binding MinPlusCommand}"
-                                 Content="- \ +"
-                                 Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="4"
+                    Grid.Column="0"
+                    Command="{Binding CommandKey}"
+                    CommandParameter="0"
+                    Content="0"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Command="{Binding DotCommand}"
+                    Content="."
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
+                <ctrls:PpcButton
+                    Grid.Row="4"
+                    Grid.Column="2"
+                    Command="{Binding MinPlusCommand}"
+                    Content="- \ +"
+                    Style="{StaticResource PpcButtonNumKeyStyle}" />
             </Grid>
         </Border>
 

@@ -19,7 +19,7 @@ namespace Ferretto.VW.App.Controls
             typeof(PpcSpinEdit));
 
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
-                    nameof(Highlighted),
+            nameof(Highlighted),
             typeof(bool),
             typeof(PpcSpinEdit));
 
@@ -58,6 +58,18 @@ namespace Ferretto.VW.App.Controls
             typeof(decimal),
             typeof(PpcSpinEdit),
             new PropertyMetadata(new decimal(250)));
+
+        public static DependencyProperty KeyboardCloseCommandProperty = DependencyProperty.Register(
+            nameof(KeyboardCloseCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
+
+        public static DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
+                    nameof(KeyboardOpenCommand),
+            typeof(ICommand),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(null));
 
         private const string DECIMAL_STYLE = "VWAPP_SpinEdit_DecimalStyle";
 
@@ -123,6 +135,18 @@ namespace Ferretto.VW.App.Controls
         {
             get => (KeyboardType)this.GetValue(KeyboardProperty);
             set => this.SetValue(KeyboardProperty, value);
+        }
+
+        public ICommand KeyboardCloseCommand
+        {
+            get => (ICommand)this.GetValue(KeyboardCloseCommandProperty);
+            set => this.SetValue(KeyboardCloseCommandProperty, value);
+        }
+
+        public ICommand KeyboardOpenCommand
+        {
+            get => (ICommand)this.GetValue(KeyboardOpenCommandProperty);
+            set => this.SetValue(KeyboardOpenCommandProperty, value);
         }
 
         public string LabelText
@@ -247,8 +271,12 @@ namespace Ferretto.VW.App.Controls
                     vm.Update(this.LabelText, this.EditValue?.ToString() ?? string.Empty);
                     ppcMessagePopup.Topmost = false;
                     ppcMessagePopup.ShowInTaskbar = false;
+                    this.KeyboardOpenCommand?.Execute(null);
                     PpcMessagePopup.ShowDialog(ppcMessagePopup);
+                    this.KeyboardCloseCommand?.Execute(null);
                     this.EditValue = vm.ScreenText;
+                    vm.Dispose();
+                    vm = null;
                     break;
 
                 case KeyboardType.Numpad:
@@ -258,8 +286,12 @@ namespace Ferretto.VW.App.Controls
                     vmNumpad.Update(this.LabelText, this.EditValue?.ToString() ?? string.Empty);
                     ppcNumpadPopup.Topmost = false;
                     ppcNumpadPopup.ShowInTaskbar = false;
+                    this.KeyboardOpenCommand?.Execute(null);
                     PpcMessagePopup.ShowAnchorDialog(ppcNumpadPopup);
+                    this.KeyboardCloseCommand?.Execute(null);
                     this.EditValue = vmNumpad.ScreenText;
+                    vmNumpad.Dispose();
+                    vmNumpad = null;
                     break;
 
                 default:
