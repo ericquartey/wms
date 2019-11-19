@@ -45,7 +45,7 @@
 
                             <controls:PpcIcon x:Name="PpcButton_Icon"
                                               Height="24"
-                                              Margin="10,5,10,5"
+                                              Margin="15,5"
                                               HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                               ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                               ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
@@ -53,9 +53,9 @@
 
                             <TextBlock x:Name="PpcButton_Text"
                                        Grid.Column="1"
-                                       Margin="10,5,10,5"
-                                       VerticalAlignment="Center"
+                                       Margin="10,5"
                                        HorizontalAlignment="Stretch"
+                                       VerticalAlignment="Center"
                                        Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                        TextWrapping="Wrap">
                                 <TextBlock.Style>
@@ -74,6 +74,10 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
+                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                             <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
                         </Trigger>
@@ -101,6 +105,7 @@
                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                 <Setter Property="Cursor" Value="Hand" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="False">
