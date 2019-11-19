@@ -57,6 +57,13 @@
                     <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{Binding SelectedCell.Position, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="180"
+                               Foreground="{StaticResource FerrettoPureWhite}"
+                               Text="Lato" />
+                    <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
+                               Text="{Binding SelectedCell.Side, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
 
