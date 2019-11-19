@@ -220,9 +220,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
 
-                this.Cells = await this.machineCellsWebService.GetAllAsync();
+                await this.LodingData();
 
-                this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.InputLoadingUnitIdPropertyChanged();
                 this.InputCellIdPropertyChanged();
 
@@ -296,6 +295,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.KeyboardOpened = true;
         }
 
+        private async Task LodingData()
+        {
+            try
+            {
+                this.Cells = await this.machineCellsWebService.GetAllAsync();
+                this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
@@ -348,11 +360,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.IsElevatorMovingToBay = false;
                         this.IsTuningChain = false;
                         this.IsTuningBay = false;
-                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
                         }
-
+                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
+                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.LodingData().ConfigureAwait(false);
+                        }
                         break;
                     }
 

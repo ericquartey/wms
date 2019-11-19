@@ -55,6 +55,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(resolvedError);
         }
 
+        [HttpPost("resolveall")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<MachineError> ResolveAll()
+        {
+            this.errorsProvider.ResolveAll();
+            return this.Ok();
+        }
+
         #endregion
     }
 }
