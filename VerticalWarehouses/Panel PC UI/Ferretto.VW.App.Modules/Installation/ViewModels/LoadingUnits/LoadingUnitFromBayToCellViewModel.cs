@@ -23,6 +23,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 sensorsService,
                 bayManagerService)
         {
+            this.InitialinngData().ConfigureAwait(false);
         }
 
         #endregion
@@ -55,10 +56,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            await this.GetLoadingUnits();
-
-            this.SelectBayPositionDown();
         }
 
         public override async Task StartAsync()
@@ -93,10 +90,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
-
-                await this.RetrieveCellsAsync();
-
-                await this.GetLoadingUnits();
             }
             catch (Exception ex)
             {
@@ -106,6 +99,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override void Ended()
+        {
+            base.Ended();
+
+            this.RetrieveCellsAsync().ConfigureAwait(false);
+
+            this.GetLoadingUnits().ConfigureAwait(false);
+        }
+
+        private async Task InitialinngData()
+        {
+            await this.GetLoadingUnits();
+            this.SelectBayPositionDown();
         }
 
         #endregion
