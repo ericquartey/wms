@@ -75,17 +75,24 @@
                                   LabelText="{x:Static res:VWApp.ErrorReason}" />
 
             <local:PpcLabeledText Grid.Row="3"
-                                  Grid.ColumnSpan="2"
                                   MinHeight="100"
                                   HorizontalAlignment="Left"
                                   ContentText="{Binding ErrorTime}"
                                   LabelText="{x:Static res:VWApp.FirstSeen}" />
 
+
+            <local:PpcLabeledText Grid.Row="3"
+                                  Grid.Column="1"
+                                  MinHeight="100"
+                                  HorizontalAlignment="Left"
+                                  ContentText="{Binding Error.Id}"
+                                  LabelText="Id" />
+
             <local:PpcButton Grid.Row="4"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              Command="{Binding MarkAsResolvedCommand}"
-                             Content="{x:Static res:VWApp.MarkAsResolved}"/>
+                             Content="{x:Static res:VWApp.MarkAsResolved}" />
 
         </Grid>
     </Grid>
