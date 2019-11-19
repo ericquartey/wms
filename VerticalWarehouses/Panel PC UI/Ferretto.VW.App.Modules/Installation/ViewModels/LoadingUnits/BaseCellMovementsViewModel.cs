@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class BaseCellMovementsViewModel : BaseMovementsViewModel
+    public class BaseCellMovementsViewModel : BaseMovementsViewModel, IRegionMemberLifetime
     {
         #region Fields
 
@@ -115,6 +116,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
+
+        public bool KeepAlive => false;
 
         protected IEnumerable<Cell> Cells
         {
