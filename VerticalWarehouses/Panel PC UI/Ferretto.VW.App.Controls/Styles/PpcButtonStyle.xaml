@@ -17,7 +17,7 @@
                                                                    Invert="True" />
                     </ControlTemplate.Resources>
 
-                    <Border Name="PpcButton_Border"
+                    <Border x:Name="PpcButton_Border"
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}"
                             HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
@@ -26,7 +26,13 @@
                             BorderThickness="{TemplateBinding BorderThickness}"
                             Cursor="Hand"
                             FlowDirection="LeftToRight">
-                        <Grid>
+                        <Grid x:Name="PpcButton_Grid"
+                              Margin="{DynamicResource PpcButtonBorderThicknessActive}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
                             <ProgressBar Height="{TemplateBinding Height}"
                                          VerticalAlignment="Bottom"
                                          Background="Transparent"
@@ -37,27 +43,39 @@
                                          Visibility="{TemplateBinding IsBusy,
                                                                       Converter={StaticResource BTVC}}" />
 
-                            <TextBlock Grid.Column="1"
-                                       Margin="10,5,10,5"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                       TextAlignment="Center"
-                                       TextWrapping="Wrap" />
-
-                            <controls:PpcIcon Height="24"
-                                              Margin="20,5,20,5"
+                            <controls:PpcIcon x:Name="PpcButton_Icon"
+                                              Height="24"
+                                              Margin="10,5,10,5"
                                               HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                               ColorizeBrush="{DynamicResource PpcButtonForeground}"
                                               ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                               Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
+                            <TextBlock x:Name="PpcButton_Text"
+                                       Grid.Column="1"
+                                       Margin="10,5,10,5"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Stretch"
+                                       Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                       TextWrapping="Wrap">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="TextAlignment" Value="Center" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
+                                                         Value="Visible">
+                                                <Setter Property="TextAlignment" Value="Left" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Grid>
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
-
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
