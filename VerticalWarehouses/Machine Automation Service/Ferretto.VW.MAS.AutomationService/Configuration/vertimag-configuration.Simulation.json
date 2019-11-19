@@ -39,7 +39,7 @@
         "Number": "BayOne",
         "Positions": [
           {
-            "Height": 350,
+            "Height": 446,
             "Location": "InternalBay1Down"
           }
         ],
@@ -67,11 +67,11 @@
         "Number": "BayTwo",
         "Positions": [
           {
-            "Height": 645,
+            "Height": 446,
             "Location": "InternalBay2Down"
           },
           {
-            "Height": 1143,
+            "Height": 795,
             "Location": "InternalBay2Up"
           }
         ],
@@ -115,10 +115,10 @@
           "BrakeActivatePercent": 10,
           "Orientation": "Vertical",
           "Resolution": 77.61182,
-          "Offset": 350,
+          "Offset": 592,
           "ChainOffset": 0,
           "UpperBound": 4000,
-          "LowerBound": 350,
+          "LowerBound": 438,
           "EmptyLoadMovement": {
             "Acceleration": 1000,
             "Deceleration": 1000,
@@ -354,13 +354,13 @@
             "Id": 1,
             "Position": 375,
             "Priority": 1,
-            "Status": "Free"
+            "Status": "Disabled"
           },
           {
             "Id": 3,
             "Position": 425,
             "Priority": 3,
-            "Status": "Free"
+            "Status": "Disabled"
           },
           {
             "Id": 5,
@@ -1583,19 +1583,19 @@
             "Id": 2,
             "Position": 355,
             "Priority": 2,
-            "Status": "Free"
+            "Status": "Disabled"
           },
           {
             "Id": 4,
             "Position": 367,
             "Priority": 4,
-            "Status": "Free"
+            "Status": "Disabled"
           },
           {
             "Id": 6,
             "Position": 418,
             "Priority": 6,
-            "Status": "Free"
+            "Status": "Disabled"
           },
           {
             "Id": 8,

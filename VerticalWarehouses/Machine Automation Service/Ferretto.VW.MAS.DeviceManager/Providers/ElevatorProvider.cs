@@ -311,7 +311,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
-            var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
+            var lowerBound = verticalAxis.LowerBound;
             var upperBound = verticalAxis.UpperBound;
 
             if (targetPosition < lowerBound || targetPosition > upperBound)

@@ -119,14 +119,13 @@ namespace Ferretto.VW.MAS.InverterDriver
                     ? this.elevatorDataProvider.GetHorizontalAxis()
                     : this.elevatorDataProvider.GetVerticalAxis();
 
-                position -= axis.Offset;
-
-                if (position < 0)
+                if (position < axis.LowerBound)
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position+axis.Offset}) is below the axis lower bound ({axis.Offset}).");
+                    throw new Exception($"The requested position ({position}) is below the axis lower bound ({axis.LowerBound}).");
                 }
 
+                position -= axis.Offset;
                 if (axis.Orientation == Orientation.Vertical && positioningData.ComputeElongation)
                 {
                     var beltDisplacement = this.ComputeDisplacement(positioningData.TargetPosition);
