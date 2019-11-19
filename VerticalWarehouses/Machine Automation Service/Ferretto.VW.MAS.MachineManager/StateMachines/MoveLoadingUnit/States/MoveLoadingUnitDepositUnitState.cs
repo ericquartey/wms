@@ -61,6 +61,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
             {
                 this.messageData = messageData;
@@ -116,6 +117,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     break;
 
                 case MessageStatus.OperationError:
+                case MessageStatus.OperationRunningStop:
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
