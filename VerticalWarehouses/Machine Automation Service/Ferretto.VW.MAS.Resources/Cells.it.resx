@@ -144,4 +144,7 @@
   <data name="TheTargetCellIsUnusable" xml:space="preserve">
     <value>La cella di destinazione è inutilizzabile.</value>
   </data>
+  <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
+    <value>La cella specificata non è situata entro i limiti verticali dell'elevatore.</value>
+  </data>
 </root>

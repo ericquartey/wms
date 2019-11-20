@@ -169,6 +169,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
+            // check #6: the cell's vertical position must be within the elvator's vertical bounds
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            if (cell.Position < verticalAxis.LowerBound || cell.Position > verticalAxis.UpperBound)
+            {
+                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
+            }
+
             return ActionPolicy.Allowed;
         }
 
@@ -216,13 +223,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ActionPolicy CanMoveToCell(int cellId)
         {
             // check #1: the elevator is already in front of the specified cell
-            var currentCell = this.elevatorDataProvider.GetCurrentCell();
-            if (currentCell?.Id == cellId)
+            var elevatorCell = this.elevatorDataProvider.GetCurrentCell();
+            if (elevatorCell?.Id == cellId)
             {
-                return new ActionPolicy
-                {
-                    Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell,
-                };
+                return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsAlreadyLocatedOppositeToTheSpecifiedCell };
             }
 
             // check #2: the elevator must be empty with pawl in zero position
@@ -249,6 +253,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         Reason = Resources.Elevator.TheElevatorIsNotFullButThePawlIsNotInZeroPosition,
                     };
                 }
+            }
+
+            // check #3: the cell's vertical position must be within the elvator's vertical bounds
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            var targetCell = this.cellsProvider.GetById(cellId);
+            if (targetCell.Position < verticalAxis.LowerBound || targetCell.Position > verticalAxis.UpperBound)
+            {
+                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
             }
 
             return ActionPolicy.Allowed;
@@ -307,8 +319,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public ActionPolicy CanUnloadToCell(int cellId)
         {
             // check #1: elevator must be located opposite to the specified cell
-            var cell = this.elevatorDataProvider.GetCurrentCell();
-            if (cell?.Id != cellId)
+            var elevatorCell = this.elevatorDataProvider.GetCurrentCell();
+            if (elevatorCell is null || elevatorCell.Id != cellId)
             {
                 return new ActionPolicy { Reason = Resources.Elevator.TheElevatorIsNotLocatedOppositeToTheSpecifiedCell };
             }
@@ -323,7 +335,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #2: there is enough space to host the loading unit in the specified cell
-            if (!this.cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnit.Id))
+            if (!this.cellsProvider.CanFitLoadingUnit(elevatorCell.Id, loadingUnit.Id))
             {
                 return new ActionPolicy { Reason = Resources.Elevator.TheLoadingUnitDoesNotFitInTheSpecifiedCell };
             }
@@ -339,7 +351,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //                 only for cells that are actually obscured by the shutter
             var baysOnSameSide = this.baysDataProvider
                 .GetAll()
-                .Where(b => b.Side == cell.Side);
+                .Where(b => b.Side == elevatorCell.Side);
             foreach (var bayOnSameSide in baysOnSameSide)
             {
                 if (bayOnSameSide.Shutter != null
@@ -351,6 +363,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
                     };
                 }
+            }
+
+            // check #5: the cell's vertical position must be within the elvator's vertical bounds
+            var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            if (elevatorCell.Position < verticalAxis.LowerBound || elevatorCell.Position > verticalAxis.UpperBound)
+            {
+                return new ActionPolicy { Reason = Resources.Cells.TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds };
             }
 
             return ActionPolicy.Allowed;

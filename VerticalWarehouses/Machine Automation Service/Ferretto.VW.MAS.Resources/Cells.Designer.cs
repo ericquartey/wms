@@ -106,6 +106,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The specified cell is not within the elevator&apos;s vertical bounds..
+        /// </summary>
+        public static string TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds {
+            get {
+                return ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified height is not between the adjacent cells&apos; heights..
         /// </summary>
         public static string TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights {
