@@ -24,6 +24,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void Add(SetupProceduresSet setupProceduresSet)
+        {
+            if (setupProceduresSet is null)
+            {
+                throw new ArgumentNullException(nameof(setupProceduresSet));
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.SetupProceduresSets.Add(setupProceduresSet);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public SetupProceduresSet GetAll()
         {
             lock (this.dataContext)
@@ -238,21 +252,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return existingProcedure;
-            }
-        }
-
-        public void Update(SetupProceduresSet setupProceduresSet)
-        {
-            if (setupProceduresSet is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresSet));
-            }
-
-            lock (this.dataContext)
-            {
-                this.dataContext.RemoveRange(this.dataContext.SetupProceduresSets);
-                this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
-                this.dataContext.SaveChanges();
             }
         }
 

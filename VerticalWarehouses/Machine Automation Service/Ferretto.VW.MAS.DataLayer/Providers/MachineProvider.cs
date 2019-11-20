@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -29,6 +28,53 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
+
+        public void Add(Machine machine)
+        {
+            if (machine is null)
+            {
+                throw new System.ArgumentNullException(nameof(machine));
+            }
+
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.Add(machine);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void ClearAll()
+        {
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+
+            lock (this.dataContext)
+            {
+                this.dataContext.Shutters.RemoveRange(this.dataContext.Shutters);
+                this.dataContext.WeightMeasurements.RemoveRange(this.dataContext.WeightMeasurements);
+                this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
+                this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
+                this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
+                this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
+                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
+                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
+                this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
+                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
+                this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
+                this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
+                this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
+                this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
+                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
+                this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
+                this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                this.dataContext.SaveChanges();
+            }
+        }
 
         public Machine Get()
         {
@@ -110,163 +156,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return elevatorInvertersCount > 1;
             }
-        }
-
-        public void Update(Machine machine)
-        {
-            if (machine is null)
-            {
-                throw new System.ArgumentNullException(nameof(machine));
-            }
-
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
-
-            lock (this.dataContext)
-            {
-                //this.dataContext.Database.ExecuteSqlCommand("PRAGMA foreign_keys = OFF");
-                //this.dataContext.Database.ExecuteSqlCommand("PRAGMA ignore_check_constraints = ON;");
-                // this.dataContext.SaveChanges();
-                foreach (var mac in this.dataContext.Machines)
-                {
-                    this.DeleteBays(mac.Bays);
-
-                    this.DeleteElevators(mac.Elevator);
-
-                    if (!(mac.Panels is null))
-                    {
-                        foreach (var panel in mac.Panels)
-                        {
-                            if (!(panel.Cells is null))
-                            {
-                                foreach (var cell in panel.Cells)
-                                {
-                                    cell.LoadingUnit = null;
-                                    cell.Panel = null;
-                                }
-                                panel.Cells = null;
-                            }
-                        }
-                    }
-                }
-
-                this.DeleteBays(this.dataContext.Bays);
-
-                this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
-
-                this.dataContext.Bays.ForEachAsync(b => b.Positions = null);
-                this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
-
-                this.dataContext.Cells.ForEachAsync(c => c.Panel = null);
-                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
-                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
-
-                //this.dataContext.Bays.ForEachAsync(b => b.IoDevice = null);
-                this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
-
-                this.dataContext.Bays.ForEachAsync(b => b.Inverter = null);
-                
-                this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
-
-                this.DeleteBays(this.dataContext.Bays);
-
-                this.dataContext.Bays.ForEachAsync(b => b.Shutter = null);
-                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
-
-                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
-
-                this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
-                this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
-
-                //this.dataContext.Machines.ForEachAsync(m => m.Elevator.Axes = null);
-
-                this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
-
-                //this.dataContext.Machines.ForEachAsync(m => m.Elevator.StructuralProperties = null);
-                this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
-
-                this.dataContext.Elevators.ForEachAsync(e => this.DeleteElevators(e));
-                this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
-
-                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
-                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
-
-                //this.dataContext.Carousels.RemoveRange(this.dataContext.Carousels);
-                //this.dataContext.ErrorDefinitions.RemoveRange(this.dataContext.ErrorDefinitions);
-                //this.dataContext.Errors.RemoveRange(this.dataContext.Errors);
-                //this.dataContext.ErrorStatistics.RemoveRange(this.dataContext.ErrorStatistics);
-                //this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
-                //this.dataContext.LogEntries.RemoveRange(this.dataContext.LogEntries);
-                //this.dataContext.MachineStatistics.RemoveRange(this.dataContext.MachineStatistics);
-                //this.dataContext.ServicingInfo.RemoveRange(this.dataContext.ServicingInfo);
-                //this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
-                //this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
-                //this.dataContext.SetupStatus.RemoveRange(this.dataContext.SetupStatus);
-                //this.dataContext.TorqueCurrentMeasurementSessions.RemoveRange(this.dataContext.TorqueCurrentMeasurementSessions);
-                //this.dataContext.TorqueCurrentSamples.RemoveRange(this.dataContext.TorqueCurrentSamples);
-                //this.dataContext.Users.RemoveRange(this.dataContext.Users);
-
-                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
-
-                this.dataContext.SaveChanges();
-
-                //this.dataContext.Machines.Update(machine);
-
-                //this.dataContext.Database.ExecuteSqlCommand("PRAGMA foreign_keys = ON");
-                //this.dataContext.Database.ExecuteSqlCommand("PRAGMA ignore_check_constraints = ON;");
-
-                //this.dataContext.SaveChanges();
-            }
-        }
-
-        private void DeleteBays(IEnumerable<Bay> bays)
-        {
-            if (bays is null)
-            {
-                return;
-            }
-
-            foreach (var bay in bays)
-            {
-                bay.Inverter = null;
-                bay.IoDevice = null;
-                bay.IoDeviceId = null;
-                if (!(bay.Positions is null))
-                {
-                    foreach (var position in bay.Positions)
-                    {
-                        position.LoadingUnit = null;
-                    }
-                }
-                bay.Positions = null;
-                bay.Shutter = null;
-            }
-        }
-
-
-        private void DeleteElevators(Elevator elevator)
-        {
-
-            if (elevator is null)
-            {
-                return;
-            }
-                if (!(elevator.Axes is null))
-                {
-                    foreach (var axes in elevator.Axes)
-                    {
-                        axes.FullLoadMovement = null;
-                        axes.EmptyLoadMovement = null;
-                        axes.Inverter = null;
-                        foreach (var profile in axes.Profiles)
-                        {
-                            profile.Steps = null;
-                        }
-                        axes.WeightMeasurement = null;
-                    }
-                }
-                elevator.StructuralProperties = null;            
         }
 
         #endregion

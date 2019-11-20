@@ -65,21 +65,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            // 3 scopes, avoid cross reference of same object on save
+            // 4 scopes, avoid cross reference of same object on save
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Update(vertimagConfiguration.Machine);
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().ClearAll();
             }
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Update(vertimagConfiguration.SetupProcedures);
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Add(vertimagConfiguration.Machine);
             }
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().UpdateRange(vertimagConfiguration.LoadingUnits);
+                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Add(vertimagConfiguration.SetupProcedures);
+            }
+
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().Add(vertimagConfiguration.LoadingUnits);
             }
 
             return this.Ok();

@@ -1150,7 +1150,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 19, 13, 52, 4, 830, DateTimeKind.Local).AddTicks(4249),
+                            InstallationDate = new DateTime(2017, 1, 20, 16, 37, 14, 220, DateTimeKind.Local).AddTicks(7026),
                             ServiceStatus = 86
                         });
                 });
@@ -1333,7 +1333,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("InverterId");
 
-                    b.ToTable("Shutter");
+                    b.ToTable("Shutters");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
@@ -1428,7 +1428,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeightMeasurement");
+                    b.ToTable("WeightMeasurements");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>

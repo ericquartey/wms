@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -6,6 +7,10 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        void Add(Machine machine);
+
+        void ClearAll();
+
         Machine Get();
 
         double GetHeight();
@@ -13,8 +18,6 @@ namespace Ferretto.VW.MAS.DataLayer
         MachineStatistics GetStatistics();
 
         bool IsOneTonMachine();
-
-        void Update(Machine machine);
 
         #endregion
     }
