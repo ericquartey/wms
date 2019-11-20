@@ -27,6 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
 
         public override void Start()
         {
+            this.Logger.LogError($"Power On Error state. Inverter {this.InverterStatus.SystemIndex}");
             var notificationMessageData = new InverterPowerOnFieldMessageData();
             var notificationMessage = new FieldNotificationMessage(
                 notificationMessageData,

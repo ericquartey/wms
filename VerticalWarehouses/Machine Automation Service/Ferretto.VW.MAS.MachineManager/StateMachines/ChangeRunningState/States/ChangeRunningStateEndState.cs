@@ -119,6 +119,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 {
                     case MessageStatus.OperationEnd:
                     case MessageStatus.OperationError:
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationRunningStop:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
                 }

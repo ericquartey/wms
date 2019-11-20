@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
     {
         #region Fields
 
-        private DateTime startTime;
+        private readonly DateTime startTime;
 
         #endregion
 
@@ -28,6 +28,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
             : base(parentStateMachine, inverterStatus, logger)
         {
             this.Logger.LogTrace("1:Method Start");
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -37,7 +38,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
         public override void Start()
         {
             this.Logger.LogDebug($"Power On Start Inverter {this.InverterStatus.SystemIndex}");
-            this.startTime = DateTime.UtcNow;
             this.InverterStatus.CommonControlWord.EnableVoltage = true;
             this.InverterStatus.CommonControlWord.QuickStop = true;
 

@@ -89,6 +89,7 @@
                        HorizontalAlignment="Center"
                        FontSize="20"
                        Text="{Binding Title}"
+                       Focusable="True"
                        TextAlignment="Center" />
         </Grid>
 
@@ -139,7 +140,7 @@
                                  Command="{Binding CommandKey}"
                                  CommandParameter="7"
                                  Content="7"
-                                 FontSize="20"
+                                 FontSize="20"             
                                  Style="{StaticResource PpcButtonNumKeyStyle}" />
                 <ctrls:PpcButton Grid.Row="1"
                                  Grid.Column="1"

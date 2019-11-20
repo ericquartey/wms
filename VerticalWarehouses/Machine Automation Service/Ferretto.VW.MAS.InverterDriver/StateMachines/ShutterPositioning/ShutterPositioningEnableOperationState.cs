@@ -18,9 +18,9 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
 
         private readonly IInverterShutterPositioningFieldMessageData shutterPositionData;
 
-        private ShutterPosition oldShutterPosition;
+        private readonly DateTime startTime;
 
-        private DateTime startTime;
+        private ShutterPosition oldShutterPosition;
 
         #endregion
 
@@ -35,6 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
         {
             this.shutterPositionData = shutterPositionData;
             this.shutterDestination = this.shutterPositionData.ShutterPosition;
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -55,7 +56,6 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.ShutterPositioning
             {
                 this.oldShutterPosition = currentStatus.CurrentShutterPosition;
             }
-            this.startTime = DateTime.UtcNow;
         }
 
         /// <inheritdoc />

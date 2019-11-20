@@ -33,14 +33,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-                if (lst.Count() > 0)
+                if (this.LoadingUnitId is null)
                 {
-                    this.LoadingUnitId = lst.Max(o => o.Id) + 1;
-                }
-                else
-                {
-                    this.LoadingUnitId = null;
+                    var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
+                    if (lst.Count() > 0)
+                    {
+                        this.LoadingUnitId = lst.Max(o => o.Id) + 1;
+                    }
+                    else
+                    {
+                        this.LoadingUnitId = null;
+                    }
                 }
             }
             catch (Exception ex)
@@ -55,10 +58,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            await this.GetLoadingUnits();
-
-            this.SelectBayPositionDown();
+            await this.InitialinngData();
         }
 
         public override async Task StartAsync()
@@ -82,12 +82,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                //if (!this.IsLoadingUnitInBay)
-                //{
-                //    this.ShowNotification("la baia non è occupata", Services.Models.NotificationSeverity.Warning);
-                //    return;
-                //}
-
                 var source = this.GetLoadingUnitSource();
 
                 if (source == LoadingUnitLocation.NoLocation)
@@ -98,10 +92,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                //await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, LoadingUnitDestination.Cell, this.LoadingUnitId, this.DestinationCellId);
                 await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
-
-                await this.GetLoadingUnits();
             }
             catch (Exception ex)
             {
@@ -111,6 +102,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override void Ended()
+        {
+            base.Ended();
+
+            this.RetrieveCellsAsync().ConfigureAwait(false);
+
+            this.GetLoadingUnits().ConfigureAwait(false);
+        }
+
+        private async Task InitialinngData()
+        {
+            await this.GetLoadingUnits();
+            this.SelectBayPositionDown();
         }
 
         #endregion

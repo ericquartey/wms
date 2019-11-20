@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class BaseCellMovementsViewModel : BaseMovementsViewModel
+    public class BaseCellMovementsViewModel : BaseMovementsViewModel, IRegionMemberLifetime
     {
         #region Fields
 
@@ -51,9 +52,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             get => this.destinationCellId;
             set
             {
+                int? old = this.destinationCellId;
                 if (this.SetProperty(ref this.destinationCellId, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    if (this.IsCellFree)
+                    {
+                        this.RaiseCanExecuteChanged();
+                    }
+                    else
+                    {
+                        bool increment = !old.HasValue || old < this.destinationCellId;
+                        if (increment)
+                        {
+                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && w.Id > (old ?? 0));
+                            if (l.Any())
+                            {
+                                this.DestinationCellId = l.Min(o => o.Id);
+                            }
+                        }
+                        else
+                        {
+                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && old.HasValue && w.Id < old.Value);
+                            if (l.Any())
+                            {
+                                this.DestinationCellId = l.Max(o => o.Id);
+                            }
+                            else
+                            {
+                                this.DestinationCellId = null;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -92,6 +121,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
 
+        public bool KeepAlive => true;
+
         protected IEnumerable<Cell> Cells
         {
             get => this.cells;
@@ -115,19 +146,21 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await base.OnAppearedAsync();
         }
 
-        private async Task RetrieveCellsAsync()
+        protected async Task RetrieveCellsAsync()
         {
             try
             {
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
-
-                if (this.Cells.Count() > 0)
+                if (this.DestinationCellId is null)
                 {
-                    this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
-                }
-                else
-                {
-                    this.DestinationCellId = null;
+                    if (this.Cells.Count() > 0)
+                    {
+                        this.DestinationCellId = this.Cells.Where(w => w.Status == CellStatus.Free).Min(o => o.Id);
+                    }
+                    else
+                    {
+                        this.DestinationCellId = null;
+                    }
                 }
             }
             catch (Exception ex)

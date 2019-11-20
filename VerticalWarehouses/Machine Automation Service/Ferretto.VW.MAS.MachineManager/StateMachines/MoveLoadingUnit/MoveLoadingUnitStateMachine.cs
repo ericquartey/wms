@@ -181,7 +181,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     throw new StateMachineException(description, null, MessageActor.MachineManager);
 
                 default:
+#if CHECK_BAY_SENSOR
                     if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
+#endif
                     {
                         returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
                     }
@@ -214,10 +216,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
             }
+#if CHECK_BAY_SENSOR
             else
             {
                 returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
             }
+#endif
             if (!returnValue)
             {
                 this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
@@ -229,8 +233,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private bool IsMachineOk(IMoveLoadingUnitMessageData messageData)
         {
+#if !CHECK_BAY_SENSOR
+            return true;
+#endif
             var returnValue = this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source);
-
             if (!returnValue)
             {
                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorNoLoadingUnitInSource);
@@ -321,12 +327,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
+#if CHECK_BAY_SENSOR
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
                     {
                         unitToMove = null;
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
                     }
+#endif
                     else if (this.baysProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadingUnit && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
                         )

@@ -30,17 +30,17 @@
         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Up}"
-                                           IsEnabled="{Binding CanExecuteMoveUpCommand}"
                                            PressCommand="{Binding MoveUpCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
-
+        <!--IsEnabled="{Binding CanExecuteMoveUpCommand}"-->
+        
         <controls:PpcPressAndReleaseButton Grid.Row="2"
                                            Margin="0,20,0,0"
                                            HorizontalAlignment="Center"
                                            Content="{x:Static res:InstallationApp.Down}"
-                                           IsEnabled="{Binding CanExecuteMoveDownCommand}"
                                            PressCommand="{Binding MoveDownCommand}"
                                            ReleaseCommand="{Binding StopMovementCommand}" />
-
+        <!--IsEnabled="{Binding CanExecuteMoveDownCommand}"-->
+        
     </Grid>
 </ctrls:View>

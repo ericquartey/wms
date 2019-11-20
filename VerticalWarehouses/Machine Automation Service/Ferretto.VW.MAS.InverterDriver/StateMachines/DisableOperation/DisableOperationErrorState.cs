@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.DisableOperation
 
         public override void Start()
         {
+            this.Logger.LogError($"Disable Operation Error state. Inverter {this.InverterStatus.SystemIndex}");
+
             var notificationMessage = new FieldNotificationMessage(
                 null,
                 "Message",

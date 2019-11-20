@@ -19,6 +19,18 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        private static void ValidateJson(JObject jsonObject)
+        {
+            using (var streamReader = new StreamReader("configuration/schemas/vertimag-configuration-schema.json"))
+            {
+                using (var textReader = new JsonTextReader(streamReader))
+                {
+                    var schema = JSchema.Load(textReader);
+                    jsonObject.Validate(schema);
+                }
+            }
+        }
+
         private async Task LoadConfigurationAsync(string configurationFilePath, DataLayerContext dataContext)
         {
             if (dataContext.Machines.Any())
@@ -36,8 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             var jsonObject = JObject.Parse(fileContents);
 
-            var schema = JSchema.Load(new JsonTextReader(new StreamReader("configuration/schemas/vertimag-configuration-schema.json")));
-            jsonObject.Validate(schema);
+            ValidateJson(jsonObject);
 
             var settings = new JsonSerializerSettings();
             settings.Converters.Add(new IPAddressConverter());

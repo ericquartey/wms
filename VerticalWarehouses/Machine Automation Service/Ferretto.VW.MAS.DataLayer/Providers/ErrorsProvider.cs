@@ -71,24 +71,24 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Errors
-                .Where(e => !e.ResolutionDate.HasValue)
-                .OrderBy(e => e.Definition.Severity)
-                .ThenBy(e => e.OccurrenceDate)
-                .Select(e => new MachineError
-                {
-                    Id = e.Id,
-                    Code = e.Code,
-                    OccurrenceDate = e.OccurrenceDate,
-                    ResolutionDate = e.ResolutionDate,
-                    Definition = new ErrorDefinition
+                    .Where(e => !e.ResolutionDate.HasValue)
+                    .OrderBy(e => e.Definition.Severity)
+                    .ThenBy(e => e.OccurrenceDate)
+                    .Select(e => new MachineError
                     {
+                        Id = e.Id,
                         Code = e.Code,
-                        Description = e.Definition.Description,
-                        Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity,
-                    },
-                })
-                .FirstOrDefault();
+                        OccurrenceDate = e.OccurrenceDate,
+                        ResolutionDate = e.ResolutionDate,
+                        Definition = new ErrorDefinition
+                        {
+                            Code = e.Code,
+                            Description = e.Definition.Description,
+                            Reason = e.Definition.Reason,
+                            Severity = e.Definition.Severity,
+                        },
+                    })
+                    .FirstOrDefault();
             }
         }
 
@@ -137,13 +137,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(e => e.Code == (int)code && e.ResolutionDate == null && e.BayNumber == bayNumber);
+                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                    e =>
+                        e.Code == (int)code
+                        &&
+                        e.ResolutionDate == null
+                        &&
+                        e.BayNumber == bayNumber);
+
                 if (existingUnresolvedError != null)
                 {
+                    this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
                     return existingUnresolvedError;
                 }
 
-                this.logger.LogError($"Triggering new user error '{code.ToString()}', code: {(int)code}");
+                this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
                 this.dataContext.Errors.Add(newError);
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
@@ -176,6 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (!this.IsErrorStillActive(error.Code))
                 {
                     error.ResolutionDate = DateTime.Now;
+                    this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
 
                     this.dataContext.Errors.Update(error);
 
