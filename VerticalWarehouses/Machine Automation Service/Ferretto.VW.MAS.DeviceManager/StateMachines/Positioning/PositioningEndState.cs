@@ -117,10 +117,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                 {
-                    this.UpdateLoadingUnitLocation();
                     this.UpdateLastIdealPosition();
+                    if (this.machineData.Requester == MessageActor.AutomationService)
+                    {
+                        this.UpdateLoadingUnitLocation();
+                    }
                 }
 
                 var notificationMessage = new NotificationMessage(

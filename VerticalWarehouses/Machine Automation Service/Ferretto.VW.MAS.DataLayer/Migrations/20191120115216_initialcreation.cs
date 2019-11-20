@@ -488,7 +488,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     IsExternal = table.Column<bool>(nullable: false),
                     Number = table.Column<int>(nullable: false),
                     Operation = table.Column<int>(nullable: false),
-                    RealTimePosition = table.Column<double>(nullable: false),
                     Resolution = table.Column<double>(nullable: false),
                     ShutterId = table.Column<int>(nullable: true),
                     Side = table.Column<string>(type: "text", nullable: false),
@@ -696,7 +695,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     ProfileCalibrateLength = table.Column<double>(nullable: false),
                     ProfileCalibratePosition = table.Column<int>(nullable: false),
                     ProfileCalibrateSpeed = table.Column<double>(nullable: false),
-                    RealTimePosition = table.Column<double>(nullable: false),
                     Resolution = table.Column<decimal>(nullable: false),
                     TotalCycles = table.Column<int>(nullable: false),
                     UpperBound = table.Column<double>(nullable: false),
@@ -991,7 +989,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 20, 12, 36, 10, 62, DateTimeKind.Local).AddTicks(2282), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 20, 12, 52, 16, 286, DateTimeKind.Local).AddTicks(8282), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

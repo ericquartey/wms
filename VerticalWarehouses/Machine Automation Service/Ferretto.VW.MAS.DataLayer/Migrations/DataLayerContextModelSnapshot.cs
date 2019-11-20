@@ -47,8 +47,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Operation");
 
-                    b.Property<double>("RealTimePosition");
-
                     b.Property<double>("Resolution");
 
                     b.Property<int?>("ShutterId");
@@ -205,8 +203,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ProfileCalibratePosition");
 
                     b.Property<double>("ProfileCalibrateSpeed");
-
-                    b.Property<double>("RealTimePosition");
 
                     b.Property<decimal>("Resolution");
 
@@ -1190,7 +1186,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 12, 36, 10, 62, DateTimeKind.Local).AddTicks(2282),
+                            InstallationDate = new DateTime(2017, 1, 20, 12, 52, 16, 286, DateTimeKind.Local).AddTicks(8282),
                             ServiceStatus = 86
                         });
                 });
