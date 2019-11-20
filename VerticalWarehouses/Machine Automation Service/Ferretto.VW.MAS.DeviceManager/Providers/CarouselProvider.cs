@@ -158,16 +158,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void UpdateRealTimePosition(BayNumber bayNumber, double position)
-        {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay is null)
-            {
-                throw new ArgumentOutOfRangeException(nameof(bayNumber));
-            }
-            this.baysProvider.UpdateRealTimePosition(bay, position);
-        }
-
         #endregion
     }
 }

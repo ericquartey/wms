@@ -258,4 +258,7 @@
   <data name="DestinationOverUpperBound" xml:space="preserve">
     <value>DestinationOverUpperBound</value>
   </data>
+  <data name="IoDeviceError" xml:space="preserve">
+    <value>IoDeviceError</value>
+  </data>
 </root>

@@ -674,18 +674,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateRealTimePosition(Bay bay, double position)
-        {
-            if (bay is null)
-            {
-                throw new ArgumentNullException(nameof(bay));
-            }
-            bay.RealTimePosition = position;
-            this.dataContext.Bays.Update(bay);
-
-            this.dataContext.SaveChanges();
-        }
-
         internal static string GetElevatorAxesCacheKey() => $"{nameof(GetElevatorAxes)}";
 
         private void Update(Bay bay)

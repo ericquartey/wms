@@ -36,8 +36,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<BayPosition> Positions { get; set; }
 
-        public double RealTimePosition { get; set; }
-
         public double Resolution { get; set; }
 
         public Shutter Shutter { get; set; }

@@ -20,8 +20,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Stop(BayNumber bayNumber, MessageActor sender);
 
-        void UpdateRealTimePosition(BayNumber bayNumber, double position);
-
         #endregion
     }
 }

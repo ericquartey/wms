@@ -69,8 +69,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 
-        void UpdateRealTimePosition(Bay bay, double position);
-
         #endregion
     }
 }
