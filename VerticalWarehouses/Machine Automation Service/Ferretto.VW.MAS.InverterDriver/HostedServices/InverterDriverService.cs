@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private Axis currentAxis;
 
-        private bool forceStatusPublish;
+        private bool[] forceStatusPublish;
 
         private bool isDisposed;
 
@@ -113,6 +113,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.axisPositionUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
             this.statusWordUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
+            this.forceStatusPublish = new bool[(int)InverterIndex.Slave7 + 1];
         }
 
         #endregion
@@ -266,7 +267,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     else
                     {
                         this.Logger.LogInformation($"Connected to inverter's TCP address {this.inverterAddress}:{this.inverterPort}");
-                        this.forceStatusPublish = true;
+                            for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                            {
+                                this.forceStatusPublish[i] = true;
+                            }
                     }
 
                     this.writeEnableEvent.Set();
