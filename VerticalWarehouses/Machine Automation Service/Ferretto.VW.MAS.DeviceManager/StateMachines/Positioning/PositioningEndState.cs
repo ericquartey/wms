@@ -1,4 +1,6 @@
 ﻿using System;
+using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
@@ -52,6 +54,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
+                case FieldMessageType.InverterSwitchOn:
+                case FieldMessageType.InverterSwitchOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
@@ -113,6 +117,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.machineData.MessageData.TargetBayPositionId,
                         this.machineData.MessageData.TargetCellId,
                         this.machineData.MessageData.TargetPosition);
+
+                    this.UpdateLastIdealPosition();
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -163,6 +169,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug("Retry Stop Command");
             this.Start();
+        }
+
+        private void UpdateLastIdealPosition()
+        {
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
         }
 
         private static void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)

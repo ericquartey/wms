@@ -59,6 +59,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetLoadingUnit(int? loadingUnitId);
 
+        void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
+
+        void UpdateRealTimePosition(double position, Orientation orientation = Orientation.Horizontal);
+
         void UpdateVerticalOffset(double newOffset);
 
         void UpdateVerticalResolution(decimal newResolution);

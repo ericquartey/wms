@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly bool refreshTargetTable = false;
-
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
@@ -52,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private IPAddress inverterAddress;
 
         private int inverterPort;
+
+        private bool refreshTargetTable = false;
 
         #endregion
 
@@ -513,6 +513,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
             currentStateMachine.Start();
+
+            this.refreshTargetTable = true;
         }
 
         private async Task<bool> ProcessHeartbeat(IAngInverterStatus mainInverter)

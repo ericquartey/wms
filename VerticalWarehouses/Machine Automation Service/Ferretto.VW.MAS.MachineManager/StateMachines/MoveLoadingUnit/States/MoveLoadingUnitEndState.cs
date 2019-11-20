@@ -62,6 +62,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData stateData)
         {
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,
                 commandMessage.Description,
@@ -93,9 +94,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 switch (notificationStatus)
                 {
-                    // STate machine is in error, any response from device manager state machines will do to complete state machine shutdown
+                    // State machine is in error, any response from device manager state machines will do to complete state machine shutdown
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationRunningStop:
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
                 }

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
         private readonly IElevatorDataProvider elevatorDataProvider;
 
         private readonly IMachineResourcesProvider machineResourcesProvider;
@@ -31,6 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IElevatorDataProvider elevatorDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
@@ -38,6 +41,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
 
         #endregion
@@ -103,7 +107,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void Move(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanMove(direction, bayNumber);
             if (!policy.IsAllowed)
@@ -116,14 +120,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
-
-            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-
-            // TODO: scale movement speed by weight
-            var speed = new[] { axis.EmptyLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
-            var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
+                {
+                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                }
+            }
+            var speed = new[] { bay.EmptyLoadMovement.Speed - ((bay.EmptyLoadMovement.Speed - bay.FullLoadMovement.Speed) * scalingFactor) };
+            var acceleration = new[] { bay.EmptyLoadMovement.Acceleration - ((bay.EmptyLoadMovement.Acceleration - bay.FullLoadMovement.Acceleration) * scalingFactor) };
+            var deceleration = new[] { bay.EmptyLoadMovement.Deceleration - ((bay.EmptyLoadMovement.Deceleration - bay.FullLoadMovement.Deceleration) * scalingFactor) };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -160,11 +169,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
-            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -199,6 +207,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 MessageType.Stop,
                 bayNumber,
                 BayNumber.None);
+        }
+
+        public void UpdateRealTimePosition(BayNumber bayNumber, double position)
+        {
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+            if (bay is null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bayNumber));
+            }
+            this.baysProvider.UpdateRealTimePosition(bay, position);
         }
 
         #endregion

@@ -45,7 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                var loadingUnit = this.dataContext.LoadingUnits.FirstOrDefault(l => l.Id == id);
+                var loadingUnit = this.dataContext.LoadingUnits.AsNoTracking()
+                    .FirstOrDefault(l => l.Id == id);
                 if (loadingUnit is null)
                 {
                     throw new EntityNotFoundException(id);
