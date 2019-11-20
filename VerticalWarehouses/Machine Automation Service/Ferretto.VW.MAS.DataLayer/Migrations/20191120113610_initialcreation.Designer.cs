@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191120070300_initialcreation")]
+    [Migration("20191120113610_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -441,6 +441,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 21,
+                            Code = 21,
+                            Description = "IoDeviceError",
+                            Reason = "IoDeviceError",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -774,6 +782,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 20,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 21,
                             TotalErrors = 0
                         },
                         new
@@ -1179,7 +1192,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 8, 2, 59, 428, DateTimeKind.Local).AddTicks(6393),
+                            InstallationDate = new DateTime(2017, 1, 20, 12, 36, 10, 62, DateTimeKind.Local).AddTicks(2282),
                             ServiceStatus = 86
                         });
                 });
