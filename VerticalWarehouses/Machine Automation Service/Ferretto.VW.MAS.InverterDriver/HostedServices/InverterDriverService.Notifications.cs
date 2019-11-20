@@ -262,7 +262,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             if (inverter is AngInverterStatus angInverter)
                             {
                                 ioStatuses[6] = angInverter.ANG_OverrunElevatorSensor;
-                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)InverterIndex.MainInverter])
                                 {
                                     this.Logger.LogTrace("Sensor Update");
 

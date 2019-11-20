@@ -960,17 +960,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                         this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                     }
                 }
-                else
-                {
-                    if (this.InverterType == InverterType.Ang)
-                    {
-                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
-                    }
-                    else
-                    {
-                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                    }
-                }
+                //else
+                //{
+                //    if (this.InverterType == InverterType.Ang)
+                //    {
+                //        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                //    }
+                //    else
+                //    {
+                //        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                //    }
+                //}
             }
         }
 
