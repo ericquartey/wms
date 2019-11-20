@@ -47,8 +47,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Operation");
 
-                    b.Property<double>("RealTimePosition");
-
                     b.Property<double>("Resolution");
 
                     b.Property<int?>("ShutterId");
@@ -217,8 +215,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ProfileCalibratePosition");
 
                     b.Property<double>("ProfileCalibrateSpeed");
-
-                    b.Property<double>("RealTimePosition");
 
                     b.Property<decimal>("Resolution");
 
@@ -447,6 +443,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Code = 20,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Code = 21,
+                            Description = "IoDeviceError",
+                            Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
@@ -784,6 +788,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 20,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 21,
                             TotalErrors = 0
                         },
                         new
@@ -1189,7 +1198,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 11, 22, 37, 672, DateTimeKind.Local).AddTicks(2381),
+                            InstallationDate = new DateTime(2017, 1, 20, 16, 4, 33, 290, DateTimeKind.Local).AddTicks(4818),
                             ServiceStatus = 86
                         });
                 });

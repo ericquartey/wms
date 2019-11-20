@@ -936,9 +936,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("positions", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<BayPosition> Positions { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("realTimePosition", Required = Newtonsoft.Json.Required.Always)]
-        public double RealTimePosition { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
         public double Resolution { get; set; }
     
@@ -1792,9 +1789,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("profiles", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.Collections.Generic.IEnumerable<MovementProfile> Profiles { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("realTimePosition", Required = Newtonsoft.Json.Required.Always)]
-        public double RealTimePosition { get; set; }
     
         [Newtonsoft.Json.JsonProperty("resolution", Required = Newtonsoft.Json.Required.Always)]
         public decimal Resolution { get; set; }

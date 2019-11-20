@@ -369,22 +369,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateRealTimePosition(double position, Orientation orientation = Orientation.Horizontal)
-        {
-            lock (this.dataContext)
-            {
-                var axis = this.dataContext.ElevatorAxes.SingleOrDefault(a => a.Orientation == orientation);
-                if (axis is null)
-                {
-                    throw new EntityNotFoundException(orientation.ToString());
-                }
-
-                axis.RealTimePosition = position;
-
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public void UpdateVerticalOffset(double newOffset)
         {
             lock (this.dataContext)

@@ -286,6 +286,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IoDeviceError.
+        /// </summary>
+        public static string IoDeviceError {
+            get {
+                return ResourceManager.GetString("IoDeviceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Scaricare il cassetto in baia e rimuovere il peso in eccesso..
         /// </summary>
         public static string LoadingUnitWeightExceeded {

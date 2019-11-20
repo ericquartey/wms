@@ -82,8 +82,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
 
-        public double RealTimePosition { get; set; }
-
         public decimal Resolution
         {
             get => this.resolution;
