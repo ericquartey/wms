@@ -1,11 +1,13 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -15,7 +17,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IHomingMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IHomingStateData stateData;
 
@@ -28,6 +34,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IHomingMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -54,6 +62,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         break;
 
                     case MessageStatus.OperationError:
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
+                        break;
+                }
+            }
+            else if (message.Type == FieldMessageType.InverterSwitchOff)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.Logger.LogDebug("Inverter switch OFF completed");
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                         break;
@@ -97,9 +121,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         public override void Start()
         {
-            this.Logger.LogDebug($"Start {this.GetType().Name}");
-
             var inverterIndex = this.machineData.CurrentInverterIndex;
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {inverterIndex}");
 
             var calibrateAxisData = new CalibrateAxisFieldMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType);
             var commandMessage = new FieldCommandMessage(

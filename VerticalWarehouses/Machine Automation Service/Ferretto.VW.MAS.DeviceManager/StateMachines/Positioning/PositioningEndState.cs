@@ -21,7 +21,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -34,6 +38,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -79,6 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             break;
 
                         case MessageStatus.OperationError:
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                             break;
                     }
