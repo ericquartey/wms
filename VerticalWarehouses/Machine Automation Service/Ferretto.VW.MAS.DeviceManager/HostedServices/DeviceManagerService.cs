@@ -422,44 +422,42 @@ namespace Ferretto.VW.MAS.DeviceManager
                 case FieldMessageType.InverterPowerOff:
                     break;
 
-                case FieldMessageType.SensorsChanged:
+                case FieldMessageType.SensorsChanged when receivedMessage.Data is ISensorsChangedFieldMessageData:
 
                     this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
-                    if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
+                    var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
+
+                    var ioIndex = receivedMessage.DeviceIndex;
+                    if (machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                     {
-                        var ioIndex = receivedMessage.DeviceIndex;
-                        if (machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
+                        var msgData = new SensorsChangedMessageData
                         {
-                            var msgData = new SensorsChangedMessageData
-                            {
-                                SensorsStates = machineResourcesProvider.DisplayedInputs
-                            };
+                            SensorsStates = machineResourcesProvider.DisplayedInputs
+                        };
 
-                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                        this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
-                            this.EventAggregator
-                                .GetEvent<NotificationEvent>()
-                                .Publish(
-                                    new NotificationMessage(
-                                        msgData,
-                                        "IO sensors status",
-                                        MessageActor.Any,
-                                        MessageActor.DeviceManager,
-                                        MessageType.SensorsChanged,
-                                        bayNumber,
-                                        bayNumber,
-                                        MessageStatus.OperationExecuting));
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage(
+                                    msgData,
+                                    "IO sensors status",
+                                    MessageActor.Any,
+                                    MessageActor.DeviceManager,
+                                    MessageType.SensorsChanged,
+                                    bayNumber,
+                                    bayNumber,
+                                    MessageStatus.OperationExecuting));
 
-                            this.forceRemoteIoStatusPublish[ioIndex] = false;
-                        }
+                        this.forceRemoteIoStatusPublish[ioIndex] = false;
                     }
+
                     break;
 
-                case FieldMessageType.InverterStatusUpdate:
+                case FieldMessageType.InverterStatusUpdate when receivedMessage.Data is IInverterStatusUpdateFieldMessageData:
 
                     this.Logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-
-                    System.Diagnostics.Debug.Assert(receivedMessage.Data is IInverterStatusUpdateFieldMessageData);
 
                     var inverterData = receivedMessage.Data as IInverterStatusUpdateFieldMessageData;
 
@@ -473,23 +471,26 @@ namespace Ferretto.VW.MAS.DeviceManager
                         {
                             elevatorProvider.VerticalPosition = inverterData.CurrentPosition.Value;
                             // for future use
-                                //serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(dataInverters.CurrentPosition.Value);
-                                notificationData.AxisMovement = inverterData.CurrentAxis;
+                            //serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(dataInverters.CurrentPosition.Value);
+                            notificationData.AxisMovement = inverterData.CurrentAxis;
                         }
                         else if (inverterData.CurrentAxis is Axis.Horizontal)
                         {
                             elevatorProvider.HorizontalPosition = inverterData.CurrentPosition.Value;
-                            if (inverterIndex == Inverter.MasterIndex)
-                                {
-                                    serviceProvider.GetRequiredService<IElevatorDataProvider>().UpdateRealTimePosition(dataInverters.CurrentPosition.Value);
-                                }
-                                notificationData.AxisMovement = inverterData.CurrentAxis;
+                            if (receivedMessage.DeviceIndex == Inverter.MasterIndex)
+                            {
+                                serviceProvider
+                                    .GetRequiredService<IElevatorDataProvider>()
+                                    .UpdateRealTimePosition(inverterData.CurrentPosition.Value);
+                            }
+
+                            notificationData.AxisMovement = inverterData.CurrentAxis;
                         }
                         else
                         {
                             baysDataProvider.SetChainPosition(bayNumber, inverterData.CurrentPosition.Value);
-// for future use
-                                //carouselProvider.UpdateRealTimePosition(messageBayBayIndex, dataInverters.CurrentPosition.Value);
+                            // for future use
+                            //carouselProvider.UpdateRealTimePosition(messageBayBayIndex, dataInverters.CurrentPosition.Value);
                             notificationData.AxisMovement = Axis.BayChain;
                             notificationData.MovementMode = MovementMode.BayChain;
                         }

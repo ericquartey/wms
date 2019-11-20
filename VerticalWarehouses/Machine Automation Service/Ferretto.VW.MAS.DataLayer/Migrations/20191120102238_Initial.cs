@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class initialcreation : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -455,6 +455,122 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Elevators",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BayPositionId = table.Column<int>(nullable: true),
+                    CellId = table.Column<int>(nullable: true),
+                    LoadingUnitId = table.Column<int>(nullable: true),
+                    StructuralPropertiesId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Elevators", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Elevators_ElevatorStructuralProperties_StructuralPropertiesId",
+                        column: x => x.StructuralPropertiesId,
+                        principalTable: "ElevatorStructuralProperties",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Machines",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ElevatorId = table.Column<int>(nullable: true),
+                    Height = table.Column<double>(nullable: false),
+                    MaxGrossWeight = table.Column<double>(nullable: false),
+                    ModelName = table.Column<string>(nullable: true),
+                    SerialNumber = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Machines", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Machines_Elevators_ElevatorId",
+                        column: x => x.ElevatorId,
+                        principalTable: "Elevators",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CellPanels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Side = table.Column<string>(type: "text", nullable: false),
+                    MachineId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CellPanels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CellPanels_Machines_MachineId",
+                        column: x => x.MachineId,
+                        principalTable: "Machines",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Cells",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    IsDeactivated = table.Column<bool>(nullable: false),
+                    IsUnusable = table.Column<bool>(nullable: false),
+                    PanelId = table.Column<int>(nullable: false),
+                    Position = table.Column<double>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    Status = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Cells", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cells_CellPanels_PanelId",
+                        column: x => x.PanelId,
+                        principalTable: "CellPanels",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "LoadingUnits",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CellId = table.Column<int>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    GrossWeight = table.Column<double>(nullable: false),
+                    Height = table.Column<double>(nullable: false),
+                    IsIntoMachine = table.Column<bool>(nullable: false),
+                    MaxNetWeight = table.Column<double>(nullable: false),
+                    MissionsCount = table.Column<int>(nullable: false),
+                    Status = table.Column<long>(nullable: false),
+                    Tare = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoadingUnits", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoadingUnits_Cells_CellId",
+                        column: x => x.CellId,
+                        principalTable: "Cells",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BayPositions",
                 columns: table => new
                 {
@@ -468,6 +584,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BayPositions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BayPositions_LoadingUnits_LoadingUnitId",
+                        column: x => x.LoadingUnitId,
+                        principalTable: "LoadingUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -516,121 +638,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
+                        name: "FK_Bays_Machines_MachineId",
+                        column: x => x.MachineId,
+                        principalTable: "Machines",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_Bays_Shutter_ShutterId",
                         column: x => x.ShutterId,
                         principalTable: "Shutter",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cells",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    PanelId = table.Column<int>(nullable: false),
-                    Position = table.Column<double>(nullable: false),
-                    Priority = table.Column<int>(nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cells", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "LoadingUnits",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    CellId = table.Column<int>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    GrossWeight = table.Column<double>(nullable: false),
-                    Height = table.Column<double>(nullable: false),
-                    IsIntoMachine = table.Column<bool>(nullable: false),
-                    MaxNetWeight = table.Column<double>(nullable: false),
-                    MissionsCount = table.Column<int>(nullable: false),
-                    Status = table.Column<long>(nullable: false),
-                    Tare = table.Column<double>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoadingUnits", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LoadingUnits_Cells_CellId",
-                        column: x => x.CellId,
-                        principalTable: "Cells",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Elevators",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    LoadingUnitId = table.Column<int>(nullable: true),
-                    StructuralPropertiesId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Elevators", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Elevators_LoadingUnits_LoadingUnitId",
-                        column: x => x.LoadingUnitId,
-                        principalTable: "LoadingUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Elevators_ElevatorStructuralProperties_StructuralPropertiesId",
-                        column: x => x.StructuralPropertiesId,
-                        principalTable: "ElevatorStructuralProperties",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Machines",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ElevatorId = table.Column<int>(nullable: true),
-                    Height = table.Column<double>(nullable: false),
-                    MaxGrossWeight = table.Column<double>(nullable: false),
-                    ModelName = table.Column<string>(nullable: true),
-                    SerialNumber = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Machines", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Machines_Elevators_ElevatorId",
-                        column: x => x.ElevatorId,
-                        principalTable: "Elevators",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "CellPanels",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Side = table.Column<string>(type: "text", nullable: false),
-                    MachineId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CellPanels", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_CellPanels_Machines_MachineId",
-                        column: x => x.MachineId,
-                        principalTable: "Machines",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -986,7 +1002,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 20, 8, 2, 59, 428, DateTimeKind.Local).AddTicks(6393), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 20, 11, 22, 37, 672, DateTimeKind.Local).AddTicks(2381), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1330,6 +1346,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "WeightMeasurementId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Elevators_BayPositionId",
+                table: "Elevators",
+                column: "BayPositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Elevators_CellId",
+                table: "Elevators",
+                column: "CellId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Elevators_LoadingUnitId",
                 table: "Elevators",
                 column: "LoadingUnitId");
@@ -1481,18 +1507,34 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BayPositions_Bays_BayId",
-                table: "BayPositions",
-                column: "BayId",
-                principalTable: "Bays",
+                name: "FK_Elevators_LoadingUnits_LoadingUnitId",
+                table: "Elevators",
+                column: "LoadingUnitId",
+                principalTable: "LoadingUnits",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_BayPositions_LoadingUnits_LoadingUnitId",
+                name: "FK_Elevators_BayPositions_BayPositionId",
+                table: "Elevators",
+                column: "BayPositionId",
+                principalTable: "BayPositions",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Elevators_Cells_CellId",
+                table: "Elevators",
+                column: "CellId",
+                principalTable: "Cells",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_BayPositions_Bays_BayId",
                 table: "BayPositions",
-                column: "LoadingUnitId",
-                principalTable: "LoadingUnits",
+                column: "BayId",
+                principalTable: "Bays",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
 
@@ -1513,22 +1555,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Bays_Machines_MachineId",
-                table: "Bays",
-                column: "MachineId",
-                principalTable: "Machines",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Cells_CellPanels_PanelId",
-                table: "Cells",
-                column: "PanelId",
-                principalTable: "CellPanels",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_MovementProfiles_ElevatorAxes_ElevatorAxisId",
                 table: "MovementProfiles",
                 column: "ElevatorAxisId",
@@ -1539,6 +1565,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_BayPositions_Bays_BayId",
+                table: "BayPositions");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_BayPositions_LoadingUnits_LoadingUnitId",
+                table: "BayPositions");
+
             migrationBuilder.DropForeignKey(
                 name: "FK_Elevators_LoadingUnits_LoadingUnitId",
                 table: "Elevators");
@@ -1551,8 +1585,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "FK_ElevatorAxes_MovementParameters_FullLoadMovementId",
                 table: "ElevatorAxes");
 
-            migrationBuilder.DropTable(
-                name: "BayPositions");
+            migrationBuilder.DropForeignKey(
+                name: "FK_CellPanels_Machines_MachineId",
+                table: "CellPanels");
 
             migrationBuilder.DropTable(
                 name: "Errors");
@@ -1582,9 +1617,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Users");
 
             migrationBuilder.DropTable(
-                name: "Bays");
-
-            migrationBuilder.DropTable(
                 name: "ErrorDefinitions");
 
             migrationBuilder.DropTable(
@@ -1592,6 +1624,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "TorqueCurrentMeasurementSessions");
+
+            migrationBuilder.DropTable(
+                name: "Bays");
 
             migrationBuilder.DropTable(
                 name: "Carousels");
@@ -1606,15 +1641,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "LoadingUnits");
 
             migrationBuilder.DropTable(
-                name: "Cells");
-
-            migrationBuilder.DropTable(
-                name: "CellPanels");
-
-            migrationBuilder.DropTable(
-                name: "Machines");
-
-            migrationBuilder.DropTable(
                 name: "MovementParameters");
 
             migrationBuilder.DropTable(
@@ -1624,16 +1650,28 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "ElevatorAxes");
 
             migrationBuilder.DropTable(
-                name: "Elevators");
-
-            migrationBuilder.DropTable(
                 name: "Inverters");
 
             migrationBuilder.DropTable(
                 name: "WeightMeasurement");
 
             migrationBuilder.DropTable(
+                name: "Machines");
+
+            migrationBuilder.DropTable(
+                name: "Elevators");
+
+            migrationBuilder.DropTable(
+                name: "BayPositions");
+
+            migrationBuilder.DropTable(
+                name: "Cells");
+
+            migrationBuilder.DropTable(
                 name: "ElevatorStructuralProperties");
+
+            migrationBuilder.DropTable(
+                name: "CellPanels");
         }
     }
 }

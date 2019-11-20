@@ -120,6 +120,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsDeactivated");
+
+                    b.Property<bool>("IsUnusable");
+
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
@@ -160,11 +164,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BayPositionId");
+
+                    b.Property<int?>("CellId");
+
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<int?>("StructuralPropertiesId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BayPositionId");
+
+                    b.HasIndex("CellId");
 
                     b.HasIndex("LoadingUnitId");
 
@@ -1177,7 +1189,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 8, 2, 59, 428, DateTimeKind.Local).AddTicks(6393),
+                            InstallationDate = new DateTime(2017, 1, 20, 11, 22, 37, 672, DateTimeKind.Local).AddTicks(2381),
                             ServiceStatus = 86
                         });
                 });
@@ -1613,6 +1625,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
+                        .WithMany()
+                        .HasForeignKey("BayPositionId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
+                        .WithMany()
+                        .HasForeignKey("CellId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");
