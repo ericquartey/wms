@@ -79,6 +79,11 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Powered : MachinePowerState.Unpowered;
                         break;
 
+                    case MessageStatus.OperationError:
+                    case MessageStatus.OperationStop:
+                        machinePowerState = MachinePowerState.Unpowered;
+                        break;
+
                     default:
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;

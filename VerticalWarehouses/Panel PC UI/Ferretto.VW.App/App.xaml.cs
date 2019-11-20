@@ -73,6 +73,13 @@ namespace Ferretto.VW.App
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            if (!AppCheck.Start())
+            {
+                this.Shutdown(1);
+            }
+
+            SplashScreenService.Show();
+
             this.HACK_ForceItalianLanguage();
 
             base.OnStartup(e);
@@ -138,6 +145,11 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
+        }
+
+        private void Application_Exit(object sender, ExitEventArgs e)
+        {
+            AppCheck.End();
         }
 
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

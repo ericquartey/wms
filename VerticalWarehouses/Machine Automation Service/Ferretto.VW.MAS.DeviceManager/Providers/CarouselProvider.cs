@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly IElevatorDataProvider elevatorDataProvider;
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -25,14 +25,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public CarouselProvider(
             IBaysProvider baysProvider,
-            IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(HorizontalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
         {
             var bay = this.baysProvider.GetByNumber(bayNumber);
             if (bay.Carousel is null)
@@ -70,14 +70,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
-
-            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-
-            // TODO: scale movement speed by weight
-            var speed = new[] { axis.EmptyLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
-            var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
+                {
+                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                }
+            }
+            var speed = new[] { bay.EmptyLoadMovement.Speed - ((bay.EmptyLoadMovement.Speed - bay.FullLoadMovement.Speed) * scalingFactor) };
+            var acceleration = new[] { bay.EmptyLoadMovement.Acceleration - ((bay.EmptyLoadMovement.Acceleration - bay.FullLoadMovement.Acceleration) * scalingFactor) };
+            var deceleration = new[] { bay.EmptyLoadMovement.Deceleration - ((bay.EmptyLoadMovement.Deceleration - bay.FullLoadMovement.Deceleration) * scalingFactor) };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -113,11 +118,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
-            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(

@@ -39,8 +39,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly bool refreshTargetTable = false;
-
         private readonly object syncAxisTimer = new object();
 
         private readonly object syncSensorTimer = new object();
@@ -52,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver
         private IPAddress inverterAddress;
 
         private int inverterPort;
+
+        private bool refreshTargetTable = false;
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogTrace("2:Change axis update interval");
                             this.axisPositionUpdateTimer[(int)inverterIndex].Change(updateData.UpdateInterval, updateData.UpdateInterval);
                         }
-                        this.forceStatusPublish = true;
+                        this.forceStatusPublish[(int)inverterIndex] = true;
                     }
                     else
                     {
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogTrace("2:Change sensor update interval");
                             this.sensorStatusUpdateTimer.Change(updateData.UpdateInterval, updateData.UpdateInterval);
                         }
-                        this.forceStatusPublish = true;
+                        this.forceStatusPublish[(int)inverterIndex] = true;
                     }
                     else
                     {
@@ -128,7 +128,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogTrace("2:Change status word interval");
                             this.statusWordUpdateTimer[(int)inverterIndex].Change(updateData.UpdateInterval, updateData.UpdateInterval);
                         }
-                        this.forceStatusPublish = true;
+                        this.forceStatusPublish[(int)inverterIndex] = true;
                     }
                     else
                     {
@@ -213,7 +213,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 ioStatuses[7] = angInverter.ANG_ZeroCradleSensor;
                             }
-                            if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
                                 this.Logger.LogTrace("Sensor Update");
 
@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         case AcuInverterStatus acuInverter:
 
-                            if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            if (acuInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(acuInverter.Inputs),
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         case AglInverterStatus aglInverter:
 
-                            if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                            if (aglInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)inverter.SystemIndex])
                             {
                                 var msgNotification = new FieldNotificationMessage(
                                     new InverterStatusUpdateFieldMessageData(aglInverter.Inputs),
@@ -267,8 +267,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             break;
                     }
+                    this.forceStatusPublish[(int)inverter.SystemIndex] = false;
                 }
-                this.forceStatusPublish = false;
             }
             else if (message.ParameterId == InverterParameterId.ActualPositionShaft)
             {
@@ -296,7 +296,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     this.Logger.LogTrace($"ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
 
                     if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
-                        (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish))
+                        (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish[(int)message.SystemIndex]))
                     {
                         var axisOrientation = (axis == Axis.Horizontal || axis == Axis.BayChain) ? Orientation.Horizontal : Orientation.Vertical;
 
@@ -330,7 +330,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                        this.forceStatusPublish = false;
+                        this.forceStatusPublish[(int)message.SystemIndex] = false;
                     }
                     currentStateMachine?.ValidateCommandResponse(message);
                 }
@@ -504,6 +504,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.currentStateMachines.Add(inverter.SystemIndex, currentStateMachine);
             currentStateMachine.Start();
+
+            this.refreshTargetTable = true;
         }
 
         private async Task<bool> ProcessHeartbeat(IAngInverterStatus mainInverter)
@@ -756,6 +758,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
                         var targetPosition = invertersProvider.ComputePositioningValues(inverter, positioningData, axisOrientation, currentPosition, this.refreshTargetTable, out var positioningFieldData);
+                        this.refreshTargetTable = false;
 
                         this.Logger.LogDebug($"Inverter: {inverter.SystemIndex}; " +
                             $"Current axis: {this.currentAxis}; " +

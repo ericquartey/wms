@@ -62,9 +62,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         [HttpPost("move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public IActionResult Move(HorizontalMovementDirection direction)
+        public IActionResult Move(HorizontalMovementDirection direction, int? loadingUnitId)
         {
-            this.carouselProvider.Move(direction, this.BayNumber, MessageActor.AutomationService);
+            this.carouselProvider.Move(direction, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
