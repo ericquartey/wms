@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -126,6 +127,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal || this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
+                }
             }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason

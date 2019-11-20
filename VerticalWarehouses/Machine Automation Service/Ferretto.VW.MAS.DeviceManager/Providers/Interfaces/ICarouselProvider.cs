@@ -14,11 +14,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender);
 
-        void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
+        void Move(HorizontalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender);
 
         void MoveManual(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);
+
+        void UpdateRealTimePosition(BayNumber bayNumber, double position);
 
         #endregion
     }

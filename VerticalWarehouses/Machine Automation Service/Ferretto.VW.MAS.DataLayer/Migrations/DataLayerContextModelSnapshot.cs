@@ -29,6 +29,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionOperationId");
 
+                    b.Property<int?>("EmptyLoadMovementId");
+
+                    b.Property<int?>("FullLoadMovementId");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<int?>("IoDeviceId");
@@ -43,6 +47,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("Operation");
 
+                    b.Property<double>("RealTimePosition");
+
                     b.Property<double>("Resolution");
 
                     b.Property<int?>("ShutterId");
@@ -54,6 +60,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
+
+                    b.HasIndex("EmptyLoadMovementId");
+
+                    b.HasIndex("FullLoadMovementId");
 
                     b.HasIndex("InverterId");
 
@@ -182,6 +192,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("InverterId");
 
+                    b.Property<double>("LastIdealPosition");
+
                     b.Property<double>("LowerBound");
 
                     b.Property<double>("Offset");
@@ -193,6 +205,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("ProfileCalibratePosition");
 
                     b.Property<double>("ProfileCalibrateSpeed");
+
+                    b.Property<double>("RealTimePosition");
 
                     b.Property<decimal>("Resolution");
 
@@ -411,6 +425,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 19,
                             Code = 19,
+                            Description = "DestinationOverUpperBound",
+                            Reason = "DestinationOverUpperBound",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Code = 20,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
                             Severity = 1
@@ -745,6 +767,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 19,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 20,
                             TotalErrors = 0
                         },
                         new
@@ -1150,7 +1177,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 15, 11, 55, 10, 993, DateTimeKind.Local).AddTicks(1837),
+                            InstallationDate = new DateTime(2017, 1, 20, 8, 2, 59, 428, DateTimeKind.Local).AddTicks(6393),
                             ServiceStatus = 86
                         });
                 });
@@ -1435,6 +1462,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
+                    b.Property<bool>("AdjustByWeight");
+
                     b.Property<int?>("MovementProfileId");
 
                     b.Property<int>("Number");
@@ -1530,6 +1559,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
                         .WithMany()
                         .HasForeignKey("CarouselId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("EmptyLoadMovementId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("FullLoadMovementId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()

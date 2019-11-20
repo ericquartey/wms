@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Inverter Inverter { get; set; }
 
+        public double LastIdealPosition { get; set; }
+
         public double LowerBound
         {
             get => this.lowerBound;
@@ -79,6 +81,8 @@ namespace Ferretto.VW.MAS.DataModels
         public double ProfileCalibrateSpeed { get; set; }
 
         public IEnumerable<MovementProfile> Profiles { get; set; }
+
+        public double RealTimePosition { get; set; }
 
         public decimal Resolution
         {
@@ -141,7 +145,8 @@ namespace Ferretto.VW.MAS.DataModels
                 maxGrossWeight > 0,
                 "Max gross weight should always be positive (consistency ensured by LoadingUnit class).");
 
-            var scalingFactor = loadingUnit.GrossWeight / maxGrossWeight;
+            // if weight is unknown we move as full weight
+            var scalingFactor = (loadingUnit.GrossWeight == 0) ? 1 : (loadingUnit.GrossWeight / maxGrossWeight);
 
             return new MovementParameters
             {

@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CurrentMissionOperationId { get; set; }
 
+        public MovementParameters EmptyLoadMovement { get; set; }
+
+        public MovementParameters FullLoadMovement { get; set; }
+
         public Inverter Inverter { get; set; }
 
         public IoDevice IoDevice { get; set; }
@@ -31,6 +35,8 @@ namespace Ferretto.VW.MAS.DataModels
         public BayOperation Operation { get; set; }
 
         public IEnumerable<BayPosition> Positions { get; set; }
+
+        public double RealTimePosition { get; set; }
 
         public double Resolution { get; set; }
 
