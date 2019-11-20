@@ -111,13 +111,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
+                if (this.machineData.MessageData.AxisMovement is Axis.Vertical)
                 {
                     this.PersistElevatorPosition(
                         this.machineData.MessageData.TargetBayPositionId,
                         this.machineData.MessageData.TargetCellId,
                         this.machineData.MessageData.TargetPosition);
-
+                }
+                else if (
+                    this.machineData.Requester == MessageActor.AutomationService
+                    &&
+                    this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+                {
                     this.UpdateLastIdealPosition();
                 }
 
@@ -169,13 +174,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug("Retry Stop Command");
             this.Start();
-        }
-
-        private void UpdateLastIdealPosition()
-        {
-            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
         }
 
         private static void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)
@@ -297,6 +295,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
                 elevatorDataProvider.SetCurrentCell(targetCellId);
             }
+        }
+
+        private void UpdateLastIdealPosition()
+        {
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
         }
 
         private void UpdateLoadingUnitForManualMovement()

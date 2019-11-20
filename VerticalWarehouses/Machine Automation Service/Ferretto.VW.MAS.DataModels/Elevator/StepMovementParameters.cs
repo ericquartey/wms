@@ -22,6 +22,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 throw new ArgumentNullException(nameof(axis));
             }
+
             if (this.AdjustByWeight)
             {
                 var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
