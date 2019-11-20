@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
+using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -92,9 +93,9 @@ namespace Ferretto.VW.App.Controls.Controls
             switch (this.Keyboard)
             {
                 case KeyboardType.QWERTY:
-                    var ppcKeyboard = new PpcKeyboard();
+                    var ppcKeyboard = new Keyboards.Keyboards();
                     var vmKeyboard = new PpcKeypadsPopupViewModel();
-                    ppcKeyboard.DataContext = vmKeyboard;
+                    ppcKeyboard.Keyboardsss = vmKeyboard.Keyboards;
                     vmKeyboard.Update(this.LabelText, this.InputText?.ToString() ?? string.Empty);
                     ppcKeyboard.Topmost = false;
                     ppcKeyboard.ShowInTaskbar = false;

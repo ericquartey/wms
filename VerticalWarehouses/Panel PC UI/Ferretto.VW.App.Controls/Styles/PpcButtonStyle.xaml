@@ -33,7 +33,8 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <ProgressBar Height="{TemplateBinding Height}"
+                            <ProgressBar Grid.ColumnSpan="2"
+                                         Height="{TemplateBinding Height}"
                                          VerticalAlignment="Bottom"
                                          Background="Transparent"
                                          BorderBrush="Transparent"
@@ -74,11 +75,11 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                            <!--<Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />-->
                             <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
+                            <!--<Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />-->
                             <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
                         </Trigger>
                     </ControlTemplate.Triggers>
@@ -120,9 +121,14 @@
     <Style x:Key="PpcHeaderButtonStyle"
            BasedOn="{StaticResource PpcButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0,0,0,10" />
+        <Setter Property="BorderThickness" Value="1,1,1,10" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderThickness" Value="1,1,1,10" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonMachinePowerHeaderStyle"
@@ -162,15 +168,23 @@
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonMachineErrorHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
-
-
 
     <Style x:Key="PpcButtonHelpHeaderStyle"
            BasedOn="{StaticResource PpcButtonStyle}"
@@ -178,7 +192,6 @@
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
         <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
-
     </Style>
 
     <Style x:Key="PpcButtonThemeStyle"
@@ -191,7 +204,6 @@
             <DataTrigger Binding="{Binding IsDarkThemeActive}"
                          Value="False">
                 <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_light.png" />
-
             </DataTrigger>
         </Style.Triggers>
     </Style>

@@ -6,6 +6,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Ferretto.VW.App.Controls.Controls.Keyboards;
+using Key = System.Windows.Input.Key;
 
 namespace Ferretto.VW.App.Controls
 {

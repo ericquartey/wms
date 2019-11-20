@@ -48,6 +48,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\Keyboards\Keyboards.xaml" />
     <None Remove="Controls\Keyboards\PpcKeyboard.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
@@ -69,6 +70,9 @@
   <ItemGroup>
     <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
       <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Keyboards\Keyboards.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Keyboards\PpcKeyboard.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>

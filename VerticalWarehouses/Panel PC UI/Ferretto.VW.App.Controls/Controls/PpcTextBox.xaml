@@ -16,8 +16,8 @@
                  BorderBrush="{Binding BorderColor}"
                  KeyDown="OnKeyDownHandler"
                  MouseDoubleClick="OnKeyboardOpenHandler"
-                 TouchEnter="OnKeyboardOpenHandler"
                  Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 TouchEnter="OnKeyboardOpenHandler" />
     </StackPanel>
 </UserControl>

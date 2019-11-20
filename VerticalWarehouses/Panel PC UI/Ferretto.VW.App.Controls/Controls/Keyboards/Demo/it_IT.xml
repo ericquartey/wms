@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<KeyboardDefinition
+  xmlns="http://www.w3schools.com"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.w3schools.com KeyboardLayout.xsd"
+  ActiveLayout="Querty">
+
+  <!-- Default complete qwerty layout without numpad -->
+  <KeyboardLayout Id="Querty"
+                  Width="790"
+                  Height="485"
+                  KeyWidth="51"
+                  KeyHeight="51"
+                  RowPadding="0"
+                  KeyPadding="0"
+                  RowLeftMargin="6">
+
+    <Row>
+      <Key Text="ESC" Action="EndEdit" StyleSelector="highlight" />
+      <Key Value="\" ShiftValue="|" />
+      <Key Value="1" ShiftValue="!" />
+      <Key Value="2" ShiftValue="&quot;" />
+      <Key Value="3" ShiftValue="£" />
+      <Key Value="4" ShiftValue="$" />
+      <Key Value="5" ShiftValue="%" />
+      <Key Value="6" ShiftValue="&amp;" />
+      <Key Value="7" ShiftValue="/" />
+      <Key Value="8" ShiftValue="(" />
+      <Key Value="9" ShiftValue=")" />
+      <Key Value="0" ShiftValue="=" />
+      <Key Value="'" ShiftValue="?" />
+      <Key Text="Canc" Action="Clear" Width="93" StyleSelector="highlight" />
+    </Row>
+    <Row LeftMargin="77">
+      <Key Value="q" ShiftValue="Q" />
+      <Key Value="w" ShiftValue="W" />
+      <Key Value="e" ShiftValue="E" />
+      <Key Value="r" ShiftValue="R" />
+      <Key Value="t" ShiftValue="T" />
+      <Key Value="y" ShiftValue="Y" />
+      <Key Value="u" ShiftValue="U" />
+      <Key Value="i" ShiftValue="I" />
+      <Key Value="o" ShiftValue="O" />
+      <Key Value="p" ShiftValue="P" />
+      <Key Value="è" ShiftValue="é" AltValue="[" ShiftAltValue="{" />
+      <Key Value="+" ShiftValue="*" AltValue="]" ShiftAltValue="}" />
+      <Key Text="" Value="\d8" SendAs="KeyDown" Width="73" StyleSelector="highlight backspace-key" />
+    </Row>
+    <Row>
+      <Key Text="Caps Lock" Modifiers="Shift" Toggle="true" Width="82" StyleSelector="highlight capslock-key" />
+      <Key Value="a" ShiftValue="A" />
+      <Key Value="s" ShiftValue="S" />
+      <Key Value="d" ShiftValue="D" />
+      <Key Value="f" ShiftValue="F" />
+      <Key Value="g" ShiftValue="G" />
+      <Key Value="h" ShiftValue="H" />
+      <Key Value="j" ShiftValue="J" />
+      <Key Value="k" ShiftValue="K" />
+      <Key Value="l" ShiftValue="L" />
+      <Key Value="ò" ShiftValue="ç" AltValue="@" />
+      <Key Value="à" ShiftValue="°" AltValue="#" />
+      <Key Value="ù" ShiftValue="§" />
+      <Key Text="Enter" Action="Accept" Width="62" RowSpan="2" StyleSelector="highlight enter-key" />
+    </Row>
+    <Row>
+      <Key Text="Shift" Modifiers="Shift" Toggle="true" AutoRollback="true" Width="56" StyleSelector="highlight" />
+      <Key Value="&lt;" ShiftValue="&gt;" />
+      <Key Value="z" ShiftValue="Z" />
+      <Key Value="x" ShiftValue="X" />
+      <Key Value="c" ShiftValue="C" />
+      <Key Value="v" ShiftValue="V" />
+      <Key Value="b" ShiftValue="B" />
+      <Key Value="n" ShiftValue="N" />
+      <Key Value="m" ShiftValue="M" />
+      <Key Value="," ShiftValue=";" />
+      <Key Value="." ShiftValue=":" />
+      <Key Value="-" ShiftValue="_" />
+      <Key Value="ì" ShiftValue="^" />
+    </Row>
+    <Row>
+      <Key Text="Alt" Modifiers="Alt" Toggle="true" AutoRollback="true" Width="56" StyleSelector="highlight" />
+      <Key Text="&amp;123" SetLayout="SymbolsNumpad" ColSpan="2" StyleSelector="highlight2" />
+      <Key Text="" Value="\d32" ColSpan="9" />
+      <Key LayoutSelector="true" Text="Italiano" Width="139" StyleSelector="key-lang" />
+    </Row>
+  </KeyboardLayout>
+
+  <!-- The legacy keyboard
+  <KeyboardLayout Id="Legacy"
+                  KeyWidth="52"
+                  KeyHeight="52"
+                  RowPadding="0"
+                  KeyPadding="0"
+                  RowLeftMargin="20">
+    <Row>
+      <Key Text="ESC" Action="EndEdit" ColSpan="2" />
+      <Key Value=")" ShiftValue="(" />
+      <Key Value="*" ShiftValue="/" />
+      <Key Value="+" ShiftValue="=" />
+      <Key Value="-" ShiftValue="-" />
+      <Key Value=":" ShiftValue=";" />
+      <Key Value="?" ShiftValue="%" />
+      <Key Text="" Value="\d8" SendAs="KeyDown" ColSpan="2" StyleSelector="backspace-key" />
+    </Row>
+    <Row>
+      <Key Value="q" ShiftValue="Q" />
+      <Key Value="w" ShiftValue="W" />
+      <Key Value="e" ShiftValue="E" />
+      <Key Value="r" ShiftValue="R" />
+      <Key Value="t" ShiftValue="T" />
+      <Key Value="y" ShiftValue="Y" />
+      <Key Value="u" ShiftValue="U" />
+      <Key Value="i" ShiftValue="I" />
+      <Key Value="o" ShiftValue="O" />
+      <Key Value="p" ShiftValue="P" />
+      <Key Value="7" LeftMargin="10" />
+      <Key Value="8" />
+      <Key Value="9" />
+    </Row>
+    <Row>
+      <Key Value="a" ShiftValue="A" />
+      <Key Value="s" ShiftValue="S" />
+      <Key Value="d" ShiftValue="D" />
+      <Key Value="f" ShiftValue="F" />
+      <Key Value="g" ShiftValue="G" />
+      <Key Value="h" ShiftValue="H" />
+      <Key Value="j" ShiftValue="J" />
+      <Key Value="k" ShiftValue="K" />
+      <Key Value="l" ShiftValue="L" />
+      <Key Value="\d13" Action="Accept" RowSpan="2" StyleSelector="enter-key" />
+      <Key Value="4" LeftMargin="10" />
+      <Key Value="5" />
+      <Key Value="6" />
+    </Row>
+    <Row>
+      <Key Value="z" ShiftValue="Z" />
+      <Key Value="x" ShiftValue="X" />
+      <Key Value="c" ShiftValue="C" />
+      <Key Value="v" ShiftValue="V" />
+      <Key Value="b" ShiftValue="B" />
+      <Key Value="n" ShiftValue="N" />
+      <Key Value="m" ShiftValue="M" />
+      <Key Value="," />
+      <Key Value="$" ShiftValue="\" />
+      <Key Value="1" LeftMargin="62" />
+      <Key Value="2" />
+      <Key Value="3" />
+    </Row>
+    <Row>
+      <Key Text="CAPS LOCK" Modifiers="Shift" Toggle="true" ColSpan="2" StyleSelector="capslock-key" />
+      <Key Value=" " ColSpan="6" />
+      <Key Text="SHIFT" Modifiers="Shift" AutoRollback="true" ColSpan="2" />
+      <Key Value="0" ColSpan="2" LeftMargin="10" />
+      <Key Value="." />
+    </Row>
+  </KeyboardLayout>
+  -->
+
+  <!-- This layout contains symbols and numbers and is meant to be used when user
+  need input a lot of number or symbols in an easy way -->
+  <KeyboardLayout Id="SymbolsNumpad"
+                  Width="790"
+                  Height="485"
+                  KeyWidth="51"
+                  KeyHeight="51"
+                  RowPadding="0"
+                  KeyPadding="0"
+                  RowLeftMargin="6" >
+
+    <Row>
+      <!-- Symbols -->
+      <Key Text="ESC" Width="65" Action="EndEdit" StyleSelector="highlight" />
+      <Key Value="!" />
+      <Key Value="?" />
+      <Key Value="@" />
+      <Key Value="#" />
+      <Key Value="$" />
+      <Key Value="%" />
+      <Key Value="/" />
+
+      <!-- Numpad -->
+      <Key Value="*" Offset="2" Width="60" LeftMargin="-8" />
+      <Key Value="-" Width="60" />
+      <Key Text="" Value="\d8" SendAs="KeyDown" Width="60" StyleSelector="highlight backspace-key" />
+      <Key Text="Canc" Action="Clear" Width="60" StyleSelector="highlight" />
+    </Row>
+    <Row>
+      <!-- Symbols -->
+      <Key Value="&amp;" />
+      <Key Value="£" />
+      <Key Value="~" />
+      <Key Value="_" />
+      <Key Value="\" />
+      <Key Value="{" />
+      <Key Value="}" />
+      <Key Text="Enter" Value="\d13" Action="Accept" RowSpan="3" Width="65" StyleSelector="highlight enter-key" />
+
+      <!-- Numpad -->
+      <Key Value="7" Offset="2" Width="60" LeftMargin="-8" />
+      <Key Value="8" Width="60" />
+      <Key Value="9" Width="60" />
+      <Key Value="+" RowSpan="2" Width="60" />
+    </Row>
+    <Row>
+      <!-- Symbols -->
+      <Key Value=":" />
+      <Key Value="&quot;" />
+      <Key Value="ì" />
+      <Key Value="(" />
+      <Key Value=")" />
+      <Key Value="[" />
+      <Key Value="]" />
+
+      <!-- Numpad -->
+      <Key Value="4" LeftMargin="6" Offset="3" Width="60" />
+      <Key Value="5" Width="60" />
+      <Key Value="6" Width="60" />
+    </Row>
+    <Row>
+      <!-- Symbols -->
+      <Key Value="." />
+      <Key Value="," />
+      <Key Value=";" />
+      <Key Value="&lt;" />
+      <Key Value="&gt;" />
+      <Key Value="¥" />
+      <Key Value="|" />
+
+      <!-- Numpad -->
+      <Key Value="1" LeftMargin="6" Offset="3" Width="60" />
+      <Key Value="2" Width="60" />
+      <Key Value="3" Width="60" />
+      <Key Text="Enter" Action="Accept" RowSpan="2" StyleSelector="highlight enter-key" Width="60" />
+    </Row>
+    <Row>
+      <!-- Symbols -->
+      <Key Text="ABC" SetLayout="Querty" ColSpan="2" StyleSelector="highlight2" />
+      <Key Text="" Value="\d32" Width="320" />
+
+      <!-- Numpad -->
+      <Key Value="0" ColSpan="2" Offset="2" Width="60" LeftMargin="-8" />
+      <Key Value="." Width="60" />
+    </Row>
+
+  </KeyboardLayout>
+
+  <!-- This layout contains only numbers and is meant to be used when user
+  need input a lot of number in an easy way -->
+  <KeyboardLayout Id="Numpad"
+                  Width="300"
+                  Height="440"
+                  KeyWidth="55"
+                  KeyHeight="55"
+                  RowPadding="2"
+                  KeyPadding="2"
+                  RowLeftMargin="23"
+                  ClearOnFirstDigit="true" >
+
+    <Row>
+      <Key Value="7" />
+      <Key Value="8" />
+      <Key Value="9" />
+      <Key Text="ESC" Action="EndEdit" StyleSelector="highlight" />
+    </Row>
+    <Row>
+      <Key Value="4" />
+      <Key Value="5" />
+      <Key Value="6" />
+      <Key Text="" Value="\d8" SendAs="KeyDown" StyleSelector="highlight backspace-key" />
+    </Row>
+    <Row>
+      <Key Value="1" />
+      <Key Value="2" />
+      <Key Value="3" />
+      <Key Action="Accept" RowSpan="2" StyleSelector="highlight enter-key" />
+    </Row>
+    <Row>
+      <Key Value="0" />
+      <Key Text="," Action="InsertDecimalSeparator" StyleSelector="highligth" />
+      <Key Text="+ / -" Action="ToggleSign" StyleSelector="highligth" />
+    </Row>
+  </KeyboardLayout>
+
+  <!-- This layout contains only numbers and is meant to be used when user
+  need input a lot of number in an easy way -->
+  <KeyboardLayout Id="IPAddressInputPanel"
+                  Width="353"
+                  Height="440"
+                  KeyWidth="55"
+                  KeyHeight="55"
+                  RowPadding="2"
+                  KeyPadding="2"
+                  RowLeftMargin="23" >
+
+    <Row>
+      <Key Text="ESC" Action="EndEdit" StyleSelector="highlight" />
+      <Key Text="HOST NAME" SetLayout="Querty" ColSpan="3" StyleSelector="highlight" />
+      <Key Action="Back" StyleSelector="highlight backspace-key" />
+    </Row>
+    <Row>
+      <Key Value="1" Action="KeyDown" />
+      <Key Value="2" Action="KeyDown" />
+      <Key Value="3" Action="KeyDown" />
+      <Key Value="4" Action="KeyDown" />
+      <Key Text="|__|" Action="BackBlock" StyleSelector="highlight" />
+    </Row>
+    <Row>
+      <Key Value="5" Action="KeyDown" />
+      <Key Value="6" Action="KeyDown" />
+      <Key Value="7" Action="KeyDown" />
+      <Key Value="8" Action="KeyDown" />
+      <Key Action="Accept" RowSpan="2" StyleSelector="highlight enter-key" />
+    </Row>
+    <Row>
+      <Key Value="9" Action="KeyDown" />
+      <Key Value="0" Action="KeyDown" />
+      <Key Value="." Action="KeyDown" ColSpan="2" />
+    </Row>
+  </KeyboardLayout>
+
+  <KeyboardLayout Id="Boolpad"
+                  Width="300"
+                  Height="325"
+                  KeyWidth="55"
+                  KeyHeight="55"
+                  RowPadding="2"
+                  KeyPadding="2"
+                  RowLeftMargin="23"
+                  TextEnteringMode="Overtype" >
+    <Row>
+      <Key Text="1" RowSpan="2" Value="1" />
+      <Key Text="0" RowSpan="2" Value="0" />
+      <Key Text="" Value="\d8" SendAs="KeyDown" StyleSelector="highlight backspace-key" />
+      <Key Text="ESC" Action="EndEdit" StyleSelector="highlight" />
+    </Row>
+    <Row>
+      <Key Action="Accept" Offset="2" LeftMargin="4" ColSpan="2" StyleSelector="highlight enter-key" />
+    </Row>
+  </KeyboardLayout>
+
+</KeyboardDefinition>
