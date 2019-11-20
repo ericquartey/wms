@@ -311,6 +311,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+            if (!(verticalAxis.LowerBound <= verticalAxis.Offset
+                && verticalAxis.Offset <= verticalAxis.UpperBound
+                )
+            )
+            {
+                throw new ArgumentOutOfRangeException($"Vertical Axis bounds or offset are not valid: lower bound ({verticalAxis.LowerBound}); offset {verticalAxis.Offset}; upper bound {verticalAxis.UpperBound}");
+            }
+
             var lowerBound = verticalAxis.LowerBound;
             var upperBound = verticalAxis.UpperBound;
 
@@ -320,14 +328,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     nameof(targetPosition),
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
-
-            //// TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
-            //var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            //if (!homingDone)
-            //{
-            //    throw new InvalidOperationException(
-            //       Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
-            //}
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =

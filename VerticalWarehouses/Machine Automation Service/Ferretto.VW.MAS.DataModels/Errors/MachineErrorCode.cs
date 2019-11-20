@@ -61,6 +61,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(DestinationBelowLowerBound), 1)]
         DestinationBelowLowerBound,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(DestinationOverUpperBound), 1)]
+        DestinationOverUpperBound,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BayInvertersBusy), 1)]
         BayInvertersBusy,
 

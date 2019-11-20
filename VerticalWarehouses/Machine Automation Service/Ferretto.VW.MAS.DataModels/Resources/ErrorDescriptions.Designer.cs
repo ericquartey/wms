@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DestinationOverUpperBound.
+        /// </summary>
+        public static string DestinationOverUpperBound {
+            get {
+                return ResourceManager.GetString("DestinationOverUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidPresenceSensors.
         /// </summary>
         public static string InvalidPresenceSensors {

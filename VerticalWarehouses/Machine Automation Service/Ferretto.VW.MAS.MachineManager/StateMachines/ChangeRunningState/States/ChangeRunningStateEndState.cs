@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 }
                 else
                 {
-                    var endMessageData = new ChangeRunningStateMessageData(false, null, runningState.CommandAction, runningState.StopReason);
+                    var endMessageData = new ChangeRunningStateMessageData(false, null, runningState.CommandAction, StopRequestReason.Error);
                     this.EndMessage = new NotificationMessage(
                         endMessageData,
                         commandMessage.Description,
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                         commandMessage.Type,
                         commandMessage.RequestingBay,
                         commandMessage.TargetBay,
-                        StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
+                        StopRequestReasonConverter.GetMessageStatusFromReason(StopRequestReason.Error));
 
                     this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
 

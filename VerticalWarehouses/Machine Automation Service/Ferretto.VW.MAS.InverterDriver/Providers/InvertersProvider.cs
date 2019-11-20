@@ -122,7 +122,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (position < axis.LowerBound)
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position}) is below the axis lower bound ({axis.LowerBound}).");
+                    throw new Exception($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
+                }
+                if (position > axis.UpperBound)
+                {
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
+                    throw new Exception($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
                 }
 
                 position -= axis.Offset;
