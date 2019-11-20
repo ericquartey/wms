@@ -6,7 +6,7 @@
 
         private double acceleration;
 
-        private double deceleration;    // TODO remove this unused parameter
+        private double deceleration;    
 
         private double speed;
 
