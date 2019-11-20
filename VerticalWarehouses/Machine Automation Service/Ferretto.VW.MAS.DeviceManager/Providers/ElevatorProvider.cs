@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 }
             }
 
-            // check #6: the cell's vertical position must be within the elvator's vertical bounds
+            // check #6: the cell's vertical position must be within the elevator's vertical bounds
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
             if (cell.Position < verticalAxis.LowerBound || cell.Position > verticalAxis.UpperBound)
             {

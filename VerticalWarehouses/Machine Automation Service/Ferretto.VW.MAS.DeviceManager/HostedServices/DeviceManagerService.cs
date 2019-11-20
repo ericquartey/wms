@@ -723,7 +723,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                 this.Logger.LogError(data.InnerException, data.InnerException.Message);
             }
 
-            System.Diagnostics.Debug.Fail("Exception detected");
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debug.Fail("Exception detected");
+            }
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
