@@ -192,7 +192,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
 
             var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
-            System.Diagnostics.Debug.Assert(loadingUnitOnBoard != null);
+            if (loadingUnitOnBoard is null)
+            {
+                return;
+            }
 
             if (loadingUnitOnBoard.Id != loadingUnitId)
             {
