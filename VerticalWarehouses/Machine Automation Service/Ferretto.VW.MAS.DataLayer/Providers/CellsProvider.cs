@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const double VerticalPositionTolerance = 12.5;
+
         private readonly DataLayerContext dataContext;
 
         private readonly ILogger<DataLayerContext> logger;
@@ -57,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     &&
                     c.Position >= cell.Position
                     &&
-                    c.Position <= cell.Position + loadingUnit.Height);
+                    c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance);
 
             return !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable);
         }
@@ -160,7 +162,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         &&
                         c.Position >= cell.Position
                         &&
-                        c.Position <= cell.Position + cell.LoadingUnit.Height)
+                        c.Position <= cell.Position + cell.LoadingUnit.Height + VerticalPositionTolerance)
                     .ToArray();
 
                 foreach (var occupiedCell in occupiedCells)
@@ -170,10 +172,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
                     }
 
-                    if (occupiedCell.Status != CellStatus.Occupied)
-                    {
-                        throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
-                    }
+                    //if (occupiedCell.Status != CellStatus.Occupied)
+                    //{
+                    //    throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
+                    //}
 
                     occupiedCell.Status = CellStatus.Free;
                     occupiedCell.LoadingUnit = null;
@@ -196,7 +198,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new InvalidOperationException(Resources.Cells.TheCellAlreadyContainsAnotherLoadingUnit);
                 }
 
-                var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+                var loadingUnit = this.dataContext.LoadingUnits
+                    .AsNoTracking()
+                    .SingleOrDefault(l => l.Id == loadingUnitId);
                 if (loadingUnit is null)
                 {
                     throw new EntityNotFoundException(loadingUnitId.Value);
@@ -214,7 +218,7 @@ namespace Ferretto.VW.MAS.DataLayer
                        &&
                        c.Position >= cell.Position
                        &&
-                       c.Position <= cell.Position + loadingUnit.Height)
+                       c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                    .ToArray();
 
                 foreach (var freeCell in freeCells)
@@ -230,10 +234,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         throw new InvalidOperationException(Resources.Cells.TheLoadingCannotBePlacedOppositeADeactivatedCell);
                     }
                 }
-
-                cell.LoadingUnit = loadingUnit;
+                // TODO check if this could be done better
+                cell.LoadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
             }
-
             this.dataContext.SaveChanges();
         }
 
