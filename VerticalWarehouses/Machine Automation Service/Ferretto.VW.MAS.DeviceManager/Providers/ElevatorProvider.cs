@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // we use compensation for small errors only (large errors come from new database)
             var compensation = this.HorizontalPosition - axis.LastIdealPosition;
-            if (Math.Abs(compensation) > 10)
+            if (Math.Abs(compensation) > 5)
             {
                 compensation = 0;
             }
