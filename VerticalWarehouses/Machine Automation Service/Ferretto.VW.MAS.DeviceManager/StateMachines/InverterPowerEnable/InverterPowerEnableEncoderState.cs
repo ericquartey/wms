@@ -32,8 +32,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
         private bool ioSwitched;
 
-        private bool positionRequested;
-
         #endregion
 
         #region Constructors
@@ -138,7 +136,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
 
                     this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-                    this.positionRequested = false;
                     this.ioSwitched = false;
                     this.inverterSwitched = false;
                 }
@@ -146,19 +143,17 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 {
                     this.Logger.LogDebug("Vertical position received");
                     this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
-                    this.positionRequested = true;
                 }
             }
 
             if (this.ioSwitched
                 && this.inverterSwitched
-                && !this.positionRequested
                 )
             {
                 var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.AxisPosition, true, 0);
                 var inverterMessage = new FieldCommandMessage(
                     inverterDataMessage,
-                    "Update Inverter digital input status",
+                    "Update Inverter timer",
                     FieldMessageActor.InverterDriver,
                     FieldMessageActor.DeviceManager,
                     FieldMessageType.InverterSetTimer,
@@ -167,7 +162,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 this.Logger.LogTrace($"1:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
                 this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
-                this.positionRequested = true;
             }
         }
 
