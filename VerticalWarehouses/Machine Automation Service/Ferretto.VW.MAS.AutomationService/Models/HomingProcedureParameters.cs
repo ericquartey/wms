@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.AutomationService.Models
 {
-    public class HomingProcedureParameters
+    public sealed class HomingProcedureParameters
     {
         #region Properties
 

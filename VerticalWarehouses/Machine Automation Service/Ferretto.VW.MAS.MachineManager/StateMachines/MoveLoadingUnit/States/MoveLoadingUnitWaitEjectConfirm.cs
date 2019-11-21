@@ -63,7 +63,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
 #endif
             {
-                this.baysProvider.UnloadLoadingUnit(this.ejectBay);
+                var bayPosition = this.baysProvider.GetPositionByLocation(this.ejectBay);
+
+                this.baysProvider.SetLoadingUnit(bayPosition.Id, null);
 
                 returnValue = this.GetState<IMoveLoadingUnitEndState>();
 

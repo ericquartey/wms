@@ -15,10 +15,10 @@ namespace Ferretto.VW.App.Controls.Controls
         #region Fields
 
         public static readonly DependencyProperty PressCommandProperty =
-            DependencyProperty.Register("PressCommand", typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(PressCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty ReleaseCommandProperty =
-            DependencyProperty.Register("ReleaseCommand", typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(ReleaseCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         #endregion
 
@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnButtonDown()
         {
-            if (this.PressCommand.CanExecute(null))
+            if (this.PressCommand?.CanExecute(null) == true)
             {
                 this.PressCommand.Execute(null);
             }
@@ -86,7 +86,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnButtonUp()
         {
-            if (this.ReleaseCommand.CanExecute(null))
+            if (this.ReleaseCommand?.CanExecute(null) == true)
             {
                 this.ReleaseCommand.Execute(null);
             }

@@ -21,8 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .Property(b => b.Location)
                 .HasColumnType("text")
                 .HasConversion(
-                               enumValue => enumValue.ToString(),
-                               stringValue => Enum.Parse<LoadingUnitLocation>(stringValue));
+                    enumValue => enumValue.ToString(),
+                    stringValue => Enum.Parse<LoadingUnitLocation>(stringValue));
         }
 
         #endregion

@@ -61,11 +61,47 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The bay chain is not in zero position..
+        /// </summary>
+        public static string TheBayChainIsNotInZeroPosition {
+            get {
+                return ResourceManager.GetString("TheBayChainIsNotInZeroPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay contains a loading unit in its upper position..
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsUpperPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsUpperPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The bay contains at least one loading unit..
+        /// </summary>
+        public static string TheBayContainsAtLeastOneLoadingUnit {
+            get {
+                return ResourceManager.GetString("TheBayContainsAtLeastOneLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay height ({0}) must be in range [{1},{2}]..
         /// </summary>
         public static string TheBayHeightMustBeInRange {
             get {
                 return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified bay has no carousel..
+        /// </summary>
+        public static string TheSpecifiedBayHasNoCarousel {
+            get {
+                return ResourceManager.GetString("TheSpecifiedBayHasNoCarousel", resourceCulture);
             }
         }
         

@@ -60,6 +60,9 @@
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Movements\Manual\ElevatorManualMovementsView.xaml.cs">
+      <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">

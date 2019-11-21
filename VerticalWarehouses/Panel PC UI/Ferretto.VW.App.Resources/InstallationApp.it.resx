@@ -1102,22 +1102,22 @@
     <value>Test Serranda</value>
   </data>
   <data name="BayPositionDownHeight" xml:space="preserve">
-    <value>Quota baia posiz. bassa [mm]</value>
+    <value>Quota posiz. bassa [mm]</value>
   </data>
   <data name="BayPositionUpHeight" xml:space="preserve">
-    <value>Quota baia posiz. alta [mm]</value>
+    <value>Quota posiz. alta [mm]</value>
   </data>
   <data name="TrayInBayPositionDown" xml:space="preserve">
-    <value>Cassetto in posizione down</value>
+    <value>Presenza in posiz. bassa</value>
   </data>
   <data name="TrayInBayPositionUp" xml:space="preserve">
-    <value>Cassetto in posizione up</value>
+    <value>Presenza in posiz. alta</value>
   </data>
   <data name="LoadingUnitCodePositionUp" xml:space="preserve">
-    <value>Codice cassetto posizione alta</value>
+    <value>Cassetto in posiz. alta</value>
   </data>
   <data name="LoadingUnitCodePositionDown" xml:space="preserve">
-    <value>Codice cassetto posizione bassa</value>
+    <value>Cassetto in posiz. bassa</value>
   </data>
   <data name="LoadingUnitCode" xml:space="preserve">
     <value>Codice cassetto</value>
@@ -1181,5 +1181,35 @@
   </data>
   <data name="UseWeightControl" xml:space="preserve">
     <value>Usa controllo peso</value>
+  </data>
+  <data name="LowerBayPosition" xml:space="preserve">
+    <value>Posizione Inferiore</value>
+  </data>
+  <data name="UpperBayPosition" xml:space="preserve">
+    <value>Posizione Superiore</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Carica</value>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Carica</value>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Scarica</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Scarica</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Posizione</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Cella {0}</value>
+  </data>
+  <data name="InBay" xml:space="preserve">
+    <value>in Baia</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>in Baia {0}</value>
   </data>
 </root>

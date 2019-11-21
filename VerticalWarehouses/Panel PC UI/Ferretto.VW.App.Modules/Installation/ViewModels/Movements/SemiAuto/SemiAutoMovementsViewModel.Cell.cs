@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -70,18 +71,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
-        }
-
-        public IEnumerable<Cell> Cells
-        {
-            get => this.cells;
-            private set
-            {
-                if (this.SetProperty(ref this.cells, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public int? InputCellId
@@ -183,7 +172,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     if (this.selectedCell != null)
                     {
-                        this.LoadingUnitInCell = this.LoadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
+                        this.LoadingUnitInCell = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id);
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -217,13 +206,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCellHeight()
         {
             return
-                !this.KeyboardOpened
+               !this.KeyboardOpened
                 &&
                 this.SelectedCell != null
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving;
+                !this.IsMoving
+                &&
+                this.moveToCellPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveToHeight()
@@ -241,7 +232,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             return
-                !this.KeyboardOpened
+               !this.KeyboardOpened
                 &&
                 this.SelectedLoadingUnit != null
                 &&
@@ -271,36 +262,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void InputCellIdPropertyChanged()
         {
-            if (this.Cells != null)
+            if (this.cells is null)
             {
-                this.SelectedCell = this.inputCellId == null
-                    ? null
-                    : this.Cells.SingleOrDefault(c => c.Id == this.inputCellId);
-
-                this.InputHeight = this.SelectedCell?.Position ?? this.InputHeight;
-
-                if (this.SelectedLoadingUnit?.CellId is null)
-                {
-                    this.LoadingUnitInCell = null;
-                }
-                else
-                {
-                    this.LoadingUnitInCell = this.SelectedLoadingUnit;
-                }
-
-                this.RaiseCanExecuteChanged();
+                return;
             }
+
+            this.SelectedCell = this.inputCellId is null
+                ? null
+                : this.cells.SingleOrDefault(c => c.Id == this.inputCellId);
+
+            if (this.SelectedCell != null)
+            {
+                this.InputHeight = this.SelectedCell.Position;
+                this.InputLoadingUnitId = this.loadingUnits.SingleOrDefault(l => l.CellId == this.selectedCell.Id)?.Id;
+            }
+
+            if (this.SelectedLoadingUnit?.CellId is null)
+            {
+                this.LoadingUnitInCell = null;
+            }
+            else
+            {
+                this.LoadingUnitInCell = this.SelectedLoadingUnit;
+            }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private void InputLoadingUnitIdPropertyChanged()
         {
-            if (this.LoadingUnits != null)
+            if (this.loadingUnits is null)
             {
-                this.SelectedLoadingUnit = this.inputLoadingUnitId == null
-                    ? null
-                    : this.LoadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+                return;
+            }
 
-                this.InputCellId = this.SelectedLoadingUnit?.CellId;
+            this.SelectedLoadingUnit = this.inputLoadingUnitId == null
+                ? null
+                : this.loadingUnits.SingleOrDefault(c => c.Id == this.inputLoadingUnitId);
+
+            if (this.SelectedLoadingUnit != null)
+            {
+                this.InputCellId = this.SelectedLoadingUnit.CellId;
             }
         }
 
@@ -310,11 +312,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.SelectedCell.Position,
+                Debug.Assert(
+                    this.SelectedCell != null,
+                    "The selected cell should be specified.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedCell.Id,
                     this.procedureParameters.FeedRateAfterZero,
-                    this.isUseWeightControl,
-                    true);
+                    performWeighting: this.isUseWeightControl,
+                    computeElongation: true);
 
                 this.IsElevatorMovingToCell = true;
             }
@@ -362,11 +368,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.SelectedLoadingUnit.Cell?.Position ?? 0,
+                Debug.Assert(this.SelectedLoadingUnit != null, "A loading unit should be selected.");
+                Debug.Assert(this.SelectedLoadingUnit.Cell != null, "The selected loading unit should specify a cell.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedLoadingUnit.Cell.Id,
                     this.procedureParameters.FeedRateAfterZero,
-                    this.isUseWeightControl,
-                    true);
+                    performWeighting: this.isUseWeightControl,
+                    computeElongation: true);
 
                 this.IsElevatorMovingToLoadingUnit = true;
             }

@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public SocketTransport(IConfiguration configuration)
         {
-            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:InverterDriver:ReadTimeoutMilliseconds", -1);
+            this.readTimeoutMilliseconds = configuration.GetValue<int>("Vertimag:Drivers:Inverter:ReadTimeoutMilliseconds", -1);
         }
 
         #endregion
@@ -96,11 +96,11 @@ namespace Ferretto.VW.MAS.InverterDriver
                     $"{nameof(this.sendPort)} can't be zero");
             }
 
-            if (this.sendPort < 1024 || this.sendPort > 65535)
+            if (this.sendPort < 1024 || this.sendPort > IPEndPoint.MaxPort)
             {
                 throw new ArgumentOutOfRangeException(
                     nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} value must be between 1204 and 65535");
+                    $"{nameof(this.sendPort)} value must be between 1204 and {IPEndPoint.MaxPort}");
             }
 
             if (this.transportClient != null || this.transportStream != null)

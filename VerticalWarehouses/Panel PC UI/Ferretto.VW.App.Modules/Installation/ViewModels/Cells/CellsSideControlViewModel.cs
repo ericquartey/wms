@@ -119,15 +119,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.sideBackCommand
             ??
             (this.sideBackCommand = new DelegateCommand(
-                this.ChangeSideCommand,
-                this.CanSideBackCommand));
+                this.ToggleSide,
+                this.CanToggleToBackSide));
 
         public ICommand SideFrontCommand =>
             this.sideFrontCommand
             ??
             (this.sideFrontCommand = new DelegateCommand(
-                this.ChangeSideCommand,
-                this.CanSideFrontCommand));
+                this.ToggleSide,
+                this.CanToggleToFrontSide));
 
         public double? StepValue
         {
@@ -221,7 +221,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.sideSelected = WarehouseSide.Back;
 
-            this.ChangeSideCommand();
+            this.ToggleSide();
         }
 
         private bool CanCorrectCommand()
@@ -239,34 +239,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.inputFormCellId.HasValue;
         }
 
-        private bool CanSideBackCommand()
+        private bool CanToggleToBackSide()
         {
-            return !this.isWaitingForResponse
-                && this.sideSelected == WarehouseSide.Front;
+            return
+                !this.isWaitingForResponse
+                &&
+                this.sideSelected == WarehouseSide.Front;
         }
 
-        private bool CanSideFrontCommand()
+        private bool CanToggleToFrontSide()
         {
-            return !this.isWaitingForResponse
-                && this.sideSelected == WarehouseSide.Back;
-        }
-
-        private void ChangeSideCommand()
-        {
-            if (this.sideSelected == WarehouseSide.Front)
-            {
-                this.sideSelected = WarehouseSide.Back;
-                this.IsFrontActive = false;
-                this.IsBackActive = true;
-            }
-            else
-            {
-                this.sideSelected = WarehouseSide.Front;
-                this.IsFrontActive = true;
-                this.IsBackActive = false;
-            }
-
-            this.RaiseCanExecuteChanged();
+            return
+                !this.isWaitingForResponse
+                &&
+                this.sideSelected == WarehouseSide.Back;
         }
 
         private async Task CorrectCommandAsync()
@@ -301,6 +287,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        private void ToggleSide()
+        {
+            if (this.sideSelected == WarehouseSide.Front)
+            {
+                this.sideSelected = WarehouseSide.Back;
+                this.IsFrontActive = false;
+                this.IsBackActive = true;
+            }
+            else
+            {
+                this.sideSelected = WarehouseSide.Front;
+                this.IsFrontActive = true;
+                this.IsBackActive = false;
+            }
+
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

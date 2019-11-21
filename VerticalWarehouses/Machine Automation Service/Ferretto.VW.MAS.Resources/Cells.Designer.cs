@@ -61,6 +61,60 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The cell already contains another loading unit..
+        /// </summary>
+        public static string TheCellAlreadyContainsAnotherLoadingUnit {
+            get {
+                return ResourceManager.GetString("TheCellAlreadyContainsAnotherLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The cell is unexpectedly free..
+        /// </summary>
+        public static string TheCellIsUnexpectedlyFree {
+            get {
+                return ResourceManager.GetString("TheCellIsUnexpectedlyFree", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The cell unexpectedly contains another loading unit..
+        /// </summary>
+        public static string TheCellUnexpectedlyContainsAnotherLoadingUnit {
+            get {
+                return ResourceManager.GetString("TheCellUnexpectedlyContainsAnotherLoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The loading unit cannot be placed opposite a deactivated cell..
+        /// </summary>
+        public static string TheLoadingCannotBePlacedOppositeADeactivatedCell {
+            get {
+                return ResourceManager.GetString("TheLoadingCannotBePlacedOppositeADeactivatedCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The loading unit is already located in another cell..
+        /// </summary>
+        public static string TheLoadingUnitIsAlreadyLocatedInAnotherCell {
+            get {
+                return ResourceManager.GetString("TheLoadingUnitIsAlreadyLocatedInAnotherCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The specified cell is not within the elevator&apos;s vertical bounds..
+        /// </summary>
+        public static string TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds {
+            get {
+                return ResourceManager.GetString("TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The specified height is not between the adjacent cells&apos; heights..
         /// </summary>
         public static string TheSpecifiedHeightIsNotBetweenTheAdjacentCellsHeights {
@@ -75,6 +129,24 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels {
             get {
                 return ResourceManager.GetString("TheSpecifiedHeightWouldCauseThePanelToOverlapWithOtherPanels", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target cell is deactivated..
+        /// </summary>
+        public static string TheTargetCellIsDeactivated {
+            get {
+                return ResourceManager.GetString("TheTargetCellIsDeactivated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The target cell is unusable..
+        /// </summary>
+        public static string TheTargetCellIsUnusable {
+            get {
+                return ResourceManager.GetString("TheTargetCellIsUnusable", resourceCulture);
             }
         }
     }

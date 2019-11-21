@@ -123,4 +123,16 @@
   <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
     <value>La posizione di baia specificata non è valida.</value>
   </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>La baia specificata non ha una giostra.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>La baia contiene almeno un cassetto.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>La baia contiene un cassetto nella sua posizione superiore.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>La catena della baia non è in posizione di zero.</value>
+  </data>
 </root>

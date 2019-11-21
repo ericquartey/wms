@@ -123,4 +123,16 @@
   <data name="TheSpecifiedBayPositionIsNotValid" xml:space="preserve">
     <value>The specified bay position is not valid.</value>
   </data>
+  <data name="TheSpecifiedBayHasNoCarousel" xml:space="preserve">
+    <value>The specified bay has no carousel.</value>
+  </data>
+  <data name="TheBayContainsAtLeastOneLoadingUnit" xml:space="preserve">
+    <value>The bay contains at least one loading unit.</value>
+  </data>
+  <data name="TheBayContainsALoadingUnitInItsUpperPosition" xml:space="preserve">
+    <value>The bay contains a loading unit in its upper position.</value>
+  </data>
+  <data name="TheBayChainIsNotInZeroPosition" xml:space="preserve">
+    <value>The bay chain is not in zero position.</value>
+  </data>
 </root>

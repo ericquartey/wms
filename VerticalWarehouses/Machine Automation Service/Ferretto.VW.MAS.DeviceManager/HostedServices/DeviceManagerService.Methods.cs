@@ -216,43 +216,42 @@ namespace Ferretto.VW.MAS.DeviceManager
             var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-            if (message.Data is IPositioningMessageData data)
+            System.Diagnostics.Debug.Assert(
+                message.Data is IPositioningMessageData,
+                "Message data should be consistent with message.Type");
+
+            var data = message.Data as IPositioningMessageData;
+
+            var targetBay = baysProvider.GetByMovementType(data);
+            if (targetBay is BayNumber.None)
             {
-                var targetBay = baysProvider.GetByMovementType(data);
-                if (targetBay == BayNumber.None)
-                {
-                    targetBay = message.RequestingBay;
-                }
+                targetBay = message.RequestingBay;
+            }
 
-                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
-                {
-                    this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
-                }
-                else
-                {
-                    data.IsOneKMachine = machineProvider.IsOneTonMachine();
-                    data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
-
-                    currentStateMachine = new PositioningStateMachine(
-                        message.Source,
-                        message.RequestingBay,
-                        targetBay,
-                        data,
-                        machineResourcesProvider,
-                        this.EventAggregator,
-                        this.Logger,
-                        baysProvider,
-                        this.ServiceScopeFactory);
-
-                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                    this.currentStateMachines.Add(targetBay, currentStateMachine);
-
-                    this.StartStateMachine(targetBay);
-                }
+            if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
             }
             else
             {
-                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
+                data.IsOneKMachine = machineProvider.IsOneTonMachine();
+                data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+
+                currentStateMachine = new PositioningStateMachine(
+                    message.Source,
+                    message.RequestingBay,
+                    targetBay,
+                    data,
+                    machineResourcesProvider,
+                    this.EventAggregator,
+                    this.Logger,
+                    baysProvider,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(targetBay, currentStateMachine);
+
+                this.StartStateMachine(targetBay);
             }
         }
 

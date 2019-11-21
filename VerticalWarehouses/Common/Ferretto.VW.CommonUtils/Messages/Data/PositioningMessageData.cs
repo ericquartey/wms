@@ -110,8 +110,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public bool ComputeElongation { get; set; }
 
-        public double? CurrentPosition { get; set; }
-
         public int Delay { get; set; }
 
         public HorizontalMovementDirection Direction { get; set; }
@@ -140,6 +138,10 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public double[] TargetAcceleration { get; set; }
 
+        public int? TargetBayPositionId { get; set; }
+
+        public int? TargetCellId { get; set; }
+
         public double[] TargetDeceleration { get; set; }
 
         public double TargetPosition { get; set; }
@@ -153,6 +155,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public MessageVerbosity Verbosity { get; set; } = MessageVerbosity.Debug;
 
         public bool WaitContinue { get; set; }
+        public int? SourceCellId { get; set; }
+        public int? SourceBayPositionId { get; set; }
 
         #endregion
 
