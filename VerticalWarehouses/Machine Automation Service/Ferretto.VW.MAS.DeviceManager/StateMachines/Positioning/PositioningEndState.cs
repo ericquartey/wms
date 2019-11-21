@@ -314,7 +314,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
                         {
-                            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                            elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
                             cellsProvider.SetLoadingUnit(cell.Id, null);
                         }
                     }
