@@ -15,13 +15,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILogger<CellsProvider> logger;
+        private readonly ILogger<DataLayerContext> logger;
 
         #endregion
 
         #region Constructors
 
-        public CellsProvider(DataLayerContext dataContext, ILogger<CellsProvider> logger)
+        public CellsProvider(DataLayerContext dataContext, ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));

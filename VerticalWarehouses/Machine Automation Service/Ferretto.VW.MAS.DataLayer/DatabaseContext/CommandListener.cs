@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly ILogger<DbContext> logger;
+        private readonly ILogger<DataLayerContext> logger;
 
         private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
