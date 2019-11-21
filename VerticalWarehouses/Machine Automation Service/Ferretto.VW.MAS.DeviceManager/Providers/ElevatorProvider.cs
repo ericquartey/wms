@@ -520,9 +520,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (loadingUnitId.HasValue && !measure)
             {
                 var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
-                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
+                if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
                 {
-                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                    if (loadUnit.GrossWeight < loadUnit.Tare)
+                    {
+                        scalingFactor = 0;
+                    }
+                    else
+                    {
+                        scalingFactor = (loadUnit.GrossWeight - loadUnit.Tare) / loadUnit.MaxNetWeight;
+                    }
                 }
             }
             foreach (var profileStep in profileSteps)
