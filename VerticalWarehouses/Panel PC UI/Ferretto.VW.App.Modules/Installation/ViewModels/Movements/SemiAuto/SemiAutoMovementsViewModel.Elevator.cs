@@ -394,7 +394,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.loadFromBayCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.loadFromBayPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.loadFromBayPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - LoadFromBay - {this.loadFromBayPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
@@ -403,7 +403,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.unloadToBayCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.unloadToBayPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.unloadToBayPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - UnloadToBay - {this.unloadToBayPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV -> BAY: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
@@ -412,7 +412,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.moveToBayPositionPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.moveToBayPositionPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToBayPosition - {this.moveToBayPositionPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV ^ BAY: {this.moveToBayPositionPolicy.IsAllowed} {this.moveToBayPositionPolicy.Reason}");
@@ -425,7 +425,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.loadFromCellCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.loadFromCellPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.loadFromCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - LoadFromCell - {this.loadFromCellPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV <- CELL: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
@@ -434,7 +434,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.unloadToCellCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.unloadToCellPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.unloadToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - UnloadToCell - {this.unloadToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV -> CELL: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
@@ -443,24 +443,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.moveToCellPolicy.Reason))
                     {
-                        this.Log = $"{DateTime.Now.ToLocalTime()} {this.moveToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToCellHeight - {this.moveToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
                     System.Diagnostics.Debug.WriteLine($"ELEV ^ CELL: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
                 }
 
-                this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up);
-                this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
-                if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
+                if (this.HasCarousel)
                 {
-                    this.Log = $"{DateTime.Now.ToLocalTime()} {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
-                }
+                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up);
+                    this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselUp - {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
 
-                this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down);
-                this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
-                if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
-                {
-                    this.Log = $"{DateTime.Now.ToLocalTime()} {this.moveCarouselDownPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down);
+                    this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselDown - {this.moveCarouselDownPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
                 }
             }
             catch (Exception ex)
