@@ -22,11 +22,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private int? completedCyclesThisSession;
 
         private double? currentPosition;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private int inputDelay;
 
@@ -63,12 +67,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BeltBurnishingViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineBeltBurnishingProcedureWebService beltBurnishingWebService)
-            : base(Services.PresentationMode.Installer)
+            IMachineBeltBurnishingProcedureWebService beltBurnishingWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.beltBurnishingWebService = beltBurnishingWebService ?? throw new ArgumentNullException(nameof(beltBurnishingWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -96,10 +102,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public override EnableMask EnableMask => EnableMask.MachineManualMode;
 
         public string Error => string.Join(
-                this[nameof(this.InputLowerBound)],
-                this[nameof(this.InputUpperBound)],
-                this[nameof(this.InputRequiredCycles)],
-                this[nameof(this.InputDelay)]);
+            this[nameof(this.InputLowerBound)],
+            this[nameof(this.InputUpperBound)],
+            this[nameof(this.InputRequiredCycles)],
+            this[nameof(this.InputDelay)]);
 
         public int InputDelay
         {
@@ -328,7 +334,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
-                await this.RetrieveCurrentPositionAsync();
+                this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
             catch (Exception ex)
             {
@@ -345,6 +351,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
                         this.OnPositioningMessageReceived,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
                         false);
         }
@@ -381,6 +396,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentPosition = e.VerticalPosition;
+        }
+
         private void OnPositioningMessageReceived(NotificationMessageUI<PositioningMessageData> message)
         {
             if (message.IsNotRunning())
@@ -397,7 +417,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
-                this.CurrentPosition = message.Data.CurrentPosition ?? this.CurrentPosition;
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
             }
 
@@ -419,11 +438,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.startCommand?.RaiseCanExecuteChanged();
             this.stopCommand?.RaiseCanExecuteChanged();
-        }
-
-        private async Task RetrieveCurrentPositionAsync()
-        {
-            this.CurrentPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
         }
 
         private async Task StartTestAsync()

@@ -7,9 +7,9 @@ namespace Ferretto.VW.MAS.AutomationService
     {
         #region Fields
 
-        private const string VertimagInverterDriverUseMockKey = "Vertimag:InverterDriver:UseMock";
+        private const string VertimagInverterDriverUseMockKey = "Vertimag:Drivers:Inverter:UseMock";
 
-        private const string VertimagRemoteIoDriverUseMockKey = "Vertimag:RemoteIODriver:UseMock";
+        private const string VertimagRemoteIoDriverUseMockKey = "Vertimag:Drivers:RemoteIO:UseMock";
 
         private const string WmsIsEnabledKey = "WMS:IsEnabled";
 

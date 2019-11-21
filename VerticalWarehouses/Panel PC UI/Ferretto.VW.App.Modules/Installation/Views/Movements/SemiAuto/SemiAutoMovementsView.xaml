@@ -18,7 +18,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="5" />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
@@ -44,25 +44,25 @@
                         BorderThickness="0,2,0,0" />
 
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="180"
+                    <TextBlock Width="170"
                                Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{x:Static res:InstallationApp.TrayInCell}" />
                     <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{Binding LoadingUnitInCell.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="180"
+                    <TextBlock Width="170"
                                Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{x:Static res:InstallationApp.CellHeight}" />
                     <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{Binding SelectedCell.Position, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Width="180"
+                    <TextBlock Width="170"
                                Foreground="{StaticResource FerrettoPureWhite}"
                                Text="Lato" />
                     <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
-                               Text="{Binding SelectedCell.Side, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                               Text="{Binding SelectedCell.Side, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, Converter={StaticResource EWSC}}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>
@@ -78,6 +78,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -88,7 +89,7 @@
             </Grid.ColumnDefinitions>
 
             <ctrls:PpcSpinEdit Grid.Column="0"
-                               Margin="4,4,4,0"
+                               Margin="4,4,4,4"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
                                EditValue="{Binding InputHeight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -101,6 +102,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -122,6 +124,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -143,6 +146,7 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="4,0,4,4"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
@@ -152,43 +156,48 @@
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Command="{Binding EmbarkBackwardsCommand}"
-                                Content="{x:Static res:InstallationApp.EmbarkBackwards}"
-                                IsBusy="{Binding IsElevatorEmbarking}"
-                                Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
+                                Command="{Binding UnloadToBayCommand}"
+                                Content="{x:Static res:InstallationApp.UnloadToBay}"
+                                IsBusy="{Binding IsBusyUnloadingToBay}"
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Command="{Binding DisembarkBackwardsCommand}"
-                                Content="{x:Static res:InstallationApp.DisembarkBackwards}"
-                                IsBusy="{Binding IsElevatorDisembarking}"
-                                Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
+                                Command="{Binding UnloadToCellCommand}"
+                                Content="{x:Static res:InstallationApp.UnloadToCell}"
+                                IsBusy="{Binding IsBusyUnloadingToCell}"
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
 
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Command="{Binding EmbarkForwardsCommand}"
-                                Content="{x:Static res:InstallationApp.EmbarkForwards}"
-                                IsBusy="{Binding IsElevatorEmbarking}"
-                                Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVC}}" />
+                                Command="{Binding LoadFromBayCommand}"
+                                Content="{x:Static res:InstallationApp.LoadFromBay}"
+                                IsBusy="{Binding IsBusyLoadingFromBay}"
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Command="{Binding DisembarkForwardsCommand}"
-                                Content="{x:Static res:InstallationApp.DisembarkForwards}"
-                                IsBusy="{Binding IsElevatorDisembarking}"
-                                Visibility="{Binding EmbarkedLoadingUnit, Converter={StaticResource RTVIC}}" />
+                                Command="{Binding LoadFromCellCommand}"
+                                Content="{x:Static res:InstallationApp.LoadFromCell}"
+                                IsBusy="{Binding IsBusyLoadingFromCell}"
+                                Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding SetWeightControlCommand}"
@@ -197,6 +206,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningChainCommand}"
@@ -205,6 +215,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding TuningBayCommand}"
@@ -213,6 +224,7 @@
 
             <controls:PpcButton Grid.Row="3"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding ResetCommand}"
@@ -220,32 +232,34 @@
 
             <controls:PpcButton Grid.Row="4"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
-                                Command="{Binding MoveToBayHeightCommand}"
+                                Command="{Binding MoveToBayPositionCommand}"
                                 Content="{x:Static res:InstallationApp.GoToBay}"
                                 IsBusy="{Binding IsElevatorMovingToBay}" />
+            <StackPanel Grid.Row="4"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                <controls:PpcButton Width="100"
+                                    Margin="5"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding SelectBayPositionDownCommand}"
+                                    Content="{x:Static res:InstallationApp.BayPositionDown}"
+                                    IsActive="{Binding IsPositionDownSelected}"
+                                    Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
 
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="1"
-                                Margin="5"
-                                HorizontalAlignment="Center"
-                                Command="{Binding SelectBayPositionDownCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionDown}"
-                                IsActive="{Binding IsPositionDownSelected}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-
-            <controls:PpcButton Grid.Row="4"
-                                Grid.Column="2"
-                                Margin="5"
-                                HorizontalAlignment="Center"
-                                Command="{Binding SelectBayPositionUpCommand}"
-                                Content="{x:Static res:InstallationApp.BayPositionUp}"
-                                IsActive="{Binding IsPositionUpSelected}"
-                                Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
-
+                <controls:PpcButton Width="100"
+                                    Margin="5"
+                                    HorizontalAlignment="Center"
+                                    Command="{Binding SelectBayPositionUpCommand}"
+                                    Content="{x:Static res:InstallationApp.BayPositionUp}"
+                                    IsActive="{Binding IsPositionUpSelected}"
+                                    Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+            </StackPanel>
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding OpenShutterCommand}"
@@ -254,6 +268,7 @@
 
             <controls:PpcButton Grid.Row="5"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding IntermediateShutterCommand}"
@@ -261,6 +276,7 @@
                                 Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding ClosedShutterCommand}"
@@ -283,6 +299,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="0"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselUpCommand}"
@@ -291,6 +308,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="1"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding CarouselDownCommand}"
@@ -299,6 +317,7 @@
 
             <controls:PpcButton Grid.Row="6"
                                 Grid.Column="2"
+                                Width="210"
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding StopMovingCommand}"

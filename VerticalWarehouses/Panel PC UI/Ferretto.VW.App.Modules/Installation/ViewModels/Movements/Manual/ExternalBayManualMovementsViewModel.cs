@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -242,7 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineBaysWebService.MoveAsync(direction);
+                // await this.machineBaysWebService.MoveAsync(direction);
                 if (direction == HorizontalMovementDirection.Backwards)
                 {
                     this.IsMovingBackwards = true;

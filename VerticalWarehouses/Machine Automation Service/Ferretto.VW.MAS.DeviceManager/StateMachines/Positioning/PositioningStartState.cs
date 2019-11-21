@@ -19,7 +19,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -36,6 +40,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -61,6 +67,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         break;
 
                     case MessageStatus.OperationError:
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.IoDeviceError, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                         break;
@@ -77,6 +84,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         break;
 
                     case MessageStatus.OperationError:
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
+                        this.stateData.FieldMessage = message;
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
+                        break;
+                }
+            }
+
+            if (message.Type == FieldMessageType.InverterSwitchOff)
+            {
+                switch (message.Status)
+                {
+                    case MessageStatus.OperationEnd:
+                        this.Logger.LogDebug("Inverter switch OFF completed");
+                        break;
+
+                    case MessageStatus.OperationError:
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                         this.stateData.FieldMessage = message;
                         this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                         break;
@@ -147,33 +171,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterCommandMessage);
 
-            lock (this.machineData.MachineSensorStatus)
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
-                {
-                    var elevatorProvider = scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
-                    if (this.machineData.MessageData.AxisMovement == Axis.Vertical)
-                    {
-                        this.machineData.MessageData.CurrentPosition = elevatorProvider.VerticalPosition;
-                    }
-                    else if (this.machineData.MessageData.MovementMode >= MovementMode.BayChain)
-                    {
-                        var bayChainProvider = scope.ServiceProvider.GetRequiredService<ICarouselProvider>();
-                        this.machineData.MessageData.CurrentPosition = bayChainProvider.HorizontalPosition;
-                    }
-                    else
-                    {
-                        this.machineData.MessageData.CurrentPosition = elevatorProvider.HorizontalPosition;
-                    }
-
-                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
-                        .GetRequiredService<ISetupProceduresDataProvider>()
-                        .GetBeltBurnishingTest()
-                        .PerformedCycles;
-                }
+                this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                    .GetRequiredService<ISetupProceduresDataProvider>()
+                    .GetBeltBurnishingTest()
+                    .PerformedCycles;
             }
 
-            this.Logger.LogTrace($"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement}; value={(int)this.machineData.MessageData.CurrentPosition.Value}");
+            this.Logger.LogTrace(
+                $"InverterStatusUpdate inverter={this.machineData.CurrentInverterIndex}; Movement={this.machineData.MessageData.AxisMovement};");
+
             var notificationMessage = new NotificationMessage(
                 this.machineData.MessageData,
                 this.machineData.MessageData.RequiredCycles == 0

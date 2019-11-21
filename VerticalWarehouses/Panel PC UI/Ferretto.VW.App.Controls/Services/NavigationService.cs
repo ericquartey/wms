@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Services
                 if (trackCurrentView)
                 {
                     var currentViewRecord = this.navigationStack.Peek();
-                    this.logger.Warn($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
+                    this.logger.Trace($"Marking view '{currentViewRecord.ModuleName}.{currentViewRecord.ViewModelName}' as trackable.");
                     currentViewRecord.IsTrackable = true;
                 }
 

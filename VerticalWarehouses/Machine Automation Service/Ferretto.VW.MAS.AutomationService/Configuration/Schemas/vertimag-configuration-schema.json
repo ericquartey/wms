@@ -289,6 +289,66 @@
                     "default": 0
                   }
                 }
+              },
+              "FullLoadMovement": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement",
+                "type": "object",
+                "title": "The FullLoadMovement Schema",
+                "required": [
+                  "Acceleration",
+                  "Deceleration",
+                  "Speed"
+                ],
+                "properties": {
+                  "Acceleration": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Acceleration",
+                    "type": "number",
+                    "title": "The Acceleration Schema",
+                    "default": 0
+                  },
+                  "Deceleration": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Deceleration",
+                    "type": "number",
+                    "title": "The Deceleration Schema",
+                    "default": 0
+                  },
+                  "Speed": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Speed",
+                    "type": "number",
+                    "title": "The Speed Schema",
+                    "default": 0
+                  }
+                }
+              },
+              "EmptyLoadMovement": {
+                "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement",
+                "type": "object",
+                "title": "The Emptyloadmovement Schema",
+                "required": [
+                  "Acceleration",
+                  "Deceleration",
+                  "Speed"
+                ],
+                "properties": {
+                  "Acceleration": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Acceleration",
+                    "type": "number",
+                    "title": "The Acceleration Schema",
+                    "default": 0
+                  },
+                  "Deceleration": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Deceleration",
+                    "type": "number",
+                    "title": "The Deceleration Schema",
+                    "default": 0
+                  },
+                  "Speed": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Speed",
+                    "type": "number",
+                    "title": "The Speed Schema",
+                    "default": 0
+                  }
+                }
               }
             }
           }
@@ -647,8 +707,7 @@
                   "required": [
                     "Id",
                     "Position",
-                    "Priority",
-                    "Status"
+                    "Priority"
                   ],
                   "properties": {
                     "Id": {
@@ -676,10 +735,18 @@
                       "title": "The Status Schema",
                       "enum": [
                         "Free",
-                        "Disabled",
-                        "Occupied",
-                        "Unusable"
+                        "Occupied"
                       ]
+                    },
+                    "IsUnusable": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsUnusable",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
+                    },
+                    "IsDeactivated": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsDeactivated",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
                     }
                   }
                 }

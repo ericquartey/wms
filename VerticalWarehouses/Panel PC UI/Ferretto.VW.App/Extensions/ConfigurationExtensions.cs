@@ -8,26 +8,51 @@ namespace Ferretto.VW.App
 
         public static string GetAutomationServiceInstallationHubPath(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(appSettings));
+            }
+
             return appSettings.Get("AutomationService:Hubs:Installation:Path");
         }
 
         public static string GetAutomationServiceLiveHealthPath(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(appSettings));
+            }
+
             return appSettings.Get("AutomationService:HealthChecks:Live:Path");
         }
 
         public static string GetAutomationServiceOperatorHubPath(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(appSettings));
+            }
+
             return appSettings.Get("AutomationService:Hubs:Operator:Path");
         }
 
         public static string GetAutomationServiceReadyHealthPath(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(appSettings));
+            }
+
             return appSettings.Get("AutomationService:HealthChecks:Ready:Path");
         }
 
         public static System.Uri GetAutomationServiceUrl(this NameValueCollection appSettings)
         {
+            if (appSettings is null)
+            {
+                throw new System.ArgumentNullException(nameof(appSettings));
+            }
+
             return new System.Uri(appSettings.Get("AutomationService:Url"));
         }
 

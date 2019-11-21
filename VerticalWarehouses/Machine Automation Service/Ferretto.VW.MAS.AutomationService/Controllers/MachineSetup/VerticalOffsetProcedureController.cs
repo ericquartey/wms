@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
 
-            this.elevatorProvider.MoveVerticalOfDistance(
+            this.elevatorProvider.MoveToRelativeVerticalPosition(
                 -procedureParameters.Step,
                 this.BayNumber,
                 MessageActor.AutomationService,
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             var procedureParameters = this.setupProceduresDataProvider.GetVerticalOffsetCalibration();
 
-            this.elevatorProvider.MoveVerticalOfDistance(
+            this.elevatorProvider.MoveToRelativeVerticalPosition(
                 procedureParameters.Step,
                 this.BayNumber,
                 MessageActor.AutomationService,

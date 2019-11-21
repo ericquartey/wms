@@ -29,6 +29,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionOperationId");
 
+                    b.Property<int?>("EmptyLoadMovementId");
+
+                    b.Property<int?>("FullLoadMovementId");
+
                     b.Property<int?>("InverterId");
 
                     b.Property<int?>("IoDeviceId");
@@ -54,6 +58,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
+
+                    b.HasIndex("EmptyLoadMovementId");
+
+                    b.HasIndex("FullLoadMovementId");
 
                     b.HasIndex("InverterId");
 
@@ -110,6 +118,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsDeactivated");
+
+                    b.Property<bool>("IsUnusable");
+
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
@@ -150,11 +162,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BayPositionId");
+
+                    b.Property<int?>("CellId");
+
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<int?>("StructuralPropertiesId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BayPositionId");
+
+                    b.HasIndex("CellId");
 
                     b.HasIndex("LoadingUnitId");
 
@@ -181,6 +201,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("FullLoadMovementId");
 
                     b.Property<int?>("InverterId");
+
+                    b.Property<double>("LastIdealPosition");
 
                     b.Property<double>("LowerBound");
 
@@ -411,8 +433,24 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 19,
                             Code = 19,
+                            Description = "DestinationOverUpperBound",
+                            Reason = "DestinationOverUpperBound",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Code = 20,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Code = 21,
+                            Description = "IoDeviceError",
+                            Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
@@ -745,6 +783,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 19,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 20,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 21,
                             TotalErrors = 0
                         },
                         new
@@ -1150,7 +1198,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 15, 11, 55, 10, 993, DateTimeKind.Local).AddTicks(1837),
+                            InstallationDate = new DateTime(2017, 1, 20, 16, 4, 33, 290, DateTimeKind.Local).AddTicks(4818),
                             ServiceStatus = 86
                         });
                 });
@@ -1435,6 +1483,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     b.HasBaseType("Ferretto.VW.MAS.DataModels.MovementParameters");
 
+                    b.Property<bool>("AdjustByWeight");
+
                     b.Property<int?>("MovementProfileId");
 
                     b.Property<int>("Number");
@@ -1531,6 +1581,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CarouselId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("EmptyLoadMovementId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "FullLoadMovement")
+                        .WithMany()
+                        .HasForeignKey("FullLoadMovementId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.Inverter", "Inverter")
                         .WithMany()
                         .HasForeignKey("InverterId");
@@ -1576,6 +1634,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
+                        .WithMany()
+                        .HasForeignKey("BayPositionId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
+                        .WithMany()
+                        .HasForeignKey("CellId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");

@@ -27,7 +27,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
-        private readonly IMachineModeDataProvider machineModeDataProvider;
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+
+        private readonly ISensorsProvider sensorsProvider;
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
 
@@ -39,7 +41,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
-            IMachineModeDataProvider machineModeDataProvider,
+            IMachineModeVolatileDataProvider machineModeDataProvider,
+            ISensorsProvider sensorsProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
         }
 
         #endregion
@@ -78,11 +82,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                 commandMessage.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
 
-            if (this.StopRequestReason is StopRequestReason.NoReason)
+            if (this.EndMessage.Data is IChangeRunningStateMessageData runningState)
             {
-                this.IsCompleted = true;
-                if (this.EndMessage.Data is IChangeRunningStateMessageData runningState)
+                if (this.StopRequestReason is StopRequestReason.NoReason
+                    && this.sensorsProvider.IsMachineRunning == runningState.Enable)
                 {
+                    this.IsCompleted = true;
                     if (runningState.Enable)
                     {
                         this.errorsProvider.ResolveAll();
@@ -90,19 +95,31 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
                     this.machineModeDataProvider.Mode = MachineMode.Manual;
                 }
-            }
-            else
-            {
-                this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
-
+                else
                 {
-                    var newMessageData = new ChangeRunningStateMessageData(false);
+                    var endMessageData = new ChangeRunningStateMessageData(false, null, runningState.CommandAction, StopRequestReason.Error);
+                    this.EndMessage = new NotificationMessage(
+                        endMessageData,
+                        commandMessage.Description,
+                        MessageActor.AutomationService,
+                        MessageActor.MachineManager,
+                        commandMessage.Type,
+                        commandMessage.RequestingBay,
+                        commandMessage.TargetBay,
+                        StopRequestReasonConverter.GetMessageStatusFromReason(StopRequestReason.Error));
 
-                    this.machineControlProvider.StartChangePowerStatus(newMessageData, MessageActor.MachineManager, commandMessage.RequestingBay);
-                }
-                {
-                    var newMessageData = new StopMessageData(this.StopRequestReason);
-                    this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.ConditionsNotMetForRunning, commandMessage.RequestingBay);
+
+                    {
+                        var newMessageData = new ChangeRunningStateMessageData(false);
+
+                        this.machineControlProvider.StartChangePowerStatus(newMessageData, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    }
+
+                    {
+                        var newMessageData = new StopMessageData(this.StopRequestReason);
+                        this.machineControlProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    }
                 }
             }
         }

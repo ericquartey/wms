@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Homing.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
     internal class HomingEndState : StateBase, System.IDisposable
     {
         #region Fields
+
+        private readonly IErrorsProvider errorsProvider;
 
         private readonly IHomingMachineData machineData;
 
@@ -35,6 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.machineData = stateData.MachineData as IHomingMachineData;
 
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -81,6 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                             break;
 
                         case MessageStatus.OperationError:
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.stateData.FieldMessage = message;
                             this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                             break;
@@ -126,6 +131,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
+
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal
+                    ||
+                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
+                }
             }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason

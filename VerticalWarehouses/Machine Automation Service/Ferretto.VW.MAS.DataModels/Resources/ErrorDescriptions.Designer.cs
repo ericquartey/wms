@@ -133,6 +133,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to DestinationOverUpperBound.
+        /// </summary>
+        public static string DestinationOverUpperBound {
+            get {
+                return ResourceManager.GetString("DestinationOverUpperBound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to InvalidPresenceSensors.
         /// </summary>
         public static string InvalidPresenceSensors {
@@ -273,6 +282,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string InverterFaultStateDetected {
             get {
                 return ResourceManager.GetString("InverterFaultStateDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IoDeviceError.
+        /// </summary>
+        public static string IoDeviceError {
+            get {
+                return ResourceManager.GetString("IoDeviceError", resourceCulture);
             }
         }
         

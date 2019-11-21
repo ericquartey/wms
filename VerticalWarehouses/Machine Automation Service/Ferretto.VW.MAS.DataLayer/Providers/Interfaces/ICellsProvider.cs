@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -9,23 +8,21 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        bool CanFitLoadingUnit(int cellId, int loadingUnitId);
+
         IEnumerable<Cell> GetAll();
 
-        Cell GetCellByHeight(double cellHeight, double tolerance, WarehouseSide machineSide);
+        Cell GetById(int cellId);
 
-        Cell GetCellById(int cellId);
-
-        Cell GetCellByLoadingUnit(int loadingUnitId);
+        Cell GetByLoadingUnitId(int loadingUnitId);
 
         CellStatisticsSummary GetStatistics();
 
-        void LoadLoadingUnit(int loadingUnitId, int cellId);
+        void SetLoadingUnit(int cellId, int? loadingUnitId);
 
-        void UnloadLoadingUnit(int cellId);
+        Cell UpdatePosition(int cellId, double height);
 
-        Cell UpdateHeight(int cellId, double height);
-
-        IEnumerable<Cell> UpdatesHeight(int fromCellId, int toCellId, WarehouseSide side, double height);
+        IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);
 
         #endregion
     }

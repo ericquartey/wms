@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
@@ -15,7 +16,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+
         private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly IMachineResourcesProvider machineResourcesProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -26,24 +31,68 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public CarouselProvider(
             IBaysProvider baysProvider,
             IElevatorDataProvider elevatorDataProvider,
+            IMachineResourcesProvider machineResourcesProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
+            ILoadingUnitsProvider loadingUnitsProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
+            this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
         }
 
         #endregion
 
-        #region Properties
-
-        public double HorizontalPosition { get; set; }
-
-        #endregion
-
         #region Methods
+
+        public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber)
+        {
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+            if (bay.Carousel is null)
+            {
+                return new ActionPolicy { Reason = Resources.Bays.TheSpecifiedBayHasNoCarousel };
+            }
+
+            var isLoadingUnitInLowerPosition = this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber);
+            var isLoadingUnitInUpperPosition = this.machineResourcesProvider.IsDrawerInBayTop(bayNumber);
+
+            switch (direction)
+            {
+                case VerticalMovementDirection.Down:
+                    if (isLoadingUnitInLowerPosition || isLoadingUnitInUpperPosition)
+                    {
+                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsAtLeastOneLoadingUnit };
+                    }
+
+                    break;
+
+                case VerticalMovementDirection.Up:
+                    if (isLoadingUnitInUpperPosition)
+                    {
+                        return new ActionPolicy { Reason = Resources.Bays.TheBayContainsALoadingUnitInItsUpperPosition };
+                    }
+
+                    break;
+
+                default:
+                    throw new InvalidEnumArgumentException(nameof(direction), (int)direction, typeof(VerticalMovementDirection));
+            }
+
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
+            }
+
+            return ActionPolicy.Allowed;
+        }
+
+        public double GetPosition(BayNumber bayNumber)
+        {
+            return this.baysProvider.GetChainPosition(bayNumber);
+        }
 
         public void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender)
         {
@@ -58,26 +107,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void Move(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)
+            var policy = this.CanMove(direction, bayNumber);
+            if (!policy.IsAllowed)
             {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {bayNumber} because it has no carousel.");
+                throw new InvalidOperationException(policy.Reason);
             }
 
+            var bay = this.baysProvider.GetByNumber(bayNumber);
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= (direction == HorizontalMovementDirection.Forwards) ? 1 : -1;
+            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
-
-            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-
-            // TODO: scale movement speed by weight
-            var speed = new[] { axis.EmptyLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.EmptyLoadMovement.Acceleration };
-            var deceleration = new[] { axis.EmptyLoadMovement.Deceleration };
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue)
+            {
+                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
+                {
+                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                }
+            }
+            var speed = new[] { bay.EmptyLoadMovement.Speed - ((bay.EmptyLoadMovement.Speed - bay.FullLoadMovement.Speed) * scalingFactor) };
+            var acceleration = new[] { bay.EmptyLoadMovement.Acceleration - ((bay.EmptyLoadMovement.Acceleration - bay.FullLoadMovement.Acceleration) * scalingFactor) };
+            var deceleration = new[] { bay.EmptyLoadMovement.Deceleration - ((bay.EmptyLoadMovement.Deceleration - bay.FullLoadMovement.Deceleration) * scalingFactor) };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -89,7 +144,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             this.PublishCommand(
                 messageData,
@@ -101,23 +156,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public void MoveManual(HorizontalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
+        public void MoveManual(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
-            if (bay.Carousel is null)
+            var policy = this.CanMove(direction, bayNumber);
+            if (!policy.IsAllowed)
             {
-                throw new InvalidOperationException($"Cannot operate carousel on bay {bayNumber} because it has no carousel.");
+                throw new InvalidOperationException(policy.Reason);
             }
 
+            var bay = this.baysProvider.GetByNumber(bayNumber);
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= ((direction == HorizontalMovementDirection.Forwards) ? 1 : -1);
+            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
-            var axis = this.elevatorDataProvider.GetHorizontalAxis();
             var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
-            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
-            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
+            var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { bay.FullLoadMovement.Acceleration };
+            var deceleration = new[] { bay.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -129,7 +184,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 acceleration,
                 deceleration,
                 switchPosition,
-                direction);
+                direction is VerticalMovementDirection.Up ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards);
 
             this.PublishCommand(
                 messageData,
@@ -146,7 +201,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new StopMessageData(StopRequestReason.Stop);
             this.PublishCommand(
                 messageData,
-                "Stop Command",
+                $"Stop carousel on bay {bayNumber}",
                 MessageActor.DeviceManager,
                 sender,
                 MessageType.Stop,

@@ -10,14 +10,14 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     {
         #region Fields
 
-        private readonly IMachineModeDataProvider machineModeDataProvider;
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
 
         #endregion
 
         #region Constructors
 
         public MachineModeProvider(
-            IMachineModeDataProvider machineModeDataProvider,
+            IMachineModeVolatileDataProvider machineModeDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {

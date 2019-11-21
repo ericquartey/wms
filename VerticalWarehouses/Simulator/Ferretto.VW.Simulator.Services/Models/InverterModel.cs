@@ -960,17 +960,17 @@ namespace Ferretto.VW.Simulator.Services.Models
                         this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = true;
                     }
                 }
-                else
-                {
-                    if (this.InverterType == InverterType.Ang)
-                    {
-                        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
-                    }
-                    else
-                    {
-                        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
-                    }
-                }
+                //else
+                //{
+                //    if (this.InverterType == InverterType.Ang)
+                //    {
+                //        this.DigitalIO[(int)InverterSensors.ANG_ZeroCradleSensor].Value = false;
+                //    }
+                //    else
+                //    {
+                //        this.DigitalIO[(int)InverterSensors.ACU_ZeroSensor].Value = false;
+                //    }
+                //}
             }
         }
 
@@ -1199,6 +1199,11 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(target - this.AxisPosition) <= 0.1)
             {
                 this.AxisPosition = target;
+                if (this.OperationMode == InverterOperationMode.TableTravel)
+                {
+                    // simulate positioning error
+                    //this.AxisPosition += (short)(new Random().Next(-5, 5));
+                }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack
                 this.IsTargetReached = true;

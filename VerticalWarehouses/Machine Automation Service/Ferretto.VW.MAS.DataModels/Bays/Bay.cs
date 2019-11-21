@@ -16,6 +16,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CurrentMissionOperationId { get; set; }
 
+        public MovementParameters EmptyLoadMovement { get; set; }
+
+        public MovementParameters FullLoadMovement { get; set; }
+
         public Inverter Inverter { get; set; }
 
         public IoDevice IoDevice { get; set; }
@@ -49,6 +53,15 @@ namespace Ferretto.VW.MAS.DataModels
 
                 return BayStatus.Disconnected;
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Number.ToString();
         }
 
         #endregion

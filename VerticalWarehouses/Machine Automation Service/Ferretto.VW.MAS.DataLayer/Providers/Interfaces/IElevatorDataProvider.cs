@@ -7,8 +7,14 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
+        /// <summary>
+        /// The horizontal position, in millimeters, of the elevator's chain.
+        /// </summary>
         double HorizontalPosition { get; set; }
 
+        /// <summary>
+        /// The vertical position, in millimeters, of the elevator.
+        /// </summary>
         double VerticalPosition { get; set; }
 
         #endregion
@@ -19,6 +25,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IDbContextTransaction GetContextTransaction();
 
+        /// <summary>
+        /// Gets the bay position where the elevator is currently located, or null if the elevator is not located opposite a bay.
+        /// </summary>
+        BayPosition GetCurrentBayPosition();
+
+        /// <summary>
+        /// Gets the cell where the elevator is currently located, or null if the elevator is not located opposite a cell.
+        /// </summary>
+        Cell GetCurrentCell();
+
         ElevatorAxis GetHorizontalAxis();
 
         LoadingUnit GetLoadingUnitOnBoard();
@@ -27,13 +43,23 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ElevatorAxis GetVerticalAxis();
 
-        void LoadLoadingUnit(int loadingUnitId);
-
         void ResetMachine();
 
         MovementParameters ScaleMovementsByWeight(Orientation orientation);
 
-        void UnloadLoadingUnit();
+        /// <summary>
+        /// Sets the bay position where the elevator is currently located, or null if the elevator is not located opposite a bay.
+        /// </summary>
+        void SetCurrentBayPosition(int? bayPositionId);
+
+        /// <summary>
+        /// Gets the cell where the elevator is currently located, or null if the elevator is not located opposite a cell.
+        /// </summary>
+        void SetCurrentCell(int? cellId);
+
+        void SetLoadingUnit(int? loadingUnitId);
+
+        void UpdateLastIdealPosition(double position, Orientation orientation = Orientation.Horizontal);
 
         void UpdateVerticalOffset(double newOffset);
 

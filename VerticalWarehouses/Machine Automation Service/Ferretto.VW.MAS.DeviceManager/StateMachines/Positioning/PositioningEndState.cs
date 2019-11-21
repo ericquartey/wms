@@ -1,4 +1,7 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -19,7 +22,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -32,6 +39,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -51,15 +60,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
+                case FieldMessageType.InverterSwitchOn:
+                case FieldMessageType.InverterSwitchOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
 
-                            //if (message.Status == MessageStatus.OperationEnd && this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
-                            //{
-                            //    this.UpdateLoadingUnitLocation();
-                            //}
+                            if (message.Status is MessageStatus.OperationEnd
+                                &&
+                                this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+                            {
+                                this.UpdateLoadingUnitLocation();
+                            }
 
                             var notificationMessage = new NotificationMessage(
                                 this.machineData.MessageData,
@@ -75,6 +88,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             break;
 
                         case MessageStatus.OperationError:
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                             break;
                     }
@@ -89,8 +103,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            this.Logger?.LogTrace("1:Method Start");
-
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
@@ -106,9 +118,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                if (this.machineData.MessageData.AxisMovement is Axis.Vertical)
                 {
-                    this.UpdateLoadingUnitLocation();
+                    this.PersistElevatorPosition(
+                        this.machineData.MessageData.TargetBayPositionId,
+                        this.machineData.MessageData.TargetCellId,
+                        this.machineData.MessageData.TargetPosition);
+                }
+                else if (
+                    this.machineData.Requester == MessageActor.AutomationService
+                    &&
+                    this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+                {
+                    this.UpdateLastIdealPosition();
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -120,8 +142,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     this.machineData.RequestingBay,
                     this.machineData.TargetBay,
                     StopRequestReasonConverter.GetMessageStatusFromReason(this.stateData.StopRequestReason));
+
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
+            }
+
+            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+            {
+                this.UpdateLoadingUnitLocation();
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
@@ -155,87 +183,199 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Start();
         }
 
-        private void UpdateLoadingUnitLocation()
+        private static void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)
         {
-            LoadingUnit currentLoadingUnit;
+            System.Diagnostics.Debug.Assert(targetBayPositionId.HasValue || targetCellId.HasValue);
 
-            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
-
-            var resourceProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
-
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
 
-            var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
-
-            var bayProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-
-            var cellProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-
-            var bayLocation = LoadingUnitLocation.NoLocation;
-
-            var position = elevatorProvider.VerticalPosition;
-
-            var side = (this.machineData.MessageData.IsStartedOnBoard ?
-                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Forwards ? WarehouseSide.Front : WarehouseSide.Back) :
-                (this.machineData.MessageData.Direction == HorizontalMovementDirection.Backwards ? WarehouseSide.Front : WarehouseSide.Back));
-
-            var cell = cellProvider.GetCellByHeight(position, 10, side);
-            if (cell == null)
+            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnitOnBoard is null)
             {
-                bayLocation = bayProvider.GetPositionByHeight(position, 10, this.machineData.RequestingBay);
+                return;
             }
 
-            currentLoadingUnit = elevatorDataProvider.GetLoadingUnitOnBoard();
-
-            if (currentLoadingUnit == null)
+            if (loadingUnitOnBoard.Id != loadingUnitId)
             {
-                if (cell != null)
+                throw new InvalidOperationException(
+                    $"The loading unit on board of the elevator (id={loadingUnitOnBoard.Id}) is not the same loading unit requested for deposit (id={loadingUnitId}).");
+            }
+
+            if (targetBayPositionId.HasValue)
+            {
+                baysProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
+            }
+            else if (targetCellId.HasValue)
+            {
+                cellsProvider.SetLoadingUnit(targetCellId.Value, loadingUnitOnBoard.Id);
+            }
+
+            elevatorDataProvider.SetLoadingUnit(null);
+        }
+
+        private static void UpdateLoadingUnitForPickup(int? sourceBayPositionId, int? sourceCellId, IServiceProvider serviceProvider)
+        {
+            System.Diagnostics.Debug.Assert(sourceBayPositionId.HasValue || sourceCellId.HasValue);
+
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+
+            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnitOnBoard != null)
+            {
+                throw new InvalidOperationException(
+                    $"A pickup was requested, but the elevator has already a loading unit (id={loadingUnitOnBoard.Id}) on board.");
+            }
+
+            if (sourceBayPositionId.HasValue)
+            {
+                var bayPosition = baysProvider.GetPositionById(sourceBayPositionId.Value);
+
+                elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
+
+                baysProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
+            }
+            else if (sourceCellId.HasValue)
+            {
+                var cell = cellsProvider.GetById(sourceCellId.Value);
+
+                elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
+
+                cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+            }
+        }
+
+        private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
+        {
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            {
+                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+
+                elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                elevatorDataProvider.SetCurrentCell(targetCellId);
+            }
+        }
+
+        private void UpdateLastIdealPosition()
+        {
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
+        }
+
+        private void UpdateLoadingUnitForManualMovement()
+        {
+            using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+            {
+                var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
+                var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+                var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
+                var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+
+                var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
+
+                // 1. check if elevator is opposite a bay or a cell
+                var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
+                var cell = elevatorDataProvider.GetCurrentCell();
+
+                if (bayPosition != null)
                 {
-                    currentLoadingUnit = cell.LoadingUnit;
+                    var bay = baysProvider.GetByBayPositionId(bayPosition.Id);
+                    var isDrawerInBay = bayPosition.IsUpper
+                         ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+                         : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+
+                    if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+                    // possible pickup from bay
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
+                        {
+                            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                            baysProvider.SetLoadingUnit(bayPosition.Id, null);
+                        }
+                    }
+                    else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+                    // possible deposit to bay
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
+                        {
+                            elevatorDataProvider.SetLoadingUnit(null);
+                            baysProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+                        }
+                    }
+                }
+                else if (cell != null)
+                {
+                    if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
+                    // possible pickup from cell
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
+                        {
+                            elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
+                            cellsProvider.SetLoadingUnit(cell.Id, null);
+                        }
+                    }
+                    else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
+                    // possible deposit to cell
+                    {
+                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
+                        {
+                            if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                            {
+                                elevatorDataProvider.SetLoadingUnit(null);
+                                cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                            }
+                            else
+                            {
+                                this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void UpdateLoadingUnitLocation()
+        {
+            if (this.machineData.MessageData.LoadingUnitId.HasValue)
+            {
+                if (this.machineData.MessageData.SourceCellId.HasValue
+                    ||
+                    this.machineData.MessageData.SourceBayPositionId.HasValue)
+                {
+                    using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                    {
+                        UpdateLoadingUnitForPickup(
+                            this.machineData.MessageData.SourceBayPositionId,
+                            this.machineData.MessageData.SourceCellId,
+                            scope.ServiceProvider);
+                    }
+                }
+                else
+                if (this.machineData.MessageData.TargetCellId.HasValue
+                    ||
+                    this.machineData.MessageData.TargetBayPositionId.HasValue)
+                {
+                    using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
+                    {
+                        UpdateLoadingUnitForDeposit(
+                            this.machineData.MessageData.LoadingUnitId.Value,
+                            this.machineData.MessageData.TargetBayPositionId,
+                            this.machineData.MessageData.TargetCellId,
+                            scope.ServiceProvider);
+                    }
                 }
                 else
                 {
-                    currentLoadingUnit = bayProvider.GetLoadingUnitByDestination(bayLocation);
+                    this.Logger.LogWarning("No source or target cell/bay was specified for the horizontal positioning.");
                 }
-            }
-
-            if (currentLoadingUnit == null)
-            {
-                this.Logger.LogWarning($"Found no loading unit at position {position}");
             }
             else
             {
-                using (var transaction = elevatorDataProvider.GetContextTransaction())
-                {
-                    if (resourceProvider.IsDrawerCompletelyOnCradle)
-                    {
-                        elevatorDataProvider.LoadLoadingUnit(currentLoadingUnit.Id);
-
-                        if (cell != null)
-                        {
-                            cellProvider.UnloadLoadingUnit(cell.Id);
-                        }
-                        else if (bayLocation != LoadingUnitLocation.NoLocation)
-                        {
-                            bayProvider.UnloadLoadingUnit(bayLocation);
-                        }
-                    }
-                    else
-                    {
-                        elevatorDataProvider.UnloadLoadingUnit();
-
-                        if (cell != null)
-                        {
-                            cellProvider.LoadLoadingUnit(currentLoadingUnit.Id, cell.Id);
-                        }
-                        else if (bayLocation != LoadingUnitLocation.NoLocation)
-                        {
-                            bayProvider.LoadLoadingUnit(currentLoadingUnit.Id, bayLocation);
-                        }
-                    }
-
-                    transaction.Commit();
-                }
+                this.UpdateLoadingUnitForManualMovement();
             }
         }
 

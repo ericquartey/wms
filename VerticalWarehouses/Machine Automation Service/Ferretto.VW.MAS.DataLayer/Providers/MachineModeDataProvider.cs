@@ -5,7 +5,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class MachineModeDataProvider : IMachineModeDataProvider
+    internal sealed class MachineModeVolatileDataProvider : IMachineModeVolatileDataProvider
     {
         #region Fields
 
@@ -17,9 +17,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public MachineModeDataProvider(IEventAggregator eventAggregator)
+        public MachineModeVolatileDataProvider(IEventAggregator eventAggregator)
         {
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
         }
 
         #endregion
