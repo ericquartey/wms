@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return false;
+            return true;
         }
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)

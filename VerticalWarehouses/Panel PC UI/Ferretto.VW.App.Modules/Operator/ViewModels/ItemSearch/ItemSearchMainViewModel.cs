@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int DEFAULT_QUANTITY_ITEM = 20;
 
+        private readonly IAreasDataService areasDataService;
+
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
@@ -69,7 +71,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IBayManager bayManager,
             IMachineIdentityWebService identityService,
             IItemsDataService itemsDataService,
-            IItemSearchedModel itemSearchedModel)
+            IItemSearchedModel itemSearchedModel,
+            IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
@@ -77,6 +80,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemsDataService = itemsDataService ?? throw new ArgumentNullException(nameof(itemsDataService));
             this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
+            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
 
             this.currentItemIndex = 0;
             this.requestedQuantity = "0";
@@ -257,7 +261,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             try
             {
-                var newItems = await this.itemsDataService.GetAllAsync(
+                var newItems = await this.areasDataService.GetItemsAsync(
+                    this.areaId.Value,
                     skip,
                     DEFAULT_QUANTITY_ITEM,
                     null,

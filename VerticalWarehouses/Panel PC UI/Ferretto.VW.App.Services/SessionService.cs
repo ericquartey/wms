@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading.Tasks;
 
 #if DEBUG
 using System.Windows;
@@ -12,29 +13,34 @@ namespace Ferretto.VW.App.Services
 {
     internal class SessionService : ISessionService
     {
+        private readonly IAuthenticationService autenticationService;
+
         private readonly IHealthProbeService healthProbeService;
 
         private readonly INavigationService navigationService;
 
         public SessionService(
+            IAuthenticationService autenticationService,
             IHealthProbeService healthProbeService,
             INavigationService navigationService)
         {
+            this.autenticationService = autenticationService ?? throw new ArgumentNullException(nameof(autenticationService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
             this.healthProbeService.HealthStatusChanged.Subscribe(
-                this.OnHealthStatusChanged,
+                async m => await this.OnHealthStatusChanged(m),
                 Prism.Events.ThreadOption.UIThread,
                 false);
         }
 
-        private void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
         {
             if (e.HealthStatus == HealthStatus.Unhealthy
                 &&
                 ConfigurationManager.AppSettings.LogoutWhenUnhealthy())
             {
+                await this.autenticationService.LogOutAsync();
                 this.navigationService.GoBackTo(
                     nameof(Utils.Modules.Login),
                     Utils.Modules.Login.LOGIN);

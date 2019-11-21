@@ -42,7 +42,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Login)
         {
             if (bayManager is null)
@@ -55,7 +56,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
-
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 #if DEBUG
             this.UserLogin = new UserLogin
             {
@@ -114,6 +115,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
             }
         }
+
+        private readonly IMachineBaysWebService machineBaysWebService;
 
         public bool IsWaitingForResponse
         {
@@ -178,6 +181,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 if (!(bay is null))
                 {
                     this.BayNumber = (int)bay.Number;
+                    await this.machineBaysWebService.DeactivateAsync();
                 }
             }
             catch (Exception ex)
@@ -242,6 +246,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     }
                     else
                     {
+                        await this.machineBaysWebService.ActivateAsync();
                         this.NavigateToOperatorMainView();
                     }
 
