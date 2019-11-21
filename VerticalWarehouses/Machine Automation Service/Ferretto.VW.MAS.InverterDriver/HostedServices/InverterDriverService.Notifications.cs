@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
+using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning;
 using Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff;
@@ -258,7 +262,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             if (inverter is AngInverterStatus angInverter)
                             {
                                 ioStatuses[6] = angInverter.ANG_OverrunElevatorSensor;
-                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)InverterIndex.MainInverter])
                                 {
                                     this.Logger.LogTrace("Sensor Update");
 

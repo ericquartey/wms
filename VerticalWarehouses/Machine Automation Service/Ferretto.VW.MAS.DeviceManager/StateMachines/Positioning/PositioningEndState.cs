@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.CommonUtils.Messages;
+﻿using System;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -19,7 +21,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
 
@@ -32,6 +38,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -51,6 +59,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 case FieldMessageType.InverterStop:
                 case FieldMessageType.Positioning:
+                case FieldMessageType.InverterSwitchOn:
+                case FieldMessageType.InverterSwitchOff:
                     switch (message.Status)
                     {
                         case MessageStatus.OperationStop:
@@ -75,6 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             break;
 
                         case MessageStatus.OperationError:
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.ParentStateMachine.ChangeState(new PositioningErrorState(this.stateData));
                             break;
                     }
@@ -106,9 +117,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else
             {
-                if (this.machineData.Requester == MessageActor.AutomationService && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                if (this.machineData.MessageData.AxisMovement == Axis.Horizontal)
                 {
-                    this.UpdateLoadingUnitLocation();
+                    this.UpdateLastIdealPosition();
+                    if (this.machineData.Requester == MessageActor.AutomationService)
+                    {
+                        this.UpdateLoadingUnitLocation();
+                    }
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -153,6 +168,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogDebug("Retry Stop Command");
             this.Start();
+        }
+
+        private void UpdateLastIdealPosition()
+        {
+            var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
         }
 
         private void UpdateLoadingUnitLocation()

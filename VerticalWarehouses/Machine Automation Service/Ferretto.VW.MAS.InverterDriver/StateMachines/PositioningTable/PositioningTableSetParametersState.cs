@@ -175,15 +175,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         switch (this.tableIndex)
                         {
                             case InverterTableIndex.TableTravelP7:
-                                if (this.data.TargetPosition != (this.dataOld?.TargetPosition ?? 0))
-                                {
-                                    this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
-                                    this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
-                                }
-                                else
-                                {
-                                    this.DoTargetPosition();
-                                }
+                                this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.TableTravelTargetPosition, this.data.TargetPosition));
+                                this.Logger.LogDebug($"Set target position: {this.data.TargetPosition}");
                                 break;
 
                             case InverterTableIndex.TableTravelSet1:

@@ -116,16 +116,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var sensors = this.sensorsProvider.GetAll();
 
             if (loadingUnitId.HasValue
-                &&
-                loadingUnitNetWeight.HasValue)
+                && loadingUnitNetWeight.HasValue
+                )
             {
                 this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitNetWeight.Value);
             }
 
             var isLoadingUnitOnBoard =
                 sensors[(int)IOMachineSensors.LuPresentInMachineSide]
-                &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
+                && sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
 
             if (isStartedOnBoard != isLoadingUnitOnBoard)
             {
@@ -149,22 +148,57 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var profileType = SelectProfileType(direction, isStartedOnBoard);
-            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; HorizontalPosition: {(int)this.HorizontalPosition}; direction: {direction}; measure: {measure}; waitContinue: {waitContinue}");
 
-            var profileSteps = this.elevatorDataProvider.GetHorizontalAxis().Profiles
+            var axis = this.elevatorDataProvider.GetHorizontalAxis();
+            var profileSteps = axis.Profiles
                 .Single(p => p.Name == profileType)
                 .Steps
                 .OrderBy(s => s.Number);
 
+            if (!loadingUnitId.HasValue && isLoadingUnitOnBoard)
+            {
+                var loadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                if (loadUnit != null)
+                {
+                    loadingUnitId = loadUnit.Id;
+                }
+            }
+
+            // if weight is unknown we move as full weight
+            double scalingFactor = 1;
+            if (loadingUnitId.HasValue && !measure)
+            {
+                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
+                {
+                    scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);
+                }
+            }
+            foreach (var profileStep in profileSteps)
+            {
+                profileStep.ScaleMovementsByWeight(scalingFactor, axis);
+            }
+
             // if direction is Forwards then height increments, otherwise it decrements
-            var directionMultiplier = direction == HorizontalMovementDirection.Forwards ? 1 : -1;
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
 
             var speed = profileSteps.Select(s => s.Speed).ToArray();
             var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
             var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
-            var switchPosition = profileSteps.Select(s => this.HorizontalPosition + (s.Position * directionMultiplier)).ToArray();
+
+            var compensation = this.HorizontalPosition - axis.LastIdealPosition;
+            var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();
 
             var targetPosition = switchPosition.Last();
+
+            this.logger.LogDebug($"MoveHorizontalAuto: ProfileType: {profileType}; " +
+                $"HorizontalPosition: {(int)this.HorizontalPosition}; " +
+                $"direction: {direction}; " +
+                $"measure: {measure}; " +
+                $"waitContinue: {waitContinue}; " +
+                $"loadUnitId: {loadingUnitId}; " +
+                $"scalingFactor: {scalingFactor}; " +
+                $"compensation: {compensation}");
 
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
@@ -205,11 +239,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var speed = new[] { movementParameters.Speed * procedureParameters.FeedRate };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
+            var speed = new[] { axis.FullLoadMovement.Speed * procedureParameters.FeedRate };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -241,11 +275,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Horizontal);
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var speed = new[] { procedureParameters.ProfileCalibrateSpeed };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
+            var acceleration = new[] { axis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { axis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
@@ -277,7 +311,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
-            var lowerBound = Math.Max(verticalAxis.LowerBound, verticalAxis.Offset);
+            if (!(verticalAxis.LowerBound <= verticalAxis.Offset
+                && verticalAxis.Offset <= verticalAxis.UpperBound
+                )
+            )
+            {
+                throw new ArgumentOutOfRangeException($"Vertical Axis bounds or offset are not valid: lower bound ({verticalAxis.LowerBound}); offset {verticalAxis.Offset}; upper bound {verticalAxis.UpperBound}");
+            }
+
+            var lowerBound = verticalAxis.LowerBound;
             var upperBound = verticalAxis.UpperBound;
 
             if (targetPosition < lowerBound || targetPosition > upperBound)
@@ -286,14 +328,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     nameof(targetPosition),
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
-
-            //// TODO remove this check. We can move vertical even if homing is not done: only the feedRate will be smaller!
-            //var homingDone = this.setupStatusProvider.Get().VerticalOriginCalibration.IsCompleted;
-            //if (!homingDone)
-            //{
-            //    throw new InvalidOperationException(
-            //       Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
-            //}
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
