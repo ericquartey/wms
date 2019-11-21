@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     case LoadingUnitLocation.Cell:
                         if (this.messageData.DestinationCellId != null)
                         {
-                            var cell = this.cellsProvider.GetCellById(this.messageData.DestinationCellId.Value);
+                            var cell = this.cellsProvider.GetById(this.messageData.DestinationCellId.Value);
 
                             direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         }
@@ -129,20 +129,24 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                 {
-                    this.elevatorDataProvider.UnloadLoadingUnit();
+                    this.elevatorDataProvider.SetLoadingUnit(null);
 
-                    if (this.messageData.Destination == LoadingUnitLocation.Cell)
+                    if (this.messageData.Destination is LoadingUnitLocation.Cell)
                     {
-                        var moveDataLoadingUnitCellSourceId = this.messageData.DestinationCellId;
-
-                        if (moveDataLoadingUnitCellSourceId != null)
+                        var destinationCellId = this.messageData.DestinationCellId;
+                        if (destinationCellId.HasValue)
                         {
-                            this.cellsProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, moveDataLoadingUnitCellSourceId.Value);
+                            this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.moveData.LoadingUnitId);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Loading unit movement to target cell has no target cell specified.");
                         }
                     }
                     else
                     {
-                        this.baysProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, this.messageData.Destination);
+                        var bayPosition = this.baysProvider.GetPositionByLocation(this.messageData.Destination);
+                        this.baysProvider.SetLoadingUnit(bayPosition.Id, this.moveData.LoadingUnitId);
                     }
 
                     transaction.Commit();

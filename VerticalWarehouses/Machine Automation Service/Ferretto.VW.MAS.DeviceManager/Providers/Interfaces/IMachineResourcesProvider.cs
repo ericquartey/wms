@@ -75,6 +75,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void EnableNotification(bool enable);
 
+        ShutterPosition GetShutterPosition(BayNumber bayNumber);
+
         bool IsDrawerInBayBottom(BayNumber bayNumber);
 
         bool IsDrawerInBayTop(BayNumber bayNumber);

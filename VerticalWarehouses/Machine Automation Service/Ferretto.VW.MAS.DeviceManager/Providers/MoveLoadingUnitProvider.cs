@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     // Retrieve loading unit position
                     if (messageData.LoadingUnitId != null)
                     {
-                        var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
+                        var cell = this.cellsProvider.GetByLoadingUnitId(messageData.LoadingUnitId.Value);
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     // Retrieve Cell height
                     if (messageData.DestinationCellId != null)
                     {
-                        var cell = this.cellsProvider.GetCellById(messageData.DestinationCellId.Value);
+                        var cell = this.cellsProvider.GetById(messageData.DestinationCellId.Value);
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
@@ -115,7 +115,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     // Retrieve loading unit position
                     if (messageData.LoadingUnitId != null)
                     {
-                        var cell = this.cellsProvider.GetCellByLoadingUnit(messageData.LoadingUnitId.Value);
+                        var cell = this.cellsProvider.GetByLoadingUnitId(messageData.LoadingUnitId.Value);
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
@@ -127,7 +127,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     // Retrieve Cell height
                     if (messageData.SourceCellId != null)
                     {
-                        var cell = this.cellsProvider.GetCellById(messageData.SourceCellId.Value);
+                        var cell = this.cellsProvider.GetById(messageData.SourceCellId.Value);
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
@@ -144,6 +144,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
+          //TODO***********REFACTOR THIS
             this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, measure, requestingBay, sender);
 
             if (openShutter)
@@ -178,7 +179,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToVerticalPosition(targetHeight, parameters.FeedRateAfterZero, measure, true, requestingBay, MessageActor.MachineManager);
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(targetHeight, parameters.FeedRateAfterZero, measure, true, requestingBay, MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)

@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
+        double ChainPosition { get; }
+
         WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; }
 
         WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }

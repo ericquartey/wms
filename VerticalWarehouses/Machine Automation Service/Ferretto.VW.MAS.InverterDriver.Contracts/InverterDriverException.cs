@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Ferretto.VW.MAS.InverterDriver.Contracts
 {
+    [Serializable]
     public class InverterDriverException : Exception
     {
         #region Constructors

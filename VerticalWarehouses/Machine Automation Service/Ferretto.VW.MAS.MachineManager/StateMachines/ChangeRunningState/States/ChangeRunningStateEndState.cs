@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
-        private readonly IMachineModeDataProvider machineModeDataProvider;
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             IBaysProvider baysProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
-            IMachineModeDataProvider machineModeDataProvider,
+            IMachineModeVolatileDataProvider machineModeDataProvider,
             ISensorsProvider sensorsProvider,
             ILogger<StateBase> logger)
             : base(logger)

@@ -192,20 +192,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                ??
                (this.startCommand = new DelegateCommand(
                    async () => await this.StartAsync(),
-                   this.CanExecuteStartCommand));
+                   this.CanStart));
 
         public ICommand StopCommand =>
                 this.stopCommand
                 ??
                 (this.stopCommand = new DelegateCommand(
-                    async () => await this.StartStop(),
-                    this.CanExecuteStopCommand));
+                    async () => await this.StopAsync(),
+                    this.CanStop));
 
         #endregion
 
         #region Methods
 
-        public virtual bool CanExecuteStartCommand()
+        public virtual bool CanStart()
         {
             return
                 !this.IsExecutingProcedure
@@ -323,7 +323,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             return Task.CompletedTask;
         }
 
-        public virtual async Task StartStop()
+        public virtual async Task StopAsync()
         {
             try
             {
@@ -368,7 +368,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
         }
 
-        private bool CanExecuteStopCommand()
+        private bool CanStop()
         {
             return
                 this.IsExecutingProcedure
