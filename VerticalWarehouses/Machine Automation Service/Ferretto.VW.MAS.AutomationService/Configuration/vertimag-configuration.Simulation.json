@@ -144,14 +144,14 @@
           "ChainOffset": -6.4,
           "Inverter": null,
           "FullLoadMovement": {
-            "Acceleration": 350,
-            "Deceleration": 350,
-            "Speed": 550
+            "Acceleration": 200,
+            "Deceleration": 200,
+            "Speed": 480
           },
           "EmptyLoadMovement": {
             "Acceleration": 1500,
             "Deceleration": 1500,
-            "Speed": 730
+            "Speed": 650
           },
           "Profiles": [
             {
@@ -176,7 +176,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
                   "Position": 900,
                   "AdjustByWeight": 1
@@ -184,7 +184,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 3,
                   "Position": 1100,
                   "AdjustByWeight": 1
@@ -220,7 +220,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
                   "Position": 750,
                   "AdjustByWeight": 1
@@ -231,7 +231,7 @@
                   "Speed": 200,
                   "Number": 3,
                   "Position": 1020,
-                  "AdjustByWeight": 1
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
@@ -264,7 +264,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 900,
                   "Number": 2,
                   "AdjustByWeight": 1
@@ -272,7 +272,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 1100,
                   "Number": 3,
                   "AdjustByWeight": 1
@@ -308,7 +308,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 750,
                   "Number": 2,
                   "AdjustByWeight": 1
@@ -319,7 +319,7 @@
                   "Speed": 200,
                   "Position": 1020,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
