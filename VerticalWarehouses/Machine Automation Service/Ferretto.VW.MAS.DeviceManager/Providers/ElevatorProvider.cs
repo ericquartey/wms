@@ -539,8 +539,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // we use compensation for small errors only (large errors come from new database)
             var compensation = this.HorizontalPosition - axis.LastIdealPosition;
-            if (Math.Abs(compensation) > 5)
+            if (Math.Abs(compensation) > Math.Abs(axis.ChainOffset))
             {
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation} > offset {axis.ChainOffset}");
                 compensation = 0;
             }
             var switchPosition = profileSteps.Select(s => this.HorizontalPosition - compensation + (s.Position * directionMultiplier)).ToArray();

@@ -65,6 +65,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 {
                     case MessageStatus.OperationEnd:
                         this.ioSwitched = true;
+                        this.Logger.LogDebug("SwitchAxis completed");
                         break;
 
                     case MessageStatus.OperationError:
@@ -80,6 +81,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 {
                     case MessageStatus.OperationEnd:
                         this.inverterSwitched = true;
+                        this.Logger.LogDebug("Inverter switch ON completed");
                         break;
 
                     case MessageStatus.OperationError:
@@ -94,7 +96,6 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 switch (message.Status)
                 {
                     case MessageStatus.OperationEnd:
-                        this.Logger.LogDebug("Inverter switch OFF completed");
                         break;
 
                     case MessageStatus.OperationError:
@@ -111,7 +112,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
             {
                 if (data.CurrentAxis == Axis.Horizontal)
                 {
-                    // horizontal position received
+                    this.Logger.LogDebug("Horizontal position received");
                     var axis = Axis.Vertical;
                     var ioCommandMessageData = new SwitchAxisFieldMessageData(Axis.Horizontal);
                     var ioCommandMessage = new FieldCommandMessage(
@@ -143,7 +144,7 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 }
                 else if (data.CurrentAxis == Axis.Vertical)
                 {
-                    // vertical position received
+                    this.Logger.LogDebug("Vertical position received");
                     this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
                     this.positionRequested = true;
                 }
