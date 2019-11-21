@@ -238,7 +238,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WeightMeasurement",
+                name: "WeightMeasurements",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -251,7 +251,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WeightMeasurement", x => x.Id);
+                    table.PrimaryKey("PK_WeightMeasurements", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -295,7 +295,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shutter",
+                name: "Shutters",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -306,9 +306,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shutter", x => x.Id);
+                    table.PrimaryKey("PK_Shutters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shutter_Inverters_InverterId",
+                        name: "FK_Shutters_Inverters_InverterId",
                         column: x => x.InverterId,
                         principalTable: "Inverters",
                         principalColumn: "Id",
@@ -643,9 +643,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Bays_Shutter_ShutterId",
+                        name: "FK_Bays_Shutters_ShutterId",
                         column: x => x.ShutterId,
-                        principalTable: "Shutter",
+                        principalTable: "Shutters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -745,9 +745,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ElevatorAxes_WeightMeasurement_WeightMeasurementId",
+                        name: "FK_ElevatorAxes_WeightMeasurements_WeightMeasurementId",
                         column: x => x.WeightMeasurementId,
-                        principalTable: "WeightMeasurement",
+                        principalTable: "WeightMeasurements",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -1005,7 +1005,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 20, 16, 4, 33, 290, DateTimeKind.Local).AddTicks(4818), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 21, 9, 18, 37, 504, DateTimeKind.Local).AddTicks(7649), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1499,8 +1499,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "WeightCheckId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shutter_InverterId",
-                table: "Shutter",
+                name: "IX_Shutters_InverterId",
+                table: "Shutters",
                 column: "InverterId");
 
             migrationBuilder.CreateIndex(
@@ -1643,7 +1643,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IoDevices");
 
             migrationBuilder.DropTable(
-                name: "Shutter");
+                name: "Shutters");
 
             migrationBuilder.DropTable(
                 name: "LoadingUnits");
@@ -1661,7 +1661,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Inverters");
 
             migrationBuilder.DropTable(
-                name: "WeightMeasurement");
+                name: "WeightMeasurements");
 
             migrationBuilder.DropTable(
                 name: "Machines");

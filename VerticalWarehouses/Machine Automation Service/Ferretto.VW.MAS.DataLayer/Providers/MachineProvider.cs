@@ -29,6 +29,53 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void Add(Machine machine)
+        {
+            if (machine is null)
+            {
+                throw new System.ArgumentNullException(nameof(machine));
+            }
+
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+
+            lock (this.dataContext)
+            {
+                this.dataContext.Machines.Add(machine);
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void ClearAll()
+        {
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+
+            lock (this.dataContext)
+            {
+                this.dataContext.Shutters.RemoveRange(this.dataContext.Shutters);
+                this.dataContext.WeightMeasurements.RemoveRange(this.dataContext.WeightMeasurements);
+                this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
+                this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
+                this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
+                this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
+                this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
+                this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
+                this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
+                this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
+                this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
+                this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
+                this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
+                this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
+                this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
+                this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
+                this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public Machine Get()
         {
             lock (this.dataContext)
@@ -108,25 +155,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Count();
 
                 return elevatorInvertersCount > 1;
-            }
-        }
-
-        public void Update(Machine machine)
-        {
-            if (machine is null)
-            {
-                throw new System.ArgumentNullException(nameof(machine));
-            }
-
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
-            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
-
-            lock (this.dataContext)
-            {
-                this.dataContext.Machines.Update(machine);
-
-                this.dataContext.SaveChanges();
             }
         }
 

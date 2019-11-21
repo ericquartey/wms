@@ -31,6 +31,16 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void Add(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.AddRange(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
@@ -151,16 +161,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
-
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
 
                 this.dataContext.SaveChanges();
             }
