@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
-        private readonly ILogger<DbContext> logger;
+        private readonly ILogger<DataLayerContext> logger;
 
         private readonly IDbContextRedundancyService<TDbContext> redundancyService;
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
             bool async,
             DateTimeOffset startTime)
         {
-            this.logger.LogTrace(command.CommandText);
+            this.logger.LogDebug($"{connectionId}|{command.CommandText}");
 
             lock (this.redundancyService)
             {
