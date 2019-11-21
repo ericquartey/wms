@@ -330,15 +330,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
 
-                        if (this.currentAxis == Axis.Horizontal)
-                        {
-                            elevatorDataProvider.HorizontalPosition = currentAxisPosition;
-                        }
-                        else if (this.currentAxis == Axis.Vertical)
-                        {
-                            elevatorDataProvider.VerticalPosition = currentAxisPosition;
-                        }
-
                         this.forceStatusPublish[(int)message.SystemIndex] = false;
                     }
                     currentStateMachine?.ValidateCommandResponse(message);
