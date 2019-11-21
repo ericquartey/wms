@@ -61,14 +61,14 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding ElevatorVerticalPosition, StringFormat={}{0:F1}}" />
+                                       Text="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding ElevatorHorizontalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -89,14 +89,14 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.TrayWeight}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="Altezza cassetto" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F1}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
@@ -156,7 +156,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="Posizione Catena" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding BayChainPosition, StringFormat={}{0:F1}}" />
+                                       Text="{Binding BayChainPosition, StringFormat={}{0:F2}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical">
