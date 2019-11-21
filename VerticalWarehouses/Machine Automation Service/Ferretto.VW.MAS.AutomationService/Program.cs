@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 return -1;
             }
 
-            logger.LogInformation("Application terminated correctly.");
+            logger.LogInformation("Application terminated.");
 
             return NoError;
         }

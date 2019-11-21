@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger<ElevatorDataProvider> logger;
+        private readonly ILogger<DataLayerContext> logger;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILogger<ElevatorDataProvider> logger)
+            ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));

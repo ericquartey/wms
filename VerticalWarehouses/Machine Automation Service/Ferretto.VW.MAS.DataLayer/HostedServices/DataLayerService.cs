@@ -93,6 +93,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void SendErrorMessage(IMessageData data)
         {
+            var errorLevel = data?.Verbosity is MessageVerbosity.Fatal
+                ? ErrorLevel.Fatal
+                : ErrorLevel.Error;
+
             var message = new NotificationMessage(
                 data,
                 "DataLayer Error",
@@ -102,7 +106,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 BayNumber.None,
                 BayNumber.None,
                 MessageStatus.OperationError,
-                ErrorLevel.Error);
+                errorLevel);
 
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
