@@ -35,7 +35,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Parameters" />
+                   Text="Parametri" />
 
         <dxprg:PropertyGridControl Grid.Row="1"
                                    AllowExpanding="Force"
@@ -67,12 +67,14 @@
             <controls:PpcButton Grid.Row="0"
                                 Margin="15,0,15,0"
                                 Command="{Binding GoToImport}"
-                                Content="{x:Static res:InstallationApp.Restore}" />
+                                Content="{x:Static res:InstallationApp.Restore}"
+                                IsBusy="{Binding IsBusy}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,15,15,0"
                                 Command="{Binding GoToExport}"
-                                Content="{x:Static res:InstallationApp.Export}" />
+                                Content="{x:Static res:InstallationApp.Export}"
+                                IsBusy="{Binding IsBusy}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Margin="15,15,15,0"

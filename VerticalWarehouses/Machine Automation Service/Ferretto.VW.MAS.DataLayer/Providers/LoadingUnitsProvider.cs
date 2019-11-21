@@ -41,6 +41,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void ClearAll()
+        {
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
@@ -162,6 +166,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                foreach (var l in loadingUnits)
+                {
+                    this.dataContext.LoadingUnits.Attach(l);
+                    this.dataContext.Entry(l).State = EntityState.Modified;
+                    this.dataContext.LoadingUnits.Update(l);
+                }
                 this.dataContext.SaveChanges();
             }
         }

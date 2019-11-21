@@ -44,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure MarkAsCompleted(SetupProcedure procedureParameters);
 
+        void Update(SetupProceduresSet setupProceduresSet);
+
         #endregion
     }
 }
