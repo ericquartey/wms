@@ -68,6 +68,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="appsettings.EjLog.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="appsettings.SimulationP2.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

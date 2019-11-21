@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Services
 
         public static bool LogoutWhenUnhealthy(this NameValueCollection appSettings)
         {
-            var logoutWhenUnhealthyStringEnv = Environment.GetEnvironmentVariable("LOGOUTWHENUNHEALTHY");
+            var logoutWhenUnhealthyStringEnv = Environment.GetEnvironmentVariable("LOGOUT_WHEN_UNHEALTHY");
             if (!string.IsNullOrWhiteSpace(logoutWhenUnhealthyStringEnv))
             {
                 return bool.Parse(logoutWhenUnhealthyStringEnv);
