@@ -14,12 +14,12 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
         }
 
         public PositionStatusWord(IStatusWord otherControlWord)
-            : base(otherControlWord.Value)
+            : base(otherControlWord?.Value ?? throw new System.ArgumentNullException(nameof(otherControlWord)))
         {
         }
 
         public PositionStatusWord(IPositionStatusWord otherControlWord)
-            : base(otherControlWord.Value)
+            : base(otherControlWord?.Value ?? throw new System.ArgumentNullException(nameof(otherControlWord)))
         {
         }
 

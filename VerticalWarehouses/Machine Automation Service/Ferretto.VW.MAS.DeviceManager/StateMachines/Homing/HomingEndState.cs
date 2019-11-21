@@ -132,7 +132,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal || this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal
+                    ||
+                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
                 }

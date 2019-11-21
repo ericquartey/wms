@@ -32,8 +32,6 @@
 
         Positioning,
 
-        CurrentPosition,
-
         ShutterPositioning,
 
         FsmException,
@@ -89,5 +87,9 @@
         MoveLoadingUnit,
 
         ContinueMovement,
+
+        ElevatorPosition,
+
+        BayChainPosition,
     }
 }

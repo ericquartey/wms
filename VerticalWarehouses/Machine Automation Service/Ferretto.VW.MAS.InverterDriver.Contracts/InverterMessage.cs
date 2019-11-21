@@ -172,6 +172,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public static string FormatBlockWrite(object[] blockValues)
         {
+            if (blockValues is null)
+            {
+                throw new ArgumentNullException(nameof(blockValues));
+            }
+
             var text = new StringBuilder();
             foreach (var block in blockValues)
             {
@@ -261,6 +266,11 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
 
         public object[] ConvertPayloadToBlockRead(List<InverterBlockDefinition> blockDefinitions)
         {
+            if (blockDefinitions is null)
+            {
+                throw new ArgumentNullException(nameof(blockDefinitions));
+            }
+
             var blockValues = new object[blockDefinitions.Count];
             var stringPayload = Encoding.ASCII.GetString(this.payload);
             var start = 0;

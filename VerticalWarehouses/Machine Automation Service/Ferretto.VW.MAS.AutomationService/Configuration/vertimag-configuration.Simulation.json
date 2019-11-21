@@ -4,19 +4,19 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 3
     }
   ],
@@ -354,13 +354,13 @@
             "Id": 1,
             "Position": 375,
             "Priority": 1,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 3,
             "Position": 425,
             "Priority": 3,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 5,
@@ -1583,19 +1583,19 @@
             "Id": 2,
             "Position": 355,
             "Priority": 2,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 4,
             "Position": 367,
             "Priority": 4,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 6,
             "Position": 418,
             "Priority": 6,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 8,

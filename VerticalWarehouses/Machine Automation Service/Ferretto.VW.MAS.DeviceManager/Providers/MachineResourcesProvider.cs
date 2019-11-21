@@ -139,8 +139,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ShutterPosition GetShutterPosition(BayNumber bayNumber)
         {
-            var inverterStatus = new AglInverterStatus(
-                this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index);
+            var bay = this.baysProvider.GetByNumber(bayNumber);
+
+            if (bay.Shutter is null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bayNumber), "The specified bay has no shutter");
+            }
+
+            var inverterStatus = new AglInverterStatus(bay.Shutter.Inverter.Index);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 

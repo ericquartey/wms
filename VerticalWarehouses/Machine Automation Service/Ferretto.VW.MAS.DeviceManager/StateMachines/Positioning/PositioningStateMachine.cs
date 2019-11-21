@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
+            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - MovementType = {messageData.MovementType}");
 
             this.machineData = new PositioningMachineData(
                 requester,

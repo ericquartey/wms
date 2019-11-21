@@ -13,8 +13,6 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         bool ComputeElongation { get; set; }
 
-        double? CurrentPosition { get; set; }
-
         int Delay { get; set; }
 
         HorizontalMovementDirection Direction { get; set; }
@@ -39,9 +37,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         int RequiredCycles { get; }
 
+        int? SourceBayPositionId { get; set; }
+
+        int? SourceCellId { get; set; }
+
         double[] SwitchPosition { get; set; }
 
         double[] TargetAcceleration { get; }
+
+        int? TargetBayPositionId { get; set; }
+
+        int? TargetCellId { get; set; }
 
         double[] TargetDeceleration { get; }
 

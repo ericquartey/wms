@@ -10,6 +10,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const string CacheExpirationTimespanKey = "Vertimag:DataLayer:CacheExpirationTimespan";
 
+        private const string DataLayerConfigurationFileKey = "Vertimag:DataLayer:ConfigurationFile";
+
+        private const string OverrideSetupStatusKey = "Vertimag:DataLayer:OverrideSetupStatus";
+
         private const string PrimaryConnectionStringName = "AutomationServicePrimary";
 
         private const string SecondaryConnectionStringName = "AutomationServiceSecondary";
@@ -18,14 +22,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public static string GetCellsConfigurationFile(this IConfiguration configuration)
-        {
-            return configuration.GetValue("Vertimag:DataLayer:CellsFile", "cells.json");
-        }
-
         public static string GetDataLayerConfigurationFile(this IConfiguration configuration)
         {
-            return configuration.GetValue<string>("Vertimag:DataLayer:ConfigurationFile");
+            return configuration.GetValue<string>(DataLayerConfigurationFileKey);
         }
 
         public static string GetDataLayerPrimaryConnectionString(this IConfiguration configuration)
@@ -34,7 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new System.Exception($"Connection string '{PrimaryConnectionStringName}' cannot be null.");
+                throw new Exception($"Connection string '{PrimaryConnectionStringName}' cannot be null.");
             }
 
             return connectionString;
@@ -54,7 +53,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public static bool IsSetupStatusOverridden(this IConfiguration configuration)
         {
-            return configuration.GetValue<bool>("Vertimag:DataLayer:OverrideSetupStatus");
+            return configuration.GetValue<bool>(OverrideSetupStatusKey);
         }
 
         #endregion

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191120115216_initialcreation")]
-    partial class initialcreation
+    [Migration("20191120150434_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -120,6 +120,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<bool>("IsDeactivated");
+
+                    b.Property<bool>("IsUnusable");
+
                     b.Property<int>("PanelId");
 
                     b.Property<double>("Position");
@@ -160,11 +164,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("BayPositionId");
+
+                    b.Property<int?>("CellId");
+
                     b.Property<int?>("LoadingUnitId");
 
                     b.Property<int?>("StructuralPropertiesId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BayPositionId");
+
+                    b.HasIndex("CellId");
 
                     b.HasIndex("LoadingUnitId");
 
@@ -1188,7 +1200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 12, 52, 16, 286, DateTimeKind.Local).AddTicks(8282),
+                            InstallationDate = new DateTime(2017, 1, 20, 16, 4, 33, 290, DateTimeKind.Local).AddTicks(4818),
                             ServiceStatus = 86
                         });
                 });
@@ -1624,6 +1636,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Elevator", b =>
                 {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.BayPosition", "BayPosition")
+                        .WithMany()
+                        .HasForeignKey("BayPositionId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
+                        .WithMany()
+                        .HasForeignKey("CellId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");

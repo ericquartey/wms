@@ -18,13 +18,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorWebService machineElevatorWebService;
+        private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService;
 
         private double? currentHorizontalPosition;
 
         private double? currentVerticalPosition;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private bool isExecutingProcedure;
 
@@ -48,8 +50,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand stopCommand;
 
-        private SubscriptionToken updateCurrentPositionToken;
-
         private double upperBound;
 
         #endregion
@@ -58,11 +58,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public VerticalOriginCalibrationViewModel(
             IMachineVerticalOriginProcedureWebService verticalOriginProcedureWebService,
-            IMachineElevatorWebService machineElevatorWebService)
+            IMachineElevatorService machineElevatorService)
             : base(PresentationMode.Installer)
         {
             this.verticalOriginProcedureWebService = verticalOriginProcedureWebService ?? throw new ArgumentNullException(nameof(verticalOriginProcedureWebService));
-            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -199,8 +199,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.Offset = procedureParameters.Offset;
                 this.Resolution = procedureParameters.Resolution;
 
-                this.CurrentVerticalPosition = await this.machineElevatorWebService.GetVerticalPositionAsync();
-                this.CurrentHorizontalPosition = await this.machineElevatorWebService.GetHorizontalPositionAsync();
+                this.CurrentVerticalPosition = this.machineElevatorService.Position.Vertical;
+                this.CurrentHorizontalPosition = this.machineElevatorService.Position.Horizontal;
             }
             catch (Exception ex)
             {
@@ -292,6 +292,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsExecutingProcedure = false;
             }
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentHorizontalPosition = e.HorizontalPosition;
+            this.CurrentVerticalPosition = e.VerticalPosition;
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
@@ -405,29 +411,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            this.updateCurrentPositionToken = this.updateCurrentPositionToken
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
                 ??
                 this.EventAggregator
-                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
                     .Subscribe(
-                        this.UpdatePositions,
+                        this.OnElevatorPositionChanged,
                         ThreadOption.UIThread,
-                        false,
-                        m => m.Data != null);
-        }
-
-        private void UpdatePositions(NotificationMessageUI<PositioningMessageData> message)
-        {
-            switch (message.Data.AxisMovement)
-            {
-                case Axis.Horizontal:
-                    this.CurrentHorizontalPosition = message.Data.CurrentPosition;
-                    break;
-
-                case Axis.Vertical:
-                    this.CurrentVerticalPosition = message.Data.CurrentPosition;
-                    break;
-            }
+                        false);
         }
 
         #endregion

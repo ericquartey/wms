@@ -27,6 +27,11 @@ namespace Ferretto.VW.App
         public Shell(IModuleManager moduleManager)
           : this()
         {
+            if (moduleManager is null)
+            {
+                throw new System.ArgumentNullException(nameof(moduleManager));
+            }
+
             moduleManager.LoadModule(nameof(Utils.Modules.Layout));
             moduleManager.LoadModule(nameof(Utils.Modules.Login));
         }

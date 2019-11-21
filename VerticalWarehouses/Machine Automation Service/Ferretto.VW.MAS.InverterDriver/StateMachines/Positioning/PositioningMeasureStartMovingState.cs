@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
 
         private readonly ElevatorAxis verticalParams;
 
-        private DateTime startTime;
+        private DateTime? startTime;
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
             base.Start();
 
             this.Logger.LogInformation("Starting measure of weight.");
-            this.startTime = DateTime.MinValue;
+            this.startTime = null;
         }
 
         public override void Stop()
@@ -72,23 +72,23 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             base.ValidateCommandResponse(message);
 
-            if (this.startTime == DateTime.MinValue)
+            if (this.startTime.HasValue)
             {
-                this.startTime = DateTime.UtcNow;
-            }
-            else
-            {
-                if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > this.verticalParams.WeightMeasurement.MeasureTime * 100)
+                if ((DateTime.UtcNow - this.startTime.Value).TotalMilliseconds > this.verticalParams.WeightMeasurement.MeasureTime * 100)
                 {
                     this.RequestSample();
                     this.startTime = DateTime.UtcNow;
                 }
             }
+            else
+            {
+                this.startTime = DateTime.UtcNow;
+            }
 
             if (message.ParameterId == InverterParameterId.TorqueCurrent)
             {
                 var current = message.UShortPayload / 10.0;
-                this.data.MeasuredWeight = (current * current * this.verticalParams.WeightMeasurement.MeasureConst2)
+                this.data.MeasuredWeight = (Math.Pow(current, 2) * this.verticalParams.WeightMeasurement.MeasureConst2)
                     + (current * this.verticalParams.WeightMeasurement.MeasureConst1)
                     + this.verticalParams.WeightMeasurement.MeasureConst0;
 
