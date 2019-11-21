@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191120150434_Initial")]
+    [Migration("20191121081838_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1200,7 +1200,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 20, 16, 4, 33, 290, DateTimeKind.Local).AddTicks(4818),
+                            InstallationDate = new DateTime(2017, 1, 21, 9, 18, 37, 504, DateTimeKind.Local).AddTicks(7649),
                             ServiceStatus = 86
                         });
                 });
@@ -1383,7 +1383,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("InverterId");
 
-                    b.ToTable("Shutter");
+                    b.ToTable("Shutters");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.TorqueCurrentMeasurementSession", b =>
@@ -1478,7 +1478,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WeightMeasurement");
+                    b.ToTable("WeightMeasurements");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.StepMovementParameters", b =>
