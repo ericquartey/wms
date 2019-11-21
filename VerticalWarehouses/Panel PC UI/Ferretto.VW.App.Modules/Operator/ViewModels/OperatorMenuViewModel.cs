@@ -78,6 +78,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.IsBackNavigationAllowed = true;
+        }
+
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
             await base.OnMachinePowerChangedAsync(e);

@@ -12,10 +12,11 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public partial class BaseMovementsViewModel : BaseMainViewModel
+    public partial class BaseMovementsViewModel : BaseMainViewModel, IRegionMemberLifetime
     {
         #region Fields
 
@@ -149,6 +150,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
             }
         }
+
+        public virtual bool KeepAlive => true;
 
         public int? LoadingUnitCellId
         {

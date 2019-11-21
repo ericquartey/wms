@@ -1,8 +1,18 @@
-﻿namespace Ferretto.VW.App.Services
+﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+
+namespace Ferretto.VW.App.Services
 {
     public interface ISessionService
     {
+        #region Properties
+
+        UserAccessLevel UserAccessLevel { get; }
+
+        #endregion
+
         #region Methods
+
+        void SetUserAccessLevel(UserAccessLevel userAccessLevel);
 
         /// <summary>
         /// Shuts down the current machine.

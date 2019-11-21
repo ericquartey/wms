@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly ISessionService sessionService;
+
         private SubscriptionToken subscriptionToken;
 
         private MachineIdentity machineIdentity;
@@ -42,18 +44,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
+            ISessionService sessionService,
             IBayManager bayManager)
             : base(PresentationMode.Login)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
 
 #if DEBUG
@@ -236,14 +235,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 if (claims != null)
                 {
-                    if (claims.AccessLevel == UserAccessLevel.SuperUser)
-                    {
-                        this.NavigateToInstallerMainView();
-                    }
-                    else
-                    {
-                        this.NavigateToOperatorMainView();
-                    }
+                    this.sessionService.SetUserAccessLevel(claims.AccessLevel);
+
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Menu),
+                        Utils.Modules.Menu.MAINMENU,
+                        data: this.Data,
+                        trackCurrentView: true);
 
                     this.machineErrorsService.AutoNavigateOnError = true;
                 }

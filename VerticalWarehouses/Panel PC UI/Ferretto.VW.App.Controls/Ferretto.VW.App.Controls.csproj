@@ -48,12 +48,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\PpcBadge.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
+    <None Remove="Skins\Dark\DarkPpcBadge.xaml" />
     <None Remove="Skins\DXStyle.xaml" />
     <None Remove="Skins\Light\LightDialogPopup.xaml" />
+    <None Remove="Skins\Light\LightPpcBadge.xaml" />
     <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
+    <None Remove="Styles\General.xaml" />
     <None Remove="Styles\PpcButtonKeyStyle.xaml" />
     <None Remove="Styles\PpcButtonStyle.xaml" />
     <None Remove="Styles\PpcPressAndReleaseButton.xaml" />

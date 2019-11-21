@@ -15,9 +15,13 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineErrorsService machineErrorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineErrorsService>();
 
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
+
+        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
 
         private SubscriptionToken healthStatusChangedToken;
 
@@ -50,6 +54,8 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        protected NLog.Logger Logger => this.logger;
+
         public MachineError MachineError => this.machineErrorsService.ActiveError;
 
         public PresentationMode Mode
@@ -57,6 +63,8 @@ namespace Ferretto.VW.App.Controls
             get => this.mode;
             set => this.SetProperty(ref this.mode, value);
         }
+
+        protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
         #endregion
 
@@ -171,6 +179,8 @@ namespace Ferretto.VW.App.Controls
             {
                 throw new ArgumentNullException(nameof(exception));
             }
+
+            this.Logger.Error(exception);
 
             if (this.IsVisible)
             {

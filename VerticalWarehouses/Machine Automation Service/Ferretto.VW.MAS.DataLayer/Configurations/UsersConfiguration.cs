@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             {
                 Id = -1,
                 Name = "installer",
-                AccessLevel = 0,
+                AccessLevel = 1,
                 PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
                 PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A==",
             });
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             {
                 Id = -2,
                 Name = "operator",
-                AccessLevel = 2,
+                AccessLevel = 3,
                 PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
                 PasswordSalt = "iB+IdMnlzvXvitHWJff38A==",
             });

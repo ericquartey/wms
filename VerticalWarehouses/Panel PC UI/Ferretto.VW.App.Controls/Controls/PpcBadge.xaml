@@ -1,0 +1,41 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.PpcBadge"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             Width="75"
+             Height="75"
+             d:DataContext="{d:DesignInstance Type=local:PpcBadge,
+                                              IsDesignTimeCreatable=False}"
+             mc:Ignorable="d">
+    <UserControl.Resources>
+        <Style x:Key="PpcBadge_TextBlock_Style"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="8" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="28" />
+            <Setter Property="Foreground" Value="{DynamicResource PpcBadge_TextBlock_Foreground}" />
+        </Style>
+        <Style x:Key="PpcBadge_Ellipse_Style"
+               TargetType="{x:Type Ellipse}">
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="Stroke" Value="{DynamicResource PpcBadge_Ellipse_Stroke}" />
+            <Setter Property="Fill" Value="{DynamicResource PpcBadge_Ellipse_Fill}" />
+            <Setter Property="StrokeThickness" Value="5" />
+        </Style>
+    </UserControl.Resources>
+
+    <Viewbox Stretch="Uniform"
+             StretchDirection="Both">
+        <Grid Width="100"
+              Height="100">
+            <Ellipse Style="{DynamicResource PpcBadge_Ellipse_Style}" />
+            <TextBlock Style="{DynamicResource PpcBadge_TextBlock_Style}"
+                       Text="{Binding LabelText}" />
+        </Grid>
+    </Viewbox>
+
+</UserControl>
