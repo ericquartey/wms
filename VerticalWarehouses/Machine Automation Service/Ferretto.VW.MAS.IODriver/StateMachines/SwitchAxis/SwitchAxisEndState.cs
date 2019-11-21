@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         public override void Start()
         {
+            this.Logger.LogDebug($"1:Switch axis end {this.axisToSwitchOn}");
+
             var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
             var endNotification = new FieldNotificationMessage(
                 messageData,

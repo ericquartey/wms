@@ -93,8 +93,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
             if (this.switchOffOtherAxis)
             {
-                this.Logger.LogTrace("2:Change State to SwitchOffMotorState");
-
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
                     messageData,
@@ -111,8 +109,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
             }
             else
             {
-                this.Logger.LogTrace("4:Change State to SwitchOnMotorState");
-
                 var messageData = new SwitchAxisFieldMessageData(this.axisToSwitchOn, MessageVerbosity.Info);
                 var notificationMessage = new FieldNotificationMessage(
                     messageData,
