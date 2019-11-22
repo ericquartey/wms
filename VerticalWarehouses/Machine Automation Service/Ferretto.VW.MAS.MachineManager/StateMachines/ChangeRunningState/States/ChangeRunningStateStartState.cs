@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IMachineControlProvider machineControlProvider;
 
@@ -35,12 +35,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateStartState(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
 
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
 
@@ -142,7 +142,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                             break;
                     }
 
-                    if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
+                    if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                     {
                         var messageData = new ChangeRunningStateMessageData(this.requestedState);
                         this.machineControlProvider.StartChangePowerStatus(messageData, MessageActor.MachineManager, notification.RequestingBay);

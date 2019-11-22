@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
             services.AddHostedService<MissionManagerService>();
 
+            services.AddTransient<IMissionOperationsProvider, MissionOperationsProvider>();
+
             return services;
         }
 

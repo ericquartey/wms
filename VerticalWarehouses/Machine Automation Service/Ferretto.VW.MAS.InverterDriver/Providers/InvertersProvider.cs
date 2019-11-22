@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             IEventAggregator eventAggregator,
             IElevatorDataProvider elevatorDataProvider,
             IMachineProvider machineProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IErrorsProvider errorsProvider,
             ILogger<InverterDriverService> logger
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
 
@@ -121,12 +121,12 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (position < axis.LowerBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                     throw new Exception($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
                 }
                 if (position > axis.UpperBound)
                 {
-                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysProvider.GetByInverterIndex(inverter.SystemIndex));
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
                     throw new Exception($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
                 }
 
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
             if (positioningData.AxisMovement == Axis.BayChain)
             {
-                targetPosition = (int)Math.Round(this.baysProvider.GetResolution(inverter.SystemIndex) * position);
+                targetPosition = (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * position);
             }
             else
             {
@@ -242,7 +242,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         public IInverterStatusBase GetShutterInverter(BayNumber bayNumber)
         {
-            var index = this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
+            var index = this.baysDataProvider.GetByNumber(bayNumber).Shutter.Inverter.Index;
             var inverter = this.inverters.SingleOrDefault(i => i.SystemIndex == index);
 
             if (inverter is null)

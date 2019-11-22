@@ -20,7 +20,7 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class BaysProvider : BaseProvider, IBaysProvider
+    internal sealed class BaysDataProvider : BaseProvider, IBaysDataProvider
     {
         #region Fields
 
@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Constructors
 
-        public BaysProvider(
+        public BaysDataProvider(
             DataLayerContext dataContext,
             IEventAggregator eventAggregator,
             IMachineProvider machineProvider,
@@ -201,6 +201,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay;
             }
+        }
+
+        public void FindZero(BayNumber bayNumber)
+        {
+            this.PublishCommand(
+                new HomingMessageData(Axis.BayChain, Calibration.FindSensor),
+                "Execute FindZeroSensor Command",
+                MessageActor.DeviceManager,
+                MessageType.Homing,
+                bayNumber,
+                bayNumber);
         }
 
         public IEnumerable<Bay> GetAll()
@@ -672,6 +683,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return bay.Resolution;
             }
+        }
+
+        public void PerformHoming(BayNumber bayNumber)
+        {
+            this.PublishCommand(
+                new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder),
+                "Execute Homing Command",
+                MessageActor.DeviceManager,
+                MessageType.Homing,
+                bayNumber,
+                bayNumber);
         }
 
         public void ResetMachine()

@@ -62,14 +62,6 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private void OnEntityChanged(object sender, EntityChangedEventArgs e)
-        {
-            if (e.EntityType == nameof(MissionOperation))
-            {
-                this.OnNewMissionAvailable();
-            }
-        }
-
         private void OnMachineModeChanged()
         {
             this.bayStatusChangedEvent.Set();
@@ -81,7 +73,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
                 var bay = bayProvider
                     .GetAll()

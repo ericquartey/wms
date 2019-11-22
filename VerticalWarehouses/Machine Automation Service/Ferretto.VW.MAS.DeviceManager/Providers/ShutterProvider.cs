@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -23,13 +23,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public ShutterProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? ShutterPosition.Opened
                 : ShutterPosition.Closed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
             var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             if (bay.Shutter.Type == ShutterType.NotSpecified)
             {
@@ -174,7 +174,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var delayInMilliseconds = delayInSeconds * 1000;
 

@@ -101,9 +101,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataLayerReady()
         {
-            this.baysProvider.AddElevatorPseudoBay();
+            this.baysDataProvider.AddElevatorPseudoBay();
 
-            this.baysProvider.GetAll().ToList(); // HACK why is this call needed?
+            this.baysDataProvider.GetAll().ToList(); // HACK why is this call needed?
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionMessageData data)
