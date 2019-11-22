@@ -98,6 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
+                this.machineProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
 
                 this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }

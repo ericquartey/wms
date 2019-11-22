@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191121081838_Initial")]
-    partial class Initial
+    [Migration("20191122095241_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -678,6 +678,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "MachineManagerErrorLoadingUnitShutterClosed",
                             Reason = "MachineManagerErrorLoadingUnitShutterClosed",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300013,
+                            Code = 300013,
+                            Description = "MachineManagerErrorLoadingUnitPresentInCell",
+                            Reason = "MachineManagerErrorLoadingUnitPresentInCell",
+                            Severity = 1
                         });
                 });
 
@@ -935,6 +943,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300012,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300013,
                             TotalErrors = 0
                         });
                 });
@@ -1200,7 +1213,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 21, 9, 18, 37, 504, DateTimeKind.Local).AddTicks(7649),
+                            InstallationDate = new DateTime(2017, 1, 22, 10, 52, 41, 153, DateTimeKind.Local).AddTicks(2934),
                             ServiceStatus = 86
                         });
                 });
