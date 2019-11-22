@@ -100,6 +100,18 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public async Task<bool> AbortCurrentMissionOperationAsync()
+        {
+            //bool isMissionOperationAborted = await this.missionOperationsAutomationService.AbortAsync(this.CurrentMissionOperation.Id);
+            bool isMissionOperationAborted = true;
+            if (!isMissionOperationAborted)
+            {
+                this.CurrentMissionOperation = null;
+                return false;
+            }
+            return true;
+        }
+
         public void CompleteCurrentMission()
         {
             // TODO Implement mission completion logic

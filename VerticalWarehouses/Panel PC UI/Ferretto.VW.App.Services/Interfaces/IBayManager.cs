@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        Task<bool> AbortCurrentMissionOperationAsync();
+
         void CompleteCurrentMission();
 
         Task CompleteCurrentMissionOperationAsync(double quantity);

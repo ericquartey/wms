@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        private ICommand abortCommand;
+
         private IEnumerable<TrayControlCompartment> compartments;
 
         private ICommand confirmCommand;
@@ -51,6 +53,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand AbortCommand =>
+            this.abortCommand
+            ??
+            (this.abortCommand = new DelegateCommand(async () => await this.ExecuteAbortCommand()));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -140,6 +147,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.Compartments = await this.WmsDataProvider.GetTrayControlCompartmentsAsync(bayManager.CurrentMission);
                 this.SelectedCompartment = this.Compartments
                     .FirstOrDefault(c => c.Id == bayManager.CurrentMissionOperation.CompartmentId);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task ExecuteAbortCommand()
+        {
+            // TODO add validation
+            try
+            {
+                await this.BayManager.AbortCurrentMissionOperationAsync();
+
+                this.InputQuantity = null;
             }
             catch (Exception ex)
             {
