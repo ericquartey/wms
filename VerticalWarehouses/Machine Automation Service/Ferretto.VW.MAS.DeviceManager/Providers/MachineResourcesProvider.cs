@@ -145,6 +145,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 throw new ArgumentOutOfRangeException(nameof(bayNumber), "The specified bay has no shutter");
             }
+            if (bay.Shutter.Type == ShutterType.NotSpecified)
+            {
+                return ShutterPosition.NotSpecified;
+            }
 
             var inverterStatus = new AglInverterStatus(bay.Shutter.Inverter.Index);
 
