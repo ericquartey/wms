@@ -18,11 +18,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitWaitViewModel(
-            IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsWebService missionOperationsService,
+            IMissionsDataService missionsDataService,
             IBayManager bayManager)
-            : base(wmsDataProvider, wmsImagesProvider, missionOperationsService, bayManager)
+            : base(wmsImagesProvider, missionsDataService, bayManager)
         {
         }
 

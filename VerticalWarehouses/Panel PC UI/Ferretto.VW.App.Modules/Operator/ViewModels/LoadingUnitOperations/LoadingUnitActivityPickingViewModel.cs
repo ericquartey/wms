@@ -1,8 +1,7 @@
-﻿using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -18,11 +17,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitActivityPickingViewModel(
-            IWmsDataProvider wmsDataProvider,
-            IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsWebService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsDataProvider, wmsImagesProvider, missionOperationsService, bayManager)
+                    IWmsImagesProvider wmsImagesProvider,
+                    IMissionsDataService missionsDataService,
+                    IBayManager bayManager)
+                    : base(wmsImagesProvider, missionsDataService, bayManager)
         {
         }
 
@@ -45,22 +43,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.Disappear();
             this.ItemImage?.Dispose();
-        }
-
-        public override async Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.GetViewDataAsync(this.BayManager);
-            await this.GetTrayControlDataAsync(this.BayManager);
-        }
-
-        private async Task GetViewDataAsync(IBayManager bayManager)
-        {
-            // TODO       var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
-            // TODO       this.ItemImage = Image.FromStream(imageStram);
         }
 
         private void NavigateToOperationDetails()

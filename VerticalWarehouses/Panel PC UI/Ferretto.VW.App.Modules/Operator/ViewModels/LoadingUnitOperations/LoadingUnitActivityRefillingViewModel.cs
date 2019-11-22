@@ -1,8 +1,7 @@
 ﻿using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -18,11 +17,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitActivityRefillingViewModel(
-            IWmsDataProvider wmsDataProvider,
-            IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsWebService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsDataProvider, wmsImagesProvider, missionOperationsService, bayManager)
+                    IWmsImagesProvider wmsImagesProvider,
+                    IMissionsDataService missionsDataService,
+                    IBayManager bayManager)
+                    : base(wmsImagesProvider, missionsDataService, bayManager)
         {
         }
 
@@ -36,8 +34,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
                 () => this.DrawerDetailsButtonMethod()));
 
-        public override EnableMask EnableMask => EnableMask.Any;
-
         #endregion
 
         #region Methods
@@ -45,11 +41,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            await this.GetViewDataAsync(this.BayManager);
-            await this.GetTrayControlDataAsync(this.BayManager);
         }
 
         private void DrawerDetailsButtonMethod()
@@ -59,17 +50,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 Utils.Modules.Operator.DrawerOperations.REFILLINGDETAIL,
                 null,
                 trackCurrentView: true);
-        }
-
-        private async Task GetViewDataAsync(IBayManager bayManager)
-        {
-            this.ItemImage = null;
-
-            if (this.BayManager.CurrentMissionOperation != null)
-            {
-                // TODO   var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
-                // TODO    this.ItemImage = Image.FromStream(imageStram);
-            }
         }
 
         #endregion

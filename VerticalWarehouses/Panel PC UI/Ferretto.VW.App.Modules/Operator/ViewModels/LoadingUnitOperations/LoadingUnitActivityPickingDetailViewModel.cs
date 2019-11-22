@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -44,11 +45,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitActivityPickingDetailViewModel(
-            IWmsDataProvider wmsDataProvider,
-            IWmsImagesProvider wmsImagesProvider,
-            IMachineMissionOperationsWebService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsDataProvider, wmsImagesProvider, missionOperationsService, bayManager)
+                    IWmsImagesProvider wmsImagesProvider,
+                    IMissionsDataService missionsDataService,
+                    IBayManager bayManager)
+                    : base(wmsImagesProvider, missionsDataService, bayManager)
         {
         }
 

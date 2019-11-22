@@ -18,8 +18,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private const int DEFAULT_DELAY = 300;
-
         private const int DEFAULT_QUANTITY_ITEM = 20;
 
         private readonly IAreasDataService areasDataService;

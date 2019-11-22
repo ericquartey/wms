@@ -98,9 +98,11 @@ namespace Ferretto.VW.App.Services
 
         public async Task<bool> AbortCurrentMissionOperationAsync()
         {
-            //bool isMissionOperationAborted = await this.missionOperationsAutomationService.AbortAsync(this.CurrentMissionOperation.Id);
-            bool isMissionOperationAborted = true;
-            if (!isMissionOperationAborted)
+            try
+            {
+                await this.missionOperationsAutomationService.AbortAsync(this.CurrentMissionOperation.Id);
+            }
+            catch
             {
                 this.CurrentMissionOperation = null;
                 return false;
