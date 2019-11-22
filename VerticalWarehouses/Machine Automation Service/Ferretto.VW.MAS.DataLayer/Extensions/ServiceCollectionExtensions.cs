@@ -43,7 +43,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<IErrorsProvider, ErrorsProvider>()
                 .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
                 .AddTransient<ILogEntriesProvider, LogEntriesProvider>()
-                .AddTransient<IMachineProvider, MachineProvider>()
                 .AddTransient<IServicingProvider, ServicingProvider>()
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
@@ -51,6 +50,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<IUsersProvider, UsersProvider>();
 
             services
+                .AddSingleton<IMachineProvider, MachineProvider>()
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
                 .AddSingleton<IMachineModeVolatileDataProvider, MachineModeVolatileDataProvider>()
                 .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
