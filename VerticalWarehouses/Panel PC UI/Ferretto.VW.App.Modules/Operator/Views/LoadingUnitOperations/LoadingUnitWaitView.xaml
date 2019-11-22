@@ -46,7 +46,7 @@
             <controls:PpcLabeledText Grid.Row="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding PendingMissionsCount, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ContentText="{Binding PendingMissionOperationsCount, UpdateSourceTrigger=PropertyChanged}"
                                      LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}" />
 
         </Grid>

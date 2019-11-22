@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int PendingMissionsCount
+        public int PendingMissionOperationsCount
         {
             get => this.pendingMissionsCount;
             set => this.SetProperty(ref this.pendingMissionsCount, value);
@@ -54,13 +54,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.PendingMissionsCount = this.BayManager.PendingMissionsCount;
+            this.PendingMissionOperationsCount = this.BayManager.PendingMissionOperationsCount;
 
             this.BayManager.NewMissionOperationAvailable += this.OnMissionOperationAvailable;
 
             this.UpdateOperation();
 
-            this.PendingMissionsCount = this.BayManager.PendingMissionsCount;
+            this.PendingMissionOperationsCount = this.BayManager.PendingMissionOperationsCount;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)

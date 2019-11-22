@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Specialized;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {

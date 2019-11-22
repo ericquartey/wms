@@ -33,19 +33,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     return;
                 }
                 */
-                var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
-
-                var idleBays = baysProvider
-                    .GetAll()
-                    .Where(b => b.Status == BayStatus.Idle);
-
-                if (!idleBays.Any())
-                {
-                    this.Logger.LogInformation($"There are no free active bays.");
-                    return;
-                }
-
-                this.Logger.LogInformation($"There are {idleBays.Count()} idle (useable) bays.");
 
                 var machineId = 1; // TODO ***** use serial number instead
                 var missions = (await this.machinesDataService.GetMissionsByIdAsync(machineId))
@@ -55,20 +42,32 @@ namespace Ferretto.VW.MAS.MissionManager
                         &&
                         m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed);
 
-                foreach (var bay in idleBays)
-                {
-                    System.Diagnostics.Debug.Assert(!bay.CurrentMissionId.HasValue);
+                var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
-                    var pendingMissionsOnBay = missions
-                        .Where(m => m.BayId.Value == (int)bay.Number);
+                foreach (var bay in baysProvider.GetAll())
+                {
+                    var pendingMissionsOnBay = missions.Where(m => m.BayId.Value == (int)bay.Number);
 
                     if (pendingMissionsOnBay.Any())
                     {
-                        await this.ExecuteNextMissionAsync(
-                            bay,
-                            pendingMissionsOnBay.First().Id,
-                            pendingMissionsOnBay.Count(),
-                            baysProvider);
+                        var pendingMissionOperationsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
+                        if (bay.Status is BayStatus.Idle)
+                        {
+                            await this.ExecuteNextMissionAsync(
+                                bay,
+                                pendingMissionsOnBay.First().Id,
+                                pendingMissionOperationsCount,
+                                baysProvider);
+                        }
+                        else
+                        {
+                            this.Logger.LogInformation($"Bay {bay.Number}: the bay is not idle, but there are {pendingMissionsOnBay.Count()} pending missions (total operations: {pendingMissionOperationsCount}).");
+                            this.NotifyAssignedMissionOperationChanged(
+                                bay.Number,
+                                bay.CurrentMissionId,
+                                bay.CurrentMissionOperationId,
+                                pendingMissionOperationsCount);
+                        }
                     }
                     else
                     {
@@ -78,7 +77,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task ExecuteNextMissionAsync(Bay bay, int missionId, int pendingMissionsCount, IBaysProvider baysProvider)
+        private async Task ExecuteNextMissionAsync(Bay bay, int missionId, int pendingMissionOperationsCount, IBaysProvider baysProvider)
         {
             System.Diagnostics.Debug.Assert(!bay.CurrentMissionId.HasValue);
 
@@ -108,7 +107,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 await this.missionOperationsDataService.ExecuteAsync(operation.Id);
                 this.Logger.LogDebug($"Bay {bay.Number}: busy executing mission operation id='{operation.Id}'.");
 
-                this.NotifyAssignedMissionOperationChanged(bay.Number, mission.Id, operation.Id, pendingMissionsCount);
+                this.NotifyAssignedMissionOperationChanged(bay.Number, mission.Id, operation.Id, pendingMissionOperationsCount);
             }
             else
             {
@@ -116,7 +115,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 baysProvider.AssignMissionOperation(bay.Number, null, null);
 
-                this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, pendingMissionsCount);
+                this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, pendingMissionOperationsCount);
             }
         }
 
