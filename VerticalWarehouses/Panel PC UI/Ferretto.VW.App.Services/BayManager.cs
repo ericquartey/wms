@@ -149,26 +149,11 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
         {
-            //TODO Review Implementation avoid using numbers to identify bays
-            var bayNumber = BayNumber.None;
-            switch (e.BayNumber)
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            if ((BayNumber)bayNumber == e.BayNumber)
             {
-                case 1:
-                    bayNumber = BayNumber.BayOne;
-                    break;
-
-                case 2:
-                    bayNumber = BayNumber.BayTwo;
-                    break;
-
-                case 3:
-                    bayNumber = BayNumber.BayThree;
-                    break;
-            }
-
-            if ((BayNumber)ConfigurationManager.AppSettings.GetBayNumber() == bayNumber)
-            {
-                this.PendingMissionsCount = e.PendingMissionsCount;
+                this.PendingMissionsCount = e.PendingMissionsOperationsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);
             }
         }

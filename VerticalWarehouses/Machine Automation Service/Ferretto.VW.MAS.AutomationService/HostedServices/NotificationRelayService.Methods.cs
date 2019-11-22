@@ -3,6 +3,7 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -148,11 +149,15 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
-        private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)
+        private async Task OnNewMissionOperationAvailable(NewMissionOperationAvailable e)
         {
             Contract.Requires(e != null);
 
-            await this.operatorHub.Clients.All.NewMissionOperationAvailable(e);
+            await this.operatorHub.Clients.All.NewMissionOperationAvailable(
+                e.BayNumber,
+                e.MissionId,
+                e.MissionOperationId,
+                e.PendingMissionsCount);
         }
 
         private void OnPositioningChanged(NotificationMessage receivedMessage)

@@ -23,11 +23,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachinesDataService machinesDataService;
 
-        private readonly Task missionManagementTask;
-
         private readonly IMissionsDataService missionsDataService;
 
+        private readonly IMissionOperationsDataService missionOperationsDataService;
+
         private readonly AutoResetEvent newMissionArrivedResetEvent = new AutoResetEvent(false);
+
+        private readonly Task scheduleMissionsOnBaysTask;
 
         #endregion
 
@@ -36,6 +38,7 @@ namespace Ferretto.VW.MAS.MissionManager
         public MissionManagerService(
             IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService,
+            IMissionOperationsDataService missionOperationsDataService,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
             ILogger<MissionManagerService> logger,
@@ -44,9 +47,10 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            this.missionManagementTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
+            this.scheduleMissionsOnBaysTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());
 
             this.Logger.LogTrace("Mission manager initialized.");
         }

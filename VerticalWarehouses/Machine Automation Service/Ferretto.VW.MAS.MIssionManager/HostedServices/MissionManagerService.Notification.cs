@@ -16,7 +16,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return true;
+            return
+                notification.Destination is MessageActor.Any
+                ||
+                notification.Destination is MessageActor.MissionManager;
         }
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
@@ -52,7 +55,7 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             if (this.configuration.IsWmsEnabled())
             {
-                this.missionManagementTask.Start();
+                this.scheduleMissionsOnBaysTask.Start();
             }
         }
 
@@ -67,9 +70,10 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
 
-                var bay = bayProvider.GetAll()
-                                     .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                                     .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
+                var bay = bayProvider
+                    .GetAll()
+                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
+                    .SingleOrDefault(b => b.CurrentMissionOperationId == e.MissionOperationId);
 
                 if (bay != null && bay.CurrentMissionId != null)
                 {

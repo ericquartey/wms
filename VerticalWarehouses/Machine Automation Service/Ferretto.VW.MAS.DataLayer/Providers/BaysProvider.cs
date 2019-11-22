@@ -13,6 +13,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Prism.Events;
 
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         private readonly double kSum = -181.25;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         private readonly IMachineProvider machineProvider;
 
         private readonly NotificationEvent notificationEvent;
@@ -58,7 +61,8 @@ namespace Ferretto.VW.MAS.DataLayer
             IConfiguration configuration,
             IElevatorDataProvider elevatorDataProvider,
             IBayChainVolatileDataProvider bayChainVolatileDataProvider,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            ILogger<DataLayerContext> logger)
             : base(eventAggregator)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
@@ -66,6 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.bayChainVolatileDataProvider = bayChainVolatileDataProvider ?? throw new ArgumentNullException(nameof(bayChainVolatileDataProvider));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.cacheOptions = configuration.GetMemoryCacheOptions();
@@ -85,9 +90,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.IsActive = true;
+                if (!bay.IsActive)
+                {
+                    bay.IsActive = true;
 
-                this.Update(bay);
+                    this.Update(bay);
+
+                    this.logger.LogInformation($"The bay {bay.Number} is now active and ready to accept missions.");
+                }
 
                 return bay;
             }
@@ -180,9 +190,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.IsActive = false;
+                if (bay.IsActive)
+                {
+                    bay.IsActive = false;
 
-                this.Update(bay);
+                    this.Update(bay);
+
+                    this.logger.LogInformation($"The bay {bay.Number} is now deactivated and can no longer accept missions.");
+                }
 
                 return bay;
             }

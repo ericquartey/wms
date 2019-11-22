@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
@@ -11,7 +12,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task ErrorStatusChanged(int code);
 
-        Task NewMissionOperationAvailable(INewMissionOperationAvailable message);
+        Task NewMissionOperationAvailable(BayNumber bayNumber, int missionId, int missionOperationId, int pendingMissionOperationsCount);
 
         Task SetBayDrawerOperationToInventory();
 

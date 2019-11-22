@@ -2,6 +2,7 @@
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -76,8 +77,8 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.ResolutionCalibrationMethod(message);
                     break;
 
-                case MessageType.ExecuteMission when message.Data is INewMissionOperationAvailable:
-                    await this.OnNewMissionOperationAvailable(message.Data as INewMissionOperationAvailable);
+                case MessageType.ExecuteMission when message.Data is NewMissionOperationAvailable:
+                    await this.OnNewMissionOperationAvailable(message.Data as NewMissionOperationAvailable);
                     break;
 
                 case MessageType.ElevatorWeightCheck:

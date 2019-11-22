@@ -29,14 +29,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<INewMissionOperationAvailable>(
-                nameof(AutomationService.Hubs.IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
+            connection.On<BayNumber, int, int, int>(
+                nameof(AutomationService.Hubs.IOperatorHub.NewMissionOperationAvailable),
+                this.OnMissionOperationAvailable);
 
             connection.On<IBayOperationalStatusChangedMessageData>(
-                nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
+                nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged),
+                this.OnBayStatusChanged);
 
             connection.On<int>(
-                nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
+                nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged),
+                this.OnErrorStatusChanged);
         }
 
         private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
@@ -55,15 +58,15 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.ErrorStatusChanged?.Invoke(this, new ErrorStatusChangedEventArgs(code));
         }
 
-        private void OnMissionOperationAvailable(INewMissionOperationAvailable e)
+        private void OnMissionOperationAvailable(BayNumber bayNumber, int missionId, int missionOperationId, int pendingMissionOperationsCount)
         {
             this.MissionOperationAvailable?.Invoke(
                 this,
                 new MissionOperationAvailableEventArgs(
-                    e.BayId,
-                    e.MissionId,
-                    e.MissionOperationId,
-                    e.PendingMissionsCount));
+                    bayNumber,
+                    missionId,
+                    missionOperationId,
+                    pendingMissionOperationsCount));
         }
 
         #endregion
