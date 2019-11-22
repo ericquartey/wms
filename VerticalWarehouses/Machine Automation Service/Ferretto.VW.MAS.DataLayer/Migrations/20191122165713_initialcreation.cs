@@ -571,6 +571,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "LoadingUnitParts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    LoadingUnitId = table.Column<int>(nullable: false),
+                    PartId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LoadingUnitParts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_LoadingUnitParts_LoadingUnits_LoadingUnitId",
+                        column: x => x.LoadingUnitId,
+                        principalTable: "LoadingUnits",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BayPositions",
                 columns: table => new
                 {
@@ -1010,7 +1030,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 22, 10, 52, 41, 153, DateTimeKind.Local).AddTicks(2934), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 22, 17, 57, 12, 808, DateTimeKind.Local).AddTicks(1008), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1407,6 +1427,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_LoadingUnitParts_LoadingUnitId",
+                table: "LoadingUnitParts",
+                column: "LoadingUnitId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
@@ -1612,6 +1637,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ErrorStatistics");
+
+            migrationBuilder.DropTable(
+                name: "LoadingUnitParts");
 
             migrationBuilder.DropTable(
                 name: "LogEntries");

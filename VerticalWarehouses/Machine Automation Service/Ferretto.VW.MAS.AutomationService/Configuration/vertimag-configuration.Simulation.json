@@ -5,13 +5,35 @@
       "Tare": 120,
       "MaxNetWeight": 800,
       "Height": 100,
-      "Id": 1
+      "Id": 1,
+      "LoadingUnitParts": [
+        {
+          "PartId": 1
+        },
+        {
+          "PartId": 2
+        }
+      ]
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
       "Height": 100,
-      "Id": 2
+      "Id": 2,
+      "LoadingUnitParts": [
+        {
+          "PartId": 1
+        },
+        {
+          "PartId": 2
+        },
+        {
+          "PartId": 3
+        },
+        {
+          "PartId": 4
+        }
+      ]
     },
     {
       "Tare": 120,

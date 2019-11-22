@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -61,6 +62,11 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         public bool IsIntoMachine { get; set; }
+
+        /// <summary>
+        /// The parts (compartments) contained in the loading units
+        /// </summary>
+        public IEnumerable<LoadingUnitPart> LoadingUnitParts { get; set; }
 
         /// <summary>
         /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.

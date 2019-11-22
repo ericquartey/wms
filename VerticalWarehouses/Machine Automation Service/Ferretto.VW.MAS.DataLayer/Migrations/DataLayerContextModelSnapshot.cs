@@ -1025,6 +1025,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("LoadingUnits");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnitPart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("LoadingUnitId");
+
+                    b.Property<int>("PartId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LoadingUnitId");
+
+                    b.ToTable("LoadingUnitParts");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LogEntry", b =>
                 {
                     b.Property<int>("Id")
@@ -1211,7 +1227,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 22, 10, 52, 41, 153, DateTimeKind.Local).AddTicks(2934),
+                            InstallationDate = new DateTime(2017, 1, 22, 17, 57, 12, 808, DateTimeKind.Local).AddTicks(1008),
                             ServiceStatus = 86
                         });
                 });
@@ -1699,6 +1715,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Cell", "Cell")
                         .WithOne("LoadingUnit")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.LoadingUnit", "CellId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnitPart", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
+                        .WithMany("LoadingUnitParts")
+                        .HasForeignKey("LoadingUnitId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Machine", b =>
