@@ -93,9 +93,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
-        public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
+        public bool IsMachineInRunningState => this.machineProvider.IsMachineRunning;
 
-        public bool IsMachineRunning => this.IsMachineInRunningState;
+        public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
         public bool IsMicroCarterLeftSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide];
 

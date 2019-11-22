@@ -322,10 +322,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         unitToMove = this.baysProvider.GetLoadingUnitByDestination(messageData.Source);
                     }
 
-                    if (unitToMove == null)
+                    if (unitToMove == null || unitToMove.CellId.HasValue)
                     {
+                        unitToMove = null;
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
+                    }
+                    else if (unitToMove.CellId.HasValue)
+                    {
+                        unitToMove = null;
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceDb);
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
                     }
 #if CHECK_BAY_SENSOR
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
@@ -358,6 +365,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
             else
             {
+                unitToMove = null;
                 this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceDb);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
             }

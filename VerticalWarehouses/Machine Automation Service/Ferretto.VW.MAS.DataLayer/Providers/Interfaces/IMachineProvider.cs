@@ -5,6 +5,12 @@ namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IMachineProvider
     {
+        #region Properties
+
+        bool IsMachineRunning { get; set; }
+
+        #endregion
+
         #region Methods
 
         void Add(Machine machine);

@@ -376,6 +376,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitPresentInCell.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitShutterClosed {
