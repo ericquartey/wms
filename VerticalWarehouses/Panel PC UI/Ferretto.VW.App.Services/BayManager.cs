@@ -21,9 +21,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
 
-        private readonly IOperatorHubClient operatorHubClient;
+        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
 
-        private WMS.Data.WebAPI.Contracts.MissionOperation currentMissionOperation;
+        private readonly IOperatorHubClient operatorHubClient;
 
         #endregion
 
@@ -35,13 +35,15 @@ namespace Ferretto.VW.App.Services
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService,
             IMachineMissionOperationsWebService missionOperationsAutomationWebService,
-            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService)
+            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
+            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
         {
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
             this.missionOperationsAutomationService = missionOperationsAutomationWebService ?? throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
+            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
 
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
@@ -69,22 +71,7 @@ namespace Ferretto.VW.App.Services
 
         public WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; private set; }
 
-        public WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation
-        {
-            get => this.currentMissionOperation;
-            private set
-            {
-                if (value is null)
-                {
-                    this.currentMissionOperation = null;
-                }
-                else if (this.currentMissionOperation is null)
-                {
-                    this.currentMissionOperation = value;
-                    this.NewMissionOperationAvailable?.Invoke(this, null);
-                }
-            }
-        }
+        public WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; private set; }
 
         public MachineIdentity Identity { get; private set; }
 
@@ -141,8 +128,15 @@ namespace Ferretto.VW.App.Services
             if (e.BayNumber == bayNumber)
             {
                 this.PendingMissionOperationsCount = e.PendingMissionOperationsCount;
-
-                await this.RetrieveMissionOperation(e.MissionOperationId);
+                if (e.MissionOperationId.HasValue)
+                {
+                    await this.RetrieveMissionOperation(e.MissionOperationId.Value);
+                }
+                else
+                {
+                    this.CurrentMission = null;
+                    this.CurrentMissionOperation = null;
+                }
             }
         }
 
@@ -151,26 +145,20 @@ namespace Ferretto.VW.App.Services
             this.ChainPosition = e.Position;
         }
 
-        private async Task RetrieveMissionOperation(int? missionOperationId)
+        private async Task RetrieveMissionOperation(int missionOperationId)
         {
-            if (missionOperationId.HasValue)
+            if (missionOperationId != this.CurrentMissionOperation?.Id)
             {
-                if (missionOperationId.Value != this.CurrentMissionOperation?.Id)
+                try
                 {
-                    try
-                    {
-                        this.CurrentMissionOperation =
-                            await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
-                    }
-                    catch (Exception ex)
-                    {
-                        System.Diagnostics.Debug.WriteLine(ex.Message);
-                        // TODO notify error
-                    }
+                    this.CurrentMissionOperation =
+                        await this.missionOperationsDataService.GetByIdAsync(missionOperationId);
+                    this.CurrentMission = await this.missionsDataService.GetByIdAsync(this.CurrentMissionOperation.MissionId);
+                    this.NewMissionOperationAvailable?.Invoke(this, null);
                 }
-                else
+                catch (Exception ex)
                 {
-                    this.CurrentMissionOperation = null;
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
                 }
             }
         }

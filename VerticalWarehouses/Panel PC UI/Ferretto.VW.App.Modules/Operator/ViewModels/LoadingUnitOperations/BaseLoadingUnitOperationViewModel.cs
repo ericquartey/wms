@@ -211,10 +211,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
+                if (this.BayManager.CurrentMission == null)
+                {
+                    this.ShowNotification("Current mission is null.");
+                    return;
+                }
+
                 var mission = await this.missionDataService.GetDetailsByIdAsync(this.BayManager.CurrentMission.Id);
                 this.Compartments = this.GetCompartments(mission.LoadingUnit.Compartments);
                 this.SelectedCompartment = this.Compartments
                         .FirstOrDefault(c => c.Id == this.BayManager.CurrentMissionOperation.CompartmentId);
+
+                this.LoadImage(this.BayManager.CurrentMissionOperation.ItemCode);
             }
             catch (Exception ex)
             {

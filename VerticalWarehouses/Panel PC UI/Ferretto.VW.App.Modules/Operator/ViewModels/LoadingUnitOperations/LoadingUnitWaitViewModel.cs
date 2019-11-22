@@ -1,15 +1,17 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class LoadingUnitWaitViewModel : BaseLoadingUnitOperationViewModel
+    public class LoadingUnitWaitViewModel : BaseMainViewModel
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
 
         private int pendingMissionsCount;
 
@@ -18,11 +20,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public LoadingUnitWaitViewModel(
-            IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
-            IBayManager bayManager)
-            : base(wmsImagesProvider, missionsDataService, bayManager)
+                IBayManager bayManager)
+            : base(PresentationMode.Operator)
         {
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
@@ -43,7 +44,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override void Disappear()
         {
-            this.BayManager.NewMissionOperationAvailable -= this.OnMissionOperationAvailable;
+            this.bayManager.NewMissionOperationAvailable -= this.OnMissionOperationAvailable;
             base.Disappear();
         }
 
@@ -53,13 +54,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.PendingMissionOperationsCount = this.BayManager.PendingMissionOperationsCount;
-
-            this.BayManager.NewMissionOperationAvailable += this.OnMissionOperationAvailable;
+            this.bayManager.NewMissionOperationAvailable += this.OnMissionOperationAvailable;
 
             this.UpdateOperation();
-
-            this.PendingMissionOperationsCount = this.BayManager.PendingMissionOperationsCount;
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -69,7 +66,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public virtual void UpdateOperation()
         {
-            var missionOperation = this.BayManager.CurrentMissionOperation;
+            this.PendingMissionOperationsCount = this.bayManager.PendingMissionOperationsCount;
+            var missionOperation = this.bayManager.CurrentMissionOperation;
             if (missionOperation != null)
             {
                 switch (missionOperation.Type)
@@ -98,14 +96,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             trackCurrentView: false);
                         break;
                 }
-            }
-            else
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.DrawerOperations.WAIT,
-                    null,
-                    trackCurrentView: true);
             }
         }
 
