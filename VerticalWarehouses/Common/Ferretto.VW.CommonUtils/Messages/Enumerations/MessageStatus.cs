@@ -16,6 +16,11 @@
 
         OperationStart,
 
+        /// <summary>
+        /// Using this state when change data on db
+        /// </summary>
+        OperationUpdateData,
+
         OperationExecuting,
 
         OperationStepStart,

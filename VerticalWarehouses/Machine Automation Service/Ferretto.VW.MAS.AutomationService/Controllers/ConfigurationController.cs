@@ -67,24 +67,24 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             // 4 scopes, avoid cross reference of same object on save
 
+            //using (var scope = serviceScopeFactory.CreateScope())
+            //{
+            //    scope.ServiceProvider.GetRequiredService<IMachineProvider>().ClearAll();
+            //}
+
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<IMachineProvider>().ClearAll();
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Update(vertimagConfiguration.Machine);
             }
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Add(vertimagConfiguration.Machine);
+                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Update(vertimagConfiguration.SetupProcedures);
             }
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Add(vertimagConfiguration.SetupProcedures);
-            }
-
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().Add(vertimagConfiguration.LoadingUnits);
+                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().UpdateRange(vertimagConfiguration.LoadingUnits);
             }
 
             return this.Ok();

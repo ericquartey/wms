@@ -5,6 +5,8 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 using Microsoft.Extensions.Logging;
@@ -104,6 +106,17 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                             .SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
 
                         this.ScaleMovementsByWeight();
+
+                        var notificationMessage = new FieldNotificationMessage(
+                            this.data,
+                            $"Positioning weight measured",
+                            FieldMessageActor.Any,
+                            FieldMessageActor.InverterDriver,
+                            FieldMessageType.Positioning,
+                            MessageStatus.OperationUpdateData,
+                            this.InverterStatus.SystemIndex);
+
+                        this.ParentStateMachine.PublishNotificationEvent(notificationMessage);
                     }
                     catch
                     {

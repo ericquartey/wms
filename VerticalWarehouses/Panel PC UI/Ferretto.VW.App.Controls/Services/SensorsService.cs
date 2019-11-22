@@ -424,7 +424,11 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationEnd when message.Data.AxisMovement is Axis.Horizontal:
                     {
                         await this.GetElevatorAsync(false);
-
+                        break;
+                    }
+                case MessageStatus.OperationUpdateData:
+                    {
+                        await this.GetElevatorAsync(true);
                         break;
                     }
                 default:
