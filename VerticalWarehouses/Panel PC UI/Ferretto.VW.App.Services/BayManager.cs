@@ -160,8 +160,9 @@ namespace Ferretto.VW.App.Services
                         this.CurrentMissionOperation =
                             await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
                     }
-                    catch
+                    catch (Exception ex)
                     {
+                        System.Diagnostics.Debug.WriteLine(ex.Message);
                         // TODO notify error
                     }
                 }
