@@ -19,31 +19,31 @@
             <helpWindows:HelpInitialPage />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerWaitViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitWaitViewModel}">
             <helpWindows:HelpDrawerWait />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityPickingViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityPickingViewModel}">
             <helpWindows:HelpDrawerActivityPicking />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityPickingDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityPickingDetailViewModel}">
             <helpWindows:HelpDrawerActivityPickingDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityRefillingDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityRefillingDetailViewModel}">
             <helpWindows:HelpDrawerActivityRefillingDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityInventoryDetailViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityInventoryDetailViewModel}">
             <helpWindows:HelpDrawerActivityInventoryDetail />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityRefillingViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityRefillingViewModel}">
             <helpWindows:HelpDrawerActivityRefilling />
         </DataTemplate>
 
-        <DataTemplate DataType="{x:Type viewsmodels:DrawerActivityInventoryViewModel}">
+        <DataTemplate DataType="{x:Type viewsmodels:LoadingUnitActivityInventoryViewModel}">
             <helpWindows:HelpDrawerActivityInventory />
         </DataTemplate>
 

@@ -16,21 +16,21 @@
         {
             #region Fields
 
-            public const string INVENTORY = "DrawerActivityInventoryViewModel";
+            public const string INVENTORY = "LoadingUnitActivityInventoryViewModel";
 
-            public const string INVENTORYDETAIL = "DrawerActivityInventoryDetailViewModel";
+            public const string INVENTORYDETAIL = "LoadingUnitActivityInventoryDetailViewModel";
 
-            public const string LOCALCALL = "DrawerActivityLocalCallViewModel";
+            public const string LOCALCALL = "LoadingUnitActivityLocalCallViewModel";
 
-            public const string PICKING = "DrawerActivityPickingViewModel";
+            public const string PICKING = "LoadingUnitActivityPickingViewModel";
 
-            public const string PICKINGDETAIL = "DrawerActivityPickingDetailViewModel";
+            public const string PICKINGDETAIL = "LoadingUnitActivityPickingDetailViewModel";
 
-            public const string REFILLING = "DrawerActivityRefillingViewModel";
+            public const string REFILLING = "LoadingUnitActivityRefillingViewModel";
 
-            public const string REFILLINGDETAIL = "DrawerActivityRefillingDetailViewModel";
+            public const string REFILLINGDETAIL = "LoadingUnitActivityRefillingDetailViewModel";
 
-            public const string WAIT = "DrawerWaitViewModel";
+            public const string WAIT = "LoadingUnitWaitViewModel";
 
             #endregion
         }

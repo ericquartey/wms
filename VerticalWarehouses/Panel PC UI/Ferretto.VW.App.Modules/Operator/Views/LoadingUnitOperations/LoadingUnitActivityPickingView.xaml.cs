@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class DrawerActivityRefillingView
+    public partial class LoadingUnitActivityPickingView
     {
         #region Constructors
 
-        public DrawerActivityRefillingView()
+        public LoadingUnitActivityPickingView()
         {
             this.InitializeComponent();
         }

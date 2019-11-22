@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerActivityRefillingDetailViewModel : BaseDrawerOperationViewModel
+    public class LoadingUnitActivityPickingDetailViewModel : BaseLoadingUnitOperationViewModel
     {
         #region Fields
 
@@ -29,6 +29,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private string packagingType;
 
+        private string packingListCode;
+
+        private string packingListDescription;
+
         private string position;
 
         private string productionDate;
@@ -39,7 +43,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public DrawerActivityRefillingDetailViewModel(
+        public LoadingUnitActivityPickingDetailViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -74,6 +78,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public string PackagingType { get => this.packagingType; set => this.SetProperty(ref this.packagingType, value); }
 
+        public string PackingListCode { get => this.packingListCode; set => this.SetProperty(ref this.packingListCode, value); }
+
+        public string PackingListDescription { get => this.packingListDescription; set => this.SetProperty(ref this.packingListDescription, value); }
+
         public string Position { get => this.position; set => this.SetProperty(ref this.position, value); }
 
         public string ProductionDate { get => this.productionDate; set => this.SetProperty(ref this.productionDate, value); }
@@ -98,6 +106,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.ListRow = this.ItemDetail.ListRow;
             this.MaterialStatus = this.ItemDetail.MaterialStatus;
             this.PackagingType = this.ItemDetail.PackageType;
+            this.PackingListCode = this.ItemDetail.PackingListCode;
+            this.PackingListDescription = this.ItemDetail.PackingListDescription;
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;

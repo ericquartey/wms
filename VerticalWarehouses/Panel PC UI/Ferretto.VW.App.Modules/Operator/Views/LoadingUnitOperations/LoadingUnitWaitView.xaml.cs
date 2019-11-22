@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class DrawerWaitView
+    public partial class LoadingUnitWaitView
     {
         #region Constructors
 
-        public DrawerWaitView()
+        public LoadingUnitWaitView()
         {
             this.InitializeComponent();
         }

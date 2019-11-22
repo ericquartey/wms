@@ -215,7 +215,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (success)
             {
-                this.ShowNotification($"Successfully called {qty} pieces of item {itemToPick.Id}.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification($"Successfully called {qty} pieces of item '{itemToPick.Code}'.", Services.Models.NotificationSeverity.Success);
             }
             else
             {

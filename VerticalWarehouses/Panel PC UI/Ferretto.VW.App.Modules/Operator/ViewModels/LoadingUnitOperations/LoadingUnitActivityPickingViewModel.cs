@@ -7,19 +7,17 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerActivityRefillingViewModel : BaseDrawerOperationViewModel
+    public class LoadingUnitActivityPickingViewModel : BaseLoadingUnitOperationViewModel
     {
         #region Fields
 
-        private ICommand confirmCommand;
-
-        private ICommand drawerActivityRefillingDetailsButtonCommand;
+        private ICommand drawerDetailsButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public DrawerActivityRefillingViewModel(
+        public LoadingUnitActivityPickingViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -32,22 +30,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand ConfirmCommand =>
-            this.confirmCommand
+        public ICommand DrawerDetailsButtonCommand =>
+            this.drawerDetailsButtonCommand
             ??
-            (this.confirmCommand = new DelegateCommand(async () => await this.ExecuteConfirmCommand()));
-
-        public ICommand DrawerActivityRefillingDetailsButtonCommand =>
-            this.drawerActivityRefillingDetailsButtonCommand
-            ??
-            (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
-                () => this.DrawerDetailsButtonMethod()));
+            (this.drawerDetailsButtonCommand = new DelegateCommand(this.NavigateToOperationDetails));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
         #endregion
 
         #region Methods
+
+        public override void Disappear()
+        {
+            base.Disappear();
+            this.ItemImage?.Dispose();
+        }
 
         public override async Task OnAppearedAsync()
         {
@@ -59,24 +57,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        private void DrawerDetailsButtonMethod()
+        private async Task GetViewDataAsync(IBayManager bayManager)
+        {
+            // TODO       var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
+            // TODO       this.ItemImage = Image.FromStream(imageStram);
+        }
+
+        private void NavigateToOperationDetails()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.DrawerOperations.REFILLINGDETAIL,
+                Utils.Modules.Operator.DrawerOperations.PICKINGDETAIL,
                 null,
                 trackCurrentView: true);
-        }
-
-        private async Task GetViewDataAsync(IBayManager bayManager)
-        {
-            this.ItemImage = null;
-
-            if (this.BayManager.CurrentMissionOperation != null)
-            {
-                // TODO   var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
-                // TODO    this.ItemImage = Image.FromStream(imageStram);
-            }
         }
 
         #endregion

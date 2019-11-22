@@ -58,14 +58,14 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
-            containerRegistry.RegisterForNavigation<DrawerWaitView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityInventoryDetailView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityInventoryView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityLocalCallView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityPickingDetailView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityPickingView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityRefillingDetailView>();
-            containerRegistry.RegisterForNavigation<DrawerActivityRefillingView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitWaitView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityInventoryDetailView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityInventoryView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityLocalCallView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityPickingDetailView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityPickingView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityRefillingDetailView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitActivityRefillingView>();
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
             containerRegistry.RegisterForNavigation<WaitingListsView>();

@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerActivityInventoryDetailViewModel : BaseDrawerOperationViewModel
+    public class LoadingUnitActivityRefillingDetailViewModel : BaseLoadingUnitOperationViewModel
     {
         #region Fields
 
@@ -39,7 +39,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public DrawerActivityInventoryDetailViewModel(
+        public LoadingUnitActivityRefillingDetailViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -103,8 +103,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
             try
             {
-                var imageStram = await this.WmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
-                this.Image = Image.FromStream(imageStram);
+                var imageStream = await this.WmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
+                this.Image = Image.FromStream(imageStream);
             }
             catch (Exception ex)
             {

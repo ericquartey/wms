@@ -5,17 +5,11 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerWaitViewModel : BaseDrawerOperationViewModel
+    public class LoadingUnitActivityLocalCallViewModel : BaseLoadingUnitOperationViewModel
     {
-        #region Fields
-
-        private int pendingMissionsCount;
-
-        #endregion
-
         #region Constructors
 
-        public DrawerWaitViewModel(
+        public LoadingUnitActivityLocalCallViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -30,12 +24,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int PendingMissionsCount
-        {
-            get => this.pendingMissionsCount;
-            set => this.SetProperty(ref this.pendingMissionsCount, value);
-        }
-
         #endregion
 
         #region Methods
@@ -45,23 +33,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            this.PendingMissionsCount = this.BayManager.PendingMissionsCount;
-
-            this.BayManager.NewMissionOperationAvailable += this.OnMissionOperationAvailable;
-
-            this.UpdateView();
-        }
-
-        public override void UpdateView()
-        {
-            base.UpdateView();
-            this.PendingMissionsCount = this.BayManager.PendingMissionsCount;
-        }
-
-        private void OnMissionOperationAvailable(object sender, object e)
-        {
-            this.UpdateView();
         }
 
         #endregion

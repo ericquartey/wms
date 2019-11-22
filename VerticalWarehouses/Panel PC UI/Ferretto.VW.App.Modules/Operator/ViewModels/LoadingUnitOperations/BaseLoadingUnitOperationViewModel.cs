@@ -2,20 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public abstract class BaseDrawerOperationViewModel : BaseMainViewModel
+    public abstract class BaseLoadingUnitOperationViewModel : BaseMainViewModel
     {
         #region Fields
 
         private IEnumerable<TrayControlCompartment> compartments;
+
+        private ICommand confirmCommand;
 
         private int? inputQuantity;
 
@@ -29,7 +33,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public BaseDrawerOperationViewModel(
+        public BaseLoadingUnitOperationViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -55,6 +59,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.compartments;
             set => this.SetProperty(ref this.compartments, value);
         }
+
+        public ICommand ConfirmCommand =>
+                        this.confirmCommand
+                        ??
+                        (this.confirmCommand = new DelegateCommand(async () => await this.ExecuteConfirmCommand()));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -109,8 +118,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     await this.BayManager.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
 
                     this.InputQuantity = null;
-
-                    this.UpdateView();
                 }
                 catch (Exception ex)
                 {
@@ -124,50 +131,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            this.UpdateView();
-        }
-
-        public virtual void UpdateView()
-        {
-            var missionOperation = this.BayManager.CurrentMissionOperation;
-            if (missionOperation != null)
-            {
-                switch (missionOperation.Type)
-                {
-                    case MissionOperationType.Inventory:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.DrawerOperations.INVENTORY,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Pick:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.DrawerOperations.PICKING,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Put:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.DrawerOperations.REFILLING,
-                            null,
-                            trackCurrentView: true);
-                        break;
-                }
-            }
-            else
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.DrawerOperations.WAIT,
-                    null,
-                    trackCurrentView: true);
-            }
         }
 
         protected async Task GetTrayControlDataAsync(IBayManager bayManager)

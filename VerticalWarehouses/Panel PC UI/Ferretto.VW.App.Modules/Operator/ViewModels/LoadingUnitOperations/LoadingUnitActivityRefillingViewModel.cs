@@ -7,17 +7,17 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerActivityInventoryViewModel : BaseDrawerOperationViewModel
+    public class LoadingUnitActivityRefillingViewModel : BaseLoadingUnitOperationViewModel
     {
         #region Fields
 
-        private ICommand drawerActivityInventoryDetailsButtonCommand;
+        private ICommand drawerActivityRefillingDetailsButtonCommand;
 
         #endregion
 
         #region Constructors
 
-        public DrawerActivityInventoryViewModel(
+        public LoadingUnitActivityRefillingViewModel(
             IWmsDataProvider wmsDataProvider,
             IWmsImagesProvider wmsImagesProvider,
             IMachineMissionOperationsWebService missionOperationsService,
@@ -30,10 +30,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DrawerActivityInventoryDetailsButtonCommand =>
-            this.drawerActivityInventoryDetailsButtonCommand
+        public ICommand DrawerActivityRefillingDetailsButtonCommand =>
+            this.drawerActivityRefillingDetailsButtonCommand
             ??
-            (this.drawerActivityInventoryDetailsButtonCommand = new DelegateCommand(() => this.DrawerDetailsButtonMethod()));
+            (this.drawerActivityRefillingDetailsButtonCommand = new DelegateCommand(
+                () => this.DrawerDetailsButtonMethod()));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -51,24 +52,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.GetTrayControlDataAsync(this.BayManager);
         }
 
-        public override void UpdateView()
-        {
-            base.UpdateView();
-        }
-
         private void DrawerDetailsButtonMethod()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.DrawerOperations.INVENTORYDETAIL,
+                Utils.Modules.Operator.DrawerOperations.REFILLINGDETAIL,
                 null,
                 trackCurrentView: true);
         }
 
         private async Task GetViewDataAsync(IBayManager bayManager)
         {
-            // TODO  var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
-            // TODO   this.ItemImage = Image.FromStream(imageStram);
+            this.ItemImage = null;
+
+            if (this.BayManager.CurrentMissionOperation != null)
+            {
+                // TODO   var imageStram = await this.WmsImagesProvider.GetImageAsync(this.BayManager.CurrentMissionOperation.ItemImage);
+                // TODO    this.ItemImage = Image.FromStream(imageStram);
+            }
         }
 
         #endregion
