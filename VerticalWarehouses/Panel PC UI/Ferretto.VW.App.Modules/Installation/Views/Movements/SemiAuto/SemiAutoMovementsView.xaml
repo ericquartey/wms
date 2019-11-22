@@ -9,7 +9,8 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="50,15">
+    <Grid x:Name="Root"
+          Margin="50,15">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -22,10 +23,51 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="3"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Movimenti semi-automatici" />
+        <Grid Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock x:Name="Title"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Movimenti semi-automatici" />
+
+            <controls:PpcButton x:Name="ButtonLog"
+                                Grid.Column="1"
+                                Width="100"
+                                Height="50"
+                                VerticalAlignment="Center"
+                                Command="{Binding LogCommand}"
+                                Content="LOG" />
+
+            <Popup Width="980"
+                   Height="550"
+                   AllowsTransparency="False"
+                   IsOpen="{Binding IsPopupOpen}"
+                   PlacementTarget="{Binding ElementName=Title}">
+                <Grid Margin="30">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Padding="10"
+                               Background="{DynamicResource PpcButtonBackground}"
+                               Foreground="White"
+                               Text="{Binding Log}" />
+
+                    <controls:PpcButton Grid.Row="1"
+                                        Margin="0,5"
+                                        HorizontalAlignment="Right"
+                                        VerticalAlignment="Center"
+                                        Command="{Binding LogCommand}"
+                                        Content="Close" />
+
+                </Grid>
+            </Popup>
+        </Grid>
 
         <StackPanel Grid.Row="1"
                     Background="{DynamicResource PpcButtonBackground}"
@@ -63,6 +105,13 @@
                                Text="Lato" />
                     <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
                                Text="{Binding SelectedCell.Side, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}, Converter={StaticResource EWSC}}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Width="170"
+                               Foreground="{StaticResource FerrettoPureWhite}"
+                               Text="Status" />
+                    <TextBlock Foreground="{StaticResource FerrettoPureWhite}"
+                               Text="{Binding SelectedCell.Status, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                 </StackPanel>
             </StackPanel>
         </StackPanel>

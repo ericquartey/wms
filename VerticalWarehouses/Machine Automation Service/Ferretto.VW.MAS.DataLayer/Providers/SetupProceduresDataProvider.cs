@@ -38,6 +38,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void ClearAll()
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public SetupProceduresSet GetAll()
         {
             lock (this.dataContext)
@@ -252,6 +261,83 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return existingProcedure;
+            }
+        }
+
+        public void Update(SetupProceduresSet setupProceduresSet)
+        {
+            if (setupProceduresSet is null)
+            {
+                throw new ArgumentNullException(nameof(setupProceduresSet));
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.SetupProceduresSets.Attach(setupProceduresSet);
+                this.dataContext.Entry(setupProceduresSet).State = EntityState.Modified;
+                this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.BayHeightCheck);
+                this.dataContext.Entry(setupProceduresSet.BayHeightCheck).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.BayHeightCheck);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.BeltBurnishingTest);
+                this.dataContext.Entry(setupProceduresSet.BeltBurnishingTest).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.BeltBurnishingTest);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CarouselManualMovements);
+                this.dataContext.Entry(setupProceduresSet.CarouselManualMovements).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.CarouselManualMovements);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CellPanelsCheck);
+                this.dataContext.Entry(setupProceduresSet.CellPanelsCheck).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.CellPanelsCheck);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CellsHeightCheck);
+                this.dataContext.Entry(setupProceduresSet.CellPanelsCheck).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.CellsHeightCheck);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.DepositAndPickUpTest);
+                this.dataContext.Entry(setupProceduresSet.DepositAndPickUpTest).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.DepositAndPickUpTest);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.HorizontalManualMovements);
+                this.dataContext.Entry(setupProceduresSet.HorizontalManualMovements).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.HorizontalManualMovements);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.LoadFirstDrawerTest);
+                this.dataContext.Entry(setupProceduresSet.LoadFirstDrawerTest).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.LoadFirstDrawerTest);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterHeightCheck);
+                this.dataContext.Entry(setupProceduresSet.ShutterHeightCheck).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterHeightCheck);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterManualMovements);
+                this.dataContext.Entry(setupProceduresSet.ShutterManualMovements).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterManualMovements);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterTest);
+                this.dataContext.Entry(setupProceduresSet.ShutterTest).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterTest);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalManualMovements);
+                this.dataContext.Entry(setupProceduresSet.VerticalManualMovements).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalManualMovements);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalOffsetCalibration);
+                this.dataContext.Entry(setupProceduresSet.VerticalOffsetCalibration).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalOffsetCalibration);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalResolutionCalibration);
+                this.dataContext.Entry(setupProceduresSet.VerticalResolutionCalibration).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalResolutionCalibration);
+
+                this.dataContext.SetupProcedures.Attach(setupProceduresSet.WeightCheck);
+                this.dataContext.Entry(setupProceduresSet.WeightCheck).State = EntityState.Modified;
+                this.dataContext.SetupProcedures.Update(setupProceduresSet.WeightCheck);
+
+                this.dataContext.SaveChanges();
             }
         }
 

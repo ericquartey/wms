@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        void Add(IEnumerable<LoadingUnit> loadingUnits);
+
         IEnumerable<LoadingUnit> GetAll();
 
         LoadingUnit GetById(int id);
@@ -21,7 +23,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 
-        void Add(IEnumerable<LoadingUnit> loadingUnits);
+        void UpdateRange(IEnumerable<LoadingUnit> loadingUnits);
 
         #endregion
     }
