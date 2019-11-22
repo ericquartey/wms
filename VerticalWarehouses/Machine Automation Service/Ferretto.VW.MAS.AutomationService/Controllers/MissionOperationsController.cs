@@ -57,14 +57,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("{id}/abort")]
-        public Task<ActionResult> Abort(int id)
+        public async Task<ActionResult> AbortAsync(int id)
         {
             if (!this.configuration.IsWmsEnabled())
             {
                 throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
             }
 
-            throw new NotImplementedException();
+            try
+            {
+                await this.missionOperationsDataService.AbortAsync(id);
+
+                return this.Ok();
+            }
+            catch (SwaggerException ex)
+            {
+                return this.NegativeResult(ex);
+            }
         }
 
         [HttpPost("{id}/complete")]
