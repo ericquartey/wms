@@ -21,7 +21,7 @@ namespace Ferretto.VW.App.Services
 
         MachineIdentity Identity { get; }
 
-        int PendingMissionsCount { get; }
+        int PendingMissionOperationsCount { get; }
 
         #endregion
 

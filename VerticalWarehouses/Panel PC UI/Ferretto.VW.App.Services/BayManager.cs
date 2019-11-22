@@ -21,8 +21,6 @@ namespace Ferretto.VW.App.Services
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
-
         private readonly IOperatorHubClient operatorHubClient;
 
         private WMS.Data.WebAPI.Contracts.MissionOperation currentMissionOperation;
@@ -37,12 +35,10 @@ namespace Ferretto.VW.App.Services
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService,
             IMachineMissionOperationsWebService missionOperationsAutomationWebService,
-            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
-            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
+            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService)
         {
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
             this.missionOperationsAutomationService = missionOperationsAutomationWebService ?? throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
-            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
@@ -94,7 +90,7 @@ namespace Ferretto.VW.App.Services
 
         public IMachineIdentityWebService IdentityService => this.machineIdentityWebService;
 
-        public int PendingMissionsCount { get; private set; }
+        public int PendingMissionOperationsCount { get; private set; }
 
         #endregion
 
@@ -116,7 +112,7 @@ namespace Ferretto.VW.App.Services
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            return await this.machineBaysWebService.GetByNumberAsync((BayNumber)bayNumber);
+            return await this.machineBaysWebService.GetByNumberAsync(bayNumber);
         }
 
         public async Task InitializeAsync()
@@ -128,9 +124,10 @@ namespace Ferretto.VW.App.Services
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
-            if ((BayNumber)bayNumber == e.BayNumber)
+            if (e.BayNumber == bayNumber)
             {
-                this.PendingMissionsCount = e.PendingMissionsOperationsCount;
+                this.PendingMissionOperationsCount = e.PendingMissionOperationsCount;
+
                 await this.RetrieveMissionOperation(e.MissionOperationId);
             }
         }
@@ -142,19 +139,24 @@ namespace Ferretto.VW.App.Services
 
         private async Task RetrieveMissionOperation(int? missionOperationId)
         {
-            try
+            if (missionOperationId.HasValue)
             {
-                if (missionOperationId.HasValue
-                    &&
-                    missionOperationId.Value != this.CurrentMissionOperation?.Id)
+                if (missionOperationId.Value != this.CurrentMissionOperation?.Id)
                 {
-                    this.CurrentMissionOperation =
-                        await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
+                    try
+                    {
+                        this.CurrentMissionOperation =
+                            await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
+                    }
+                    catch
+                    {
+                        // TODO notify error
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                // TODO notify error
+                else
+                {
+                    this.CurrentMissionOperation = null;
+                }
             }
         }
 

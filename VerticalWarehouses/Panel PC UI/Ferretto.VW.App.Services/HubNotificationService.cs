@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using Ferretto.VW.CommonUtils.Messages.Data;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnBayChainPositionChanged(object sender, BayChainPositionChangedEventArgs e)
         {
-            if ((BayNumber)e.BayNumber != this.bayNumber)
+            if (e.BayNumber != this.bayNumber)
             {
                 return;
             }
@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Services
         }
 
         private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
-                    where TEventArgs : EventArgs
+            where TEventArgs : EventArgs
         {
             this.eventAggregator
                 .GetEvent<PubSubEvent<TEventArgs>>()
