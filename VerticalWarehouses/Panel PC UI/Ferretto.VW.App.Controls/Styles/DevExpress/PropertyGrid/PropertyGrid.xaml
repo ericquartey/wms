@@ -12,11 +12,22 @@
         <Setter Property="ExpandButtonVisibility" Value="Collapsed" />
     </Style>
 
+    <DataTemplate x:Key="PropDefBooleanTemplate">
+        <dxe:CheckEdit Margin="4,0"
+                       HorizontalAlignment="Left"
+                       EditValue="{Binding RowData.Row.IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       IsReadOnly="False" />
+    </DataTemplate>
+
+
     <DataTemplate x:Key="PropDefReadonlyIDTemplate">
         <Border Padding="2"
+                BorderBrush="{DynamicResource FerrettoDarkGray}"
                 BorderThickness="1"
                 ToolTip="{Binding Value}">
-            <TextBlock Text="{Binding Value}" />
+            <TextBlock Background="{DynamicResource FerrettoMediumGray}"
+                       Foreground="{DynamicResource FerrettoPureWhite}"
+                       Text="{Binding Value}" />
         </Border>
     </DataTemplate>
 
