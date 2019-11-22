@@ -57,6 +57,8 @@ namespace Ferretto.VW.MAS.AutomationService
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
+            this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
         }
 
         #endregion
@@ -94,6 +96,30 @@ namespace Ferretto.VW.MAS.AutomationService
                 ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            switch (e.EntityType)
+            {
+                case nameof(MissionOperation):
+                    {
+                        var msg = new NotificationMessage(
+                            null,
+                            "New mission available",
+                            MessageActor.Any,
+                            MessageActor.AutomationService,
+                            MessageType.NewMissionAvailable,
+                            BayNumber.None,
+                            BayNumber.None,
+                            MessageStatus.OperationStart);
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(msg);
+                        break;
+                    }
+            }
         }
 
         #endregion

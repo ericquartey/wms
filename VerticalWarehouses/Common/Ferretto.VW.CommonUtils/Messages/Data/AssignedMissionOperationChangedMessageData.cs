@@ -3,15 +3,15 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class NewMissionOperationAvailable : IMessageData
+    public class AssignedMissionOperationChangedMessageData : IMessageData
     {
         #region Properties
 
         public BayNumber BayNumber { get; set; }
 
-        public int MissionId { get; set; }
+        public int? MissionId { get; set; }
 
-        public int MissionOperationId { get; set; }
+        public int? MissionOperationId { get; set; }
 
         public int PendingMissionsCount { get; set; }
 

@@ -77,16 +77,16 @@ namespace Ferretto.VW.MAS.AutomationService
                     this.ResolutionCalibrationMethod(message);
                     break;
 
-                case MessageType.ExecuteMission when message.Data is NewMissionOperationAvailable:
-                    await this.OnNewMissionOperationAvailable(message.Data as NewMissionOperationAvailable);
+                case MessageType.AssignedMissionOperationChanged when message.Data is AssignedMissionOperationChangedMessageData:
+                    await this.OnAssignedMissionOperationChanged(message.Data as AssignedMissionOperationChangedMessageData);
                     break;
 
                 case MessageType.ElevatorWeightCheck:
                     this.ElevatorWeightCheckMethod(message);
                     break;
 
-                case MessageType.BayOperationalStatusChanged when message.Data is IBayOperationalStatusChangedMessageData:
-                    this.OnBayConnected(message.Data as IBayOperationalStatusChangedMessageData);
+                case MessageType.BayOperationalStatusChanged when message.Data is BayOperationalStatusChangedMessageData:
+                    this.OnBayConnected(message.Data as BayOperationalStatusChangedMessageData);
                     break;
 
                 case MessageType.ErrorStatusChanged when message.Data is IErrorStatusMessageData:

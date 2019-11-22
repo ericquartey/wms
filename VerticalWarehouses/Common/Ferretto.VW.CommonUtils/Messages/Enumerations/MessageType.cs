@@ -16,7 +16,7 @@
 
         DataLayerReady,
 
-        ExecuteMission,
+        AssignedMissionOperationChanged,
 
         SwitchAxis,
 

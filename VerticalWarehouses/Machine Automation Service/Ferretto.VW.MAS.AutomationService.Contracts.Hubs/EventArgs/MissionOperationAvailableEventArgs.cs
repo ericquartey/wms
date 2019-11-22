@@ -1,10 +1,10 @@
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class MissionOperationAvailableEventArgs : System.EventArgs
+    public class AssignedMissionOperationChangedEventArgs : System.EventArgs
     {
         #region Constructors
 
-        public MissionOperationAvailableEventArgs(
+        public AssignedMissionOperationChangedEventArgs(
             BayNumber bayNumber,
             int missionId,
             int missionOperationId,

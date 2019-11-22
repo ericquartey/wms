@@ -47,8 +47,7 @@ namespace Ferretto.VW.App.Services
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
-            this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
-            this.operatorHubClient.MissionOperationAvailable += async (sender, e) => await this.OnMissionOperationAvailableAsync(sender, e);
+            this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
 
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
@@ -125,29 +124,7 @@ namespace Ferretto.VW.App.Services
             this.Identity = await this.IdentityService.GetAsync();
         }
 
-        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
-        {
-            this.ChainPosition = e.Position;
-        }
-
-        private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)
-        {
-            try
-            {
-                var bay = await this.GetBayAsync();
-                if (bay != null && bay.Number == (BayNumber)e.Index)
-                {
-                    this.PendingMissionsCount = e.PendingMissionsCount;
-                    await this.RetrieveMissionOperation(e.CurrentMissionOperationId);
-                }
-            }
-            catch
-            {
-                // do nothing
-            }
-        }
-
-        private async Task OnMissionOperationAvailableAsync(object sender, MissionOperationAvailableEventArgs e)
+        private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
         {
             var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
 
@@ -156,6 +133,11 @@ namespace Ferretto.VW.App.Services
                 this.PendingMissionsCount = e.PendingMissionsOperationsCount;
                 await this.RetrieveMissionOperation(e.MissionOperationId);
             }
+        }
+
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.ChainPosition = e.Position;
         }
 
         private async Task RetrieveMissionOperation(int? missionOperationId)
@@ -170,7 +152,7 @@ namespace Ferretto.VW.App.Services
                         await this.missionOperationsDataService.GetByIdAsync(missionOperationId.Value);
                 }
             }
-            catch (WMS.Data.WebAPI.Contracts.SwaggerException)
+            catch (Exception ex)
             {
                 // TODO notify error
             }

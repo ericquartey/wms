@@ -59,24 +59,19 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             Contract.Requires(data != null);
 
-            this.installationHub.Clients.All.BayChainPositionChanged(
-                data.Position,
-                data.BayNumber);
+            this.installationHub.Clients.All.BayChainPositionChanged(data.Position, data.BayNumber);
         }
 
-        private void OnBayConnected(IBayOperationalStatusChangedMessageData messageData)
+        private void OnBayConnected(BayOperationalStatusChangedMessageData data)
         {
-            if (messageData is null)
-            {
-                throw new ArgumentNullException(nameof(messageData));
-            }
+            Contract.Requires(data != null);
 
-            this.operatorHub.Clients.All.BayStatusChanged(messageData);
+            this.operatorHub.Clients.All.BayStatusChanged(data.BayNumber, data.BayStatus);
         }
 
         private void OnChangeRunningState(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is CommonUtils.Messages.Data.ChangeRunningStateMessageData data)
+            if (receivedMessage.Data is ChangeRunningStateMessageData data)
             {
                 MachinePowerState machinePowerState;
                 switch (receivedMessage.Status)
@@ -149,11 +144,11 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
-        private async Task OnNewMissionOperationAvailable(NewMissionOperationAvailable e)
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
         {
             Contract.Requires(e != null);
 
-            await this.operatorHub.Clients.All.NewMissionOperationAvailable(
+            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
                 e.BayNumber,
                 e.MissionId,
                 e.MissionOperationId,

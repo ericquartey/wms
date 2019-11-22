@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -16,10 +18,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return
-                notification.Destination is MessageActor.Any
-                ||
-                notification.Destination is MessageActor.MissionManager;
+            return true;
         }
 
         protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
@@ -31,11 +30,15 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged();
+                    this.OnBayOperationalStatusChanged(message.Data as BayOperationalStatusChangedMessageData);
                     break;
 
                 case MessageType.NewMissionAvailable:
                     this.OnNewMissionAvailable();
+                    break;
+
+                case MessageType.MachineMode:
+                    this.OnMachineModeChanged();
                     break;
 
                 case MessageType.DataLayerReady:
@@ -46,7 +49,7 @@ namespace Ferretto.VW.MAS.MissionManager
             return Task.CompletedTask;
         }
 
-        private void OnBayOperationalStatusChanged()
+        private void OnBayOperationalStatusChanged(BayOperationalStatusChangedMessageData data)
         {
             this.bayStatusChangedEvent.Set();
         }
@@ -59,12 +62,22 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        private void OnEntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            if (e.EntityType == nameof(MissionOperation))
+            {
+                this.OnNewMissionAvailable();
+            }
+        }
+
+        private void OnMachineModeChanged()
+        {
+            this.bayStatusChangedEvent.Set();
+        }
+
         private void OnMissionOperationCompleted(MissionOperationCompletedMessageData e)
         {
-            if (e == null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            Contract.Requires(e != null);
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
@@ -92,7 +105,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private void OnNewMissionAvailable()
         {
-            this.newMissionArrivedResetEvent.Set();
+            this.bayStatusChangedEvent.Set();
         }
 
         #endregion
