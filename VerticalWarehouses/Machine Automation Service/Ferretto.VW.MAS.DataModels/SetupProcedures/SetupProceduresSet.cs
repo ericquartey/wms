@@ -20,7 +20,7 @@
 
         public SetupProcedure ShutterHeightCheck { get; set; }
 
-        public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
+        //public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
 
         public RepeatedTestProcedure ShutterTest { get; set; }
 

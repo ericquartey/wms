@@ -1453,11 +1453,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class Shutter : DataModel
     {
+        [Newtonsoft.Json.JsonProperty("assistedMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ShutterManualParameters AssistedMovements { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("totalCycles", Required = Newtonsoft.Json.Required.Always)]
-        public int TotalCycles { get; set; }
+        [Newtonsoft.Json.JsonProperty("manualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public ShutterManualParameters ManualMovements { get; set; }
     
         [Newtonsoft.Json.JsonProperty("type", Required = Newtonsoft.Json.Required.Always)]
         public ShutterType Type { get; set; }
@@ -1470,6 +1473,36 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static Shutter FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<Shutter>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class ShutterManualParameters : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("feedRate", Required = Newtonsoft.Json.Required.Always)]
+        public double FeedRate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("highSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
+        public double HighSpeedDurationClose { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("highSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
+        public double HighSpeedDurationOpen { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("maxSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MaxSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("minSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double MinSpeed { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static ShutterManualParameters FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterManualParameters>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }
@@ -2049,9 +2082,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("shutterHeightCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public SetupProcedure ShutterHeightCheck { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("shutterManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("shutterTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure ShutterTest { get; set; }
     
@@ -2090,33 +2120,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public static RepeatedTestProcedure FromJson(string data)
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<RepeatedTestProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class ShutterManualMovementsProcedure : SetupProcedure
-    {
-        [Newtonsoft.Json.JsonProperty("highSpeedDurationClose", Required = Newtonsoft.Json.Required.Always)]
-        public double HighSpeedDurationClose { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("highSpeedDurationOpen", Required = Newtonsoft.Json.Required.Always)]
-        public double HighSpeedDurationOpen { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("maxSpeed", Required = Newtonsoft.Json.Required.Always)]
-        public double MaxSpeed { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("minSpeed", Required = Newtonsoft.Json.Required.Always)]
-        public double MinSpeed { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static ShutterManualMovementsProcedure FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<ShutterManualMovementsProcedure>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
     
     }

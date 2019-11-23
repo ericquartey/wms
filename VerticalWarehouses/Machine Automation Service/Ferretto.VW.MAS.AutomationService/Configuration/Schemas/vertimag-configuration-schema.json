@@ -237,7 +237,9 @@
                 "title": "The Shutter Schema",
                 "required": [
                   "Inverter",
-                  "Type"
+                  "Type",
+                  "ManualMovements",
+                  "AssistedMovements"
                 ],
                 "properties": {
                   "Inverter": {
@@ -270,6 +272,94 @@
                     "type": "string",
                     "title": "The Type Schema",
                     "enum": [ "TwoSensors", "ThreeSensors" ]
+                  },
+                  "ManualMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements",
+                    "type": "object",
+                    "title": "The ManualMovements Schema",
+                    "required": [
+                      "FeedRate",
+                      "MaxSpeed",
+                      "MinSpeed",
+                      "HighSpeedDurationOpen",
+                      "HighSpeedDurationClose"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/FeedRate",
+                        "type": "number",
+                        "title": "The FeedRate Schema",
+                        "default": 0
+                      },
+                      "MaxSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MaxSpeed",
+                        "type": "number",
+                        "title": "The Maxspeed Schema",
+                        "default": 0
+                      },
+                      "MinSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MinSpeed",
+                        "type": "number",
+                        "title": "The Minspeed Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationOpen": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationOpen",
+                        "type": "number",
+                        "title": "The Highspeeddurationopen Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationClose": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationClose",
+                        "type": "number",
+                        "title": "The Highspeeddurationclose Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "AssistedMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements",
+                    "type": "object",
+                    "title": "The AssistedMovements Schema",
+                    "required": [
+                      "FeedRate",
+                      "MaxSpeed",
+                      "MinSpeed",
+                      "HighSpeedDurationOpen",
+                      "HighSpeedDurationClose"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/FeedRate",
+                        "default": 0,
+                        "title": "The FeedRate Schema",
+                        "type": "number"
+                      },
+                      "MaxSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/MaxSpeed",
+                        "type": "number",
+                        "title": "The Maxspeed Schema",
+                        "default": 0
+                      },
+                      "MinSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/MinSpeed",
+                        "type": "number",
+                        "title": "The Minspeed Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationOpen": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/HighSpeedDurationOpen",
+                        "type": "number",
+                        "title": "The Highspeeddurationopen Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationClose": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/HighSpeedDurationClose",
+                        "type": "number",
+                        "title": "The Highspeeddurationclose Schema",
+                        "default": 0
+                      }
+                    }
                   }
                 }
               },
@@ -791,7 +881,6 @@
         "DepositAndPickUpTest",
         "LoadFirstDrawerTest",
         "ShutterHeightCheck",
-        "ShutterManualMovements",
         "ShutterTest",
         "VerticalOffsetCalibration",
         "VerticalResolutionCalibration"
@@ -943,50 +1032,6 @@
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0
-            }
-          }
-        },
-        "ShutterManualMovements": {
-          "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements",
-          "type": "object",
-          "title": "The Shuttermanualmovements Schema",
-          "required": [
-            "FeedRate",
-            "MaxSpeed",
-            "MinSpeed",
-            "HighSpeedDurationOpen",
-            "HighSpeedDurationClose"
-          ],
-          "properties": {
-            "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            },
-            "MaxSpeed": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MaxSpeed",
-              "type": "number",
-              "title": "The Maxspeed Schema",
-              "default": 0
-            },
-            "MinSpeed": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MinSpeed",
-              "type": "number",
-              "title": "The Minspeed Schema",
-              "default": 0
-            },
-            "HighSpeedDurationOpen": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/HighSpeedDurationOpen",
-              "type": "number",
-              "title": "The Highspeeddurationopen Schema",
-              "default": 0
-            },
-            "HighSpeedDurationClose": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/HighSpeedDurationClose",
-              "type": "number",
-              "title": "The Highspeeddurationclose Schema",
-              "default": 0
             }
           }
         },

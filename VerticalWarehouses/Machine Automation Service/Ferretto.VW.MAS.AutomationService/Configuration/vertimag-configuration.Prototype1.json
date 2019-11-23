@@ -46,7 +46,21 @@
             "Index": "Slave2",
             "Type": "Agl"
           },
-          "Type": "TwoSensors"
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          }
         }
       },
       {
@@ -77,6 +91,20 @@
           "Inverter": {
             "Type": "Agl",
             "Index": "Slave4"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 32000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
           }
         }
       }
@@ -1605,13 +1633,6 @@
     },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
-    },
-    "ShutterManualMovements": {
-      "FeedRate": 0.2,
-      "MaxSpeed": 32000,
-      "MinSpeed": 5000,
-      "HighSpeedDurationOpen": 16,
-      "HighSpeedDurationClose": 16
     },
     "ShutterTest": {
       "FeedRate": 1.0,

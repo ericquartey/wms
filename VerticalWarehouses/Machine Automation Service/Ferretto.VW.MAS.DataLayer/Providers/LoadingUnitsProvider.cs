@@ -206,12 +206,8 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                foreach (var l in loadingUnits)
-                {
-                    this.dataContext.LoadingUnits.Attach(l);
-                    this.dataContext.Entry(l).State = EntityState.Modified;
-                    this.dataContext.LoadingUnits.Update(l);
-                }
+                loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+
                 this.dataContext.SaveChanges();
             }
         }

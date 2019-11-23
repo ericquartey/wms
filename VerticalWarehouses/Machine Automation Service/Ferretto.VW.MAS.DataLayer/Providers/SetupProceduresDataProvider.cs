@@ -66,7 +66,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.DepositAndPickUpTest)
                     .Include(s => s.LoadFirstDrawerTest)
                     .Include(s => s.ShutterHeightCheck)
-                    .Include(s => s.ShutterManualMovements)
                     .Include(s => s.ShutterTest)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
@@ -150,16 +149,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.SetupProceduresSets
                     .Select(s => s.ShutterHeightCheck)
-                    .Single();
-            }
-        }
-
-        public ShutterManualMovementsProcedure GetShutterManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.ShutterManualMovements)
                     .Single();
             }
         }
@@ -275,57 +264,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                this.dataContext.SetupProceduresSets.Attach(setupProceduresSet);
-                this.dataContext.Entry(setupProceduresSet).State = EntityState.Modified;
-                this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.BayHeightCheck);
-                this.dataContext.Entry(setupProceduresSet.BayHeightCheck).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.BayHeightCheck);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.BeltBurnishingTest);
-                this.dataContext.Entry(setupProceduresSet.BeltBurnishingTest).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.BeltBurnishingTest);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CarouselManualMovements);
-                this.dataContext.Entry(setupProceduresSet.CarouselManualMovements).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.CarouselManualMovements);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CellPanelsCheck);
-                this.dataContext.Entry(setupProceduresSet.CellPanelsCheck).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.CellPanelsCheck);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.CellsHeightCheck);
-                this.dataContext.Entry(setupProceduresSet.CellPanelsCheck).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.CellsHeightCheck);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.DepositAndPickUpTest);
-                this.dataContext.Entry(setupProceduresSet.DepositAndPickUpTest).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.DepositAndPickUpTest);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.LoadFirstDrawerTest);
-                this.dataContext.Entry(setupProceduresSet.LoadFirstDrawerTest).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.LoadFirstDrawerTest);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterHeightCheck);
-                this.dataContext.Entry(setupProceduresSet.ShutterHeightCheck).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterHeightCheck);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterManualMovements);
-                this.dataContext.Entry(setupProceduresSet.ShutterManualMovements).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterManualMovements);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.ShutterTest);
-                this.dataContext.Entry(setupProceduresSet.ShutterTest).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterTest);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalOffsetCalibration);
-                this.dataContext.Entry(setupProceduresSet.VerticalOffsetCalibration).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalOffsetCalibration);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalResolutionCalibration);
-                this.dataContext.Entry(setupProceduresSet.VerticalResolutionCalibration).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalResolutionCalibration);
+                this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.BayHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.BeltBurnishingTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.CarouselManualMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.CellPanelsCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.CellsHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.DepositAndPickUpTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.LoadFirstDrawerTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.ShutterHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.ShutterTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.VerticalOffsetCalibration, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet.VerticalResolutionCalibration, (e) => e.Id);
 
                 this.dataContext.SaveChanges();
             }

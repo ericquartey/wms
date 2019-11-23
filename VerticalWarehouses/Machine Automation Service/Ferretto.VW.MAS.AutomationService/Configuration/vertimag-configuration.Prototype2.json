@@ -454,7 +454,21 @@
             "Type": "Agl",
             "Index": "Slave2"
           },
-          "Type": "TwoSensors"
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          }
         },
         "Carousel": {
           "ElevatorDistance": 460
@@ -4368,13 +4382,6 @@
     },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
-    },
-    "ShutterManualMovements": {
-      "FeedRate": 0.2,
-      "MaxSpeed": 40000,
-      "MinSpeed": 5000,
-      "HighSpeedDurationOpen": 14,
-      "HighSpeedDurationClose": 13
     },
     "ShutterTest": {
       "FeedRate": 1.0,

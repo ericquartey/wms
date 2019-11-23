@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetShutterHeightCheck();
 
-        ShutterManualMovementsProcedure GetShutterManualMovements();
+        //ShutterManualMovementsProcedure GetShutterManualMovements();
 
         RepeatedTestProcedure GetShutterTest();
 
