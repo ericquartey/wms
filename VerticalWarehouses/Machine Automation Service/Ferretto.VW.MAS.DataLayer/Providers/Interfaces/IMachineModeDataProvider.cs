@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface IMachineModeDataProvider
+    public interface IMachineModeVolatileDataProvider
     {
         #region Properties
 

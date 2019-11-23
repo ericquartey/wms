@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     case LoadingUnitLocation.Cell:
                         if (this.moveData.LoadingUnitCellSourceId != null)
                         {
-                            var cell = this.cellsProvider.GetCellById(this.moveData.LoadingUnitCellSourceId.Value);
+                            var cell = this.cellsProvider.GetById(this.moveData.LoadingUnitCellSourceId.Value);
 
                             direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         }
@@ -117,7 +117,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        if (this.sensorsProvider.GetShutterPosition(notification.RequestingBay) == ShutterPosition.Opened)
+                        var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
+                        if (shutterPosition == ShutterPosition.Opened
+                            || shutterPosition == ShutterPosition.NotSpecified)
                         {
                             this.loadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                         }
@@ -148,20 +150,24 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                 {
-                    this.elevatorDataProvider.LoadLoadingUnit(this.moveData.LoadingUnitId);
+                    this.elevatorDataProvider.SetLoadingUnit(this.moveData.LoadingUnitId);
 
                     if (this.moveData.LoadingUnitSource == LoadingUnitLocation.Cell)
                     {
-                        var moveDataLoadingUnitCellSourceId = this.moveData.LoadingUnitCellSourceId;
-
-                        if (moveDataLoadingUnitCellSourceId != null)
+                        var sourceCellId = this.moveData.LoadingUnitCellSourceId;
+                        if (sourceCellId.HasValue)
                         {
-                            this.cellsProvider.UnloadLoadingUnit(moveDataLoadingUnitCellSourceId.Value);
+                            this.cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("");
                         }
                     }
                     else
                     {
-                        this.baysProvider.UnloadLoadingUnit(this.moveData.LoadingUnitSource);
+                        var bayPosition = this.baysProvider.GetPositionByLocation(this.moveData.LoadingUnitSource);
+                        this.baysProvider.SetLoadingUnit(bayPosition.Id, null);
                     }
 
                     transaction.Commit();

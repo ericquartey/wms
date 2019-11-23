@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -77,7 +78,16 @@ namespace Ferretto.VW.MAS.DeviceManager.InverterPowerEnable
                 }
                 else
                 {
-                    this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+                    if (this.machineData.Enable
+                        && this.machineData.TargetBay == BayNumber.ElevatorBay
+                        && this.machineData.BayInverters.Count() == 1)
+                    {
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEncoderState(this.stateData));
+                    }
+                    else
+                    {
+                        this.ParentStateMachine.ChangeState(new InverterPowerEnableEndState(this.stateData));
+                    }
                 }
             }
         }

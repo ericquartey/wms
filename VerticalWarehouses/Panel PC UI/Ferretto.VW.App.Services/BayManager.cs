@@ -3,6 +3,7 @@ using System.Configuration;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
 
@@ -31,6 +32,7 @@ namespace Ferretto.VW.App.Services
         #region Constructors
 
         public BayManager(
+            IEventAggregator eventAggregator,
             IOperatorHubClient operatorHubClient,
             IMachineBaysWebService machineBaysWebService,
             IMachineIdentityWebService machineIdentityWebService,
@@ -38,45 +40,24 @@ namespace Ferretto.VW.App.Services
             WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
             WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService)
         {
-            if (operatorHubClient is null)
-            {
-                throw new ArgumentNullException(nameof(operatorHubClient));
-            }
-
-            if (machineBaysWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineBaysWebService));
-            }
-
-            if (machineIdentityWebService is null)
-            {
-                throw new ArgumentNullException(nameof(machineIdentityWebService));
-            }
-
-            if (missionOperationsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(missionOperationsDataService));
-            }
-
-            if (missionOperationsAutomationWebService is null)
-            {
-                throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
-            }
-
-            if (missionsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(missionsDataService));
-            }
-
-            this.missionOperationsDataService = missionOperationsDataService;
-            this.missionOperationsAutomationService = missionOperationsAutomationWebService;
-            this.missionsDataService = missionsDataService;
-            this.operatorHubClient = operatorHubClient;
-            this.machineBaysWebService = machineBaysWebService;
-            this.machineIdentityWebService = machineIdentityWebService;
+            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionOperationsAutomationService = missionOperationsAutomationWebService ?? throw new ArgumentNullException(nameof(missionOperationsAutomationWebService));
+            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
 
             this.operatorHubClient.BayStatusChanged += async (sender, e) => await this.OnBayStatusChangedAsync(sender, e);
             this.operatorHubClient.MissionOperationAvailable += async (sender, e) => await this.OnMissionOperationAvailableAsync(sender, e);
+
+            var bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
+
+            eventAggregator
+                .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                .Subscribe(
+                    this.OnBayChainPositionChanged,
+                    ThreadOption.UIThread,
+                    false);
         }
 
         #endregion
@@ -88,6 +69,8 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Properties
+
+        public double ChainPosition { get; private set; }
 
         public WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; private set; }
 
@@ -140,6 +123,11 @@ namespace Ferretto.VW.App.Services
         public async Task InitializeAsync()
         {
             this.Identity = await this.IdentityService.GetAsync();
+        }
+
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.ChainPosition = e.Position;
         }
 
         private async Task OnBayStatusChangedAsync(object sender, BayStatusChangedEventArgs e)

@@ -58,6 +58,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
             await this.InitialinngData();
         }
 
@@ -116,6 +117,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private async Task InitialinngData()
         {
             await this.GetLoadingUnits();
+
             this.SelectBayPositionDown();
         }
 

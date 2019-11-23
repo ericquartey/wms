@@ -15,7 +15,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly IMachineCellsWebService machineCellsWebService;
 
+        private readonly IMachineElevatorWebService machineElevatorWebService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineElevatorWebService>();
+
         private readonly ISensorsService sensorsService;
+
+        private AxisBounds axisBounds;
 
         private IEnumerable<Cell> cells;
 
@@ -55,31 +59,41 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 int? old = this.destinationCellId;
                 if (this.SetProperty(ref this.destinationCellId, value))
                 {
-                    if (this.IsCellFree)
+                    if (this.axisBounds != null)
                     {
-                        this.RaiseCanExecuteChanged();
-                    }
-                    else
-                    {
-                        bool increment = !old.HasValue || old < this.destinationCellId;
-                        if (increment)
+                        if (this.IsCellFree)
                         {
-                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && w.Id > (old ?? 0));
-                            if (l.Any())
-                            {
-                                this.DestinationCellId = l.Min(o => o.Id);
-                            }
+                            this.RaiseCanExecuteChanged();
                         }
                         else
                         {
-                            var l = this.Cells.Where(w => w.Status == CellStatus.Free && old.HasValue && w.Id < old.Value);
-                            if (l.Any())
+                            bool increment = !old.HasValue || old < this.destinationCellId;
+                            if (increment)
                             {
-                                this.DestinationCellId = l.Max(o => o.Id);
+                                var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
+                                                              w.Position < this.axisBounds?.Upper &&
+                                                              w.Status == CellStatus.Free &&
+                                                              w.Id > (old ?? 0));
+                                if (l.Any())
+                                {
+                                    this.DestinationCellId = l.Min(o => o.Id);
+                                }
                             }
                             else
                             {
-                                this.DestinationCellId = null;
+                                var l = this.Cells.Where(w => w.Position > this.axisBounds?.Lower &&
+                                                              w.Position < this.axisBounds?.Upper &&
+                                                              w.Status == CellStatus.Free &&
+                                                              old.HasValue &&
+                                                              w.Id < old.Value);
+                                if (l.Any())
+                                {
+                                    this.DestinationCellId = l.Max(o => o.Id);
+                                }
+                                else
+                                {
+                                    this.DestinationCellId = null;
+                                }
                             }
                         }
                     }
@@ -96,7 +110,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return false;
                 }
 
-                var cellFound = this.cells.FirstOrDefault(l => l.Id == this.destinationCellId.Value);
+                var cellFound = this.cells.FirstOrDefault(l =>
+                                                          !(this.axisBounds is null) &&
+                                                          l.Position > this.axisBounds.Lower &&
+                                                          l.Position < this.axisBounds.Upper &&
+                                                          l.Id == this.destinationCellId.Value);
                 if (!(cellFound is null))
                 {
                     return cellFound.Status == CellStatus.Free;
@@ -148,6 +166,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
+                this.axisBounds = await this.machineElevatorWebService.GetVerticalBoundsAsync();
+
                 this.Cells = await this.machineCellsWebService.GetAllAsync();
                 if (this.DestinationCellId is null)
                 {

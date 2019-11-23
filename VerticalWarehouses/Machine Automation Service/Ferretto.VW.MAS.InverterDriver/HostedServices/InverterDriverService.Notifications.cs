@@ -41,7 +41,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 case FieldMessageType.DataLayerReady:
 
-                    this.ReloadRealTimeValues(serviceProvider);
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     this.InitializeTimers();
 
@@ -263,7 +262,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             if (inverter is AngInverterStatus angInverter)
                             {
                                 ioStatuses[6] = angInverter.ANG_OverrunElevatorSensor;
-                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish)
+                                if (angInverter.UpdateInputsStates(ioStatuses) || this.forceStatusPublish[(int)InverterIndex.MainInverter])
                                 {
                                     this.Logger.LogTrace("Sensor Update");
 
@@ -288,7 +287,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                 &&
                 (receivedMessage.Status == MessageStatus.OperationEnd
                 ||
-                receivedMessage.Status == MessageStatus.OperationStop))
+                receivedMessage.Status == MessageStatus.OperationStop
+                ||
+                receivedMessage.Status == MessageStatus.OperationUpdateData))
             {
                 var notificationMessageToFsm = receivedMessage;
 
@@ -298,46 +299,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                 this.eventAggregator?
                     .GetEvent<FieldNotificationEvent>()
                     .Publish(notificationMessageToFsm);
-            }
-        }
-
-        private void ReloadRealTimeValues(IServiceProvider serviceProvider)
-        {
-            var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-            var inverterList = invertersProvider.GetAll();
-            var bayList = baysProvider.GetAll();
-            foreach (var inverter in inverterList)
-            {
-                if ((inverter is AngInverterStatus || inverter is AcuInverterStatus)
-                    && inverter is IPositioningInverterStatus positioningInverter)
-                {
-                    if (inverter.SystemIndex == InverterIndex.MainInverter)
-                    {
-                        var axis = elevatorDataProvider.GetVerticalAxis();
-                        var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetVerticalAxis().Offset, Orientation.Vertical);
-                        positioningInverter.UpdateInverterCurrentPosition(Axis.Vertical, currentAxisPosition);
-                        if (!inverterList.Any(x => x.SystemIndex == InverterIndex.Slave1))
-                        {
-                            axis = elevatorDataProvider.GetHorizontalAxis();
-                            currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
-                            positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
-                        }
-                    }
-                    else if (inverter.SystemIndex == InverterIndex.Slave1)
-                    {
-                        var axis = elevatorDataProvider.GetHorizontalAxis();
-                        var currentAxisPosition = invertersProvider.ConvertMillimetersToPulses(axis.RealTimePosition - elevatorDataProvider.GetHorizontalAxis().Offset, Orientation.Horizontal);
-                        positioningInverter.UpdateInverterCurrentPosition(Axis.Horizontal, currentAxisPosition);
-                    }
-                    else
-                    {
-                        var bay = bayList.FirstOrDefault(x => x.Inverter.Index == inverter.SystemIndex);
-                        var currentAxisPosition = (int)Math.Round(bay.Resolution * bay.RealTimePosition);
-                        positioningInverter.UpdateInverterCurrentPosition(Axis.BayChain, currentAxisPosition);
-                    }
-                }
             }
         }
 

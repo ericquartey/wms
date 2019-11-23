@@ -65,7 +65,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 throw new System.ArgumentNullException(nameof(serviceScopeFactory));
             }
 
-            // 3 scopes, avoid cross reference of same object on save
+            // 4 scopes, avoid cross reference of same object on save
+
+            //using (var scope = serviceScopeFactory.CreateScope())
+            //{
+            //    scope.ServiceProvider.GetRequiredService<IMachineProvider>().ClearAll();
+            //}
 
             using (var scope = serviceScopeFactory.CreateScope())
             {

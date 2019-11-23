@@ -31,6 +31,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public void Add(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.AddRange(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void ClearAll()
+        {
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
@@ -132,23 +146,25 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(e => e.StructuralProperties)
                     .Single();
 
-                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevator.StructuralProperties.ElevatorWeight)
+                var elevatorWeight = elevator.StructuralProperties.ElevatorWeight;
+
+                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
+                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard + elevatorWeight}kg).");
                 }
 
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevator.StructuralProperties.ElevatorWeight)
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
                         $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
                 }
 
-                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevator.StructuralProperties.ElevatorWeight;
+                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 
                 this.dataContext.SaveChanges();
             }
@@ -158,8 +174,12 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
-
+                foreach (var l in loadingUnits)
+                {
+                    this.dataContext.LoadingUnits.Attach(l);
+                    this.dataContext.Entry(l).State = EntityState.Modified;
+                    this.dataContext.LoadingUnits.Update(l);
+                }
                 this.dataContext.SaveChanges();
             }
         }

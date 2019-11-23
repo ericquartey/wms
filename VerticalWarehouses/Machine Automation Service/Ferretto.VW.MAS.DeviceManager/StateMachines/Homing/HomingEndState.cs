@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
     {
         #region Fields
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly IHomingMachineData machineData;
 
         private readonly IServiceScope scope;
@@ -36,6 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             this.machineData = stateData.MachineData as IHomingMachineData;
 
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
         }
 
         #endregion
@@ -82,6 +85,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                             break;
 
                         case MessageStatus.OperationError:
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InverterErrorBaseCode, this.machineData.RequestingBay);
                             this.stateData.FieldMessage = message;
                             this.ParentStateMachine.ChangeState(new HomingErrorState(this.stateData));
                             break;
@@ -128,7 +132,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
 
-                if (this.machineData.AxisToCalibrate == Axis.Horizontal || this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
+                if (this.machineData.AxisToCalibrate == Axis.Horizontal
+                    ||
+                    this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
                 }

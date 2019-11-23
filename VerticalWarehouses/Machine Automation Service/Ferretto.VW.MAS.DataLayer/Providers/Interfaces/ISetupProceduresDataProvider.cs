@@ -6,6 +6,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        void Add(SetupProceduresSet setupProceduresSet);
+
         SetupProceduresSet GetAll();
 
         PositioningProcedure GetBayHeightCheck();
@@ -24,8 +26,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         SetupProcedure GetLoadFirstDrawerTest();
 
-        OffsetCalibrationProcedure GetVerticalOffsetCalibration();
-
         SetupProcedure GetShutterHeightCheck();
 
         ShutterManualMovementsProcedure GetShutterManualMovements();
@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer
         RepeatedTestProcedure GetShutterTest();
 
         VerticalManualMovementsProcedure GetVerticalManualMovements();
+
+        OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 

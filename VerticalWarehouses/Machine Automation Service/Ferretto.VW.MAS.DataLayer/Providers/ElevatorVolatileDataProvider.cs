@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ferretto.VW.MAS.DataLayer.Providers
+﻿namespace Ferretto.VW.MAS.DataLayer.Providers
 {
     public class ElevatorVolatileDataProvider : IElevatorVolatileDataProvider
     {

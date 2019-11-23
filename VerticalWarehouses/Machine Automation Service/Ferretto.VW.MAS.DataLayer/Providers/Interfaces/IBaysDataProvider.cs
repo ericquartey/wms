@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByAxis(IHomingMessageData data);
 
+        Bay GetByBayPositionId(int id);
+
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
@@ -40,6 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer
         Bay GetByNumber(BayNumber bayNumber);
 
         double GetChainOffset(InverterIndex inverterIndex);
+
+        double GetChainPosition(BayNumber bayNumber);
 
         InverterIndex GetInverterIndexByAxis(Axis axis, BayNumber bayNumber);
 
@@ -55,21 +59,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
-        LoadingUnitLocation GetPositionByHeight(double position, double tolerance, BayNumber bayNumber);
+        BayPosition GetPositionById(int bayPositionId);
+
+        BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
         double GetResolution(InverterIndex inverterIndex);
 
-        void LoadLoadingUnit(int loadingUnitId, LoadingUnitLocation location);
-
         void ResetMachine();
+
+        void SetChainPosition(BayNumber bayNumber, double value);
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
-        void UnloadLoadingUnit(LoadingUnitLocation location);
+        void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
-
-        void UpdateRealTimePosition(Bay bay, double position);
 
         #endregion
     }

@@ -67,6 +67,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BayInvertersBusy), 1)]
         BayInvertersBusy,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(IoDeviceError), 1)]
+        IoDeviceError,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
 
@@ -150,5 +153,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitShutterClosed), 1)]
         MachineManagerErrorLoadingUnitShutterClosed = MachineManagerErrorBaseCode + 12,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitPresentInCell), 1)]
+        MachineManagerErrorLoadingUnitPresentInCell = MachineManagerErrorBaseCode + 13,
     }
 }

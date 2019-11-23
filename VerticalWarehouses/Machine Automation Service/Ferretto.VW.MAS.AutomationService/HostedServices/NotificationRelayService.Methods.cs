@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
@@ -53,6 +54,15 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
+        private void OnBayChainPositionChanged(BayChainPositionMessageData data)
+        {
+            Contract.Requires(data != null);
+
+            this.installationHub.Clients.All.BayChainPositionChanged(
+                data.Position,
+                data.BayNumber);
+        }
+
         private void OnBayConnected(IBayOperationalStatusChangedMessageData messageData)
         {
             if (messageData is null)
@@ -88,6 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
+                this.machineProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
 
                 this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }
@@ -100,12 +111,20 @@ namespace Ferretto.VW.MAS.AutomationService
             this.baysProvider.GetAll().ToList(); // HACK why is this call needed?
         }
 
+        private void OnElevatorPositionChanged(ElevatorPositionMessageData data)
+        {
+            Contract.Requires(data != null);
+
+            this.installationHub.Clients.All.ElevatorPositionChanged(
+                data.VerticalPosition,
+                data.HorizontalPosition,
+                data.CellId,
+                data.BayPositionId);
+        }
+
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
         {
-            if (machineErrorMessageData is null)
-            {
-                throw new ArgumentNullException(nameof(machineErrorMessageData));
-            }
+            Contract.Requires(machineErrorMessageData != null);
 
             this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
         }
@@ -118,7 +137,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnMachineModeChanged(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is DataLayer.MachineModeMessageData data)
+            if (receivedMessage.Data is MachineModeMessageData data)
             {
                 this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
             }
@@ -132,10 +151,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)
         {
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            Contract.Requires(e != null);
 
             await this.operatorHub.Clients.All.NewMissionOperationAvailable(e);
         }

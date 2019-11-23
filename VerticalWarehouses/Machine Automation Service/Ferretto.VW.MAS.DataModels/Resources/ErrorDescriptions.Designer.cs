@@ -286,6 +286,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to IoDeviceError.
+        /// </summary>
+        public static string IoDeviceError {
+            get {
+                return ResourceManager.GetString("IoDeviceError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Il peso massimo caricato sul cassetto è eccessivo..
         /// </summary>
         public static string LoadingUnitWeightExceeded {
@@ -363,6 +372,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string MachineManagerErrorLoadingUnitNotRemoved {
             get {
                 return ResourceManager.GetString("MachineManagerErrorLoadingUnitNotRemoved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitPresentInCell.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
             }
         }
         

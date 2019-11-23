@@ -79,11 +79,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
+        public DbSet<Shutter> Shutters { get; set; }
+
         public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }
 
         public DbSet<TorqueCurrentSample> TorqueCurrentSamples { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 
         #endregion
 

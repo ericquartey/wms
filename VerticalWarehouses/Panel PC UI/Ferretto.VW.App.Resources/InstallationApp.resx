@@ -673,7 +673,7 @@
   </data>
   <data name="LoadingDrawersButton" xml:space="preserve">
     <value>Load Drawers</value>
-    <comment>Button text</comment>
+    <comment>Command</comment>
   </data>
   <data name="LoadingDrawersPageHeader" xml:space="preserve">
     <value>Load Drawers</value>
@@ -697,11 +697,11 @@
   </data>
   <data name="LoadingDrawersNextDrawer" xml:space="preserve">
     <value>Next drawer</value>
-    <comment>Button text</comment>
+    <comment>Command</comment>
   </data>
   <data name="LoadingDrawersStartInsertion" xml:space="preserve">
     <value>Start insertion</value>
-    <comment>Button text</comment>
+    <comment>Command</comment>
   </data>
   <data name="LoadFirstDrawerButton" xml:space="preserve">
     <value>Load First Drawer</value>
@@ -1259,5 +1259,31 @@
   </data>
   <data name="UseWeightControl" xml:space="preserve">
     <value>Use weight control</value>
+  </data>
+  <data name="LoadFromBay" xml:space="preserve">
+    <value>Load</value>
+    <comment>Command</comment>
+  </data>
+  <data name="LoadFromCell" xml:space="preserve">
+    <value>Load</value>
+    <comment>Command</comment>
+  </data>
+  <data name="UnloadToBay" xml:space="preserve">
+    <value>Unload</value>
+  </data>
+  <data name="UnloadToCell" xml:space="preserve">
+    <value>Unload</value>
+  </data>
+  <data name="ElevatorLogicalPosition" xml:space="preserve">
+    <value>Position</value>
+  </data>
+  <data name="CellWithNumber" xml:space="preserve">
+    <value>Cell {0}</value>
+  </data>
+  <data name="InBay" xml:space="preserve">
+    <value>in Bay</value>
+  </data>
+  <data name="InBayWithNumber" xml:space="preserve">
+    <value>in Bay {0}</value>
   </data>
 </root>

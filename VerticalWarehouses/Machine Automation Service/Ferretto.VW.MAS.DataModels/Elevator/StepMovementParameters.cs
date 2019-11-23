@@ -22,33 +22,20 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 throw new ArgumentNullException(nameof(axis));
             }
+
             if (this.AdjustByWeight)
             {
                 var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
-                if (deltaSpeed < this.Speed)
+                if (this.Speed - deltaSpeed > axis.FullLoadMovement.Speed)
                 {
                     this.Speed -= deltaSpeed;
                 }
-                else
-                {
-                    this.Speed = axis.FullLoadMovement.Speed;
-                }
 
                 var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;
-                if (deltaAcceleration < this.Acceleration)
+                if (this.Acceleration - deltaAcceleration > axis.FullLoadMovement.Acceleration)
                 {
                     this.Acceleration -= deltaAcceleration;
                 }
-                else
-                {
-                    this.Acceleration = axis.FullLoadMovement.Acceleration;
-                }
-
-                //var deltaDeceleration = (axis.EmptyLoadMovement.Deceleration - axis.FullLoadMovement.Deceleration) * scalingFactor;
-                //if (deltaDeceleration > this.Deceleration)
-                //{
-                //    this.Deceleration -= deltaDeceleration;
-                //}
             }
         }
 

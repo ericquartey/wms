@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        void Add(IEnumerable<LoadingUnit> loadingUnits);
+
         IEnumerable<LoadingUnit> GetAll();
 
         LoadingUnit GetById(int id);

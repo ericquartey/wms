@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.Interface.InverterStatus;
 
 namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
@@ -13,12 +14,12 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.StatusWord
         }
 
         public ProfileVelocityStatusWord(IStatusWord otherControlWord)
-            : base(otherControlWord.Value)
+            : base(otherControlWord?.Value ?? throw new ArgumentNullException(nameof(otherControlWord)))
         {
         }
 
         public ProfileVelocityStatusWord(IProfileVelocityStatusWord otherControlWord)
-            : base(otherControlWord.Value)
+            : base(otherControlWord?.Value ?? throw new ArgumentNullException(nameof(otherControlWord)))
         {
         }
 

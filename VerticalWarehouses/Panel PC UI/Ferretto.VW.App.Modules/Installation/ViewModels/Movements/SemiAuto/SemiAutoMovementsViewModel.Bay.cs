@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -14,9 +15,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
-        private BayNumber bayNumber;
+        private Bay bay;
 
-        private double? bayPositionHeight;
+        private bool bayIsMultiPosition;
 
         private bool isElevatorMovingToBay;
 
@@ -24,27 +25,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPositionUpSelected;
 
-        private DelegateCommand moveToBayHeightCommand;
+        private DelegateCommand moveToBayPositionCommand;
 
         private DelegateCommand selectBayPositionDownCommand;
 
         private DelegateCommand selectBayPositionUpCommand;
 
+        private BayPosition selectedBayPosition;
+
         #endregion
 
         #region Properties
-
-        public BayNumber BayNumber
-        {
-            get => this.bayNumber;
-            set => this.SetProperty(ref this.bayNumber, value);
-        }
-
-        public double? BayPositionHeight
-        {
-            get => this.bayPositionHeight;
-            private set => this.SetProperty(ref this.bayPositionHeight, value);
-        }
 
         public bool IsElevatorMovingToBay
         {
@@ -83,39 +74,55 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public ICommand MoveToBayHeightCommand =>
-            this.moveToBayHeightCommand
+        public ICommand MoveToBayPositionCommand =>
+            this.moveToBayPositionCommand
             ??
-            (this.moveToBayHeightCommand = new DelegateCommand(
-                async () => await this.MoveToBayHeightAsync(),
-                this.CanMoveToBayHeight));
+            (this.moveToBayPositionCommand = new DelegateCommand(
+                async () => await this.MoveToBayPositionAsync(),
+                this.CanMoveToBayPosition));
 
         public ICommand SelectBayPositionDownCommand =>
             this.selectBayPositionDownCommand
             ??
-            (this.selectBayPositionDownCommand = new DelegateCommand(() => this.SelectBayPositionDown(), this.CanSelectBayPosition));
+            (this.selectBayPositionDownCommand = new DelegateCommand(
+                this.SelectBayPositionDown,
+                this.CanSelectBayPosition));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
-            (this.selectBayPositionUpCommand = new DelegateCommand(() => this.SelectBayPositionUp(), this.CanSelectBayPosition));
+            (this.selectBayPositionUpCommand = new DelegateCommand(
+                this.SelectBayPositionUp,
+                this.CanSelectBayPosition));
+
+        public BayPosition SelectedBayPosition
+        {
+            get => this.selectedBayPosition;
+            private set
+            {
+                if (this.SetProperty(ref this.selectedBayPosition, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         #endregion
 
         #region Methods
 
-        private bool CanMoveToBayHeight()
+        private bool CanMoveToBayPosition()
         {
             return
-                !this.KeyboardOpened
+               !this.KeyboardOpened
                 &&
-                this.BayPositionHeight.HasValue
+                this.SelectedBayPosition != null
                 &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
                 &&
-                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSide && this.sensorsService.Sensors.LuPresentInOperatorSide));
+                this.moveToBayPositionPolicy?.IsAllowed == true;
         }
 
         private bool CanSelectBayPosition()
@@ -125,24 +132,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                !this.IsMoving
-                &&
-                (this.sensorsService.IsZeroChain || (this.sensorsService.Sensors.LuPresentInMachineSide && this.sensorsService.Sensors.LuPresentInOperatorSide));
+                !this.IsMoving;
         }
 
-        private async Task MoveToBayHeightAsync()
+        private async Task MoveToBayPositionAsync()
         {
             try
             {
                 this.IsWaitingForResponse = true;
 
-                this.InputHeight = this.BayPositionHeight.HasValue ? this.BayPositionHeight.Value : 0;
+                Debug.Assert(
+                    this.SelectedBayPosition != null,
+                    "A bay position should be selected.");
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.BayPositionHeight.Value,
+                this.InputHeight = this.SelectedBayPosition.Height;
+
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                    this.SelectedBayPosition.Id,
                     this.procedureParameters.FeedRateAfterZero,
-                    false,
-                    true);
+                    computeElongation: true,
+                    performWeighting: false);
 
                 this.IsElevatorMovingToBay = true;
             }
@@ -161,13 +170,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
-            this.BayPositionHeight = this.bay.Positions.First().Height;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
         }
 
         private void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
-            this.BayPositionHeight = this.bay.Positions.Last().Height;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
         }
 
         #endregion

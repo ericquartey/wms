@@ -9,14 +9,18 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Constructors
 
-        public InstallationHubClient(string url, string installationHubPath)
-            : base(new Uri(new Uri(url), installationHubPath))
+        public InstallationHubClient(Uri url, string installationHubPath)
+            : base(new Uri(url, installationHubPath))
         {
         }
 
         #endregion
 
         #region Events
+
+        public event EventHandler<BayChainPositionChangedEventArgs> BayChainPositionChanged;
+
+        public event EventHandler<ElevatorPositionChangedEventArgs> ElevatorPositionChanged;
 
         public event EventHandler<MachineModeChangedEventArgs> MachineModeChanged;
 
@@ -30,11 +34,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
+            connection.On<double, BayNumber>(
+                nameof(IInstallationHub.BayChainPositionChanged), this.OnBayChainPositionChanged);
+
             connection.On<MachineMode>(
                 nameof(IInstallationHub.MachineModeChanged), this.OnMachineModeChanged);
 
             connection.On<MachinePowerState>(
                 nameof(IInstallationHub.MachinePowerChanged), this.OnMachinePowerChanged);
+
+            connection.On<double, double, int?, int?>(
+                nameof(IInstallationHub.ElevatorPositionChanged), this.OnElevatorPositionChanged);
 
             connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
                 nameof(IInstallationHub.SensorsChanged), this.OnSensorsChanged);
@@ -50,9 +60,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<PositioningMessageData>>(
                  nameof(IInstallationHub.PositioningNotify), this.OnPositioningNotify);
-
-            connection.On<NotificationMessageUI<CurrentPositionMessageData>>(
-                 nameof(IInstallationHub.CurrentPositionChanged), this.OnCurrentPositionChanged);
 
             connection.On<NotificationMessageUI<HomingMessageData>>(
                  nameof(IInstallationHub.HomingProcedureStatusChanged), this.OnHomingProcedureStatusChanged);
@@ -79,12 +86,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
                 nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
         }
 
-        private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
+        private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
         {
-            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+            this.BayChainPositionChanged?.Invoke(
+                this,
+                new BayChainPositionChangedEventArgs(position, bayNumber));
         }
 
-        private void OnCurrentPositionChanged(NotificationMessageUI<CurrentPositionMessageData> message)
+        private void OnCalibrateAxisNotify(NotificationMessageUI<CalibrateAxisMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
@@ -92,6 +101,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
         private void OnElavtorWeightCheck(NotificationMessageUI<ElevatorWeightCheckMessageData> message)
         {
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
+        }
+
+        private void OnElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId)
+        {
+            this.ElevatorPositionChanged?.Invoke(
+                this,
+                new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId));
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
