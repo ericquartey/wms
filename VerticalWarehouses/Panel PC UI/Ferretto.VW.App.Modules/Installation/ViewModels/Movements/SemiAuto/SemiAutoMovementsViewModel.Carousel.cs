@@ -15,17 +15,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
-        private ActionPolicy moveCarouselDownPolicy;
-
-        private ActionPolicy moveCarouselUpPolicy;
-
         private bool hasCarousel;
 
         private bool isCarouselMoving;
 
         private DelegateCommand moveCarouselDownCommand;
 
+        private ActionPolicy moveCarouselDownPolicy;
+
         private DelegateCommand moveCarouselUpCommand;
+
+        private ActionPolicy moveCarouselUpPolicy;
 
         #endregion
 
@@ -35,15 +35,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveCarouselDownCommand
             ??
             (this.moveCarouselDownCommand = new DelegateCommand(
-                async () => await this.MoveCarouselDownAsync(),
-                this.CanMoveCarouselDown));
+            async () => await this.MoveCarouselDownAsync(),
+            this.CanMoveCarouselDown));
 
         public ICommand CarouselUpCommand =>
             this.moveCarouselUpCommand
             ??
             (this.moveCarouselUpCommand = new DelegateCommand(
-                async () => await this.MoveCarouselUpAsync(),
-                this.CanMoveCarouselUp));
+            async () => await this.MoveCarouselUpAsync(),
+            this.CanMoveCarouselUp));
 
         public bool HasCarousel
         {
@@ -67,10 +67,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.KeyboardOpened
                 &&
                 !this.IsMoving
-              &&
-              !this.IsWaitingForResponse
-              &&
-              this.moveCarouselDownPolicy?.IsAllowed == true;
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselDownPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveCarouselUp()
@@ -78,11 +78,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.KeyboardOpened
                 &&
-            !this.IsMoving
-              &&
-              !this.IsWaitingForResponse
-              &&
-              this.moveCarouselUpPolicy?.IsAllowed == true;
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselUpPolicy?.IsAllowed == true;
         }
 
         private async Task MoveCarouselDownAsync()
@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(VerticalMovementDirection.Down);
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Down);
                 this.IsCarouselMoving = true;
             }
             catch (Exception ex)
@@ -110,7 +110,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(VerticalMovementDirection.Up);
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Up);
                 this.IsCarouselMoving = true;
             }
             catch (Exception ex)

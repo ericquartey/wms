@@ -265,17 +265,17 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.BayHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.BeltBurnishingTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.CarouselManualMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.CellPanelsCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.CellsHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.DepositAndPickUpTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.LoadFirstDrawerTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.ShutterHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.ShutterTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.VerticalOffsetCalibration, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet.VerticalResolutionCalibration, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.CarouselManualMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+                this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
 
                 this.dataContext.SaveChanges();
             }

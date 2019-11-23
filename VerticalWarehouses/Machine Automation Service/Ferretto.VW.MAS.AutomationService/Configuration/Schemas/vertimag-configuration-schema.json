@@ -368,7 +368,9 @@
                 "type": "object",
                 "title": "The Carousel Schema",
                 "required": [
-                  "ElevatorDistance"
+                  "ElevatorDistance",
+                  "ManualMovements",
+                  "AssistedMovements"
                 ],
                 "properties": {
                   "ElevatorDistance": {
@@ -376,6 +378,38 @@
                     "type": "number",
                     "title": "The Elevatordistance Schema",
                     "default": 0
+                  },
+                  "ManualMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ManualMovements",
+                    "type": "object",
+                    "title": "The ManualMovements Schema",
+                    "required": [
+                      "FeedRate"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ManualMovements/properties/FeedRate",
+                        "type": "number",
+                        "title": "The FeedRate Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "AssistedMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/AssistedMovements",
+                    "type": "object",
+                    "title": "The AssistedMovements Schema",
+                    "required": [
+                      "FeedRate"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/AssistedMovements/properties/FeedRate",
+                        "default": 0,
+                        "title": "The FeedRate Schema",
+                        "type": "number"
+                      }
+                    }
                   }
                 }
               }

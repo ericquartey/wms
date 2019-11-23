@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Bay> GetAll();
 
+        CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
+
         ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);
 
         BayNumber GetByAxis(IHomingMessageData data);
@@ -60,6 +62,8 @@ namespace Ferretto.VW.MAS.DataLayer
         double? GetLoadingUnitDestinationHeight(LoadingUnitLocation location);
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
+
+        CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber);
 
         ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 

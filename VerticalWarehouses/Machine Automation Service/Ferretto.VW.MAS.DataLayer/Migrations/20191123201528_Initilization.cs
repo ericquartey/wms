@@ -8,16 +8,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Carousels",
+                name: "CarouselManualParameters",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ElevatorDistance = table.Column<double>(nullable: false)
+                    FeedRate = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carousels", x => x.Id);
+                    table.PrimaryKey("PK_CarouselManualParameters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -276,6 +276,33 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WeightMeasurements", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Carousels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AssistedMovementsId = table.Column<int>(nullable: true),
+                    ElevatorDistance = table.Column<double>(nullable: false),
+                    ManualMovementsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carousels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carousels_CarouselManualParameters_AssistedMovementsId",
+                        column: x => x.AssistedMovementsId,
+                        principalTable: "CarouselManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Carousels_CarouselManualParameters_ManualMovementsId",
+                        column: x => x.ManualMovementsId,
+                        principalTable: "CarouselManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -1032,7 +1059,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 23, 19, 29, 21, 615, DateTimeKind.Local).AddTicks(6897), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 23, 21, 15, 27, 588, DateTimeKind.Local).AddTicks(2432), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1349,6 +1376,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_Bays_ShutterId",
                 table: "Bays",
                 column: "ShutterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carousels_AssistedMovementsId",
+                table: "Carousels",
+                column: "AssistedMovementsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carousels_ManualMovementsId",
+                table: "Carousels",
+                column: "ManualMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CellPanels_MachineId",
@@ -1676,6 +1713,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "Shutters");
+
+            migrationBuilder.DropTable(
+                name: "CarouselManualParameters");
 
             migrationBuilder.DropTable(
                 name: "ShutterManualParameters");

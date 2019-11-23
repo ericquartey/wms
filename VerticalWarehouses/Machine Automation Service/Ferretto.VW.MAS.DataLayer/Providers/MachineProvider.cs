@@ -124,6 +124,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             .ThenInclude(b => b.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Inverter)
                     .Include(m => m.Bays)
@@ -141,13 +145,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Cells)
                     .Single();
 
-                foreach (var axe in entity.Elevator.Axes.ToList())
+                entity.Elevator.Axes.ForEach((axe) =>
                 {
-                    foreach (var profile in axe.Profiles.ToList())
-                    {
-                        profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList();
-                    }
-                }
+                    axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
+                });
 
                 return entity;
             }
@@ -259,7 +260,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     this.dataContext.AddOrUpdate(a, (e) => e.Id);
                 });
 
-                this.dataContext.AddOrUpdate(machine.Elevator.StructuralProperties, (e) => e.Id);
+                this.dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
                 this.dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
 
                 machine.Bays.ForEach((b) =>
@@ -271,12 +272,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     });
 
                     this.dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
                     this.dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
                     this.dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
                     this.dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
-                    this.dataContext.AddOrUpdate(b.Shutter.Inverter, (e) => e.Id);
-                    this.dataContext.AddOrUpdate(b.Shutter.AssistedMovements, (e) => e.Id);
-                    this.dataContext.AddOrUpdate(b.Shutter.ManualMovements, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
                 });
 
                 machine.Panels.ForEach((p) =>

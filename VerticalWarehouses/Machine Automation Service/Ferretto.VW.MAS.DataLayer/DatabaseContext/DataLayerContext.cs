@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<CarouselManualParameters> CarouselManualParameters { get; set; }
+
         public DbSet<Carousel> Carousels { get; set; }
 
         public DbSet<CellPanel> CellPanels { get; set; }
@@ -161,6 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new CellsConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
                 .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
+                .ApplyConfiguration(new CarouselManualParametersConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())

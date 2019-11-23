@@ -70,7 +70,13 @@
           }
         },
         "Carousel": {
-          "ElevatorDistance": 460
+          "ElevatorDistance": 460,
+          "ManualMovements": {
+            "FeedRate": 0.1
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2
+          }
         }
       },
       {

@@ -106,11 +106,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int?>("AssistedMovementsId");
+
                     b.Property<double>("ElevatorDistance");
+
+                    b.Property<int?>("ManualMovementsId");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AssistedMovementsId");
+
+                    b.HasIndex("ManualMovementsId");
+
                     b.ToTable("Carousels");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.CarouselManualParameters", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<double>("FeedRate");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarouselManualParameters");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
@@ -1235,7 +1255,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 23, 19, 29, 21, 615, DateTimeKind.Local).AddTicks(6897),
+                            InstallationDate = new DateTime(2017, 1, 23, 21, 15, 27, 588, DateTimeKind.Local).AddTicks(2432),
                             ServiceStatus = 86
                         });
                 });
@@ -1623,6 +1643,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.LoadingUnit", "LoadingUnit")
                         .WithMany()
                         .HasForeignKey("LoadingUnitId");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Carousel", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.CarouselManualParameters", "AssistedMovements")
+                        .WithMany()
+                        .HasForeignKey("AssistedMovementsId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.CarouselManualParameters", "ManualMovements")
+                        .WithMany()
+                        .HasForeignKey("ManualMovementsId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Cell", b =>
