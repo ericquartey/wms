@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 throw new ArgumentNullException(nameof(services));
             }
 
-            services.AddHostedService<MissionManagerService>();
+            services.AddHostedService<WmsMissionProxyService>();
 
             services.AddTransient<IMissionOperationsProvider, MissionOperationsProvider>();
 

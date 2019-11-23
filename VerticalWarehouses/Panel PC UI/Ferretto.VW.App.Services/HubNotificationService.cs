@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -9,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class HubNotificationService : IHubNotificationService
+    internal sealed class HubNotificationService : IHubNotificationService
     {
         #region Fields
 
@@ -36,7 +37,7 @@ namespace Ferretto.VW.App.Services
             this.installationHubClient.MachineModeChanged += this.OnEventReceived;
             this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
             this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
-            this.installationHubClient.BayChainPositionChanged += this.OnBayChainPositionChanged;
+            this.installationHubClient.BayChainPositionChanged += this.OnBayEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
 
@@ -47,20 +48,19 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        private void OnBayChainPositionChanged(object sender, BayChainPositionChangedEventArgs e)
+        private void OnBayEventReceived<TEventArgs>(object sender, TEventArgs e)
+            where TEventArgs : EventArgs, IBayEventArgs
         {
-            if (e.BayNumber != this.bayNumber)
+            if (e.BayNumber == this.bayNumber)
             {
-                return;
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<TEventArgs>>()
+                    .Publish(e);
             }
-
-            this.eventAggregator
-                .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
-                .Publish(e);
         }
 
         private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
-            where TEventArgs : EventArgs
+                    where TEventArgs : EventArgs
         {
             this.eventAggregator
                 .GetEvent<PubSubEvent<TEventArgs>>()

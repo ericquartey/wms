@@ -86,10 +86,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public int BayNumber
         {
             get => this.bayNumber;
-            set
-            {
-                this.SetProperty(ref this.bayNumber, value);
-            }
+            set => this.SetProperty(ref this.bayNumber, value);
         }
 
         public MachineIdentity MachineIdentity
@@ -246,7 +243,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                     }
                     else
                     {
-                        await this.machineBaysWebService.ActivateAsync();
                         this.NavigateToOperatorMainView();
                     }
 
@@ -280,7 +276,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.OPERATORMENU,
+                Utils.Modules.Operator.OPERATOR_MENU,
                 data: null,
                 trackCurrentView: true);
         }

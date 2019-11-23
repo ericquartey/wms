@@ -6,31 +6,31 @@
 
         public const string EMPTY = "EmptyViewModel";
 
-        public const string OPERATORMENU = "OperatorMenuViewModel";
+        public const string LOADING_UNIT = "LoadingUnitViewModel";
+
+        public const string OPERATOR_MENU = "OperatorMenuViewModel";
 
         #endregion
 
         #region Classes
 
-        public static class DrawerOperations
+        public static class ItemOperations
         {
             #region Fields
 
-            public const string INVENTORY = "LoadingUnitActivityInventoryViewModel";
+            public const string INVENTORY = "ItemInventoryViewModel";
 
-            public const string INVENTORYDETAIL = "LoadingUnitActivityInventoryDetailViewModel";
+            public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
 
-            public const string LOCALCALL = "LoadingUnitActivityLocalCallViewModel";
+            public const string PICK = "ItemPickViewModel";
 
-            public const string PICKING = "LoadingUnitActivityPickingViewModel";
+            public const string PICK_DETAILS = "ItemPickDetailsViewModel";
 
-            public const string PICKINGDETAIL = "LoadingUnitActivityPickingDetailViewModel";
+            public const string PUT = "ItemPutViewModel";
 
-            public const string REFILLING = "LoadingUnitActivityRefillingViewModel";
+            public const string PUT_DETAILS = "ItemPutDetailsViewModel";
 
-            public const string REFILLINGDETAIL = "LoadingUnitActivityRefillingDetailViewModel";
-
-            public const string WAIT = "LoadingUnitWaitViewModel";
+            public const string WAIT = "ItemOperationWaitViewModel";
 
             #endregion
         }
@@ -39,7 +39,7 @@
         {
             #region Fields
 
-            public const string DETAIL = "ItemSearchDetailViewModel";
+            public const string ITEM_DETAILS = "ItemSearchDetailViewModel";
 
             public const string MAIN = "ItemSearchMainViewModel";
 

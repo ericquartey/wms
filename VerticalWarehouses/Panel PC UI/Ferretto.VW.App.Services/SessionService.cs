@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class SessionService : ISessionService
+    internal sealed class SessionService : ISessionService
     {
         private readonly IAuthenticationService autenticationService;
 

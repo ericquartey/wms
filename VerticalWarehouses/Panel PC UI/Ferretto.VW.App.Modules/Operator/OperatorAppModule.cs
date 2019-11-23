@@ -58,18 +58,22 @@ namespace Ferretto.VW.App.Modules.Operator
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitWaitView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityInventoryDetailView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityInventoryView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityLocalCallView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityPickingDetailView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityPickingView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityRefillingDetailView>();
-            containerRegistry.RegisterForNavigation<LoadingUnitActivityRefillingView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitView>();
+
+            containerRegistry.RegisterForNavigation<ItemOperationWaitView>();
+            containerRegistry.RegisterForNavigation<ItemInventoryDetailsView>();
+            containerRegistry.RegisterForNavigation<ItemInventoryView>();
+            containerRegistry.RegisterForNavigation<ItemPickDetailsView>();
+            containerRegistry.RegisterForNavigation<ItemPickView>();
+            containerRegistry.RegisterForNavigation<ItemPutDetailsView>();
+            containerRegistry.RegisterForNavigation<ItemPutView>();
+
             containerRegistry.RegisterForNavigation<ItemSearchMainView>();
             containerRegistry.RegisterForNavigation<ItemSearchDetailView>();
+
             containerRegistry.RegisterForNavigation<WaitingListsView>();
             containerRegistry.RegisterForNavigation<WaitingListDetailView>();
+
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
             containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();

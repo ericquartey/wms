@@ -1,6 +1,6 @@
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class AssignedMissionOperationChangedEventArgs : System.EventArgs
+    public class AssignedMissionOperationChangedEventArgs : System.EventArgs, IBayEventArgs
     {
         #region Constructors
 

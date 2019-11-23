@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
-                    MissionId = id,
+                    MissionOperationId = id,
                 };
 
                 var notificationMessage = new NotificationMessage(

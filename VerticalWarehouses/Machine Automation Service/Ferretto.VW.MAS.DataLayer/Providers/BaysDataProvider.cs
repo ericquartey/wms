@@ -94,10 +94,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     bay.IsActive = true;
 
-                    this.Update(bay);
-
                     this.logger.LogInformation($"The bay {bay.Number} is now active and ready to accept missions.");
                 }
+
+                this.Update(bay);
 
                 return bay;
             }
