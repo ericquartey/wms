@@ -856,11 +856,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         }
 
         public void RunTorqueCurrentSampling(
-                            double displacement,
-                    double netWeight,
-                    int? loadingUnitId,
-                    BayNumber requestingBay,
-                    MessageActor sender)
+            double displacement,
+            double netWeight,
+            int? loadingUnitId,
+            BayNumber requestingBay,
+            MessageActor sender)
         {
             if (displacement <= 0)
             {
@@ -1155,7 +1155,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var feedRate = homingDone ? manualParameters.FeedRateAfterZero : manualParameters.FeedRate;
-            var speed = new[] { movementParameters.Speed * feedRate };
+            var speed = new[] { movementParameters.Speed * (sender == MessageActor.AutomationService ? feedRate : 1) };
 
             var switchPosition = new[] { 0.0 };
 
@@ -1171,7 +1171,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 HorizontalMovementDirection.Forwards)
             {
                 LoadingUnitId = this.elevatorDataProvider.GetLoadingUnitOnBoard()?.Id,
-                FeedRate = feedRate,
+                FeedRate = (sender == MessageActor.AutomationService ? feedRate : 1),
                 ComputeElongation = computeElongation,
                 TargetBayPositionId = targetBayPositionId,
                 TargetCellId = targetCellId,
@@ -1182,7 +1182,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"manualMovement: {manualMovement}; " +
                 $"targetPosition: {targetPosition}; " +
                 $"homing: {homingDone}" +
-                $"feedRate: {manualParameters.FeedRate}; " +
+                $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
                 $"speed: {speed[0]}; " +
                 $"acceleration: {acceleration[0]}; " +
                 $"deceleration: {deceleration[0]}; " +
