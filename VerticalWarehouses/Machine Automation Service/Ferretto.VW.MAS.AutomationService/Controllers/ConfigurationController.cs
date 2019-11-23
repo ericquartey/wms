@@ -49,6 +49,32 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(configuration);
         }
 
+        [HttpPost("import-configuration")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Import(VertimagConfiguration vertimagConfiguration, [FromServices] IServiceScopeFactory serviceScopeFactory)
+        {
+            if (vertimagConfiguration is null)
+            {
+                throw new System.ArgumentNullException(nameof(vertimagConfiguration));
+            }
+
+            if (serviceScopeFactory is null)
+            {
+                throw new System.ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Import(vertimagConfiguration.Machine);
+                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Import(vertimagConfiguration.SetupProcedures);
+                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().Import(vertimagConfiguration.LoadingUnits);
+            }
+
+            return this.Ok();
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]

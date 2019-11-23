@@ -741,7 +741,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
                 }
 
-                var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+                var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
                 if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
                 {
                     throw new ArgumentOutOfRangeException(

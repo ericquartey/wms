@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -14,16 +16,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         #endregion
 
         #region Constructors
 
         public MachineProvider(
             DataLayerContext dataContext,
+            ILogger<DataLayerContext> logger,
             IMemoryCache cache)
         {
-            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
-            this.cache = cache ?? throw new System.ArgumentNullException(nameof(cache));
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
 
         #endregion
@@ -94,6 +100,12 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.WeightMeasurement)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.AssistedMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.ManualMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
@@ -142,6 +154,53 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.MachineStatistics.FirstOrDefault();
+            }
+        }
+
+        public void Import(Machine machine)
+        {
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+
+            lock (this.dataContext)
+            {
+                using (var transaction = this.dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        this.dataContext.ElevatorAxisManualParameters.RemoveRange(this.dataContext.ElevatorAxisManualParameters);
+                        this.dataContext.Carousels.RemoveRange(this.dataContext.Carousels);
+                        this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
+                        this.dataContext.Shutters.RemoveRange(this.dataContext.Shutters);
+                        this.dataContext.WeightMeasurements.RemoveRange(this.dataContext.WeightMeasurements);
+                        this.dataContext.Inverters.RemoveRange(this.dataContext.Inverters);
+                        this.dataContext.ElevatorStructuralProperties.RemoveRange(this.dataContext.ElevatorStructuralProperties);
+                        this.dataContext.BayPositions.RemoveRange(this.dataContext.BayPositions);
+                        this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
+                        this.dataContext.Cells.RemoveRange(this.dataContext.Cells);
+                        this.dataContext.IoDevices.RemoveRange(this.dataContext.IoDevices);
+                        this.dataContext.Bays.RemoveRange(this.dataContext.Bays);
+                        this.dataContext.MovementParameters.RemoveRange(this.dataContext.MovementParameters);
+                        this.dataContext.MovementProfiles.RemoveRange(this.dataContext.MovementProfiles);
+                        this.dataContext.ElevatorAxes.RemoveRange(this.dataContext.ElevatorAxes);
+                        this.dataContext.Elevators.RemoveRange(this.dataContext.Elevators);
+                        this.dataContext.Machines.RemoveRange(this.dataContext.Machines);
+
+                        this.dataContext.Machines.Add(machine);
+                        this.dataContext.SaveChanges();
+
+                        transaction.Commit();
+
+                        this.logger.LogDebug($"Machine import");
+                    }
+                    catch (Exception e)
+                    {
+                        this.logger.LogError(e, $"Machine import exception");
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 
@@ -195,6 +254,20 @@ namespace Ferretto.VW.MAS.DataLayer
                             this.dataContext.WeightMeasurements.Attach(a.WeightMeasurement);
                             this.dataContext.Entry(a.WeightMeasurement).State = EntityState.Modified;
                             this.dataContext.WeightMeasurements.Update(a.WeightMeasurement);
+                        }
+
+                        if (!(a.AssistedMovements is null))
+                        {
+                            this.dataContext.ElevatorAxisManualParameters.Attach(a.AssistedMovements);
+                            this.dataContext.Entry(a.AssistedMovements).State = EntityState.Modified;
+                            this.dataContext.ElevatorAxisManualParameters.Update(a.AssistedMovements);
+                        }
+
+                        if (!(a.ManualMovements is null))
+                        {
+                            this.dataContext.ElevatorAxisManualParameters.Attach(a.ManualMovements);
+                            this.dataContext.Entry(a.ManualMovements).State = EntityState.Modified;
+                            this.dataContext.ElevatorAxisManualParameters.Update(a.ManualMovements);
                         }
 
                         if (!(a.Profiles is null))

@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
 
+        public DbSet<ElevatorAxisManualParameters> ElevatorAxisManualParameters { get; set; }
+
         public DbSet<Elevator> Elevators { get; set; }
 
         public DbSet<ElevatorStructuralProperties> ElevatorStructuralProperties { get; set; }
@@ -139,6 +141,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
+                .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())

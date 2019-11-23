@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineStatistics GetStatistics();
 
+        void Import(Machine machine);
+
         bool IsOneTonMachine();
 
         void Update(Machine machine);

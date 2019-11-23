@@ -2,6 +2,7 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -11,13 +12,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         #endregion
 
         #region Constructors
 
-        public SetupProceduresDataProvider(DataLayerContext dataContext)
+        public SetupProceduresDataProvider(
+            DataLayerContext dataContext,
+            ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -58,15 +64,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(s => s.CellPanelsCheck)
                     .Include(s => s.CellsHeightCheck)
                     .Include(s => s.DepositAndPickUpTest)
-                    .Include(s => s.HorizontalManualMovements)
                     .Include(s => s.LoadFirstDrawerTest)
                     .Include(s => s.ShutterHeightCheck)
                     .Include(s => s.ShutterManualMovements)
                     .Include(s => s.ShutterTest)
-                    .Include(s => s.VerticalManualMovements)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
-                    .Include(s => s.WeightCheck)
                     .Single();
             }
         }
@@ -131,16 +134,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public HorizontalManualMovementsProcedure GetHorizontalManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.HorizontalManualMovements)
-                    .Single();
-            }
-        }
-
         public SetupProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)
@@ -181,16 +174,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public VerticalManualMovementsProcedure GetVerticalManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.VerticalManualMovements)
-                    .Single();
-            }
-        }
-
         public OffsetCalibrationProcedure GetVerticalOffsetCalibration()
         {
             lock (this.dataContext)
@@ -211,13 +194,32 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public SetupProcedure GetWeightCheck()
+        public void Import(SetupProceduresSet setupProceduresSet)
         {
             lock (this.dataContext)
             {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.WeightCheck)
-                    .Single();
+                using (var transaction = this.dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
+                        this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
+
+                        this.dataContext.SetupProceduresSets.AddRange(setupProceduresSet);
+
+                        this.dataContext.SaveChanges();
+
+                        transaction.Commit();
+
+                        this.logger.LogDebug($"SetupProceduresSet import");
+                    }
+                    catch (Exception e)
+                    {
+                        this.logger.LogError(e, $"SetupProceduresSet import exception");
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 
@@ -301,10 +303,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.Entry(setupProceduresSet.DepositAndPickUpTest).State = EntityState.Modified;
                 this.dataContext.SetupProcedures.Update(setupProceduresSet.DepositAndPickUpTest);
 
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.HorizontalManualMovements);
-                this.dataContext.Entry(setupProceduresSet.HorizontalManualMovements).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.HorizontalManualMovements);
-
                 this.dataContext.SetupProcedures.Attach(setupProceduresSet.LoadFirstDrawerTest);
                 this.dataContext.Entry(setupProceduresSet.LoadFirstDrawerTest).State = EntityState.Modified;
                 this.dataContext.SetupProcedures.Update(setupProceduresSet.LoadFirstDrawerTest);
@@ -321,10 +319,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.Entry(setupProceduresSet.ShutterTest).State = EntityState.Modified;
                 this.dataContext.SetupProcedures.Update(setupProceduresSet.ShutterTest);
 
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalManualMovements);
-                this.dataContext.Entry(setupProceduresSet.VerticalManualMovements).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalManualMovements);
-
                 this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalOffsetCalibration);
                 this.dataContext.Entry(setupProceduresSet.VerticalOffsetCalibration).State = EntityState.Modified;
                 this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalOffsetCalibration);
@@ -332,10 +326,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SetupProcedures.Attach(setupProceduresSet.VerticalResolutionCalibration);
                 this.dataContext.Entry(setupProceduresSet.VerticalResolutionCalibration).State = EntityState.Modified;
                 this.dataContext.SetupProcedures.Update(setupProceduresSet.VerticalResolutionCalibration);
-
-                this.dataContext.SetupProcedures.Attach(setupProceduresSet.WeightCheck);
-                this.dataContext.Entry(setupProceduresSet.WeightCheck).State = EntityState.Modified;
-                this.dataContext.SetupProcedures.Update(setupProceduresSet.WeightCheck);
 
                 this.dataContext.SaveChanges();
             }

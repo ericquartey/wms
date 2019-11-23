@@ -146,7 +146,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         private void ScaleMovementsByWeight()
         {
             var invertersProvider = this.ParentStateMachine.GetRequiredService<IInvertersProvider>();
-            var axis = this.elevatorProvider.GetVerticalAxis();
+            var axis = this.elevatorProvider.GetAxis(Orientation.Vertical);
 
             try
             {

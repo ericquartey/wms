@@ -557,7 +557,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(
                     bayPosition.Id,
-                    this.procedureParameters.FeedRate,
                     computeElongation: true,
                     performWeighting: false);
 

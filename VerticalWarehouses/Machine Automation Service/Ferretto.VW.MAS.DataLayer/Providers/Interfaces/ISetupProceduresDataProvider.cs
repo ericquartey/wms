@@ -22,8 +22,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
 
-        HorizontalManualMovementsProcedure GetHorizontalManualMovements();
-
         SetupProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
@@ -32,13 +30,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetShutterTest();
 
-        VerticalManualMovementsProcedure GetVerticalManualMovements();
-
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
-        SetupProcedure GetWeightCheck();
+        void Import(SetupProceduresSet setupProceduresSet);
 
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
 

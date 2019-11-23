@@ -16,9 +16,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
-
         private readonly IElevatorDataProvider elevatorDataProvider;
+
+        private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
 
-            var procedureParameters = this.setupProceduresDataProvider.GetHorizontalManualMovements();
+            var procedureParameters = this.elevatorDataProvider.GetManualMovementsAxis(DataModels.Orientation.Horizontal);
             var speed = new[] { bay.FullLoadMovement.Speed * procedureParameters.FeedRate };
             var acceleration = new[] { bay.FullLoadMovement.Acceleration };
             var deceleration = new[] { bay.FullLoadMovement.Deceleration };

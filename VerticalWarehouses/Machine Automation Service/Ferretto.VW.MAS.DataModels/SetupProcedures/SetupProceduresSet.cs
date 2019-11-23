@@ -16,8 +16,6 @@
 
         public RepeatedTestProcedure DepositAndPickUpTest { get; set; }
 
-        public HorizontalManualMovementsProcedure HorizontalManualMovements { get; set; }
-
         public SetupProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }
@@ -26,13 +24,9 @@
 
         public RepeatedTestProcedure ShutterTest { get; set; }
 
-        public VerticalManualMovementsProcedure VerticalManualMovements { get; set; }
-
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
 
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
-
-        public SetupProcedure WeightCheck { get; set; }
 
         #endregion
     }

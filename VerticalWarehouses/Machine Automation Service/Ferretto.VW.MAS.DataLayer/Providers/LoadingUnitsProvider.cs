@@ -18,13 +18,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<DataLayerContext> logger;
+
         #endregion
 
         #region Constructors
 
-        public LoadingUnitsProvider(DataLayerContext dataContext)
+        public LoadingUnitsProvider(
+            DataLayerContext dataContext,
+            ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -105,6 +110,33 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ToArray();
 
                 return loadingUnits;
+            }
+        }
+
+        public void Import(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                using (var transaction = this.dataContext.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
+                        this.dataContext.LoadingUnits.AddRange(loadingUnits);
+
+                        this.dataContext.SaveChanges();
+
+                        transaction.Commit();
+
+                        this.logger.LogDebug($"LoadingUnit import count {loadingUnits?.Count() ?? 0} ");
+                    }
+                    catch (Exception e)
+                    {
+                        this.logger.LogError(e, $"LoadingUnit import exception");
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
             }
         }
 
