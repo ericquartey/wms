@@ -958,7 +958,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical);
 
             var speed = new[] { movementParameters.Speed *
-                    (homingDone ? assistedMovementsAxis.FeedRateAfterZero : assistedMovementsAxis.FeedRate) };
+                    (homingDone ? 1 : assistedMovementsAxis.FeedRate) };
             var acceleration = new[] { movementParameters.Acceleration };
             var deceleration = new[] { movementParameters.Deceleration };
             var switchPosition = new[] { 0.0 };
