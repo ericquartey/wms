@@ -84,17 +84,16 @@
                     <controls:PpcButton Margin="50,50,0,0"
                                         Command="{Binding MenuMaintenanceCommand}"
                                         Content="{x:Static res:Menu.MenuMaintenance}"
-                                        Permition="SuperUser" />
+                                        Permition="Installer" />
 
                     <controls:PpcButton Margin="50,50,0,0"
                                         Command="{Binding MenuInstalationCommand}"
                                         Content="{x:Static res:Menu.MenuInstalation}"
-                                        Permition="Admin" />
+                                        Permition="Installer" />
 
                     <controls:PpcButton Margin="50,50,0,0"
                                         Command="{Binding MenuAboutCommand}"
-                                        Content="{x:Static res:Menu.MenuAbout}"
-                                        Permition="User" />
+                                        Content="{x:Static res:Menu.MenuAbout}" />
                 </WrapPanel>
 
             </Grid>

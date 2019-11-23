@@ -2852,11 +2852,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public partial class UserClaims 
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string Name { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("accessLevel", Required = Newtonsoft.Json.Required.Always)]
         public UserAccessLevel AccessLevel { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
     
         public string ToJson() 
         {
@@ -2873,13 +2873,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum UserAccessLevel
     {
-        SuperUser = 0,
+        NoAccess = 0,
     
-        Admin = 1,
+        Operator = 1,
     
-        User = 2,
+        Installer = 2,
     
-        Base = 3,
+        Admin = 99,
     
     }
 

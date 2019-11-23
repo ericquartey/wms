@@ -31,7 +31,7 @@ namespace Ferretto.VW.App.Controls.Controls
             nameof(Permition),
             typeof(UserAccessLevel),
             typeof(PpcButton),
-            new PropertyMetadata(UserAccessLevel.Base, new PropertyChangedCallback(OnPermitionChanged)));
+            new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
 
         private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
 
@@ -77,6 +77,8 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(IsBusyProperty, value);
         }
 
+        protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;
+
         public UserAccessLevel Permition
         {
             get => (UserAccessLevel)this.GetValue(PermitionProperty);
@@ -85,17 +87,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
-        protected bool IsOperatorBase => this.sessionService.UserAccessLevel == UserAccessLevel.Base ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.User ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.SuperUser ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
-
-        protected bool IsOperatorUser => this.sessionService.UserAccessLevel == UserAccessLevel.User ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.SuperUser ||
-                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
-
-        protected bool IsSuperUser => this.sessionService.UserAccessLevel == UserAccessLevel.SuperUser ||
+        protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
                                       this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+
+        protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
+                                                 this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         #endregion
 
@@ -107,19 +104,19 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 switch (this.Permition)
                 {
-                    case UserAccessLevel.SuperUser:
-                        this.Visibility = this.Visibility == Visibility.Visible && this.IsSuperUser ? Visibility.Visible : Visibility.Collapsed;
+                    case UserAccessLevel.Installer:
+                        this.Visibility = this.Visibility == Visibility.Visible && this.IsInstaller ? Visibility.Visible : Visibility.Collapsed;
                         break;
 
                     case UserAccessLevel.Admin:
                         this.Visibility = this.Visibility == Visibility.Visible && this.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
                         break;
 
-                    case UserAccessLevel.User:
-                        this.Visibility = this.Visibility == Visibility.Visible && this.IsOperatorUser ? Visibility.Visible : Visibility.Collapsed;
+                    case UserAccessLevel.Operator:
+                        this.Visibility = this.Visibility == Visibility.Visible && this.IsOperator ? Visibility.Visible : Visibility.Collapsed;
                         break;
 
-                    case UserAccessLevel.Base:
+                    case UserAccessLevel.NoAccess:
                         break;
 
                     default:
