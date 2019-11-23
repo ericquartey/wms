@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Properties
 
-        bool IsMachineRunning { get; }
+        bool IsMachineSecurityRunning { get; }
 
         #endregion
 

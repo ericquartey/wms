@@ -153,5 +153,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitShutterClosed), 1)]
         MachineManagerErrorLoadingUnitShutterClosed = MachineManagerErrorBaseCode + 12,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitPresentInCell), 1)]
+        MachineManagerErrorLoadingUnitPresentInCell = MachineManagerErrorBaseCode + 13,
     }
 }

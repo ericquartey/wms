@@ -34,6 +34,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #endregion
 
+        #region Properties
+
+        public bool IsMachineRunning { get; set; }
+
+        #endregion
+
         #region Methods
 
         public void Add(Machine machine)

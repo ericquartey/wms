@@ -109,7 +109,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely open
-            if (this.machineResourcesProvider.GetShutterPosition(bayNumber) != ShutterPosition.Opened)
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            if (shutterPosition != ShutterPosition.Opened
+                && shutterPosition != ShutterPosition.NotSpecified
+                )
             {
                 return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
             }
@@ -158,14 +161,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var baysOnSameSide = this.baysDataProvider.GetAll().Where(b => b.Side == cell.Side);
             foreach (var bayOnSameSide in baysOnSameSide)
             {
-                if (bayOnSameSide.Shutter != null
-                    &&
-                    this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number) != ShutterPosition.Closed)
+                if (bayOnSameSide.Shutter != null)
                 {
-                    return new ActionPolicy
+                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
+                    if (shutterPosition != ShutterPosition.Closed
+                        && shutterPosition != ShutterPosition.NotSpecified
+                        )
                     {
-                        Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
-                    };
+                        return new ActionPolicy
+                        {
+                            Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+                        };
+                    }
                 }
             }
 
@@ -299,7 +306,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             // check #4: the shutter must be completely open
-            if (this.machineResourcesProvider.GetShutterPosition(bayNumber) != ShutterPosition.Opened)
+            var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
+            if (shutterPosition != ShutterPosition.Opened
+                && shutterPosition != ShutterPosition.NotSpecified
+                )
             {
                 return new ActionPolicy
                 {
@@ -354,14 +364,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 .Where(b => b.Side == elevatorCell.Side);
             foreach (var bayOnSameSide in baysOnSameSide)
             {
-                if (bayOnSameSide.Shutter != null
-                    &&
-                    this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number) != ShutterPosition.Closed)
+                if (bayOnSameSide.Shutter != null)
                 {
-                    return new ActionPolicy
+                    var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
+                    if (shutterPosition != ShutterPosition.Closed
+                        && shutterPosition != ShutterPosition.NotSpecified)
                     {
-                        Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
-                    };
+                        return new ActionPolicy
+                        {
+                            Reason = string.Format(Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed, (int)bayOnSameSide.Number)
+                        };
+                    }
                 }
             }
 
