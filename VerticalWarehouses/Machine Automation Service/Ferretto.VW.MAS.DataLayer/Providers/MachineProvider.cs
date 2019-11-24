@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
+        public bool IsHomingExetuted { get; set; }
+
         public bool IsMachineRunning { get; set; }
 
         #endregion
