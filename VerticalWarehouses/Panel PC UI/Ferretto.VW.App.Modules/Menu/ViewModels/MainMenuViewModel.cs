@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private readonly IBayManager bayManager;
 
+        private readonly ISessionService sessionService;
+
         private int bayNumber;
 
         private bool isWaitingForResponse;
@@ -37,10 +39,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public MainMenuViewModel(
-            IBayManager bayManager)
+            IBayManager bayManager,
+            ISessionService sessionService)
             : base(PresentationMode.Menu)
         {
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
         }
 
         #endregion
@@ -133,11 +137,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 await this.GetBayNumber();
 
-                if (this.Data is MachineIdentity machineIdentity)
-                {
-                    this.MachineIdentity = machineIdentity;
-                }
-
                 this.RaiseCanExecuteChanged();
             }
             catch (Exception ex)
@@ -165,6 +164,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     if (!(bay is null))
                     {
                         this.bayNumber = (int)bay.Number;
+                    }
+
+                    if (this.Data is MachineIdentity machineIdentity)
+                    {
+                        this.MachineIdentity = machineIdentity;
+                    }
+                    else
+                    {
+                        this.MachineIdentity = this.sessionService.MachineIdentity;
                     }
                 }
             }

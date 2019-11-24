@@ -193,6 +193,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             if (this.Data is MachineIdentity machineIdentity)
             {
                 this.MachineIdentity = machineIdentity;
+                this.sessionService.MachineIdentity = machineIdentity;
             }
         }
 

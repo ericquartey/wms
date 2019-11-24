@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Services
 
         public UserAccessLevel UserAccessLevel { get; private set; }
 
+        public MachineIdentity MachineIdentity { get; set; }
+
         public SessionService(
             IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
