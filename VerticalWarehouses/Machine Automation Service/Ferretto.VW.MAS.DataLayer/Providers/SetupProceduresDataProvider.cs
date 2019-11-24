@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -30,29 +31,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public void Add(SetupProceduresSet setupProceduresSet)
-        {
-            if (setupProceduresSet is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresSet));
-            }
-
-            lock (this.dataContext)
-            {
-                this.dataContext.SetupProceduresSets.Add(setupProceduresSet);
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void ClearAll()
-        {
-            lock (this.dataContext)
-            {
-                this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
-                this.dataContext.SaveChanges();
-            }
-        }
-
         public SetupProceduresSet GetAll()
         {
             lock (this.dataContext)
@@ -60,7 +38,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.SetupProceduresSets
                     .Include(s => s.BayHeightCheck)
                     .Include(s => s.BeltBurnishingTest)
-                    .Include(s => s.CarouselManualMovements)
                     .Include(s => s.CellPanelsCheck)
                     .Include(s => s.CellsHeightCheck)
                     .Include(s => s.DepositAndPickUpTest)
@@ -89,16 +66,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.SetupProceduresSets
                     .Select(s => s.BeltBurnishingTest)
-                    .Single();
-            }
-        }
-
-        public SetupProcedure GetCarouselManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.CarouselManualMovements)
                     .Single();
             }
         }
@@ -187,27 +154,31 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                using (var transaction = this.dataContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        this.dataContext.SetupProceduresSets.RemoveRange(this.dataContext.SetupProceduresSets);
-                        this.dataContext.SetupProcedures.RemoveRange(this.dataContext.SetupProcedures);
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.BayHeightCheck?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.BeltBurnishingTest?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.CellPanelsCheck?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.CellsHeightCheck?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.DepositAndPickUpTest?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.LoadFirstDrawerTest?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.ShutterHeightCheck?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.ShutterTest?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.VerticalOffsetCalibration?.Id));
+                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.VerticalResolutionCalibration?.Id));
 
-                        this.dataContext.SetupProceduresSets.AddRange(setupProceduresSet);
+                    this.dataContext.SetupProceduresSets.Remove(setupProceduresSet);
 
-                        this.dataContext.SaveChanges();
+                    this.dataContext.SaveChanges();
 
-                        transaction.Commit();
+                    this.Update(setupProceduresSet);
 
-                        this.logger.LogDebug($"SetupProceduresSet import");
-                    }
-                    catch (Exception e)
-                    {
-                        this.logger.LogError(e, $"SetupProceduresSet import exception");
-                        transaction.Rollback();
-                        throw;
-                    }
+                    this.logger.LogDebug($"SetupProceduresSet import");
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogError(e, $"SetupProceduresSet import exception");
+                    throw;
                 }
             }
         }
@@ -267,7 +238,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
                 this.dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
                 this.dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.CarouselManualMovements, (e) => e.Id);
                 this.dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
                 this.dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
                 this.dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);

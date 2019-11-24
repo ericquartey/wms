@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Cells)
                     .Single();
 
-                entity.Elevator.Axes.ForEach((axe) =>
+                entity.Elevator?.Axes?.ForEach((axe) =>
                 {
                     axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
                 });
@@ -184,6 +184,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         this.dataContext.ElevatorAxisManualParameters.RemoveRange(this.dataContext.ElevatorAxisManualParameters);
                         this.dataContext.ShutterManualParameters.RemoveRange(this.dataContext.ShutterManualParameters);
+                        this.dataContext.CarouselManualParameters.RemoveRange(this.dataContext.CarouselManualParameters);
                         this.dataContext.Carousels.RemoveRange(this.dataContext.Carousels);
                         this.dataContext.CellPanels.RemoveRange(this.dataContext.CellPanels);
                         this.dataContext.Shutters.RemoveRange(this.dataContext.Shutters);

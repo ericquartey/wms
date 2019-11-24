@@ -68,8 +68,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             using (var scope = serviceScopeFactory.CreateScope())
             {
                 scope.ServiceProvider.GetRequiredService<IMachineProvider>().Import(vertimagConfiguration.Machine);
-                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Import(vertimagConfiguration.SetupProcedures);
                 scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().Import(vertimagConfiguration.LoadingUnits);
+                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Import(vertimagConfiguration.SetupProcedures);
             }
 
             return this.Ok();

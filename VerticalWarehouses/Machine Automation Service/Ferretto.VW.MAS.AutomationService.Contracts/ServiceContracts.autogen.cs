@@ -2095,9 +2095,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("beltBurnishingTest", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("carouselManualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public SetupProcedure CarouselManualMovements { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("cellPanelsCheck", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public PositioningProcedure CellPanelsCheck { get; set; }
     

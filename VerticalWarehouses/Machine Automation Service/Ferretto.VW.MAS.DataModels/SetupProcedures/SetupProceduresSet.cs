@@ -8,8 +8,6 @@
 
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
 
-        public SetupProcedure CarouselManualMovements { get; set; }
-
         public PositioningProcedure CellPanelsCheck { get; set; }
 
         public PositioningProcedure CellsHeightCheck { get; set; }
@@ -19,8 +17,6 @@
         public SetupProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }
-
-        //public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
 
         public RepeatedTestProcedure ShutterTest { get; set; }
 

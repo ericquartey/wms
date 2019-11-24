@@ -101,22 +101,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
-        public void AddOrUpdate<T, TKey>(T entity, Func<T, TKey> idExpression) where T : class
-        {
-            if (entity.IsNotNull())
-            {
-                var existingEntity = this.Set<T>().Find(idExpression(entity));
-                if (existingEntity != null)
-                {
-                    this.Entry(existingEntity).CurrentValues.SetValues(entity);
-                }
-                else
-                {
-                    this.Set<T>().Add(entity);
-                }
-            }
-        }
-
         public override void Dispose()
         {
             base.Dispose();
@@ -181,23 +165,5 @@ namespace Ferretto.VW.MAS.DataLayer
         }
 
         #endregion
-
-        //public IEnumerable<T> AddOrUpdate<T, TKey>(IEnumerable<T> entities, Func<T, TKey> idExpression) where T : class
-        //{
-        //    foreach (var entity in entities.ToList())
-        //    {
-        //        var existingEntity = this.Set<T>().Find(idExpression(entity));
-        //        if (existingEntity != null)
-        //        {
-        //            this.Entry(existingEntity).CurrentValues.SetValues(entity);
-        //            yield return existingEntity;
-        //        }
-        //        else
-        //        {
-        //            this.Set<T>().Add(entity);
-        //            yield return entity;
-        //        }
-        //    }
-        //}
     }
 }

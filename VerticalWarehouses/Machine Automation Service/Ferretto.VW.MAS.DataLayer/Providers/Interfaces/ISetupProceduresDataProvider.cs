@@ -6,15 +6,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        void Add(SetupProceduresSet setupProceduresSet);
-
         SetupProceduresSet GetAll();
 
         PositioningProcedure GetBayHeightCheck();
 
         RepeatedTestProcedure GetBeltBurnishingTest();
-
-        SetupProcedure GetCarouselManualMovements();
 
         PositioningProcedure GetCellPanelsCheck();
 
@@ -25,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
         SetupProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
-
-        //ShutterManualMovementsProcedure GetShutterManualMovements();
 
         RepeatedTestProcedure GetShutterTest();
 

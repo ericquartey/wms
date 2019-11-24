@@ -117,25 +117,19 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                using (var transaction = this.dataContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        this.dataContext.LoadingUnits.RemoveRange(this.dataContext.LoadingUnits);
-                        this.dataContext.LoadingUnits.AddRange(loadingUnits);
+                    this.dataContext.Delete(loadingUnits, (e) => e.Id);
+                    loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
 
-                        this.dataContext.SaveChanges();
+                    this.dataContext.SaveChanges();
 
-                        transaction.Commit();
-
-                        this.logger.LogDebug($"LoadingUnit import count {loadingUnits?.Count() ?? 0} ");
-                    }
-                    catch (Exception e)
-                    {
-                        this.logger.LogError(e, $"LoadingUnit import exception");
-                        transaction.Rollback();
-                        throw;
-                    }
+                    this.logger.LogDebug($"LoadingUnit import count {loadingUnits?.Count() ?? 0} ");
+                }
+                catch (Exception e)
+                {
+                    this.logger.LogError(e, $"LoadingUnit import exception");
+                    throw;
                 }
             }
         }

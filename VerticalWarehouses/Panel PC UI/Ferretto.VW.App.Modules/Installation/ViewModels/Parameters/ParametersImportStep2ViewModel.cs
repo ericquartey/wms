@@ -113,7 +113,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.ClearNotifications();
 
-                await this.machineConfigurationWebService.SetAsync(this.configuration);
+                await this.machineConfigurationWebService.ImportAsync(this.configuration);
 
                 this.ShowNotification(InstallationApp.RestoreSuccessful);
             }
