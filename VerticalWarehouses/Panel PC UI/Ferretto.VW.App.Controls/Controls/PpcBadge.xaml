@@ -33,7 +33,8 @@
         <Grid Width="100"
               Height="100">
             <Ellipse Style="{DynamicResource PpcBadge_Ellipse_Style}" />
-            <TextBlock Style="{DynamicResource PpcBadge_TextBlock_Style}"
+            <TextBlock x:Name="PpcBadge_TextBlock"
+                       Style="{DynamicResource PpcBadge_TextBlock_Style}"
                        Text="{Binding LabelText}" />
         </Grid>
     </Viewbox>

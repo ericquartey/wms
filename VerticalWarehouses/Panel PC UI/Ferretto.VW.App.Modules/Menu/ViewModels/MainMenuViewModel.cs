@@ -239,6 +239,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.MachineIdentity));
+            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         #endregion

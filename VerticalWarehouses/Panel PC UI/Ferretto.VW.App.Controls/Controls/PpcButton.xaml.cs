@@ -5,6 +5,7 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
+using System;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -38,6 +39,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
 
         private readonly SubscriptionToken userAccessLevelToken;
+
+        private bool? visibleOldStatus;
 
         #endregion
 
@@ -102,27 +105,75 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
+                bool condition = false;
                 switch (this.Permition)
                 {
+                    case UserAccessLevel.Operator:
+                        condition = this.IsOperator;
+                        break;
+
                     case UserAccessLevel.Installer:
-                        this.Visibility = this.Visibility == Visibility.Visible && this.IsInstaller ? Visibility.Visible : Visibility.Collapsed;
+                        condition = this.IsInstaller;
                         break;
 
                     case UserAccessLevel.Admin:
-                        this.Visibility = this.Visibility == Visibility.Visible && this.IsAdmin ? Visibility.Visible : Visibility.Collapsed;
-                        break;
-
-                    case UserAccessLevel.Operator:
-                        this.Visibility = this.Visibility == Visibility.Visible && this.IsOperator ? Visibility.Visible : Visibility.Collapsed;
+                        condition = this.IsAdmin;
                         break;
 
                     case UserAccessLevel.NoAccess:
-                        break;
+                        throw new ArgumentException(nameof(this.Permition));
 
                     default:
                         System.Diagnostics.Debugger.Break();
                         break;
                 }
+
+                if ((condition && this.Visibility != Visibility.Visible) ||
+                    (!condition && this.Visibility == Visibility.Visible))
+                {
+                    // salvo lo stato precedente
+                    if (!this.visibleOldStatus.HasValue && this.Visibility == Visibility.Visible && !condition)
+                    {
+                        this.visibleOldStatus = this.Visibility == Visibility.Visible;
+                    }
+
+                    // setto la visibilità in base alla consizione
+                    if (condition)
+                    {
+                        this.Visibility = !this.visibleOldStatus.HasValue || this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
+                    }
+                    else if (!condition)
+                    {
+                        this.Visibility = Visibility.Collapsed;
+                    }
+
+                    // relsetto lo stato vecchio
+                    if (condition)
+                    {
+                        this.visibleOldStatus = null;
+                    }
+                };
+            }
+        }
+
+        public void VisibilityChange()
+        {
+            if (!this.visibleOldStatus.HasValue &&
+                this.Visibility == Visibility.Visible)
+            {
+                this.visibleOldStatus = this.Visibility == Visibility.Visible;
+            }
+            this.Visibility = Visibility.Visible;
+        }
+
+        public void VisibilityRestore()
+        {
+            if (this.Visibility != Visibility.Visible &&
+                this.visibleOldStatus.HasValue &&
+                this.Permition != UserAccessLevel.NoAccess)
+            {
+                this.Visibility = this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
+                this.visibleOldStatus = null;
             }
         }
 

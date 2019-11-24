@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Controls.Controls
             nameof(LabelText),
             typeof(string),
             typeof(PpcBadge),
-            new PropertyMetadata(string.Empty));
+            new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnLabelTextChanged)));
 
         #endregion
 
@@ -47,6 +47,18 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (bool)this.GetValue(LabelTextProperty);
             set => this.SetValue(LabelTextProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        private static void OnLabelTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcBadge control)
+            {
+                control.PpcBadge_TextBlock.Text = e.NewValue as string;
+            }
         }
 
         #endregion
