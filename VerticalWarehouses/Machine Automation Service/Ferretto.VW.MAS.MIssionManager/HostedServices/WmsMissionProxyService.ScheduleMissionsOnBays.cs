@@ -98,6 +98,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var operation = newOperations.OrderBy(o => o.Priority).First();
                 baysDataProvider.AssignMissionOperation(bay.Number, mission.Id, operation.Id);
 
+                this.missionSchedulingProvider.QueueBayMission(mission.LoadingUnitId, bay.Number, mission.Id);
                 this.Logger.LogDebug($"Bay {bay.Number}: moving loading unit id={mission.LoadingUnitId} to bay ...");
                 await Task.Delay(10 * 1000);
                 this.Logger.LogDebug($"Bay {bay.Number}: loading unit id={mission.LoadingUnitId} is now in bay.");

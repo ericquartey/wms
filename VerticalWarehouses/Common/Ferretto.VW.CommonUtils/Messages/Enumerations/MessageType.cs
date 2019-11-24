@@ -26,7 +26,7 @@
 
         MachineStatusActive,
 
-        NewMissionAvailable,
+        NewWmsMissionAvailable,
 
         CreateMission,
 

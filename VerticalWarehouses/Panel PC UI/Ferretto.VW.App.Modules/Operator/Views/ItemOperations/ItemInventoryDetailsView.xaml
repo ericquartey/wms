@@ -88,7 +88,7 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Batch}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailLotto}" />
+                                     LabelText="{x:Static resources:OperatorApp.Lot}" />
 
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="1"

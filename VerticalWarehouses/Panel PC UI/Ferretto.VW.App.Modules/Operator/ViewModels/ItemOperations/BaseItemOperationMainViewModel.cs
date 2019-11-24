@@ -164,7 +164,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.IsBusyConfirmingOperation = true;
+                this.IsBusyAbortingOperation = true;
                 this.IsWaitingForResponse = true;
 
                 // TODO show prompt dialog "are you sure?"

@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
 
+        private readonly IMissionSchedulingProvider missionSchedulingProvider;
+
         private readonly IMissionsDataService missionsDataService;
 
         private readonly Task scheduleMissionsOnBaysTask;
@@ -37,6 +39,7 @@ namespace Ferretto.VW.MAS.MissionManager
             IMachinesDataService machinesDataService,
             IMissionsDataService missionsDataService,
             IMissionOperationsDataService missionOperationsDataService,
+            IMissionSchedulingProvider missionSchedulingProvider,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,
@@ -46,6 +49,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             this.scheduleMissionsOnBaysTask = new Task(async () => await this.ScheduleMissionsOnBaysAsync());

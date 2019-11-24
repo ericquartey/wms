@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private MissionWithLoadingUnitDetails mission;
 
-        private MissionOperationInfo missionOperation;
+        private MissionOperation missionOperation;
 
         #endregion
 
@@ -69,7 +69,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             private set => this.SetProperty(ref this.mission, value);
         }
 
-        public MissionOperationInfo MissionOperation
+        public MissionOperation MissionOperation
         {
             get => this.missionOperation;
             set => this.SetProperty(ref this.missionOperation, value);
@@ -105,34 +105,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        private async Task CheckOtherOperationsOnSameMissionAsync()
-        {
-            try
-            {
-                var mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                if (mission.Operations?.Any(o => o.Status == MissionOperationStatus.New) == true)
-                {
-                    this.IsEnabled = false;
-                    // TODO *** this.InputQuantity = null;
-                    this.ItemImage = null;
-                }
-                else
-                {
-                    this.NavigationService.GoBack();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         private async Task GetItemImageAsync()
         {
             try
             {
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
                 await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemCode);
+
+                this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
             }
             catch (Exception ex)
             {

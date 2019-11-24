@@ -26,15 +26,15 @@ namespace Ferretto.VW.MAS.MissionManager
             switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                    this.OnMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
+                    this.OnWmsMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
                     this.OnBayOperationalStatusChanged(message.Data as BayOperationalStatusChangedMessageData);
                     break;
 
-                case MessageType.NewMissionAvailable:
-                    this.OnNewMissionAvailable();
+                case MessageType.NewWmsMissionAvailable:
+                    this.OnNewWmsMissionAvailable();
                     break;
 
                 case MessageType.MachineMode:
@@ -67,7 +67,12 @@ namespace Ferretto.VW.MAS.MissionManager
             this.bayStatusChangedEvent.Set();
         }
 
-        private void OnMissionOperationCompleted(MissionOperationCompletedMessageData data)
+        private void OnNewWmsMissionAvailable()
+        {
+            this.bayStatusChangedEvent.Set();
+        }
+
+        private void OnWmsMissionOperationCompleted(MissionOperationCompletedMessageData data)
         {
             Contract.Requires(data != null);
 
@@ -93,11 +98,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     this.Logger.LogWarning($"None of the bays is currently executing operation id={data.MissionOperationId}.");
                 }
             }
-        }
-
-        private void OnNewMissionAvailable()
-        {
-            this.bayStatusChangedEvent.Set();
         }
 
         #endregion

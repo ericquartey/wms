@@ -64,74 +64,71 @@
             </Grid.ColumnDefinitions>
 
             <controls:PpcLabeledText HorizontalAlignment="Left"
-                                     VerticalAlignment="Bottom"
-                                     ContentText="{Binding ListCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
 
 
             <controls:PpcLabeledText Grid.Column="1"
+                                     Grid.ColumnSpan="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ListDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="0"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ItemCode, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ContentText="{Binding MissionOperation.ItemCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
             <Image Grid.Row="2"
+                   Grid.RowSpan="3"
                    Grid.Column="0"
                    Width="180"
                    Height="180"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Source="{Binding ItemImage, Converter={StaticResource ImageToSourceConverter}}"
-                   Stretch="Uniform" />
+                   Stretch="UniformToFill" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ItemDescription, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
 
-            <controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonCompartmentPosition}" />
 
-            <controls:PpcLabeledText Grid.Row="3"
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.RowSpan="2"
                                      Grid.Column="1"
                                      Grid.ColumnSpan="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="Note inserite ad uso operatore in baia..."
+                                     ContentText="{Binding MissionOperation.ItemNotes}"
                                      LabelText="{x:Static resources:OperatorApp.CommonNote}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="3"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding RequestedQuantity}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyToRefill}" />
+                                     ContentText="{Binding MissionOperation.RequestedQuantity}"
+                                     LabelText="{x:Static resources:OperatorApp.QuantityToPick}" />
 
             <controls:PpcTextBox Grid.Row="2"
                                  Grid.Column="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  InputText="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}" />
+                                 LabelText="{x:Static resources:OperatorApp.PickedQuantity}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Grid.Column="1"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Command="{Binding ShowDetailsCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonButtonDetail}" />
+                                Content="{x:Static resources:OperatorApp.Details}" />
 
 
             <controls:PpcButton Grid.Row="4"
@@ -139,15 +136,15 @@
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Command="{Binding AbortOperationCommand}"
-                                Content="Abort ** TODO"
+                                Content="{x:Static resources:OperatorApp.Abort}"
                                 IsBusy="{Binding IsBusyAbortingOperation}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Grid.Column="3"
-                                HorizontalAlignment="Right"
+                                HorizontalAlignment="Left"
                                 VerticalAlignment="Top"
                                 Command="{Binding ConfirmOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonButtonConfirm}"
+                                Content="{x:Static resources:OperatorApp.Confirm}"
                                 IsBusy="{Binding IsBusyConfirmingOperation}" />
 
         </Grid>

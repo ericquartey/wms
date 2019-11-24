@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
-
+        private readonly IMachineBaysWebService machineBaysWebService;
         private readonly IMachineErrorsService machineErrorsService;
 
         private readonly IHealthProbeService healthProbeService;
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #endregion
 
         #region Properties
-
+      
         public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand LoginCommand =>
@@ -113,7 +113,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        private readonly IMachineBaysWebService machineBaysWebService;
+
 
         public bool IsWaitingForResponse
         {

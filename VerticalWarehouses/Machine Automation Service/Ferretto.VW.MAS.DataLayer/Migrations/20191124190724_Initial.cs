@@ -131,6 +131,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Missions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    MissionStatus = table.Column<int>(nullable: false),
+                    WmsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Missions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServicingInfo",
                 columns: table => new
                 {
@@ -1005,7 +1020,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 21, 9, 18, 37, 504, DateTimeKind.Local).AddTicks(7649), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 24, 20, 7, 23, 577, DateTimeKind.Local).AddTicks(2628), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1608,6 +1623,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "MachineStatistics");
+
+            migrationBuilder.DropTable(
+                name: "Missions");
 
             migrationBuilder.DropTable(
                 name: "ServicingInfo");

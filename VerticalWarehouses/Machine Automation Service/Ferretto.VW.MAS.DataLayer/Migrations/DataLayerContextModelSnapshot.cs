@@ -1131,6 +1131,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Mission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("MissionStatus");
+
+                    b.Property<int?>("WmsId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Missions");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
                 {
                     b.Property<int>("Id")
@@ -1198,7 +1214,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 21, 9, 18, 37, 504, DateTimeKind.Local).AddTicks(7649),
+                            InstallationDate = new DateTime(2017, 1, 24, 20, 7, 23, 577, DateTimeKind.Local).AddTicks(2628),
                             ServiceStatus = 86
                         });
                 });

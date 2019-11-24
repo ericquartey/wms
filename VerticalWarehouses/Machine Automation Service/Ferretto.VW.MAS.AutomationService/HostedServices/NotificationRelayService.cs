@@ -100,16 +100,21 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)
         {
+            if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
+            {
+                return;
+            }
+
             switch (e.EntityType)
             {
                 case nameof(MissionOperation):
                     {
                         var msg = new NotificationMessage(
                             null,
-                            "New mission available",
+                            "New WMS mission available",
                             MessageActor.Any,
                             MessageActor.AutomationService,
-                            MessageType.NewMissionAvailable,
+                            MessageType.NewWmsMissionAvailable,
                             BayNumber.None,
                             BayNumber.None,
                             MessageStatus.OperationStart);

@@ -81,28 +81,28 @@
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding ProductionDate}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailProductionDate}" />
+                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding Batch}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailLotto}" />
+                                     LabelText="{x:Static resources:OperatorApp.Lot}" />
 
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MaterialStatus}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailMaterialStatus}" />
+                                     LabelText="{x:Static resources:OperatorApp.MaterialStatus}" />
 
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding PackagingType}"
-                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailPackagingType}" />
+                                     LabelText="{x:Static resources:OperatorApp.PackagingType}" />
 
             <controls:PpcLabeledText Grid.Row="6"
                                      Grid.Column="1"
