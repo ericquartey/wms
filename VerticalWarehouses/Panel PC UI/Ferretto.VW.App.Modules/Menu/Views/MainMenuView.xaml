@@ -104,6 +104,7 @@
                            Margin="30,30"
                            HorizontalAlignment="Right"
                            VerticalAlignment="Bottom"
-                           LabelText="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
+                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
+        <!--  , FallbackValue='1'  -->
     </Grid>
 </ctrls:View>

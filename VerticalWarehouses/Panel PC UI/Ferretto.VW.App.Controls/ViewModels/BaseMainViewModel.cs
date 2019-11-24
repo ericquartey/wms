@@ -9,7 +9,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
+    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel, IRegionMemberLifetime
     {
         #region Fields
 
@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Controls
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
         }
+
+        public virtual bool KeepAlive => true;
 
         protected NLog.Logger Logger => this.logger;
 

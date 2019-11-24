@@ -22,8 +22,8 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty LabelTextProperty = DependencyProperty.Register(
-            nameof(LabelText),
+        public static readonly DependencyProperty TextBadgeProperty = DependencyProperty.Register(
+            nameof(TextBadge),
             typeof(string),
             typeof(PpcBadge),
             new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnLabelTextChanged)));
@@ -35,18 +35,16 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcBadge()
         {
             this.InitializeComponent();
-
-            this.DataContext = this;
         }
 
         #endregion
 
         #region Properties
 
-        public bool LabelText
+        public string TextBadge
         {
-            get => (bool)this.GetValue(LabelTextProperty);
-            set => this.SetValue(LabelTextProperty, value);
+            get => (string)this.GetValue(TextBadgeProperty);
+            set => this.SetValue(TextBadgeProperty, value);
         }
 
         #endregion

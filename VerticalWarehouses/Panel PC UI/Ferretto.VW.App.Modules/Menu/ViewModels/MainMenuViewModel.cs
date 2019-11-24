@@ -68,11 +68,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.bayNumber, value, this.RaiseCanExecuteChanged);
         }
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
+
+        public override bool KeepAlive => false;
 
         public MachineIdentity MachineIdentity
         {
@@ -111,8 +115,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
-
-        public override EnableMask EnableMask => EnableMask.Any;
 
         public override void Disappear()
         {
@@ -162,7 +164,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     var bay = await this.bayManager.GetBayAsync();
                     if (!(bay is null))
                     {
-                        this.BayNumber = (int)bay.Number;
+                        this.bayNumber = (int)bay.Number;
                     }
                 }
             }

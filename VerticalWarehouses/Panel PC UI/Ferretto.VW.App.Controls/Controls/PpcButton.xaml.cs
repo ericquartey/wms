@@ -16,17 +16,20 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
             nameof(ImageSource),
             typeof(ImageSource),
-            typeof(PpcButton));
+            typeof(PpcButton),
+            new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
             nameof(IsActive),
             typeof(bool),
-            typeof(PpcButton));
+            typeof(PpcButton),
+            new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
             nameof(IsBusy),
             typeof(bool),
-            typeof(PpcButton));
+            typeof(PpcButton),
+            new PropertyMetadata(false));
 
         public static readonly DependencyProperty PermitionProperty = DependencyProperty.Register(
             nameof(Permition),
@@ -38,7 +41,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
 
-        private readonly SubscriptionToken userAccessLevelToken;
+        private SubscriptionToken userAccessLevelToken;
 
         private bool? visibleOldStatus;
 
@@ -56,6 +59,12 @@ namespace Ferretto.VW.App.Controls.Controls
                         ((m) => this.PermitionChanged()),
                         ThreadOption.UIThread,
                         false);
+
+            this.Unloaded += (s, e) =>
+            {
+                this.userAccessLevelToken?.Dispose();
+                this.userAccessLevelToken = null;
+            };
         }
 
         #endregion

@@ -34,7 +34,7 @@
                                          Foreground="{DynamicResource PpcButtonForeground}"
                                          IsIndeterminate="True"
                                          Opacity="0.2"
-                                         Visibility="{TemplateBinding IsBusy,
+                                         Visibility="{TemplateBinding ,
                                                                       Converter={StaticResource BTVC}}" />
 
                             <TextBlock Grid.Column="1"
