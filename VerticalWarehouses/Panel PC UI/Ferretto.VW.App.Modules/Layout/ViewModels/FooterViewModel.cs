@@ -149,7 +149,13 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
 
         public override void UpdateChanges(PresentationChangedMessage message)
         {
-            base.UpdateChanges(message);
+            message.States?.ForEach((s) =>
+            {
+                if (s != null)
+                {
+                    this.Show(s.Type, s.IsVisible ?? false);
+                }
+            });
         }
 
         public override void UpdatePresentation(PresentationMode mode)
@@ -169,15 +175,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     break;
 
                 case PresentationMode.Menu:
-                    this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Back, true);
                     break;
 
                 case PresentationMode.Installer:
-                    this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Back, true);
                     break;
 
                 case PresentationMode.Operator:
-                    this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Back, true);
                     break;
 
                 case PresentationMode.Help:
