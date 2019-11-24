@@ -56,6 +56,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 {
                     this.RaisePropertyChanged();
                     this.IsBackNavigationAllowed = !this.isBusy;
+                    this.confirmSaveCommand?.RaiseCanExecuteChanged();
                 }
             }
         }
@@ -115,7 +116,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 await this.machineConfigurationWebService.ImportAsync(this.configuration);
 
-                this.ShowNotification(InstallationApp.RestoreSuccessful);
+                this.ShowNotification(InstallationApp.RestoreSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

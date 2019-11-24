@@ -25,7 +25,8 @@
                 BorderBrush="{DynamicResource FerrettoDarkGray}"
                 BorderThickness="1"
                 ToolTip="{Binding Value}">
-            <TextBlock Background="{DynamicResource FerrettoMediumGray}"
+            <TextBlock Padding="2,0"
+                       Background="{DynamicResource FerrettoMediumGray}"
                        Foreground="{DynamicResource FerrettoPureWhite}"
                        Text="{Binding Value}" />
         </Border>

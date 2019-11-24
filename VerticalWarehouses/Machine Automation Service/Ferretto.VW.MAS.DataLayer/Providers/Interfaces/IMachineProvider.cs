@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -23,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineStatistics GetStatistics();
 
-        void Import(Machine machine);
+        void Import(Machine machine, DataLayerContext context);
 
         bool IsOneTonMachine();
 

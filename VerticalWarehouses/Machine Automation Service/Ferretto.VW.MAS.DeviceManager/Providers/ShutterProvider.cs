@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysProvider baysProvider;
 
-        private readonly ILogger<DataLayerContext> logger;
+        private readonly ILogger<ShutterProvider> logger;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IEventAggregator eventAggregator,
-            ILogger<DataLayerContext> logger)
+            ILogger<ShutterProvider> logger)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));

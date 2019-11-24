@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILogger<DataLayerContext> logger;
+        private readonly ILogger<LoadingUnitsProvider> logger;
 
         #endregion
 
@@ -26,7 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public LoadingUnitsProvider(
             DataLayerContext dataContext,
-            ILogger<DataLayerContext> logger)
+            ILogger<LoadingUnitsProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -113,25 +114,12 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Import(IEnumerable<LoadingUnit> loadingUnits)
+        public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
         {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    this.dataContext.Delete(loadingUnits, (e) => e.Id);
-                    loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
 
-                    this.dataContext.SaveChanges();
-
-                    this.logger.LogDebug($"LoadingUnit import count {loadingUnits?.Count() ?? 0} ");
-                }
-                catch (Exception e)
-                {
-                    this.logger.LogError(e, $"LoadingUnit import exception");
-                    throw;
-                }
-            }
+            context.Delete(loadingUnits, (e) => e.Id);
+            loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
         }
 
         public void Insert(int loadingUnitsId)
@@ -198,12 +186,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
         {
-            lock (this.dataContext)
-            {
-                loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
 
-                this.dataContext.SaveChanges();
-            }
+            loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+
+            this.dataContext.SaveChanges();
         }
 
         #endregion

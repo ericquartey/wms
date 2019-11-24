@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -28,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
-        void Import(SetupProceduresSet setupProceduresSet);
+        void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
 

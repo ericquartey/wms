@@ -4,6 +4,7 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -13,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILogger<DataLayerContext> logger;
+        private readonly ILogger<SetupProceduresDataProvider> logger;
 
         #endregion
 
@@ -21,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public SetupProceduresDataProvider(
             DataLayerContext dataContext,
-            ILogger<DataLayerContext> logger)
+            ILogger<SetupProceduresDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -150,37 +151,33 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Import(SetupProceduresSet setupProceduresSet)
+        public void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context)
         {
-            lock (this.dataContext)
-            {
-                try
-                {
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.BayHeightCheck?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.BeltBurnishingTest?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.CellPanelsCheck?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.CellsHeightCheck?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.DepositAndPickUpTest?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.LoadFirstDrawerTest?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.ShutterHeightCheck?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.ShutterTest?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.VerticalOffsetCalibration?.Id));
-                    this.dataContext.SetupProcedures.Remove(this.dataContext.SetupProcedures.Find(setupProceduresSet?.VerticalResolutionCalibration?.Id));
+            _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-                    this.dataContext.SetupProceduresSets.Remove(setupProceduresSet);
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BayHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BeltBurnishingTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellPanelsCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellsHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.DepositAndPickUpTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.LoadFirstDrawerTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.ShutterHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.ShutterTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.VerticalOffsetCalibration?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.VerticalResolutionCalibration?.Id));
+            //context.SetupProceduresSets.Remove(setupProceduresSet);
 
-                    this.dataContext.SaveChanges();
-
-                    this.Update(setupProceduresSet);
-
-                    this.logger.LogDebug($"SetupProceduresSet import");
-                }
-                catch (Exception e)
-                {
-                    this.logger.LogError(e, $"SetupProceduresSet import exception");
-                    throw;
-                }
-            }
+            context.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
@@ -228,27 +225,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Update(SetupProceduresSet setupProceduresSet)
         {
-            if (setupProceduresSet is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresSet));
-            }
+            _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            lock (this.dataContext)
-            {
-                this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
-                this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+            this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
 
-                this.dataContext.SaveChanges();
-            }
+            this.dataContext.SaveChanges();
         }
 
         #endregion

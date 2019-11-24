@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ILoadingUnitsProvider loadingUnitsProvider;
 
-        private readonly ILogger<DataLayerContext> logger;
+        private readonly ILogger<CarouselProvider> logger;
 
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ISetupProceduresDataProvider setupProceduresDataProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             IEventAggregator eventAggregator,
-            ILogger<DataLayerContext> logger)
+            ILogger<CarouselProvider> logger)
             : base(eventAggregator)
         {
             this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
