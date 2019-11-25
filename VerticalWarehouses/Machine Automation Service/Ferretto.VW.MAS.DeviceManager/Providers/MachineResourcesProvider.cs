@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private const int REMOTEIO_INPUTS = 16;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ILogger<MachineResourcesProvider> logger;
 
@@ -40,11 +40,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ILogger<MachineResourcesProvider> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.logger = logger;
         }
 
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ShutterPosition GetShutterPosition(BayNumber bayNumber)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             if (bay.Shutter is null)
             {

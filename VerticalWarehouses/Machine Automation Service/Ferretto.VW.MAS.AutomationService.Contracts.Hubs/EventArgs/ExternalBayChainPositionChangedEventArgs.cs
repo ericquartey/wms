@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class BayChainPositionChangedEventArgs : System.EventArgs
+    public class BayChainPositionChangedEventArgs : System.EventArgs, IBayEventArgs
     {
         #region Constructors
 

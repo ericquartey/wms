@@ -117,36 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Article" xml:space="preserve">
-    <value>Article</value>
-    <comment>Grid label</comment>
-  </data>
-  <data name="ArticleDescription" xml:space="preserve">
-    <value>Article description:</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ArticleLable" xml:space="preserve">
-    <value>Article:</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="Articles" xml:space="preserve">
-    <value>Articles</value>
-    <comment>Button - Title text</comment>
-  </data>
-  <data name="ArticlesDetails" xml:space="preserve">
-    <value>Article Details</value>
-    <comment>View Title</comment>
-  </data>
-  <data name="ArticleState" xml:space="preserve">
-    <value>Article state:</value>
-    <comment>Label text</comment>
-  </data>
   <data name="Availability" xml:space="preserve">
-    <value>Availability [units]:</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="Batch" xml:space="preserve">
-    <value>Batch:</value>
+    <value>Availability [units]</value>
     <comment>Label text</comment>
   </data>
   <data name="Confirm" xml:space="preserve">
@@ -157,20 +129,16 @@
     <value>Description</value>
     <comment>Grid label</comment>
   </data>
-  <data name="DescriptionLable" xml:space="preserve">
-    <value>Description:</value>
-    <comment>Label text</comment>
-  </data>
   <data name="Details" xml:space="preserve">
     <value>Details</value>
     <comment>Button - Title text</comment>
   </data>
   <data name="DispatchedQuantity" xml:space="preserve">
-    <value>Dispatched quantity:</value>
+    <value>Dispatched quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="FIFOPeriod" xml:space="preserve">
-    <value>FIFO Period:</value>
+    <value>FIFO time span</value>
     <comment>Label text</comment>
   </data>
   <data name="InstantArticle" xml:space="preserve">
@@ -178,7 +146,7 @@
     <comment>View Title</comment>
   </data>
   <data name="LIFOPeriod" xml:space="preserve">
-    <value>LIFO Period:</value>
+    <value>LIFO time span</value>
     <comment>Label text</comment>
   </data>
   <data name="List" xml:space="preserve">
@@ -186,11 +154,7 @@
     <comment>Grid label</comment>
   </data>
   <data name="ListDescription" xml:space="preserve">
-    <value>List description:</value>
-    <comment>Label text</comment>
-  </data>
-  <data name="ListLabel" xml:space="preserve">
-    <value>List:</value>
+    <value>List description</value>
     <comment>Label text</comment>
   </data>
   <data name="Lists" xml:space="preserve">
@@ -206,15 +170,15 @@
     <comment>Grid label</comment>
   </data>
   <data name="Management" xml:space="preserve">
-    <value>Management:</value>
+    <value>Management</value>
     <comment>Label text</comment>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notes:</value>
+    <value>Notes</value>
     <comment>Label text</comment>
   </data>
   <data name="PackagingType" xml:space="preserve">
-    <value>Packaging type:</value>
+    <value>Packaging type</value>
     <comment>Label text</comment>
   </data>
   <data name="Picking" xml:space="preserve">
@@ -222,11 +186,11 @@
     <comment>Button - Title text</comment>
   </data>
   <data name="Position" xml:space="preserve">
-    <value>Position:</value>
+    <value>Position</value>
     <comment>Label text</comment>
   </data>
   <data name="ProductionDate" xml:space="preserve">
-    <value>Production date:</value>
+    <value>Production date</value>
     <comment>Label text</comment>
   </data>
   <data name="Quantity" xml:space="preserve">
@@ -234,11 +198,11 @@
     <comment>Grid label</comment>
   </data>
   <data name="RequestedQuantity" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="SearchCode" xml:space="preserve">
-    <value>Search by code:</value>
+    <value>Search by code</value>
     <comment>Label text</comment>
   </data>
   <data name="Search" xml:space="preserve">
@@ -270,11 +234,11 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityPickingQtyReq" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingQtyPick" xml:space="preserve">
-    <value>Picked quantity:</value>
+    <value>Picked quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerWaitPageHeader" xml:space="preserve">
@@ -290,19 +254,19 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityPickingDetailProductionDate" xml:space="preserve">
-    <value>Production date:</value>
+    <value>Production date</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailLotto" xml:space="preserve">
-    <value>Batch:</value>
+    <value>Batch</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailMaterialStatus" xml:space="preserve">
-    <value>Material status:</value>
+    <value>Material status</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailPackagingType" xml:space="preserve">
-    <value>Packaging type:</value>
+    <value>Packaging type</value>
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitHeader" xml:space="preserve">
@@ -310,11 +274,11 @@
     <comment>Page header</comment>
   </data>
   <data name="ListsInWaitNote" xml:space="preserve">
-    <value>Note:</value>
+    <value>Note</value>
     <comment>Label text</comment>
   </data>
   <data name="ListsInWaitDetail" xml:space="preserve">
-    <value>List detail</value>
+    <value>List details</value>
     <comment>Button text</comment>
   </data>
   <data name="ListsInWaitExecute" xml:space="preserve">
@@ -326,7 +290,7 @@
     <comment>Page Header</comment>
   </data>
   <data name="ItemSearchKeySearch" xml:space="preserve">
-    <value>Search by code:</value>
+    <value>Search by code</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchSearch" xml:space="preserve">
@@ -334,11 +298,11 @@
     <comment>Button text</comment>
   </data>
   <data name="ItemSearchQtyAvailable" xml:space="preserve">
-    <value>Available quantity:</value>
+    <value>Available quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchQtyRequest" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="ItemSearchDetail" xml:space="preserve">
@@ -358,7 +322,7 @@
     <comment>Label text</comment>
   </data>
   <data name="ItemDetailPeriod" xml:space="preserve">
-    <value>FIFO period:</value>
+    <value>FIFO time span</value>
     <comment>Labet text</comment>
   </data>
   <data name="ImmediateDrawerCallHeader" xml:space="preserve">
@@ -370,11 +334,11 @@
     <comment>Button text</comment>
   </data>
   <data name="ImmediateDrawerCallRequiredDrawer" xml:space="preserve">
-    <value>Requested drawer:</value>
+    <value>Requested tray</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingRowList" xml:space="preserve">
-    <value>List's row:</value>
+    <value>List row</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoHeader" xml:space="preserve">
@@ -382,35 +346,35 @@
     <comment>Page Header</comment>
   </data>
   <data name="GeneralInfoModel" xml:space="preserve">
-    <value>Model:</value>
+    <value>Model</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoSerial" xml:space="preserve">
-    <value>Serial number:</value>
+    <value>Serial number</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoTotDrawers" xml:space="preserve">
-    <value>Drawer quantity:</value>
+    <value>Drawer quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoSwRelease" xml:space="preserve">
-    <value>Released software version:</value>
+    <value>Software version</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoInstallationDate" xml:space="preserve">
-    <value>Installation date:</value>
+    <value>Installation date</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>Last maintenance date:</value>
+    <value>Last service date</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>Next maintenance date:</value>
+    <value>Next service date</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">
-    <value>Operative machine's state:</value>
+    <value>Operative machine's state</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
@@ -422,15 +386,15 @@
     <comment>Section header</comment>
   </data>
   <data name="DrawerCompactingFragmentNumber" xml:space="preserve">
-    <value>Fragments quantity:</value>
+    <value>Fragments quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingMaxSpaceRecoverable" xml:space="preserve">
-    <value>Max recoverable space:</value>
+    <value>Max recoverable space</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingSpaceToRecover" xml:space="preserve">
-    <value>Space to recover:</value>
+    <value>Space to recover</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerCompactingAntCompact" xml:space="preserve">
@@ -677,11 +641,11 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityRefillingQtyToRefill" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingQtyRefilled" xml:space="preserve">
-    <value>Refilled quantity:</value>
+    <value>Refilled quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingCapacityMaxAdjust" xml:space="preserve">
@@ -689,35 +653,35 @@
     <comment>Button text</comment>
   </data>
   <data name="DrawerActivityPickingDetailRowList" xml:space="preserve">
-    <value>List's row:</value>
+    <value>List's row</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityPickingDetailQtyRequest" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailHeader" xml:space="preserve">
     <value>Refilling operation detail</value>
     <comment>Page header</comment>
   </data>
-  <data name="DrawerActivityRefillingDetailLotto" xml:space="preserve">
-    <value>Batch:</value>
+  <data name="Lot" xml:space="preserve">
+    <value>Lot</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailMaterialStatus" xml:space="preserve">
-    <value>Material status:</value>
+    <value>Material status</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailPackagingType" xml:space="preserve">
-    <value>Packaging type:</value>
+    <value>Packaging type</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailProductionDate" xml:space="preserve">
-    <value>Production date:</value>
+    <value>Production date</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailQtyRequest" xml:space="preserve">
-    <value>Requested quantity:</value>
+    <value>Requested quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="DrawerActivityRefillingDetailListRow" xml:space="preserve">
@@ -725,27 +689,27 @@
     <comment>Label text</comment>
   </data>
   <data name="CommonItemCode" xml:space="preserve">
-    <value>Item code:</value>
+    <value>Item code</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonItemDescription" xml:space="preserve">
-    <value>Item description:</value>
+    <value>Item description</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListCode" xml:space="preserve">
-    <value>List code:</value>
+    <value>List code</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonListDescription" xml:space="preserve">
-    <value>List description:</value>
+    <value>List description</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListCode" xml:space="preserve">
-    <value>Packing list code:</value>
+    <value>Packing list code</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonPackingListDescription" xml:space="preserve">
-    <value>Packing list description:</value>
+    <value>Packing list description</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonNote" xml:space="preserve">
@@ -765,7 +729,7 @@
     <comment>Page header</comment>
   </data>
   <data name="DrawerActivityInventoryQtyStored" xml:space="preserve">
-    <value>Stored quantity;</value>
+    <value>Stored quantity</value>
     <comment>Label text</comment>
   </data>
   <data name="CommonCompartmentPosition" xml:space="preserve">
@@ -1205,5 +1169,17 @@
   <data name="ItemListType_NotSpecified" xml:space="preserve">
     <value>NotSpecified</value>
     <comment>enum ItemListType</comment>
+  </data>
+  <data name="Abort" xml:space="preserve">
+    <value>Abort</value>
+  </data>
+  <data name="QuantityToPick" xml:space="preserve">
+    <value>Quantity to pick</value>
+  </data>
+  <data name="PickedQuantity" xml:space="preserve">
+    <value>Picked quantity</value>
+  </data>
+  <data name="MaterialStatus" xml:space="preserve">
+    <value>Material status</value>
   </data>
 </root>

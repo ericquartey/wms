@@ -1190,6 +1190,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Mission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("MissionStatus");
+
+                    b.Property<int?>("WmsId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Missions");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
                 {
                     b.Property<int>("Id")
@@ -1255,7 +1271,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 23, 21, 15, 27, 588, DateTimeKind.Local).AddTicks(2432),
+                            InstallationDate = new DateTime(2017, 1, 25, 14, 49, 58, 508, DateTimeKind.Local).AddTicks(4069),
                             ServiceStatus = 86
                         });
                 });
@@ -1288,8 +1304,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("BeltBurnishingTestId");
 
-                    b.Property<int?>("CarouselManualMovementsId");
-
                     b.Property<int?>("CellPanelsCheckId");
 
                     b.Property<int?>("CellsHeightCheckId");
@@ -1311,8 +1325,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("BayHeightCheckId");
 
                     b.HasIndex("BeltBurnishingTestId");
-
-                    b.HasIndex("CarouselManualMovementsId");
 
                     b.HasIndex("CellPanelsCheckId");
 
@@ -1765,10 +1777,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "BeltBurnishingTest")
                         .WithMany()
                         .HasForeignKey("BeltBurnishingTestId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "CarouselManualMovements")
-                        .WithMany()
-                        .HasForeignKey("CarouselManualMovementsId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "CellPanelsCheck")
                         .WithMany()

@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         #region Constructors
 
         public MoveLoadingUnitStateMachine(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider,
             ILoadingUnitsProvider loadingUnitsProvider,
             ICellsProvider cellsProvider,
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             ILogger<StateBase> logger)
             : base(eventAggregator, logger)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
@@ -185,14 +185,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
 #endif
                     {
-                        returnValue = this.baysProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
+                        returnValue = this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
                     }
                     if (!returnValue)
                     {
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
                     }
-                    else if (this.baysProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
+                    else if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
                         && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
                         )
                     {
@@ -288,7 +288,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         }
                         else
                         {
-                            var sourceBay = this.baysProvider.GetLoadingUnitLocationByLoadingUnit(unitToMove.Id);
+                            var sourceBay = this.baysDataProvider.GetLoadingUnitLocationByLoadingUnit(unitToMove.Id);
 
                             if (sourceBay != LoadingUnitLocation.NoLocation)
                             {
@@ -319,7 +319,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     }
                     else
                     {
-                        unitToMove = this.baysProvider.GetLoadingUnitByDestination(messageData.Source);
+                        unitToMove = this.baysDataProvider.GetLoadingUnitByDestination(messageData.Source);
                     }
 
                     if (unitToMove == null || unitToMove.CellId.HasValue)
@@ -342,7 +342,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
                     }
 #endif
-                    else if (this.baysProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
+                    else if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadingUnit && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
                         )
                     {

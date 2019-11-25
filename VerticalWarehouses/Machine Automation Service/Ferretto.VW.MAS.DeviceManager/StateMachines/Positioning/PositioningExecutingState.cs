@@ -28,7 +28,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int DefaultStatusWordPollingInterval = 100;
 
-        private readonly IBaysProvider baysDataProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IElevatorProvider elevatorProvider;
 
@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.elevatorProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorProvider>();
             this.setupProceduresDataProvider = this.scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
             this.errorsProvider = this.scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-            this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+            this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
         }
 
         #endregion

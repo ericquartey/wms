@@ -30,7 +30,16 @@ namespace Ferretto.VW.App.Controls
 
             if (this.DataContext is INavigableViewModel viewModel)
             {
-                await viewModel.OnAppearedAsync();
+                try
+                {
+                    await viewModel.OnAppearedAsync();
+                }
+                catch (System.Exception ex)
+                {
+                    NLog.LogManager
+                        .GetCurrentClassLogger()
+                        .Error(ex, "An error occurred while opening view.");
+                }
             }
         }
 

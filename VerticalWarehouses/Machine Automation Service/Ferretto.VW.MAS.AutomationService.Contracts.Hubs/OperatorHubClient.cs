@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
@@ -17,11 +16,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         #region Events
 
+        public event EventHandler<AssignedMissionOperationChangedEventArgs> AssignedMissionOperationChanged;
+
         public event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
         public event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
-
-        public event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
 
@@ -29,41 +28,40 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
         protected override void RegisterEvents(HubConnection connection)
         {
-            connection.On<INewMissionOperationAvailable>(
-                nameof(AutomationService.Hubs.IOperatorHub.NewMissionOperationAvailable), this.OnMissionOperationAvailable);
+            connection.On<BayNumber, int, int, int>(
+                nameof(AutomationService.Hubs.IOperatorHub.AssignedMissionOperationChanged),
+                this.OnAssignedMissionOperationChanged);
 
-            connection.On<IBayOperationalStatusChangedMessageData>(
-                nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged), this.OnBayStatusChanged);
+            connection.On<BayNumber, BayStatus>(
+                nameof(AutomationService.Hubs.IOperatorHub.BayStatusChanged),
+                this.OnBayStatusChanged);
 
             connection.On<int>(
-                nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged), this.OnErrorStatusChanged);
+                nameof(AutomationService.Hubs.IOperatorHub.ErrorStatusChanged),
+                this.OnErrorStatusChanged);
         }
 
-        private void OnBayStatusChanged(IBayOperationalStatusChangedMessageData e)
+        private void OnAssignedMissionOperationChanged(BayNumber bayNumber, int missionId, int missionOperationId, int pendingMissionOperationsCount)
+        {
+            this.AssignedMissionOperationChanged?.Invoke(
+                this,
+                new AssignedMissionOperationChangedEventArgs(
+                    bayNumber,
+                    missionId,
+                    missionOperationId,
+                    pendingMissionOperationsCount));
+        }
+
+        private void OnBayStatusChanged(BayNumber bayNumber, BayStatus bayStatus)
         {
             this.BayStatusChanged?.Invoke(
                 this,
-                new BayStatusChangedEventArgs(
-                    e.Index,
-                    e.BayStatus,
-                    e.PendingMissionsCount,
-                    e.CurrentMissionOperationId));
+                new BayStatusChangedEventArgs(bayNumber, bayStatus));
         }
 
         private void OnErrorStatusChanged(int code)
         {
             this.ErrorStatusChanged?.Invoke(this, new ErrorStatusChangedEventArgs(code));
-        }
-
-        private void OnMissionOperationAvailable(INewMissionOperationAvailable e)
-        {
-            this.MissionOperationAvailable?.Invoke(
-                this,
-                new MissionOperationAvailableEventArgs(
-                    e.BayId,
-                    e.MissionId,
-                    e.MissionOperationId,
-                    e.PendingMissionsCount));
         }
 
         #endregion

@@ -130,14 +130,14 @@ namespace Ferretto.VW.App
 
         private static void RegisterWmsHubs(IContainerRegistry container)
         {
-            var wmsHubPath = ConfigurationManager.AppSettings.Get("WMS:DataService:Hubs:Data:Path");
-            var wmsHub = DataServiceFactory.GetService<IDataHubClient>(new Uri(wmsHubPath));
-            container.RegisterInstance(wmsHub);
+            var wmsHubPath = ConfigurationManager.AppSettings.GetWMSDataServiceHubDataPath();
+            var hubClient = DataServiceFactory.GetService<IDataHubClient>(wmsHubPath);
+            container.RegisterInstance(hubClient);
         }
 
         private static void RegisterWmsProviders(IContainerRegistry container)
         {
-            var wmsServiceUrl = new Uri(ConfigurationManager.AppSettings.Get("WMS:DataService:Url"));
+            var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
 
             container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));

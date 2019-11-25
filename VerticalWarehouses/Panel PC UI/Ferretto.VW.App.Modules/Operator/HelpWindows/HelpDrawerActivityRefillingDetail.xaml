@@ -105,7 +105,7 @@
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="045-25"
-                                 LabelText="{x:Static res:OperatorApp.DrawerActivityRefillingDetailLotto}" />
+                                 LabelText="{x:Static res:OperatorApp.Lot}" />
 
         <controls:PpcLabeledText Width="180"
                                  Margin="530,260,0,0"

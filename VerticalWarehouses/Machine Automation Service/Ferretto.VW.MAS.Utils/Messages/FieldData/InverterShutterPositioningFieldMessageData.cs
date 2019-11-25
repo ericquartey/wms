@@ -12,6 +12,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
+            if (shutterPositioningFieldMessageData is null)
+            {
+                throw new System.ArgumentNullException(nameof(shutterPositioningFieldMessageData));
+            }
+
             this.ShutterPosition = shutterPositioningFieldMessageData.ShutterPosition;
             this.ShutterType = shutterPositioningFieldMessageData.ShutterType;
             this.ShutterMovementDirection = shutterPositioningFieldMessageData.ShutterMovementDirection;

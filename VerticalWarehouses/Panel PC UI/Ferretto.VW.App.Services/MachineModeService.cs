@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    public sealed class MachineModeService : IMachineModeService, IDisposable
+    internal sealed class MachineModeService : IMachineModeService, IDisposable
     {
         #region Fields
 
