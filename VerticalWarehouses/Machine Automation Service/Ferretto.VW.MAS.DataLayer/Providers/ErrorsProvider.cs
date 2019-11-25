@@ -60,56 +60,62 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MachineError GetCurrent()
         {
-            return this.dataContext.Errors
-                .Where(e => !e.ResolutionDate.HasValue)
-                .OrderBy(e => e.Definition.Severity)
-                .ThenBy(e => e.OccurrenceDate)
-                .Select(e => new MachineError
-                {
-                    Id = e.Id,
-                    Code = e.Code,
-                    OccurrenceDate = e.OccurrenceDate,
-                    ResolutionDate = e.ResolutionDate,
-                    Definition = new ErrorDefinition
-                    {
-                        Code = e.Code,
-                        Description = e.Definition.Description,
-                        Reason = e.Definition.Reason,
-                        Severity = e.Definition.Severity,
-                    },
-                })
-                .FirstOrDefault();
+            lock (this.dataContext)
+            {
+                return this.dataContext.Errors
+                        .Where(e => !e.ResolutionDate.HasValue)
+                        .OrderBy(e => e.Definition.Severity)
+                        .ThenBy(e => e.OccurrenceDate)
+                        .Select(e => new MachineError
+                        {
+                            Id = e.Id,
+                            Code = e.Code,
+                            OccurrenceDate = e.OccurrenceDate,
+                            ResolutionDate = e.ResolutionDate,
+                            Definition = new ErrorDefinition
+                            {
+                                Code = e.Code,
+                                Description = e.Definition.Description,
+                                Reason = e.Definition.Reason,
+                                Severity = e.Definition.Severity,
+                            },
+                        })
+                        .FirstOrDefault();
+            }
         }
 
         public ErrorStatisticsSummary GetStatistics()
         {
-            var totalErrors = this.dataContext.ErrorStatistics.Sum(s => s.TotalErrors);
-            var summary = new ErrorStatisticsSummary
+            lock (this.dataContext)
             {
-                TotalErrors = totalErrors,
-                Errors = this.dataContext.ErrorStatistics
-                    .Select(s =>
-                        new ErrorStatisticsDetail
-                        {
-                            Code = s.Code,
-                            Description = s.Error.Description,
-                            Total = s.TotalErrors,
-                            RatioTotal = s.TotalErrors * 100.0 / totalErrors,
-                        }),
-            };
-
-            if (this.dataContext.MachineStatistics.Any())
-            {
-                summary.TotalLoadingUnits = this.dataContext.MachineStatistics.First().TotalMovedTrays;
-                if (summary.TotalLoadingUnits > 0)
+                var totalErrors = this.dataContext.ErrorStatistics.Sum(s => s.TotalErrors);
+                var summary = new ErrorStatisticsSummary
                 {
-                    summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
+                    TotalErrors = totalErrors,
+                    Errors = this.dataContext.ErrorStatistics
+                        .Select(s =>
+                            new ErrorStatisticsDetail
+                            {
+                                Code = s.Code,
+                                Description = s.Error.Description,
+                                Total = s.TotalErrors,
+                                RatioTotal = s.TotalErrors * 100.0 / totalErrors,
+                            }),
+                };
+
+                if (this.dataContext.MachineStatistics.Any())
+                {
+                    summary.TotalLoadingUnits = this.dataContext.MachineStatistics.First().TotalMovedTrays;
+                    if (summary.TotalLoadingUnits > 0)
+                    {
+                        summary.TotalLoadingUnitsBetweenErrors = summary.TotalLoadingUnits / totalErrors;
+                    }
+
+                    summary.ReliabilityPercentage = totalErrors * 100.0 / summary.TotalLoadingUnits;
                 }
 
-                summary.ReliabilityPercentage = totalErrors * 100.0 / summary.TotalLoadingUnits;
+                return summary;
             }
-
-            return summary;
         }
 
         public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
@@ -121,31 +127,35 @@ namespace Ferretto.VW.MAS.DataLayer
                 BayNumber = bayNumber,
             };
 
-            var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
-                e =>
-                    e.Code == (int)code
-                    &&
-                    e.ResolutionDate == null
-                    &&
-                    e.BayNumber == bayNumber);
-
-            if (existingUnresolvedError != null)
+            lock (this.dataContext)
             {
-                this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
-                return existingUnresolvedError;
+                var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                    e =>
+                        e.Code == (int)code
+                        &&
+                        e.ResolutionDate == null
+                        &&
+                        e.BayNumber == bayNumber);
+
+                if (existingUnresolvedError != null)
+                {
+                    this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
+                    return existingUnresolvedError;
+                }
+
+                this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
+                this.dataContext.Errors.Add(newError);
+
+                var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+                if (errorStatistics != null)
+                {
+                    errorStatistics.TotalErrors++;
+                    this.dataContext.ErrorStatistics.Update(errorStatistics);
+                }
+
+                this.dataContext.SaveChanges();
             }
 
-            this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
-            this.dataContext.Errors.Add(newError);
-
-            var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
-            if (errorStatistics != null)
-            {
-                errorStatistics.TotalErrors++;
-                this.dataContext.ErrorStatistics.Update(errorStatistics);
-            }
-
-            this.dataContext.SaveChanges();
             this.NotifyErrorCreation(newError, bayNumber);
 
             return newError;
@@ -153,35 +163,40 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MachineError Resolve(int id)
         {
-            error = dataContext.Errors.SingleOrDefault(e => e.Id == id);
-            if (error is null)
+            lock (this.dataContext)
             {
-                throw new EntityNotFoundException(id);
+                var error = this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
+                if (error is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
+
+                if (!this.IsErrorStillActive(error.Code))
+                {
+                    error.ResolutionDate = DateTime.Now;
+                    this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
+
+                    this.dataContext.Errors.Update(error);
+
+                    this.dataContext.SaveChanges();
+                }
+
+                this.NotifyErrorResolution(error);
+
+                return error;
             }
-
-            if (!this.IsErrorStillActive(error.Code))
-            {
-                error.ResolutionDate = DateTime.Now;
-                this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
-
-                dataContext.Errors.Update(error);
-
-                dataContext.SaveChanges();
-            }
-
-            this.NotifyErrorResolution(error);
-
-            return error;
         }
 
         public void ResolveAll()
         {
             IEnumerable<int> errors;
-            errors = this.dataContext.Errors.AsNoTracking()
-               .Where(e => e.ResolutionDate == null)
-               .Select(e => e.Id)
-               .ToArray();
-
+            lock (this.dataContext)
+            {
+                errors = this.dataContext.Errors.AsNoTracking()
+                   .Where(e => e.ResolutionDate == null)
+                   .Select(e => e.Id)
+                   .ToArray();
+            }
             errors.ToList().ForEach(id => this.Resolve(id));
         }
 

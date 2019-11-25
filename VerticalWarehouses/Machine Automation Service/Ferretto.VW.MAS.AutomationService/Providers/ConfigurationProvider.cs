@@ -64,24 +64,26 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-
-            using (var transaction = this.dataContext.Database.BeginTransaction())
+            lock (this.dataContext)
             {
-                try
+                using (var transaction = this.dataContext.Database.BeginTransaction())
                 {
-                    this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
-                    this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
-                    this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
+                    try
+                    {
+                        this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
+                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
 
-                    this.dataContext.SaveChanges();
+                        this.dataContext.SaveChanges();
 
-                    transaction.Commit();
-                    this.logger.LogInformation($"Configuration Provider import");
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    this.logger.LogError(e, $"Configuration Provider import exception");
+                        transaction.Commit();
+                        this.logger.LogInformation($"Configuration Provider import");
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        this.logger.LogError(e, $"Configuration Provider import exception");
+                    }
                 }
             }
         }
@@ -90,21 +92,24 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            using (var transaction = this.dataContext.Database.BeginTransaction())
+            lock (this.dataContext)
             {
-                try
+                using (var transaction = this.dataContext.Database.BeginTransaction())
                 {
-                    this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
-                    this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
-                    this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
+                    try
+                    {
+                        this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
+                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
 
-                    transaction.Commit();
-                    this.logger.LogInformation($"Configuration Provider update");
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    this.logger.LogError(e, $"Configuration Provider update exception");
+                        transaction.Commit();
+                        this.logger.LogInformation($"Configuration Provider update");
+                    }
+                    catch (Exception e)
+                    {
+                        transaction.Rollback();
+                        this.logger.LogError(e, $"Configuration Provider update exception");
+                    }
                 }
             }
         }
