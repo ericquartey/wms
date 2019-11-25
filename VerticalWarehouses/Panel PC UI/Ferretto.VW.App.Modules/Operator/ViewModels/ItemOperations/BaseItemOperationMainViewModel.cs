@@ -36,6 +36,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isWaitingForResponse;
 
+        private double loadingUnitDepth;
+
+        private double loadingUnitWidth;
+
         private TrayControlCompartment selectedCompartment;
 
         private DelegateCommand showDetailsCommand;
@@ -108,6 +112,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
+        public double LoadingUnitDepth
+        {
+            get => this.loadingUnitDepth;
+            set => this.SetProperty(ref this.loadingUnitDepth, value, this.RaiseCanExecuteChanged);
+        }
+
+        public double LoadingUnitWidth
+        {
+            get => this.loadingUnitWidth;
+            set => this.SetProperty(ref this.loadingUnitWidth, value, this.RaiseCanExecuteChanged);
+        }
+
         public TrayControlCompartment SelectedCompartment
         {
             get => this.selectedCompartment;
@@ -154,8 +170,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.GetLoadingUnitDetails();
-
-            this.IsBackNavigationAllowed = true;
         }
 
         protected abstract void ShowOperationDetails();
@@ -241,6 +255,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     "This view model should not be opened if there is no current mission");
 
                 this.Compartments = this.MapCompartments(this.Mission.LoadingUnit.Compartments);
+                this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
+                this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
                 this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
                     c.Id == this.MissionOperationsService.CurrentMissionOperation.CompartmentId);
             }
