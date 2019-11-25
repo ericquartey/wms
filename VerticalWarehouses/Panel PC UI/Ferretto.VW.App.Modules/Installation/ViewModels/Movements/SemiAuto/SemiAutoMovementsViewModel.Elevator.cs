@@ -47,8 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveToCellPolicy;
 
-        private VerticalManualMovementsProcedure procedureParameters;
-
         private DelegateCommand tuningBayCommand;
 
         private DelegateCommand tuningChainCommand;
@@ -141,13 +139,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsElevatorInBay
         {
             get => this.isElevatorInBay;
-            private set => this.SetProperty(ref this.isElevatorInBay, value);
+            private set => this.SetProperty(ref this.isElevatorInBay, value, this.ElevatorChanged);
         }
 
         public bool IsElevatorInCell
         {
             get => this.isElevatorInCell;
-            private set => this.SetProperty(ref this.isElevatorInCell, value);
+            private set => this.SetProperty(ref this.isElevatorInCell, value, this.ElevatorChanged);
         }
 
         public bool IsTuningBay
@@ -324,6 +322,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.unloadToCellPolicy?.IsAllowed == true;
+        }
+
+        private void ElevatorChanged()
+        {
+            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
         }
 
         private async Task LoadFromBayAsync()

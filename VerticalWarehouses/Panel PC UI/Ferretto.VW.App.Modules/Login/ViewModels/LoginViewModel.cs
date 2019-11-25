@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #region Fields
 
         private readonly IAuthenticationService authenticationService;
-
+        private readonly IMachineBaysWebService machineBaysWebService;
         private readonly IMachineErrorsService machineErrorsService;
 
         private readonly IHealthProbeService healthProbeService;
@@ -45,7 +45,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
             ISessionService sessionService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Login)
         {
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
@@ -54,11 +55,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
-
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 #if DEBUG
             this.UserLogin = new UserLogin
             {
-                UserName = "installer",
+                UserName = "operator",
                 Password = "password",
             };
 #else
@@ -69,7 +70,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         #endregion
 
         #region Properties
-
+      
         public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand LoginCommand =>
@@ -84,10 +85,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         public int BayNumber
         {
             get => this.bayNumber;
-            set
-            {
-                this.SetProperty(ref this.bayNumber, value);
-            }
+            set => this.SetProperty(ref this.bayNumber, value);
         }
 
         public MachineIdentity MachineIdentity
@@ -113,6 +111,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 }
             }
         }
+
+
 
         public bool IsWaitingForResponse
         {
@@ -177,6 +177,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 if (!(bay is null))
                 {
                     this.BayNumber = (int)bay.Number;
+                    await this.machineBaysWebService.DeactivateAsync();
                 }
             }
             catch (Exception ex)
@@ -274,7 +275,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.OPERATORMENU,
+                Utils.Modules.Operator.OPERATOR_MENU,
                 data: null,
                 trackCurrentView: true);
         }

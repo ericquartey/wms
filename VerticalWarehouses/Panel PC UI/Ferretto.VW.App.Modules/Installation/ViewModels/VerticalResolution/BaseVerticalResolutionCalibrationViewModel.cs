@@ -56,10 +56,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             : base(PresentationMode.Installer)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
-            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
             this.InitializeNavigationMenu();
         }
@@ -172,7 +172,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                       ThreadOption.UIThread,
                       false);
 
-            this.CurrentPosition = this.machineElevatorService.Position.Vertical;
+            this.CurrentPosition = this.machineElevatorService?.Position?.Vertical;
 
             await this.RetrieveProcedureParametersAsync();
         }

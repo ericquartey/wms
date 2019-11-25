@@ -19,6 +19,11 @@ namespace Ferretto.VW.MAS.Utils.Messages.FieldData
             MessageVerbosity verbosity = MessageVerbosity.Debug)
             : base(verbosity)
         {
+            if (positioningFieldMessageData is null)
+            {
+                throw new System.ArgumentNullException(nameof(positioningFieldMessageData));
+            }
+
             this.AxisMovement = positioningFieldMessageData.AxisMovement;
             this.MovementType = positioningFieldMessageData.MovementType;
             this.NumberCycles = positioningFieldMessageData.NumberCycles;

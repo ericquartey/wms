@@ -249,7 +249,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.RefreshMachineInfoAsync();
 
-                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
                 var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();

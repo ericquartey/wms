@@ -392,7 +392,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                 string s = string.Empty;
             }
 
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             BayNumber bayNumber;
             switch (receivedMessage.Source)

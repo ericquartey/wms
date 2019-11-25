@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class MachineErrorsService : IMachineErrorsService
+    internal sealed class MachineErrorsService : IMachineErrorsService
     {
         #region Fields
 

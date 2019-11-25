@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
                 else
                 {
+                    System.Console.Title = "Vertimag Automation Service";
                     host.Run();
                 }
             }

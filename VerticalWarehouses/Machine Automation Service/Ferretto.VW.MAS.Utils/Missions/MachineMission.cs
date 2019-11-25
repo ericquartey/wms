@@ -48,6 +48,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public override bool AllowMultipleInstances(CommandMessage command)
         {
+            if (command is null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             var returnValue = true;
             switch (command.Type)
             {

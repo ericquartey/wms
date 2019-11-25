@@ -4,6 +4,9 @@
     <Image x:Key="IAPP_ImageChangeSkin"
            Source="/Ferretto.VW.App.Controls;Component/Assets/brush_dark.png" />
 
+    <BitmapImage x:Key="FerrettoGroup"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogroup_dark.png" />
+
     <BitmapImage x:Key="Ferretto_Logo"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_dark.png" />
 

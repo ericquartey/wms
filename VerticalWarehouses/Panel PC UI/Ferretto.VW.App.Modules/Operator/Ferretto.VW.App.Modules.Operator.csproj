@@ -42,14 +42,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (2).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (3).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (4).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (5).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (6).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy (7).xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView - Copy.xaml" />
-    <None Remove="Views\DrawerOperations\DrawerWaitView.xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (2).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (3).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (4).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (5).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (6).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy (7).xaml" />
+    <None Remove="Views\ItemOperations\DrawerWaitView - Copy.xaml" />
     <None Remove="Views\EmptyView.xaml" />
     <None Remove="Views\ItemSearch\WaitingListDetailView.xaml" />
     <None Remove="Views\ItemSearch\WaitingListsView.xaml" />
@@ -86,6 +85,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Views\LoadingUnitOperations\ItemInventoryDetailsView.xaml.cs">
+      <DependentUpon>ItemInventoryDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnitOperations\ItemInventoryView.xaml.cs">
+      <DependentUpon>ItemInventoryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnitOperations\LoadingUnitView.xaml.cs">
+      <DependentUpon>LoadingUnitView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnitOperations\ItemPutDetailsView.xaml.cs">
+      <DependentUpon>ItemPutDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnitOperations\ItemPutView.xaml.cs">
+      <DependentUpon>ItemPutView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnitOperations\ItemPickView.xaml.cs">
+      <DependentUpon>ItemPickView.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy %282%29.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
@@ -107,8 +124,8 @@
     <Compile Update="Views\DrawerOperations\DrawerWaitView - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\DrawerOperations\DrawerWaitView.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
+    <Compile Update="Views\LoadingUnitOperations\ItemOperationWaitView.xaml.cs">
+      <DependentUpon>ItemOperationWaitView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Others\Maintenance\MaintenanceView - Copy.xaml.cs">
       <DependentUpon>MaintenanceView.xaml</DependentUpon>

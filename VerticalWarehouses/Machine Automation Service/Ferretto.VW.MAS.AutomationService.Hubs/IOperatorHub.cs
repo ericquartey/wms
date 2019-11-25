@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.MAS.AutomationService.Hubs
@@ -7,11 +8,11 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
-        Task BayStatusChanged(IBayOperationalStatusChangedMessageData message);
+        Task AssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionOperationsCount);
+
+        Task BayStatusChanged(BayNumber bayNumber, BayStatus bayStatus);
 
         Task ErrorStatusChanged(int code);
-
-        Task NewMissionOperationAvailable(INewMissionOperationAvailable message);
 
         Task SetBayDrawerOperationToInventory();
 

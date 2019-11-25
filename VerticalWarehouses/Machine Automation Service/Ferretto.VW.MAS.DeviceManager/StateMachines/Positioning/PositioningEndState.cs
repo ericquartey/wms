@@ -103,6 +103,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+            {
+                this.UpdateLoadingUnitLocation();
+            }
+
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
@@ -146,11 +151,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 this.Logger.LogDebug("FSM Positioning End");
             }
 
-            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
-            {
-                this.UpdateLoadingUnitLocation();
-            }
-
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
             var inverterMessage = new FieldCommandMessage(
                 inverterDataMessage,
@@ -186,7 +186,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         {
             System.Diagnostics.Debug.Assert(targetBayPositionId.HasValue || targetCellId.HasValue);
 
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
 
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (targetBayPositionId.HasValue)
             {
-                baysProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
+                baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
             }
             else if (targetCellId.HasValue)
             {
@@ -219,7 +219,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             System.Diagnostics.Debug.Assert(sourceBayPositionId.HasValue || sourceCellId.HasValue);
 
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
 
             var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
@@ -231,11 +231,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (sourceBayPositionId.HasValue)
             {
-                var bayPosition = baysProvider.GetPositionById(sourceBayPositionId.Value);
+                var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
 
                 elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
 
-                baysProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
+                baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
             }
             else if (sourceCellId.HasValue)
             {
@@ -270,7 +270,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
-                var baysProvider = scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
                 var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
 
@@ -282,7 +282,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 if (bayPosition != null)
                 {
-                    var bay = baysProvider.GetByBayPositionId(bayPosition.Id);
+                    var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
                     var isDrawerInBay = bayPosition.IsUpper
                          ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
                          : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
@@ -293,7 +293,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
                         {
                             elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
-                            baysProvider.SetLoadingUnit(bayPosition.Id, null);
+                            baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
                         }
                     }
                     else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
@@ -302,7 +302,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
                         {
                             elevatorDataProvider.SetLoadingUnit(null);
-                            baysProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+                            baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
                         }
                     }
                 }

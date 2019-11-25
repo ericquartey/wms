@@ -18,6 +18,12 @@
         "ASPNETCORE_ENVIRONMENT": "Prototype2"
       }
     },
+    "MAS (EjLog)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "EjLog"
+      }
+    },
     "MAS (Bender)": {
       "commandName": "Project",
       "environmentVariables": {

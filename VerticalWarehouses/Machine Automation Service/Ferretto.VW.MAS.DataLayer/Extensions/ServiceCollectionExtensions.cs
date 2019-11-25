@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer
                        p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
 
             services
-                .AddTransient<IBaysProvider, BaysProvider>()
+                .AddTransient<IBaysDataProvider, BaysDataProvider>()
                 .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()
                 .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()

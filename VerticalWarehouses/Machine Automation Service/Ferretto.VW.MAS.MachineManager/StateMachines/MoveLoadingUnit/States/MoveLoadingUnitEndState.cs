@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -33,12 +33,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitEndState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         break;
                 }
 
-                if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
+                if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                 {
                     this.IsCompleted = true;
                 }

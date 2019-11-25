@@ -99,8 +99,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (receivedMessage.Data is IHomingMessageData data)
             {
-                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-                var targetBay = baysProvider.GetByAxis(data);
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var targetBay = baysDataProvider.GetByAxis(data);
                 if (targetBay == BayNumber.None)
                 {
                     targetBay = receivedMessage.RequestingBay;
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.EventAggregator,
                         this.Logger,
-                        baysProvider,
+                        baysDataProvider,
                         this.ServiceScopeFactory);
 
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
@@ -212,7 +212,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
@@ -222,7 +222,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             var data = message.Data as IPositioningMessageData;
 
-            var targetBay = baysProvider.GetByMovementType(data);
+            var targetBay = baysDataProvider.GetByMovementType(data);
             if (targetBay is BayNumber.None)
             {
                 targetBay = message.RequestingBay;
@@ -245,7 +245,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     machineResourcesProvider,
                     this.EventAggregator,
                     this.Logger,
-                    baysProvider,
+                    baysDataProvider,
                     this.ServiceScopeFactory);
 
                 this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
@@ -291,7 +291,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
                         machineResourcesProvider,
-                        serviceProvider.GetRequiredService<IBaysProvider>(),
+                        serviceProvider.GetRequiredService<IBaysDataProvider>(),
                         this.EventAggregator,
                         this.Logger,
                         this.ServiceScopeFactory);
@@ -409,13 +409,13 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
-                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
                     message.TargetBay = message.RequestingBay;
                     currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
                         message.TargetBay,
-                        baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
+                        baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.EventAggregator,
                         this.Logger,

@@ -8,31 +8,21 @@
 
         public RepeatedTestProcedure BeltBurnishingTest { get; set; }
 
-        public SetupProcedure CarouselManualMovements { get; set; }
-
         public PositioningProcedure CellPanelsCheck { get; set; }
 
         public PositioningProcedure CellsHeightCheck { get; set; }
 
         public RepeatedTestProcedure DepositAndPickUpTest { get; set; }
 
-        public HorizontalManualMovementsProcedure HorizontalManualMovements { get; set; }
-
         public SetupProcedure LoadFirstDrawerTest { get; set; }
 
         public SetupProcedure ShutterHeightCheck { get; set; }
 
-        public ShutterManualMovementsProcedure ShutterManualMovements { get; set; }
-
         public RepeatedTestProcedure ShutterTest { get; set; }
-
-        public VerticalManualMovementsProcedure VerticalManualMovements { get; set; }
 
         public OffsetCalibrationProcedure VerticalOffsetCalibration { get; set; }
 
         public VerticalResolutionCalibrationProcedure VerticalResolutionCalibration { get; set; }
-
-        public SetupProcedure WeightCheck { get; set; }
 
         #endregion
     }

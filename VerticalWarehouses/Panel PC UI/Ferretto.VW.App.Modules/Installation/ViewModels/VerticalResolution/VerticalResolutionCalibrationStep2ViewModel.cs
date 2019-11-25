@@ -189,9 +189,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveManualToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
-                    this.ProcedureParameters.FeedRate,
                     false,
                     false);
             }

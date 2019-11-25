@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IPowerEnableMachineData machineData;
 
@@ -30,13 +30,13 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
         public PowerEnableStateMachine(
             CommandMessage receivedMessage,
             IMachineResourcesProvider machineResourcesProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.baysProvider = baysProvider;
+            this.baysDataProvider = baysDataProvider;
 
             if (receivedMessage.Data is IPowerEnableMessageData data)
             {
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
                 reason.Append("Micro Carter Active Bay1 Right; ");
             }
 
-            foreach (var bay in this.baysProvider.GetAll())
+            foreach (var bay in this.baysDataProvider.GetAll())
             {
                 switch (bay.Number)
                 {

@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface IBaysProvider
+    public interface IBaysDataProvider
     {
         #region Methods
 
@@ -23,7 +23,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay Deactivate(BayNumber bayNumber);
 
+        void FindZero(BayNumber bayNumber);
+
         IEnumerable<Bay> GetAll();
+
+        CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber);
+
+        ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber);
 
         BayNumber GetByAxis(IHomingMessageData data);
 
@@ -59,11 +65,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         LoadingUnitLocation GetLoadingUnitLocationByLoadingUnit(int loadingUnitId);
 
+        CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber);
+
+        ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
+
         BayPosition GetPositionById(int bayPositionId);
 
         BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
         double GetResolution(InverterIndex inverterIndex);
+
+        void PerformHoming(BayNumber bayNumber);
 
         void ResetMachine();
 

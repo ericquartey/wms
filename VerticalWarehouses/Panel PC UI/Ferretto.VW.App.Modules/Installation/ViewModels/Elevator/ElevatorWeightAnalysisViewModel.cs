@@ -65,8 +65,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken positioningOperationChangedToken;
 
-        private SetupProcedure procedureParameters;
-
         private DelegateCommand startCommand;
 
         private DelegateCommand stopCommand;
@@ -137,9 +135,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.inputLoadingUnitCode, value))
                 {
-                    if (value != null)
+                    int id;
+                    if (value != null && int.TryParse(value, out id))
                     {
-                        this.LoadingUnit = this.loadingUnits.SingleOrDefault(l => l.Code == value);
+                        this.LoadingUnit = this.loadingUnits.SingleOrDefault(l => l.Id.Equals(id));
                     }
 
                     this.RaiseCanExecuteChanged();
@@ -314,8 +313,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveCurrentPositionAsync();
 
             await this.RetrieveLoadingUnitsAsync();
-
-            this.procedureParameters = await this.weightAnalysisProcedureWebService.GetParametersAsync();
         }
 
         private bool CanMoveToBay()
@@ -354,7 +351,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(
                     bayPosition.Id,
-                    this.procedureParameters.FeedRate,
                     computeElongation: true,
                     performWeighting: false);
 

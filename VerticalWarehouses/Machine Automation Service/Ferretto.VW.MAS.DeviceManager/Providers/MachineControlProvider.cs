@@ -14,18 +14,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         #endregion
 
         #region Constructors
 
         public MachineControlProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
         }
 
         #endregion
@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysProvider.GetAll())
+                foreach (var bay in this.baysDataProvider.GetAll())
                 {
                     var description = $"Requesting inverter fault reset from bay {requestingBay} to bay {bay.Number}";
                     this.PublishCommand(
@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysProvider.GetAll())
+                foreach (var bay in this.baysDataProvider.GetAll())
                 {
                     this.PublishCommand(
                         messageData,
@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysProvider.GetAll())
+                foreach (var bay in this.baysDataProvider.GetAll())
                 {
                     this.PublishCommand(
                         messageData,

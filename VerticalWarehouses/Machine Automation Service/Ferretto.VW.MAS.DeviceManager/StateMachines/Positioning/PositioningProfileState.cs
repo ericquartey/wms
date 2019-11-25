@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private const int MAX_RETRIES = 3;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ILoadingUnitsProvider loadingUnitProvider;
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
-            this.baysProvider = this.scope.ServiceProvider.GetRequiredService<IBaysProvider>();
+            this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
         }
 
@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     case MessageStatus.OperationEnd:
                         if (message.Data is MeasureProfileFieldMessageData data && message.Source == FieldMessageActor.InverterDriver)
                         {
-                            var profileHeight = this.baysProvider.ConvertProfileToHeight(data.Profile);
+                            var profileHeight = this.baysDataProvider.ConvertProfileToHeight(data.Profile);
                             this.Logger.LogInformation($"Height measured {profileHeight}mm. Profile {data.Profile / 100.0}%");
                             if (profileHeight < this.minHeight || data.Profile > 10000)
                             {
@@ -116,7 +116,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
-            this.inverterIndex = this.baysProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+            this.inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
         }
 
         public override void Stop(StopRequestReason reason)
