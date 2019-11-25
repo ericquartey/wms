@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Core" Version="19.1.6" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="19.2.4" />
     <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Unity" Version="7.1.0.431" />
