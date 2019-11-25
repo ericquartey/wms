@@ -2,6 +2,7 @@ using System;
 using System.Configuration;
 using System.Reflection;
 using System.Windows;
+using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -12,6 +13,7 @@ using Prism.Events;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Mvvm;
+using Prism.Regions;
 using Unity;
 
 namespace Ferretto.VW.App

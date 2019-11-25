@@ -447,6 +447,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool ZeroVerticalSensor { get => this.zeroVerticalSensor; set => this.SetProperty(ref this.zeroVerticalSensor, value); }
 
+        public bool InverterInFault1 { get => this.inverterInFault1; set => this.SetProperty(ref this.inverterInFault1, value); }
+        public bool NoValue { get => this.noValue; set => this.SetProperty(ref this.noValue, value); }
         #endregion
 
         #region Methods

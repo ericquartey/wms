@@ -103,6 +103,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
+            {
+                this.UpdateLoadingUnitLocation();
+            }
+
             var inverterIndex = this.machineData.CurrentInverterIndex;
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
@@ -144,11 +149,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Positioning End");
-            }
-
-            if (this.machineData.MessageData.AxisMovement is Axis.Horizontal)
-            {
-                this.UpdateLoadingUnitLocation();
             }
 
             var inverterDataMessage = new InverterSetTimerFieldMessageData(InverterTimer.SensorStatus, true, SENSOR_UPDATE_SLOW);
