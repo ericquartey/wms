@@ -14,7 +14,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemSearchMainViewModel : BaseMainViewModel
+    public class ItemSearchMainViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -80,6 +80,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public override bool KeepAlive => true;
 
         public double? AvailableQuantity
         {

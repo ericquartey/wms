@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class WaitingListsViewModel : BaseMainViewModel
+    public class WaitingListsViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -78,6 +78,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.isWaitingForResponse;
             protected set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
+
+        public override bool KeepAlive => true;
 
         public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 

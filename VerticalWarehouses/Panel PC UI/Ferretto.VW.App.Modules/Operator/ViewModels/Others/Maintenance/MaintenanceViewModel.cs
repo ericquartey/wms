@@ -12,7 +12,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class MaintenanceViewModel : BaseMainViewModel
+    public class MaintenanceViewModel : BaseOperatorViewModel
     {
         #region Fields
 

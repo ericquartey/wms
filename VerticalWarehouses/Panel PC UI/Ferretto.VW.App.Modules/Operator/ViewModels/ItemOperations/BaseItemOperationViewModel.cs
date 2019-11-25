@@ -8,7 +8,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public abstract class BaseItemOperationViewModel : BaseMainViewModel, IRegionMemberLifetime
+    public abstract class BaseItemOperationViewModel : BaseOperatorViewModel
     {
         #region Fields
 

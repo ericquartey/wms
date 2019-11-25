@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class WaitingListDetailViewModel : BaseMainViewModel
+    public class WaitingListDetailViewModel : BaseOperatorViewModel
     {
         #region Fields
 

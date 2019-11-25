@@ -11,7 +11,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsCellsViewModel : BaseMainViewModel
+    public class StatisticsCellsViewModel : BaseOperatorViewModel
     {
         #region Fields
 

@@ -6,7 +6,7 @@ using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class BaseOthersViewModel : BaseMainViewModel
+    public class BaseOthersViewModel : BaseOperatorViewModel
     {
         #region Fields
 
