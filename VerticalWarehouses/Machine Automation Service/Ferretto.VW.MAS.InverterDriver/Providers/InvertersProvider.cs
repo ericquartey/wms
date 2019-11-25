@@ -116,8 +116,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (positioningData.MovementType == MovementType.Absolute)
             {
                 var axis = positioningData.AxisMovement == Axis.Horizontal
-                    ? this.elevatorDataProvider.GetHorizontalAxis()
-                    : this.elevatorDataProvider.GetVerticalAxis();
+                    ? this.elevatorDataProvider.GetAxis(Orientation.Horizontal)
+                    : this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
                 if (position < axis.LowerBound)
                 {
@@ -166,10 +166,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
 
             this.logger.LogDebug($"Direction: {positioningData.Direction}");
-            this.logger.LogDebug($"Position:");
+            this.logger.LogDebug($"Position:\t    Speed\t    Acceleration");
             for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
             {
-                this.logger.LogDebug($"{positioningData.SwitchPosition[i]} mm");
+                this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2");
             }
 
             positioningFieldData = new InverterPositioningFieldMessageData(

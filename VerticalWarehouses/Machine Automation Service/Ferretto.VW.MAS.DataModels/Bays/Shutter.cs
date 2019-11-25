@@ -6,9 +6,11 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        public ShutterManualParameters AssistedMovements { get; set; }
+
         public Inverter Inverter { get; set; }
 
-        public int TotalCycles { get; set; }
+        public ShutterManualParameters ManualMovements { get; set; }
 
         public ShutterType Type { get; set; }
 

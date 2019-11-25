@@ -1,8 +1,14 @@
-﻿namespace Ferretto.VW.MAS.DataModels
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace Ferretto.VW.MAS.DataModels
 {
-    public sealed class ShutterManualMovementsProcedure : SetupProcedure
+    public class ShutterManualParameters : DataModel
     {
         #region Fields
+
+        private double feedRate = 0.15;
 
         private double highSpeedDurationClose;
 
@@ -15,6 +21,20 @@
         #endregion
 
         #region Properties
+
+        public double FeedRate
+        {
+            get => this.feedRate;
+            set
+            {
+                if (value <= 0 || value > 1)
+                {
+                    throw new System.ArgumentOutOfRangeException(nameof(value));
+                }
+
+                this.feedRate = value;
+            }
+        }
 
         public double HighSpeedDurationClose
         {

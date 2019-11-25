@@ -41,6 +41,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? inputLoadingUnitCode;
 
+        private bool isPopupOpen;
+
         private bool isWaitingForResponse;
 
         private DelegateCommand keyboardCloseCommand;
@@ -50,6 +52,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool keyboardOpened;
 
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private string log;
+
+        private DelegateCommand logCommand;
 
         private SubscriptionToken positioningOperationChangedToken;
 
@@ -141,6 +147,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool IsPopupOpen
+        {
+            get => this.isPopupOpen;
+            set => this.SetProperty(ref this.isPopupOpen, value);
+        }
+
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -173,6 +185,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.keyboardOpened;
             set => this.SetProperty(ref this.keyboardOpened, value, this.RaiseCanExecuteChanged);
         }
+
+        public string Log
+        {
+            get => this.log;
+            set => this.SetProperty(ref this.log, value);
+        }
+
+        public ICommand LogCommand =>
+            this.logCommand
+            ??
+            (this.logCommand = new DelegateCommand(() => this.IsPopupOpen = !this.IsPopupOpen));
 
         public ICommand ResetCommand =>
            this.resetCommand
@@ -226,7 +249,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.RefreshMachineInfoAsync();
 
-                this.procedureParameters = await this.machineElevatorWebService.GetVerticalManualMovementsParametersAsync();
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
                 var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();

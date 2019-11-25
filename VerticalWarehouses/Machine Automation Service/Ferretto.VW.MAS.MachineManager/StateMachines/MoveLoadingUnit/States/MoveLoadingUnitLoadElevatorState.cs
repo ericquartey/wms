@@ -117,7 +117,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        if (this.sensorsProvider.GetShutterPosition(notification.RequestingBay) == ShutterPosition.Opened)
+                        var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
+                        if (shutterPosition == ShutterPosition.Opened
+                            || shutterPosition == ShutterPosition.NotSpecified)
                         {
                             this.loadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                         }

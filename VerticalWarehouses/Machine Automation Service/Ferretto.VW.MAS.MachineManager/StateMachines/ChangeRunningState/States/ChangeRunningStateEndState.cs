@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             if (this.EndMessage.Data is IChangeRunningStateMessageData runningState)
             {
                 if (this.StopRequestReason is StopRequestReason.NoReason
-                    && this.sensorsProvider.IsMachineRunning == runningState.Enable)
+                    && this.sensorsProvider.IsMachineSecurityRunning == runningState.Enable)
                 {
                     this.IsCompleted = true;
                     if (runningState.Enable)

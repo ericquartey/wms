@@ -4,10 +4,14 @@
     {
         #region Properties
 
+        public CarouselManualParameters AssistedMovements { get; set; }
+
         /// <summary>
         /// Gets or sets the distance, in millimeters, of the elevator from the carousel.
         /// </summary>
         public double ElevatorDistance { get; set; }
+
+        public CarouselManualParameters ManualMovements { get; set; }
 
         #endregion
     }

@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly IElevatorProvider elevatorProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -31,6 +33,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
+            IElevatorDataProvider elevatorDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
             IEventAggregator eventAggregator)
@@ -39,6 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
@@ -144,7 +148,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
-          //TODO***********REFACTOR THIS
+            //TODO***********REFACTOR THIS
             this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, measure, requestingBay, sender);
 
             if (openShutter)
@@ -173,13 +177,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="requestingBay"></param>
         public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay)
         {
-            var parameters = this.setupProceduresDataProvider.GetVerticalManualMovements();
+            var parameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 
             if (closeShutter)
             {
                 this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
             }
-            this.elevatorProvider.MoveToAbsoluteVerticalPosition(targetHeight, parameters.FeedRateAfterZero, measure, true, requestingBay, MessageActor.MachineManager);
+
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                false,
+                targetHeight,
+                measure,
+                true,
+                requestingBay,
+                MessageActor.MachineManager);
         }
 
         public MessageStatus PositionElevatorToPositionStatus(NotificationMessage message)

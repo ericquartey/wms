@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
 
+        private readonly IMachineProvider machineProvider;
+
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
         #endregion
@@ -48,6 +50,7 @@ namespace Ferretto.VW.MAS.AutomationService
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
             IBaysDataProvider baysDataProvider,
+            IMachineProvider machineProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -57,6 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
 
             this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
         }

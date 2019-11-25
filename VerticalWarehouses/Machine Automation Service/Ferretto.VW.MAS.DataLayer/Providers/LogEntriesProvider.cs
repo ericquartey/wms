@@ -12,11 +12,18 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings();
+
         private readonly ILogger<LogEntriesProvider> logger;
 
         #endregion
 
         #region Constructors
+
+        static LogEntriesProvider()
+        {
+            SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+        }
 
         public LogEntriesProvider(ILogger<LogEntriesProvider> logger)
         {
@@ -69,7 +76,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             try
             {
-                return JsonConvert.SerializeObject(messageData);
+                return JsonConvert.SerializeObject(messageData, SerializerSettings);
             }
             catch (Exception ex)
             {

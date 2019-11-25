@@ -387,6 +387,11 @@ namespace Ferretto.VW.MAS.DeviceManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
+            if (receivedMessage.Status == MessageStatus.OperationUpdateData)
+            {
+                string s = string.Empty;
+            }
+
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
             BayNumber bayNumber;
@@ -592,6 +597,25 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 case FieldMessageType.MeasureProfile:
                     bayNumber = BayNumber.ElevatorBay;
+                    break;
+
+                case FieldMessageType.Positioning when receivedMessage.Status is MessageStatus.OperationUpdateData &&
+                                                       receivedMessage.Source is FieldMessageActor.InverterDriver &&
+                                                       receivedMessage.Data is IInverterPositioningFieldMessageData:
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage(
+                                null,
+                                receivedMessage.Description,
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.Positioning,
+                                bayNumber,
+                                bayNumber,
+                                receivedMessage.Status));
+
                     break;
             }
 

@@ -314,8 +314,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         var offset = (axis == Axis.Vertical)
-                            ? elevatorDataProvider.GetVerticalAxis().Offset
-                            : elevatorDataProvider.GetHorizontalAxis().Offset;
+                            ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
+                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                         currentAxisPosition += offset;
 
                         var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
@@ -329,15 +329,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                             (byte)message.SystemIndex);
 
                         this.eventAggregator.GetEvent<FieldNotificationEvent>().Publish(msgNotification);
-
-                        if (this.currentAxis == Axis.Horizontal)
-                        {
-                            elevatorDataProvider.HorizontalPosition = currentAxisPosition;
-                        }
-                        else if (this.currentAxis == Axis.Vertical)
-                        {
-                            elevatorDataProvider.VerticalPosition = currentAxisPosition;
-                        }
 
                         this.forceStatusPublish[(int)message.SystemIndex] = false;
                     }

@@ -200,6 +200,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
 
+            if (commandMessage is null)
+            {
+                throw new ArgumentNullException(nameof(commandMessage));
+            }
+
             if (this.OnStart(commandMessage, cancellationToken))
             {
                 this.isStarted = true;
@@ -265,14 +270,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {command.Type}, {command.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {command?.Type}, {command?.Description}");
 
             return this.ActiveState;
         }
 
         protected virtual IState OnNotificationReceived(NotificationMessage notification)
         {
-            this.Logger.LogTrace($"{this.GetType().Name}: received notification {notification.Type}, {notification.Description}");
+            this.Logger.LogTrace($"{this.GetType().Name}: received notification {notification?.Type}, {notification?.Description}");
 
             return this.ActiveState;
         }

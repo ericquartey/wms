@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
         #region Fields
 
-        // TODO move following parameters into configuration?
+        // TODO move following parameters into configuration? si
         private const int HIGH_SPEED = 2000;
 
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID

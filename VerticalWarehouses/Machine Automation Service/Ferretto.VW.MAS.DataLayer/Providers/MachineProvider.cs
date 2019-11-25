@@ -1,7 +1,11 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -13,17 +17,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<MachineProvider> logger;
+
         #endregion
 
         #region Constructors
 
         public MachineProvider(
             DataLayerContext dataContext,
+            ILogger<MachineProvider> logger,
             IMemoryCache cache)
         {
-            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
-            this.cache = cache ?? throw new System.ArgumentNullException(nameof(cache));
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsHomingExetuted { get; set; }
+
+        public bool IsMachineRunning { get; set; }
 
         #endregion
 
@@ -93,6 +109,12 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.WeightMeasurement)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.AssistedMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.ManualMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
@@ -105,10 +127,20 @@ namespace Ferretto.VW.MAS.DataLayer
                             .ThenInclude(b => b.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Inverter)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.IoDevice)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.ManualMovements)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.Inverter)
@@ -116,13 +148,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Cells)
                     .Single();
 
-                foreach (var axe in entity.Elevator.Axes.ToList())
+                entity.Elevator?.Axes?.ForEach((axe) =>
                 {
-                    foreach (var profile in axe.Profiles.ToList())
-                    {
-                        profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList();
-                    }
-                }
+                    axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
+                });
 
                 return entity;
             }
@@ -144,6 +173,37 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Import(Machine machine, DataLayerContext context)
+        {
+            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+
+            context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
+            context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
+            context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
+            context.Carousels.RemoveRange(context.Carousels);
+            context.CellPanels.RemoveRange(context.CellPanels);
+            context.Shutters.RemoveRange(context.Shutters);
+            context.WeightMeasurements.RemoveRange(context.WeightMeasurements);
+            context.Inverters.RemoveRange(context.Inverters);
+            context.ElevatorStructuralProperties.RemoveRange(context.ElevatorStructuralProperties);
+            context.BayPositions.RemoveRange(context.BayPositions);
+            context.CellPanels.RemoveRange(context.CellPanels);
+            context.Cells.RemoveRange(context.Cells);
+            context.IoDevices.RemoveRange(context.IoDevices);
+            context.Bays.RemoveRange(context.Bays);
+            context.MovementParameters.RemoveRange(context.MovementParameters);
+            context.MovementProfiles.RemoveRange(context.MovementProfiles);
+            context.ElevatorAxes.RemoveRange(context.ElevatorAxes);
+            context.Elevators.RemoveRange(context.Elevators);
+            context.Machines.RemoveRange(context.Machines);
+
+            context.Machines.Add(machine);
+        }
+
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
@@ -156,6 +216,111 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 return elevatorInvertersCount > 1;
             }
+        }
+
+        public void Update(Machine machine)
+        {
+            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+
+            machine.Elevator?.Axes.ForEach((a) =>
+            {
+                this.dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
+                this.dataContext.AddOrUpdate(a.FullLoadMovement, (e) => e.Id);
+                this.dataContext.AddOrUpdate(a.WeightMeasurement, (e) => e.Id);
+                this.dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
+
+                a.Profiles.ForEach((p) =>
+                {
+                    p.Steps.ForEach((s) => this.dataContext.AddOrUpdate(s, (e) => e.Id));
+                    this.dataContext.AddOrUpdate(p, (e) => e.Id);
+                });
+
+                this.dataContext.AddOrUpdate(a, (e) => e.Id);
+            });
+
+            this.dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
+            this.dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
+
+            machine.Bays.ForEach((b) =>
+            {
+                b.Positions.ForEach((p) =>
+                {
+                    this.dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
+                    this.dataContext.AddOrUpdate(p, (e) => e.Id);
+                });
+
+                this.dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
+                this.dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
+            });
+
+            machine.Panels.ForEach((p) =>
+            {
+                p.Cells.ForEach((c) => this.dataContext.AddOrUpdate(c, (e) => e.Id));
+                this.dataContext.AddOrUpdate(p, (e) => e.Id);
+            });
+
+            this.dataContext.AddOrUpdate(machine, (e) => e.Id);
+
+            this.dataContext.SaveChanges();
+        }
+
+        private void DeleteBays(IEnumerable<Bay> bays)
+        {
+            if (bays is null)
+            {
+                return;
+            }
+
+            foreach (var bay in bays)
+            {
+                bay.Inverter = null;
+                bay.IoDevice = null;
+                if (!(bay.Positions is null))
+                {
+                    foreach (var position in bay.Positions)
+                    {
+                        position.LoadingUnit = null;
+                    }
+                }
+                bay.Positions = null;
+                bay.Shutter = null;
+            }
+        }
+
+        private void DeleteElevators(Elevator elevator)
+        {
+            if (elevator is null)
+            {
+                return;
+            }
+            if (!(elevator.Axes is null))
+            {
+                foreach (var axes in elevator.Axes)
+                {
+                    axes.FullLoadMovement = null;
+                    axes.EmptyLoadMovement = null;
+                    axes.Inverter = null;
+                    foreach (var profile in axes.Profiles)
+                    {
+                        profile.Steps = null;
+                    }
+                    axes.WeightMeasurement = null;
+                }
+            }
+            elevator.StructuralProperties = null;
         }
 
         #endregion

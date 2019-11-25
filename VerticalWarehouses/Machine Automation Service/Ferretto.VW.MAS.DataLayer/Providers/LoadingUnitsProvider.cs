@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -18,13 +19,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<LoadingUnitsProvider> logger;
+
         #endregion
 
         #region Constructors
 
-        public LoadingUnitsProvider(DataLayerContext dataContext)
+        public LoadingUnitsProvider(
+            DataLayerContext dataContext,
+            ILogger<LoadingUnitsProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -39,6 +45,10 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void ClearAll()
+        {
         }
 
         public IEnumerable<LoadingUnit> GetAll()
@@ -104,6 +114,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
+        {
+            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
+
+            context.Delete(loadingUnits, (e) => e.Id);
+            loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
+        }
+
         public void Insert(int loadingUnitsId)
         {
             lock (this.dataContext)
@@ -164,6 +182,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
+        }
+
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
+
+            loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+
+            this.dataContext.SaveChanges();
         }
 
         #endregion

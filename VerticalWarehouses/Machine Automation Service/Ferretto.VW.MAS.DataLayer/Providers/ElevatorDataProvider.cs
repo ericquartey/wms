@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly ILogger<ElevatorDataProvider> logger;
+        private readonly ILogger<DataLayerContext> logger;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             IElevatorVolatileDataProvider elevatorVolatileDataProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILogger<ElevatorDataProvider> logger)
+            ILogger<DataLayerContext> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.cache = memoryCache ?? throw new ArgumentNullException(nameof(memoryCache));
@@ -119,6 +119,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        public ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation) => this.GetAxis(orientation).AssistedMovements;
+
         public ElevatorAxis GetAxis(Orientation orientation)
         {
             lock (this.dataContext)
@@ -131,6 +133,8 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Steps)
                         .Include(a => a.FullLoadMovement)
                         .Include(a => a.EmptyLoadMovement)
+                        .Include(a => a.ManualMovements)
+                        .Include(a => a.AssistedMovements)
                         .Include(a => a.WeightMeasurement)
                         .SingleOrDefault(a => a.Orientation == orientation);
 
@@ -187,8 +191,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public ElevatorAxis GetHorizontalAxis() => this.GetAxis(Orientation.Horizontal);
-
         public LoadingUnit GetLoadingUnitOnBoard()
         {
             lock (this.dataContext)
@@ -202,6 +204,8 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation) => this.GetAxis(orientation).ManualMovements;
+
         public ElevatorStructuralProperties GetStructuralProperties()
         {
             lock (this.dataContext)
@@ -213,8 +217,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 return elevator.StructuralProperties;
             }
         }
-
-        public ElevatorAxis GetVerticalAxis() => this.GetAxis(Orientation.Vertical);
 
         public void IncreaseCycleQuantity(Orientation orientation)
         {
@@ -265,9 +267,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MovementParameters ScaleMovementsByWeight(Orientation orientation)
         {
-            var axis = orientation == Orientation.Horizontal
-                ? this.GetHorizontalAxis()
-                : this.GetVerticalAxis();
+            var axis = this.GetAxis(orientation);
 
             var loadingUnit = this.GetLoadingUnitOnBoard();
 
