@@ -66,29 +66,37 @@ namespace Ferretto.VW.MAS.AutomationService
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                using (var transaction = dataContext.Database.BeginTransaction())
+                var redundancyService = scope
+                    .ServiceProvider
+                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+                redundancyService.IsEnabled = false;
+
+                using (var dataContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                 {
-                    try
+                    using (var transaction = dataContext.Database.BeginTransaction())
                     {
-                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        this.machineProvider.Import(vertimagConfiguration.Machine, dataContext);
+                        try
+                        {
+                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                            this.machineProvider.Import(vertimagConfiguration.Machine, dataContext);
 
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
+                            var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+                            this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
 
-                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, dataContext);
+                            var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                            this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, dataContext);
 
-                        dataContext.SaveChanges();
+                            dataContext.SaveChanges();
 
-                        transaction.Commit();
-                        this.logger.LogInformation($"Configuration Provider import");
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        this.logger.LogError(e, $"Configuration Provider import exception");
+                            transaction.Commit();
+                            this.logger.LogInformation($"Configuration Provider import");
+                        }
+                        catch (Exception e)
+                        {
+                            transaction.Rollback();
+                            this.logger.LogError(e, $"Configuration Provider import exception");
+                        }
                     }
                 }
             }
@@ -100,27 +108,35 @@ namespace Ferretto.VW.MAS.AutomationService
 
             using (var scope = serviceScopeFactory.CreateScope())
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                using (var transaction = dataContext.Database.BeginTransaction())
+                var redundancyService = scope
+                    .ServiceProvider
+                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+
+                redundancyService.IsEnabled = false;
+
+                using (var dataContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
                 {
-                    try
+                    using (var transaction = dataContext.Database.BeginTransaction())
                     {
-                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        machineProvider.Update(vertimagConfiguration.Machine, dataContext);
+                        try
+                        {
+                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                            machineProvider.Update(vertimagConfiguration.Machine, dataContext);
 
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
+                            var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+                            this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
 
-                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, dataContext);
+                            var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                            this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, dataContext);
 
-                        transaction.Commit();
-                        this.logger.LogInformation($"Configuration Provider update");
-                    }
-                    catch (Exception e)
-                    {
-                        transaction.Rollback();
-                        this.logger.LogError(e, $"Configuration Provider update exception");
+                            transaction.Commit();
+                            this.logger.LogInformation($"Configuration Provider update");
+                        }
+                        catch (Exception e)
+                        {
+                            transaction.Rollback();
+                            this.logger.LogError(e, $"Configuration Provider update exception");
+                        }
                     }
                 }
             }
