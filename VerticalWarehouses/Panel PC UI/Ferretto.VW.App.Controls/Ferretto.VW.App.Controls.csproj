@@ -19,7 +19,7 @@
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.1.6" />
     <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.1.6" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
-    <PackageReference Include="NLog" Version="4.6.7" />
+    <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
