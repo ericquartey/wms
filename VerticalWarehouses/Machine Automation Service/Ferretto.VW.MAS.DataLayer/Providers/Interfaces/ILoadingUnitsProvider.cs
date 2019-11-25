@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
 
-        void UpdateRange(IEnumerable<LoadingUnit> loadingUnits);
+        void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext);
 
         #endregion
     }

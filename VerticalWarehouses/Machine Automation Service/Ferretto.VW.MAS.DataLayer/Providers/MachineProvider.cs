@@ -218,9 +218,11 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Update(Machine machine)
+        public void Update(Machine machine, DataLayerContext dataContext)
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+
+            dataContext ??= this.dataContext;
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
@@ -228,53 +230,53 @@ namespace Ferretto.VW.MAS.DataLayer
 
             machine.Elevator?.Axes.ForEach((a) =>
             {
-                this.dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
-                this.dataContext.AddOrUpdate(a.FullLoadMovement, (e) => e.Id);
-                this.dataContext.AddOrUpdate(a.WeightMeasurement, (e) => e.Id);
-                this.dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
+                dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.FullLoadMovement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.WeightMeasurement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
 
                 a.Profiles.ForEach((p) =>
                 {
-                    p.Steps.ForEach((s) => this.dataContext.AddOrUpdate(s, (e) => e.Id));
-                    this.dataContext.AddOrUpdate(p, (e) => e.Id);
+                    p.Steps.ForEach((s) => dataContext.AddOrUpdate(s, (e) => e.Id));
+                    dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
 
-                this.dataContext.AddOrUpdate(a, (e) => e.Id);
+                dataContext.AddOrUpdate(a, (e) => e.Id);
             });
 
-            this.dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
-            this.dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
+            dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
+            dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
 
             machine.Bays.ForEach((b) =>
             {
                 b.Positions.ForEach((p) =>
                 {
-                    this.dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
-                    this.dataContext.AddOrUpdate(p, (e) => e.Id);
+                    dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
+                    dataContext.AddOrUpdate(p, (e) => e.Id);
                 });
 
-                this.dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
-                this.dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
             });
 
             machine.Panels.ForEach((p) =>
             {
-                p.Cells.ForEach((c) => this.dataContext.AddOrUpdate(c, (e) => e.Id));
-                this.dataContext.AddOrUpdate(p, (e) => e.Id);
+                p.Cells.ForEach((c) => dataContext.AddOrUpdate(c, (e) => e.Id));
+                dataContext.AddOrUpdate(p, (e) => e.Id);
             });
 
-            this.dataContext.AddOrUpdate(machine, (e) => e.Id);
+            dataContext.AddOrUpdate(machine, (e) => e.Id);
 
-            this.dataContext.SaveChanges();
+            dataContext.SaveChanges();
         }
 
         private void DeleteBays(IEnumerable<Bay> bays)

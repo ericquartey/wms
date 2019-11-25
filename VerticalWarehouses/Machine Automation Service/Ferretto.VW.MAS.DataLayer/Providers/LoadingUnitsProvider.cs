@@ -184,13 +184,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext)
         {
-            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
+            _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
 
-            loadingUnits.ForEach((l) => this.dataContext.AddOrUpdate(l, (e) => e.Id));
+            dataContext ??= this.dataContext;
 
-            this.dataContext.SaveChanges();
+            loadingUnits.ForEach((l) => dataContext.AddOrUpdate(l, (e) => e.Id));
+
+            dataContext.SaveChanges();
         }
 
         #endregion

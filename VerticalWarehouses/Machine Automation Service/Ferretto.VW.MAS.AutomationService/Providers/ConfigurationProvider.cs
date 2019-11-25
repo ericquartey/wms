@@ -7,6 +7,8 @@ using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.IODriver;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService
@@ -58,21 +60,27 @@ namespace Ferretto.VW.MAS.AutomationService
             };
         }
 
-        public void ConfigurationImport(VertimagConfiguration vertimagConfiguration)
+        public void ConfigurationImport(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory)
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            lock (this.dataContext)
+            using (var scope = serviceScopeFactory.CreateScope())
             {
-                using (var transaction = this.dataContext.Database.BeginTransaction())
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                using (var transaction = dataContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
-                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
-                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
+                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                        this.machineProvider.Import(vertimagConfiguration.Machine, dataContext);
 
-                        this.dataContext.SaveChanges();
+                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
+
+                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, dataContext);
+
+                        dataContext.SaveChanges();
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider import");
@@ -86,19 +94,25 @@ namespace Ferretto.VW.MAS.AutomationService
             }
         }
 
-        public void ConfigurationUpdate(VertimagConfiguration vertimagConfiguration)
+        public void ConfigurationUpdate(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory)
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            lock (this.dataContext)
+            using (var scope = serviceScopeFactory.CreateScope())
             {
-                using (var transaction = this.dataContext.Database.BeginTransaction())
+                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
+                using (var transaction = dataContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        this.machineProvider.Update(vertimagConfiguration.Machine);
-                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits);
-                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures);
+                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                        machineProvider.Update(vertimagConfiguration.Machine, dataContext);
+
+                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
+
+                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
+                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, dataContext);
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");

@@ -45,11 +45,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
             _ = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<IConfigurationProvider>().ConfigurationImport(vertimagConfiguration);
-            }
-
+            this.configurationProvider.ConfigurationImport(vertimagConfiguration, serviceScopeFactory);
             return this.Ok();
         }
 
@@ -62,11 +58,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
             _ = serviceScopeFactory ?? throw new System.ArgumentNullException(nameof(serviceScopeFactory));
 
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<IConfigurationProvider>().ConfigurationUpdate(vertimagConfiguration);
-            }
-
+            this.configurationProvider.ConfigurationUpdate(vertimagConfiguration, serviceScopeFactory);
             return this.Ok();
         }
 
