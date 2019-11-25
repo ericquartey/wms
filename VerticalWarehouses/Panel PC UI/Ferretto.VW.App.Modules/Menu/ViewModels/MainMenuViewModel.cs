@@ -30,6 +30,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuInstalationCommand;
 
+        private DelegateCommand menuInstalationOldCommand;
+
         private DelegateCommand menuMaintenanceCommand;
 
         private DelegateCommand menuOperationCommand;
@@ -56,6 +58,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Operation,
 
             Maintenance,
+
+            InstallationOld,
 
             Installation,
 
@@ -100,6 +104,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuInstalationCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Installation),
+                this.CanExecuteCommand));
+
+        public ICommand MenuInstalationOldCommand =>
+            this.menuInstalationOldCommand
+            ??
+            (this.menuInstalationOldCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.InstallationOld),
                 this.CanExecuteCommand));
 
         public ICommand MenuMaintenanceCommand =>
@@ -197,7 +208,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case Menu.Operation:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.OPERATORMENU,
+                            Utils.Modules.Operator.OPERATOR_MENU,
                             data: null,
                             trackCurrentView: true);
                         break;
@@ -211,6 +222,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         break;
 
                     case Menu.Installation:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Menu.INSTALLATIONMENU,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.InstallationOld:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.INSTALLATORMENU,

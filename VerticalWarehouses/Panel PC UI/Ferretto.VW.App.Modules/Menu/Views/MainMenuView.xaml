@@ -92,8 +92,14 @@
                                         Permition="Installer" />
 
                     <controls:PpcButton Margin="50,50,0,0"
+                                        Command="{Binding MenuInstalationOldCommand}"
+                                        Content="Installatore OLD"
+                                        Permition="Installer" />
+                    
+                    <controls:PpcButton Margin="50,50,0,0"
                                         Command="{Binding MenuAboutCommand}"
-                                        Content="{x:Static res:Menu.MenuAbout}" />
+                                        Content="{x:Static res:Menu.MenuAbout}"
+                                        Style="{DynamicResource PpcButtonMenuStyle}" />
                 </WrapPanel>
 
             </Grid>

@@ -7,27 +7,88 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:InstallationMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
-    <Grid Margin="80,15">
 
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Installation" />
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15"
+                                    Command="{Binding MenuOperationCommand}"
+                                    Content="Elevatore" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    Margin="15"
+                                    Command="{Binding MenuMaintenanceCommand}"
+                                    Content="Baie" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Command="{Binding MenuInstalationCommand}"
+                                    Content="Celle" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Margin="15"
+                                    Command="{Binding MenuInstalationOldCommand}"
+                                    Content="Cassetti" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15"
+                                    Command="{Binding MenuAboutCommand}"
+                                    Content="Accessori" />
+
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Margin="15">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.ColumnSpan="2"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Stato Installazione" />
+
+
+
+
+            <StackPanel Grid.Row="2"
+                        Orientation="Horizontal">
+                <controls:PpcButton Command="{Binding MenuAboutCommand}"
+                                    Content="STATO" />
+                <controls:PpcButton Command="{Binding MenuAboutCommand}"
+                                    Content="Movimenti" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </ctrls:View>

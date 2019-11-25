@@ -9,11 +9,8 @@
                      Color="{DynamicResource EDBGrayH}" />
     <SolidColorBrush x:Key="PpcButtonForeground"
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
-    <sys:Double x:Key="PpcButtonWidth">160</sys:Double>
-    <sys:Double x:Key="PpcButtonHeight">60</sys:Double>
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
     <sys:Double x:Key="PpcButtonFontSize">14</sys:Double>
-
 
     <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />

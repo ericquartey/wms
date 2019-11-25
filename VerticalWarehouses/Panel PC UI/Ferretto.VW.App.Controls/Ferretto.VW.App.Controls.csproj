@@ -54,6 +54,8 @@
     <None Remove="Assets\theme_dark.png" />
     <None Remove="Assets\theme_light.png" />
     <None Remove="Controls\PpcBadge.xaml" />
+    <None Remove="Controls\PpcButtonMenu.xaml" />
+    <None Remove="Controls\PpcMenuButton.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
@@ -65,6 +67,7 @@
     <None Remove="Styles\General.xaml" />
     <None Remove="Styles\PpcButtonKeyStyle.xaml" />
     <None Remove="Styles\PpcButtonStyle.xaml" />
+    <None Remove="Styles\PpcMenuButtonStyle.xaml" />
     <None Remove="Styles\PpcPressAndReleaseButton.xaml" />
   </ItemGroup>
 
@@ -72,12 +75,14 @@
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
-    <ProjectReference Include="..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
       <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PpcMenuButton.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
       <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
