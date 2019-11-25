@@ -40,13 +40,13 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
 
-            containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
-                new InjectionFactory(c =>
-                    new HealthProbeService(
-                        serviceUrl,
-                        serviceLiveHealthPath,
-                        serviceReadyHealthPath,
-                        c.Resolve<IEventAggregator>())));
+            _ = containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
+                 new InjectionFactory(c =>
+                     new HealthProbeService(
+                         serviceUrl,
+                         serviceLiveHealthPath,
+                         serviceReadyHealthPath,
+                         c.Resolve<IEventAggregator>())));
 
             return containerRegistry;
         }

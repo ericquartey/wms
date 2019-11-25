@@ -47,6 +47,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\help.png" />
+    <None Remove="Assets\spinner_black.gif" />
+    <None Remove="Assets\spinner_pure_white.gif" />
+    <None Remove="Assets\spinner_white.gif" />
+    <None Remove="Assets\theme_dark.png" />
+    <None Remove="Assets\theme_light.png" />
     <None Remove="Controls\PpcBadge.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
@@ -66,6 +72,7 @@
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+    <ProjectReference Include="..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
   </ItemGroup>
 
   <ItemGroup>
