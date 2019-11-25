@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool IsOneTonMachine();
 
-        void Update(Machine machine);
+        void Update(Machine machine, DataLayerContext context);
 
         #endregion
     }

@@ -223,23 +223,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Update(SetupProceduresSet setupProceduresSet)
+        public void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext)
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            this.dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
-            this.dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+            dataContext ??= this.dataContext;
 
-            this.dataContext.SaveChanges();
+            dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+
+            dataContext.SaveChanges();
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Ferretto.VW.MAS.AutomationService
 {
@@ -8,9 +9,9 @@ namespace Ferretto.VW.MAS.AutomationService
 
         VertimagConfiguration ConfigurationGet();
 
-        void ConfigurationImport(VertimagConfiguration vertimagConfiguration);
+        void ConfigurationImport(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory);
 
-        void ConfigurationUpdate(VertimagConfiguration vertimagConfiguration);
+        void ConfigurationUpdate(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory);
 
         #endregion
     }
