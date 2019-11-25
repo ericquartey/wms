@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("parameters")]
         public ActionResult<HomingProcedureParameters> GetParameters()
         {
-            var axis = this.elevatorDataProvider.GetVerticalAxis();
+            var axis = this.elevatorDataProvider.GetAxis(DataModels.Orientation.Vertical);
 
             var parameters = new HomingProcedureParameters
             {

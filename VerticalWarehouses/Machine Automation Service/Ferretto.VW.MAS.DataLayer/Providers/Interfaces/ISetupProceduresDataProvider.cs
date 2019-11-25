@@ -1,4 +1,5 @@
 ﻿using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -6,15 +7,11 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
-        void Add(SetupProceduresSet setupProceduresSet);
-
         SetupProceduresSet GetAll();
 
         PositioningProcedure GetBayHeightCheck();
 
         RepeatedTestProcedure GetBeltBurnishingTest();
-
-        SetupProcedure GetCarouselManualMovements();
 
         PositioningProcedure GetCellPanelsCheck();
 
@@ -22,23 +19,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         RepeatedTestProcedure GetDepositAndPickUpTest();
 
-        HorizontalManualMovementsProcedure GetHorizontalManualMovements();
-
         SetupProcedure GetLoadFirstDrawerTest();
 
         SetupProcedure GetShutterHeightCheck();
 
-        ShutterManualMovementsProcedure GetShutterManualMovements();
-
         RepeatedTestProcedure GetShutterTest();
-
-        VerticalManualMovementsProcedure GetVerticalManualMovements();
 
         OffsetCalibrationProcedure GetVerticalOffsetCalibration();
 
         VerticalResolutionCalibrationProcedure GetVerticalResolutionCalibration();
 
-        SetupProcedure GetWeightCheck();
+        void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context);
 
         RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure depositAndPickUpTest);
 

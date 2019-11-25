@@ -47,8 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy moveToCellPolicy;
 
-        private VerticalManualMovementsProcedure procedureParameters;
-
         private DelegateCommand tuningBayCommand;
 
         private DelegateCommand tuningChainCommand;

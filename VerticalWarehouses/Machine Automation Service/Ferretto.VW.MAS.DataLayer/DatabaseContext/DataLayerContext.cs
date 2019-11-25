@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -37,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<CarouselManualParameters> CarouselManualParameters { get; set; }
+
         public DbSet<Carousel> Carousels { get; set; }
 
         public DbSet<CellPanel> CellPanels { get; set; }
@@ -44,6 +48,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
+
+        public DbSet<ElevatorAxisManualParameters> ElevatorAxisManualParameters { get; set; }
 
         public DbSet<Elevator> Elevators { get; set; }
 
@@ -79,6 +85,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
+        public DbSet<ShutterManualParameters> ShutterManualParameters { get; set; }
+
         public DbSet<Shutter> Shutters { get; set; }
 
         public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }
@@ -101,10 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(optionsBuilder));
-            }
+            _ = optionsBuilder ?? throw new ArgumentNullException(nameof(optionsBuilder));
 
             if (optionsBuilder.IsConfigured)
             {
@@ -123,7 +128,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder
+                .UseSqlite(connectionString)
+                .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -139,6 +146,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
+                .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
+                .ApplyConfiguration(new CarouselManualParametersConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())
@@ -149,6 +158,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new MovementProfilesConfiguration())
                 .ApplyConfiguration(new ServicingInfoConfiguration())
                 .ApplyConfiguration(new SetupStatusConfiguration())
+                .ApplyConfiguration(new ShutterManualParametersConfiguration())
                 .ApplyConfiguration(new ShuttersConfiguration())
                 .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
                 .ApplyConfiguration(new UsersConfiguration());

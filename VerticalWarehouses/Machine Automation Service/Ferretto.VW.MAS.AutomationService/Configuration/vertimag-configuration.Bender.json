@@ -42,7 +42,21 @@
             "Type": "Agl",
             "Index": "Slave2"
           },
-          "Type": "TwoSensors"
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 31500,
+            "MinSpeed": 2500,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 17
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 31500,
+            "MinSpeed": 2500,
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 17
+          }
         }
       }
     ],
@@ -79,6 +93,18 @@
             "MeasureConst2": -4.9791,
             "MeasureSpeed": 20,
             "MeasureTime": 15
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "FeedRateAfterZero": 0.15,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.15,
+            "FeedRateAfterZero": 0.2,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
           }
         },
         {
@@ -96,6 +122,14 @@
             "Acceleration": 1500,
             "Deceleration": 1500,
             "Speed": 730
+          },
+          "ManualMovements": {
+            "FeedRate": 0.04,
+            "FeedRateAfterZero": 0.3,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 200
+          },
+          "AssistedMovements": {
           },
           "Profiles": [
             {
@@ -2755,33 +2789,15 @@
     "DepositAndPickUpTest": {
       "RequiredCycles": 10
     },
-    "HorizontalManualMovements": {
-      "FeedRate": 0.04,
-      "InitialTargetPosition": 30,
-      "RecoveryTargetPosition": 200
-    },
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
-    "ShutterManualMovements": {
-      "FeedRate": 0.2,
-      "MaxSpeed": 31500,
-      "MinSpeed": 2500,
-      "HighSpeedDurationOpen": 16,
-      "HighSpeedDurationClose": 17
-    },
     "ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 10000
-    },
-    "VerticalManualMovements": {
-      "FeedRate": 0.1,
-      "PositiveTargetDirection": 30,
-      "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15,
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50, //TEMP Temporary value for software test
@@ -2792,9 +2808,6 @@
       "InitialPosition": 1000, //TEMP Temporary value for software test
       "FinalPosition": 5500, //TEMP Temporary value for software test
       "FeedRate": 0.2
-    },
-    "WeightCheck": {
-      "FeedRate": 0.05
     }
   }
 }

@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataModels
         public double MeasureConst2 { get; set; }
 
         /// <summary>
-        /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/meter.
+        /// Gets or sets the speed for the upward movement during weight measurement, in millimeters/seconds.
         /// </summary>
         public double MeasureSpeed { get; set; }
 

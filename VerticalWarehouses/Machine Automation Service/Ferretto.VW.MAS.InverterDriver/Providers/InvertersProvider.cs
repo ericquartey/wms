@@ -116,8 +116,8 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (positioningData.MovementType == MovementType.Absolute)
             {
                 var axis = positioningData.AxisMovement == Axis.Horizontal
-                    ? this.elevatorDataProvider.GetHorizontalAxis()
-                    : this.elevatorDataProvider.GetVerticalAxis();
+                    ? this.elevatorDataProvider.GetAxis(Orientation.Horizontal)
+                    : this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
                 if (position < axis.LowerBound)
                 {

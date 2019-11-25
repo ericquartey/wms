@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -16,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<LoadingUnitSpaceStatistics> GetSpaceStatistics();
 
         IEnumerable<LoadingUnitWeightStatistics> GetWeightStatistics();
+
+        void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context);
 
         void Insert(int loadingUnitsId);
 

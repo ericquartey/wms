@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender);
 
+        void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
+
         void MoveManual(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender);
 
         void Stop(BayNumber bayNumber, MessageActor sender);

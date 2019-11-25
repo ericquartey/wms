@@ -196,15 +196,25 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
-                    .ThenInclude(s => s.LoadingUnit)
+                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                    .ThenInclude(s => s.Inverter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .ToArray();
             }
         }
+
+        public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
+
+        public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;
 
         [Obsolete("This method contains business logic. It should not be in the DataLayer.")]
         public BayNumber GetByAxis(IHomingMessageData data)
@@ -297,9 +307,13 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
-                    .ThenInclude(s => s.LoadingUnit)
+                        .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                    .ThenInclude(s => s.Inverter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Carousel)
                     .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
@@ -371,6 +385,12 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Inverter)
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.Inverter)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.Shutter)
+                        .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
@@ -614,6 +634,10 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public CarouselManualParameters GetManualMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.ManualMovements;
+
+        public ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.ManualMovements;
+
         public BayPosition GetPositionById(int bayPositionId)
         {
             lock (this.dataContext)
@@ -741,7 +765,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new ArgumentOutOfRangeException(Resources.Bays.TheSpecifiedBayPositionIsNotValid);
                 }
 
-                var verticalAxis = this.elevatorDataProvider.GetVerticalAxis();
+                var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
                 if (height < verticalAxis.LowerBound || height > verticalAxis.UpperBound)
                 {
                     throw new ArgumentOutOfRangeException(

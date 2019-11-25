@@ -52,6 +52,11 @@ namespace Ferretto.VW.App.Controls
                 return this.GetDataTemplate(TEMPLATE_ID_READONLY);
             }
 
+            if (property.IsReadOnly)
+            {
+                return this.GetDataTemplate(TEMPLATE_ID_READONLY);
+            }
+
             if (property.PropertyType is Type type)
 
             {
