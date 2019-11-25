@@ -20,13 +20,14 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Methods
 
-        private async Task ExecuteNextMissionAsync()
+        private async Task QueueMissionsAsync()
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
-                var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
-                /*
+                /*  TO REMOVE
                  *
+                var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+
                   TODO ***************
                 if (modeProvider.GetCurrent() != MachineMode.Automatic)
                 {
@@ -53,7 +54,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         var pendingMissionOperationsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
                         if (bay.Status is BayStatus.Idle)
                         {
-                            await this.ExecuteNextMissionAsync(
+                            await this.QueueNextMissionAsync(
                                 bay,
                                 pendingMissionsOnBay.First().Id,
                                 pendingMissionOperationsCount,
@@ -75,7 +76,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task ExecuteNextMissionAsync(Bay bay, int missionId, int pendingMissionOperationsCount, IBaysDataProvider baysDataProvider)
+        private async Task QueueNextMissionAsync(Bay bay, int missionId, int pendingMissionOperationsCount, IBaysDataProvider baysDataProvider)
         {
             System.Diagnostics.Debug.Assert(!bay.CurrentMissionId.HasValue);
 
@@ -153,7 +154,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 try
                 {
-                    await this.ExecuteNextMissionAsync();
+                    await this.QueueMissionsAsync();
                 }
                 catch (Exception ex) when (ex is OperationCanceledException)
                 {
