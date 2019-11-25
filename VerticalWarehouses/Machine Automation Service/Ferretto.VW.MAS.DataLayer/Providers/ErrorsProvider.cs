@@ -114,93 +114,64 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            var newError = new MachineError
             {
-                var redundancyService = scope
-                    .ServiceProvider
-                    .GetRequiredService<IDbContextRedundancyService<DataLayerContext>>();
+                Code = (int)code,
+                OccurrenceDate = DateTime.Now,
+                BayNumber = bayNumber,
+            };
 
-                redundancyService.IsEnabled = false;
+            var existingUnresolvedError = this.dataContext.Errors.FirstOrDefault(
+                e =>
+                    e.Code == (int)code
+                    &&
+                    e.ResolutionDate == null
+                    &&
+                    e.BayNumber == bayNumber);
 
-                //using (var scope = new TransactionScope())
-                //{
-                var newError = new MachineError
-                {
-                    Code = (int)code,
-                    OccurrenceDate = DateTime.Now,
-                    BayNumber = bayNumber,
-                };
-
-                using (var dataContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
-                {
-                    //    using (var dataContext = new DataLayerContext())
-                    //{
-                    //lock (this.dataContext)
-                    //{
-                    var existingUnresolvedError = dataContext.Errors.FirstOrDefault(
-                        e =>
-                            e.Code == (int)code
-                            &&
-                            e.ResolutionDate == null
-                            &&
-                            e.BayNumber == bayNumber);
-
-                    if (existingUnresolvedError != null)
-                    {
-                        this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
-                        return existingUnresolvedError;
-                    }
-
-                    this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
-                    dataContext.Errors.Add(newError);
-
-                    var errorStatistics = dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
-                    if (errorStatistics != null)
-                    {
-                        errorStatistics.TotalErrors++;
-                        dataContext.ErrorStatistics.Update(errorStatistics);
-                    }
-
-                    dataContext.SaveChanges();
-                }
-
-                //}
-
-                this.NotifyErrorCreation(newError, bayNumber);
-
-                return newError;
+            if (existingUnresolvedError != null)
+            {
+                this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
+                return existingUnresolvedError;
             }
-            //}
+
+            this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
+            this.dataContext.Errors.Add(newError);
+
+            var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);
+            if (errorStatistics != null)
+            {
+                errorStatistics.TotalErrors++;
+                this.dataContext.ErrorStatistics.Update(errorStatistics);
+            }
+
+            this.dataContext.SaveChanges();
+            this.NotifyErrorCreation(newError, bayNumber);
+
+            return newError;
         }
 
         public MachineError Resolve(int id)
         {
-            using (var scope = this.serviceScopeFactory.CreateScope())
+            error = dataContext.Errors.SingleOrDefault(e => e.Id == id);
+            if (error is null)
             {
-                MachineError error;
-
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-
-                error = dataContext.Errors.SingleOrDefault(e => e.Id == id);
-                if (error is null)
-                {
-                    throw new EntityNotFoundException(id);
-                }
-
-                if (!this.IsErrorStillActive(error.Code))
-                {
-                    error.ResolutionDate = DateTime.Now;
-                    this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
-
-                    dataContext.Errors.Update(error);
-
-                    dataContext.SaveChanges();
-                }
-
-                this.NotifyErrorResolution(error);
-
-                return error;
+                throw new EntityNotFoundException(id);
             }
+
+            if (!this.IsErrorStillActive(error.Code))
+            {
+                error.ResolutionDate = DateTime.Now;
+                this.logger.LogDebug($"User error {error.Code} for {error.BayNumber} marked as resolved.");
+
+                dataContext.Errors.Update(error);
+
+                dataContext.SaveChanges();
+            }
+
+            this.NotifyErrorResolution(error);
+
+            return error;
         }
 
         public void ResolveAll()
