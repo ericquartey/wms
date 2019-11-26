@@ -6,2902 +6,2907 @@
       "MaxNetWeight": 800,
       "Height": 100,
       "Id": 1
-  ]
-}, {
-  "Tare": 120,
-  "MaxNetWeight": 800,
-  "Height": 100,
-  "Id": 2
-}, {
-  "Tare": 120,
-  "MaxNetWeight": 800,
-  "Height": 100,
-  "Id": 3
-} ], "Machine": {
-  "Bays": [
-    {
-      "AlphaNumericBar": null,
-      "Inverter": {
-        "Type": "Acu",
-        "Index": "Slave3"
-      },
-      "Side": "Front",
-      "IoDevice": {
-        "Index": "IoDevice1",
-        "IpAddress": "127.0.0.1",
-        "TcpPort": 19550
-      },
-      "IsExternal": false,
-      "ChainOffset": -5,
-      "Number": "BayOne",
-      "Positions": [
-        {
-          "Height": 446,
-          "Location": "InternalBay1Down"
-        }
-      ],
-      "Resolution": 369.8453,
-      "Shutter": {
-        "Inverter": {
-          "Type": "Agl",
-          "Index": "Slave2"
-        },
-        "Type": "TwoSensors",
-        "ManualMovements": {
-          "FeedRate": 0.1,
-          "MaxSpeed": 40000,
-          "MinSpeed": 5000,
-          "HighSpeedDurationOpen": 14,
-          "HighSpeedDurationClose": 13
-        },
-        "AssistedMovements": {
-          "FeedRate": 0.2,
-          "MaxSpeed": 40000,
-          "MinSpeed": 5000,
-          "HighSpeedDurationOpen": 14,
-          "HighSpeedDurationClose": 13
-        }
-      }
     },
     {
-      "IoDevice": {
-        "Index": "IoDevice2",
-        "IpAddress": "127.0.0.1",
-        "TcpPort": 19551
-      },
-      "Side": "Back",
-      "IsExternal": false,
-      "ChainOffset": 0,
-      "LaserPointer": {
-        "Heights": [ 680, 1080 ]
-      },
-      "Number": "BayTwo",
-      "Positions": [
-        {
-          "Height": 446,
-          "Location": "InternalBay2Down"
-        },
-        {
-          "Height": 795,
-          "Location": "InternalBay2Up"
-        }
-      ],
-      "FullLoadMovement": {
-        "Acceleration": 350,
-        "Deceleration": 350,
-        "Speed": 550
-      },
-      "EmptyLoadMovement": {
-        "Acceleration": 1500,
-        "Deceleration": 1500,
-        "Speed": 730
-      },
-      "Shutter": {
-        "Type": "TwoSensors",
-        "Inverter": {
-          "Type": "Agl",
-          "Index": "Slave4"
-        },
-        "ManualMovements": {
-          "FeedRate": 0.1,
-          "MaxSpeed": 40000,
-          "MinSpeed": 5000,
-          "HighSpeedDurationOpen": 14,
-          "HighSpeedDurationClose": 13
-        },
-        "AssistedMovements": {
-          "FeedRate": 0.2,
-          "MaxSpeed": 40000,
-          "MinSpeed": 5000,
-          "HighSpeedDurationOpen": 14,
-          "HighSpeedDurationClose": 13
-        }
-      },
-      "Inverter": {
-        "Type": "Acu",
-        "Index": "Slave5"
-      },
-      "Resolution": 369.8453,
-      "Carousel": {
-        "ElevatorDistance": 460,
-        "ManualMovements": {
-          "FeedRate": 0.1
-        },
-        "AssistedMovements": {
-          "FeedRate": 0.2
-        }
-      }
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Height": 100,
+      "Id": 2
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 800,
+      "Height": 100,
+      "Id": 3
     }
   ],
-  "Elevator": {
-    "Axes": [
+  "Machine": {
+    "Bays": [
       {
+        "AlphaNumericBar": null,
         "Inverter": {
-          "Index": "MainInverter",
-          "Type": "Ang",
+          "Type": "Acu",
+          "Index": "Slave3"
+        },
+        "Side": "Front",
+        "IoDevice": {
+          "Index": "IoDevice1",
           "IpAddress": "127.0.0.1",
-          "TcpPort": 17221
+          "TcpPort": 19550
         },
-        "BrakeReleaseTime": 150,
-        "BrakeActivatePercent": 10,
-        "Orientation": "Vertical",
-        "Resolution": 77.61182,
-        "Offset": 592,
-        "ChainOffset": 0,
-        "UpperBound": 4000,
-        "LowerBound": 438,
-        "EmptyLoadMovement": {
-          "Acceleration": 1000,
-          "Deceleration": 1000,
-          "Speed": 770
-        },
-        "FullLoadMovement": {
-          "Acceleration": 400,
-          "Deceleration": 400,
-          "Speed": 550
-        },
-        "WeightMeasurement": {
-          "MeasureConst0": -1130.6,
-          "MeasureConst1": 249.75,
-          "MeasureConst2": -4.9268,
-          "MeasureSpeed": 20,
-          "MeasureTime": 15
-        },
-        "ManualMovements": {
-          "FeedRate": 0.1,
-          "FeedRateAfterZero": 0.15,
-          "TargetDistance": 30,
-          "TargetDistanceAfterZero": 30
-        },
-        "AssistedMovements": {
-          "FeedRate": 0.15,
-          "FeedRateAfterZero": 0.2,
-          "TargetDistance": 30,
-          "TargetDistanceAfterZero": 30
+        "IsExternal": false,
+        "ChainOffset": -5,
+        "Number": "BayOne",
+        "Positions": [
+          {
+            "Height": 446,
+            "Location": "InternalBay1Down"
+          }
+        ],
+        "Resolution": 369.8453,
+        "Shutter": {
+          "Inverter": {
+            "Type": "Agl",
+            "Index": "Slave2"
+          },
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          }
         }
       },
       {
-        "Orientation": "Horizontal",
-        "Resolution": 77.6722,
-        "Offset": 0,
-        "ChainOffset": -6.4,
-        "Inverter": null,
+        "IoDevice": {
+          "Index": "IoDevice2",
+          "IpAddress": "127.0.0.1",
+          "TcpPort": 19551
+        },
+        "Side": "Back",
+        "IsExternal": false,
+        "ChainOffset": 0,
+        "LaserPointer": {
+          "Heights": [ 680, 1080 ]
+        },
+        "Number": "BayTwo",
+        "Positions": [
+          {
+            "Height": 446,
+            "Location": "InternalBay2Down"
+          },
+          {
+            "Height": 795,
+            "Location": "InternalBay2Up"
+          }
+        ],
         "FullLoadMovement": {
-          "Acceleration": 200,
-          "Deceleration": 200,
-          "Speed": 480
+          "Acceleration": 350,
+          "Deceleration": 350,
+          "Speed": 550
         },
         "EmptyLoadMovement": {
           "Acceleration": 1500,
           "Deceleration": 1500,
-          "Speed": 650
+          "Speed": 730
         },
-        "ManualMovements": {
-          "FeedRate": 0.04,
-          "FeedRateAfterZero": 0.3,
-          "TargetDistance": 30,
-          "TargetDistanceAfterZero": 200
+        "Shutter": {
+          "Type": "TwoSensors",
+          "Inverter": {
+            "Type": "Agl",
+            "Index": "Slave4"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          }
         },
-        "AssistedMovements": {
+        "Inverter": {
+          "Type": "Acu",
+          "Index": "Slave5"
         },
-        "Profiles": [
+        "Resolution": 369.8453,
+        "Carousel": {
+          "ElevatorDistance": 460,
+          "ManualMovements": {
+            "FeedRate": 0.1
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2
+          }
+        }
+      }
+    ],
+    "Elevator": {
+      "Axes": [
+        {
+          "Inverter": {
+            "Index": "MainInverter",
+            "Type": "Ang",
+            "IpAddress": "127.0.0.1",
+            "TcpPort": 17221
+          },
+          "BrakeReleaseTime": 150,
+          "BrakeActivatePercent": 10,
+          "Orientation": "Vertical",
+          "Resolution": 77.61182,
+          "Offset": 592,
+          "ChainOffset": 0,
+          "UpperBound": 4000,
+          "LowerBound": 438,
+          "EmptyLoadMovement": {
+            "Acceleration": 1000,
+            "Deceleration": 1000,
+            "Speed": 770
+          },
+          "FullLoadMovement": {
+            "Acceleration": 400,
+            "Deceleration": 400,
+            "Speed": 550
+          },
+          "WeightMeasurement": {
+            "MeasureConst0": -1130.6,
+            "MeasureConst1": 249.75,
+            "MeasureConst2": -4.9268,
+            "MeasureSpeed": 20,
+            "MeasureTime": 15
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "FeedRateAfterZero": 0.15,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.15,
+            "FeedRateAfterZero": 0.2,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          }
+        },
+        {
+          "Orientation": "Horizontal",
+          "Resolution": 77.6722,
+          "Offset": 0,
+          "ChainOffset": -6.4,
+          "Inverter": null,
+          "FullLoadMovement": {
+            "Acceleration": 200,
+            "Deceleration": 200,
+            "Speed": 480
+          },
+          "EmptyLoadMovement": {
+            "Acceleration": 1500,
+            "Deceleration": 1500,
+            "Speed": 650
+          },
+          "ManualMovements": {
+            "FeedRate": 0.04,
+            "FeedRateAfterZero": 0.3,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 200
+          },
+          "AssistedMovements": {
+          },
+          "Profiles": [
+            {
+              "Name": "ShortPickup",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Number": 0,
+                  "Position": 150
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 100,
+                  "Number": 1,
+                  "Position": 450
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Number": 2,
+                  "Position": 900,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Number": 3,
+                  "Position": 1100,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Number": 4,
+                  "Position": 1252
+                }
+              ]
+            },
+            {
+              "Name": "ShortDeposit",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Number": 0,
+                  "Position": 200
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 100,
+                  "Number": 1,
+                  "Position": 350
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Number": 2,
+                  "Position": 750,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Number": 3,
+                  "Position": 1020,
+                  "AdjustByWeight": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Number": 4,
+                  "Position": 1252
+                }
+              ]
+            },
+            {
+              "Name": "LongPickup",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Position": 150,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 100,
+                  "Position": 450,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Position": 900,
+                  "Number": 2,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Position": 1100,
+                  "Number": 3,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Position": 1252,
+                  "Number": 4
+                }
+              ]
+            },
+            {
+              "Name": "LongDeposit",
+              "TotalDistance": 1252,
+              "Correction": 20,
+              "Steps": [
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Position": 200,
+                  "Number": 0
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 100,
+                  "Position": 350,
+                  "Number": 1
+                },
+                {
+                  "Acceleration": 1000,
+                  "Deceleration": 0,
+                  "Speed": 650,
+                  "Position": 750,
+                  "Number": 2,
+                  "AdjustByWeight": 1
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 200,
+                  "Position": 1020,
+                  "Number": 3,
+                  "AdjustByWeight": 0
+                },
+                {
+                  "Acceleration": 3000,
+                  "Deceleration": 0,
+                  "Speed": 730,
+                  "Position": 1252,
+                  "Number": 4
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "StructuralProperties": {
+        "BeltRigidity": 7000000,
+        "BeltSpacing": 300,
+        "ElevatorWeight": 230,
+        "HalfShaftLength": 2084,
+        "PulleyDiameter": 160,
+        "ShaftDiameter": 45,
+        "ShaftElasticity": 210000
+      }
+    },
+    "Height": 4563,
+    "MaxGrossWeight": 50000,
+    "ModelName": "Simulation Vertimag 800kg",
+    "Panels": [
+      {
+        "Side": "Front",
+        "Cells": [
           {
-            "Name": "ShortPickup",
-            "TotalDistance": 1252,
-            "Correction": 20,
-            "Steps": [
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 730,
-                "Number": 0,
-                "Position": 150
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 100,
-                "Number": 1,
-                "Position": 450
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Number": 2,
-                "Position": 900,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Number": 3,
-                "Position": 1100,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Number": 4,
-                "Position": 1252
-              }
-            ]
+            "Id": 1,
+            "Position": 375,
+            "Priority": 1,
+            "IsUnusable": true
           },
           {
-            "Name": "ShortDeposit",
-            "TotalDistance": 1252,
-            "Correction": 20,
-            "Steps": [
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Number": 0,
-                "Position": 200
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 100,
-                "Number": 1,
-                "Position": 350
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Number": 2,
-                "Position": 750,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Number": 3,
-                "Position": 1020,
-                "AdjustByWeight": 0
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 730,
-                "Number": 4,
-                "Position": 1252
-              }
-            ]
+            "Id": 3,
+            "Position": 425,
+            "Priority": 3,
+            "IsUnusable": true
           },
           {
-            "Name": "LongPickup",
-            "TotalDistance": 1252,
-            "Correction": 20,
-            "Steps": [
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 730,
-                "Position": 150,
-                "Number": 0
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 100,
-                "Position": 450,
-                "Number": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Position": 900,
-                "Number": 2,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Position": 1100,
-                "Number": 3,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Position": 1252,
-                "Number": 4
-              }
-            ]
+            "Id": 5,
+            "Position": 475,
+            "Priority": 5,
+            "Status": "Free"
           },
           {
-            "Name": "LongDeposit",
-            "TotalDistance": 1252,
-            "Correction": 20,
-            "Steps": [
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Position": 200,
-                "Number": 0
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 100,
-                "Position": 350,
-                "Number": 1
-              },
-              {
-                "Acceleration": 1000,
-                "Deceleration": 0,
-                "Speed": 650,
-                "Position": 750,
-                "Number": 2,
-                "AdjustByWeight": 1
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 200,
-                "Position": 1020,
-                "Number": 3,
-                "AdjustByWeight": 0
-              },
-              {
-                "Acceleration": 3000,
-                "Deceleration": 0,
-                "Speed": 730,
-                "Position": 1252,
-                "Number": 4
-              }
-            ]
+            "Id": 7,
+            "Position": 450,
+            "Priority": 7,
+            "Status": "Free"
+          },
+          {
+            "Id": 9,
+            "Position": 468,
+            "Priority": 9,
+            "Status": "Free"
+          },
+          {
+            "Id": 11,
+            "Position": 518,
+            "Priority": 11,
+            "Status": "Free"
+          },
+          {
+            "Id": 13,
+            "Position": 568,
+            "Priority": 13,
+            "Status": "Free"
+          },
+          {
+            "Id": 15,
+            "Position": 618,
+            "Priority": 15,
+            "Status": "Free"
+          },
+          {
+            "Id": 17,
+            "Position": 668,
+            "Priority": 17,
+            "Status": "Free"
+          },
+          {
+            "Id": 19,
+            "Position": 718,
+            "Priority": 19,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 21,
+            "Position": 768,
+            "Priority": 21,
+            "Status": "Free"
+          },
+          {
+            "Id": 23,
+            "Position": 818,
+            "Priority": 23,
+            "Status": "Free"
+          },
+          {
+            "Id": 25,
+            "Position": 868,
+            "Priority": 25,
+            "Status": "Free"
+          },
+          {
+            "Id": 27,
+            "Position": 918,
+            "Priority": 27,
+            "Status": "Free"
+          },
+          {
+            "Id": 29,
+            "Position": 968,
+            "Priority": 29,
+            "Status": "Free"
+          },
+          {
+            "Id": 31,
+            "Position": 1018,
+            "Priority": 31,
+            "Status": "Free"
+          },
+          {
+            "Id": 33,
+            "Position": 1068,
+            "Priority": 33,
+            "Status": "Free"
+          },
+          {
+            "Id": 35,
+            "Position": 1118,
+            "Priority": 35,
+            "Status": "Free"
+          },
+          {
+            "Id": 37,
+            "Position": 1168,
+            "Priority": 37,
+            "Status": "Free"
+          },
+          {
+            "Id": 39,
+            "Position": 1218,
+            "Priority": 39,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 41,
+            "Position": 1268,
+            "Priority": 41,
+            "Status": "Free"
+          },
+          {
+            "Id": 43,
+            "Position": 1318,
+            "Priority": 43,
+            "Status": "Free"
+          },
+          {
+            "Id": 45,
+            "Position": 1368,
+            "Priority": 45,
+            "Status": "Free"
+          },
+          {
+            "Id": 47,
+            "Position": 1418,
+            "Priority": 47,
+            "Status": "Free"
+          },
+          {
+            "Id": 49,
+            "Position": 1468,
+            "Priority": 49,
+            "Status": "Free"
+          },
+          {
+            "Id": 51,
+            "Position": 1518,
+            "Priority": 51,
+            "Status": "Free"
+          },
+          {
+            "Id": 53,
+            "Position": 1568,
+            "Priority": 53,
+            "Status": "Free"
+          },
+          {
+            "Id": 55,
+            "Position": 1618,
+            "Priority": 55,
+            "Status": "Free"
+          },
+          {
+            "Id": 57,
+            "Position": 1668,
+            "Priority": 57,
+            "Status": "Free"
+          },
+          {
+            "Id": 59,
+            "Position": 1718,
+            "Priority": 59,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 61,
+            "Position": 1768,
+            "Priority": 61,
+            "Status": "Free"
+          },
+          {
+            "Id": 63,
+            "Position": 1818,
+            "Priority": 63,
+            "Status": "Free"
+          },
+          {
+            "Id": 65,
+            "Position": 1868,
+            "Priority": 65,
+            "Status": "Free"
+          },
+          {
+            "Id": 67,
+            "Position": 1918,
+            "Priority": 67,
+            "Status": "Free"
+          },
+          {
+            "Id": 69,
+            "Position": 1968,
+            "Priority": 69,
+            "Status": "Free"
+          },
+          {
+            "Id": 71,
+            "Position": 2018,
+            "Priority": 71,
+            "Status": "Free"
+          },
+          {
+            "Id": 73,
+            "Position": 2068,
+            "Priority": 73,
+            "Status": "Free"
+          },
+          {
+            "Id": 75,
+            "Position": 2118,
+            "Priority": 75,
+            "Status": "Free"
+          },
+          {
+            "Id": 77,
+            "Position": 2168,
+            "Priority": 77,
+            "Status": "Free"
+          },
+          {
+            "Id": 79,
+            "Position": 2218,
+            "Priority": 79,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 81,
+            "Position": 2268,
+            "Priority": 81,
+            "Status": "Free"
+          },
+          {
+            "Id": 83,
+            "Position": 2318,
+            "Priority": 83,
+            "Status": "Free"
+          },
+          {
+            "Id": 85,
+            "Position": 2368,
+            "Priority": 85,
+            "Status": "Free"
+          },
+          {
+            "Id": 87,
+            "Position": 2418,
+            "Priority": 87,
+            "Status": "Free"
+          },
+          {
+            "Id": 89,
+            "Position": 2468,
+            "Priority": 89,
+            "Status": "Free"
+          },
+          {
+            "Id": 91,
+            "Position": 2518,
+            "Priority": 91,
+            "Status": "Free"
+          },
+          {
+            "Id": 93,
+            "Position": 2568,
+            "Priority": 93,
+            "Status": "Free"
+          },
+          {
+            "Id": 95,
+            "Position": 2618,
+            "Priority": 95,
+            "Status": "Free"
+          },
+          {
+            "Id": 97,
+            "Position": 2668,
+            "Priority": 97,
+            "Status": "Free"
+          },
+          {
+            "Id": 99,
+            "Position": 2718,
+            "Priority": 99,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 101,
+            "Position": 2768,
+            "Priority": 101,
+            "Status": "Free"
+          },
+          {
+            "Id": 103,
+            "Position": 2818,
+            "Priority": 103,
+            "Status": "Free"
+          },
+          {
+            "Id": 105,
+            "Position": 2868,
+            "Priority": 105,
+            "Status": "Free"
+          },
+          {
+            "Id": 107,
+            "Position": 2918,
+            "Priority": 107,
+            "Status": "Free"
+          },
+          {
+            "Id": 109,
+            "Position": 2968,
+            "Priority": 109,
+            "Status": "Free"
+          },
+          {
+            "Id": 111,
+            "Position": 3018,
+            "Priority": 111,
+            "Status": "Free"
+          },
+          {
+            "Id": 113,
+            "Position": 3068,
+            "Priority": 113,
+            "Status": "Free"
+          },
+          {
+            "Id": 115,
+            "Position": 3118,
+            "Priority": 115,
+            "Status": "Free"
+          },
+          {
+            "Id": 117,
+            "Position": 3168,
+            "Priority": 117,
+            "Status": "Free"
+          },
+          {
+            "Id": 119,
+            "Position": 3218,
+            "Priority": 119,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 121,
+            "Position": 3268,
+            "Priority": 121,
+            "Status": "Free"
+          },
+          {
+            "Id": 123,
+            "Position": 3318,
+            "Priority": 123,
+            "Status": "Free"
+          },
+          {
+            "Id": 125,
+            "Position": 3368,
+            "Priority": 125,
+            "Status": "Free"
+          },
+          {
+            "Id": 127,
+            "Position": 3418,
+            "Priority": 127,
+            "Status": "Free"
+          },
+          {
+            "Id": 129,
+            "Position": 3468,
+            "Priority": 129,
+            "Status": "Free"
+          },
+          {
+            "Id": 131,
+            "Position": 3518,
+            "Priority": 131,
+            "Status": "Free"
+          },
+          {
+            "Id": 133,
+            "Position": 3568,
+            "Priority": 133,
+            "Status": "Free"
+          },
+          {
+            "Id": 135,
+            "Position": 3618,
+            "Priority": 135,
+            "Status": "Free"
+          },
+          {
+            "Id": 137,
+            "Position": 3668,
+            "Priority": 137,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 139,
+            "Position": 3718,
+            "Priority": 139,
+            "Status": "Free"
+          },
+          {
+            "Id": 141,
+            "Position": 3768,
+            "Priority": 141,
+            "Status": "Free"
+          },
+          {
+            "Id": 143,
+            "Position": 3818,
+            "Priority": 143,
+            "Status": "Free"
+          },
+          {
+            "Id": 145,
+            "Position": 3868,
+            "Priority": 145,
+            "Status": "Free"
+          },
+          {
+            "Id": 147,
+            "Position": 3918,
+            "Priority": 147,
+            "Status": "Free"
+          },
+          {
+            "Id": 149,
+            "Position": 3968,
+            "Priority": 149,
+            "Status": "Free"
+          },
+          {
+            "Id": 151,
+            "Position": 4018,
+            "Priority": 151,
+            "Status": "Free"
+          },
+          {
+            "Id": 153,
+            "Position": 4068,
+            "Priority": 153,
+            "Status": "Free"
+          },
+          {
+            "Id": 155,
+            "Position": 4118,
+            "Priority": 155,
+            "Status": "Free"
+          },
+          {
+            "Id": 157,
+            "Position": 4168,
+            "Priority": 157,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 159,
+            "Position": 4218,
+            "Priority": 159,
+            "Status": "Free"
+          },
+          {
+            "Id": 161,
+            "Position": 4268,
+            "Priority": 161,
+            "Status": "Free"
+          },
+          {
+            "Id": 163,
+            "Position": 4318,
+            "Priority": 163,
+            "Status": "Free"
+          },
+          {
+            "Id": 165,
+            "Position": 4368,
+            "Priority": 165,
+            "Status": "Free"
+          },
+          {
+            "Id": 167,
+            "Position": 4418,
+            "Priority": 167,
+            "Status": "Free"
+          },
+          {
+            "Id": 169,
+            "Position": 4468,
+            "Priority": 169,
+            "Status": "Free"
+          },
+          {
+            "Id": 171,
+            "Position": 4518,
+            "Priority": 171,
+            "Status": "Free"
+          },
+          {
+            "Id": 173,
+            "Position": 4568,
+            "Priority": 173,
+            "Status": "Free"
+          },
+          {
+            "Id": 175,
+            "Position": 4618,
+            "Priority": 175,
+            "Status": "Free"
+          },
+          {
+            "Id": 177,
+            "Position": 4668,
+            "Priority": 177,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 179,
+            "Position": 4718,
+            "Priority": 179,
+            "Status": "Free"
+          },
+          {
+            "Id": 181,
+            "Position": 4768,
+            "Priority": 181,
+            "Status": "Free"
+          },
+          {
+            "Id": 183,
+            "Position": 4818,
+            "Priority": 183,
+            "Status": "Free"
+          },
+          {
+            "Id": 185,
+            "Position": 4868,
+            "Priority": 185,
+            "Status": "Free"
+          },
+          {
+            "Id": 187,
+            "Position": 4918,
+            "Priority": 187,
+            "Status": "Free"
+          },
+          {
+            "Id": 189,
+            "Position": 4968,
+            "Priority": 189,
+            "Status": "Free"
+          },
+          {
+            "Id": 191,
+            "Position": 5018,
+            "Priority": 191,
+            "Status": "Free"
+          },
+          {
+            "Id": 193,
+            "Position": 5068,
+            "Priority": 193,
+            "Status": "Free"
+          },
+          {
+            "Id": 195,
+            "Position": 5118,
+            "Priority": 195,
+            "Status": "Free"
+          },
+          {
+            "Id": 197,
+            "Position": 5168,
+            "Priority": 197,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 199,
+            "Position": 5218,
+            "Priority": 199,
+            "Status": "Free"
+          },
+          {
+            "Id": 201,
+            "Position": 5268,
+            "Priority": 201,
+            "Status": "Free"
+          },
+          {
+            "Id": 203,
+            "Position": 5318,
+            "Priority": 203,
+            "Status": "Free"
+          },
+          {
+            "Id": 205,
+            "Position": 5368,
+            "Priority": 205,
+            "Status": "Free"
+          },
+          {
+            "Id": 207,
+            "Position": 5418,
+            "Priority": 207,
+            "Status": "Free"
+          },
+          {
+            "Id": 209,
+            "Position": 5468,
+            "Priority": 209,
+            "Status": "Free"
+          },
+          {
+            "Id": 211,
+            "Position": 5518,
+            "Priority": 211,
+            "Status": "Free"
+          },
+          {
+            "Id": 213,
+            "Position": 5568,
+            "Priority": 213,
+            "Status": "Free"
+          },
+          {
+            "Id": 215,
+            "Position": 5618,
+            "Priority": 215,
+            "Status": "Free"
+          },
+          {
+            "Id": 217,
+            "Position": 5668,
+            "Priority": 217,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 219,
+            "Position": 5718,
+            "Priority": 219,
+            "Status": "Free"
+          },
+          {
+            "Id": 221,
+            "Position": 5768,
+            "Priority": 221,
+            "Status": "Free"
+          },
+          {
+            "Id": 223,
+            "Position": 5818,
+            "Priority": 223,
+            "Status": "Free"
+          },
+          {
+            "Id": 225,
+            "Position": 5868,
+            "Priority": 225,
+            "Status": "Free"
+          },
+          {
+            "Id": 227,
+            "Position": 5918,
+            "Priority": 227,
+            "Status": "Free"
+          },
+          {
+            "Id": 229,
+            "Position": 5968,
+            "Priority": 229,
+            "Status": "Free"
+          },
+          {
+            "Id": 231,
+            "Position": 6018,
+            "Priority": 231,
+            "Status": "Free"
+          },
+          {
+            "Id": 233,
+            "Position": 6068,
+            "Priority": 233,
+            "Status": "Free"
+          },
+          {
+            "Id": 235,
+            "Position": 6118,
+            "Priority": 235,
+            "Status": "Free"
+          },
+          {
+            "Id": 237,
+            "Position": 6168,
+            "Priority": 237,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 239,
+            "Position": 6218,
+            "Priority": 239,
+            "Status": "Free"
+          },
+          {
+            "Id": 241,
+            "Position": 6268,
+            "Priority": 241,
+            "Status": "Free"
+          },
+          {
+            "Id": 243,
+            "Position": 6318,
+            "Priority": 243,
+            "Status": "Free"
+          },
+          {
+            "Id": 245,
+            "Position": 6368,
+            "Priority": 245,
+            "Status": "Free"
+          },
+          {
+            "Id": 247,
+            "Position": 6418,
+            "Priority": 247,
+            "Status": "Free"
+          },
+          {
+            "Id": 249,
+            "Position": 6468,
+            "Priority": 249,
+            "Status": "Free"
+          },
+          {
+            "Id": 251,
+            "Position": 6518,
+            "Priority": 251,
+            "Status": "Free"
+          },
+          {
+            "Id": 253,
+            "Position": 6568,
+            "Priority": 253,
+            "Status": "Free"
+          },
+          {
+            "Id": 255,
+            "Position": 6618,
+            "Priority": 255,
+            "Status": "Free"
+          },
+          {
+            "Id": 257,
+            "Position": 6668,
+            "Priority": 257,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 259,
+            "Position": 6718,
+            "Priority": 259,
+            "Status": "Free"
+          },
+          {
+            "Id": 261,
+            "Position": 6768,
+            "Priority": 261,
+            "Status": "Free"
+          },
+          {
+            "Id": 263,
+            "Position": 6818,
+            "Priority": 263,
+            "Status": "Free"
+          },
+          {
+            "Id": 265,
+            "Position": 6868,
+            "Priority": 265,
+            "Status": "Free"
+          },
+          {
+            "Id": 267,
+            "Position": 6918,
+            "Priority": 267,
+            "Status": "Free"
+          },
+          {
+            "Id": 269,
+            "Position": 6968,
+            "Priority": 269,
+            "Status": "Free"
+          },
+          {
+            "Id": 271,
+            "Position": 7018,
+            "Priority": 271,
+            "Status": "Free"
+          },
+          {
+            "Id": 273,
+            "Position": 7068,
+            "Priority": 273,
+            "Status": "Free"
+          },
+          {
+            "Id": 275,
+            "Position": 7118,
+            "Priority": 275,
+            "Status": "Free"
+          },
+          {
+            "Id": 277,
+            "Position": 7168,
+            "Priority": 277,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 279,
+            "Position": 7218,
+            "Priority": 279,
+            "Status": "Free"
+          },
+          {
+            "Id": 281,
+            "Position": 7268,
+            "Priority": 281,
+            "Status": "Free"
+          },
+          {
+            "Id": 283,
+            "Position": 7318,
+            "Priority": 283,
+            "Status": "Free"
+          },
+          {
+            "Id": 285,
+            "Position": 7368,
+            "Priority": 285,
+            "Status": "Free"
+          },
+          {
+            "Id": 287,
+            "Position": 7418,
+            "Priority": 287,
+            "Status": "Free"
+          },
+          {
+            "Id": 289,
+            "Position": 7468,
+            "Priority": 289,
+            "Status": "Free"
+          },
+          {
+            "Id": 291,
+            "Position": 7518,
+            "Priority": 291,
+            "Status": "Free"
+          },
+          {
+            "Id": 293,
+            "Position": 7568,
+            "Priority": 293,
+            "Status": "Free"
+          },
+          {
+            "Id": 295,
+            "Position": 7618,
+            "Priority": 295,
+            "Status": "Free"
+          },
+          {
+            "Id": 297,
+            "Position": 7668,
+            "Priority": 297,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 299,
+            "Position": 7718,
+            "Priority": 299,
+            "Status": "Free"
+          },
+          {
+            "Id": 301,
+            "Position": 7768,
+            "Priority": 301,
+            "Status": "Free"
+          },
+          {
+            "Id": 303,
+            "Position": 7818,
+            "Priority": 303,
+            "Status": "Free"
+          },
+          {
+            "Id": 305,
+            "Position": 7868,
+            "Priority": 305,
+            "Status": "Free"
+          },
+          {
+            "Id": 307,
+            "Position": 7918,
+            "Priority": 307,
+            "Status": "Free"
+          },
+          {
+            "Id": 309,
+            "Position": 7968,
+            "Priority": 309,
+            "Status": "Free"
+          },
+          {
+            "Id": 311,
+            "Position": 8018,
+            "Priority": 311,
+            "Status": "Free"
+          },
+          {
+            "Id": 313,
+            "Position": 8068,
+            "Priority": 313,
+            "Status": "Free"
+          },
+          {
+            "Id": 315,
+            "Position": 8118,
+            "Priority": 315,
+            "Status": "Free"
+          },
+          {
+            "Id": 317,
+            "Position": 8168,
+            "Priority": 317,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 319,
+            "Position": 8218,
+            "Priority": 319,
+            "Status": "Free"
+          },
+          {
+            "Id": 321,
+            "Position": 8268,
+            "Priority": 321,
+            "Status": "Free"
+          },
+          {
+            "Id": 323,
+            "Position": 8318,
+            "Priority": 323,
+            "Status": "Free"
+          },
+          {
+            "Id": 325,
+            "Position": 8368,
+            "Priority": 325,
+            "Status": "Free"
+          },
+          {
+            "Id": 327,
+            "Position": 8418,
+            "Priority": 327,
+            "Status": "Free"
+          },
+          {
+            "Id": 329,
+            "Position": 8468,
+            "Priority": 329,
+            "Status": "Free"
+          },
+          {
+            "Id": 331,
+            "Position": 8518,
+            "Priority": 331,
+            "Status": "Free"
+          },
+          {
+            "Id": 333,
+            "Position": 8568,
+            "Priority": 333,
+            "Status": "Free"
+          },
+          {
+            "Id": 335,
+            "Position": 8618,
+            "Priority": 335,
+            "Status": "Free"
+          },
+          {
+            "Id": 337,
+            "Position": 8668,
+            "Priority": 337,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 339,
+            "Position": 8718,
+            "Priority": 339,
+            "Status": "Free"
+          },
+          {
+            "Id": 341,
+            "Position": 8768,
+            "Priority": 341,
+            "Status": "Free"
+          },
+          {
+            "Id": 343,
+            "Position": 8818,
+            "Priority": 343,
+            "Status": "Free"
+          },
+          {
+            "Id": 345,
+            "Position": 8868,
+            "Priority": 345,
+            "Status": "Free"
+          },
+          {
+            "Id": 347,
+            "Position": 8918,
+            "Priority": 347,
+            "Status": "Free"
+          },
+          {
+            "Id": 349,
+            "Position": 8968,
+            "Priority": 349,
+            "Status": "Free"
+          },
+          {
+            "Id": 351,
+            "Position": 9018,
+            "Priority": 351,
+            "Status": "Free"
+          },
+          {
+            "Id": 353,
+            "Position": 9068,
+            "Priority": 353,
+            "Status": "Free"
+          },
+          {
+            "Id": 355,
+            "Position": 9118,
+            "Priority": 355,
+            "Status": "Free"
+          },
+          {
+            "Id": 357,
+            "Position": 9168,
+            "Priority": 357,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Front",
+        "Cells": [
+          {
+            "Id": 359,
+            "Position": 9218,
+            "Priority": 359,
+            "Status": "Free"
+          },
+          {
+            "Id": 361,
+            "Position": 9268,
+            "Priority": 361,
+            "Status": "Free"
+          },
+          {
+            "Id": 363,
+            "Position": 9318,
+            "Priority": 363,
+            "Status": "Free"
+          },
+          {
+            "Id": 365,
+            "Position": 9368,
+            "Priority": 365,
+            "Status": "Free"
+          },
+          {
+            "Id": 367,
+            "Position": 9418,
+            "Priority": 367,
+            "Status": "Free"
+          },
+          {
+            "Id": 369,
+            "Position": 9468,
+            "Priority": 369,
+            "Status": "Free"
+          },
+          {
+            "Id": 371,
+            "Position": 9518,
+            "Priority": 371,
+            "Status": "Free"
+          },
+          {
+            "Id": 373,
+            "Position": 9568,
+            "Priority": 373,
+            "Status": "Free"
+          },
+          {
+            "Id": 375,
+            "Position": 9618,
+            "Priority": 375,
+            "Status": "Free"
+          },
+          {
+            "Id": 377,
+            "Position": 9668,
+            "Priority": 377,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 2,
+            "Position": 355,
+            "Priority": 2,
+            "IsUnusable": true
+          },
+          {
+            "Id": 4,
+            "Position": 367,
+            "Priority": 4,
+            "IsUnusable": true
+          },
+          {
+            "Id": 6,
+            "Position": 418,
+            "Priority": 6,
+            "IsUnusable": true
+          },
+          {
+            "Id": 8,
+            "Position": 468,
+            "Priority": 8,
+            "Status": "Free"
+          },
+          {
+            "Id": 10,
+            "Position": 518,
+            "Priority": 10,
+            "Status": "Free"
+          },
+          {
+            "Id": 12,
+            "Position": 568,
+            "Priority": 12,
+            "Status": "Free"
+          },
+          {
+            "Id": 14,
+            "Position": 618,
+            "Priority": 14,
+            "Status": "Free"
+          },
+          {
+            "Id": 16,
+            "Position": 668,
+            "Priority": 16,
+            "Status": "Free"
+          },
+          {
+            "Id": 18,
+            "Position": 718,
+            "Priority": 18,
+            "Status": "Free"
+          },
+          {
+            "Id": 20,
+            "Position": 768,
+            "Priority": 20,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 22,
+            "Position": 818,
+            "Priority": 22,
+            "Status": "Free"
+          },
+          {
+            "Id": 24,
+            "Position": 868,
+            "Priority": 24,
+            "Status": "Free"
+          },
+          {
+            "Id": 26,
+            "Position": 918,
+            "Priority": 26,
+            "Status": "Free"
+          },
+          {
+            "Id": 28,
+            "Position": 968,
+            "Priority": 28,
+            "Status": "Free"
+          },
+          {
+            "Id": 30,
+            "Position": 1018,
+            "Priority": 30,
+            "Status": "Free"
+          },
+          {
+            "Id": 32,
+            "Position": 1068,
+            "Priority": 32,
+            "Status": "Free"
+          },
+          {
+            "Id": 34,
+            "Position": 1118,
+            "Priority": 34,
+            "Status": "Free"
+          },
+          {
+            "Id": 36,
+            "Position": 1168,
+            "Priority": 36,
+            "Status": "Free"
+          },
+          {
+            "Id": 38,
+            "Position": 1218,
+            "Priority": 38,
+            "Status": "Free"
+          },
+          {
+            "Id": 40,
+            "Position": 1268,
+            "Priority": 40,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 42,
+            "Position": 1318,
+            "Priority": 42,
+            "Status": "Free"
+          },
+          {
+            "Id": 44,
+            "Position": 1368,
+            "Priority": 44,
+            "Status": "Free"
+          },
+          {
+            "Id": 46,
+            "Position": 1418,
+            "Priority": 46,
+            "Status": "Free"
+          },
+          {
+            "Id": 48,
+            "Position": 1468,
+            "Priority": 48,
+            "Status": "Free"
+          },
+          {
+            "Id": 50,
+            "Position": 1518,
+            "Priority": 50,
+            "Status": "Free"
+          },
+          {
+            "Id": 52,
+            "Position": 1568,
+            "Priority": 52,
+            "Status": "Free"
+          },
+          {
+            "Id": 54,
+            "Position": 1618,
+            "Priority": 54,
+            "Status": "Free"
+          },
+          {
+            "Id": 56,
+            "Position": 1668,
+            "Priority": 56,
+            "Status": "Free"
+          },
+          {
+            "Id": 58,
+            "Position": 1718,
+            "Priority": 58,
+            "Status": "Free"
+          },
+          {
+            "Id": 60,
+            "Position": 1768,
+            "Priority": 60,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 62,
+            "Position": 1818,
+            "Priority": 62,
+            "Status": "Free"
+          },
+          {
+            "Id": 64,
+            "Position": 1868,
+            "Priority": 64,
+            "Status": "Free"
+          },
+          {
+            "Id": 66,
+            "Position": 1918,
+            "Priority": 66,
+            "Status": "Free"
+          },
+          {
+            "Id": 68,
+            "Position": 1968,
+            "Priority": 68,
+            "Status": "Free"
+          },
+          {
+            "Id": 70,
+            "Position": 2018,
+            "Priority": 70,
+            "Status": "Free"
+          },
+          {
+            "Id": 72,
+            "Position": 2068,
+            "Priority": 72,
+            "Status": "Free"
+          },
+          {
+            "Id": 74,
+            "Position": 2118,
+            "Priority": 74,
+            "Status": "Free"
+          },
+          {
+            "Id": 76,
+            "Position": 2168,
+            "Priority": 76,
+            "Status": "Free"
+          },
+          {
+            "Id": 78,
+            "Position": 2218,
+            "Priority": 78,
+            "Status": "Free"
+          },
+          {
+            "Id": 80,
+            "Position": 2268,
+            "Priority": 80,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 82,
+            "Position": 2318,
+            "Priority": 82,
+            "Status": "Free"
+          },
+          {
+            "Id": 84,
+            "Position": 2368,
+            "Priority": 84,
+            "Status": "Free"
+          },
+          {
+            "Id": 86,
+            "Position": 2418,
+            "Priority": 86,
+            "Status": "Free"
+          },
+          {
+            "Id": 88,
+            "Position": 2468,
+            "Priority": 88,
+            "Status": "Free"
+          },
+          {
+            "Id": 90,
+            "Position": 2518,
+            "Priority": 90,
+            "Status": "Free"
+          },
+          {
+            "Id": 92,
+            "Position": 2568,
+            "Priority": 92,
+            "Status": "Free"
+          },
+          {
+            "Id": 94,
+            "Position": 2618,
+            "Priority": 94,
+            "Status": "Free"
+          },
+          {
+            "Id": 96,
+            "Position": 2668,
+            "Priority": 96,
+            "Status": "Free"
+          },
+          {
+            "Id": 98,
+            "Position": 2718,
+            "Priority": 98,
+            "Status": "Free"
+          },
+          {
+            "Id": 100,
+            "Position": 2768,
+            "Priority": 100,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 102,
+            "Position": 2818,
+            "Priority": 102,
+            "Status": "Free"
+          },
+          {
+            "Id": 104,
+            "Position": 2868,
+            "Priority": 104,
+            "Status": "Free"
+          },
+          {
+            "Id": 106,
+            "Position": 2918,
+            "Priority": 106,
+            "Status": "Free"
+          },
+          {
+            "Id": 108,
+            "Position": 2968,
+            "Priority": 108,
+            "Status": "Free"
+          },
+          {
+            "Id": 110,
+            "Position": 3018,
+            "Priority": 110,
+            "Status": "Free"
+          },
+          {
+            "Id": 112,
+            "Position": 3068,
+            "Priority": 112,
+            "Status": "Free"
+          },
+          {
+            "Id": 114,
+            "Position": 3118,
+            "Priority": 114,
+            "Status": "Free"
+          },
+          {
+            "Id": 116,
+            "Position": 3168,
+            "Priority": 116,
+            "Status": "Free"
+          },
+          {
+            "Id": 118,
+            "Position": 3218,
+            "Priority": 118,
+            "Status": "Free"
+          },
+          {
+            "Id": 120,
+            "Position": 3268,
+            "Priority": 120,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 122,
+            "Position": 3318,
+            "Priority": 122,
+            "Status": "Free"
+          },
+          {
+            "Id": 124,
+            "Position": 3368,
+            "Priority": 124,
+            "Status": "Free"
+          },
+          {
+            "Id": 126,
+            "Position": 3418,
+            "Priority": 126,
+            "Status": "Free"
+          },
+          {
+            "Id": 128,
+            "Position": 3468,
+            "Priority": 128,
+            "Status": "Free"
+          },
+          {
+            "Id": 130,
+            "Position": 3518,
+            "Priority": 130,
+            "Status": "Free"
+          },
+          {
+            "Id": 132,
+            "Position": 3568,
+            "Priority": 132,
+            "Status": "Free"
+          },
+          {
+            "Id": 134,
+            "Position": 3618,
+            "Priority": 134,
+            "Status": "Free"
+          },
+          {
+            "Id": 136,
+            "Position": 3668,
+            "Priority": 136,
+            "Status": "Free"
+          },
+          {
+            "Id": 138,
+            "Position": 3718,
+            "Priority": 138,
+            "Status": "Free"
+          },
+          {
+            "Id": 140,
+            "Position": 3768,
+            "Priority": 140,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 142,
+            "Position": 3818,
+            "Priority": 142,
+            "Status": "Free"
+          },
+          {
+            "Id": 144,
+            "Position": 3868,
+            "Priority": 144,
+            "Status": "Free"
+          },
+          {
+            "Id": 146,
+            "Position": 3918,
+            "Priority": 146,
+            "Status": "Free"
+          },
+          {
+            "Id": 148,
+            "Position": 3968,
+            "Priority": 148,
+            "Status": "Free"
+          },
+          {
+            "Id": 150,
+            "Position": 4018,
+            "Priority": 150,
+            "Status": "Free"
+          },
+          {
+            "Id": 152,
+            "Position": 4068,
+            "Priority": 152,
+            "Status": "Free"
+          },
+          {
+            "Id": 154,
+            "Position": 4118,
+            "Priority": 154,
+            "Status": "Free"
+          },
+          {
+            "Id": 156,
+            "Position": 4168,
+            "Priority": 156,
+            "Status": "Free"
+          },
+          {
+            "Id": 158,
+            "Position": 4218,
+            "Priority": 158,
+            "Status": "Free"
+          },
+          {
+            "Id": 160,
+            "Position": 4268,
+            "Priority": 160,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 162,
+            "Position": 4318,
+            "Priority": 162,
+            "Status": "Free"
+          },
+          {
+            "Id": 164,
+            "Position": 4368,
+            "Priority": 164,
+            "Status": "Free"
+          },
+          {
+            "Id": 166,
+            "Position": 4418,
+            "Priority": 166,
+            "Status": "Free"
+          },
+          {
+            "Id": 168,
+            "Position": 4468,
+            "Priority": 168,
+            "Status": "Free"
+          },
+          {
+            "Id": 170,
+            "Position": 4518,
+            "Priority": 170,
+            "Status": "Free"
+          },
+          {
+            "Id": 172,
+            "Position": 4568,
+            "Priority": 172,
+            "Status": "Free"
+          },
+          {
+            "Id": 174,
+            "Position": 4618,
+            "Priority": 174,
+            "Status": "Free"
+          },
+          {
+            "Id": 176,
+            "Position": 4668,
+            "Priority": 176,
+            "Status": "Free"
+          },
+          {
+            "Id": 178,
+            "Position": 4718,
+            "Priority": 178,
+            "Status": "Free"
+          },
+          {
+            "Id": 180,
+            "Position": 4768,
+            "Priority": 180,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 182,
+            "Position": 4818,
+            "Priority": 182,
+            "Status": "Free"
+          },
+          {
+            "Id": 184,
+            "Position": 4868,
+            "Priority": 184,
+            "Status": "Free"
+          },
+          {
+            "Id": 186,
+            "Position": 4918,
+            "Priority": 186,
+            "Status": "Free"
+          },
+          {
+            "Id": 188,
+            "Position": 4968,
+            "Priority": 188,
+            "Status": "Free"
+          },
+          {
+            "Id": 190,
+            "Position": 5018,
+            "Priority": 190,
+            "Status": "Free"
+          },
+          {
+            "Id": 192,
+            "Position": 5068,
+            "Priority": 192,
+            "Status": "Free"
+          },
+          {
+            "Id": 194,
+            "Position": 5118,
+            "Priority": 194,
+            "Status": "Free"
+          },
+          {
+            "Id": 196,
+            "Position": 5168,
+            "Priority": 196,
+            "Status": "Free"
+          },
+          {
+            "Id": 198,
+            "Position": 5218,
+            "Priority": 198,
+            "Status": "Free"
+          },
+          {
+            "Id": 200,
+            "Position": 5268,
+            "Priority": 200,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 202,
+            "Position": 5318,
+            "Priority": 202,
+            "Status": "Free"
+          },
+          {
+            "Id": 204,
+            "Position": 5368,
+            "Priority": 204,
+            "Status": "Free"
+          },
+          {
+            "Id": 206,
+            "Position": 5418,
+            "Priority": 206,
+            "Status": "Free"
+          },
+          {
+            "Id": 208,
+            "Position": 5468,
+            "Priority": 208,
+            "Status": "Free"
+          },
+          {
+            "Id": 210,
+            "Position": 5518,
+            "Priority": 210,
+            "Status": "Free"
+          },
+          {
+            "Id": 212,
+            "Position": 5568,
+            "Priority": 212,
+            "Status": "Free"
+          },
+          {
+            "Id": 214,
+            "Position": 5618,
+            "Priority": 214,
+            "Status": "Free"
+          },
+          {
+            "Id": 216,
+            "Position": 5668,
+            "Priority": 216,
+            "Status": "Free"
+          },
+          {
+            "Id": 218,
+            "Position": 5718,
+            "Priority": 218,
+            "Status": "Free"
+          },
+          {
+            "Id": 220,
+            "Position": 5768,
+            "Priority": 220,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 222,
+            "Position": 5818,
+            "Priority": 222,
+            "Status": "Free"
+          },
+          {
+            "Id": 224,
+            "Position": 5868,
+            "Priority": 224,
+            "Status": "Free"
+          },
+          {
+            "Id": 226,
+            "Position": 5918,
+            "Priority": 226,
+            "Status": "Free"
+          },
+          {
+            "Id": 228,
+            "Position": 5968,
+            "Priority": 228,
+            "Status": "Free"
+          },
+          {
+            "Id": 230,
+            "Position": 6018,
+            "Priority": 230,
+            "Status": "Free"
+          },
+          {
+            "Id": 232,
+            "Position": 6068,
+            "Priority": 232,
+            "Status": "Free"
+          },
+          {
+            "Id": 234,
+            "Position": 6118,
+            "Priority": 234,
+            "Status": "Free"
+          },
+          {
+            "Id": 236,
+            "Position": 6168,
+            "Priority": 236,
+            "Status": "Free"
+          },
+          {
+            "Id": 238,
+            "Position": 6218,
+            "Priority": 238,
+            "Status": "Free"
+          },
+          {
+            "Id": 240,
+            "Position": 6268,
+            "Priority": 240,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 242,
+            "Position": 6318,
+            "Priority": 242,
+            "Status": "Free"
+          },
+          {
+            "Id": 244,
+            "Position": 6368,
+            "Priority": 244,
+            "Status": "Free"
+          },
+          {
+            "Id": 246,
+            "Position": 6418,
+            "Priority": 246,
+            "Status": "Free"
+          },
+          {
+            "Id": 248,
+            "Position": 6468,
+            "Priority": 248,
+            "Status": "Free"
+          },
+          {
+            "Id": 250,
+            "Position": 6518,
+            "Priority": 250,
+            "Status": "Free"
+          },
+          {
+            "Id": 252,
+            "Position": 6568,
+            "Priority": 252,
+            "Status": "Free"
+          },
+          {
+            "Id": 254,
+            "Position": 6618,
+            "Priority": 254,
+            "Status": "Free"
+          },
+          {
+            "Id": 256,
+            "Position": 6668,
+            "Priority": 256,
+            "Status": "Free"
+          },
+          {
+            "Id": 258,
+            "Position": 6718,
+            "Priority": 258,
+            "Status": "Free"
+          },
+          {
+            "Id": 260,
+            "Position": 6768,
+            "Priority": 260,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 262,
+            "Position": 6818,
+            "Priority": 262,
+            "Status": "Free"
+          },
+          {
+            "Id": 264,
+            "Position": 6868,
+            "Priority": 264,
+            "Status": "Free"
+          },
+          {
+            "Id": 266,
+            "Position": 6918,
+            "Priority": 266,
+            "Status": "Free"
+          },
+          {
+            "Id": 268,
+            "Position": 6968,
+            "Priority": 268,
+            "Status": "Free"
+          },
+          {
+            "Id": 270,
+            "Position": 7018,
+            "Priority": 270,
+            "Status": "Free"
+          },
+          {
+            "Id": 272,
+            "Position": 7068,
+            "Priority": 272,
+            "Status": "Free"
+          },
+          {
+            "Id": 274,
+            "Position": 7118,
+            "Priority": 274,
+            "Status": "Free"
+          },
+          {
+            "Id": 276,
+            "Position": 7168,
+            "Priority": 276,
+            "Status": "Free"
+          },
+          {
+            "Id": 278,
+            "Position": 7218,
+            "Priority": 278,
+            "Status": "Free"
+          },
+          {
+            "Id": 280,
+            "Position": 7268,
+            "Priority": 280,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 282,
+            "Position": 7318,
+            "Priority": 282,
+            "Status": "Free"
+          },
+          {
+            "Id": 284,
+            "Position": 7368,
+            "Priority": 284,
+            "Status": "Free"
+          },
+          {
+            "Id": 286,
+            "Position": 7418,
+            "Priority": 286,
+            "Status": "Free"
+          },
+          {
+            "Id": 288,
+            "Position": 7468,
+            "Priority": 288,
+            "Status": "Free"
+          },
+          {
+            "Id": 290,
+            "Position": 7518,
+            "Priority": 290,
+            "Status": "Free"
+          },
+          {
+            "Id": 292,
+            "Position": 7568,
+            "Priority": 292,
+            "Status": "Free"
+          },
+          {
+            "Id": 294,
+            "Position": 7618,
+            "Priority": 294,
+            "Status": "Free"
+          },
+          {
+            "Id": 296,
+            "Position": 7668,
+            "Priority": 296,
+            "Status": "Free"
+          },
+          {
+            "Id": 298,
+            "Position": 7718,
+            "Priority": 298,
+            "Status": "Free"
+          },
+          {
+            "Id": 300,
+            "Position": 7768,
+            "Priority": 300,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 302,
+            "Position": 7818,
+            "Priority": 302,
+            "Status": "Free"
+          },
+          {
+            "Id": 304,
+            "Position": 7868,
+            "Priority": 304,
+            "Status": "Free"
+          },
+          {
+            "Id": 306,
+            "Position": 7918,
+            "Priority": 306,
+            "Status": "Free"
+          },
+          {
+            "Id": 308,
+            "Position": 7968,
+            "Priority": 308,
+            "Status": "Free"
+          },
+          {
+            "Id": 310,
+            "Position": 8018,
+            "Priority": 310,
+            "Status": "Free"
+          },
+          {
+            "Id": 312,
+            "Position": 8068,
+            "Priority": 312,
+            "Status": "Free"
+          },
+          {
+            "Id": 314,
+            "Position": 8118,
+            "Priority": 314,
+            "Status": "Free"
+          },
+          {
+            "Id": 316,
+            "Position": 8168,
+            "Priority": 316,
+            "Status": "Free"
+          },
+          {
+            "Id": 318,
+            "Position": 8218,
+            "Priority": 318,
+            "Status": "Free"
+          },
+          {
+            "Id": 320,
+            "Position": 8268,
+            "Priority": 320,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 322,
+            "Position": 8318,
+            "Priority": 322,
+            "Status": "Free"
+          },
+          {
+            "Id": 324,
+            "Position": 8368,
+            "Priority": 324,
+            "Status": "Free"
+          },
+          {
+            "Id": 326,
+            "Position": 8418,
+            "Priority": 326,
+            "Status": "Free"
+          },
+          {
+            "Id": 328,
+            "Position": 8468,
+            "Priority": 328,
+            "Status": "Free"
+          },
+          {
+            "Id": 330,
+            "Position": 8518,
+            "Priority": 330,
+            "Status": "Free"
+          },
+          {
+            "Id": 332,
+            "Position": 8568,
+            "Priority": 332,
+            "Status": "Free"
+          },
+          {
+            "Id": 334,
+            "Position": 8618,
+            "Priority": 334,
+            "Status": "Free"
+          },
+          {
+            "Id": 336,
+            "Position": 8668,
+            "Priority": 336,
+            "Status": "Free"
+          },
+          {
+            "Id": 338,
+            "Position": 8718,
+            "Priority": 338,
+            "Status": "Free"
+          },
+          {
+            "Id": 340,
+            "Position": 8768,
+            "Priority": 340,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 342,
+            "Position": 8818,
+            "Priority": 342,
+            "Status": "Free"
+          },
+          {
+            "Id": 344,
+            "Position": 8868,
+            "Priority": 344,
+            "Status": "Free"
+          },
+          {
+            "Id": 346,
+            "Position": 8918,
+            "Priority": 346,
+            "Status": "Free"
+          },
+          {
+            "Id": 348,
+            "Position": 8968,
+            "Priority": 348,
+            "Status": "Free"
+          },
+          {
+            "Id": 350,
+            "Position": 9018,
+            "Priority": 350,
+            "Status": "Free"
+          },
+          {
+            "Id": 352,
+            "Position": 9068,
+            "Priority": 352,
+            "Status": "Free"
+          },
+          {
+            "Id": 354,
+            "Position": 9118,
+            "Priority": 354,
+            "Status": "Free"
+          },
+          {
+            "Id": 356,
+            "Position": 9168,
+            "Priority": 356,
+            "Status": "Free"
+          },
+          {
+            "Id": 358,
+            "Position": 9218,
+            "Priority": 358,
+            "Status": "Free"
+          },
+          {
+            "Id": 360,
+            "Position": 9268,
+            "Priority": 360,
+            "Status": "Free"
+          }
+        ]
+      },
+      {
+        "Side": "Back",
+        "Cells": [
+          {
+            "Id": 362,
+            "Position": 9318,
+            "Priority": 362,
+            "Status": "Free"
+          },
+          {
+            "Id": 364,
+            "Position": 9368,
+            "Priority": 364,
+            "Status": "Free"
+          },
+          {
+            "Id": 366,
+            "Position": 9418,
+            "Priority": 366,
+            "Status": "Free"
+          },
+          {
+            "Id": 368,
+            "Position": 9468,
+            "Priority": 368,
+            "Status": "Free"
+          },
+          {
+            "Id": 370,
+            "Position": 9518,
+            "Priority": 370,
+            "Status": "Free"
+          },
+          {
+            "Id": 372,
+            "Position": 9568,
+            "Priority": 372,
+            "Status": "Free"
+          },
+          {
+            "Id": 374,
+            "Position": 9618,
+            "Priority": 374,
+            "Status": "Free"
+          },
+          {
+            "Id": 376,
+            "Position": 9668,
+            "Priority": 376,
+            "Status": "Free"
+          },
+          {
+            "Id": 378,
+            "Position": 9718,
+            "Priority": 378,
+            "Status": "Free"
           }
         ]
       }
     ],
-    "StructuralProperties": {
-      "BeltRigidity": 7000000,
-      "BeltSpacing": 300,
-      "ElevatorWeight": 230,
-      "HalfShaftLength": 2084,
-      "PulleyDiameter": 160,
-      "ShaftDiameter": 45,
-      "ShaftElasticity": 210000
+    "ProductionDate": "2019-10-19T16:39:57-08:00",
+    "SerialNumber": "Simulation"
+  },
+  "SetupProcedures": {
+    "BayHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "BeltBurnishingTest": {
+      "RequiredCycles": 200
+    },
+    "BeltBurnishing": {
+      "CycleQuantity": 5
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "CellsHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10000
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50,
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "VerticalResolutionCalibration": {
+      "InitialPosition": 1000,
+      "FinalPosition": 5500,
+      "FeedRate": 0.2
     }
-  },
-  "Height": 4563,
-  "MaxGrossWeight": 50000,
-  "ModelName": "Simulation Vertimag 800kg",
-  "Panels": [
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 1,
-          "Position": 375,
-          "Priority": 1,
-          "IsUnusable": true
-        },
-        {
-          "Id": 3,
-          "Position": 425,
-          "Priority": 3,
-          "IsUnusable": true
-        },
-        {
-          "Id": 5,
-          "Position": 475,
-          "Priority": 5,
-          "Status": "Free"
-        },
-        {
-          "Id": 7,
-          "Position": 450,
-          "Priority": 7,
-          "Status": "Free"
-        },
-        {
-          "Id": 9,
-          "Position": 468,
-          "Priority": 9,
-          "Status": "Free"
-        },
-        {
-          "Id": 11,
-          "Position": 518,
-          "Priority": 11,
-          "Status": "Free"
-        },
-        {
-          "Id": 13,
-          "Position": 568,
-          "Priority": 13,
-          "Status": "Free"
-        },
-        {
-          "Id": 15,
-          "Position": 618,
-          "Priority": 15,
-          "Status": "Free"
-        },
-        {
-          "Id": 17,
-          "Position": 668,
-          "Priority": 17,
-          "Status": "Free"
-        },
-        {
-          "Id": 19,
-          "Position": 718,
-          "Priority": 19,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 21,
-          "Position": 768,
-          "Priority": 21,
-          "Status": "Free"
-        },
-        {
-          "Id": 23,
-          "Position": 818,
-          "Priority": 23,
-          "Status": "Free"
-        },
-        {
-          "Id": 25,
-          "Position": 868,
-          "Priority": 25,
-          "Status": "Free"
-        },
-        {
-          "Id": 27,
-          "Position": 918,
-          "Priority": 27,
-          "Status": "Free"
-        },
-        {
-          "Id": 29,
-          "Position": 968,
-          "Priority": 29,
-          "Status": "Free"
-        },
-        {
-          "Id": 31,
-          "Position": 1018,
-          "Priority": 31,
-          "Status": "Free"
-        },
-        {
-          "Id": 33,
-          "Position": 1068,
-          "Priority": 33,
-          "Status": "Free"
-        },
-        {
-          "Id": 35,
-          "Position": 1118,
-          "Priority": 35,
-          "Status": "Free"
-        },
-        {
-          "Id": 37,
-          "Position": 1168,
-          "Priority": 37,
-          "Status": "Free"
-        },
-        {
-          "Id": 39,
-          "Position": 1218,
-          "Priority": 39,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 41,
-          "Position": 1268,
-          "Priority": 41,
-          "Status": "Free"
-        },
-        {
-          "Id": 43,
-          "Position": 1318,
-          "Priority": 43,
-          "Status": "Free"
-        },
-        {
-          "Id": 45,
-          "Position": 1368,
-          "Priority": 45,
-          "Status": "Free"
-        },
-        {
-          "Id": 47,
-          "Position": 1418,
-          "Priority": 47,
-          "Status": "Free"
-        },
-        {
-          "Id": 49,
-          "Position": 1468,
-          "Priority": 49,
-          "Status": "Free"
-        },
-        {
-          "Id": 51,
-          "Position": 1518,
-          "Priority": 51,
-          "Status": "Free"
-        },
-        {
-          "Id": 53,
-          "Position": 1568,
-          "Priority": 53,
-          "Status": "Free"
-        },
-        {
-          "Id": 55,
-          "Position": 1618,
-          "Priority": 55,
-          "Status": "Free"
-        },
-        {
-          "Id": 57,
-          "Position": 1668,
-          "Priority": 57,
-          "Status": "Free"
-        },
-        {
-          "Id": 59,
-          "Position": 1718,
-          "Priority": 59,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 61,
-          "Position": 1768,
-          "Priority": 61,
-          "Status": "Free"
-        },
-        {
-          "Id": 63,
-          "Position": 1818,
-          "Priority": 63,
-          "Status": "Free"
-        },
-        {
-          "Id": 65,
-          "Position": 1868,
-          "Priority": 65,
-          "Status": "Free"
-        },
-        {
-          "Id": 67,
-          "Position": 1918,
-          "Priority": 67,
-          "Status": "Free"
-        },
-        {
-          "Id": 69,
-          "Position": 1968,
-          "Priority": 69,
-          "Status": "Free"
-        },
-        {
-          "Id": 71,
-          "Position": 2018,
-          "Priority": 71,
-          "Status": "Free"
-        },
-        {
-          "Id": 73,
-          "Position": 2068,
-          "Priority": 73,
-          "Status": "Free"
-        },
-        {
-          "Id": 75,
-          "Position": 2118,
-          "Priority": 75,
-          "Status": "Free"
-        },
-        {
-          "Id": 77,
-          "Position": 2168,
-          "Priority": 77,
-          "Status": "Free"
-        },
-        {
-          "Id": 79,
-          "Position": 2218,
-          "Priority": 79,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 81,
-          "Position": 2268,
-          "Priority": 81,
-          "Status": "Free"
-        },
-        {
-          "Id": 83,
-          "Position": 2318,
-          "Priority": 83,
-          "Status": "Free"
-        },
-        {
-          "Id": 85,
-          "Position": 2368,
-          "Priority": 85,
-          "Status": "Free"
-        },
-        {
-          "Id": 87,
-          "Position": 2418,
-          "Priority": 87,
-          "Status": "Free"
-        },
-        {
-          "Id": 89,
-          "Position": 2468,
-          "Priority": 89,
-          "Status": "Free"
-        },
-        {
-          "Id": 91,
-          "Position": 2518,
-          "Priority": 91,
-          "Status": "Free"
-        },
-        {
-          "Id": 93,
-          "Position": 2568,
-          "Priority": 93,
-          "Status": "Free"
-        },
-        {
-          "Id": 95,
-          "Position": 2618,
-          "Priority": 95,
-          "Status": "Free"
-        },
-        {
-          "Id": 97,
-          "Position": 2668,
-          "Priority": 97,
-          "Status": "Free"
-        },
-        {
-          "Id": 99,
-          "Position": 2718,
-          "Priority": 99,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 101,
-          "Position": 2768,
-          "Priority": 101,
-          "Status": "Free"
-        },
-        {
-          "Id": 103,
-          "Position": 2818,
-          "Priority": 103,
-          "Status": "Free"
-        },
-        {
-          "Id": 105,
-          "Position": 2868,
-          "Priority": 105,
-          "Status": "Free"
-        },
-        {
-          "Id": 107,
-          "Position": 2918,
-          "Priority": 107,
-          "Status": "Free"
-        },
-        {
-          "Id": 109,
-          "Position": 2968,
-          "Priority": 109,
-          "Status": "Free"
-        },
-        {
-          "Id": 111,
-          "Position": 3018,
-          "Priority": 111,
-          "Status": "Free"
-        },
-        {
-          "Id": 113,
-          "Position": 3068,
-          "Priority": 113,
-          "Status": "Free"
-        },
-        {
-          "Id": 115,
-          "Position": 3118,
-          "Priority": 115,
-          "Status": "Free"
-        },
-        {
-          "Id": 117,
-          "Position": 3168,
-          "Priority": 117,
-          "Status": "Free"
-        },
-        {
-          "Id": 119,
-          "Position": 3218,
-          "Priority": 119,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 121,
-          "Position": 3268,
-          "Priority": 121,
-          "Status": "Free"
-        },
-        {
-          "Id": 123,
-          "Position": 3318,
-          "Priority": 123,
-          "Status": "Free"
-        },
-        {
-          "Id": 125,
-          "Position": 3368,
-          "Priority": 125,
-          "Status": "Free"
-        },
-        {
-          "Id": 127,
-          "Position": 3418,
-          "Priority": 127,
-          "Status": "Free"
-        },
-        {
-          "Id": 129,
-          "Position": 3468,
-          "Priority": 129,
-          "Status": "Free"
-        },
-        {
-          "Id": 131,
-          "Position": 3518,
-          "Priority": 131,
-          "Status": "Free"
-        },
-        {
-          "Id": 133,
-          "Position": 3568,
-          "Priority": 133,
-          "Status": "Free"
-        },
-        {
-          "Id": 135,
-          "Position": 3618,
-          "Priority": 135,
-          "Status": "Free"
-        },
-        {
-          "Id": 137,
-          "Position": 3668,
-          "Priority": 137,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 139,
-          "Position": 3718,
-          "Priority": 139,
-          "Status": "Free"
-        },
-        {
-          "Id": 141,
-          "Position": 3768,
-          "Priority": 141,
-          "Status": "Free"
-        },
-        {
-          "Id": 143,
-          "Position": 3818,
-          "Priority": 143,
-          "Status": "Free"
-        },
-        {
-          "Id": 145,
-          "Position": 3868,
-          "Priority": 145,
-          "Status": "Free"
-        },
-        {
-          "Id": 147,
-          "Position": 3918,
-          "Priority": 147,
-          "Status": "Free"
-        },
-        {
-          "Id": 149,
-          "Position": 3968,
-          "Priority": 149,
-          "Status": "Free"
-        },
-        {
-          "Id": 151,
-          "Position": 4018,
-          "Priority": 151,
-          "Status": "Free"
-        },
-        {
-          "Id": 153,
-          "Position": 4068,
-          "Priority": 153,
-          "Status": "Free"
-        },
-        {
-          "Id": 155,
-          "Position": 4118,
-          "Priority": 155,
-          "Status": "Free"
-        },
-        {
-          "Id": 157,
-          "Position": 4168,
-          "Priority": 157,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 159,
-          "Position": 4218,
-          "Priority": 159,
-          "Status": "Free"
-        },
-        {
-          "Id": 161,
-          "Position": 4268,
-          "Priority": 161,
-          "Status": "Free"
-        },
-        {
-          "Id": 163,
-          "Position": 4318,
-          "Priority": 163,
-          "Status": "Free"
-        },
-        {
-          "Id": 165,
-          "Position": 4368,
-          "Priority": 165,
-          "Status": "Free"
-        },
-        {
-          "Id": 167,
-          "Position": 4418,
-          "Priority": 167,
-          "Status": "Free"
-        },
-        {
-          "Id": 169,
-          "Position": 4468,
-          "Priority": 169,
-          "Status": "Free"
-        },
-        {
-          "Id": 171,
-          "Position": 4518,
-          "Priority": 171,
-          "Status": "Free"
-        },
-        {
-          "Id": 173,
-          "Position": 4568,
-          "Priority": 173,
-          "Status": "Free"
-        },
-        {
-          "Id": 175,
-          "Position": 4618,
-          "Priority": 175,
-          "Status": "Free"
-        },
-        {
-          "Id": 177,
-          "Position": 4668,
-          "Priority": 177,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 179,
-          "Position": 4718,
-          "Priority": 179,
-          "Status": "Free"
-        },
-        {
-          "Id": 181,
-          "Position": 4768,
-          "Priority": 181,
-          "Status": "Free"
-        },
-        {
-          "Id": 183,
-          "Position": 4818,
-          "Priority": 183,
-          "Status": "Free"
-        },
-        {
-          "Id": 185,
-          "Position": 4868,
-          "Priority": 185,
-          "Status": "Free"
-        },
-        {
-          "Id": 187,
-          "Position": 4918,
-          "Priority": 187,
-          "Status": "Free"
-        },
-        {
-          "Id": 189,
-          "Position": 4968,
-          "Priority": 189,
-          "Status": "Free"
-        },
-        {
-          "Id": 191,
-          "Position": 5018,
-          "Priority": 191,
-          "Status": "Free"
-        },
-        {
-          "Id": 193,
-          "Position": 5068,
-          "Priority": 193,
-          "Status": "Free"
-        },
-        {
-          "Id": 195,
-          "Position": 5118,
-          "Priority": 195,
-          "Status": "Free"
-        },
-        {
-          "Id": 197,
-          "Position": 5168,
-          "Priority": 197,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 199,
-          "Position": 5218,
-          "Priority": 199,
-          "Status": "Free"
-        },
-        {
-          "Id": 201,
-          "Position": 5268,
-          "Priority": 201,
-          "Status": "Free"
-        },
-        {
-          "Id": 203,
-          "Position": 5318,
-          "Priority": 203,
-          "Status": "Free"
-        },
-        {
-          "Id": 205,
-          "Position": 5368,
-          "Priority": 205,
-          "Status": "Free"
-        },
-        {
-          "Id": 207,
-          "Position": 5418,
-          "Priority": 207,
-          "Status": "Free"
-        },
-        {
-          "Id": 209,
-          "Position": 5468,
-          "Priority": 209,
-          "Status": "Free"
-        },
-        {
-          "Id": 211,
-          "Position": 5518,
-          "Priority": 211,
-          "Status": "Free"
-        },
-        {
-          "Id": 213,
-          "Position": 5568,
-          "Priority": 213,
-          "Status": "Free"
-        },
-        {
-          "Id": 215,
-          "Position": 5618,
-          "Priority": 215,
-          "Status": "Free"
-        },
-        {
-          "Id": 217,
-          "Position": 5668,
-          "Priority": 217,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 219,
-          "Position": 5718,
-          "Priority": 219,
-          "Status": "Free"
-        },
-        {
-          "Id": 221,
-          "Position": 5768,
-          "Priority": 221,
-          "Status": "Free"
-        },
-        {
-          "Id": 223,
-          "Position": 5818,
-          "Priority": 223,
-          "Status": "Free"
-        },
-        {
-          "Id": 225,
-          "Position": 5868,
-          "Priority": 225,
-          "Status": "Free"
-        },
-        {
-          "Id": 227,
-          "Position": 5918,
-          "Priority": 227,
-          "Status": "Free"
-        },
-        {
-          "Id": 229,
-          "Position": 5968,
-          "Priority": 229,
-          "Status": "Free"
-        },
-        {
-          "Id": 231,
-          "Position": 6018,
-          "Priority": 231,
-          "Status": "Free"
-        },
-        {
-          "Id": 233,
-          "Position": 6068,
-          "Priority": 233,
-          "Status": "Free"
-        },
-        {
-          "Id": 235,
-          "Position": 6118,
-          "Priority": 235,
-          "Status": "Free"
-        },
-        {
-          "Id": 237,
-          "Position": 6168,
-          "Priority": 237,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 239,
-          "Position": 6218,
-          "Priority": 239,
-          "Status": "Free"
-        },
-        {
-          "Id": 241,
-          "Position": 6268,
-          "Priority": 241,
-          "Status": "Free"
-        },
-        {
-          "Id": 243,
-          "Position": 6318,
-          "Priority": 243,
-          "Status": "Free"
-        },
-        {
-          "Id": 245,
-          "Position": 6368,
-          "Priority": 245,
-          "Status": "Free"
-        },
-        {
-          "Id": 247,
-          "Position": 6418,
-          "Priority": 247,
-          "Status": "Free"
-        },
-        {
-          "Id": 249,
-          "Position": 6468,
-          "Priority": 249,
-          "Status": "Free"
-        },
-        {
-          "Id": 251,
-          "Position": 6518,
-          "Priority": 251,
-          "Status": "Free"
-        },
-        {
-          "Id": 253,
-          "Position": 6568,
-          "Priority": 253,
-          "Status": "Free"
-        },
-        {
-          "Id": 255,
-          "Position": 6618,
-          "Priority": 255,
-          "Status": "Free"
-        },
-        {
-          "Id": 257,
-          "Position": 6668,
-          "Priority": 257,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 259,
-          "Position": 6718,
-          "Priority": 259,
-          "Status": "Free"
-        },
-        {
-          "Id": 261,
-          "Position": 6768,
-          "Priority": 261,
-          "Status": "Free"
-        },
-        {
-          "Id": 263,
-          "Position": 6818,
-          "Priority": 263,
-          "Status": "Free"
-        },
-        {
-          "Id": 265,
-          "Position": 6868,
-          "Priority": 265,
-          "Status": "Free"
-        },
-        {
-          "Id": 267,
-          "Position": 6918,
-          "Priority": 267,
-          "Status": "Free"
-        },
-        {
-          "Id": 269,
-          "Position": 6968,
-          "Priority": 269,
-          "Status": "Free"
-        },
-        {
-          "Id": 271,
-          "Position": 7018,
-          "Priority": 271,
-          "Status": "Free"
-        },
-        {
-          "Id": 273,
-          "Position": 7068,
-          "Priority": 273,
-          "Status": "Free"
-        },
-        {
-          "Id": 275,
-          "Position": 7118,
-          "Priority": 275,
-          "Status": "Free"
-        },
-        {
-          "Id": 277,
-          "Position": 7168,
-          "Priority": 277,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 279,
-          "Position": 7218,
-          "Priority": 279,
-          "Status": "Free"
-        },
-        {
-          "Id": 281,
-          "Position": 7268,
-          "Priority": 281,
-          "Status": "Free"
-        },
-        {
-          "Id": 283,
-          "Position": 7318,
-          "Priority": 283,
-          "Status": "Free"
-        },
-        {
-          "Id": 285,
-          "Position": 7368,
-          "Priority": 285,
-          "Status": "Free"
-        },
-        {
-          "Id": 287,
-          "Position": 7418,
-          "Priority": 287,
-          "Status": "Free"
-        },
-        {
-          "Id": 289,
-          "Position": 7468,
-          "Priority": 289,
-          "Status": "Free"
-        },
-        {
-          "Id": 291,
-          "Position": 7518,
-          "Priority": 291,
-          "Status": "Free"
-        },
-        {
-          "Id": 293,
-          "Position": 7568,
-          "Priority": 293,
-          "Status": "Free"
-        },
-        {
-          "Id": 295,
-          "Position": 7618,
-          "Priority": 295,
-          "Status": "Free"
-        },
-        {
-          "Id": 297,
-          "Position": 7668,
-          "Priority": 297,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 299,
-          "Position": 7718,
-          "Priority": 299,
-          "Status": "Free"
-        },
-        {
-          "Id": 301,
-          "Position": 7768,
-          "Priority": 301,
-          "Status": "Free"
-        },
-        {
-          "Id": 303,
-          "Position": 7818,
-          "Priority": 303,
-          "Status": "Free"
-        },
-        {
-          "Id": 305,
-          "Position": 7868,
-          "Priority": 305,
-          "Status": "Free"
-        },
-        {
-          "Id": 307,
-          "Position": 7918,
-          "Priority": 307,
-          "Status": "Free"
-        },
-        {
-          "Id": 309,
-          "Position": 7968,
-          "Priority": 309,
-          "Status": "Free"
-        },
-        {
-          "Id": 311,
-          "Position": 8018,
-          "Priority": 311,
-          "Status": "Free"
-        },
-        {
-          "Id": 313,
-          "Position": 8068,
-          "Priority": 313,
-          "Status": "Free"
-        },
-        {
-          "Id": 315,
-          "Position": 8118,
-          "Priority": 315,
-          "Status": "Free"
-        },
-        {
-          "Id": 317,
-          "Position": 8168,
-          "Priority": 317,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 319,
-          "Position": 8218,
-          "Priority": 319,
-          "Status": "Free"
-        },
-        {
-          "Id": 321,
-          "Position": 8268,
-          "Priority": 321,
-          "Status": "Free"
-        },
-        {
-          "Id": 323,
-          "Position": 8318,
-          "Priority": 323,
-          "Status": "Free"
-        },
-        {
-          "Id": 325,
-          "Position": 8368,
-          "Priority": 325,
-          "Status": "Free"
-        },
-        {
-          "Id": 327,
-          "Position": 8418,
-          "Priority": 327,
-          "Status": "Free"
-        },
-        {
-          "Id": 329,
-          "Position": 8468,
-          "Priority": 329,
-          "Status": "Free"
-        },
-        {
-          "Id": 331,
-          "Position": 8518,
-          "Priority": 331,
-          "Status": "Free"
-        },
-        {
-          "Id": 333,
-          "Position": 8568,
-          "Priority": 333,
-          "Status": "Free"
-        },
-        {
-          "Id": 335,
-          "Position": 8618,
-          "Priority": 335,
-          "Status": "Free"
-        },
-        {
-          "Id": 337,
-          "Position": 8668,
-          "Priority": 337,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 339,
-          "Position": 8718,
-          "Priority": 339,
-          "Status": "Free"
-        },
-        {
-          "Id": 341,
-          "Position": 8768,
-          "Priority": 341,
-          "Status": "Free"
-        },
-        {
-          "Id": 343,
-          "Position": 8818,
-          "Priority": 343,
-          "Status": "Free"
-        },
-        {
-          "Id": 345,
-          "Position": 8868,
-          "Priority": 345,
-          "Status": "Free"
-        },
-        {
-          "Id": 347,
-          "Position": 8918,
-          "Priority": 347,
-          "Status": "Free"
-        },
-        {
-          "Id": 349,
-          "Position": 8968,
-          "Priority": 349,
-          "Status": "Free"
-        },
-        {
-          "Id": 351,
-          "Position": 9018,
-          "Priority": 351,
-          "Status": "Free"
-        },
-        {
-          "Id": 353,
-          "Position": 9068,
-          "Priority": 353,
-          "Status": "Free"
-        },
-        {
-          "Id": 355,
-          "Position": 9118,
-          "Priority": 355,
-          "Status": "Free"
-        },
-        {
-          "Id": 357,
-          "Position": 9168,
-          "Priority": 357,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Front",
-      "Cells": [
-        {
-          "Id": 359,
-          "Position": 9218,
-          "Priority": 359,
-          "Status": "Free"
-        },
-        {
-          "Id": 361,
-          "Position": 9268,
-          "Priority": 361,
-          "Status": "Free"
-        },
-        {
-          "Id": 363,
-          "Position": 9318,
-          "Priority": 363,
-          "Status": "Free"
-        },
-        {
-          "Id": 365,
-          "Position": 9368,
-          "Priority": 365,
-          "Status": "Free"
-        },
-        {
-          "Id": 367,
-          "Position": 9418,
-          "Priority": 367,
-          "Status": "Free"
-        },
-        {
-          "Id": 369,
-          "Position": 9468,
-          "Priority": 369,
-          "Status": "Free"
-        },
-        {
-          "Id": 371,
-          "Position": 9518,
-          "Priority": 371,
-          "Status": "Free"
-        },
-        {
-          "Id": 373,
-          "Position": 9568,
-          "Priority": 373,
-          "Status": "Free"
-        },
-        {
-          "Id": 375,
-          "Position": 9618,
-          "Priority": 375,
-          "Status": "Free"
-        },
-        {
-          "Id": 377,
-          "Position": 9668,
-          "Priority": 377,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 2,
-          "Position": 355,
-          "Priority": 2,
-          "IsUnusable": true
-        },
-        {
-          "Id": 4,
-          "Position": 367,
-          "Priority": 4,
-          "IsUnusable": true
-        },
-        {
-          "Id": 6,
-          "Position": 418,
-          "Priority": 6,
-          "IsUnusable": true
-        },
-        {
-          "Id": 8,
-          "Position": 468,
-          "Priority": 8,
-          "Status": "Free"
-        },
-        {
-          "Id": 10,
-          "Position": 518,
-          "Priority": 10,
-          "Status": "Free"
-        },
-        {
-          "Id": 12,
-          "Position": 568,
-          "Priority": 12,
-          "Status": "Free"
-        },
-        {
-          "Id": 14,
-          "Position": 618,
-          "Priority": 14,
-          "Status": "Free"
-        },
-        {
-          "Id": 16,
-          "Position": 668,
-          "Priority": 16,
-          "Status": "Free"
-        },
-        {
-          "Id": 18,
-          "Position": 718,
-          "Priority": 18,
-          "Status": "Free"
-        },
-        {
-          "Id": 20,
-          "Position": 768,
-          "Priority": 20,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 22,
-          "Position": 818,
-          "Priority": 22,
-          "Status": "Free"
-        },
-        {
-          "Id": 24,
-          "Position": 868,
-          "Priority": 24,
-          "Status": "Free"
-        },
-        {
-          "Id": 26,
-          "Position": 918,
-          "Priority": 26,
-          "Status": "Free"
-        },
-        {
-          "Id": 28,
-          "Position": 968,
-          "Priority": 28,
-          "Status": "Free"
-        },
-        {
-          "Id": 30,
-          "Position": 1018,
-          "Priority": 30,
-          "Status": "Free"
-        },
-        {
-          "Id": 32,
-          "Position": 1068,
-          "Priority": 32,
-          "Status": "Free"
-        },
-        {
-          "Id": 34,
-          "Position": 1118,
-          "Priority": 34,
-          "Status": "Free"
-        },
-        {
-          "Id": 36,
-          "Position": 1168,
-          "Priority": 36,
-          "Status": "Free"
-        },
-        {
-          "Id": 38,
-          "Position": 1218,
-          "Priority": 38,
-          "Status": "Free"
-        },
-        {
-          "Id": 40,
-          "Position": 1268,
-          "Priority": 40,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 42,
-          "Position": 1318,
-          "Priority": 42,
-          "Status": "Free"
-        },
-        {
-          "Id": 44,
-          "Position": 1368,
-          "Priority": 44,
-          "Status": "Free"
-        },
-        {
-          "Id": 46,
-          "Position": 1418,
-          "Priority": 46,
-          "Status": "Free"
-        },
-        {
-          "Id": 48,
-          "Position": 1468,
-          "Priority": 48,
-          "Status": "Free"
-        },
-        {
-          "Id": 50,
-          "Position": 1518,
-          "Priority": 50,
-          "Status": "Free"
-        },
-        {
-          "Id": 52,
-          "Position": 1568,
-          "Priority": 52,
-          "Status": "Free"
-        },
-        {
-          "Id": 54,
-          "Position": 1618,
-          "Priority": 54,
-          "Status": "Free"
-        },
-        {
-          "Id": 56,
-          "Position": 1668,
-          "Priority": 56,
-          "Status": "Free"
-        },
-        {
-          "Id": 58,
-          "Position": 1718,
-          "Priority": 58,
-          "Status": "Free"
-        },
-        {
-          "Id": 60,
-          "Position": 1768,
-          "Priority": 60,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 62,
-          "Position": 1818,
-          "Priority": 62,
-          "Status": "Free"
-        },
-        {
-          "Id": 64,
-          "Position": 1868,
-          "Priority": 64,
-          "Status": "Free"
-        },
-        {
-          "Id": 66,
-          "Position": 1918,
-          "Priority": 66,
-          "Status": "Free"
-        },
-        {
-          "Id": 68,
-          "Position": 1968,
-          "Priority": 68,
-          "Status": "Free"
-        },
-        {
-          "Id": 70,
-          "Position": 2018,
-          "Priority": 70,
-          "Status": "Free"
-        },
-        {
-          "Id": 72,
-          "Position": 2068,
-          "Priority": 72,
-          "Status": "Free"
-        },
-        {
-          "Id": 74,
-          "Position": 2118,
-          "Priority": 74,
-          "Status": "Free"
-        },
-        {
-          "Id": 76,
-          "Position": 2168,
-          "Priority": 76,
-          "Status": "Free"
-        },
-        {
-          "Id": 78,
-          "Position": 2218,
-          "Priority": 78,
-          "Status": "Free"
-        },
-        {
-          "Id": 80,
-          "Position": 2268,
-          "Priority": 80,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 82,
-          "Position": 2318,
-          "Priority": 82,
-          "Status": "Free"
-        },
-        {
-          "Id": 84,
-          "Position": 2368,
-          "Priority": 84,
-          "Status": "Free"
-        },
-        {
-          "Id": 86,
-          "Position": 2418,
-          "Priority": 86,
-          "Status": "Free"
-        },
-        {
-          "Id": 88,
-          "Position": 2468,
-          "Priority": 88,
-          "Status": "Free"
-        },
-        {
-          "Id": 90,
-          "Position": 2518,
-          "Priority": 90,
-          "Status": "Free"
-        },
-        {
-          "Id": 92,
-          "Position": 2568,
-          "Priority": 92,
-          "Status": "Free"
-        },
-        {
-          "Id": 94,
-          "Position": 2618,
-          "Priority": 94,
-          "Status": "Free"
-        },
-        {
-          "Id": 96,
-          "Position": 2668,
-          "Priority": 96,
-          "Status": "Free"
-        },
-        {
-          "Id": 98,
-          "Position": 2718,
-          "Priority": 98,
-          "Status": "Free"
-        },
-        {
-          "Id": 100,
-          "Position": 2768,
-          "Priority": 100,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 102,
-          "Position": 2818,
-          "Priority": 102,
-          "Status": "Free"
-        },
-        {
-          "Id": 104,
-          "Position": 2868,
-          "Priority": 104,
-          "Status": "Free"
-        },
-        {
-          "Id": 106,
-          "Position": 2918,
-          "Priority": 106,
-          "Status": "Free"
-        },
-        {
-          "Id": 108,
-          "Position": 2968,
-          "Priority": 108,
-          "Status": "Free"
-        },
-        {
-          "Id": 110,
-          "Position": 3018,
-          "Priority": 110,
-          "Status": "Free"
-        },
-        {
-          "Id": 112,
-          "Position": 3068,
-          "Priority": 112,
-          "Status": "Free"
-        },
-        {
-          "Id": 114,
-          "Position": 3118,
-          "Priority": 114,
-          "Status": "Free"
-        },
-        {
-          "Id": 116,
-          "Position": 3168,
-          "Priority": 116,
-          "Status": "Free"
-        },
-        {
-          "Id": 118,
-          "Position": 3218,
-          "Priority": 118,
-          "Status": "Free"
-        },
-        {
-          "Id": 120,
-          "Position": 3268,
-          "Priority": 120,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 122,
-          "Position": 3318,
-          "Priority": 122,
-          "Status": "Free"
-        },
-        {
-          "Id": 124,
-          "Position": 3368,
-          "Priority": 124,
-          "Status": "Free"
-        },
-        {
-          "Id": 126,
-          "Position": 3418,
-          "Priority": 126,
-          "Status": "Free"
-        },
-        {
-          "Id": 128,
-          "Position": 3468,
-          "Priority": 128,
-          "Status": "Free"
-        },
-        {
-          "Id": 130,
-          "Position": 3518,
-          "Priority": 130,
-          "Status": "Free"
-        },
-        {
-          "Id": 132,
-          "Position": 3568,
-          "Priority": 132,
-          "Status": "Free"
-        },
-        {
-          "Id": 134,
-          "Position": 3618,
-          "Priority": 134,
-          "Status": "Free"
-        },
-        {
-          "Id": 136,
-          "Position": 3668,
-          "Priority": 136,
-          "Status": "Free"
-        },
-        {
-          "Id": 138,
-          "Position": 3718,
-          "Priority": 138,
-          "Status": "Free"
-        },
-        {
-          "Id": 140,
-          "Position": 3768,
-          "Priority": 140,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 142,
-          "Position": 3818,
-          "Priority": 142,
-          "Status": "Free"
-        },
-        {
-          "Id": 144,
-          "Position": 3868,
-          "Priority": 144,
-          "Status": "Free"
-        },
-        {
-          "Id": 146,
-          "Position": 3918,
-          "Priority": 146,
-          "Status": "Free"
-        },
-        {
-          "Id": 148,
-          "Position": 3968,
-          "Priority": 148,
-          "Status": "Free"
-        },
-        {
-          "Id": 150,
-          "Position": 4018,
-          "Priority": 150,
-          "Status": "Free"
-        },
-        {
-          "Id": 152,
-          "Position": 4068,
-          "Priority": 152,
-          "Status": "Free"
-        },
-        {
-          "Id": 154,
-          "Position": 4118,
-          "Priority": 154,
-          "Status": "Free"
-        },
-        {
-          "Id": 156,
-          "Position": 4168,
-          "Priority": 156,
-          "Status": "Free"
-        },
-        {
-          "Id": 158,
-          "Position": 4218,
-          "Priority": 158,
-          "Status": "Free"
-        },
-        {
-          "Id": 160,
-          "Position": 4268,
-          "Priority": 160,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 162,
-          "Position": 4318,
-          "Priority": 162,
-          "Status": "Free"
-        },
-        {
-          "Id": 164,
-          "Position": 4368,
-          "Priority": 164,
-          "Status": "Free"
-        },
-        {
-          "Id": 166,
-          "Position": 4418,
-          "Priority": 166,
-          "Status": "Free"
-        },
-        {
-          "Id": 168,
-          "Position": 4468,
-          "Priority": 168,
-          "Status": "Free"
-        },
-        {
-          "Id": 170,
-          "Position": 4518,
-          "Priority": 170,
-          "Status": "Free"
-        },
-        {
-          "Id": 172,
-          "Position": 4568,
-          "Priority": 172,
-          "Status": "Free"
-        },
-        {
-          "Id": 174,
-          "Position": 4618,
-          "Priority": 174,
-          "Status": "Free"
-        },
-        {
-          "Id": 176,
-          "Position": 4668,
-          "Priority": 176,
-          "Status": "Free"
-        },
-        {
-          "Id": 178,
-          "Position": 4718,
-          "Priority": 178,
-          "Status": "Free"
-        },
-        {
-          "Id": 180,
-          "Position": 4768,
-          "Priority": 180,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 182,
-          "Position": 4818,
-          "Priority": 182,
-          "Status": "Free"
-        },
-        {
-          "Id": 184,
-          "Position": 4868,
-          "Priority": 184,
-          "Status": "Free"
-        },
-        {
-          "Id": 186,
-          "Position": 4918,
-          "Priority": 186,
-          "Status": "Free"
-        },
-        {
-          "Id": 188,
-          "Position": 4968,
-          "Priority": 188,
-          "Status": "Free"
-        },
-        {
-          "Id": 190,
-          "Position": 5018,
-          "Priority": 190,
-          "Status": "Free"
-        },
-        {
-          "Id": 192,
-          "Position": 5068,
-          "Priority": 192,
-          "Status": "Free"
-        },
-        {
-          "Id": 194,
-          "Position": 5118,
-          "Priority": 194,
-          "Status": "Free"
-        },
-        {
-          "Id": 196,
-          "Position": 5168,
-          "Priority": 196,
-          "Status": "Free"
-        },
-        {
-          "Id": 198,
-          "Position": 5218,
-          "Priority": 198,
-          "Status": "Free"
-        },
-        {
-          "Id": 200,
-          "Position": 5268,
-          "Priority": 200,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 202,
-          "Position": 5318,
-          "Priority": 202,
-          "Status": "Free"
-        },
-        {
-          "Id": 204,
-          "Position": 5368,
-          "Priority": 204,
-          "Status": "Free"
-        },
-        {
-          "Id": 206,
-          "Position": 5418,
-          "Priority": 206,
-          "Status": "Free"
-        },
-        {
-          "Id": 208,
-          "Position": 5468,
-          "Priority": 208,
-          "Status": "Free"
-        },
-        {
-          "Id": 210,
-          "Position": 5518,
-          "Priority": 210,
-          "Status": "Free"
-        },
-        {
-          "Id": 212,
-          "Position": 5568,
-          "Priority": 212,
-          "Status": "Free"
-        },
-        {
-          "Id": 214,
-          "Position": 5618,
-          "Priority": 214,
-          "Status": "Free"
-        },
-        {
-          "Id": 216,
-          "Position": 5668,
-          "Priority": 216,
-          "Status": "Free"
-        },
-        {
-          "Id": 218,
-          "Position": 5718,
-          "Priority": 218,
-          "Status": "Free"
-        },
-        {
-          "Id": 220,
-          "Position": 5768,
-          "Priority": 220,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 222,
-          "Position": 5818,
-          "Priority": 222,
-          "Status": "Free"
-        },
-        {
-          "Id": 224,
-          "Position": 5868,
-          "Priority": 224,
-          "Status": "Free"
-        },
-        {
-          "Id": 226,
-          "Position": 5918,
-          "Priority": 226,
-          "Status": "Free"
-        },
-        {
-          "Id": 228,
-          "Position": 5968,
-          "Priority": 228,
-          "Status": "Free"
-        },
-        {
-          "Id": 230,
-          "Position": 6018,
-          "Priority": 230,
-          "Status": "Free"
-        },
-        {
-          "Id": 232,
-          "Position": 6068,
-          "Priority": 232,
-          "Status": "Free"
-        },
-        {
-          "Id": 234,
-          "Position": 6118,
-          "Priority": 234,
-          "Status": "Free"
-        },
-        {
-          "Id": 236,
-          "Position": 6168,
-          "Priority": 236,
-          "Status": "Free"
-        },
-        {
-          "Id": 238,
-          "Position": 6218,
-          "Priority": 238,
-          "Status": "Free"
-        },
-        {
-          "Id": 240,
-          "Position": 6268,
-          "Priority": 240,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 242,
-          "Position": 6318,
-          "Priority": 242,
-          "Status": "Free"
-        },
-        {
-          "Id": 244,
-          "Position": 6368,
-          "Priority": 244,
-          "Status": "Free"
-        },
-        {
-          "Id": 246,
-          "Position": 6418,
-          "Priority": 246,
-          "Status": "Free"
-        },
-        {
-          "Id": 248,
-          "Position": 6468,
-          "Priority": 248,
-          "Status": "Free"
-        },
-        {
-          "Id": 250,
-          "Position": 6518,
-          "Priority": 250,
-          "Status": "Free"
-        },
-        {
-          "Id": 252,
-          "Position": 6568,
-          "Priority": 252,
-          "Status": "Free"
-        },
-        {
-          "Id": 254,
-          "Position": 6618,
-          "Priority": 254,
-          "Status": "Free"
-        },
-        {
-          "Id": 256,
-          "Position": 6668,
-          "Priority": 256,
-          "Status": "Free"
-        },
-        {
-          "Id": 258,
-          "Position": 6718,
-          "Priority": 258,
-          "Status": "Free"
-        },
-        {
-          "Id": 260,
-          "Position": 6768,
-          "Priority": 260,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 262,
-          "Position": 6818,
-          "Priority": 262,
-          "Status": "Free"
-        },
-        {
-          "Id": 264,
-          "Position": 6868,
-          "Priority": 264,
-          "Status": "Free"
-        },
-        {
-          "Id": 266,
-          "Position": 6918,
-          "Priority": 266,
-          "Status": "Free"
-        },
-        {
-          "Id": 268,
-          "Position": 6968,
-          "Priority": 268,
-          "Status": "Free"
-        },
-        {
-          "Id": 270,
-          "Position": 7018,
-          "Priority": 270,
-          "Status": "Free"
-        },
-        {
-          "Id": 272,
-          "Position": 7068,
-          "Priority": 272,
-          "Status": "Free"
-        },
-        {
-          "Id": 274,
-          "Position": 7118,
-          "Priority": 274,
-          "Status": "Free"
-        },
-        {
-          "Id": 276,
-          "Position": 7168,
-          "Priority": 276,
-          "Status": "Free"
-        },
-        {
-          "Id": 278,
-          "Position": 7218,
-          "Priority": 278,
-          "Status": "Free"
-        },
-        {
-          "Id": 280,
-          "Position": 7268,
-          "Priority": 280,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 282,
-          "Position": 7318,
-          "Priority": 282,
-          "Status": "Free"
-        },
-        {
-          "Id": 284,
-          "Position": 7368,
-          "Priority": 284,
-          "Status": "Free"
-        },
-        {
-          "Id": 286,
-          "Position": 7418,
-          "Priority": 286,
-          "Status": "Free"
-        },
-        {
-          "Id": 288,
-          "Position": 7468,
-          "Priority": 288,
-          "Status": "Free"
-        },
-        {
-          "Id": 290,
-          "Position": 7518,
-          "Priority": 290,
-          "Status": "Free"
-        },
-        {
-          "Id": 292,
-          "Position": 7568,
-          "Priority": 292,
-          "Status": "Free"
-        },
-        {
-          "Id": 294,
-          "Position": 7618,
-          "Priority": 294,
-          "Status": "Free"
-        },
-        {
-          "Id": 296,
-          "Position": 7668,
-          "Priority": 296,
-          "Status": "Free"
-        },
-        {
-          "Id": 298,
-          "Position": 7718,
-          "Priority": 298,
-          "Status": "Free"
-        },
-        {
-          "Id": 300,
-          "Position": 7768,
-          "Priority": 300,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 302,
-          "Position": 7818,
-          "Priority": 302,
-          "Status": "Free"
-        },
-        {
-          "Id": 304,
-          "Position": 7868,
-          "Priority": 304,
-          "Status": "Free"
-        },
-        {
-          "Id": 306,
-          "Position": 7918,
-          "Priority": 306,
-          "Status": "Free"
-        },
-        {
-          "Id": 308,
-          "Position": 7968,
-          "Priority": 308,
-          "Status": "Free"
-        },
-        {
-          "Id": 310,
-          "Position": 8018,
-          "Priority": 310,
-          "Status": "Free"
-        },
-        {
-          "Id": 312,
-          "Position": 8068,
-          "Priority": 312,
-          "Status": "Free"
-        },
-        {
-          "Id": 314,
-          "Position": 8118,
-          "Priority": 314,
-          "Status": "Free"
-        },
-        {
-          "Id": 316,
-          "Position": 8168,
-          "Priority": 316,
-          "Status": "Free"
-        },
-        {
-          "Id": 318,
-          "Position": 8218,
-          "Priority": 318,
-          "Status": "Free"
-        },
-        {
-          "Id": 320,
-          "Position": 8268,
-          "Priority": 320,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 322,
-          "Position": 8318,
-          "Priority": 322,
-          "Status": "Free"
-        },
-        {
-          "Id": 324,
-          "Position": 8368,
-          "Priority": 324,
-          "Status": "Free"
-        },
-        {
-          "Id": 326,
-          "Position": 8418,
-          "Priority": 326,
-          "Status": "Free"
-        },
-        {
-          "Id": 328,
-          "Position": 8468,
-          "Priority": 328,
-          "Status": "Free"
-        },
-        {
-          "Id": 330,
-          "Position": 8518,
-          "Priority": 330,
-          "Status": "Free"
-        },
-        {
-          "Id": 332,
-          "Position": 8568,
-          "Priority": 332,
-          "Status": "Free"
-        },
-        {
-          "Id": 334,
-          "Position": 8618,
-          "Priority": 334,
-          "Status": "Free"
-        },
-        {
-          "Id": 336,
-          "Position": 8668,
-          "Priority": 336,
-          "Status": "Free"
-        },
-        {
-          "Id": 338,
-          "Position": 8718,
-          "Priority": 338,
-          "Status": "Free"
-        },
-        {
-          "Id": 340,
-          "Position": 8768,
-          "Priority": 340,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 342,
-          "Position": 8818,
-          "Priority": 342,
-          "Status": "Free"
-        },
-        {
-          "Id": 344,
-          "Position": 8868,
-          "Priority": 344,
-          "Status": "Free"
-        },
-        {
-          "Id": 346,
-          "Position": 8918,
-          "Priority": 346,
-          "Status": "Free"
-        },
-        {
-          "Id": 348,
-          "Position": 8968,
-          "Priority": 348,
-          "Status": "Free"
-        },
-        {
-          "Id": 350,
-          "Position": 9018,
-          "Priority": 350,
-          "Status": "Free"
-        },
-        {
-          "Id": 352,
-          "Position": 9068,
-          "Priority": 352,
-          "Status": "Free"
-        },
-        {
-          "Id": 354,
-          "Position": 9118,
-          "Priority": 354,
-          "Status": "Free"
-        },
-        {
-          "Id": 356,
-          "Position": 9168,
-          "Priority": 356,
-          "Status": "Free"
-        },
-        {
-          "Id": 358,
-          "Position": 9218,
-          "Priority": 358,
-          "Status": "Free"
-        },
-        {
-          "Id": 360,
-          "Position": 9268,
-          "Priority": 360,
-          "Status": "Free"
-        }
-      ]
-    },
-    {
-      "Side": "Back",
-      "Cells": [
-        {
-          "Id": 362,
-          "Position": 9318,
-          "Priority": 362,
-          "Status": "Free"
-        },
-        {
-          "Id": 364,
-          "Position": 9368,
-          "Priority": 364,
-          "Status": "Free"
-        },
-        {
-          "Id": 366,
-          "Position": 9418,
-          "Priority": 366,
-          "Status": "Free"
-        },
-        {
-          "Id": 368,
-          "Position": 9468,
-          "Priority": 368,
-          "Status": "Free"
-        },
-        {
-          "Id": 370,
-          "Position": 9518,
-          "Priority": 370,
-          "Status": "Free"
-        },
-        {
-          "Id": 372,
-          "Position": 9568,
-          "Priority": 372,
-          "Status": "Free"
-        },
-        {
-          "Id": 374,
-          "Position": 9618,
-          "Priority": 374,
-          "Status": "Free"
-        },
-        {
-          "Id": 376,
-          "Position": 9668,
-          "Priority": 376,
-          "Status": "Free"
-        },
-        {
-          "Id": 378,
-          "Position": 9718,
-          "Priority": 378,
-          "Status": "Free"
-        }
-      ]
-    }
-  ],
-  "ProductionDate": "2019-10-19T16:39:57-08:00",
-  "SerialNumber": "Simulation"
-}, "SetupProcedures": {
-  "BayHeightCheck": {
-    "Step": 0.5,
-    "FeedRate": 0.2
-  },
-  "BeltBurnishingTest": {
-    "RequiredCycles": 200
-  },
-  "BeltBurnishing": {
-    "CycleQuantity": 5
-  },
-  "CarouselManualMovements": {
-    "FeedRate": 0.04
-  },
-  "CellPanelsCheck": {
-    "FeedRate": 0.2,
-    "Step": 0.5
-  },
-  "CellsHeightCheck": {
-    "Step": 0.5,
-    "FeedRate": 0.2
-  },
-  "DepositAndPickUpTest": {
-    "RequiredCycles": 10
-  },
-  "LoadFirstDrawerTest": {
-    "FeedRate": 0.2
-  },
-  "ShutterHeightCheck": {
-    "FeedRate": 0.1
-  },
-  "ShutterTest": {
-    "FeedRate": 1.0,
-    "RequiredCycles": 10000
-  },
-  "VerticalOffsetCalibration": {
-    "ReferenceCellId": 50,
-    "Step": 0.5,
-    "FeedRate": 0.2
-  },
-  "VerticalResolutionCalibration": {
-    "InitialPosition": 1000,
-    "FinalPosition": 5500,
-    "FeedRate": 0.2
   }
-} }
+}

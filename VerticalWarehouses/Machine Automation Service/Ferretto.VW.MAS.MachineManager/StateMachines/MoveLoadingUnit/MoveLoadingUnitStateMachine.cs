@@ -259,6 +259,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             {
                 this.Logger.LogError(ErrorDescriptions.MachineModeNotValid);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineModeNotValid);
+                return false;
             }
 
 #if !CHECK_BAY_SENSOR
