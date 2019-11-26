@@ -88,6 +88,11 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines
 
                 this.Logger.LogTrace($"1:new State: {newState.GetType().Name}");
 
+                if (this.CurrentState is IDisposable disposableState)
+                {
+                    disposableState.Dispose();
+                }
+
                 this.CurrentState = newState;
                 newState.Start();
             }
