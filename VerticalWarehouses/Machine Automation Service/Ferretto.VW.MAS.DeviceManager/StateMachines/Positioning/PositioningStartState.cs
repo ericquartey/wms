@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IPositioningMachineData machineData;
 
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+
         private readonly IServiceScope scope;
 
         private readonly IPositioningStateData stateData;
@@ -173,10 +175,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
-                    .GetRequiredService<ISetupProceduresDataProvider>()
-                    .GetBeltBurnishingTest()
-                    .PerformedCycles;
+                if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                {
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBeltBurnishingTest()
+                        .PerformedCycles;
+
+                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                }
             }
 
             this.Logger.LogTrace(

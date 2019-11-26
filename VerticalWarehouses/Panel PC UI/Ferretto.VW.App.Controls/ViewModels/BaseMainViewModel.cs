@@ -276,7 +276,7 @@ namespace Ferretto.VW.App.Controls
                 //
                 (enableIfManual &&
                  machinePower == MachinePowerState.Powered &&
-                 machineMode == MachineMode.Manual
+                 (machineMode == MachineMode.Manual || machineMode == MachineMode.Test)
                  //&& this.MachineError is null
                  );
         }

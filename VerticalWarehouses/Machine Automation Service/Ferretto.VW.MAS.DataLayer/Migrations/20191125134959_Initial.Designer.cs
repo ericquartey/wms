@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20191125134959_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -501,14 +503,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
-                            Id = 22,
-                            Code = 22,
-                            Description = "MachineModeNotValid",
-                            Reason = "MachineModeNotValid",
-                            Severity = 1
-                        },
-                        new
-                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -855,11 +849,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 21,
-                            TotalErrors = 0
-                        },
-                        new
-                        {
-                            Code = 22,
                             TotalErrors = 0
                         },
                         new
@@ -1284,7 +1273,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320),
+                            InstallationDate = new DateTime(2017, 1, 25, 14, 49, 58, 508, DateTimeKind.Local).AddTicks(4069),
                             ServiceStatus = 86
                         });
                 });

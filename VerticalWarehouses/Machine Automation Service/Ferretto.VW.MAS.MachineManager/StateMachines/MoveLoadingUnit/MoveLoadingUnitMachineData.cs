@@ -25,6 +25,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         public Guid MachineId { get; protected set; }
 
+        public MissionType MissionType { get; set; }
+
         #endregion
     }
 }
