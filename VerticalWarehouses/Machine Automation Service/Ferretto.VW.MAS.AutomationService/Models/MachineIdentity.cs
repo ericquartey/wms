@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.AutomationService.Models
 
         public System.DateTime? LastServiceDate { get; set; }
 
+        public int MachineId { get; set; }
+
         public double MaxGrossWeight { get; set; }
 
         public string ModelName { get; set; }

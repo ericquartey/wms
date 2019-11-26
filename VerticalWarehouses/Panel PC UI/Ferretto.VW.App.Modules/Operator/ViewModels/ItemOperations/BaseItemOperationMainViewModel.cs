@@ -23,7 +23,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand confirmOperationCommand;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyAbortingOperation;
 
@@ -83,7 +83,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
