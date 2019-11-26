@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -141,6 +142,30 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             }
 
             return false;
+        }
+
+        public bool TryCreateMachineMission(FSMType missionType, MoveLoadingUnitMessageData command, BayNumber bayNumber, out Guid missionId)
+        {
+            missionId = Guid.Empty;
+            var returnValue = false;
+            // TODO: exclude missions with the same WmsId or the same Bay
+
+            //if (command.WmsId.HasValue)
+            //{
+            //    returnValue = !this.machineMissions.Where(m => m.Type == missionType).Select(x => x.GetCurrent() as MoveLoadingUnitMessageData).Any(w => w.WmsId.HasValue && w.WmsId == command.WmsId);
+            //    var miss = this.machineMissions.Where(m => m.Type == FSMType.MoveLoadingUnit).Select(x => x.GetCurrent() as IFiniteStateMachine);
+            //}
+            //else
+            //{
+            //    returnValue = !this.machineMissions.Where(m => m.Type == missionType).Select(x => x as MoveLoadingUnitMessageData).Any(w => w.TargetBay == bayNumber);
+            //}
+            if (returnValue)
+            {
+                IMission newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
+                this.machineMissions.Add(newMission);
+                missionId = newMission.Id;
+            }
+            return returnValue;
         }
 
         /// <summary>

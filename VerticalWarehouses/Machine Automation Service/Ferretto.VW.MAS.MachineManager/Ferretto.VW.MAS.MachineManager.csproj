@@ -25,8 +25,4 @@
     <ProjectReference Include="..\Ferretto.VW.MAS.DeviceManager\Ferretto.VW.MAS.DeviceManager.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="StateMachines\MoveLoadingUnit\Enumerations\" />
-  </ItemGroup>
-
 </Project>

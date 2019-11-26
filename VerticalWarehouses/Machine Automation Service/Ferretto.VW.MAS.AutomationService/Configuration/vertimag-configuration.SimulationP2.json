@@ -3,27 +3,428 @@
   "LoadingUnits": [
     {
       "Tare": 120,
-      "MaxNetWeight": 800,
-
+      "MaxNetWeight": 930,
       "Id": 1
     },
     {
       "Tare": 120,
-      "MaxNetWeight": 800,
-
+      "MaxNetWeight": 930,
       "Id": 2
     },
     {
       "Tare": 120,
-      "MaxNetWeight": 800,
-
+      "MaxNetWeight": 930,
       "Id": 3
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 4
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 5
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 6
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 7
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 8
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 9
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 10
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 11
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 12
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 13
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 14
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 15
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 16
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 17
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 18
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 19
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 20
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 21
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 22
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 23
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 24
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 25
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 26
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 27
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 28
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 29
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 30
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 31
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 32
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 33
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 34
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 35
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 36
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 37
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 38
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 39
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 40
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 41
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 42
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 43
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 44
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 45
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 46
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 47
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 48
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 49
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 50
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 51
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 52
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 53
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 54
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 55
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 56
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 57
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 58
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 59
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 60
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 61
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 62
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 63
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 64
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 65
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 66
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 67
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 68
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 69
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 70
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 71
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 72
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 73
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 74
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 75
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 76
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 77
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 78
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 79
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 80
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 81
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 82
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 83
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 84
     }
   ],
   "Machine": {
     "Bays": [
       {
-        "AlphaNumericBar": null,
         "Inverter": {
           "Type": "Acu",
           "Index": "Slave3"
@@ -187,12 +588,12 @@
           "FullLoadMovement": {
             "Acceleration": 200,
             "Deceleration": 200,
-            "Speed": 550
+            "Speed": 480
           },
           "EmptyLoadMovement": {
             "Acceleration": 1500,
             "Deceleration": 1500,
-            "Speed": 730
+            "Speed": 650
           },
           "ManualMovements": {
             "FeedRate": 0.04,
