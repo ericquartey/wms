@@ -210,35 +210,32 @@
               "Steps": [
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 730,
                   "Number": 0,
                   "Position": 150
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 100,
                   "Number": 1,
                   "Position": 450
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
-                  "Position": 900
+                  "Position": 900,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 3,
-                  "Position": 1100
+                  "Position": 1100,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Number": 4,
                   "Position": 1252
@@ -252,38 +249,36 @@
               "Steps": [
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Number": 0,
                   "Position": 200
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 100,
                   "Number": 1,
                   "Position": 350
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
-                  "Position": 750
+                  "Position": 750,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Number": 3,
-                  "Position": 1020
+                  "Position": 1020,
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 730,
                   "Number": 4,
-                  "Position": 1252
+                  "Position": 1252,
+                  "AdjustByWeight": 0
                 }
               ]
             },
@@ -294,35 +289,32 @@
               "Steps": [
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 730,
                   "Position": 150,
                   "Number": 0
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 100,
                   "Position": 450,
                   "Number": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 900,
-                  "Number": 2
+                  "Number": 2,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 1100,
-                  "Number": 3
+                  "Number": 3,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Position": 1252,
                   "Number": 4
@@ -336,35 +328,32 @@
               "Steps": [
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Position": 200,
                   "Number": 0
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 100,
                   "Position": 350,
                   "Number": 1
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 750,
-                  "Number": 2
+                  "Number": 2,
+                  "AdjustByWeight": 1
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 200,
                   "Position": 1020,
-                  "Number": 3
+                  "Number": 3,
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
-                  "Deceleration": 0,
                   "Speed": 730,
                   "Position": 1252,
                   "Number": 4
