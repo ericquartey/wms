@@ -54,7 +54,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Guid? MissionId { get; }
 
-        public MissionType MissionType { get; set; }
+        public MissionType MissionType { get; }
 
         public LoadingUnitLocation Source { get; }
 
@@ -62,7 +62,11 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public StopRequestReason StopReason { get; }
 
+        public BayNumber TargetBay { get; set; }
+
         public MessageVerbosity Verbosity { get; }
+
+        public int? WmsId { get; set; }
 
         #endregion
     }

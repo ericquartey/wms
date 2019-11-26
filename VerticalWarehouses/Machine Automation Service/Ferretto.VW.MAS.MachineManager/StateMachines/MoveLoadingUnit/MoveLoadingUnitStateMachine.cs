@@ -253,7 +253,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     break;
 
                 default:
-                    return false;
+                    var description = $"Attempting to start {this.GetType()} Finite state machine with invalid MissionType {messageData.MissionType}";
+
+                    throw new StateMachineException(description, null, MessageActor.MachineManager);
             }
             if (!returnValue)
             {

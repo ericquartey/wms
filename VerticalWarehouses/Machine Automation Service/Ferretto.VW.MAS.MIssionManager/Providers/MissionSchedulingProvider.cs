@@ -1,5 +1,8 @@
 ﻿using System;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -13,14 +16,18 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingProvider> logger;
 
+        private readonly IMachineMissionsProvider machineMissionsProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionSchedulingProvider(
+            IMachineMissionsProvider missionsProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingProvider> logger)
         {
+            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
@@ -31,7 +38,25 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int? wmsMissionId)
         {
-            this.logger.LogWarning($"**** Simulating bay({targetBayNumber}) movement.");
+            var data = new MoveLoadingUnitMessageData(
+                MissionType.WMS,
+                LoadingUnitLocation.LoadingUnit,
+                LoadingUnitLocation.NoLocation,
+                null,
+                null,
+                loadingUnitId);
+
+            data.WmsId = wmsMissionId;
+            data.TargetBay = targetBayNumber;
+
+            try
+            {
+                this.machineMissionsProvider.TryCreateMachineMission(FSMType.MoveLoadingUnit, data, targetBayNumber, out var missionId);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError($"Failed to start Move Loading Unit Wms mission: {ex.Message}");
+            }
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)
