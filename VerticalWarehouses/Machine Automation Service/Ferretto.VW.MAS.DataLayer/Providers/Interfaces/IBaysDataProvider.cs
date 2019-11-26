@@ -77,6 +77,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void PerformHoming(BayNumber bayNumber);
 
+        void RemoveLoadingUnit(int loadingUnitId);
+
         void ResetMachine();
 
         void SetChainPosition(BayNumber bayNumber, double value);
