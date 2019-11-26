@@ -59,19 +59,19 @@
 
                         </Grid>
                     </Border>
-                    <ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
 
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                         </Trigger>
-                    </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
 
             </Setter.Value>
         </Setter>
 
-        <Setter Property="Width" Value="{DynamicResource PpcButtonWidth}" />
-        <Setter Property="Height" Value="{DynamicResource PpcButtonHeight}" />
+        <Setter Property="Width" Value="250" />
+        <Setter Property="Height" Value="150" />
         <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
         <Setter Property="FontSize" Value="{DynamicResource PpcButtonFontSize}" />
@@ -79,11 +79,11 @@
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding IsActive}"
+        <!--<Style.Triggers>
+            --><!--<DataTrigger Binding="{Binding IsActive}"
                          Value="True">
                 <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-            </DataTrigger>
+            </DataTrigger>--><!--
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
@@ -95,7 +95,7 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushDisabled}" />
                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundDisabled}" />
             </Trigger>
-        </Style.Triggers>
+        </Style.Triggers>-->
 
     </Style>
 </ResourceDictionary>

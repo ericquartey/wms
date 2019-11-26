@@ -53,18 +53,7 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             this.InitializeComponent();
 
-            this.userAccessLevelToken = this.eventAggregator
-                    .GetEvent<UserAccessLevelNotificationPubSubEvent>()
-                    .Subscribe(
-                        ((m) => this.PermitionChanged()),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.Unloaded += (s, e) =>
-            {
-                this.userAccessLevelToken?.Dispose();
-                this.userAccessLevelToken = null;
-            };
+            this.Initialization();
         }
 
         #endregion
@@ -192,6 +181,22 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 ppcButton.PermitionChanged();
             }
+        }
+
+        private void Initialization()
+        {
+            this.userAccessLevelToken = this.eventAggregator
+                    .GetEvent<UserAccessLevelNotificationPubSubEvent>()
+                    .Subscribe(
+                        ((m) => this.PermitionChanged()),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.Unloaded += (s, e) =>
+            {
+                this.userAccessLevelToken?.Dispose();
+                this.userAccessLevelToken = null;
+            };
         }
 
         #endregion

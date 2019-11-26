@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class initialcreation : Migration
+    public partial class Initialization : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -932,22 +932,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200004, 200004, "Parametro inverter è in sola lettura.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 200005, 200005, "Errore lettura EEPROM dell'inverter.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200002, 200002, "Dataset inverter non valido.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200004, 200004, "Parametro inverter è in sola lettura.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 2, 2, "Condizioni per il posizionamento non soddisfatte.", "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.", 0 });
+                values: new object[] { 13, 13, "LoadUnitPresentOnEmptyElevator", "Presenza a bordo elevatore con elevatore logicamente scarico.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -997,17 +992,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 12, 12, "ZeroSensorActiveWithFullElevator", "ZeroSensorActiveWithFullElevator", 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 200003, 200003, "Parametro inverter è in sola scrittura.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 13, 13, "LoadUnitPresentOnEmptyElevator", "Presenza a bordo elevatore con elevatore logicamente scarico.", 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 12, 12, "ZeroSensorActiveWithFullElevator", "ZeroSensorActiveWithFullElevator", 0 });
+                values: new object[] { 14, 14, "TopLevelBayOccupied", "Livello alto baia occupato", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1062,7 +1057,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 14, 14, "TopLevelBayOccupied", "Livello alto baia occupato", 0 });
+                values: new object[] { 200002, 200002, "Dataset inverter non valido.", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 2, 2, "Condizioni per il posizionamento non soddisfatte.", "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.", 0 });
 
             migrationBuilder.InsertData(
                 table: "MachineStatistics",
@@ -1072,22 +1072,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 26, 13, 49, 28, 399, DateTimeKind.Local).AddTicks(7106), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
                 columns: new[] { "Id", "AllLoadingUnits", "Bay1FirstLoadingUnit", "Bay1HeightCheck", "Bay1Laser", "Bay1Shape", "Bay1Shutter", "Bay2FirstLoadingUnit", "Bay2HeightCheck", "Bay2Laser", "Bay2Shape", "Bay2Shutter", "Bay3FirstLoadingUnit", "Bay3HeightCheck", "Bay3Laser", "Bay3Shape", "Bay3Shutter", "CompletedDate", "HorizontalHoming", "WeightMeasurement" },
                 values: new object[] { 1, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, null, false, false });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessLevel", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { -1, 0, "installer", "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=", "2xw+hMIYBtLCoUqQGXSL0A==" });
-
-            migrationBuilder.InsertData(
-                table: "Users",
-                columns: new[] { "Id", "AccessLevel", "Name", "PasswordHash", "PasswordSalt" },
-                values: new object[] { -2, 2, "operator", "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=", "iB+IdMnlzvXvitHWJff38A==" });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
