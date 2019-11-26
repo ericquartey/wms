@@ -64,23 +64,17 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            using (var scope = serviceScopeFactory.CreateScope())
+            lock (this.dataContext)
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = this.dataContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        this.machineProvider.Import(vertimagConfiguration.Machine, dataContext);
+                        this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
+                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
 
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
-
-                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                        this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, dataContext);
-
-                        dataContext.SaveChanges();
+                        this.dataContext.SaveChanges();
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider import");
@@ -98,21 +92,15 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
 
-            using (var scope = serviceScopeFactory.CreateScope())
+            lock (this.dataContext)
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<DataLayerContext>();
-                using (var transaction = dataContext.Database.BeginTransaction())
+                using (var transaction = this.dataContext.Database.BeginTransaction())
                 {
                     try
                     {
-                        var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                        machineProvider.Update(vertimagConfiguration.Machine, dataContext);
-
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
-
-                        var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
-                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, dataContext);
+                        this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
+                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
 
                         transaction.Commit();
                         this.logger.LogInformation($"Configuration Provider update");

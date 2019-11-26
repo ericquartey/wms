@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
 
+        private readonly IDbContextRedundancyService<DataLayerContext> dbContextRedundancy;
+
         #endregion
 
         #region Constructors
@@ -25,10 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
         }
 
-        public DataLayerContext(DbContextOptions<DataLayerContext> options)
+        public DataLayerContext(DbContextOptions<DataLayerContext> options, IDbContextRedundancyService<DataLayerContext> dbContextRedundancy)
             : base(options)
         {
             this.Options = options ?? throw new ArgumentNullException(nameof(options));
+            this.dbContextRedundancy = dbContextRedundancy ?? throw new ArgumentNullException(nameof(dbContextRedundancy));
         }
 
         #endregion
@@ -119,15 +122,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
-                .Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+            .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
+                connectionString = ((Microsoft.EntityFrameworkCore.Infrastructure.RelationalOptionsExtension)this.dbContextRedundancy.ActiveDbContextOptions.Extensions.First()).ConnectionString;
+                //throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
             optionsBuilder
