@@ -22,11 +22,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
             switch (typeof(TMachine).Name)
             {
                 case "IChangeRunningStateStateMachine":
-                    this.Type = MissionType.ChangeRunningType;
+                    this.Type = FSMType.ChangeRunningType;
                     break;
 
                 case "IMoveLoadingUnitStateMachine":
-                    this.Type = MissionType.MoveLoadingUnit;
+                    this.Type = FSMType.MoveLoadingUnit;
                     break;
 
                 default:

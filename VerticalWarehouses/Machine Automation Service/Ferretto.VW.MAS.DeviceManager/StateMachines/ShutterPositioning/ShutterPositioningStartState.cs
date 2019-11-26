@@ -3,12 +3,14 @@ using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -19,6 +21,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
+
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+
+        private readonly IServiceScope scope;
 
         private readonly IShutterPositioningStateData stateData;
 
@@ -31,6 +37,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
+            this.machineModeDataProvider = this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
         }
 
         #endregion
@@ -206,6 +214,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     this.ParentStateMachine.ChangeState(new ShutterPositioningErrorState(this.stateData));
                     return;
                 }
+                this.machineModeDataProvider.Mode = MachineMode.Test;
 
                 // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(
