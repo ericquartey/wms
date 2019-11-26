@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public LoadingUnitMovementProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 default:
-                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Destination);
+                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(messageData.Destination);
                     break;
             }
             return targetPosition;
@@ -140,7 +140,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 default:
-                    targetPosition = this.baysProvider.GetLoadingUnitDestinationHeight(messageData.Source);
+                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(messageData.Source);
                     break;
             }
             return targetPosition;
@@ -218,7 +218,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (targetBay == BayNumber.All)
             {
-                foreach (var bay in this.baysProvider.GetAll())
+                foreach (var bay in this.baysDataProvider.GetAll())
                 {
                     this.PublishCommand(
                         messageData,

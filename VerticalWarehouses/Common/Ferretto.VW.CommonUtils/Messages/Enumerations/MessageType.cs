@@ -16,7 +16,7 @@
 
         DataLayerReady,
 
-        ExecuteMission,
+        AssignedMissionOperationChanged,
 
         SwitchAxis,
 
@@ -26,7 +26,7 @@
 
         MachineStatusActive,
 
-        NewMissionAvailable,
+        NewWmsMissionAvailable,
 
         CreateMission,
 

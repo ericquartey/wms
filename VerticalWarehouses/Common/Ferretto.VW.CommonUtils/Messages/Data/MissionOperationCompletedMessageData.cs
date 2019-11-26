@@ -3,11 +3,9 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
-    public class MissionOperationCompletedMessageData : IMissionOperationCompletedMessageData
+    public class MissionOperationCompletedMessageData : IMessageData
     {
         #region Properties
-
-        public int MissionId { get; set; }
 
         public int MissionOperationId { get; set; }
 
@@ -19,7 +17,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public override string ToString()
         {
-            return $"MissionOperationId:{this.MissionOperationId} MissionId:{this.MissionId}";
+            return $"MissionOperationId:{this.MissionOperationId}";
         }
 
         #endregion

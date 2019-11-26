@@ -26,6 +26,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         protected Mission(IServiceScopeFactory serviceScopeFactory)
         {
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.serviceScope = serviceScopeFactory.CreateScope();
 
             this.cancellationTokenSource = new CancellationTokenSource();
@@ -41,7 +46,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public MissionStatus Status { get; protected set; }
 
-        public MissionType Type { get; protected set; }
+        public FSMType Type { get; protected set; }
 
         protected TMachine CurrentStateMachine { get; }
 

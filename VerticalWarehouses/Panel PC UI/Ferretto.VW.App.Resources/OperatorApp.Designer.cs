@@ -61,61 +61,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Article.
+        ///   Looks up a localized string similar to Abort.
         /// </summary>
-        public static string Article {
+        public static string Abort {
             get {
-                return ResourceManager.GetString("Article", resourceCulture);
+                return ResourceManager.GetString("Abort", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Article description:.
-        /// </summary>
-        public static string ArticleDescription {
-            get {
-                return ResourceManager.GetString("ArticleDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Article:.
-        /// </summary>
-        public static string ArticleLable {
-            get {
-                return ResourceManager.GetString("ArticleLable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Articles.
-        /// </summary>
-        public static string Articles {
-            get {
-                return ResourceManager.GetString("Articles", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Article Details.
-        /// </summary>
-        public static string ArticlesDetails {
-            get {
-                return ResourceManager.GetString("ArticlesDetails", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Article state:.
-        /// </summary>
-        public static string ArticleState {
-            get {
-                return ResourceManager.GetString("ArticleState", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Availability [units]:.
+        ///   Looks up a localized string similar to Availability [units].
         /// </summary>
         public static string Availability {
             get {
@@ -129,15 +84,6 @@ namespace Ferretto.VW.App.Resources {
         public static string Back {
             get {
                 return ResourceManager.GetString("Back", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Batch:.
-        /// </summary>
-        public static string Batch {
-            get {
-                return ResourceManager.GetString("Batch", resourceCulture);
             }
         }
         
@@ -268,7 +214,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item code:.
+        ///   Looks up a localized string similar to Item code.
         /// </summary>
         public static string CommonItemCode {
             get {
@@ -277,7 +223,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Item description:.
+        ///   Looks up a localized string similar to Item description.
         /// </summary>
         public static string CommonItemDescription {
             get {
@@ -286,7 +232,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List code:.
+        ///   Looks up a localized string similar to List code.
         /// </summary>
         public static string CommonListCode {
             get {
@@ -295,7 +241,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List description:.
+        ///   Looks up a localized string similar to List description.
         /// </summary>
         public static string CommonListDescription {
             get {
@@ -322,7 +268,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Packing list code:.
+        ///   Looks up a localized string similar to Packing list code.
         /// </summary>
         public static string CommonPackingListCode {
             get {
@@ -331,7 +277,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Packing list description:.
+        ///   Looks up a localized string similar to Packing list description.
         /// </summary>
         public static string CommonPackingListDescription {
             get {
@@ -367,15 +313,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Description:.
-        /// </summary>
-        public static string DescriptionLable {
-            get {
-                return ResourceManager.GetString("DescriptionLable", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to DetailListInWaitHeader.
         /// </summary>
         public static string DetailListInWaitHeader {
@@ -394,7 +331,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Dispatched quantity:.
+        ///   Looks up a localized string similar to Dispatched quantity.
         /// </summary>
         public static string DispatchedQuantity {
             get {
@@ -421,7 +358,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Stored quantity;.
+        ///   Looks up a localized string similar to Stored quantity.
         /// </summary>
         public static string DrawerActivityInventoryQtyStored {
             get {
@@ -511,7 +448,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Batch:.
+        ///   Looks up a localized string similar to Batch.
         /// </summary>
         public static string DrawerActivityPickingDetailLotto {
             get {
@@ -520,7 +457,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Material status:.
+        ///   Looks up a localized string similar to Material status.
         /// </summary>
         public static string DrawerActivityPickingDetailMaterialStatus {
             get {
@@ -529,7 +466,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Packaging type:.
+        ///   Looks up a localized string similar to Packaging type.
         /// </summary>
         public static string DrawerActivityPickingDetailPackagingType {
             get {
@@ -538,7 +475,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Production date:.
+        ///   Looks up a localized string similar to Production date.
         /// </summary>
         public static string DrawerActivityPickingDetailProductionDate {
             get {
@@ -547,7 +484,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string DrawerActivityPickingDetailQtyRequest {
             get {
@@ -556,7 +493,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List&apos;s row:.
+        ///   Looks up a localized string similar to List&apos;s row.
         /// </summary>
         public static string DrawerActivityPickingDetailRowList {
             get {
@@ -574,7 +511,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Picked quantity:.
+        ///   Looks up a localized string similar to Picked quantity.
         /// </summary>
         public static string DrawerActivityPickingQtyPick {
             get {
@@ -583,7 +520,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string DrawerActivityPickingQtyReq {
             get {
@@ -592,7 +529,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List&apos;s row:.
+        ///   Looks up a localized string similar to List row.
         /// </summary>
         public static string DrawerActivityPickingRowList {
             get {
@@ -628,16 +565,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Batch:.
-        /// </summary>
-        public static string DrawerActivityRefillingDetailLotto {
-            get {
-                return ResourceManager.GetString("DrawerActivityRefillingDetailLotto", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Material status:.
+        ///   Looks up a localized string similar to Material status.
         /// </summary>
         public static string DrawerActivityRefillingDetailMaterialStatus {
             get {
@@ -646,7 +574,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Packaging type:.
+        ///   Looks up a localized string similar to Packaging type.
         /// </summary>
         public static string DrawerActivityRefillingDetailPackagingType {
             get {
@@ -655,7 +583,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Production date:.
+        ///   Looks up a localized string similar to Production date.
         /// </summary>
         public static string DrawerActivityRefillingDetailProductionDate {
             get {
@@ -664,7 +592,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string DrawerActivityRefillingDetailQtyRequest {
             get {
@@ -682,7 +610,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Refilled quantity:.
+        ///   Looks up a localized string similar to Refilled quantity.
         /// </summary>
         public static string DrawerActivityRefillingQtyRefilled {
             get {
@@ -691,7 +619,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string DrawerActivityRefillingQtyToRefill {
             get {
@@ -817,7 +745,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Fragments quantity:.
+        ///   Looks up a localized string similar to Fragments quantity.
         /// </summary>
         public static string DrawerCompactingFragmentNumber {
             get {
@@ -844,7 +772,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Max recoverable space:.
+        ///   Looks up a localized string similar to Max recoverable space.
         /// </summary>
         public static string DrawerCompactingMaxSpaceRecoverable {
             get {
@@ -880,7 +808,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Space to recover:.
+        ///   Looks up a localized string similar to Space to recover.
         /// </summary>
         public static string DrawerCompactingSpaceToRecover {
             get {
@@ -1132,7 +1060,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FIFO Period:.
+        ///   Looks up a localized string similar to FIFO time span.
         /// </summary>
         public static string FIFOPeriod {
             get {
@@ -1150,7 +1078,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Installation date:.
+        ///   Looks up a localized string similar to Installation date.
         /// </summary>
         public static string GeneralInfoInstallationDate {
             get {
@@ -1159,7 +1087,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last maintenance date:.
+        ///   Looks up a localized string similar to Last service date.
         /// </summary>
         public static string GeneralInfoLastMaintenanceDate {
             get {
@@ -1168,7 +1096,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Model:.
+        ///   Looks up a localized string similar to Model.
         /// </summary>
         public static string GeneralInfoModel {
             get {
@@ -1177,7 +1105,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next maintenance date:.
+        ///   Looks up a localized string similar to Next service date.
         /// </summary>
         public static string GeneralInfoNextMaintenanceDate {
             get {
@@ -1186,7 +1114,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operative machine&apos;s state:.
+        ///   Looks up a localized string similar to Operative machine&apos;s state.
         /// </summary>
         public static string GeneralInfoOperativeStatus {
             get {
@@ -1195,7 +1123,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Serial number:.
+        ///   Looks up a localized string similar to Serial number.
         /// </summary>
         public static string GeneralInfoSerial {
             get {
@@ -1204,7 +1132,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Released software version:.
+        ///   Looks up a localized string similar to Software version.
         /// </summary>
         public static string GeneralInfoSwRelease {
             get {
@@ -1213,7 +1141,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Drawer quantity:.
+        ///   Looks up a localized string similar to Drawer quantity.
         /// </summary>
         public static string GeneralInfoTotDrawers {
             get {
@@ -1249,7 +1177,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested drawer:.
+        ///   Looks up a localized string similar to Requested tray.
         /// </summary>
         public static string ImmediateDrawerCallRequiredDrawer {
             get {
@@ -1312,7 +1240,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to FIFO period:.
+        ///   Looks up a localized string similar to FIFO time span.
         /// </summary>
         public static string ItemDetailPeriod {
             get {
@@ -1447,7 +1375,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search by code:.
+        ///   Looks up a localized string similar to Search by code.
         /// </summary>
         public static string ItemSearchKeySearch {
             get {
@@ -1456,7 +1384,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Available quantity:.
+        ///   Looks up a localized string similar to Available quantity.
         /// </summary>
         public static string ItemSearchQtyAvailable {
             get {
@@ -1465,7 +1393,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string ItemSearchQtyRequest {
             get {
@@ -1483,7 +1411,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to LIFO Period:.
+        ///   Looks up a localized string similar to LIFO time span.
         /// </summary>
         public static string LIFOPeriod {
             get {
@@ -1501,20 +1429,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List description:.
+        ///   Looks up a localized string similar to List description.
         /// </summary>
         public static string ListDescription {
             get {
                 return ResourceManager.GetString("ListDescription", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to List:.
-        /// </summary>
-        public static string ListLabel {
-            get {
-                return ResourceManager.GetString("ListLabel", resourceCulture);
             }
         }
         
@@ -1528,7 +1447,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to List detail.
+        ///   Looks up a localized string similar to List details.
         /// </summary>
         public static string ListsInWaitDetail {
             get {
@@ -1555,11 +1474,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Note:.
+        ///   Looks up a localized string similar to Note.
         /// </summary>
         public static string ListsInWaitNote {
             get {
                 return ResourceManager.GetString("ListsInWaitNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Lot.
+        /// </summary>
+        public static string Lot {
+            get {
+                return ResourceManager.GetString("Lot", resourceCulture);
             }
         }
         
@@ -1951,11 +1879,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Management:.
+        ///   Looks up a localized string similar to Management.
         /// </summary>
         public static string Management {
             get {
                 return ResourceManager.GetString("Management", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Material status.
+        /// </summary>
+        public static string MaterialStatus {
+            get {
+                return ResourceManager.GetString("MaterialStatus", resourceCulture);
             }
         }
         
@@ -1996,7 +1933,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notes:.
+        ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
             get {
@@ -2104,11 +2041,20 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Packaging type:.
+        ///   Looks up a localized string similar to Packaging type.
         /// </summary>
         public static string PackagingType {
             get {
                 return ResourceManager.GetString("PackagingType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Picked quantity.
+        /// </summary>
+        public static string PickedQuantity {
+            get {
+                return ResourceManager.GetString("PickedQuantity", resourceCulture);
             }
         }
         
@@ -2122,7 +2068,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Position:.
+        ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
             get {
@@ -2131,7 +2077,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Production date:.
+        ///   Looks up a localized string similar to Production date.
         /// </summary>
         public static string ProductionDate {
             get {
@@ -2149,7 +2095,16 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Requested quantity:.
+        ///   Looks up a localized string similar to Quantity to pick.
+        /// </summary>
+        public static string QuantityToPick {
+            get {
+                return ResourceManager.GetString("QuantityToPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Requested quantity.
         /// </summary>
         public static string RequestedQuantity {
             get {
@@ -2167,7 +2122,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search by code:.
+        ///   Looks up a localized string similar to Search by code.
         /// </summary>
         public static string SearchCode {
             get {

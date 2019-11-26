@@ -501,6 +501,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 22,
+                            Code = 22,
+                            Description = "MachineModeNotValid",
+                            Reason = "MachineModeNotValid",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -851,6 +859,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 22,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 200000,
                             TotalErrors = 0
                         },
@@ -1190,6 +1203,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Mission", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<int>("MissionStatus");
+
+                    b.Property<int?>("WmsId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Missions");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.MovementParameters", b =>
                 {
                     b.Property<int>("Id")
@@ -1255,7 +1284,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 23, 21, 15, 27, 588, DateTimeKind.Local).AddTicks(2432),
+                            InstallationDate = new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320),
                             ServiceStatus = 86
                         });
                 });
@@ -1288,8 +1317,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("BeltBurnishingTestId");
 
-                    b.Property<int?>("CarouselManualMovementsId");
-
                     b.Property<int?>("CellPanelsCheckId");
 
                     b.Property<int?>("CellsHeightCheckId");
@@ -1311,8 +1338,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasIndex("BayHeightCheckId");
 
                     b.HasIndex("BeltBurnishingTestId");
-
-                    b.HasIndex("CarouselManualMovementsId");
 
                     b.HasIndex("CellPanelsCheckId");
 
@@ -1765,10 +1790,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.RepeatedTestProcedure", "BeltBurnishingTest")
                         .WithMany()
                         .HasForeignKey("BeltBurnishingTestId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.SetupProcedure", "CarouselManualMovements")
-                        .WithMany()
-                        .HasForeignKey("CarouselManualMovementsId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.PositioningProcedure", "CellPanelsCheck")
                         .WithMany()

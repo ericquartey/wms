@@ -12,9 +12,9 @@ namespace System
 
         public static void ForEach<T>(this IEnumerable<T> enumeration, Action<T> action)
         {
-            if (enumeration.IsNotNull())
+            if (enumeration != null)
             {
-                foreach (T item in enumeration)
+                foreach (var item in enumeration)
                 {
                     action(item);
                 }

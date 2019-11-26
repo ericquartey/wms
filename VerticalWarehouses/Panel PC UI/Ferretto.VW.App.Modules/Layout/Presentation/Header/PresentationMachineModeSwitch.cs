@@ -129,7 +129,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             {
                 await this.machineModeWebService.SetManualAsync();
             }
-            else if (this.machineMode is MachineMode.Manual)
+            else if (this.machineMode is MachineMode.Manual || this.machineMode is MachineMode.Test)
             {
                 await this.machineModeWebService.SetAutomaticAsync();
             }
@@ -148,7 +148,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
                 &&
                 (this.MachineMode is MachineMode.Automatic
                 ||
-                this.MachineMode is MachineMode.Manual)
+                this.MachineMode is MachineMode.Manual
+                ||
+                this.MachineMode is MachineMode.Test)
                 &&
                 this.MachinePowerState is MachinePowerState.Powered
                 &&

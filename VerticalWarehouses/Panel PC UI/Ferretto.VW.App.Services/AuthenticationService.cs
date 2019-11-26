@@ -3,7 +3,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class AuthenticationService : IAuthenticationService
+    internal sealed class AuthenticationService : IAuthenticationService
     {
         #region Fields
 

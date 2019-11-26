@@ -76,6 +76,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
+        public DbSet<Mission> Missions { get; set; }
+
         public DbSet<MovementParameters> MovementParameters { get; set; }
 
         public DbSet<MovementProfile> MovementProfiles { get; set; }

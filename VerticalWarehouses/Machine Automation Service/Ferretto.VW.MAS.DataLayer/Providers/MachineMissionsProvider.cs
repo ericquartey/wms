@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return this.machineMissions.FirstOrDefault(m => m.Id == missionId);
         }
 
-        public List<IMission> GetMissionsByType(MissionType type)
+        public List<IMission> GetMissionsByType(FSMType type)
         {
             return this.machineMissions.Where(m => m.Type == type).ToList();
         }
@@ -113,7 +113,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(MissionType missionType, CommandMessage command, out Guid missionId)
+        public bool TryCreateMachineMission(FSMType missionType, CommandMessage command, out Guid missionId)
         {
             missionId = Guid.Empty;
 
@@ -122,11 +122,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 IMission newMission = null;
                 switch (missionType)
                 {
-                    case MissionType.ChangeRunningType:
+                    case FSMType.ChangeRunningType:
                         newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
 
-                    case MissionType.MoveLoadingUnit:
+                    case FSMType.MoveLoadingUnit:
                         newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
                 }
@@ -149,7 +149,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         /// <param name="requestedMission">TYpe of mission to be created</param>
         /// <param name="command">Command received to create mission. Provides information useful to decide id mission two or more missions of the same type are allowed or not</param>
         /// <returns>True if the mission type can be created, false otherwise</returns>
-        private bool CanCreateStateMachine(MissionType requestedMission, CommandMessage command)
+        private bool CanCreateStateMachine(FSMType requestedMission, CommandMessage command)
         {
             var returnValue = this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
 
@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
-        private bool EvaluateMissionPolicies(MissionType moveRequestedMission, CommandMessage command)
+        private bool EvaluateMissionPolicies(FSMType moveRequestedMission, CommandMessage command)
         {
             return true;
         }

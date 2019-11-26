@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {

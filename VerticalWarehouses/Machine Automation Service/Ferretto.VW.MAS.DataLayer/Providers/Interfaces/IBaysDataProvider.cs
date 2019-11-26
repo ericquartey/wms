@@ -7,7 +7,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface IBaysProvider
+    public interface IBaysDataProvider
     {
         #region Methods
 
@@ -22,6 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer
         double ConvertPulsesToMillimeters(double pulses, InverterIndex inverterIndex);
 
         Bay Deactivate(BayNumber bayNumber);
+
+        void FindZero(BayNumber bayNumber);
 
         IEnumerable<Bay> GetAll();
 
@@ -72,6 +74,8 @@ namespace Ferretto.VW.MAS.DataLayer
         BayPosition GetPositionByLocation(LoadingUnitLocation destination);
 
         double GetResolution(InverterIndex inverterIndex);
+
+        void PerformHoming(BayNumber bayNumber);
 
         void ResetMachine();
 

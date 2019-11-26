@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.ChangeRunningType, command, out var missionId))
+                        if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.ChangeRunningType, command, out var missionId))
                         {
                             try
                             {
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 switch (messageData.CommandAction)
                 {
                     case CommandAction.Start:
-                        if (this.machineMissionsProvider.TryCreateMachineMission(MissionType.MoveLoadingUnit, command, out var missionId))
+                        if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.MoveLoadingUnit, command, out var missionId))
                         {
                             try
                             {
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.MachineManager
                             }
                             catch (Exception ex)
                             {
-                                this.Logger.LogError($"Failed to start Move Loading UNit State machine mission: {ex.Message}");
+                                this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
                                 this.NotifyCommandError(command);
                             }
                         }
@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
                             {
                                 mission.AbortMachineMission();
                             }
@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
                             {
                                 mission.StopMachine(StopRequestReason.Stop);
                             }
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
                             {
                                 mission.PauseMachineMission();
                             }
@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(MissionType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
                             {
                                 mission.ResumeMachineMission();
                             }

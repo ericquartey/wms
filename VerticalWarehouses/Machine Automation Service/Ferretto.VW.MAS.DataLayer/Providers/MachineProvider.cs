@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -67,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
             context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
@@ -222,11 +222,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
 
-            dataContext ??= this.dataContext;
+            dataContext = dataContext ?? this.dataContext;
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             machine.Elevator?.Axes.ForEach((a) =>
             {

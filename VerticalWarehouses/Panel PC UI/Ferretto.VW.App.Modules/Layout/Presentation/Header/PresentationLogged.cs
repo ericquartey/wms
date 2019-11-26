@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand LogOutCommand =>
             this.logOutCommand
             ??
-            (this.logOutCommand = new DelegateCommand(this.ExecuteLogOutCommand));
+            (this.logOutCommand = new DelegateCommand(async() => await this.ExecuteLogOutCommand()));
 
         public ICommand ToggleThemeCommand =>
          this.toggleThemeCommand
@@ -107,9 +107,10 @@ namespace Ferretto.VW.App.Modules.Layout
             this.UserName = this.authenticationService.UserName;
         }
 
-        private void ExecuteLogOutCommand()
+        private async Task ExecuteLogOutCommand()
         {
             this.IsPopupOpen = false;
+            await this.authenticationService.LogOutAsync();
             this.navigationService.GoBackTo(nameof(Utils.Modules.Login), Utils.Modules.Login.LOGIN);
         }
 

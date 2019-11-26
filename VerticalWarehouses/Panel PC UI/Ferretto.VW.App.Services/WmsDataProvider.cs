@@ -1,109 +1,59 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class WmsDataProvider : IWmsDataProvider
+    internal sealed class WmsDataProvider : IWmsDataProvider
     {
         #region Fields
 
-        private readonly IItemsDataService itemsDataService;
+        private readonly IBayManager bayManager;
 
-        private readonly ILoadingUnitsDataService loadingUnitsDataService;
+        private readonly IItemsDataService itemsDataService;
 
         #endregion
 
         #region Constructors
 
         public WmsDataProvider(
-            ILoadingUnitsDataService loadingUnitsDataService,
+            IBayManager bayManager,
             IItemsDataService itemsDataService)
         {
-            if (loadingUnitsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(loadingUnitsDataService));
-            }
-
-            if (itemsDataService is null)
-            {
-                throw new ArgumentNullException(nameof(itemsDataService));
-            }
-
-            this.loadingUnitsDataService = loadingUnitsDataService;
-            this.itemsDataService = itemsDataService;
+            this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
+            this.itemsDataService = itemsDataService ?? throw new System.ArgumentNullException(nameof(itemsDataService));
         }
 
         #endregion
 
         #region Methods
 
-        public async Task<string> GetItemImageCodeAsync(int itemId)
+        public async Task<string> GetItemImagePathAsync(int itemId)
         {
-            ItemDetails item = null;
             try
             {
-                item = await this.itemsDataService.GetByIdAsync(itemId);
+                var item = await this.itemsDataService.GetByIdAsync(itemId);
+                return item.Image;
             }
             catch
             {
                 return null;
             }
-
-            return item.Image;
         }
 
-        public async Task<IEnumerable<TrayControlCompartment>> GetTrayControlCompartmentsAsync(MissionInfo mission)
+        public async Task PickAsync(int itemId, int requestedQuantity)
         {
-            var returnValue = new ObservableCollection<TrayControlCompartment>();
-            var loadingUnitId = mission.LoadingUnitId;
-            var compartments = await this.loadingUnitsDataService.GetCompartmentsAsync(loadingUnitId);
-            if (compartments != null && compartments.Count > 0)
+            await this.itemsDataService.PickAsync(itemId, new ItemOptions
             {
-                returnValue = new ObservableCollection<TrayControlCompartment>(compartments.Select(x =>
-                    new TrayControlCompartment
-                    {
-                        Depth = x.Depth,
-                        Id = x.Id,
-                        LoadingUnitId = x.LoadingUnitId,
-                        Width = x.Width,
-                        XPosition = x.XPosition,
-                        YPosition = x.YPosition
-                    }));
-            }
-
-            return returnValue;
-        }
-
-        public async Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity)
-        {
-            // HACK BUG 3381 WORKAROUND - DEVELOPMENT ONLY
-            if (bayId == 0 || areaId == 0)
-            {
-                areaId = 2;
-                bayId = 2;
-            }
-
-            // END HACK
-            try
-            {
-                await this.itemsDataService.PickAsync(itemId, new ItemOptions
-                {
-                    AreaId = areaId,
-                    BayId = bayId,
-                    RequestedQuantity = requestedQuantity,
-                    RunImmediately = true
-                });
-
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+                AreaId = this.bayManager.Identity.AreaId,
+                BayId = (int)ConfigurationManager.AppSettings.GetBayNumber(),
+                RequestedQuantity = requestedQuantity,
+                RunImmediately = true
+            });
         }
 
         #endregion

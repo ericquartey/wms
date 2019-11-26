@@ -24,6 +24,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
                     null,
@@ -40,10 +41,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void EjectFromCell(LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                  new MoveLoadingUnitMessageData(
+                    missionType,
                     LoadingUnitLocation.LoadingUnit,
                     destinationBay,
                     null,
@@ -57,10 +59,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                  requestingBay);
         }
 
-        public void InsertToCell(LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     sourceBay,
                     LoadingUnitLocation.Cell,
                     null,
@@ -73,10 +76,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveFromBayToBay(LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
+        public void MoveFromBayToBay(MissionType missionType, LoadingUnitLocation sourceBay, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
             new MoveLoadingUnitMessageData(
+                missionType,
                 sourceBay,
                 destinationBay,
                 null,
@@ -88,10 +92,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             requestingBay);
         }
 
-        public void MoveFromBayToCell(LoadingUnitLocation sourceBay, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveFromBayToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     sourceBay,
                     LoadingUnitLocation.Cell,
                     null,
@@ -103,10 +108,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveFromCellToBay(int? sourceCellId, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
+        public void MoveFromCellToBay(MissionType missionType, int? sourceCellId, LoadingUnitLocation destinationBay, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     LoadingUnitLocation.Cell,
                     destinationBay,
                     sourceCellId,
@@ -118,10 +124,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveFromCellToCell(int? sourceCellId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveFromCellToCell(MissionType missionType, int? sourceCellId, int? destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     LoadingUnitLocation.Cell,
                     LoadingUnitLocation.Cell,
                     sourceCellId,
@@ -133,10 +140,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     LoadingUnitLocation.LoadingUnit,
                     destination,
                     null,
@@ -148,10 +156,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 requestingBay);
         }
 
-        public void MoveLoadingUnitToCell(int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender)
+        public void MoveLoadingUnitToCell(MissionType missionType, int loadingUnitId, int destinationCellId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    missionType,
                     LoadingUnitLocation.LoadingUnit,
                     LoadingUnitLocation.Cell,
                     null,
@@ -167,6 +176,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
                     null,
@@ -187,6 +197,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
                     null,
@@ -207,6 +218,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
         {
             this.SendCommandToMissionManager(
                 new MoveLoadingUnitMessageData(
+                    MissionType.NoType,
                     LoadingUnitLocation.NoLocation,
                     LoadingUnitLocation.NoLocation,
                     null,

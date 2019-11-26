@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    public sealed class MachineElevatorService : IMachineElevatorService, IDisposable
+    internal sealed class MachineElevatorService : IMachineElevatorService, IDisposable
     {
         #region Fields
 

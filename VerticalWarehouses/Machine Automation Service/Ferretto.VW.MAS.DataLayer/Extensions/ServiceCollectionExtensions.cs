@@ -40,7 +40,7 @@ namespace Ferretto.VW.MAS.DataLayer
             services.AddDbContext<DataLayerContext>();
 
             services
-                .AddTransient<IBaysProvider, BaysProvider>()
+                .AddTransient<IBaysDataProvider, BaysDataProvider>()
                 .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()
                 .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
