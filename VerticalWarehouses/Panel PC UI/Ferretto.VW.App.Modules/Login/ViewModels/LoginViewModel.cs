@@ -22,10 +22,9 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly ISessionService sessionService;
-
-        private SubscriptionToken subscriptionToken;
         private readonly IMachineErrorsService machineErrorsService;
+
+        private readonly ISessionService sessionService;
 
         private int bayNumber;
 
