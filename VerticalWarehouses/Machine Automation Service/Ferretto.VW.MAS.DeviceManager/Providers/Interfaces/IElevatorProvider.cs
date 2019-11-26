@@ -53,15 +53,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToAbsoluteVerticalPosition(double targetPosition, double feedRate, bool performWeighting, bool computeElongation, BayNumber requestingBay, MessageActor sender);
+        void MoveToAbsoluteVerticalPosition(bool manualMovment, double targetPosition, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor automationService);
+        void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender);
 
-        void MoveToCell(int cellId, double feedRate, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor automationService);
+        void MoveToCell(int cellId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender, double feedRate = 1);
+        void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender);
 
-        void MoveVertical(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
+        void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 

@@ -26,6 +26,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         protected Mission(IServiceScopeFactory serviceScopeFactory)
         {
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
             this.serviceScope = serviceScopeFactory.CreateScope();
 
             this.cancellationTokenSource = new CancellationTokenSource();

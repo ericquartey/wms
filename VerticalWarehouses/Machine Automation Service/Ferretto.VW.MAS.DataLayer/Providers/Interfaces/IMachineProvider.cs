@@ -1,11 +1,14 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
     public interface IMachineProvider
     {
         #region Properties
+
+        bool IsHomingExetuted { get; set; }
 
         bool IsMachineRunning { get; set; }
 
@@ -23,9 +26,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         MachineStatistics GetStatistics();
 
+        void Import(Machine machine, DataLayerContext context);
+
         bool IsOneTonMachine();
 
-        void Update(Machine machine);
+        void Update(Machine machine, DataLayerContext context);
 
         #endregion
     }

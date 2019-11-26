@@ -18,7 +18,7 @@ namespace Ferretto.VW.Utils.Source.Filters
 
             delegate (IDrawableCompartment compartment, IDrawableCompartment selected)
             {
-                var color = "#57A639";
+                var color = "#5A5A5A";
                 return color;
             };
 

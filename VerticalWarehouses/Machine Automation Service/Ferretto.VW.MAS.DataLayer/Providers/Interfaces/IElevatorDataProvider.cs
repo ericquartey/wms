@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Methods
 
+        ElevatorAxisManualParameters GetAssistedMovementsAxis(Orientation orientation);
+
         ElevatorAxis GetAxis(Orientation orientation);
 
         IDbContextTransaction GetContextTransaction();
@@ -35,13 +37,11 @@ namespace Ferretto.VW.MAS.DataLayer
         /// </summary>
         Cell GetCurrentCell();
 
-        ElevatorAxis GetHorizontalAxis();
-
         LoadingUnit GetLoadingUnitOnBoard();
 
-        ElevatorStructuralProperties GetStructuralProperties();
+        ElevatorAxisManualParameters GetManualMovementsAxis(Orientation orientation);
 
-        ElevatorAxis GetVerticalAxis();
+        ElevatorStructuralProperties GetStructuralProperties();
 
         void ResetMachine();
 

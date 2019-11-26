@@ -55,7 +55,8 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static Resources:OperatorApp.CommonDown}" />
+                                Content="{x:Static Resources:OperatorApp.CommonDown}"
+                                IsBusy="{Binding IsBusyLoadingNextPage}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Margin="15,15,15,0"
@@ -85,13 +86,13 @@
             <controls:PpcLabeledText Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItem.TotalAvailable}"
+                                     ContentText="{Binding SelectedItem.TotalAvailable, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                      LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
             <controls:PpcTextBox Grid.Column="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 InputText="{Binding RequestedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 InputText="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyRequest}" />
 
         </Grid>
@@ -102,8 +103,9 @@
                             Margin="15,15,15,0"
                             HorizontalAlignment="Right"
                             VerticalAlignment="Top"
-                            Command="{Binding ItemCallCommand}"
-                            Content="{x:Static Resources:OperatorApp.ItemSearchCall}" />
+                            Command="{Binding RequestItemPickCommand}"
+                            Content="{x:Static Resources:OperatorApp.ItemSearchCall}"
+                            IsBusy="{Binding IsBusyRequestingItemPick}" />
 
     </Grid>
 </ctrls:View>

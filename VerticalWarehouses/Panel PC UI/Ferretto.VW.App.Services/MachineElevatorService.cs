@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    public sealed class MachineElevatorService : IMachineElevatorService, IDisposable
+    internal sealed class MachineElevatorService : IMachineElevatorService, IDisposable
     {
         #region Fields
 
@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.logger.Debug($"Elevator X={e.HorizontalPosition:0.0}; Y={e.VerticalPosition:0.0}; Cell={e.CellId}; BayPosition={e.BayPositionId};");
+            this.logger.Trace($"Elevator X={e.HorizontalPosition:0.0}; Y={e.VerticalPosition:0.0}; Cell={e.CellId}; BayPosition={e.BayPositionId};");
 
             this.Position = new ElevatorPosition
             {

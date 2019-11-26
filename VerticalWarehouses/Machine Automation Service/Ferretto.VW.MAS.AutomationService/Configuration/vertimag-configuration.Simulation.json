@@ -71,7 +71,21 @@
             "Type": "Agl",
             "Index": "Slave2"
           },
-          "Type": "TwoSensors"
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          }
         }
       },
       {
@@ -112,6 +126,20 @@
           "Inverter": {
             "Type": "Agl",
             "Index": "Slave4"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
           }
         },
         "Inverter": {
@@ -120,7 +148,13 @@
         },
         "Resolution": 369.8453,
         "Carousel": {
-          "ElevatorDistance": 460
+          "ElevatorDistance": 460,
+          "ManualMovements": {
+            "FeedRate": 0.1
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2
+          }
         }
       }
     ],
@@ -157,6 +191,18 @@
             "MeasureConst2": -4.9268,
             "MeasureSpeed": 20,
             "MeasureTime": 15
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "FeedRateAfterZero": 0.15,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.15,
+            "FeedRateAfterZero": 0.2,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
           }
         },
         {
@@ -174,6 +220,14 @@
             "Acceleration": 1500,
             "Deceleration": 1500,
             "Speed": 650
+          },
+          "ManualMovements": {
+            "FeedRate": 0.04,
+            "FeedRateAfterZero": 0.3,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 200
+          },
+          "AssistedMovements": {
           },
           "Profiles": [
             {
@@ -2856,33 +2910,15 @@
     "DepositAndPickUpTest": {
       "RequiredCycles": 10
     },
-    "HorizontalManualMovements": {
-      "FeedRate": 0.04,
-      "InitialTargetPosition": 30,
-      "RecoveryTargetPosition": 200
-    },
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
-    "ShutterManualMovements": {
-      "FeedRate": 0.20,
-      "MaxSpeed": 40000,
-      "MinSpeed": 5000,
-      "HighSpeedDurationOpen": 14,
-      "HighSpeedDurationClose": 13
-    },
     "ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 10000
-    },
-    "VerticalManualMovements": {
-      "FeedRate": 0.1,
-      "PositiveTargetDirection": 30,
-      "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
@@ -2893,9 +2929,6 @@
       "InitialPosition": 1000,
       "FinalPosition": 5500,
       "FeedRate": 0.2
-    },
-    "WeightCheck": {
-      "FeedRate": 0.05
     }
   }
 }

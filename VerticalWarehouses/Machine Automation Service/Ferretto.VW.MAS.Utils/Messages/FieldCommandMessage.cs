@@ -23,6 +23,11 @@ namespace Ferretto.VW.MAS.Utils.Messages
 
         public FieldCommandMessage(FieldCommandMessage otherMessage)
         {
+            if (otherMessage is null)
+            {
+                throw new System.ArgumentNullException(nameof(otherMessage));
+            }
+
             this.Data = otherMessage.Data;
             this.Description = otherMessage.Description;
             this.Destination = otherMessage.Destination;

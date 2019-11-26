@@ -35,7 +35,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Parametri" />
+                   Text="Modifica configurazione" />
 
         <dxprg:PropertyGridControl Grid.Row="1"
                                    AllowExpanding="Force"
@@ -50,8 +50,8 @@
                                       InsertDefinitionsFrom="{dxprg:RootPropertyDefinition}"
                                       Path="*" />
 
-            <dxprg:PropertyDefinition Path="Id"
-                                      Visibility="Collapsed" />
+            <!--<dxprg:PropertyDefinition Path="Id"
+                                      Visibility="Collapsed" />-->
 
 
         </dxprg:PropertyGridControl>

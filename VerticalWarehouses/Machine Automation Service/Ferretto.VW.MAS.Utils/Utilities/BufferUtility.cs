@@ -27,6 +27,16 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public static int ByteIndexOf(byte[] searched, byte[] find, int start)
         {
+            if (searched is null)
+            {
+                throw new ArgumentNullException(nameof(searched));
+            }
+
+            if (find is null)
+            {
+                throw new ArgumentNullException(nameof(find));
+            }
+
             for (var index = start; index <= searched.Length - find.Length; ++index)
             {
                 var matched = true;
@@ -52,6 +62,11 @@ namespace Ferretto.VW.MAS.Utils.Utilities
 
         public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)
         {
+            if (receiveBuffer is null)
+            {
+                throw new ArgumentNullException(nameof(receiveBuffer));
+            }
+
             IList<byte[]> messages = new List<byte[]>();
             if (receiveBuffer.Length >= totalHeaderLength + lengthAdjust)
             {

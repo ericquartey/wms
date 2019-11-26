@@ -6,11 +6,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
     {
         #region Events
 
+        event EventHandler<AssignedMissionOperationChangedEventArgs> AssignedMissionOperationChanged;
+
         event EventHandler<BayStatusChangedEventArgs> BayStatusChanged;
 
         event EventHandler<ErrorStatusChangedEventArgs> ErrorStatusChanged;
-
-        event EventHandler<MissionOperationAvailableEventArgs> MissionOperationAvailable;
 
         #endregion
     }

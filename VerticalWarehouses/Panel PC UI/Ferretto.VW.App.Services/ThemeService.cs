@@ -4,7 +4,7 @@ using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class ThemeService : IThemeService
+    internal sealed class ThemeService : IThemeService
     {
         #region Constructors
 
