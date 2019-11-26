@@ -264,4 +264,7 @@
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitPresentInCell</value>
   </data>
+  <data name="MachineModeNotValid" xml:space="preserve">
+    <value>MachineModeNotValid</value>
+  </data>
 </root>

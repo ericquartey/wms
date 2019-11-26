@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public MissionStatus Status { get; protected set; }
 
-        public MissionType Type { get; protected set; }
+        public FSMType Type { get; protected set; }
 
         protected TMachine CurrentStateMachine { get; }
 

@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         // Used only if source in command is LoadingUnitDestination.LoadingUnit
         LoadingUnitLocation LoadingUnitSource { get; set; }
 
+        MissionType MissionType { get; set; }
+
         #endregion
     }
 }

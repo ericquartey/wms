@@ -9,6 +9,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         #region Constructors
 
         public MoveLoadingUnitMessageData(
+            MissionType missionType,
             LoadingUnitLocation source,
             LoadingUnitLocation destination,
             int? sourceCellId,
@@ -21,6 +22,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
             StopRequestReason stopReason = StopRequestReason.NoReason,
             MessageVerbosity verbosity = MessageVerbosity.Debug)
         {
+            this.MissionType = missionType;
             this.Source = source;
             this.Destination = destination;
             this.SourceCellId = sourceCellId;
@@ -51,6 +53,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
         public int? LoadingUnitId { get; }
 
         public Guid? MissionId { get; }
+
+        public MissionType MissionType { get; set; }
 
         public LoadingUnitLocation Source { get; }
 

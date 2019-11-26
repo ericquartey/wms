@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         Guid Id { get; }
 
-        MissionType Type { get; }
+        FSMType Type { get; }
 
         #endregion
 
