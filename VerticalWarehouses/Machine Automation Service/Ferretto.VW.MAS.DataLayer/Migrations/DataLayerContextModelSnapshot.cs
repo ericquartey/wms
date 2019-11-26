@@ -501,6 +501,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 22,
+                            Code = 22,
+                            Description = "MachineModeNotValid",
+                            Reason = "MachineModeNotValid",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -847,6 +855,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 21,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 22,
                             TotalErrors = 0
                         },
                         new
@@ -1271,7 +1284,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 25, 14, 49, 58, 508, DateTimeKind.Local).AddTicks(4069),
+                            InstallationDate = new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320),
                             ServiceStatus = 86
                         });
                 });

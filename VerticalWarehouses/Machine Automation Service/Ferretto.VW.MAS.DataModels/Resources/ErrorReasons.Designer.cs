@@ -439,6 +439,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MachineModeNotValid.
+        /// </summary>
+        public static string MachineModeNotValid {
+            get {
+                return ResourceManager.GetString("MachineModeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MissingZeroSensorWithEmptyElevator.
         /// </summary>
         public static string MissingZeroSensorWithEmptyElevator {

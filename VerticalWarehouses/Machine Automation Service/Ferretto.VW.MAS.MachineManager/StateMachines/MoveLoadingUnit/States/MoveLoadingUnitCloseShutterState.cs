@@ -69,6 +69,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     if (this.messageData.EjectLoadingUnit)
                     {
                         var messageData = new MoveLoadingUnitMessageData(
+                            this.messageData.MissionType,
                             this.messageData.Source,
                             this.messageData.Destination,
                             this.messageData.SourceCellId,
