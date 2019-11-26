@@ -1341,9 +1341,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("isIntoMachine", Required = Newtonsoft.Json.Required.Always)]
         public bool IsIntoMachine { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("loadingUnitParts", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Collections.Generic.IEnumerable<LoadingUnitPart> LoadingUnitParts { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("maxNetWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxNetWeight { get; set; }
     
@@ -1424,27 +1421,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         Free = 0,
     
         Occupied = 1,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.24.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class LoadingUnitPart : DataModel
-    {
-        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Always)]
-        public int LoadingUnitId { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("partId", Required = Newtonsoft.Json.Required.Always)]
-        public int PartId { get; set; }
-    
-        public string ToJson() 
-        {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
-    
-        public static LoadingUnitPart FromJson(string data)
-        {
-            return Newtonsoft.Json.JsonConvert.DeserializeObject<LoadingUnitPart>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
-        }
     
     }
     

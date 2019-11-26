@@ -65,8 +65,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<IoDevice> IoDevices { get; set; }
 
-        public DbSet<LoadingUnitPart> LoadingUnitParts { get; set; }
-
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
         public DbSet<LogEntry> LogEntries { get; set; }

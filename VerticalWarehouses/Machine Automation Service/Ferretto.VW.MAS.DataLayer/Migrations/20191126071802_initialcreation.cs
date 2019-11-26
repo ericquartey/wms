@@ -8,16 +8,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Carousels",
+                name: "CarouselManualParameters",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ElevatorDistance = table.Column<double>(nullable: false)
+                    FeedRate = table.Column<double>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Carousels", x => x.Id);
+                    table.PrimaryKey("PK_CarouselManualParameters", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ElevatorAxisManualParameters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FeedRate = table.Column<double>(nullable: false),
+                    FeedRateAfterZero = table.Column<double>(nullable: false),
+                    TargetDistance = table.Column<double>(nullable: false),
+                    TargetDistanceAfterZero = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ElevatorAxisManualParameters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,6 +147,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Missions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    CreationDate = table.Column<DateTime>(nullable: false),
+                    MissionStatus = table.Column<int>(nullable: false),
+                    WmsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Missions", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ServicingInfo",
                 columns: table => new
                 {
@@ -155,19 +186,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     FeedRate = table.Column<double>(nullable: false),
                     IsCompleted = table.Column<bool>(nullable: false),
                     Discriminator = table.Column<string>(nullable: false),
-                    InitialTargetPosition = table.Column<double>(nullable: true),
-                    RecoveryTargetPosition = table.Column<double>(nullable: true),
                     Step = table.Column<double>(nullable: true),
                     ReferenceCellId = table.Column<int>(nullable: true),
                     PerformedCycles = table.Column<int>(nullable: true),
                     RequiredCycles = table.Column<int>(nullable: true),
-                    HighSpeedDurationClose = table.Column<double>(nullable: true),
-                    HighSpeedDurationOpen = table.Column<double>(nullable: true),
-                    MaxSpeed = table.Column<double>(nullable: true),
-                    MinSpeed = table.Column<double>(nullable: true),
-                    FeedRateAfterZero = table.Column<double>(nullable: true),
-                    NegativeTargetDirection = table.Column<double>(nullable: true),
-                    PositiveTargetDirection = table.Column<double>(nullable: true),
                     FinalPosition = table.Column<double>(nullable: true),
                     InitialPosition = table.Column<double>(nullable: true)
                 },
@@ -205,6 +227,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_SetupStatus", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShutterManualParameters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    FeedRate = table.Column<double>(nullable: false),
+                    HighSpeedDurationClose = table.Column<double>(nullable: false),
+                    HighSpeedDurationOpen = table.Column<double>(nullable: false),
+                    MaxSpeed = table.Column<double>(nullable: false),
+                    MinSpeed = table.Column<double>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShutterManualParameters", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,6 +294,33 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Carousels",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AssistedMovementsId = table.Column<int>(nullable: true),
+                    ElevatorDistance = table.Column<double>(nullable: false),
+                    ManualMovementsId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carousels", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carousels_CarouselManualParameters_AssistedMovementsId",
+                        column: x => x.AssistedMovementsId,
+                        principalTable: "CarouselManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Carousels_CarouselManualParameters_ManualMovementsId",
+                        column: x => x.ManualMovementsId,
+                        principalTable: "CarouselManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Errors",
                 columns: table => new
                 {
@@ -295,27 +361,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shutters",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    InverterId = table.Column<int>(nullable: true),
-                    TotalCycles = table.Column<int>(nullable: false),
-                    Type = table.Column<string>(type: "text", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shutters", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Shutters_Inverters_InverterId",
-                        column: x => x.InverterId,
-                        principalTable: "Inverters",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "SetupProceduresSets",
                 columns: table => new
                 {
@@ -323,19 +368,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     BayHeightCheckId = table.Column<int>(nullable: true),
                     BeltBurnishingTestId = table.Column<int>(nullable: true),
-                    CarouselManualMovementsId = table.Column<int>(nullable: true),
                     CellPanelsCheckId = table.Column<int>(nullable: true),
                     CellsHeightCheckId = table.Column<int>(nullable: true),
                     DepositAndPickUpTestId = table.Column<int>(nullable: true),
-                    HorizontalManualMovementsId = table.Column<int>(nullable: true),
                     LoadFirstDrawerTestId = table.Column<int>(nullable: true),
                     ShutterHeightCheckId = table.Column<int>(nullable: true),
-                    ShutterManualMovementsId = table.Column<int>(nullable: true),
                     ShutterTestId = table.Column<int>(nullable: true),
-                    VerticalManualMovementsId = table.Column<int>(nullable: true),
                     VerticalOffsetCalibrationId = table.Column<int>(nullable: true),
-                    VerticalResolutionCalibrationId = table.Column<int>(nullable: true),
-                    WeightCheckId = table.Column<int>(nullable: true)
+                    VerticalResolutionCalibrationId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -349,12 +389,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_BeltBurnishingTestId",
                         column: x => x.BeltBurnishingTestId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_CarouselManualMovementsId",
-                        column: x => x.CarouselManualMovementsId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -377,12 +411,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_HorizontalManualMovementsId",
-                        column: x => x.HorizontalManualMovementsId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_LoadFirstDrawerTestId",
                         column: x => x.LoadFirstDrawerTestId,
                         principalTable: "SetupProcedures",
@@ -395,20 +423,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_ShutterManualMovementsId",
-                        column: x => x.ShutterManualMovementsId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_SetupProceduresSets_SetupProcedures_ShutterTestId",
                         column: x => x.ShutterTestId,
-                        principalTable: "SetupProcedures",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_VerticalManualMovementsId",
-                        column: x => x.VerticalManualMovementsId,
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -424,10 +440,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         principalTable: "SetupProcedures",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shutters",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    AssistedMovementsId = table.Column<int>(nullable: true),
+                    InverterId = table.Column<int>(nullable: true),
+                    ManualMovementsId = table.Column<int>(nullable: true),
+                    Type = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shutters", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SetupProceduresSets_SetupProcedures_WeightCheckId",
-                        column: x => x.WeightCheckId,
-                        principalTable: "SetupProcedures",
+                        name: "FK_Shutters_ShutterManualParameters_AssistedMovementsId",
+                        column: x => x.AssistedMovementsId,
+                        principalTable: "ShutterManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Shutters_Inverters_InverterId",
+                        column: x => x.InverterId,
+                        principalTable: "Inverters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Shutters_ShutterManualParameters_ManualMovementsId",
+                        column: x => x.ManualMovementsId,
+                        principalTable: "ShutterManualParameters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -571,26 +615,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LoadingUnitParts",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    LoadingUnitId = table.Column<int>(nullable: false),
-                    PartId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LoadingUnitParts", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_LoadingUnitParts_LoadingUnits_LoadingUnitId",
-                        column: x => x.LoadingUnitId,
-                        principalTable: "LoadingUnits",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "BayPositions",
                 columns: table => new
                 {
@@ -676,7 +700,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Correction = table.Column<double>(nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
                     TotalDistance = table.Column<double>(nullable: false),
                     ElevatorAxisId = table.Column<int>(nullable: true)
@@ -718,6 +741,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    AssistedMovementsId = table.Column<int>(nullable: true),
                     BrakeActivatePercent = table.Column<double>(nullable: false),
                     BrakeReleaseTime = table.Column<double>(nullable: false),
                     ChainOffset = table.Column<double>(nullable: false),
@@ -726,6 +750,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     InverterId = table.Column<int>(nullable: true),
                     LastIdealPosition = table.Column<double>(nullable: false),
                     LowerBound = table.Column<double>(nullable: false),
+                    ManualMovementsId = table.Column<int>(nullable: true),
                     Offset = table.Column<double>(nullable: false),
                     Orientation = table.Column<int>(nullable: false),
                     ProfileCalibrateLength = table.Column<double>(nullable: false),
@@ -740,6 +765,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ElevatorAxes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_ElevatorAxisManualParameters_AssistedMovementsId",
+                        column: x => x.AssistedMovementsId,
+                        principalTable: "ElevatorAxisManualParameters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ElevatorAxes_Elevators_ElevatorId",
                         column: x => x.ElevatorId,
@@ -762,6 +793,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         name: "FK_ElevatorAxes_Inverters_InverterId",
                         column: x => x.InverterId,
                         principalTable: "Inverters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ElevatorAxes_ElevatorAxisManualParameters_ManualMovementsId",
+                        column: x => x.ManualMovementsId,
+                        principalTable: "ElevatorAxisManualParameters",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
@@ -1030,7 +1067,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 22, 17, 57, 12, 808, DateTimeKind.Local).AddTicks(1008), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 26, 8, 18, 1, 921, DateTimeKind.Local).AddTicks(3692), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1349,6 +1386,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "ShutterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carousels_AssistedMovementsId",
+                table: "Carousels",
+                column: "AssistedMovementsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Carousels_ManualMovementsId",
+                table: "Carousels",
+                column: "ManualMovementsId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CellPanels_MachineId",
                 table: "CellPanels",
                 column: "MachineId");
@@ -1357,6 +1404,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_Cells_PanelId",
                 table: "Cells",
                 column: "PanelId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_AssistedMovementsId",
+                table: "ElevatorAxes",
+                column: "AssistedMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ElevatorAxes_ElevatorId",
@@ -1377,6 +1429,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "IX_ElevatorAxes_InverterId",
                 table: "ElevatorAxes",
                 column: "InverterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ElevatorAxes_ManualMovementsId",
+                table: "ElevatorAxes",
+                column: "ManualMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ElevatorAxes_WeightMeasurementId",
@@ -1427,11 +1484,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_LoadingUnitParts_LoadingUnitId",
-                table: "LoadingUnitParts",
-                column: "LoadingUnitId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
@@ -1469,11 +1521,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "BeltBurnishingTestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_CarouselManualMovementsId",
-                table: "SetupProceduresSets",
-                column: "CarouselManualMovementsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_CellPanelsCheckId",
                 table: "SetupProceduresSets",
                 column: "CellPanelsCheckId");
@@ -1489,11 +1536,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "DepositAndPickUpTestId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_HorizontalManualMovementsId",
-                table: "SetupProceduresSets",
-                column: "HorizontalManualMovementsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_LoadFirstDrawerTestId",
                 table: "SetupProceduresSets",
                 column: "LoadFirstDrawerTestId");
@@ -1504,19 +1546,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "ShutterHeightCheckId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_ShutterManualMovementsId",
-                table: "SetupProceduresSets",
-                column: "ShutterManualMovementsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_ShutterTestId",
                 table: "SetupProceduresSets",
                 column: "ShutterTestId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_VerticalManualMovementsId",
-                table: "SetupProceduresSets",
-                column: "VerticalManualMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_SetupProceduresSets_VerticalOffsetCalibrationId",
@@ -1529,14 +1561,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 column: "VerticalResolutionCalibrationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SetupProceduresSets_WeightCheckId",
-                table: "SetupProceduresSets",
-                column: "WeightCheckId");
+                name: "IX_Shutters_AssistedMovementsId",
+                table: "Shutters",
+                column: "AssistedMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shutters_InverterId",
                 table: "Shutters",
                 column: "InverterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Shutters_ManualMovementsId",
+                table: "Shutters",
+                column: "ManualMovementsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TorqueCurrentSamples_MeasurementSessionId",
@@ -1639,13 +1676,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "ErrorStatistics");
 
             migrationBuilder.DropTable(
-                name: "LoadingUnitParts");
-
-            migrationBuilder.DropTable(
                 name: "LogEntries");
 
             migrationBuilder.DropTable(
                 name: "MachineStatistics");
+
+            migrationBuilder.DropTable(
+                name: "Missions");
 
             migrationBuilder.DropTable(
                 name: "ServicingInfo");
@@ -1684,6 +1721,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 name: "Shutters");
 
             migrationBuilder.DropTable(
+                name: "CarouselManualParameters");
+
+            migrationBuilder.DropTable(
+                name: "ShutterManualParameters");
+
+            migrationBuilder.DropTable(
                 name: "LoadingUnits");
 
             migrationBuilder.DropTable(
@@ -1694,6 +1737,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ElevatorAxes");
+
+            migrationBuilder.DropTable(
+                name: "ElevatorAxisManualParameters");
 
             migrationBuilder.DropTable(
                 name: "Inverters");
