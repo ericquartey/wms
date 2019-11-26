@@ -42,28 +42,28 @@
             <controls:PpcLabeledText Grid.ColumnSpan="3"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ListCode}"
+                                     ContentText="{Binding MissionOperation.ItemListCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.ColumnSpan="3"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ListDescription}"
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
 
             <controls:PpcLabeledText Grid.Row="2"
                                      Grid.ColumnSpan="3"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ListRow}"
+                                     ContentText="{Binding MissionOperation.ItemListRowCode}"
                                      LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailListRow}" />
 
 
             <controls:PpcLabeledText Grid.Row="3"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ItemCode}"
+                                     ContentText="{Binding MissionOperation.ItemCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
 
 
@@ -72,36 +72,36 @@
                                      Grid.ColumnSpan="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding ItemDescription}"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
 
 
-            <controls:PpcLabeledText Grid.Row="4"
+            <!--<controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding ProductionDate}"
-                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />
+                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />-->
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding Batch}"
+                                     ContentText="{Binding MissionOperation.Lot}"
                                      LabelText="{x:Static resources:OperatorApp.Lot}" />
 
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding MaterialStatus}"
+                                     ContentText="{Binding MissionOperation.MaterialStatusId}"
                                      LabelText="{x:Static resources:OperatorApp.MaterialStatus}" />
 
             <controls:PpcLabeledText Grid.Row="5"
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding PackagingType}"
+                                     ContentText="{Binding MissionOperation.PackageTypeId}"
                                      LabelText="{x:Static resources:OperatorApp.PackagingType}" />
 
             <controls:PpcLabeledText Grid.Row="6"
@@ -115,7 +115,7 @@
                                      Grid.Column="2"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding RequestedQuantity}"
+                                     ContentText="{Binding MissionOperation.RequestedQuantity}"
                                      LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
 
         </Grid>
