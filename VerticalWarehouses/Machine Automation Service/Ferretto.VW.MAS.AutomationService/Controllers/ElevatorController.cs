@@ -112,6 +112,18 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("horizontal/assisted-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Horizontal));
+        }
+
+        [HttpGet("horizontal/manual-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetHorizontalManualMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Horizontal));
+        }
+
         [HttpGet("loading-unit-on-board")]
         public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
@@ -132,6 +144,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(elevatorPosition);
         }
 
+        [HttpGet("vertical/assisted-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical));
+        }
+
         [HttpGet("vertical/bounds")]
         public ActionResult<AxisBounds> GetVerticalBounds()
         {
@@ -139,9 +157,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("vertical/manual-movements-parameters")]
-        public ActionResult<VerticalManualMovementsProcedure> GetVerticalManualMovementsParameters()
+        public ActionResult<ElevatorAxisManualParameters> GetVerticalManualMovementsParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetVerticalManualMovements());
+            return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Vertical));
         }
 
         [HttpGet("vertical/offset")]
@@ -185,16 +203,36 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/manual-move-to")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveManualToVerticalPosition(
+            double targetPosition,
+            bool performWeighting,
+            bool computeElongation)
+        {
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                true,
+                targetPosition,
+                performWeighting,
+                computeElongation,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move-to-bay-position")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToBayPosition(int bayPositionId, double feedRate, bool computeElongation, bool performWeighting)
+        public IActionResult MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting)
         {
             this.elevatorProvider.MoveToBayPosition(
                 bayPositionId,
-                feedRate,
                 computeElongation,
                 performWeighting,
                 this.BayNumber,
@@ -208,11 +246,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToCell(int cellId, double feedRate, bool computeElongation, bool performWeighting)
+        public IActionResult MoveToCell(int cellId, bool computeElongation, bool performWeighting)
         {
             this.elevatorProvider.MoveToCell(
                 cellId,
-                feedRate,
                 computeElongation,
                 performWeighting,
                 this.BayNumber,
@@ -228,13 +265,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToVerticalPosition(
             double targetPosition,
-            double feedRate,
             bool performWeighting,
             bool computeElongation)
         {
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                false,
                 targetPosition,
-                feedRate,
                 performWeighting,
                 computeElongation,
                 this.BayNumber,
@@ -243,12 +279,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        [HttpPost("vertical/move")]
+        [HttpPost("vertical/manual-move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveVertical(VerticalMovementDirection direction)
+        public IActionResult MoveVerticalManual(VerticalMovementDirection direction)
         {
-            this.elevatorProvider.MoveVertical(direction, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveVerticalManual(direction, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 

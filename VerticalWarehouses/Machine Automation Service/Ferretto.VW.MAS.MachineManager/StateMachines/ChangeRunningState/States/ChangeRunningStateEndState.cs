@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -38,7 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateEndState(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
             IErrorsProvider errorsProvider,
             IMachineModeVolatileDataProvider machineModeDataProvider,
@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             ILogger<StateBase> logger)
             : base(logger)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
             if (this.EndMessage.Data is IChangeRunningStateMessageData runningState)
             {
                 if (this.StopRequestReason is StopRequestReason.NoReason
-                    && this.sensorsProvider.IsMachineRunning == runningState.Enable)
+                    && this.sensorsProvider.IsMachineSecurityRunning == runningState.Enable)
                 {
                     this.IsCompleted = true;
                     if (runningState.Enable)
@@ -158,7 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     }
                 }
             }
-            if (this.stateMachineResponses.Values.Count == this.baysProvider.GetAll().Count())
+            if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
             {
                 this.IsCompleted = true;
             }

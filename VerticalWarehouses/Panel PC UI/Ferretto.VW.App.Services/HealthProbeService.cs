@@ -7,7 +7,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class HealthProbeService : IHealthProbeService
+    internal sealed class HealthProbeService : IHealthProbeService
     {
         #region Fields
 

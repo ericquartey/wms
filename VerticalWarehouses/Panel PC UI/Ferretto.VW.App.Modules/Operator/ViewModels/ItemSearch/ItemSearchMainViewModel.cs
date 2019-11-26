@@ -18,15 +18,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private const int DEFAULT_DELAY = 300;
+        private const int DefaultPageSize = 20;
 
-        private const int DEFAULT_QUANTITY_ITEM = 20;
-
-        private readonly IBayManager bayManager;
+        private readonly IAreasDataService areasDataService;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemsDataService itemsDataService;
+        private readonly List<Item> items = new List<Item>();
 
         private readonly IItemSearchedModel itemSearchViewModel;
 
@@ -34,31 +32,33 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int? areaId;
 
-        private string availableQuantity;
+        private double? availableQuantity;
 
         private int currentItemIndex;
 
-        private ICommand downDataGridButtonCommand;
+        private int? inputQuantity;
+
+        private bool isBusyLoadingNextPage;
+
+        private bool isBusyRequestingItemPick;
 
         private bool isSearching;
 
         private bool isWaitingForResponse;
 
-        private ICommand itemCallCommand;
-
-        private ICommand itemDetailButtonCommand;
-
-        private List<Item> items;
-
-        private string requestedQuantity;
+        private DelegateCommand requestItemPickCommand;
 
         private string searchItemCode;
 
         private Item selectedItem;
 
-        private CancellationTokenSource tokenSource;
+        private DelegateCommand selectNextItemCommand;
 
-        private ICommand upDataGridButtonCommand;
+        private DelegateCommand selectPreviousItemCommand;
+
+        private DelegateCommand showItemDetailsCommand;
+
+        private CancellationTokenSource tokenSource;
 
         #endregion
 
@@ -66,63 +66,88 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
-            IBayManager bayManager,
             IMachineIdentityWebService identityService,
-            IItemsDataService itemsDataService,
-            IItemSearchedModel itemSearchedModel)
+            IItemSearchedModel itemSearchedModel,
+            IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
-            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemsDataService = itemsDataService ?? throw new ArgumentNullException(nameof(itemsDataService));
             this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
-
-            this.currentItemIndex = 0;
-            this.requestedQuantity = "0";
-            this.items = new List<Item>();
+            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
         }
 
         #endregion
 
         #region Properties
 
-        public string AvailableQuantity { get => this.availableQuantity; set => this.SetProperty(ref this.availableQuantity, value); }
+        public double? AvailableQuantity
+        {
+            get => this.availableQuantity;
+            set => this.SetProperty(ref this.availableQuantity, value);
+        }
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(async () => await this.ChangeSelectedItemAsync(false)));
+        public ICommand DownDataGridButtonCommand =>
+            this.selectNextItemCommand
+            ??
+            (this.selectNextItemCommand = new DelegateCommand(
+                async () => await this.SelectNextItemAsync(),
+                this.CanSelectNextItem));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsSearching { get => this.isSearching; set => this.SetProperty(ref this.isSearching, value); }
+        public int? InputQuantity
+        {
+            get => this.inputQuantity;
+            set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyLoadingNextPage
+        {
+            get => this.isBusyLoadingNextPage;
+            private set => this.SetProperty(ref this.isBusyLoadingNextPage, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsBusyRequestingItemPick
+        {
+            get => this.isBusyRequestingItemPick;
+            private set => this.SetProperty(ref this.isBusyRequestingItemPick, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsSearching
+        {
+            get => this.isSearching;
+            set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
-
-        public ICommand ItemCallCommand =>
-            this.itemCallCommand
-            ??
-            (this.itemCallCommand = new DelegateCommand(
-                async () => await this.ItemCallMethodAsync(),
-                this.CanItemCall));
-
-        public ICommand ItemDetailButtonCommand => this.itemDetailButtonCommand ?? (this.itemDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
-
-        public BindingList<Item> Items => new BindingList<Item>(this.items);
-
-        public string RequestedQuantity
-        {
-            get => this.requestedQuantity;
-            set
+            private set
             {
-                if (this.SetProperty(ref this.requestedQuantity, value))
+                if (this.SetProperty(ref this.isWaitingForResponse, value) && value)
                 {
-                    ((DelegateCommand)this.ItemCallCommand).RaiseCanExecuteChanged();
+                    this.ClearNotifications();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public ICommand ItemDetailButtonCommand =>
+            this.showItemDetailsCommand
+            ??
+            (this.showItemDetailsCommand = new DelegateCommand(
+                this.ShowItemDetails,
+                this.CanShowItemDetails));
+
+        public IEnumerable<Item> Items => new BindingList<Item>(this.items);
+
+        public ICommand RequestItemPickCommand =>
+            this.requestItemPickCommand
+            ??
+            (this.requestItemPickCommand = new DelegateCommand(
+                async () => await this.RequestItemPickAsync(),
+                this.CanRequestItemPick));
 
         public string SearchItemCode
         {
@@ -145,81 +170,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.itemSearchViewModel.SelectedItem = this.selectedItem;
+                    this.AvailableQuantity = this.SelectedItem?.TotalAvailable;
 
-                    ((DelegateCommand)this.ItemCallCommand).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.ItemDetailButtonCommand).RaiseCanExecuteChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
 
         public ICommand UpDataGridButtonCommand =>
-            this.upDataGridButtonCommand
+            this.selectPreviousItemCommand
             ??
-            (this.upDataGridButtonCommand = new DelegateCommand(async () => await this.ChangeSelectedItemAsync(true)));
+            (this.selectPreviousItemCommand = new DelegateCommand(
+                async () => await this.SelectPreviousItemAsync(),
+                this.CanSelectPreviousItem));
 
         #endregion
 
         #region Methods
-
-        public async Task ChangeSelectedItemAsync(bool isUp)
-        {
-            if (this.Items == null)
-            {
-                return;
-            }
-
-            if (this.Items.Count() != 0)
-            {
-                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
-                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.Items.Count())
-                {
-                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : this.Items.Count() - 1;
-                }
-
-                if (this.currentItemIndex > (DEFAULT_QUANTITY_ITEM - 2) &&
-                    this.currentItemIndex >= this.Items.Count() - 2)
-                {
-                    this.IsSearching = true;
-                    this.tokenSource = new CancellationTokenSource();
-                    await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
-                }
-
-                this.SelectedItem = this.Items?.ToList()[this.currentItemIndex];
-            }
-        }
-
-        public async Task ItemCallMethodAsync()
-        {
-            var itemToPick = this.SelectedItem;
-            if (itemToPick == null)
-            {
-                return;
-            }
-
-            if (!int.TryParse(this.requestedQuantity, out var qty))
-            {
-                return;
-            }
-
-            var bayId = (int)(await this.bayManager.GetBayAsync()).Number;
-
-            var success = await this.wmsDataProvider.PickAsync(
-                itemToPick.Id,
-                2, // TODO remove this hardcoded value
-                bayId,
-                qty);
-
-            if (success)
-            {
-                this.ShowNotification($"Successfully called {qty} pieces of item {itemToPick.Id}.", Services.Models.NotificationSeverity.Success);
-            }
-            else
-            {
-                this.ShowNotification($"Couldn't get {qty} pieces of item {itemToPick.Id}.", Services.Models.NotificationSeverity.Error);
-            }
-
-            this.RequestedQuantity = "0";
-        }
 
         public override async Task OnAppearedAsync()
         {
@@ -235,12 +202,38 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.currentItemIndex = 0;
-            this.RequestedQuantity = "0";
-            this.items = new List<Item>();
+            this.InputQuantity = null;
+            this.items.Clear();
             var machineIdentity = await this.identityService.GetAsync();
             this.areaId = machineIdentity.AreaId;
             this.tokenSource = new CancellationTokenSource();
+
             await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+        }
+
+        public async Task RequestItemPickAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.IsBusyRequestingItemPick = true;
+
+                await this.wmsDataProvider.PickAsync(
+                    this.SelectedItem.Id,
+                    this.InputQuantity.Value);
+
+                this.ShowNotification($"TODO**Successfully requested {this.InputQuantity} pieces of item '{this.SelectedItem.Code}'.", Services.Models.NotificationSeverity.Success);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.InputQuantity = null;
+                this.IsBusyRequestingItemPick = false;
+                this.IsWaitingForResponse = false;
+            }
         }
 
         public async Task SearchItemAsync(int skip, CancellationToken cancellationToken)
@@ -257,9 +250,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             try
             {
-                var newItems = await this.itemsDataService.GetAllAsync(
+                var newItems = await this.areasDataService.GetItemsAsync(
+                    this.areaId.Value,
                     skip,
-                    DEFAULT_QUANTITY_ITEM,
+                    DefaultPageSize,
                     null,
                     null,
                     this.searchItemCode,
@@ -277,62 +271,105 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
             }
-
-            this.RaisePropertyChanged(nameof(this.Items));
-            if (skip == 0)
+            finally
             {
-                this.SelectedItem = this.items?.FirstOrDefault();
+                this.RaisePropertyChanged(nameof(this.Items));
+
+                if (skip == 0 || this.currentItemIndex >= this.items.Count - 1)
+                {
+                    this.SelectedItem = this.items?.FirstOrDefault();
+                    this.currentItemIndex = 0;
+                }
+
+                this.IsSearching = false;
+                this.IsBusyLoadingNextPage = false;
             }
-            this.IsSearching = false;
         }
 
-        private bool CanDetailCommand()
+        public async Task SelectNextItemAsync()
         {
-            return !this.IsWaitingForResponse
+            this.currentItemIndex++;
+
+            if (this.currentItemIndex > Math.Max(this.items.Count - 2, DefaultPageSize - 2))
+            {
+                this.IsSearching = true;
+                this.tokenSource = new CancellationTokenSource();
+                this.IsBusyLoadingNextPage = true;
+                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+            }
+
+            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+        }
+
+        public async Task SelectPreviousItemAsync()
+        {
+            this.currentItemIndex--;
+
+            if (this.currentItemIndex > (DefaultPageSize - 2))
+            {
+                this.IsSearching = true;
+                this.tokenSource = new CancellationTokenSource();
+                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+            }
+
+            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+        }
+
+        private bool CanRequestItemPick()
+        {
+            return
+                this.SelectedItem != null
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity > 0
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private bool CanSelectNextItem()
+        {
+            return
+                this.currentItemIndex < this.items.Count - 1
+                &&
+                !this.IsSearching
+                &&
+                !this.IsBusyLoadingNextPage;
+        }
+
+        private bool CanSelectPreviousItem()
+        {
+            return
+                this.currentItemIndex > 0
+                &&
+                !this.IsSearching
+                &&
+                !this.IsBusyLoadingNextPage;
+        }
+
+        private bool CanShowItemDetails()
+        {
+            return
+                !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
         }
 
-        private bool CanItemCall()
+        private void RaiseCanExecuteChanged()
         {
-            if (this.selectedItem == null)
-            {
-                return false;
-            }
-
-            if (int.TryParse(this.requestedQuantity, out var qty))
-            {
-                if (qty <= 0)
-                {
-                    return false;
-                }
-
-                return this.SelectedItem.TotalAvailable >= qty;
-            }
-
-            return false;
+            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
+            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
-        private void Detail()
+        private void ShowItemDetails()
         {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemSearch.DETAIL,
-                    null,
-                    trackCurrentView: true);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
+                null,
+                trackCurrentView: true);
         }
 
         private async Task TriggerSearchAsync()

@@ -39,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 requestingBay,
                 targetBay,
                 machineResourcesProvider,
-                baysProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
+                baysDataProvider.GetInverterIndexByAxis(axisToCalibrate, targetBay),
                 eventAggregator,
                 logger,
                 serviceScopeFactory);

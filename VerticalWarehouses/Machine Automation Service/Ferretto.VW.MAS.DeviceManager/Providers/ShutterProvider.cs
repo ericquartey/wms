@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 // ReSharper disable ArrangeThisQualifier
@@ -12,7 +13,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
+
+        private readonly ILogger<ShutterProvider> logger;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -23,15 +26,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #region Constructors
 
         public ShutterProvider(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            ILogger<ShutterProvider> logger)
             : base(eventAggregator)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -40,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
+            var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
 
             var speedRate = parameters.FeedRate * parameters.MinSpeed;
 
@@ -51,7 +56,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ? ShutterPosition.Opened
                 : ShutterPosition.Closed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var messageData = new ShutterPositioningMessageData(
                 targetPosition,
@@ -64,6 +69,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 highSpeedDurationOpen: 0,
                 highSpeedDurationClose: 0,
                 lowerSpeed: 0);
+
+            this.logger.LogDebug(
+                $"Move Shutter " +
+                $"direction: {direction}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"feedRate: {parameters.FeedRate}; " +
+                $"speed: {speedRate}; " +
+                $"minspeed: {parameters.MinSpeed}; " +
+                $"maxspeed: {parameters.MaxSpeed}; " +
+                $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
 
             this.PublishCommand(
                 messageData,
@@ -116,12 +132,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.ThePositionIsNotValid);
             }
 
-            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
+            var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
             var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             if (bay.Shutter.Type == ShutterType.NotSpecified)
             {
@@ -143,6 +159,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
                 lowSpeed);
+
+            this.logger.LogDebug(
+                $"MoveTo Shutter " +
+                $"direction: {direction}; " +
+                $"targetPosition: {targetPosition}; " +
+                $"feedRate: {parameters.FeedRate}; " +
+                $"speed: {speedRate}; " +
+                $"minspeed: {parameters.MinSpeed}; " +
+                $"maxspeed: {parameters.MaxSpeed}; " +
+                $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
 
             this.PublishCommand(
                 messageData,
@@ -168,13 +195,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 throw new InvalidOperationException(Resources.Shutters.TheNumberOfTestCyclesMustBeStrictlyPositive);
             }
 
-            var parameters = this.setupProceduresDataProvider.GetShutterManualMovements();
+            var parameters = this.baysDataProvider.GetAssistedMovementsShutter(bayNumber);
 
             var speedRate = parameters.FeedRate * parameters.MaxSpeed;
 
             var lowSpeed = parameters.FeedRate * parameters.MinSpeed;
 
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             var delayInMilliseconds = delayInSeconds * 1000;
 
@@ -189,6 +216,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 parameters.HighSpeedDurationOpen,
                 parameters.HighSpeedDurationClose,
                 lowSpeed);
+
+            this.logger.LogDebug(
+                $"RunTest Shutter " +
+                $"feedRate: {parameters.FeedRate}; " +
+                $"speed: {speedRate}; " +
+                $"minspeed: {parameters.MinSpeed}; " +
+                $"maxspeed: {parameters.MaxSpeed}; " +
+                $"highspeeddurationopen: {parameters.HighSpeedDurationOpen}; " +
+                $"highspeeddurationclose: {parameters.HighSpeedDurationClose}");
 
             this.PublishCommand(
                 messageData,

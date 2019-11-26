@@ -171,6 +171,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private bool freeAng3;
 
+        private bool inverterInFault1;
+
         private bool lUPresentInBay1;
 
         private bool lUPresentInBay2;
@@ -196,6 +198,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private bool mushroomEmergencyButtonBay2;
 
         private bool mushroomEmergencyButtonBay3;
+
+        private bool noValue;
 
         private bool powerOnOff;
 
@@ -393,6 +397,8 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool FreeAng3 { get => this.freeAng3; set => this.SetProperty(ref this.freeAng3, value); }
 
+        public bool InverterInFault1 { get => this.inverterInFault1; set => this.SetProperty(ref this.inverterInFault1, value); }
+
         public bool LUPresentInBay1 { get => this.lUPresentInBay1; set => this.SetProperty(ref this.lUPresentInBay1, value); }
 
         public bool LUPresentInBay2 { get => this.lUPresentInBay2; set => this.SetProperty(ref this.lUPresentInBay2, value); }
@@ -418,6 +424,8 @@ namespace Ferretto.VW.App.Controls.Controls
         public bool MushroomEmergencyButtonBay2 { get => this.mushroomEmergencyButtonBay2; set => this.SetProperty(ref this.mushroomEmergencyButtonBay2, value); }
 
         public bool MushroomEmergencyButtonBay3 { get => this.mushroomEmergencyButtonBay3; set => this.SetProperty(ref this.mushroomEmergencyButtonBay3, value); }
+
+        public bool NoValue { get => this.noValue; set => this.SetProperty(ref this.noValue, value); }
 
         public bool PowerOnOff { get => this.powerOnOff; set => this.SetProperty(ref this.powerOnOff, value); }
 

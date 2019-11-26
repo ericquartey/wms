@@ -20,9 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
-
-        private readonly IEventAggregator eventAggregator;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
@@ -32,12 +30,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public BaysController(
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            IBaysProvider baysProvider,
-            IEventAggregator eventAggregator)
+            IBaysDataProvider baysDataProvider)
         {
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
-            this.eventAggregator = eventAggregator;
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
         }
 
         #endregion
@@ -56,7 +52,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> ActivateAsync()
         {
-            var bay = this.baysProvider.Activate(this.BayNumber);
+            var bay = this.baysDataProvider.Activate(this.BayNumber);
 
             return this.Ok(bay);
         }
@@ -67,23 +63,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> DeactivateAsync()
         {
-            var bay = this.baysProvider.Deactivate(this.BayNumber);
+            var bay = this.baysDataProvider.Deactivate(this.BayNumber);
 
             return this.Ok(bay);
         }
 
-        [HttpPost("findzero")]
+        [HttpPost("find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
+            this.baysDataProvider.FindZero(this.BayNumber);
 
             return this.Accepted();
         }
@@ -93,7 +83,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<IEnumerable<Bay>> GetAll()
         {
-            var bay = this.baysProvider.GetAll();
+            var bay = this.baysDataProvider.GetAll();
 
             return this.Ok(bay);
         }
@@ -104,7 +94,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> GetByNumber(BayNumber bayNumber)
         {
-            var bay = this.baysProvider.GetByNumber(bayNumber);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
 
             return this.Ok(bay);
         }
@@ -120,13 +110,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Homing()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.ResetEncoder);
-
-            this.PublishCommand(
-                homingData,
-                "Execute Homing Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
+            this.baysDataProvider.PerformHoming(this.BayNumber);
 
             return this.Accepted();
         }
@@ -138,28 +122,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public ActionResult<Bay> UpdateHeightAsync(int position, double height)
         {
-            var bay = this.baysProvider.UpdatePosition(this.BayNumber, position, height);
+            var bay = this.baysDataProvider.UpdatePosition(this.BayNumber, position, height);
 
             return this.Ok(bay);
-        }
-
-        [Obsolete("Move message publishing to providers.")]
-        protected void PublishCommand(
-            IMessageData messageData,
-            string description,
-            MessageActor receiver,
-            MessageType messageType)
-        {
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                    new CommandMessage(
-                        messageData,
-                        description,
-                        receiver,
-                        MessageActor.WebApi,
-                        messageType,
-                        this.BayNumber));
         }
 
         #endregion

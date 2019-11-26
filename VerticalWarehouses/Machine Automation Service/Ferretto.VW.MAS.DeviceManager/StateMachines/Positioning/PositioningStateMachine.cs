@@ -31,7 +31,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -45,10 +45,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 targetBay,
                 messageData,
                 machineResourcesProvider,
-                baysProvider.GetInverterIndexByMovementType(messageData, targetBay),
+                baysDataProvider.GetInverterIndexByMovementType(messageData, targetBay),
                 eventAggregator,
                 logger,
-                baysProvider,
+                baysDataProvider,
                 serviceScopeFactory);
         }
 

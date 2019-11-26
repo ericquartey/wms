@@ -4,21 +4,30 @@
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "1",
-        "LOGOUTWHENUNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 2)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "2",
-        "LOGOUTWHENUNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     },
     "PanelPC (Bay 3)": {
       "commandName": "Project",
       "environmentVariables": {
         "BAY_NUMBER": "3",
-        "LOGOUTWHENUNHEALTHY": "False"
+        "LOGOUT_WHEN_UNHEALTHY": "False"
+      }
+    },
+    "PanelPC (Bay 1 - EjLog)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "1",
+        "WMS_DATASERVICE_URL": "http://localhost:10000",
+        "WMS_DATASERVICE_HUBS_DATA_PATH": "http://localhost:10000/hubs/data",
+        "LOGOUT_WHEN_UNHEALTHY": "False"
       }
     }
   }

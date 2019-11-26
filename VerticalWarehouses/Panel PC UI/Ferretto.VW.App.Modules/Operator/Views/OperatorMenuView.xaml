@@ -43,21 +43,21 @@
                                 Width="{DynamicResource PpcButtonWidth}"
                                 Height="{DynamicResource PpcButtonHeight}"
                                 Margin="15,0,15,15"
-                                Command="{Binding ItemSearchButtonCommand}"
+                                Command="{Binding ShowItemSearchCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuItems}" />
 
             <controls:PpcButton Grid.Row="2"
                                 Width="{DynamicResource PpcButtonWidth}"
                                 Height="{DynamicResource PpcButtonHeight}"
                                 Margin="15,0,15,15"
-                                Command="{Binding ListsInWaitButtonCommand}"
+                                Command="{Binding ShowItemListsCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuLists}" />
 
             <controls:PpcButton Grid.Row="4"
                                 Width="{DynamicResource PpcButtonWidth}"
                                 Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,15,15,0"
-                                Command="{Binding OtherButtonCommand}"
+                                Command="{Binding ShowOtherMenuCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuOther}" />
 
         </Grid>

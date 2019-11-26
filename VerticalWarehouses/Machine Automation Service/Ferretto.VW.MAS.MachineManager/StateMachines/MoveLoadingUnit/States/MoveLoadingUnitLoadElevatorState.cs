@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         public MoveLoadingUnitLoadElevatorState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
@@ -52,7 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         break;
 
                     default:
-                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
+                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitSource);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                         measure = true;
@@ -117,7 +117,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     if (notification.Type == MessageType.ShutterPositioning)
                     {
-                        if (this.sensorsProvider.GetShutterPosition(notification.RequestingBay) == ShutterPosition.Opened)
+                        var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
+                        if (shutterPosition == ShutterPosition.Opened
+                            || shutterPosition == ShutterPosition.NotSpecified)
                         {
                             this.loadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                         }
@@ -164,8 +166,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     else
                     {
-                        var bayPosition = this.baysProvider.GetPositionByLocation(this.moveData.LoadingUnitSource);
-                        this.baysProvider.SetLoadingUnit(bayPosition.Id, null);
+                        var bayPosition = this.baysDataProvider.GetPositionByLocation(this.moveData.LoadingUnitSource);
+                        this.baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
                     }
 
                     transaction.Commit();

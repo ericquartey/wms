@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -12,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
-// ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DataLayer
 {
     internal sealed class ErrorsProvider : IErrorsProvider, IDisposable
@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly NotificationEvent notificationEvent;
 
-        private readonly IServiceScope scope;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         private bool isDisposed;
 
@@ -39,21 +39,13 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             ILogger<DataLayerService> logger)
         {
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
+            _ = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
-
+            this.serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
-            this.scope = serviceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -71,24 +63,24 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 return this.dataContext.Errors
-                    .Where(e => !e.ResolutionDate.HasValue)
-                    .OrderBy(e => e.Definition.Severity)
-                    .ThenBy(e => e.OccurrenceDate)
-                    .Select(e => new MachineError
-                    {
-                        Id = e.Id,
-                        Code = e.Code,
-                        OccurrenceDate = e.OccurrenceDate,
-                        ResolutionDate = e.ResolutionDate,
-                        Definition = new ErrorDefinition
+                        .Where(e => !e.ResolutionDate.HasValue)
+                        .OrderBy(e => e.Definition.Severity)
+                        .ThenBy(e => e.OccurrenceDate)
+                        .Select(e => new MachineError
                         {
+                            Id = e.Id,
                             Code = e.Code,
-                            Description = e.Definition.Description,
-                            Reason = e.Definition.Reason,
-                            Severity = e.Definition.Severity,
-                        },
-                    })
-                    .FirstOrDefault();
+                            OccurrenceDate = e.OccurrenceDate,
+                            ResolutionDate = e.ResolutionDate,
+                            Definition = new ErrorDefinition
+                            {
+                                Code = e.Code,
+                                Description = e.Definition.Description,
+                                Reason = e.Definition.Reason,
+                                Severity = e.Definition.Severity,
+                            },
+                        })
+                        .FirstOrDefault();
             }
         }
 
@@ -171,11 +163,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public MachineError Resolve(int id)
         {
-            MachineError error;
-
             lock (this.dataContext)
             {
-                error = this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
+                var error = this.dataContext.Errors.SingleOrDefault(e => e.Id == id);
                 if (error is null)
                 {
                     throw new EntityNotFoundException(id);
@@ -192,9 +182,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 }
 
                 this.NotifyErrorResolution(error);
-            }
 
-            return error;
+                return error;
+            }
         }
 
         public void ResolveAll()
@@ -207,7 +197,6 @@ namespace Ferretto.VW.MAS.DataLayer
                    .Select(e => e.Id)
                    .ToArray();
             }
-
             errors.ToList().ForEach(id => this.Resolve(id));
         }
 
@@ -216,11 +205,6 @@ namespace Ferretto.VW.MAS.DataLayer
             if (!this.isDisposed)
             {
                 return;
-            }
-
-            if (disposing)
-            {
-                this.scope?.Dispose();
             }
 
             this.isDisposed = true;
@@ -240,9 +224,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
             foreach (var attribute in attributes)
             {
-                var condition = this.scope.ServiceProvider.GetConditionEvaluator(attribute);
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var condition = scope.ServiceProvider.GetConditionEvaluator(attribute);
 
-                isErrorStillActive &= !condition.IsSatisfied();
+                    isErrorStillActive &= !condition.IsSatisfied();
+                }
             }
 
             return isErrorStillActive;

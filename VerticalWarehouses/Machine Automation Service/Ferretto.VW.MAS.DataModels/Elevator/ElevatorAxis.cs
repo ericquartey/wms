@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        public ElevatorAxisManualParameters AssistedMovements { get; set; }
+
         public double BrakeActivatePercent { get; set; }
 
         public double BrakeReleaseTime { get; set; }
@@ -48,6 +50,8 @@ namespace Ferretto.VW.MAS.DataModels
                 this.lowerBound = value;
             }
         }
+
+        public ElevatorAxisManualParameters ManualMovements { get; set; }
 
         public double Offset
         {

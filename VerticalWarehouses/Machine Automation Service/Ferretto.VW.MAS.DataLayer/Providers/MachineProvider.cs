@@ -1,8 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -14,17 +17,29 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<MachineProvider> logger;
+
         #endregion
 
         #region Constructors
 
         public MachineProvider(
             DataLayerContext dataContext,
+            ILogger<MachineProvider> logger,
             IMemoryCache cache)
         {
-            this.dataContext = dataContext ?? throw new System.ArgumentNullException(nameof(dataContext));
-            this.cache = cache ?? throw new System.ArgumentNullException(nameof(cache));
+            this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.cache = cache ?? throw new ArgumentNullException(nameof(cache));
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsHomingExetuted { get; set; }
+
+        public bool IsMachineRunning { get; set; }
 
         #endregion
 
@@ -39,7 +54,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -52,7 +67,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
             lock (this.dataContext)
             {
@@ -94,6 +109,12 @@ namespace Ferretto.VW.MAS.DataLayer
                            .ThenInclude(a => a.WeightMeasurement)
                     .Include(m => m.Elevator)
                        .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.AssistedMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
+                           .ThenInclude(a => a.ManualMovements)
+                    .Include(m => m.Elevator)
+                       .ThenInclude(e => e.Axes)
                            .ThenInclude(a => a.Profiles)
                                .ThenInclude(p => p.Steps)
                     .Include(m => m.Elevator)
@@ -106,10 +127,20 @@ namespace Ferretto.VW.MAS.DataLayer
                             .ThenInclude(b => b.LoadingUnit)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.ManualMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Carousel)
+                            .ThenInclude(b => b.AssistedMovements)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Inverter)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.IoDevice)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.AssistedMovements)
+                    .Include(m => m.Bays)
+                        .ThenInclude(b => b.Shutter)
+                            .ThenInclude(b => b.ManualMovements)
                     .Include(m => m.Bays)
                         .ThenInclude(b => b.Shutter)
                             .ThenInclude(b => b.Inverter)
@@ -117,13 +148,10 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(p => p.Cells)
                     .Single();
 
-                foreach (var axe in entity.Elevator.Axes.ToList())
+                entity.Elevator?.Axes?.ForEach((axe) =>
                 {
-                    foreach (var profile in axe.Profiles.ToList())
-                    {
-                        profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList();
-                    }
-                }
+                    axe.Profiles.ForEach((profile) => profile.Steps = profile.Steps.OrderBy(c => c.Number).ToList());
+                });
 
                 return entity;
             }
@@ -145,6 +173,37 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Import(Machine machine, DataLayerContext context)
+        {
+            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
+            this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
+
+            context.ElevatorAxisManualParameters.RemoveRange(context.ElevatorAxisManualParameters);
+            context.ShutterManualParameters.RemoveRange(context.ShutterManualParameters);
+            context.CarouselManualParameters.RemoveRange(context.CarouselManualParameters);
+            context.Carousels.RemoveRange(context.Carousels);
+            context.CellPanels.RemoveRange(context.CellPanels);
+            context.Shutters.RemoveRange(context.Shutters);
+            context.WeightMeasurements.RemoveRange(context.WeightMeasurements);
+            context.Inverters.RemoveRange(context.Inverters);
+            context.ElevatorStructuralProperties.RemoveRange(context.ElevatorStructuralProperties);
+            context.BayPositions.RemoveRange(context.BayPositions);
+            context.CellPanels.RemoveRange(context.CellPanels);
+            context.Cells.RemoveRange(context.Cells);
+            context.IoDevices.RemoveRange(context.IoDevices);
+            context.Bays.RemoveRange(context.Bays);
+            context.MovementParameters.RemoveRange(context.MovementParameters);
+            context.MovementProfiles.RemoveRange(context.MovementProfiles);
+            context.ElevatorAxes.RemoveRange(context.ElevatorAxes);
+            context.Elevators.RemoveRange(context.Elevators);
+            context.Machines.RemoveRange(context.Machines);
+
+            context.Machines.Add(machine);
+        }
+
         public bool IsOneTonMachine()
         {
             lock (this.dataContext)
@@ -159,173 +218,65 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Update(Machine machine)
+        public void Update(Machine machine, DataLayerContext dataContext)
         {
-            if (machine is null)
-            {
-                throw new System.ArgumentNullException(nameof(machine));
-            }
+            _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
+
+            dataContext ??= this.dataContext;
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));
-            this.cache.Remove(BaysProvider.GetElevatorAxesCacheKey());
+            this.cache.Remove(BaysDataProvider.GetElevatorAxesCacheKey());
 
-            lock (this.dataContext)
+            machine.Elevator?.Axes.ForEach((a) =>
             {
-                if (!(machine.Elevator.Axes is null))
+                dataContext.AddOrUpdate(a.EmptyLoadMovement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.FullLoadMovement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.WeightMeasurement, (e) => e.Id);
+                dataContext.AddOrUpdate(a.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(a.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(a.Inverter, (e) => e.Id);
+
+                a.Profiles.ForEach((p) =>
                 {
-                    foreach (var a in machine.Elevator.Axes)
-                    {
-                        if (!(a.EmptyLoadMovement is null))
-                        {
-                            this.dataContext.MovementParameters.Attach(a.EmptyLoadMovement);
-                            this.dataContext.Entry(a.EmptyLoadMovement).State = EntityState.Modified;
-                            this.dataContext.MovementParameters.Update(a.EmptyLoadMovement);
-                        }
+                    p.Steps.ForEach((s) => dataContext.AddOrUpdate(s, (e) => e.Id));
+                    dataContext.AddOrUpdate(p, (e) => e.Id);
+                });
 
-                        if (!(a.FullLoadMovement is null))
-                        {
-                            this.dataContext.MovementParameters.Attach(a.FullLoadMovement);
-                            this.dataContext.Entry(a.FullLoadMovement).State = EntityState.Modified;
-                            this.dataContext.MovementParameters.Update(a.FullLoadMovement);
-                        }
+                dataContext.AddOrUpdate(a, (e) => e.Id);
+            });
 
-                        if (!(a.WeightMeasurement is null))
-                        {
-                            this.dataContext.WeightMeasurements.Attach(a.WeightMeasurement);
-                            this.dataContext.Entry(a.WeightMeasurement).State = EntityState.Modified;
-                            this.dataContext.WeightMeasurements.Update(a.WeightMeasurement);
-                        }
+            dataContext.AddOrUpdate(machine.Elevator?.StructuralProperties, (e) => e.Id);
+            dataContext.AddOrUpdate(machine.Elevator, (e) => e.Id);
 
-                        if (!(a.Profiles is null))
-                        {
-                            foreach (var p in a.Profiles)
-                            {
-                                if (!(p.Steps is null))
-                                {
-                                    foreach (var s in p.Steps)
-                                    {
-                                        this.dataContext.MovementParameters.Attach(s);
-                                        this.dataContext.Entry(s).State = EntityState.Modified;
-                                        this.dataContext.MovementParameters.Update(s);
-                                    }
-                                }
-
-                                this.dataContext.MovementProfiles.Attach(p);
-                                this.dataContext.Entry(p).State = EntityState.Modified;
-                                this.dataContext.MovementProfiles.Update(p);
-                            }
-                        }
-
-                        if (!(a.Inverter is null))
-                        {
-                            this.dataContext.Inverters.Attach(a.Inverter);
-                            this.dataContext.Entry(a.Inverter).State = EntityState.Modified;
-                            this.dataContext.Inverters.Update(a.Inverter);
-                        }
-                        this.dataContext.ElevatorAxes.Attach(a);
-                        this.dataContext.Entry(a).State = EntityState.Modified;
-                        this.dataContext.ElevatorAxes.Update(a);
-                    }
-                }
-
-                if (!(machine.Elevator.StructuralProperties is null))
+            machine.Bays.ForEach((b) =>
+            {
+                b.Positions.ForEach((p) =>
                 {
-                    this.dataContext.ElevatorStructuralProperties.Attach(machine.Elevator.StructuralProperties);
-                    this.dataContext.Entry(machine.Elevator.StructuralProperties).State = EntityState.Modified;
-                    this.dataContext.ElevatorStructuralProperties.Update(machine.Elevator.StructuralProperties);
-                }
+                    dataContext.AddOrUpdate(p.LoadingUnit, (e) => e.Id);
+                    dataContext.AddOrUpdate(p, (e) => e.Id);
+                });
 
-                if (!(machine.Elevator is null))
-                {
-                    this.dataContext.Elevators.Attach(machine.Elevator);
-                    this.dataContext.Entry(machine.Elevator).State = EntityState.Modified;
-                    this.dataContext.Elevators.Update(machine.Elevator);
-                }
+                dataContext.AddOrUpdate(b.Carousel, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Carousel?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Carousel?.ManualMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Inverter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.IoDevice, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.Inverter, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.AssistedMovements, (e) => e.Id);
+                dataContext.AddOrUpdate(b.Shutter?.ManualMovements, (e) => e.Id);
+            });
 
-                if (!(machine.Bays is null))
-                {
-                    foreach (var b in machine.Bays)
-                    {
-                        if (!(b.Positions is null))
-                        {
-                            foreach (var p in b.Positions)
-                            {
-                                if (!(p.LoadingUnit is null))
-                                {
-                                    this.dataContext.LoadingUnits.Attach(p.LoadingUnit);
-                                    this.dataContext.Entry(p.LoadingUnit).State = EntityState.Modified;
-                                    this.dataContext.LoadingUnits.Update(p.LoadingUnit);
-                                }
-                                this.dataContext.BayPositions.Attach(p);
-                                this.dataContext.Entry(p).State = EntityState.Modified;
-                                this.dataContext.BayPositions.Update(p);
-                            }
-                        }
+            machine.Panels.ForEach((p) =>
+            {
+                p.Cells.ForEach((c) => dataContext.AddOrUpdate(c, (e) => e.Id));
+                dataContext.AddOrUpdate(p, (e) => e.Id);
+            });
 
-                        if (!(b.Carousel is null))
-                        {
-                            this.dataContext.Carousels.Attach(b.Carousel);
-                            this.dataContext.Entry(b.Carousel).State = EntityState.Modified;
-                            this.dataContext.Carousels.Update(b.Carousel);
-                        }
+            dataContext.AddOrUpdate(machine, (e) => e.Id);
 
-                        if (!(b.Inverter is null))
-                        {
-                            this.dataContext.Inverters.Attach(b.Inverter);
-                            this.dataContext.Entry(b.Inverter).State = EntityState.Modified;
-                            this.dataContext.Inverters.Update(b.Inverter);
-                        }
-
-                        if (!(b.IoDevice is null))
-                        {
-                            this.dataContext.IoDevices.Attach(b.IoDevice);
-                            this.dataContext.Entry(b.IoDevice).State = EntityState.Modified;
-                            this.dataContext.IoDevices.Update(b.IoDevice);
-                        }
-
-                        if (!(b.Shutter is null))
-                        {
-                            this.dataContext.Shutters.Attach(b.Shutter);
-                            this.dataContext.Entry(b.Shutter).State = EntityState.Modified;
-                            this.dataContext.Shutters.Update(b.Shutter);
-                        }
-
-                        if (!(b.Shutter.Inverter is null))
-                        {
-                            this.dataContext.Inverters.Attach(b.Shutter.Inverter);
-                            this.dataContext.Entry(b.Shutter.Inverter).State = EntityState.Modified;
-                            this.dataContext.Inverters.Update(b.Shutter.Inverter);
-                        }
-                    }
-                }
-
-                if (!(machine.Panels is null))
-                {
-                    foreach (var p in machine.Panels)
-                    {
-                        if (!(p.Cells is null))
-                        {
-                            foreach (var c in p.Cells)
-                            {
-                                this.dataContext.Cells.Attach(c);
-                                this.dataContext.Entry(c).State = EntityState.Modified;
-                                this.dataContext.Cells.Update(c);
-                            }
-                        }
-
-                        this.dataContext.CellPanels.Attach(p);
-                        this.dataContext.Entry(p).State = EntityState.Modified;
-                        this.dataContext.CellPanels.Update(p);
-                    }
-                }
-
-                this.dataContext.Machines.Attach(machine);
-                this.dataContext.Entry(machine).State = EntityState.Modified;
-                this.dataContext.Machines.Update(machine);
-
-                this.dataContext.SaveChanges();
-            }
+            dataContext.SaveChanges();
         }
 
         private void DeleteBays(IEnumerable<Bay> bays)

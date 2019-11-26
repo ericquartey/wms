@@ -164,6 +164,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddTransient<IInverterProvider, InverterProvider>();
             services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
+            services.AddTransient<IConfigurationProvider, ConfigurationProvider>();
         }
 
         private void InitialiseWmsInterfaces(IServiceCollection services)

@@ -320,7 +320,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                await this.MachineElevatorService.MoveVerticalAsync(direction);
+                await this.MachineElevatorService.MoveVerticalManualAsync(direction);
                 if (direction == VerticalMovementDirection.Down)
                 {
                     this.IsMovingDown = true;

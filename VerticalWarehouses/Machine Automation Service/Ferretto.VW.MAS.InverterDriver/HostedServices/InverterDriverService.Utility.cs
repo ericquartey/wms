@@ -305,7 +305,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             if (axis == Axis.BayChain)
                             {
-                                currentAxisPosition = serviceProvider.GetRequiredService<IBaysProvider>().ConvertPulsesToMillimeters(message.IntPayload, message.SystemIndex);
+                                currentAxisPosition = serviceProvider.GetRequiredService<IBaysDataProvider>().ConvertPulsesToMillimeters(message.IntPayload, message.SystemIndex);
                             }
                             else
                             {
@@ -314,8 +314,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         var offset = (axis == Axis.Vertical)
-                            ? elevatorDataProvider.GetVerticalAxis().Offset
-                            : elevatorDataProvider.GetHorizontalAxis().Offset;
+                            ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
+                            : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                         currentAxisPosition += offset;
 
                         var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);

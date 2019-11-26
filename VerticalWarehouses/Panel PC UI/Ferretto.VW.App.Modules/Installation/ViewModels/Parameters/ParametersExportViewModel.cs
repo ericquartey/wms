@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.FullPath,
                     JsonConvert.SerializeObject(configuration, settings));
 
-                this.ShowNotification(Resources.InstallationApp.ExportSuccessful);
+                this.ShowNotification(Resources.InstallationApp.ExportSuccessful, Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {

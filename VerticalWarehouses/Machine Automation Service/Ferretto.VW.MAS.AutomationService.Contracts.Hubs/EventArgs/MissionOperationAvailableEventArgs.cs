@@ -1,32 +1,32 @@
 namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 {
-    public class MissionOperationAvailableEventArgs : System.EventArgs
+    public class AssignedMissionOperationChangedEventArgs : System.EventArgs, IBayEventArgs
     {
         #region Constructors
 
-        public MissionOperationAvailableEventArgs(
-            int bayId,
+        public AssignedMissionOperationChangedEventArgs(
+            BayNumber bayNumber,
             int missionId,
             int missionOperationId,
-            int pendingMissionsCount)
+            int pendingMissionOperationsCount)
         {
-            this.BayNumber = bayId;
+            this.BayNumber = bayNumber;
             this.MissionId = missionId;
             this.MissionOperationId = missionOperationId;
-            this.PendingMissionsCount = pendingMissionsCount;
+            this.PendingMissionOperationsCount = pendingMissionOperationsCount;
         }
 
         #endregion
 
         #region Properties
 
-        public int BayNumber { get; }
+        public BayNumber BayNumber { get; }
 
-        public int MissionId { get; }
+        public int? MissionId { get; }
 
-        public int MissionOperationId { get; }
+        public int? MissionOperationId { get; }
 
-        public int PendingMissionsCount { get; }
+        public int PendingMissionOperationsCount { get; }
 
         #endregion
     }

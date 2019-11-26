@@ -25,13 +25,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly IApplicationLifetime applicationLifetime;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IConfiguration configuration;
 
         private readonly IDataHubClient dataHubClient;
 
         private readonly IHubContext<InstallationHub, IInstallationHub> installationHub;
+
+        private readonly IMachineProvider machineProvider;
 
         private readonly IHubContext<OperatorHub, IOperatorHub> operatorHub;
 
@@ -47,7 +49,8 @@ namespace Ferretto.VW.MAS.AutomationService
             IHubContext<OperatorHub, IOperatorHub> operatorHub,
             IServiceScopeFactory serviceScopeFactory,
             IApplicationLifetime applicationLifetime,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
+            IMachineProvider machineProvider,
             IConfiguration configuration)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
@@ -55,8 +58,11 @@ namespace Ferretto.VW.MAS.AutomationService
             this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
             this.operatorHub = operatorHub ?? throw new ArgumentNullException(nameof(operatorHub));
             this.applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+
+            this.dataHubClient.EntityChanged += this.OnDataHubClientEntityChanged;
         }
 
         #endregion
@@ -94,6 +100,35 @@ namespace Ferretto.VW.MAS.AutomationService
                 ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)
+        {
+            if (e.Operation != WMS.Data.Hubs.Models.HubEntityOperation.Created)
+            {
+                return;
+            }
+
+            switch (e.EntityType)
+            {
+                case nameof(MissionOperation):
+                    {
+                        var msg = new NotificationMessage(
+                            null,
+                            "New WMS mission available",
+                            MessageActor.Any,
+                            MessageActor.AutomationService,
+                            MessageType.NewWmsMissionAvailable,
+                            BayNumber.None,
+                            BayNumber.None,
+                            MessageStatus.OperationStart);
+
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(msg);
+                        break;
+                    }
+            }
         }
 
         #endregion
