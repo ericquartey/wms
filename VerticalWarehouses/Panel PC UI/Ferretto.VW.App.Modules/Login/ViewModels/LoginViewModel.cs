@@ -61,7 +61,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             this.UserLogin = new UserLogin
             {
-                UserName = "operator",
+                UserName = "installer",
                 Password = "password",
             };
         }
