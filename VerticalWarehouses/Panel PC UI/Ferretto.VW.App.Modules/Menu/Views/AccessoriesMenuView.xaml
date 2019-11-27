@@ -10,7 +10,7 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="80,15">
+    <Grid Margin="80">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -18,8 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -28,6 +27,18 @@
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Menu Accessori" />
+
+        <Grid Grid.Row="1"
+              Margin="15">
+            <WrapPanel>
+
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15"
+                                    Content="Puntatore Laser" />
+
+
+            </WrapPanel>
+        </Grid>
 
     </Grid>
 </ctrls:View>

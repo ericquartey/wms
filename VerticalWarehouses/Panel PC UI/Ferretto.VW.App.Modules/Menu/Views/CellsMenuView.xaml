@@ -9,8 +9,8 @@
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
-    <Grid Margin="80,15">
+
+    <Grid Margin="80">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -18,8 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -28,6 +27,29 @@
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Menu Celle" />
+
+        <Grid Grid.Row="1"
+              Margin="15">
+            <WrapPanel>
+
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15"
+                                    Content="Gestione celle" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Content="Controllo pannelli mensola" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Content="Controllo quote celle" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Content="Modifica blocco celle" />
+
+            </WrapPanel>
+        </Grid>
 
     </Grid>
 </ctrls:View>

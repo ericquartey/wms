@@ -32,6 +32,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuOldCommand;
 
+        private DelegateCommand viewParametersCommand;
+
+        private DelegateCommand viewStatusSensorsCommand;
+
         #endregion
 
         #region Constructors
@@ -111,14 +115,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuMovementsCommand
             ??
             (this.menuMovementsCommand = new DelegateCommand(
-                () => this.MovementsCommandAsync(),
+                () => this.MovementsCommand(),
                 this.CanExecuteMovementsCommand));
 
         public ICommand MenuOldCommand =>
-                    this.menuOldCommand
+            this.menuOldCommand
             ??
             (this.menuOldCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Old),
+                this.CanExecuteCommand));
+
+        public ICommand ViewParametersCommand =>
+            this.viewParametersCommand
+            ??
+            (this.viewParametersCommand = new DelegateCommand(
+                () => this.ParametersCommand(),
+                this.CanExecuteCommand));
+
+        public ICommand ViewStatusSensorsCommand =>
+            this.viewStatusSensorsCommand
+            ??
+            (this.viewStatusSensorsCommand = new DelegateCommand(
+                () => this.StatusSensorsCommand(),
                 this.CanExecuteCommand));
 
         #endregion
@@ -228,7 +246,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
         }
 
-        private async Task MovementsCommandAsync()
+        private void MovementsCommand()
         {
             try
             {
@@ -250,6 +268,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             }
         }
 
+        private void ParametersCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Parameters.PARAMETERS,
+                    data: null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private void RaiseCanExecuteChanged()
         {
             this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
@@ -258,6 +298,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuElevatorCommand?.RaiseCanExecuteChanged();
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.menuOldCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void StatusSensorsCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    data: null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

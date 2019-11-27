@@ -19,7 +19,9 @@
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -37,10 +39,6 @@
                                     Margin="15"
                                     Content="Calibrazione origine asse verticale" />
 
-                <controls:PpcButton Grid.Row="2"
-                                    Margin="15"
-                                    Content="Rodaggio cinghia" />
-
                 <controls:PpcButton Grid.Row="3"
                                     Margin="15"
                                     Content="Calibrazione risoluzione asse verticale" />
@@ -57,6 +55,23 @@
                                     Margin="15"
                                     Content="Analisi profilo peso" />
 
+            </WrapPanel>
+        </Grid>
+
+        <TextBlock Grid.Row="3"
+                   Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="Test" />
+
+        <Grid Grid.Row="4"
+              Margin="15">
+            <WrapPanel>
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Content="Rodaggio cinghia" />
 
             </WrapPanel>
         </Grid>

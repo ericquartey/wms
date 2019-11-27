@@ -34,36 +34,42 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
                 <controls:PpcButton Grid.Row="0"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuElevatorCommand}"
                                     Content="{x:Static res:Menu.MenuElevator}" />
 
                 <controls:PpcButton Grid.Row="1"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuBaysCommand}"
-                                    Content="{x:Static res:Menu.MenuBays}" />
+                                    Content="Baia" />
 
                 <controls:PpcButton Grid.Row="2"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuCellsCommand}"
                                     Content="{x:Static res:Menu.MenuCells}" />
 
                 <controls:PpcButton Grid.Row="3"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuLoadingUnitsCommand}"
                                     Content="{x:Static res:Menu.MenuLoadingUnits}" />
 
                 <controls:PpcButton Grid.Row="4"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuAccessoriesCommand}"
                                     Content="{x:Static res:Menu.MenuAccessories}" />
 
                 <controls:PpcButton Grid.Row="5"
-                                    Margin="15"
+                                    Margin="15,15,0,0"
+                                    Command="{Binding ViewParametersCommand}"
+                                    Content="Parametri" />
+
+                <controls:PpcButton Grid.Row="6"
+                                    Margin="15,15,0,0"
                                     Command="{Binding MenuOldCommand}"
                                     Content="Menu OLD" />
             </Grid>
@@ -86,12 +92,15 @@
             <StackPanel Grid.Row="2"
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
+
                 <controls:PpcButton Margin="15"
-                                    Command="{Binding MenuMovementsCommand}"
-                                    Content="STATO" />
+                                    Command="{Binding ViewStatusSensorsCommand}"
+                                    Content="Stato sensori" />
+
                 <controls:PpcButton Margin="15"
                                     Command="{Binding MenuMovementsCommand}"
                                     Content="{x:Static res:Menu.Movements}" />
+
             </StackPanel>
         </Grid>
     </Grid>
