@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -21,83 +22,120 @@ namespace Ferretto.VW.MAS.MissionManager
             return true;
         }
 
-        protected override Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
+        protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
             switch (message.Type)
             {
                 case MessageType.MissionOperationCompleted:
-                    this.OnWmsMissionOperationCompleted(message.Data as MissionOperationCompletedMessageData);
+                    // this will be handled by the MissionSchedulingService
+                    await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
                     break;
 
                 case MessageType.BayOperationalStatusChanged:
-                    this.OnBayOperationalStatusChanged(message.Data as BayOperationalStatusChangedMessageData);
+                    await this.OnBayOperationalStatusChangedAsync();
                     break;
 
                 case MessageType.NewWmsMissionAvailable:
-                    this.OnNewWmsMissionAvailable();
-                    break;
-
-                case MessageType.MachineMode:
-                    this.OnMachineModeChanged();
+                    await this.OnNewWmsMissionAvailable();
                     break;
 
                 case MessageType.DataLayerReady:
-                    this.OnDataLayerReady();
+                    await this.OnDataLayerReadyAsync();
                     break;
             }
-
-            return Task.CompletedTask;
         }
 
-        private void OnBayOperationalStatusChanged(BayOperationalStatusChangedMessageData data)
+        /// <summary>
+        /// MOCK questo va fatto dal MissionSchedulingService (c'è già una copia di questo metodo laggiù)
+        /// </summary>
+        private void MOCK_NotifyAssignedMissionOperationChanged(
+           BayNumber bayNumber,
+           int? missionId,
+           int? missionOperationId,
+           int pendingMissionsCount)
         {
-            this.bayStatusChangedEvent.Set();
-        }
-
-        private void OnDataLayerReady()
-        {
-            if (this.configuration.IsWmsEnabled())
+            var data = new AssignedMissionOperationChangedMessageData
             {
-                this.scheduleMissionsOnBaysTask.Start();
+                BayNumber = bayNumber,
+                MissionId = missionId,
+                MissionOperationId = missionOperationId,
+                PendingMissionsCount = pendingMissionsCount,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission operation assigned to bay {bayNumber} has changed.",
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionOperationChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+        }
+
+        /// <summary>
+        /// HACK this method is used for mock purposes only. it will be removed
+        /// </summary>
+        private async Task MOCK_OnWmsMissionOperationCompletedAsync(MissionOperationCompletedMessageData data)
+        {
+            if (!this.configuration.IsWmsEnabled() || !this.dataLayerIsReady)
+            {
+                return;
             }
-        }
 
-        private void OnMachineModeChanged()
-        {
-            this.bayStatusChangedEvent.Set();
-        }
+            // se sono qui è perché è già stato segnalato il completamento al WMS
 
-        private void OnNewWmsMissionAvailable()
-        {
-            this.bayStatusChangedEvent.Set();
-        }
-
-        private void OnWmsMissionOperationCompleted(MissionOperationCompletedMessageData data)
-        {
             Contract.Requires(data != null);
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
+                // seleziono la baia sulla quale è in esecuzione l'operazione
                 var bay = bayProvider
                     .GetAll()
-                    .Where(b => b.CurrentMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                    .SingleOrDefault(b => b.CurrentMissionOperationId == data.MissionOperationId);
+                    .Where(b => b.CurrentWmsMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
+                    .SingleOrDefault(b => b.CurrentWmsMissionOperationId == data.MissionOperationId);
 
-                if (bay != null && bay.CurrentMissionId != null)
-                {
-                    bayProvider.AssignMissionOperation(bay.Number, bay.CurrentMissionId.Value, null);
-
-                    this.Logger.LogDebug($"Bay {bay.Number}: operation id={data.MissionOperationId} competed.");
-
-                    this.bayStatusChangedEvent.Set();
-                }
-                else
+                if (bay is null)
                 {
                     this.Logger.LogWarning($"None of the bays is currently executing operation id={data.MissionOperationId}.");
                 }
+                else
+                {
+                    // rimuovo l'assegnazione dell'operazione dalla baia
+                    bayProvider.AssignWmsMission(bay.Number, bay.CurrentMissionId.Value, null);
+
+                    // notifico la UI
+                    var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+                    var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
+                    this.MOCK_NotifyAssignedMissionOperationChanged(bay.Number, null, null, activeMissions.Count());
+
+                    this.Logger.LogDebug($"Bay {bay.Number}: operation id={data.MissionOperationId} competed.");
+
+                    // faccio ripartire il giro
+                    var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                    await missionSchedulingProvider.MOCK_ScheduleMissionsAsync(bay.Number);
+                }
             }
+        }
+
+        private async Task OnBayOperationalStatusChangedAsync()
+        {
+            await this.RetrieveNewWmsMissionsAsync();
+        }
+
+        private async Task OnDataLayerReadyAsync()
+        {
+            this.dataLayerIsReady = true;
+            await this.RetrieveNewWmsMissionsAsync();
+        }
+
+        private async Task OnNewWmsMissionAvailable()
+        {
+            await this.RetrieveNewWmsMissionsAsync();
         }
 
         #endregion

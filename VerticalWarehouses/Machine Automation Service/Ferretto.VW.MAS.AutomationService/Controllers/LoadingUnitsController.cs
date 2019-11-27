@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly IMachinesDataService machinesDataService;
 
@@ -32,10 +32,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         public LoadingUnitsController(
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachinesDataService machinesDataService)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
@@ -79,7 +79,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
-            var loadingUnits = this.loadingUnitsProvider.GetAll();
+            var loadingUnits = this.loadingUnitsDataProvider.GetAll();
             return this.Ok(loadingUnits);
         }
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<IEnumerable<LoadingUnitSpaceStatistics>>> GetSpaceStatisticsAsync(
             [FromServices] IConfiguration configuration)
         {
-            var statistics = this.loadingUnitsProvider.GetSpaceStatistics();
+            var statistics = this.loadingUnitsDataProvider.GetSpaceStatistics();
 
             if (configuration.IsWmsEnabled())
             {
@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public async Task<ActionResult<IEnumerable<LoadingUnitWeightStatistics>>> GetWeightStatisticsAsync(
             [FromServices] IConfiguration configuration)
         {
-            var statistics = this.loadingUnitsProvider.GetWeightStatistics();
+            var statistics = this.loadingUnitsDataProvider.GetWeightStatistics();
 
             if (configuration.IsWmsEnabled())
             {
@@ -171,7 +171,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public IActionResult InsertLoadingUnitOnlyDb(int loadingUnitId)
         {
-            this.loadingUnitsProvider.Insert(loadingUnitId);
+            this.loadingUnitsDataProvider.Insert(loadingUnitId);
             return this.Accepted();
         }
 

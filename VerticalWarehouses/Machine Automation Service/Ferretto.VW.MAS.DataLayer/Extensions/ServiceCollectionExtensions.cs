@@ -24,6 +24,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             services.AddMemoryCache();
 
+            services.AddHostedService<WmsDataSyncService>();
+
             services
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
@@ -41,9 +43,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<IElevatorDataProvider, ElevatorDataProvider>()
                 .AddTransient<IElevatorWeightCheckProcedureProvider, ElevatorWeightCheckProcedureProvider>()
                 .AddTransient<IErrorsProvider, ErrorsProvider>()
-                .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
+                .AddTransient<ILoadingUnitsDataProvider, LoadingUnitsDataProvider>()
                 .AddTransient<ILogEntriesProvider, LogEntriesProvider>()
                 .AddTransient<IServicingProvider, ServicingProvider>()
+                .AddTransient<IMissionsDataProvider, MissionsDataProvider>()
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
                 .AddTransient<ITorqueCurrentMeasurementsDataProvider, TorqueCurrentMeasurementsDataProvider>()

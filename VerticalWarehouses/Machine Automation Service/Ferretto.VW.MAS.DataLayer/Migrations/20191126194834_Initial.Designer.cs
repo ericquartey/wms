@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191125134959_Initial")]
+    [Migration("20191126194834_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionId");
 
-                    b.Property<int?>("CurrentMissionOperationId");
+                    b.Property<int?>("CurrentWmsMissionOperationId");
 
                     b.Property<int?>("EmptyLoadMovementId");
 
@@ -1197,11 +1197,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("BayNumber");
+
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<int>("MissionStatus");
+                    b.Property<int>("LoadingUnitId");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<int>("Status");
 
                     b.Property<int?>("WmsId");
+
+                    b.Property<int>("WmsPriority");
 
                     b.HasKey("Id");
 
@@ -1273,7 +1281,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 25, 14, 49, 58, 508, DateTimeKind.Local).AddTicks(4069),
+                            InstallationDate = new DateTime(2017, 1, 26, 20, 48, 32, 644, DateTimeKind.Local).AddTicks(7425),
                             ServiceStatus = 86
                         });
                 });

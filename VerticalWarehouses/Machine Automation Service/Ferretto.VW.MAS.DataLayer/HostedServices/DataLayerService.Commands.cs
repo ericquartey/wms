@@ -1,22 +1,25 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Ferretto.VW.MAS.MissionManager
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed partial class WmsMissionProxyService
+    internal partial class DataLayerService
     {
         #region Methods
 
         protected override bool FilterCommand(CommandMessage command)
         {
-            // do not accept any commands
-            return false;
+            return true;
         }
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            // do nothing
+            serviceProvider
+                .GetRequiredService<ILogEntriesProvider>()
+                .Add(command);
+
             return Task.CompletedTask;
         }
 

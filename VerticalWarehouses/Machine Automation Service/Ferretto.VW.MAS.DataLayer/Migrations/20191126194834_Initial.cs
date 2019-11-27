@@ -152,9 +152,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    BayNumber = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
-                    MissionStatus = table.Column<int>(nullable: false),
-                    WmsId = table.Column<int>(nullable: true)
+                    LoadingUnitId = table.Column<int>(nullable: false),
+                    Priority = table.Column<int>(nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    WmsId = table.Column<int>(nullable: true),
+                    WmsPriority = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -645,7 +649,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     CarouselId = table.Column<int>(nullable: true),
                     ChainOffset = table.Column<double>(nullable: false),
                     CurrentMissionId = table.Column<int>(nullable: true),
-                    CurrentMissionOperationId = table.Column<int>(nullable: true),
+                    CurrentWmsMissionOperationId = table.Column<int>(nullable: true),
                     EmptyLoadMovementId = table.Column<int>(nullable: true),
                     FullLoadMovementId = table.Column<int>(nullable: true),
                     InverterId = table.Column<int>(nullable: true),
@@ -1067,7 +1071,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 1, 25, 14, 49, 58, 508, DateTimeKind.Local).AddTicks(4069), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 1, 26, 20, 48, 32, 644, DateTimeKind.Local).AddTicks(7425), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

@@ -8,7 +8,7 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Properties
 
-        bool IsHomingExetuted { get; set; }
+        bool IsHomingExecuted { get; set; }
 
         bool IsMachineRunning { get; set; }
 
@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.DataLayer
         Machine Get();
 
         double GetHeight();
+
+        int GetIdentity();
 
         MachineStatistics GetStatistics();
 

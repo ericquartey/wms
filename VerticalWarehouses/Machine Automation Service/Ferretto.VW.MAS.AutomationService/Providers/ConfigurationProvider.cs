@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<ConfigurationProvider> logger;
 
@@ -33,12 +33,12 @@ namespace Ferretto.VW.MAS.AutomationService
 
         public ConfigurationProvider(
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             DataLayerContext dataContext,
             ILogger<ConfigurationProvider> logger)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.AutomationService
             {
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
-                LoadingUnits = this.loadingUnitsProvider.GetAll(),
+                LoadingUnits = this.loadingUnitsDataProvider.GetAll(),
             };
         }
 
@@ -74,8 +74,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                         this.machineProvider.Import(vertimagConfiguration.Machine, dataContext);
 
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
+                        var loadingUnitsDataProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                        this.loadingUnitsDataProvider.Import(vertimagConfiguration.LoadingUnits, dataContext);
 
                         var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, dataContext);
@@ -108,8 +108,8 @@ namespace Ferretto.VW.MAS.AutomationService
                         var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
                         machineProvider.Update(vertimagConfiguration.Machine, dataContext);
 
-                        var loadingUnitsProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
-                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
+                        var loadingUnitsDataProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+                        this.loadingUnitsDataProvider.UpdateRange(vertimagConfiguration.LoadingUnits, dataContext);
 
                         var setupProceduresDataProvider = scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>();
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, dataContext);

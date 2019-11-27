@@ -45,16 +45,6 @@ namespace Ferretto.VW.MAS.DataLayer
             await this.InitializeAsync();
         }
 
-        protected override bool FilterCommand(CommandMessage command)
-        {
-            return true;
-        }
-
-        protected override bool FilterNotification(NotificationMessage notification)
-        {
-            return true;
-        }
-
         protected override void NotifyCommandError(CommandMessage notificationData)
         {
             this.Logger.LogDebug($"Notifying Data Layer service error");
@@ -70,25 +60,9 @@ namespace Ferretto.VW.MAS.DataLayer
                 MessageStatus.OperationError,
                 ErrorLevel.Error);
 
-            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
-        }
-
-        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
-        {
-            serviceProvider
-                .GetRequiredService<ILogEntriesProvider>()
-                .Add(command);
-
-            return Task.CompletedTask;
-        }
-
-        protected override Task OnNotificationReceivedAsync(NotificationMessage notification, IServiceProvider serviceProvider)
-        {
-            serviceProvider
-                .GetRequiredService<ILogEntriesProvider>()
-                .Add(notification);
-
-            return Task.CompletedTask;
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(msg);
         }
 
         private void SendErrorMessage(IMessageData data)

@@ -2,9 +2,9 @@
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.Utils.Messages;
 
-namespace Ferretto.VW.MAS.MissionManager
+namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed partial class WmsMissionProxyService
+    internal sealed partial class WmsDataSyncService
     {
         #region Methods
 

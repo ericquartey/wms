@@ -6,9 +6,11 @@ namespace Ferretto.VW.MAS.AutomationService.Models
     {
         #region Properties
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public double Depth { get; set; }
+
+        public int Id { get; set; }
 
         public System.DateTime InstallationDate { get; set; }
 

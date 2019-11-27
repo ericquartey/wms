@@ -21,6 +21,7 @@
     }
   ],
   "Machine": {
+    "Id": 1,
     "Bays": [
       {
         "AlphaNumericBar": null,

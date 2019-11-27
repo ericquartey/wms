@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitStatisticsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitStatisticsProvider;
 
         private readonly IMachineProvider machineProvider;
 
@@ -27,35 +27,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Constructors
 
         public IdentityController(
-            ILoadingUnitsProvider loadingUnitStatisticsProvider,
+            ILoadingUnitsDataProvider loadingUnitStatisticsProvider,
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
+            IConfiguration configuration,
             WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
         {
-            if (loadingUnitStatisticsProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
-            }
-
-            if (servicingProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(servicingProvider));
-            }
-
-            if (machineProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(machineProvider));
-            }
-
-            if (machinesDataService is null)
-            {
-                throw new System.ArgumentNullException(nameof(machinesDataService));
-            }
-
-            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider;
-            this.servicingProvider = servicingProvider;
-            this.machineProvider = machineProvider;
-            this.machinesDataService = machinesDataService;
+            this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
+            this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
+            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
         }
 
         #endregion
@@ -73,8 +54,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var machineInfo = new MachineIdentity
             {
                 AreaId = 2, // TODO remove this hardcoded value
-                Width = 3080, // TODO remove this hardcoded value
-                Depth = 500, // TODO remove this hardcoded value
+                Id = machine.Id,
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
                 TrayCount = loadingUnits.Count(),
