@@ -6,11 +6,11 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="80,15">
+    <Grid Margin="80">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -28,6 +28,38 @@
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="Menu Elevatore" />
+
+        <Grid Grid.Row="1"
+              Margin="15">
+            <WrapPanel>
+
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15"
+                                    Content="Calibrazione origine asse verticale" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Content="Rodaggio cinghia" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Margin="15"
+                                    Content="Calibrazione risoluzione asse verticale" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15"
+                                    Content="Calibrazione offset asse verticale" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15"
+                                    Content="Controllo Peso" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Margin="15"
+                                    Content="Analisi profilo peso" />
+
+
+            </WrapPanel>
+        </Grid>
 
     </Grid>
 </ctrls:View>
