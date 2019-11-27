@@ -1,6 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 {
@@ -26,6 +26,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         public Guid MachineId { get; protected set; }
 
         public MissionType MissionType { get; set; }
+
+        public BayNumber TargetBay { get; set; }
+
+        public int? WmsId { get; set; }
 
         #endregion
     }

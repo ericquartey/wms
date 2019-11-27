@@ -36,6 +36,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.cancellationTokenSource = new CancellationTokenSource();
             this.CurrentStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<TMachine>();
             this.Id = this.CurrentStateMachine.InstanceId;
+            this.MachineData = this.CurrentStateMachine.MachineData;
         }
 
         #endregion
@@ -43,6 +44,8 @@ namespace Ferretto.VW.MAS.Utils.Missions
         #region Properties
 
         public Guid Id { get; }
+
+        public IFiniteStateMachineData MachineData { get; set; }
 
         public MissionStatus Status { get; protected set; }
 

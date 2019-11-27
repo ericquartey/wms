@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        public IFiniteStateMachineData MachineData { get; protected set; }
+        public IFiniteStateMachineData MachineData { get; set; }
 
         public CommandMessage StartData { get; private set; }
 

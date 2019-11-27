@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,12 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        /// <summary>
+        /// the UI informs mission manager that the operation is completed
+        /// </summary>
+        /// <param name="id">operation id</param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
         public async Task CompleteAsync(int id, double quantity)
         {
             if (!this.configuration.IsWmsEnabled())

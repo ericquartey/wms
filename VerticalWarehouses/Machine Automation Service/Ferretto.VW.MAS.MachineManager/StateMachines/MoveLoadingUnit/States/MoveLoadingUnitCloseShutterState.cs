@@ -92,6 +92,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             notification.TargetBay,
                             MessageStatus.OperationWaitResume);
 
+                        if (this.moveData.WmsId.HasValue)
+                        {
+                            this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(notification.RequestingBay, this.moveData.WmsId.Value);
+                        }
+
                         returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     }
                     else

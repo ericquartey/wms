@@ -20,6 +20,29 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Methods
 
+        private void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionsCount)
+        {
+            var data = new AssignedMissionOperationChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+                MissionOperationId = missionOperationId,
+                PendingMissionsCount = pendingMissionsCount,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission operation assigned to bay {bayNumber} has changed.",
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionOperationChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
+        }
+
         private async Task QueueMissionsAsync()
         {
             using (var scope = this.ServiceScopeFactory.CreateScope())
@@ -96,18 +119,21 @@ namespace Ferretto.VW.MAS.MissionManager
 
             if (newOperations.Any())
             {
-                var operation = newOperations.OrderBy(o => o.Priority).First();
-                baysDataProvider.AssignMissionOperation(bay.Number, mission.Id, operation.Id);
-
                 this.missionSchedulingProvider.QueueBayMission(mission.LoadingUnitId, bay.Number, mission.Id);
-                this.Logger.LogDebug($"Bay {bay.Number}: moving loading unit id={mission.LoadingUnitId} to bay ...");
-                await Task.Delay(10 * 1000);
-                this.Logger.LogDebug($"Bay {bay.Number}: loading unit id={mission.LoadingUnitId} is now in bay.");
 
-                await this.missionOperationsDataService.ExecuteAsync(operation.Id);
-                this.Logger.LogDebug($"Bay {bay.Number}: busy executing mission operation id='{operation.Id}'.");
+                // MOCK: simulate mission
+                //var operation = newOperations.OrderBy(o => o.Priority).First();
+                //baysDataProvider.AssignMissionOperation(bay.Number, mission.Id, operation.Id);
 
-                this.NotifyAssignedMissionOperationChanged(bay.Number, mission.Id, operation.Id, pendingMissionOperationsCount);
+                //this.Logger.LogDebug($"Bay {bay.Number}: moving loading unit id={mission.LoadingUnitId} to bay ...");
+                //await Task.Delay(10 * 1000);
+                //this.Logger.LogDebug($"Bay {bay.Number}: loading unit id={mission.LoadingUnitId} is now in bay.");
+
+                //await this.missionOperationsDataService.ExecuteAsync(operation.Id);
+                //this.Logger.LogDebug($"Bay {bay.Number}: busy executing mission operation id='{operation.Id}'.");
+
+                //this.NotifyAssignedMissionOperationChanged(bay.Number, mission.Id, operation.Id, pendingMissionOperationsCount);
+                // end MOCK
             }
             else
             {
@@ -117,29 +143,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, pendingMissionOperationsCount);
             }
-        }
-
-        private void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int? missionId, int? missionOperationId, int pendingMissionsCount)
-        {
-            var data = new AssignedMissionOperationChangedMessageData
-            {
-                BayNumber = bayNumber,
-                MissionId = missionId,
-                MissionOperationId = missionOperationId,
-                PendingMissionsCount = pendingMissionsCount,
-            };
-
-            var notificationMessage = new NotificationMessage(
-                data,
-                $"Mission operation assigned to bay {bayNumber} has changed.",
-                MessageActor.Any,
-                MessageActor.MachineManager,
-                MessageType.AssignedMissionOperationChanged,
-                bayNumber);
-
-            this.EventAggregator
-                .GetEvent<NotificationEvent>()
-                .Publish(notificationMessage);
         }
 
         private async Task ScheduleMissionsOnBaysAsync()

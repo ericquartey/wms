@@ -145,7 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFSMType(FSMType.MoveLoadingUnit))
                             {
                                 mission.AbortMachineMission();
                             }
@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFSMType(FSMType.MoveLoadingUnit))
                             {
                                 mission.StopMachine(StopRequestReason.Stop);
                             }
@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFSMType(FSMType.MoveLoadingUnit))
                             {
                                 mission.PauseMachineMission();
                             }
@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         }
                         else
                         {
-                            foreach (var mission in this.machineMissionsProvider.GetMissionsByType(FSMType.MoveLoadingUnit))
+                            foreach (var mission in this.machineMissionsProvider.GetMissionsByFSMType(FSMType.MoveLoadingUnit))
                             {
                                 mission.ResumeMachineMission();
                             }

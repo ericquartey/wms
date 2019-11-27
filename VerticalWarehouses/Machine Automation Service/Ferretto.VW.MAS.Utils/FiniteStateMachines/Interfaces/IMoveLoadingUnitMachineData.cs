@@ -1,9 +1,8 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 
-namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces
+namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
-    internal interface IMoveLoadingUnitMachineData : IFiniteStateMachineData
+    public interface IMoveLoadingUnitMachineData : IFiniteStateMachineData
     {
         #region Properties
 
@@ -16,6 +15,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         LoadingUnitLocation LoadingUnitSource { get; set; }
 
         MissionType MissionType { get; set; }
+
+        BayNumber TargetBay { get; set; }
+
+        int? WmsId { get; set; }
 
         #endregion
     }

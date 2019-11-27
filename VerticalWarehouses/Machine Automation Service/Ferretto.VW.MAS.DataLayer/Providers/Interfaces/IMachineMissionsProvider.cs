@@ -16,7 +16,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         IMission GetMissionById(Guid missionId);
 
-        List<IMission> GetMissionsByType(FSMType type);
+        List<IMission> GetMissionsByFSMType(FSMType fsmType);
+
+        IEnumerable<IMission> GetMissionsByType(FSMType fsmType, MissionType type);
 
         bool PauseMachineMission(Guid missionId);
 
@@ -26,9 +28,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         bool StopMachineMission(Guid missionId, StopRequestReason reason);
 
-        bool TryCreateMachineMission(FSMType missionType, CommandMessage command, out Guid missionId);
+        bool TryCreateMachineMission(FSMType fsmType, CommandMessage command, out Guid missionId);
 
-        bool TryCreateMachineMission(FSMType missionType, MoveLoadingUnitMessageData command, BayNumber bayNumber, out Guid missionId);
+        bool TryCreateWmsMission(FSMType fsmType, MoveLoadingUnitMessageData command, out Guid missionId);
 
         #endregion
     }
