@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
@@ -13,7 +12,6 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
