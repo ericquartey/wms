@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Properties
+
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public bool IsWaitingForResponse
         {

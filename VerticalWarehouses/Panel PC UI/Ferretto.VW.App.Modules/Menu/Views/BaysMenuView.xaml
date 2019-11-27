@@ -7,6 +7,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:BaysMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
@@ -37,10 +41,12 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding BayControlCommand}"
                                     Content="Controllo baia" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding BayHeightCommand}"
                                     Content="Barriera misura altezza" />
 
             </WrapPanel>
@@ -59,6 +65,7 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding TestShutterCommand}"
                                     Content="Test serranda" />
 
             </WrapPanel>

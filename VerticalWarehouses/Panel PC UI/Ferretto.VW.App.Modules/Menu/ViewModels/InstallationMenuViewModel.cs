@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
@@ -159,6 +157,20 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.IsWaitingForResponse = false;
         }
 
+        protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
+        {
+            await base.OnHealthStatusChangedAsync(e);
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
+        {
+            await base.OnMachinePowerChangedAsync(e);
+
+            this.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteCommand()
         {
             return !this.IsWaitingForResponse;
@@ -298,6 +310,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuElevatorCommand?.RaiseCanExecuteChanged();
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.menuOldCommand?.RaiseCanExecuteChanged();
+            this.viewParametersCommand?.RaiseCanExecuteChanged();
+            this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 
         private void StatusSensorsCommand()

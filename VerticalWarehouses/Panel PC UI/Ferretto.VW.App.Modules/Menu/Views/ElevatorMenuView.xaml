@@ -7,6 +7,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:ElevatorMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
@@ -37,22 +41,27 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding VerticalOriginCalibrationCommand}"
                                     Content="Calibrazione origine asse verticale" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Margin="15"
+                                    Command="{Binding VerticalResolutionCalibrationCommand}"
                                     Content="Calibrazione risoluzione asse verticale" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="15"
+                                    Command="{Binding VerticalOffsetCalibrationCommand}"
                                     Content="Calibrazione offset asse verticale" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="15"
+                                    Command="{Binding WeightMeasurementCommand}"
                                     Content="Controllo Peso" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="15"
+                                    Command="{Binding WeightAnalysisCommand}"
                                     Content="Analisi profilo peso" />
 
             </WrapPanel>
@@ -71,6 +80,7 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding BeltBurnishingCommand}"
                                     Content="Rodaggio cinghia" />
 
             </WrapPanel>

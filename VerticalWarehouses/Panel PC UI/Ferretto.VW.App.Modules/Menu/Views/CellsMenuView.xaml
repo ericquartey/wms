@@ -7,6 +7,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:CellsMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
@@ -34,18 +38,22 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding CellsCommand}"
                                     Content="Gestione celle" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding CellPanelsCheckCommand}"
                                     Content="Controllo pannelli mensola" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding CellsHeightCheckCommand}"
                                     Content="Controllo quote celle" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding CellsBlockTuningCommand}"
                                     Content="Modifica blocco celle" />
 
             </WrapPanel>

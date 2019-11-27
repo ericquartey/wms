@@ -27,6 +27,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -49,6 +51,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
+
+            this.IsWaitingForResponse = false;
         }
 
         private void RaiseCanExecuteChanged()

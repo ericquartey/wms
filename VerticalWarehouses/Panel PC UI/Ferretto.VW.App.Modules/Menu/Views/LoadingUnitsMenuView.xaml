@@ -7,6 +7,10 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:LoadingUnitsMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
@@ -37,22 +41,27 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
-                                    Content="Gestione cessetto" />
+                                    Command="{Binding LoadingUnitsCommand}"
+                                    Content="Gestione cassetto" />
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding BayFirstLoadingUnitCommand}"
                                     Content="Inserimento primo cassetto" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding InsertionLoadingUnitsCommand}"
                                     Content="Inserimento" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding MoveLoadingUnitsCommand}"
                                     Content="Spostamento" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding ExtractionLoadingUnitsCommand}"
                                     Content="Estrazione" />
 
             </WrapPanel>
@@ -71,10 +80,12 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
+                                    Command="{Binding TestDepositAndPickUpCommand}"
                                     Content="Imbarco / Sbarco" />
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
+                                    Command="{Binding TestCompleteCommand}"
                                     Content="Completo" />
 
             </WrapPanel>
