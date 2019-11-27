@@ -53,6 +53,12 @@ namespace Ferretto.VW.App.Modules.Menu
             containerRegistry.RegisterForNavigation<MainMenuView>();
             containerRegistry.RegisterForNavigation<MaintenanceMenuView>();
             containerRegistry.RegisterForNavigation<OperationsMenuView>();
+
+            containerRegistry.RegisterForNavigation<AccessoriesMenuView>();
+            containerRegistry.RegisterForNavigation<BaysMenuView>();
+            containerRegistry.RegisterForNavigation<CellsMenuView>();
+            containerRegistry.RegisterForNavigation<ElevatorMenuView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitsMenuView>();
         }
 
         #endregion

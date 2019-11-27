@@ -216,7 +216,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case Menu.Maintenance:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Menu),
-                            Utils.Modules.Menu.MAINTENANCEMENU,
+                            Utils.Modules.Menu.MAINTENANCE_MENU,
                             data: null,
                             trackCurrentView: true);
                         break;
@@ -224,7 +224,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case Menu.Installation:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
-                            Utils.Modules.Menu.INSTALLATIONMENU,
+                            Utils.Modules.Menu.INSTALLATION_MENU,
                             data: null,
                             trackCurrentView: true);
                         break;
@@ -240,7 +240,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                     case Menu.About:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Menu),
-                            Utils.Modules.Menu.ABOUTMENU,
+                            Utils.Modules.Menu.ABOUT_MENU,
                             data: null,
                             trackCurrentView: true);
                         break;

@@ -50,6 +50,11 @@
 
   <ItemGroup>
     <None Remove="Views\AboutMenuView.xaml" />
+    <None Remove="Views\AccessoriesMenuView.xaml" />
+    <None Remove="Views\BaysMenuView.xaml" />
+    <None Remove="Views\CellsMenuView.xaml" />
+    <None Remove="Views\ElevatorMenuView.xaml" />
+    <None Remove="Views\LoadingUnitsMenuView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,16 +63,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
-    <ProjectReference Include="..\..\Ferretto.VW.App.Themes\Ferretto.VW.App.Themes.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="App.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Views\AboutMenuView - Copy.xaml.cs">
-      <DependentUpon>AboutMenuView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\AboutMenuView.xaml.cs">
       <DependentUpon>AboutMenuView.xaml</DependentUpon>

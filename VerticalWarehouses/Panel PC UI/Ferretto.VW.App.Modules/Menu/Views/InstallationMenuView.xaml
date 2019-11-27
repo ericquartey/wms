@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:InstallationMenuViewModel,
                                              IsDesignTimeCreatable=False}"
@@ -14,7 +14,6 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -39,28 +38,28 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="15"
-                                    Command="{Binding MenuOperationCommand}"
-                                    Content="Elevatore" />
+                                    Command="{Binding MenuElevatorCommand}"
+                                    Content="{x:Static res:Menu.MenuElevator}" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Margin="15"
-                                    Command="{Binding MenuMaintenanceCommand}"
-                                    Content="Baie" />
+                                    Command="{Binding MenuBaysCommand}"
+                                    Content="{x:Static res:Menu.MenuBays}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
-                                    Command="{Binding MenuInstalationCommand}"
-                                    Content="Celle" />
+                                    Command="{Binding MenuCellsCommand}"
+                                    Content="{x:Static res:Menu.MenuCells}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Margin="15"
-                                    Command="{Binding MenuInstalationOldCommand}"
-                                    Content="Cassetti" />
+                                    Command="{Binding MenuLoadingUnitsCommand}"
+                                    Content="{x:Static res:Menu.MenuLoadingUnits}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="15"
-                                    Command="{Binding MenuAboutCommand}"
-                                    Content="Accessori" />
+                                    Command="{Binding MenuAccessoriesCommand}"
+                                    Content="{x:Static res:Menu.MenuAccessories}" />
 
             </Grid>
         </Grid>
@@ -77,17 +76,17 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Stato Installazione" />
-
-
-
+                       Text="{x:Static res:Menu.InstallationStatus}" />
 
             <StackPanel Grid.Row="2"
+                        HorizontalAlignment="Right"
                         Orientation="Horizontal">
-                <controls:PpcButton Command="{Binding MenuAboutCommand}"
+                <controls:PpcButton Margin="15"
+                                    Command="{Binding MenuAboutCommand}"
                                     Content="STATO" />
-                <controls:PpcButton Command="{Binding MenuAboutCommand}"
-                                    Content="Movimenti" />
+                <controls:PpcButton Margin="15"
+                                    Command="{Binding MenuAboutCommand}"
+                                    Content="{x:Static res:Menu.Movements}" />
             </StackPanel>
         </Grid>
     </Grid>

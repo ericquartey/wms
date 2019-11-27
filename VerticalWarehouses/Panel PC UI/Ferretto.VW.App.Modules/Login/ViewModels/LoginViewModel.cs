@@ -235,7 +235,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Menu),
-                        Utils.Modules.Menu.MAINMENU,
+                        Utils.Modules.Menu.MAIN_MENU,
                         data: this.Data,
                         trackCurrentView: true);
 

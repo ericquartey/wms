@@ -117,16 +117,37 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InstallationStatus" xml:space="preserve">
+    <value>Stato Installazione</value>
+  </data>
   <data name="MenuAbout" xml:space="preserve">
     <value>Informazioni</value>
   </data>
+  <data name="MenuAccessories" xml:space="preserve">
+    <value>Accessori</value>
+  </data>
+  <data name="MenuBays" xml:space="preserve">
+    <value>Baie</value>
+  </data>
+  <data name="MenuCells" xml:space="preserve">
+    <value>Celle</value>
+  </data>
+  <data name="MenuElevator" xml:space="preserve">
+    <value>Elevatore</value>
+  </data>
   <data name="MenuInstalation" xml:space="preserve">
     <value>Installazione</value>
+  </data>
+  <data name="MenuLoadingUnits" xml:space="preserve">
+    <value>Cassetti</value>
   </data>
   <data name="MenuMaintenance" xml:space="preserve">
     <value>Manutenzione</value>
   </data>
   <data name="MenuOperation" xml:space="preserve">
     <value>Operazioni</value>
+  </data>
+  <data name="Movements" xml:space="preserve">
+    <value>Movimenti</value>
   </data>
 </root>

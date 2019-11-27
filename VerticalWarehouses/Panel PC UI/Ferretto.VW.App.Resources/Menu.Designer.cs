@@ -61,6 +61,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Installation Status.
+        /// </summary>
+        public static string InstallationStatus {
+            get {
+                return ResourceManager.GetString("InstallationStatus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
         public static string MenuAbout {
@@ -70,11 +79,56 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Accessories.
+        /// </summary>
+        public static string MenuAccessories {
+            get {
+                return ResourceManager.GetString("MenuAccessories", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bays.
+        /// </summary>
+        public static string MenuBays {
+            get {
+                return ResourceManager.GetString("MenuBays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cells.
+        /// </summary>
+        public static string MenuCells {
+            get {
+                return ResourceManager.GetString("MenuCells", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevator.
+        /// </summary>
+        public static string MenuElevator {
+            get {
+                return ResourceManager.GetString("MenuElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Instalation.
         /// </summary>
         public static string MenuInstalation {
             get {
                 return ResourceManager.GetString("MenuInstalation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading Units.
+        /// </summary>
+        public static string MenuLoadingUnits {
+            get {
+                return ResourceManager.GetString("MenuLoadingUnits", resourceCulture);
             }
         }
         
@@ -93,6 +147,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MenuOperation {
             get {
                 return ResourceManager.GetString("MenuOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movements.
+        /// </summary>
+        public static string Movements {
+            get {
+                return ResourceManager.GetString("Movements", resourceCulture);
             }
         }
     }
