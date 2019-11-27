@@ -56,11 +56,18 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Movements\MovementsView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Movements\Manual\ElevatorManualMovementsView.xaml.cs">
       <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Movements\MovementsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

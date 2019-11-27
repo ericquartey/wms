@@ -14,6 +14,8 @@
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
+        public const string MOVEMENTS = "MovementsViewModel";
+
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";

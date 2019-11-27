@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public IHealthProbeService HealthProbeService => this.healthProbeService;
+
         public bool IsEnabled
         {
             get => this.isEnabled;
@@ -59,6 +61,8 @@ namespace Ferretto.VW.App.Controls
         protected NLog.Logger Logger => this.logger;
 
         public MachineError MachineError => this.machineErrorsService.ActiveError;
+
+        public IMachineModeService MachineModeService => this.machineModeService;
 
         public PresentationMode Mode
         {

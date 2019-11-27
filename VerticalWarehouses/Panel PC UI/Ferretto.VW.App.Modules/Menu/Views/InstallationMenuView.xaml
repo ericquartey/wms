@@ -33,6 +33,7 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
@@ -61,6 +62,10 @@
                                     Command="{Binding MenuAccessoriesCommand}"
                                     Content="{x:Static res:Menu.MenuAccessories}" />
 
+                <controls:PpcButton Grid.Row="5"
+                                    Margin="15"
+                                    Command="{Binding MenuOldCommand}"
+                                    Content="Menu OLD" />
             </Grid>
         </Grid>
 
@@ -82,10 +87,10 @@
                         HorizontalAlignment="Right"
                         Orientation="Horizontal">
                 <controls:PpcButton Margin="15"
-                                    Command="{Binding MenuAboutCommand}"
+                                    Command="{Binding MenuMovementsCommand}"
                                     Content="STATO" />
                 <controls:PpcButton Margin="15"
-                                    Command="{Binding MenuAboutCommand}"
+                                    Command="{Binding MenuMovementsCommand}"
                                     Content="{x:Static res:Menu.Movements}" />
             </StackPanel>
         </Grid>
