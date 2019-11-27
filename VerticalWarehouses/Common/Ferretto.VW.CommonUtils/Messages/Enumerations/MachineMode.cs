@@ -8,6 +8,8 @@
 
         Manual,
 
+        Test,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,

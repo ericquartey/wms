@@ -2854,9 +2854,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Manual = 2,
     
-        SwitchingToAutomatic = 3,
+        Test = 3,
     
-        SwitchingToManual = 4,
+        SwitchingToAutomatic = 4,
+    
+        SwitchingToManual = 5,
     
     }
     

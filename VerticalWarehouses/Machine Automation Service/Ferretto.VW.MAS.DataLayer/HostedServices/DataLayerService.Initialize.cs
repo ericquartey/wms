@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 redundancyService.IsEnabled = false;
 
-                using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions))
+                using (var activeDbContext = new DataLayerContext(redundancyService.ActiveDbContextOptions, redundancyService))
                 {
                     var pendingMigrations = await activeDbContext.Database.GetPendingMigrationsAsync();
                     if (pendingMigrations.Any())
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                 }
 
-                using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions))
+                using (var standbyDbContext = new DataLayerContext(redundancyService.StandbyDbContextOptions, redundancyService))
                 {
                     var pendingMigrations = await standbyDbContext.Database.GetPendingMigrationsAsync();
                     if (pendingMigrations.Any())

@@ -24,7 +24,7 @@ namespace Ferretto.VW.MAS.DataLayer
         public DataLayerContext(
             bool isActiveChannel,
             IDbContextRedundancyService<DataLayerContext> redundancyService)
-            : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions)
+            : this(isActiveChannel ? redundancyService?.ActiveDbContextOptions : redundancyService?.StandbyDbContextOptions, redundancyService)
         {
             this.redundancyService = redundancyService ?? throw new ArgumentNullException(nameof(redundancyService));
         }

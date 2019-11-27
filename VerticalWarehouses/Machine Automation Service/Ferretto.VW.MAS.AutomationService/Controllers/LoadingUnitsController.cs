@@ -71,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.EjectFromCell(destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.EjectFromCell(MissionType.Manual, destination, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.InsertToCell(source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 return this.BadRequest();
             }
 
-            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToBay(MissionType.Manual, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -214,7 +214,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToCell(int loadingUnitId, int destinationCellId)
         {
-            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.MoveLoadingUnitToCell(MissionType.Manual, loadingUnitId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -227,19 +227,19 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             if (source == LoadingUnitLocation.Cell && destination == LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToCell(sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromCellToCell(MissionType.Manual, sourceCellId, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source != LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromBayToBay(source, destination, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromBayToBay(MissionType.Manual, source, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else if (source == LoadingUnitLocation.Cell && destination != LoadingUnitLocation.Cell)
             {
-                this.moveLoadingUnitProvider.MoveFromCellToBay(sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromCellToBay(MissionType.Manual, sourceCellId, destination, this.BayNumber, MessageActor.AutomationService);
             }
             else
             {
-                this.moveLoadingUnitProvider.MoveFromBayToCell(source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
+                this.moveLoadingUnitProvider.MoveFromBayToCell(MissionType.Manual, source, destinationCellId, this.BayNumber, MessageActor.AutomationService);
             }
 
             return this.Accepted();

@@ -117,7 +117,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     // faccio ripartire il giro
                     var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
-                    await missionSchedulingProvider.MOCK_ScheduleMissionsAsync(bay.Number);
+                    await (missionSchedulingProvider as MockedMissionSchedulingProvider)?.MOCK_ScheduleMissionsAsync(bay.Number);
                 }
             }
         }

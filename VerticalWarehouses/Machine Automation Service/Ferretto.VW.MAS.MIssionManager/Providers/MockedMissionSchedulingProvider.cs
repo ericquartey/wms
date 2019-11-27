@@ -1,14 +1,62 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
-    internal sealed partial class MissionSchedulingProvider : IMissionSchedulingProvider
+    internal sealed partial class MockedMissionSchedulingProvider : IMissionSchedulingProvider
     {
+        #region Fields
+
+        private readonly IBaysDataProvider baysDataProvider;
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly ILogger<MissionSchedulingProvider> logger;
+
+        private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
+
+        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
+
+        #endregion
+
+        #region Constructors
+
+        public MockedMissionSchedulingProvider(
+            IEventAggregator eventAggregator,
+            IMissionsDataProvider missionsDataProvider,
+            IBaysDataProvider baysDataProvider,
+            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService,
+            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationssDataService,
+            ILogger<MissionSchedulingProvider> logger)
+        {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.missionOperationsDataService = missionOperationssDataService ?? throw new ArgumentNullException(nameof(missionOperationssDataService));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
+        }
+
+        #endregion
+
         #region Methods
+
+        public IEnumerable<Mission> GetAllWmsMissions()
+        {
+            return this.missionsDataProvider.GetAllWmsMissions();
+        }
 
         public async Task MOCK_ScheduleMissionsAsync(BayNumber bayNumber)
         {
@@ -88,6 +136,55 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             await Task.Delay(10000);
+        }
+
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
+        {
+            this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
+
+            await this.MOCK_ScheduleMissionsAsync(targetBayNumber);
+        }
+
+        public void QueueCellMission(int loadingUnitId, int targetCellId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void QueueLoadingUnitCompactingMission()
+        {
+            throw new NotImplementedException();
+        }
+
+        private void NotifyAssignedMissionOperationChanged(
+            BayNumber bayNumber,
+            int? missionId,
+            int? missionOperationId,
+            int pendingMissionsCount)
+        {
+            var data = new AssignedMissionOperationChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+                MissionOperationId = missionOperationId,
+                PendingMissionsCount = pendingMissionsCount,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission operation assigned to bay {bayNumber} has changed.",
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionOperationChanged,
+                bayNumber);
+
+            this.eventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
         }
 
         #endregion

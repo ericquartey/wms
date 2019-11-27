@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191126194834_Initial")]
+    [Migration("20191127081615_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -503,6 +503,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 22,
+                            Code = 22,
+                            Description = "MachineModeNotValid",
+                            Reason = "MachineModeNotValid",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -849,6 +857,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 21,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 22,
                             TotalErrors = 0
                         },
                         new
@@ -1281,7 +1294,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 26, 20, 48, 32, 644, DateTimeKind.Local).AddTicks(7425),
+                            InstallationDate = new DateTime(2017, 1, 27, 9, 16, 14, 45, DateTimeKind.Local).AddTicks(3055),
                             ServiceStatus = 86
                         });
                 });

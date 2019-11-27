@@ -3,7 +3,6 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
-using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -173,10 +172,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
             {
-                this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
-                    .GetRequiredService<ISetupProceduresDataProvider>()
-                    .GetBeltBurnishingTest()
-                    .PerformedCycles;
+                if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+                {
+                    this.machineData.MessageData.ExecutedCycles = scope.ServiceProvider
+                        .GetRequiredService<ISetupProceduresDataProvider>()
+                        .GetBeltBurnishingTest()
+                        .PerformedCycles;
+
+                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                }
             }
 
             this.Logger.LogTrace(
