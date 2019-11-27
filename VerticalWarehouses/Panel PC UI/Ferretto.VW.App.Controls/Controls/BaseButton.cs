@@ -5,68 +5,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using MahApps.Metro.IconPacks;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
-    /// <summary>
-    /// Interaction logic for PpcMenuButton.xaml
-    /// </summary>
-    public partial class PpcMenuButton : UserControl
+    public class BaseButton : Button
     {
         #region Fields
 
-        public static readonly DependencyProperty AbbreviationProperty =
-            DependencyProperty.Register(
-                nameof(Abbreviation),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
+            nameof(ImageSource),
+            typeof(ImageSource),
+            typeof(BaseButton),
+            new PropertyMetadata(null));
 
-        public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register(
-                nameof(Command),
-                typeof(ICommand),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(null));
+        public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
+            nameof(IsActive),
+            typeof(bool),
+            typeof(BaseButton),
+            new PropertyMetadata(false));
 
-        public static readonly DependencyProperty KindProperty =
-            DependencyProperty.Register(
-                nameof(Kind),
-                typeof(PackIconMaterialKind),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(null));
+        public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
+            nameof(IsBusy),
+            typeof(bool),
+            typeof(BaseButton),
+            new PropertyMetadata(false));
 
-        public static readonly DependencyProperty MenuBrushProperty =
-                                    DependencyProperty.Register(
-                nameof(MenuBrush),
-                typeof(Brush),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(Brushes.Green));
-
-        public static readonly DependencyProperty PermitionProperty =
-                    DependencyProperty.Register(
-                nameof(Permition),
-                typeof(UserAccessLevel),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
-
-        public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(
-                nameof(Text),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+        public static readonly DependencyProperty PermitionProperty = DependencyProperty.Register(
+            nameof(Permition),
+            typeof(UserAccessLevel),
+            typeof(BaseButton),
+            new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
 
         private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
 
@@ -80,49 +52,39 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Constructors
 
-        public PpcMenuButton()
+        public BaseButton()
         {
-            this.InitializeComponent();
+            this.Initialization();
         }
 
         #endregion
 
         #region Properties
 
-        public string Abbreviation
+        public ImageSource ImageSource
         {
-            get { return (string)this.GetValue(AbbreviationProperty); }
-            set { this.SetValue(AbbreviationProperty, value); }
+            get => (ImageSource)this.GetValue(ImageSourceProperty);
+            set => this.SetValue(ImageSourceProperty, value);
         }
 
-        public ICommand Command
+        public bool IsActive
         {
-            get => (ICommand)this.GetValue(CommandProperty);
-            set => this.SetValue(CommandProperty, value);
+            get => (bool)this.GetValue(IsActiveProperty);
+            set => this.SetValue(IsActiveProperty, value);
         }
 
-        public PackIconMaterialKind Kind
+        public bool IsBusy
         {
-            get => (PackIconMaterialKind)this.GetValue(KindProperty);
-            set => this.SetValue(KindProperty, value);
+            get => (bool)this.GetValue(IsBusyProperty);
+            set => this.SetValue(IsBusyProperty, value);
         }
 
-        public Brush MenuBrush
-        {
-            get { return (Brush)this.GetValue(MenuBrushProperty); }
-            set { this.SetValue(MenuBrushProperty, value); }
-        }
+        protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;
 
         public UserAccessLevel Permition
         {
             get => (UserAccessLevel)this.GetValue(PermitionProperty);
             set => this.SetValue(PermitionProperty, value);
-        }
-
-        public string Text
-        {
-            get { return (string)this.GetValue(TextProperty); }
-            set { this.SetValue(TextProperty, value); }
         }
 
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
@@ -131,8 +93,8 @@ namespace Ferretto.VW.App.Controls.Controls
                                       this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsOperator => this.sessionService.UserAccessLevel == UserAccessLevel.Operator ||
-                                     this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
-                                     this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
+                                                 this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
+                                         this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         #endregion
 
@@ -193,9 +155,30 @@ namespace Ferretto.VW.App.Controls.Controls
             }
         }
 
+        public void VisibilityChange()
+        {
+            if (!this.visibleOldStatus.HasValue &&
+                this.Visibility == Visibility.Visible)
+            {
+                this.visibleOldStatus = this.Visibility == Visibility.Visible;
+            }
+            this.Visibility = Visibility.Visible;
+        }
+
+        public void VisibilityRestore()
+        {
+            if (this.Visibility != Visibility.Visible &&
+                this.visibleOldStatus.HasValue &&
+                this.Permition != UserAccessLevel.NoAccess)
+            {
+                this.Visibility = this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
+                this.visibleOldStatus = null;
+            }
+        }
+
         private static void OnPermitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if (d is PpcMenuButton button)
+            if (d is BaseButton button)
             {
                 button.PermitionChanged();
             }

@@ -11,6 +11,7 @@
                      Color="{DynamicResource EDBGrayA}" />
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
     <sys:Double x:Key="PpcButtonFontSize">14</sys:Double>
+    <sys:Double x:Key="PpcMenuButtonFontSize">18</sys:Double>
 
     <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
                      Color="{DynamicResource EDBGrayD}" />

@@ -16,8 +16,8 @@
             mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         <Grid Grid.Row="0"
               Grid.RowSpan="2"
               Grid.Column="1"
-              Margin="50,50">
+              Margin="0,50,30,30">
             <Image Grid.Row="1"
                    Grid.Column="2"
                    Margin="0"
@@ -61,48 +61,46 @@
         </StackPanel>
 
         <Grid Grid.Row="1"
-              Margin="30,30">
+              Margin="30,0,0,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <WrapPanel Margin="0,0,30,80"
+                       VerticalAlignment="Center">
 
-                <WrapPanel Grid.Row="1"
-                           Margin="0,0,50,50">
-
-                    <controls:PpcButton Margin="50,50,0,0"
+                <controls:PpcMenuButton Margin="30,30,0,0"
+                                        Abbreviation="O"
                                         Command="{Binding MenuOperationCommand}"
-                                        Content="{x:Static res:Menu.MenuOperation}" />
+                                        Kind="Account"
+                                        MenuBrush="{StaticResource FerrettoGreen}"
+                                        Text="{x:Static res:Menu.MenuOperation}" />
 
-                    <controls:PpcButton Margin="50,50,0,0"
+                <controls:PpcMenuButton Margin="30,30,0,0"
+                                        Abbreviation="M"
                                         Command="{Binding MenuMaintenanceCommand}"
-                                        Content="{x:Static res:Menu.MenuMaintenance}"
-                                        Permition="Installer" />
+                                        Kind="Settings"
+                                        MenuBrush="{StaticResource FerrettoOrange}"
+                                        Permition="Installer"
+                                        Text="{x:Static res:Menu.MenuMaintenance}" />
 
-                    <controls:PpcButton Margin="50,50,0,0"
+                <controls:PpcMenuButton Margin="30,30,0,0"
+                                        Abbreviation="I"
                                         Command="{Binding MenuInstalationCommand}"
-                                        Content="{x:Static res:Menu.MenuInstalation}"
-                                        Permition="Installer" />
+                                        Kind="AutoFix"
+                                        MenuBrush="{StaticResource FerrettoRed}"
+                                        Permition="Installer"
+                                        Text="{x:Static res:Menu.MenuInstalation}" />
 
-                    <controls:PpcButton Margin="50,50,0,0"
-                                        Command="{Binding MenuInstalationOldCommand}"
-                                        Content="Installatore OLD"
-                                        Permition="Installer" />
-                    
-                    <controls:PpcButton Margin="50,50,0,0"
+                <controls:PpcMenuButton Margin="30,30,0,0"
+                                        Abbreviation="A"
                                         Command="{Binding MenuAboutCommand}"
-                                        Content="{x:Static res:Menu.MenuAbout}"
-                                        Style="{DynamicResource PpcButtonMenuStyle}" />
-                </WrapPanel>
+                                        Kind="AlertCircleOutline"
+                                        MenuBrush="{StaticResource FerrettoBlue}"
+                                        Text="{x:Static res:Menu.MenuAbout}" />
 
-            </Grid>
+            </WrapPanel>
+
         </Grid>
 
         <controls:PpcBadge Grid.RowSpan="2"

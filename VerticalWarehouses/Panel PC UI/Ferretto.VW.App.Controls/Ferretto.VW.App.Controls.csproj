@@ -67,7 +67,6 @@
     <None Remove="Styles\General.xaml" />
     <None Remove="Styles\PpcButtonKeyStyle.xaml" />
     <None Remove="Styles\PpcButtonStyle.xaml" />
-    <None Remove="Styles\PpcMenuButtonStyle.xaml" />
     <None Remove="Styles\PpcPressAndReleaseButton.xaml" />
   </ItemGroup>
 
