@@ -56,6 +56,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
   </ItemGroup>
 
@@ -67,6 +70,9 @@
       <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Movements\MovementsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
