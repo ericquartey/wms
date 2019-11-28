@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     messageData.LoadingUnitId,
                     messageData.InsertLoadingUnit,
                     messageData.EjectLoadingUnit,
-                    moveData.MachineId,
+                    moveData.FsmId,
                     messageData.CommandAction,
                     messageData.StopReason,
                     messageData.Verbosity);
@@ -82,6 +82,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     commandMessage.RequestingBay,
                     commandMessage.TargetBay,
                     MessageStatus.OperationStart);
+
+                moveData.FsmStateName = this.GetType().Name;
             }
             else
             {

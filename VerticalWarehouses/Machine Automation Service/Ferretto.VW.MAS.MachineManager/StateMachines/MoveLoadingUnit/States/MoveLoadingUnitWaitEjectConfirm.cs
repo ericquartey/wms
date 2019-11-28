@@ -54,6 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.ejectBay = messageData.Destination;
             }
+            ((IMoveLoadingUnitMachineData)machineData).FsmStateName = this.GetType().Name;
         }
 
         protected override IState OnResume()
