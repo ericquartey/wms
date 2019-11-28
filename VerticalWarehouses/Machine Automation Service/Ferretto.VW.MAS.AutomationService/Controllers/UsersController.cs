@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using UserAccessLevel = Ferretto.VW.CommonUtils.Messages.Enumerations.UserAccessLevel;
+using UserClaims = Ferretto.VW.CommonUtils.Messages.Data.UserClaims;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {

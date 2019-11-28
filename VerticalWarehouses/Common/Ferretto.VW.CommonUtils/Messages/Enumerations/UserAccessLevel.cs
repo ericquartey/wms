@@ -1,0 +1,19 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Ferretto.VW.CommonUtils.Messages.Enumerations
+{
+    public enum UserAccessLevel
+    {
+        NoAccess = 0,
+
+        Operator = 1,   // No manuali
+
+        Installer = 2,  // Con sicurezze
+
+        Admin = 99,     // Tutto
+    }
+}

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 
@@ -19,6 +20,10 @@ namespace Ferretto.VW.MAS.DataLayer
         public UsersProvider(DataLayerContext dataContext)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+
+            this.dataContext.Users.Local.Add(User.Values.Operator);
+            this.dataContext.Users.Local.Add(User.Values.Installer);
+            this.dataContext.Users.Local.Add(User.Values.Admin);
         }
 
         #endregion
@@ -39,11 +44,12 @@ namespace Ferretto.VW.MAS.DataLayer
 
             lock (this.dataContext)
             {
-                var user = this.dataContext.Users.SingleOrDefault(u => u.Name == userName);
-
+                var user = this.dataContext.Users.Concat(this.dataContext.Users.Local).SingleOrDefault(u => u.Name == userName);
                 if (user != null
                     &&
-                    IsPasswordValid(password, user))
+                    IsPasswordValid(password, user)
+                    &&
+                    (UserAccessLevel)user.AccessLevel != UserAccessLevel.NoAccess)
                 {
                     return user.AccessLevel;
                 }

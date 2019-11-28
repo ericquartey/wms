@@ -14,6 +14,8 @@
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
+        public const string MOVEMENTS = "MovementsViewModel";
+
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
         public const string SEMIAUTOMOVEMENTS = "SemiAutoMovementsViewModel";
@@ -48,6 +50,19 @@
             public const string STEP1 = "CellsHeightCheckStep1ViewModel";
 
             public const string STEP2 = "CellsHeightCheckStep2ViewModel";
+
+            #endregion
+        }
+
+        public static class CellsLoadingUnitsMenu
+        {
+            #region Fields
+
+            public const string CELLES = "CellsViewModel";
+
+            public const string LOADINGUNITS = "LoadingUnitsViewModel";
+
+            public const string MENU = "CellsLoadingUnitsMenuViewModel";
 
             #endregion
         }

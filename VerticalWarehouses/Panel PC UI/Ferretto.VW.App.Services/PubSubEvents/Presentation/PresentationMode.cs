@@ -8,6 +8,8 @@
 
         Login,
 
+        Menu,
+
         Installer,
 
         Operator,

@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IMachineErrorsService machineErrorsService;
 
+        private readonly ISessionService sessionService;
+
         private int bayNumber;
 
         private bool isWaitingForResponse;
@@ -44,19 +46,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
+            ISessionService sessionService,
             IBayManager bayManager,
             IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Login)
         {
-            if (bayManager is null)
-            {
-                throw new ArgumentNullException(nameof(bayManager));
-            }
-
             this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
             this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
@@ -177,6 +176,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             if (this.Data is MachineIdentity machineIdentity)
             {
                 this.MachineIdentity = machineIdentity;
+                this.sessionService.MachineIdentity = machineIdentity;
             }
         }
 
@@ -231,14 +231,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
                 if (claims != null)
                 {
-                    if (claims.AccessLevel == UserAccessLevel.SuperUser)
-                    {
-                        this.NavigateToInstallerMainView();
-                    }
-                    else
-                    {
-                        this.NavigateToOperatorMainView();
-                    }
+                    this.sessionService.SetUserAccessLevel(claims.AccessLevel);
+
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Menu),
+                        Utils.Modules.Menu.MAIN_MENU,
+                        data: this.Data,
+                        trackCurrentView: true);
 
                     this.machineErrorsService.AutoNavigateOnError = true;
                 }
