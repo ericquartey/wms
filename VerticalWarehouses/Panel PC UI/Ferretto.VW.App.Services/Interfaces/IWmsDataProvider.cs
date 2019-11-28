@@ -8,11 +8,9 @@ namespace Ferretto.VW.App.Services
     {
         #region Methods
 
-        Task<string> GetItemImageCodeAsync(int itemId);
+        Task<string> GetItemImagePathAsync(int itemId);
 
-        Task<IEnumerable<TrayControlCompartment>> GetTrayControlCompartmentsAsync(MissionInfo mission);
-
-        Task<bool> PickAsync(int itemId, int areaId, int bayId, int requestedQuantity);
+        Task PickAsync(int itemId, int requestedQuantity);
 
         #endregion
     }

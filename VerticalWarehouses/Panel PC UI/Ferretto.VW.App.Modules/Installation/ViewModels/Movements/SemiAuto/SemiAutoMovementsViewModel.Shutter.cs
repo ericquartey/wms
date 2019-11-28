@@ -169,12 +169,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void RaiseCanExecuteChanged1()
-        {
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-        }
-
         #endregion
     }
 }

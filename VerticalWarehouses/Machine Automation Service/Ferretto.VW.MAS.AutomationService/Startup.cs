@@ -7,6 +7,7 @@ using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
+using Ferretto.VW.MAS.Utils;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
@@ -69,6 +70,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 routes.MapHub<InstallationHub>("/installation-endpoint");
                 routes.MapHub<OperatorHub>("/operator-endpoint");
             });
+
+            app.UseMessageLogging();
 
             if (!env.IsProduction())
             {
@@ -164,6 +167,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             services.AddTransient<IInverterProvider, InverterProvider>();
             services.AddTransient<IIoDeviceProvider, IoDeviceProvider>();
+            services.AddTransient<IConfigurationProvider, ConfigurationProvider>();
         }
 
         private void InitialiseWmsInterfaces(IServiceCollection services)

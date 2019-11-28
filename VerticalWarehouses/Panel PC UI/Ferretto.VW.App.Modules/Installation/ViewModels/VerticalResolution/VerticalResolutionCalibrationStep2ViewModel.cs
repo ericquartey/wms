@@ -37,8 +37,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationService,
+            IMachineElevatorService machineElevatorService,
             IHealthProbeService healthProbeService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationService, healthProbeService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationService, machineElevatorService, healthProbeService)
         {
         }
 
@@ -153,9 +154,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInInitialPosition);
         }
 
-        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnElevatorPositionChanged(message);
+            base.OnPositioningOperationChanged(message);
 
             if (message.Status == MessageStatus.OperationEnd)
             {
@@ -188,9 +189,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveManualToVerticalPositionAsync(
                     this.InputFinalPosition.Value,
-                    this.ProcedureParameters.FeedRate,
                     false,
                     false);
             }

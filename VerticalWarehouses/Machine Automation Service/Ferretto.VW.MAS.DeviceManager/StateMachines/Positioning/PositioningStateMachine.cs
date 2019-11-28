@@ -31,13 +31,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             IMachineResourcesProvider machineResourcesProvider,
             IEventAggregator eventAggregator,
             ILogger logger,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.Logger.LogTrace("1:Method Start");
 
-            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - CurrentPosition = {messageData.CurrentPosition} - MovementType = {messageData.MovementType}");
+            this.Logger.LogTrace($"TargetPosition = {messageData.TargetPosition} - MovementType = {messageData.MovementType}");
 
             this.machineData = new PositioningMachineData(
                 requester,
@@ -45,10 +45,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 targetBay,
                 messageData,
                 machineResourcesProvider,
-                baysProvider.GetInverterIndexByMovementType(messageData, targetBay),
+                baysDataProvider.GetInverterIndexByMovementType(messageData, targetBay),
                 eventAggregator,
                 logger,
-                baysProvider,
+                baysDataProvider,
                 serviceScopeFactory);
         }
 

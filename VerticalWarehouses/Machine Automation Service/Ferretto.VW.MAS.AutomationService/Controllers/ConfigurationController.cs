@@ -3,6 +3,8 @@ using Ferretto.VW.MAS.DataModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
@@ -12,24 +14,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
-
-        private readonly IMachineProvider machineProvider;
-
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+        private readonly IConfigurationProvider configurationProvider;
 
         #endregion
 
         #region Constructors
 
         public ConfigurationController(
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
-            IMachineProvider machineProvider)
+            IConfigurationProvider configurationProvider)
         {
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitsProvider));
-            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new System.ArgumentNullException(nameof(setupProceduresDataProvider));
+            this.configurationProvider = configurationProvider ?? throw new ArgumentNullException(nameof(configurationProvider));
         }
 
         #endregion
@@ -39,14 +33,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<VertimagConfiguration> Get()
         {
-            var configuration = new VertimagConfiguration
-            {
-                Machine = this.machineProvider.Get(),
-                SetupProcedures = this.setupProceduresDataProvider.GetAll(),
-                LoadingUnits = this.loadingUnitsProvider.GetAll(),
-            };
+            return this.Ok(this.configurationProvider.ConfigurationGet());
+        }
 
-            return this.Ok(configuration);
+        [HttpPost("import-configuration")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Import(VertimagConfiguration vertimagConfiguration, [FromServices] IServiceScopeFactory serviceScopeFactory)
+        {
+            _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
+            _ = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+
+            this.configurationProvider.ConfigurationImport(vertimagConfiguration, serviceScopeFactory);
+            return this.Ok();
         }
 
         [HttpPost]
@@ -55,33 +55,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult Set(VertimagConfiguration vertimagConfiguration, [FromServices] IServiceScopeFactory serviceScopeFactory)
         {
-            if (vertimagConfiguration is null)
-            {
-                throw new System.ArgumentNullException(nameof(vertimagConfiguration));
-            }
+            _ = vertimagConfiguration ?? throw new ArgumentNullException(nameof(vertimagConfiguration));
+            _ = serviceScopeFactory ?? throw new System.ArgumentNullException(nameof(serviceScopeFactory));
 
-            if (serviceScopeFactory is null)
-            {
-                throw new System.ArgumentNullException(nameof(serviceScopeFactory));
-            }
-
-            // 3 scopes, avoid cross reference of same object on save
-
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<IMachineProvider>().Update(vertimagConfiguration.Machine);
-            }
-
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<ISetupProceduresDataProvider>().Update(vertimagConfiguration.SetupProcedures);
-            }
-
-            using (var scope = serviceScopeFactory.CreateScope())
-            {
-                scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>().UpdateRange(vertimagConfiguration.LoadingUnits);
-            }
-
+            this.configurationProvider.ConfigurationUpdate(vertimagConfiguration, serviceScopeFactory);
             return this.Ok();
         }
 

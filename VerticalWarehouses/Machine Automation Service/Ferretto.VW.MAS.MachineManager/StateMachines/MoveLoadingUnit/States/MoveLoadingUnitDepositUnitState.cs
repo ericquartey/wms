@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ICellsProvider cellsProvider;
 
@@ -41,14 +41,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         public MoveLoadingUnitDepositUnitState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IElevatorDataProvider elevatorDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ICellsProvider cellsProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
 
             this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
@@ -73,7 +73,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     case LoadingUnitLocation.Cell:
                         if (this.messageData.DestinationCellId != null)
                         {
-                            var cell = this.cellsProvider.GetCellById(this.messageData.DestinationCellId.Value);
+                            var cell = this.cellsProvider.GetById(this.messageData.DestinationCellId.Value);
 
                             direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         }
@@ -81,7 +81,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         break;
 
                     default:
-                        var bay = this.baysProvider.GetByLoadingUnitLocation(this.messageData.Destination);
+                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.messageData.Destination);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
 
@@ -129,20 +129,24 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())
                 {
-                    this.elevatorDataProvider.UnloadLoadingUnit();
+                    this.elevatorDataProvider.SetLoadingUnit(null);
 
-                    if (this.messageData.Destination == LoadingUnitLocation.Cell)
+                    if (this.messageData.Destination is LoadingUnitLocation.Cell)
                     {
-                        var moveDataLoadingUnitCellSourceId = this.messageData.DestinationCellId;
-
-                        if (moveDataLoadingUnitCellSourceId != null)
+                        var destinationCellId = this.messageData.DestinationCellId;
+                        if (destinationCellId.HasValue)
                         {
-                            this.cellsProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, moveDataLoadingUnitCellSourceId.Value);
+                            this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.moveData.LoadingUnitId);
+                        }
+                        else
+                        {
+                            throw new InvalidOperationException("Loading unit movement to target cell has no target cell specified.");
                         }
                     }
                     else
                     {
-                        this.baysProvider.LoadLoadingUnit(this.moveData.LoadingUnitId, this.messageData.Destination);
+                        var bayPosition = this.baysDataProvider.GetPositionByLocation(this.messageData.Destination);
+                        this.baysDataProvider.SetLoadingUnit(bayPosition.Id, this.moveData.LoadingUnitId);
                     }
 
                     transaction.Commit();

@@ -16,20 +16,20 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     {
         #region Fields
 
-        private readonly IElevatorProvider elevatorProvider;
+        private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
+        private readonly IElevatorProvider elevatorProvider;
 
         #endregion
 
         #region Constructors
 
         public WeightAnalysisProcedureController(
-            ISetupProceduresDataProvider setupProceduresDataProvider,
-            IElevatorProvider elevatorProvider)
+            IElevatorProvider elevatorProvider,
+            IElevatorDataProvider elevatorDataProvider)
         {
-            this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
         }
 
         #endregion
@@ -43,9 +43,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet("parameters")]
-        public ActionResult<SetupProcedure> GetParameters()
+        public ActionResult<SetupProcedure> GetParameters(Orientation orientation)
         {
-            return this.Ok(this.setupProceduresDataProvider.GetWeightCheck());
+            return this.Ok(this.elevatorDataProvider.GetAxis(orientation).WeightMeasurement);
         }
 
         [HttpPost("start")]

@@ -99,8 +99,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (receivedMessage.Data is IHomingMessageData data)
             {
-                var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-                var targetBay = baysProvider.GetByAxis(data);
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var targetBay = baysDataProvider.GetByAxis(data);
                 if (targetBay == BayNumber.None)
                 {
                     targetBay = receivedMessage.RequestingBay;
@@ -123,7 +123,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.EventAggregator,
                         this.Logger,
-                        baysProvider,
+                        baysDataProvider,
                         this.ServiceScopeFactory);
 
                     this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
@@ -212,47 +212,46 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         private void ProcessPositioningMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var machineProvider = serviceProvider.GetRequiredService<IMachineProvider>();
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
 
-            if (message.Data is IPositioningMessageData data)
+            System.Diagnostics.Debug.Assert(
+                message.Data is IPositioningMessageData,
+                "Message data should be consistent with message.Type");
+
+            var data = message.Data as IPositioningMessageData;
+
+            var targetBay = baysDataProvider.GetByMovementType(data);
+            if (targetBay is BayNumber.None)
             {
-                var targetBay = baysProvider.GetByMovementType(data);
-                if (targetBay == BayNumber.None)
-                {
-                    targetBay = message.RequestingBay;
-                }
+                targetBay = message.RequestingBay;
+            }
 
-                if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
-                {
-                    this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
-                }
-                else
-                {
-                    data.IsOneKMachine = machineProvider.IsOneTonMachine();
-                    data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
-
-                    currentStateMachine = new PositioningStateMachine(
-                        message.Source,
-                        message.RequestingBay,
-                        targetBay,
-                        data,
-                        machineResourcesProvider,
-                        this.EventAggregator,
-                        this.Logger,
-                        baysProvider,
-                        this.ServiceScopeFactory);
-
-                    this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
-                    this.currentStateMachines.Add(targetBay, currentStateMachine);
-
-                    this.StartStateMachine(targetBay);
-                }
+            if (this.currentStateMachines.TryGetValue(targetBay, out var currentStateMachine))
+            {
+                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting {currentStateMachine?.GetType().Name} state machine. Operation already in progress on ElevatorBay", 1, MessageVerbosity.Error));
             }
             else
             {
-                this.SendCriticalErrorMessage(new FsmExceptionMessageData(null, $"Error while starting Positioning state machine. Wrong command message payload type", 1, MessageVerbosity.Error));
+                data.IsOneKMachine = machineProvider.IsOneTonMachine();
+                data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
+
+                currentStateMachine = new PositioningStateMachine(
+                    message.Source,
+                    message.RequestingBay,
+                    targetBay,
+                    data,
+                    machineResourcesProvider,
+                    this.EventAggregator,
+                    this.Logger,
+                    baysDataProvider,
+                    this.ServiceScopeFactory);
+
+                this.Logger.LogTrace($"2:Starting FSM {currentStateMachine.GetType().Name}");
+                this.currentStateMachines.Add(targetBay, currentStateMachine);
+
+                this.StartStateMachine(targetBay);
             }
         }
 
@@ -292,7 +291,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     currentStateMachine = new PowerEnableStateMachine(
                         message,
                         machineResourcesProvider,
-                        serviceProvider.GetRequiredService<IBaysProvider>(),
+                        serviceProvider.GetRequiredService<IBaysDataProvider>(),
                         this.EventAggregator,
                         this.Logger,
                         this.ServiceScopeFactory);
@@ -410,13 +409,13 @@ namespace Ferretto.VW.MAS.DeviceManager
             {
                 if (message.Data is IShutterPositioningMessageData data)
                 {
-                    var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
+                    var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
 
                     message.TargetBay = message.RequestingBay;
                     currentStateMachine = new ShutterPositioningStateMachine(data,
                         message.RequestingBay,
                         message.TargetBay,
-                        baysProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
+                        baysDataProvider.GetByNumber(message.RequestingBay).Shutter.Inverter.Index,
                         serviceProvider.GetRequiredService<IMachineResourcesProvider>(),
                         this.EventAggregator,
                         this.Logger,

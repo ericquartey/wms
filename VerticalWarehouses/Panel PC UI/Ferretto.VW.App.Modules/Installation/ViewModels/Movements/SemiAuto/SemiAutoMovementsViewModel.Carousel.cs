@@ -15,39 +15,35 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
-        private double? bayChainHorizontalPosition;
-
-        private DelegateCommand carouselDownCommand;
-
-        private DelegateCommand carouselUpCommand;
-
         private bool hasCarousel;
 
         private bool isCarouselMoving;
+
+        private DelegateCommand moveCarouselDownCommand;
+
+        private ActionPolicy moveCarouselDownPolicy;
+
+        private DelegateCommand moveCarouselUpCommand;
+
+        private ActionPolicy moveCarouselUpPolicy;
 
         #endregion
 
         #region Properties
 
-        public double? BayChainHorizontalPosition
-        {
-            get => this.bayChainHorizontalPosition;
-            private set => this.SetProperty(ref this.bayChainHorizontalPosition, value);
-        }
-
         public ICommand CarouselDownCommand =>
-            this.carouselDownCommand
+            this.moveCarouselDownCommand
             ??
-            (this.carouselDownCommand = new DelegateCommand(
-                async () => await this.CarouselDownAsync(),
-                this.CanExecuteCarouselDownCommand));
+            (this.moveCarouselDownCommand = new DelegateCommand(
+            async () => await this.MoveCarouselDownAsync(),
+            this.CanMoveCarouselDown));
 
         public ICommand CarouselUpCommand =>
-            this.carouselUpCommand
+            this.moveCarouselUpCommand
             ??
-            (this.carouselUpCommand = new DelegateCommand(
-                async () => await this.CarouselUpAsync(),
-                this.CanExecuteCarouselUpCommand));
+            (this.moveCarouselUpCommand = new DelegateCommand(
+            async () => await this.MoveCarouselUpAsync(),
+            this.CanMoveCarouselUp));
 
         public bool HasCarousel
         {
@@ -58,54 +54,47 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsCarouselMoving
         {
             get => this.isCarouselMoving;
-            private set
-            {
-                if (this.SetProperty(ref this.isCarouselMoving, value))
-                {
-                    this.RaisePropertyChanged(nameof(this.IsCarouselMoving));
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isCarouselMoving, value, this.RaiseCanExecuteChanged);
         }
 
         #endregion
 
         #region Methods
 
-        private bool CanExecuteCarouselDownCommand()
+        private bool CanMoveCarouselDown()
         {
             return
                 !this.KeyboardOpened
                 &&
                 !this.IsMoving
                 &&
-                !this.IsWaitingForResponse;
-            // &&
-            // (this.Sensors.LUPresentMiddleBottomBay1); //IoStatus.LoadingUnitExistenceInBay
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselDownPolicy?.IsAllowed == true;
         }
 
-        private bool CanExecuteCarouselUpCommand()
+        private bool CanMoveCarouselUp()
         {
             return
                 !this.KeyboardOpened
                 &&
                 !this.IsMoving
                 &&
-                !this.IsWaitingForResponse;
-            // &&
-            // IoStatus.LoadingUnitInLowerBay;
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselUpPolicy?.IsAllowed == true;
         }
 
-        private async Task CarouselDownAsync()
+        private async Task MoveCarouselDownAsync()
         {
             this.IsWaitingForResponse = true;
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Backwards, null);
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Down);
                 this.IsCarouselMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -115,16 +104,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task CarouselUpAsync()
+        private async Task MoveCarouselUpAsync()
         {
             this.IsWaitingForResponse = true;
 
             try
             {
-                await this.machineCarouselWebService.MoveAsync(HorizontalMovementDirection.Forwards, null);
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Up);
                 this.IsCarouselMoving = true;
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

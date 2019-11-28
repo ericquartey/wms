@@ -60,6 +60,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 }
                 else
                 {
+                    System.Console.Title = "Vertimag Automation Service";
                     host.Run();
                 }
             }
@@ -70,7 +71,7 @@ namespace Ferretto.VW.MAS.AutomationService
                 return -1;
             }
 
-            logger.LogInformation("Application terminated correctly.");
+            logger.LogInformation("Application terminated.");
 
             return NoError;
         }

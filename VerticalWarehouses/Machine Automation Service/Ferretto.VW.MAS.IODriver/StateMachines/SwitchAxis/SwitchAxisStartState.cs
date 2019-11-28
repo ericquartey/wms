@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
         {
             var switchOffAxisIoMessage = new IoWriteMessage { PowerEnable = true };
 
-            this.Logger.LogTrace($"1:Switch off axis IO={switchOffAxisIoMessage}");
+            this.Logger.LogDebug($"1:Switch axis start {this.axisToSwitchOn}. IO={switchOffAxisIoMessage}");
 
             switch (this.axisToSwitchOn)
             {

@@ -5,29 +5,15 @@ namespace Ferretto.VW.App.Services
 {
     public interface IBayManager
     {
-        #region Events
-
-        event System.EventHandler NewMissionOperationAvailable;
-
-        #endregion
-
         #region Properties
 
-        WMS.Data.WebAPI.Contracts.MissionInfo CurrentMission { get; }
-
-        WMS.Data.WebAPI.Contracts.MissionOperation CurrentMissionOperation { get; }
+        double ChainPosition { get; }
 
         MachineIdentity Identity { get; }
-
-        int PendingMissionsCount { get; }
 
         #endregion
 
         #region Methods
-
-        void CompleteCurrentMission();
-
-        Task CompleteCurrentMissionOperationAsync(double quantity);
 
         Task<Bay> GetBayAsync();
 

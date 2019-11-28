@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
+using Ferretto.VW.MAS.DataLayer;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
@@ -37,6 +39,10 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void HomingMethod(NotificationMessage receivedMessage)
         {
+            if (receivedMessage.Status == MessageStatus.OperationEnd)
+            {
+                this.machineProvider.IsHomingExetuted = true;
+            }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
         }
@@ -53,19 +59,23 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
-        private void OnBayConnected(IBayOperationalStatusChangedMessageData messageData)
+        private void OnBayChainPositionChanged(BayChainPositionMessageData data)
         {
-            if (messageData is null)
-            {
-                throw new ArgumentNullException(nameof(messageData));
-            }
+            Contract.Requires(data != null);
 
-            this.operatorHub.Clients.All.BayStatusChanged(messageData);
+            this.installationHub.Clients.All.BayChainPositionChanged(data.Position, data.BayNumber);
+        }
+
+        private void OnBayConnected(BayOperationalStatusChangedMessageData data)
+        {
+            Contract.Requires(data != null);
+
+            this.operatorHub.Clients.All.BayStatusChanged(data.BayNumber, data.BayStatus);
         }
 
         private void OnChangeRunningState(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is CommonUtils.Messages.Data.ChangeRunningStateMessageData data)
+            if (receivedMessage.Data is ChangeRunningStateMessageData data)
             {
                 MachinePowerState machinePowerState;
                 switch (receivedMessage.Status)
@@ -88,6 +98,7 @@ namespace Ferretto.VW.MAS.AutomationService
                         machinePowerState = data.Enable ? MachinePowerState.Unpowered : MachinePowerState.Powered;
                         break;
                 }
+                this.machineProvider.IsMachineRunning = (machinePowerState == MachinePowerState.Powered);
 
                 this.installationHub.Clients.All.MachinePowerChanged(machinePowerState);
             }
@@ -95,17 +106,25 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataLayerReady()
         {
-            this.baysProvider.AddElevatorPseudoBay();
+            this.baysDataProvider.AddElevatorPseudoBay();
 
-            this.baysProvider.GetAll().ToList(); // HACK why is this call needed?
+            this.baysDataProvider.GetAll().ToList(); // HACK why is this call needed?
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionMessageData data)
+        {
+            Contract.Requires(data != null);
+
+            this.installationHub.Clients.All.ElevatorPositionChanged(
+                data.VerticalPosition,
+                data.HorizontalPosition,
+                data.CellId,
+                data.BayPositionId);
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)
         {
-            if (machineErrorMessageData is null)
-            {
-                throw new ArgumentNullException(nameof(machineErrorMessageData));
-            }
+            Contract.Requires(machineErrorMessageData != null);
 
             this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
         }
@@ -118,7 +137,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnMachineModeChanged(NotificationMessage receivedMessage)
         {
-            if (receivedMessage.Data is DataLayer.MachineModeMessageData data)
+            if (receivedMessage.Data is MachineModeMessageData data)
             {
                 this.installationHub.Clients.All.MachineModeChanged(data.MachineMode);
             }
@@ -130,14 +149,15 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }
 
-        private async Task OnNewMissionOperationAvailable(INewMissionOperationAvailable e)
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
         {
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
+            Contract.Requires(e != null);
 
-            await this.operatorHub.Clients.All.NewMissionOperationAvailable(e);
+            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
+                e.BayNumber,
+                e.MissionId,
+                e.MissionOperationId,
+                e.PendingMissionsCount);
         }
 
         private void OnPositioningChanged(NotificationMessage receivedMessage)

@@ -60,17 +60,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay);
 
                 var newMessageData = new MoveLoadingUnitMessageData(
-                                                                    messageData.Source,
-                                                                    messageData.Destination,
-                                                                    messageData.SourceCellId,
-                                                                    messageData.DestinationCellId,
-                                                                    messageData.LoadingUnitId,
-                                                                    messageData.InsertLoadingUnit,
-                                                                    messageData.EjectLoadingUnit,
-                                                                    moveData.MachineId,
-                                                                    messageData.CommandAction,
-                                                                    messageData.StopReason,
-                                                                    messageData.Verbosity);
+                    messageData.MissionType,
+                    messageData.Source,
+                    messageData.Destination,
+                    messageData.SourceCellId,
+                    messageData.DestinationCellId,
+                    messageData.LoadingUnitId,
+                    messageData.InsertLoadingUnit,
+                    messageData.EjectLoadingUnit,
+                    moveData.MachineId,
+                    messageData.CommandAction,
+                    messageData.StopReason,
+                    messageData.Verbosity);
 
                 this.Message = new NotificationMessage(
                     newMessageData,

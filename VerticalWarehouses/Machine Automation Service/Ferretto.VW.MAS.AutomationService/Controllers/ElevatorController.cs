@@ -10,6 +10,8 @@ using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Prism.Events;
+using Ferretto.VW.MAS.AutomationService;
+using Ferretto.VW.MAS.DeviceManager;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.AutomationService.Controllers
@@ -44,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.elevatorWeightCheckProvider = elevatorWeightCheckProvider ?? throw new ArgumentNullException(nameof(elevatorWeightCheckProvider));
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -57,6 +59,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #endregion
 
         #region Methods
+
+        [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("horizontal/can-load-from-cell/{cellId}")]
+        public ActionResult<ActionPolicy> CanLoadFromCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanLoadFromCell(cellId, this.BayNumber));
+        }
+
+        [HttpGet("vertical/can-move-to-bay-position")]
+        public ActionResult<ActionPolicy> CanMoveToBayPosition(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanMoveToBayPosition(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("vertical/can-move-to-cell")]
+        public ActionResult<ActionPolicy> CanMoveToCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanMoveToCell(cellId));
+        }
+
+        [HttpGet("horizontal/can-unload-to-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber));
+        }
+
+        [HttpGet("horizontal/can-unload-to-cell/{cellId}")]
+        public ActionResult<ActionPolicy> CanUnloadToCell(int cellId)
+        {
+            return this.Ok(this.elevatorProvider.CanUnloadToCell(cellId));
+        }
 
         [HttpPost("horizontal/find-zero")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
@@ -74,16 +112,42 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpGet("horizontal/assisted-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Horizontal));
+        }
+
+        [HttpGet("horizontal/manual-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetHorizontalManualMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Horizontal));
+        }
+
         [HttpGet("loading-unit-on-board")]
         public ActionResult<LoadingUnit> GetLoadingUnitOnBoard()
         {
             return this.Ok(this.elevatorDataProvider.GetLoadingUnitOnBoard());
         }
 
-        [HttpGet("horizontal/position")]
-        public ActionResult<double> GetHorizontalPosition()
+        [HttpGet("position")]
+        public ActionResult<ElevatorPosition> GetPosition()
         {
-            return this.Ok(this.elevatorProvider.HorizontalPosition);
+            var elevatorPosition = new ElevatorPosition
+            {
+                Vertical = this.elevatorProvider.VerticalPosition,
+                Horizontal = this.elevatorProvider.HorizontalPosition,
+                CellId = this.elevatorDataProvider.GetCurrentCell()?.Id,
+                BayPositionId = this.elevatorDataProvider.GetCurrentBayPosition()?.Id
+            };
+
+            return this.Ok(elevatorPosition);
+        }
+
+        [HttpGet("vertical/assisted-movements-parameters")]
+        public ActionResult<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParameters()
+        {
+            return this.Ok(this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical));
         }
 
         [HttpGet("vertical/bounds")]
@@ -93,9 +157,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("vertical/manual-movements-parameters")]
-        public ActionResult<VerticalManualMovementsProcedure> GetVerticalManualMovementsParameters()
+        public ActionResult<ElevatorAxisManualParameters> GetVerticalManualMovementsParameters()
         {
-            return this.Ok(this.setupProceduresDataProvider.GetVerticalManualMovements());
+            return this.Ok(this.elevatorDataProvider.GetManualMovementsAxis(Orientation.Vertical));
         }
 
         [HttpGet("vertical/offset")]
@@ -104,33 +168,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Offset);
         }
 
-        [HttpGet("vertical/position")]
-        public ActionResult<double> GetVerticalPosition()
-        {
-            return this.Ok(this.elevatorProvider.VerticalPosition);
-        }
-
         [HttpGet("vertical/resolution")]
         public ActionResult<decimal> GetVerticalResolution()
         {
             return this.Ok(this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution);
         }
 
-        [HttpPost("horizontal/move-auto")]
+        [HttpPost("horizontal/load-from-bay")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveHorizontalAuto(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
+        public IActionResult LoadFromBay(int bayPositionId)
         {
-            // this.elevatorProvider.MoveHorizontalProfileCalibration(direction, this.BayNumber, MessageActor.AutomationService);  // TEST
-            this.elevatorProvider.MoveHorizontalAuto(
-                direction,
-                isStartedOnBoard,
-                loadingUnitId,
-                loadingUnitGrossWeight,
-                false,
-                false,
-                this.BayNumber,
-                MessageActor.AutomationService);
+            this.elevatorProvider.LoadFromBay(bayPositionId, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/load-from-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult LoadFromCell(int cellId)
+        {
+            this.elevatorProvider.LoadFromCell(cellId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
         }
@@ -144,23 +203,88 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/manual-move-to")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveManualToVerticalPosition(
+            double targetPosition,
+            bool performWeighting,
+            bool computeElongation)
+        {
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                true,
+                targetPosition,
+                performWeighting,
+                computeElongation,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("vertical/move-to-bay-position")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting)
+        {
+            this.elevatorProvider.MoveToBayPosition(
+                bayPositionId,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("vertical/move-to-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToCell(int cellId, bool computeElongation, bool performWeighting)
+        {
+            this.elevatorProvider.MoveToCell(
+                cellId,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveToVerticalPosition(double targetPosition, double feedRate, bool measure, bool computeElongation)
+        public IActionResult MoveToVerticalPosition(
+            double targetPosition,
+            bool performWeighting,
+            bool computeElongation)
         {
-            this.elevatorProvider.MoveToVerticalPosition(targetPosition, feedRate, measure, computeElongation, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToAbsoluteVerticalPosition(
+                false,
+                targetPosition,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
             return this.Accepted();
         }
 
-        [HttpPost("vertical/move")]
+        [HttpPost("vertical/manual-move")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
-        public IActionResult MoveVertical(VerticalMovementDirection direction)
+        public IActionResult MoveVerticalManual(VerticalMovementDirection direction)
         {
-            this.elevatorProvider.MoveVertical(direction, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveVerticalManual(direction, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -169,7 +293,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveVerticalOfDistance(double distance)
         {
-            this.elevatorProvider.MoveVerticalOfDistance(distance, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveToRelativeVerticalPosition(distance, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -204,6 +328,26 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public IActionResult StopWeightCheck()
         {
             this.elevatorWeightCheckProvider.Stop();
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/unload-to-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UnloadToBay(int bayPositionId)
+        {
+            this.elevatorProvider.UnloadToBay(bayPositionId, this.BayNumber, MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
+        [HttpPost("horizontal/unload-to-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult UnloadToCell(int cellId)
+        {
+            this.elevatorProvider.UnloadToCell(cellId, this.BayNumber, MessageActor.AutomationService);
+
             return this.Accepted();
         }
 

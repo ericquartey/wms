@@ -376,6 +376,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitPresentInCell.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitPresentInCell {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitPresentInCell", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterClosed.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitShutterClosed {
@@ -426,6 +435,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string MachineManagerErrorNoLoadingUnitInSource {
             get {
                 return ResourceManager.GetString("MachineManagerErrorNoLoadingUnitInSource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineModeNotValid.
+        /// </summary>
+        public static string MachineModeNotValid {
+            get {
+                return ResourceManager.GetString("MachineModeNotValid", resourceCulture);
             }
         }
         

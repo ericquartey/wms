@@ -7,18 +7,17 @@ steps:
     updateAssemblyInfo: true
     preferBundledVersion: false
 
-
-- task: bleddynrichards.Assembly-Info-Task.Assembly-Info-Task.Assembly-Info-Task@1
+- task: Assembly-Info-NetCore@2
   displayName: 'Set Assembly Manifest Data'
   inputs:
-    FileNames: |
-     AssemblyInfo.cs
-     *.csproj
-    Product: 'Warehouse Management System'
+    Path: '$(Build.SourcesDirectory)'
+    FileNames: '**/*.csproj'
+    InsertAttributes: true
+    FileEncoding: 'auto'
+    WriteBOM: false
     Company: 'Ferretto Group S.p.A.'
+    Product: 'Vertical Warehouse Management System'
     Copyright: 'Copyright Ferretto Group S.p.A. 2019'
     VersionNumber: '$(GitVersion.AssemblySemVer)'
     FileVersionNumber: '$(GitVersion.AssemblySemFileVer)'
     InformationalVersion: '$(GitVersion.FullSemVer)'
-    InsertAttributes: true
-

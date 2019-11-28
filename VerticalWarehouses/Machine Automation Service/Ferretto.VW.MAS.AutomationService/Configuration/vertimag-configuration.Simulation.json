@@ -4,19 +4,19 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-
+      "Height": 100,
       "Id": 3
     }
   ],
@@ -49,7 +49,21 @@
             "Type": "Agl",
             "Index": "Slave2"
           },
-          "Type": "TwoSensors"
+          "Type": "TwoSensors",
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          }
         }
       },
       {
@@ -90,6 +104,20 @@
           "Inverter": {
             "Type": "Agl",
             "Index": "Slave4"
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2,
+            "MaxSpeed": 40000,
+            "MinSpeed": 5000,
+            "HighSpeedDurationOpen": 14,
+            "HighSpeedDurationClose": 13
           }
         },
         "Inverter": {
@@ -98,7 +126,13 @@
         },
         "Resolution": 369.8453,
         "Carousel": {
-          "ElevatorDistance": 460
+          "ElevatorDistance": 460,
+          "ManualMovements": {
+            "FeedRate": 0.1
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.2
+          }
         }
       }
     ],
@@ -135,6 +169,18 @@
             "MeasureConst2": -4.9268,
             "MeasureSpeed": 20,
             "MeasureTime": 15
+          },
+          "ManualMovements": {
+            "FeedRate": 0.1,
+            "FeedRateAfterZero": 0.15,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
+          },
+          "AssistedMovements": {
+            "FeedRate": 0.15,
+            "FeedRateAfterZero": 0.2,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 30
           }
         },
         {
@@ -144,14 +190,22 @@
           "ChainOffset": -6.4,
           "Inverter": null,
           "FullLoadMovement": {
-            "Acceleration": 350,
-            "Deceleration": 350,
-            "Speed": 550
+            "Acceleration": 200,
+            "Deceleration": 200,
+            "Speed": 480
           },
           "EmptyLoadMovement": {
             "Acceleration": 1500,
             "Deceleration": 1500,
-            "Speed": 730
+            "Speed": 650
+          },
+          "ManualMovements": {
+            "FeedRate": 0.04,
+            "FeedRateAfterZero": 0.3,
+            "TargetDistance": 30,
+            "TargetDistanceAfterZero": 200
+          },
+          "AssistedMovements": {
           },
           "Profiles": [
             {
@@ -176,7 +230,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
                   "Position": 900,
                   "AdjustByWeight": 1
@@ -184,7 +238,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 3,
                   "Position": 1100,
                   "AdjustByWeight": 1
@@ -220,7 +274,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Number": 2,
                   "Position": 750,
                   "AdjustByWeight": 1
@@ -231,7 +285,7 @@
                   "Speed": 200,
                   "Number": 3,
                   "Position": 1020,
-                  "AdjustByWeight": 1
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
@@ -264,7 +318,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 900,
                   "Number": 2,
                   "AdjustByWeight": 1
@@ -272,7 +326,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 1100,
                   "Number": 3,
                   "AdjustByWeight": 1
@@ -308,7 +362,7 @@
                 {
                   "Acceleration": 1000,
                   "Deceleration": 0,
-                  "Speed": 500,
+                  "Speed": 650,
                   "Position": 750,
                   "Number": 2,
                   "AdjustByWeight": 1
@@ -319,7 +373,7 @@
                   "Speed": 200,
                   "Position": 1020,
                   "Number": 3,
-                  "AdjustByWeight": 1
+                  "AdjustByWeight": 0
                 },
                 {
                   "Acceleration": 3000,
@@ -354,13 +408,13 @@
             "Id": 1,
             "Position": 375,
             "Priority": 1,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 3,
             "Position": 425,
             "Priority": 3,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 5,
@@ -1583,19 +1637,19 @@
             "Id": 2,
             "Position": 355,
             "Priority": 2,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 4,
             "Position": 367,
             "Priority": 4,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 6,
             "Position": 418,
             "Priority": 6,
-            "Status": "Disabled"
+            "IsUnusable": true
           },
           {
             "Id": 8,
@@ -2834,33 +2888,15 @@
     "DepositAndPickUpTest": {
       "RequiredCycles": 10
     },
-    "HorizontalManualMovements": {
-      "FeedRate": 0.04,
-      "InitialTargetPosition": 30,
-      "RecoveryTargetPosition": 200
-    },
     "LoadFirstDrawerTest": {
       "FeedRate": 0.2
     },
     "ShutterHeightCheck": {
       "FeedRate": 0.1
     },
-    "ShutterManualMovements": {
-      "FeedRate": 0.20,
-      "MaxSpeed": 40000,
-      "MinSpeed": 5000,
-      "HighSpeedDurationOpen": 14,
-      "HighSpeedDurationClose": 13
-    },
     "ShutterTest": {
       "FeedRate": 1.0,
       "RequiredCycles": 10000
-    },
-    "VerticalManualMovements": {
-      "FeedRate": 0.1,
-      "PositiveTargetDirection": 30,
-      "NegativeTargetDirection": 30,
-      "FeedRateAfterZero": 0.15
     },
     "VerticalOffsetCalibration": {
       "ReferenceCellId": 50,
@@ -2871,9 +2907,6 @@
       "InitialPosition": 1000,
       "FinalPosition": 5500,
       "FeedRate": 0.2
-    },
-    "WeightCheck": {
-      "FeedRate": 0.05
     }
   }
 }

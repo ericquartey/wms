@@ -15,11 +15,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IBayManager bayManager;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private readonly IEventAggregator eventAggregator;
-
-        private readonly INavigationService navigationService;
+        private readonly IMissionOperationsService missionOperationsService;
 
         private bool areItemsEnabled;
 
@@ -27,25 +25,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isWaitingForResponse;
 
-        private DelegateCommand itemSearchButtonCommand;
+        private DelegateCommand showItemListsCommand;
 
-        private DelegateCommand listsInWaitButtonCommand;
+        private DelegateCommand showItemSearchCommand;
 
-        private DelegateCommand otherButtonCommand;
+        private DelegateCommand showOtherMenuCommand;
 
         #endregion
 
         #region Constructors
 
         public OperatorMenuViewModel(
-            IEventAggregator eventAggregator,
-            IBayManager bayManager,
-            INavigationService navigationService)
+            IMachineBaysWebService machineBaysWebService,
+            IMissionOperationsService missionOperationsService)
             : base(PresentationMode.Operator)
         {
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
+            this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
         }
 
         #endregion
@@ -58,7 +54,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             private set => this.SetProperty(ref this.areItemsEnabled, value);
         }
 
-        public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand ?? (this.drawerActivityButtonCommand = new DelegateCommand(() => this.DrawerActivityButtonMethod(), this.CanDrawerActivityButtonMethod));
+        public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
+            ??
+            (this.drawerActivityButtonCommand = new DelegateCommand(
+                this.ShowItemOperations,
+                this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -68,15 +68,37 @@ namespace Ferretto.VW.App.Operator.ViewModels
             protected set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
 
-        public ICommand ItemSearchButtonCommand => this.itemSearchButtonCommand ?? (this.itemSearchButtonCommand = new DelegateCommand(() => this.ItemSearch(), this.CanItemSearchCommand));
+        public ICommand ShowItemListsCommand =>
+            this.showItemListsCommand
+            ??
+            (this.showItemListsCommand = new DelegateCommand(
+                this.ShowItemLists,
+                this.CanShowItemLists));
 
-        public ICommand ListsInWaitButtonCommand => this.listsInWaitButtonCommand ?? (this.listsInWaitButtonCommand = new DelegateCommand(() => this.ListInWait(), this.CanListInWaitCommand));
+        public ICommand ShowItemSearchCommand =>
+                    this.showItemSearchCommand
+            ??
+            (this.showItemSearchCommand = new DelegateCommand(
+                this.ShowItemSearch,
+                this.CanShowItemSearch));
 
-        public ICommand OtherButtonCommand => this.otherButtonCommand ?? (this.otherButtonCommand = new DelegateCommand(() => this.Other(), this.CanOtherCommand));
+        public ICommand ShowOtherMenuCommand =>
+            this.showOtherMenuCommand
+            ??
+            (this.showOtherMenuCommand = new DelegateCommand(
+                this.ShowOtherMenu,
+                this.CanShowOtherMenu));
 
         #endregion
 
         #region Methods
+
+        public override async Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            await this.machineBaysWebService.ActivateAsync();
+        }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
@@ -85,145 +107,93 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.AreItemsEnabled = e.MachinePowerState is MachinePowerState.Powered;
         }
 
-        private bool CanDrawerActivityButtonMethod()
+        private bool CanShowItemLists()
         {
             return !this.IsWaitingForResponse;
         }
 
-        private bool CanItemSearchCommand()
+        private bool CanShowItemOperations()
         {
             return !this.IsWaitingForResponse;
         }
 
-        private bool CanListInWaitCommand()
+        private bool CanShowItemSearch()
         {
             return !this.IsWaitingForResponse;
         }
 
-        private bool CanOtherCommand()
+        private bool CanShowOtherMenu()
         {
             return !this.IsWaitingForResponse;
         }
 
-        private void DrawerActivityButtonMethod()
+        private void ShowItemLists()
         {
-            this.IsWaitingForResponse = true;
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.WaitingLists.MAIN,
+                null,
+                trackCurrentView: true);
+        }
 
-            try
+        private void ShowItemOperations()
+        {
+            var missionOperation = this.missionOperationsService.CurrentMissionOperation;
+            if (missionOperation != null)
             {
-                var missionOperation = this.bayManager.CurrentMissionOperation;
-                if (missionOperation != null)
+                switch (missionOperation.Type)
                 {
-                    switch (missionOperation.Type)
-                    {
-                        case MissionOperationType.Inventory:
-                            this.NavigationService.Appear(
-                                nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.DrawerOperations.INVENTORY,
-                                null,
-                                trackCurrentView: true);
-                            break;
+                    case MissionOperationType.Inventory:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.INVENTORY,
+                            null,
+                            trackCurrentView: true);
+                        break;
 
-                        case MissionOperationType.Pick:
-                            this.NavigationService.Appear(
-                                nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.DrawerOperations.PICKING,
-                                null,
-                                trackCurrentView: true);
-                            break;
+                    case MissionOperationType.Pick:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PICK,
+                            null,
+                            trackCurrentView: true);
+                        break;
 
-                        case MissionOperationType.Put:
-                            this.NavigationService.Appear(
-                                nameof(Utils.Modules.Operator),
-                                Utils.Modules.Operator.DrawerOperations.REFILLING,
-                                null,
-                                trackCurrentView: true);
-                            break;
-                    }
-                }
-                else
-                {
-                    this.NavigationService.Appear(
-                        nameof(Utils.Modules.Operator),
-                        Utils.Modules.Operator.DrawerOperations.WAIT,
-                        null,
-                        trackCurrentView: true);
+                    case MissionOperationType.Put:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PUT,
+                            null,
+                            trackCurrentView: true);
+                        break;
                 }
             }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void ItemSearch()
-        {
-            this.IsWaitingForResponse = true;
-
-            try
+            else
             {
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemSearch.MAIN,
+                    Utils.Modules.Operator.ItemOperations.WAIT,
                     null,
                     trackCurrentView: true);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
             }
         }
 
-        private void ListInWait()
+        private void ShowItemSearch()
         {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.WaitingLists.MAIN,
-                    null,
-                    trackCurrentView: true);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.ItemSearch.MAIN,
+                null,
+                trackCurrentView: true);
         }
 
-        private void Other()
+        private void ShowOtherMenu()
         {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.Others.NAVIGATION,
-                    null,
-                    trackCurrentView: true);
-            }
-            catch (System.Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.NAVIGATION,
+                null,
+                trackCurrentView: true);
         }
 
         #endregion

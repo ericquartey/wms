@@ -16,7 +16,7 @@
 
         DataLayerReady,
 
-        ExecuteMission,
+        AssignedMissionOperationChanged,
 
         SwitchAxis,
 
@@ -26,13 +26,11 @@
 
         MachineStatusActive,
 
-        NewMissionAvailable,
+        NewWmsMissionAvailable,
 
         CreateMission,
 
         Positioning,
-
-        CurrentPosition,
 
         ShutterPositioning,
 
@@ -89,5 +87,9 @@
         MoveLoadingUnit,
 
         ContinueMovement,
+
+        ElevatorPosition,
+
+        BayChainPosition,
     }
 }

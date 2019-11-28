@@ -21,11 +21,17 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Guid? MissionId { get; }
 
+        MissionType MissionType { get; }
+
         LoadingUnitLocation Source { get; }
 
         int? SourceCellId { get; }
 
         StopRequestReason StopReason { get; }
+
+        BayNumber TargetBay { get; set; }
+
+        int? WmsId { get; set; }
 
         #endregion
     }

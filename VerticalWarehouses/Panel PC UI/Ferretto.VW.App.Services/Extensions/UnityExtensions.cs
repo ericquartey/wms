@@ -33,11 +33,13 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<ISessionService, SessionService>();
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
+            containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
             // Operator
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
+            containerRegistry.RegisterSingleton<IMissionOperationsService, MissionOperationsService>();
 
             containerRegistry.GetContainer().RegisterSingleton<IHealthProbeService>(
                 new InjectionFactory(c =>

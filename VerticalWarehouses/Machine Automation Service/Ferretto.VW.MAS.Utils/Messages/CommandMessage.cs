@@ -4,7 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
-    public class CommandMessage
+    public class CommandMessage : Message
     {
         #region Constructors
 
@@ -14,6 +14,11 @@ namespace Ferretto.VW.MAS.Utils.Messages
 
         public CommandMessage(CommandMessage otherMessage)
         {
+            if (otherMessage is null)
+            {
+                throw new System.ArgumentNullException(nameof(otherMessage));
+            }
+
             this.Data = otherMessage.Data;
             this.Description = otherMessage.Description;
             this.Destination = otherMessage.Destination;

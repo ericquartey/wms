@@ -23,7 +23,7 @@ namespace Ferretto.VW.MAS.IODriver
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IConfiguration configuration;
 
@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.IODriver
         public IoDriverService(
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
             IConfiguration configuration,
@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.ioDeviceService = iIoDeviceService ?? throw new ArgumentNullException(nameof(iIoDeviceService));
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.env = env ?? throw new ArgumentNullException(nameof(env));
         }
 
@@ -167,7 +167,7 @@ namespace Ferretto.VW.MAS.IODriver
                     ? (IIoTransport)new IoTransportMock()
                     : new IoTransport(readTimeoutMilliseconds);
 
-                var isCarousel = this.baysProvider.GetByIoIndex(ioDevice.Index).Carousel != null;
+                var isCarousel = this.baysDataProvider.GetByIoIndex(ioDevice.Index).Carousel != null;
 
                 this.ioDevices.Add(
                     ioDevice.Index,

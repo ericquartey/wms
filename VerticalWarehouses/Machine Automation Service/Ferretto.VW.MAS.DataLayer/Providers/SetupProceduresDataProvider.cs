@@ -2,6 +2,9 @@
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
@@ -11,13 +14,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<SetupProceduresDataProvider> logger;
+
         #endregion
 
         #region Constructors
 
-        public SetupProceduresDataProvider(DataLayerContext dataContext)
+        public SetupProceduresDataProvider(
+            DataLayerContext dataContext,
+            ILogger<SetupProceduresDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -31,19 +39,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.SetupProceduresSets
                     .Include(s => s.BayHeightCheck)
                     .Include(s => s.BeltBurnishingTest)
-                    .Include(s => s.CarouselManualMovements)
                     .Include(s => s.CellPanelsCheck)
                     .Include(s => s.CellsHeightCheck)
                     .Include(s => s.DepositAndPickUpTest)
-                    .Include(s => s.HorizontalManualMovements)
                     .Include(s => s.LoadFirstDrawerTest)
                     .Include(s => s.ShutterHeightCheck)
-                    .Include(s => s.ShutterManualMovements)
                     .Include(s => s.ShutterTest)
-                    .Include(s => s.VerticalManualMovements)
                     .Include(s => s.VerticalResolutionCalibration)
                     .Include(s => s.VerticalOffsetCalibration)
-                    .Include(s => s.WeightCheck)
                     .Single();
             }
         }
@@ -64,16 +67,6 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.SetupProceduresSets
                     .Select(s => s.BeltBurnishingTest)
-                    .Single();
-            }
-        }
-
-        public SetupProcedure GetCarouselManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.CarouselManualMovements)
                     .Single();
             }
         }
@@ -108,16 +101,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public HorizontalManualMovementsProcedure GetHorizontalManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.HorizontalManualMovements)
-                    .Single();
-            }
-        }
-
         public SetupProcedure GetLoadFirstDrawerTest()
         {
             lock (this.dataContext)
@@ -138,32 +121,12 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public ShutterManualMovementsProcedure GetShutterManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.ShutterManualMovements)
-                    .Single();
-            }
-        }
-
         public RepeatedTestProcedure GetShutterTest()
         {
             lock (this.dataContext)
             {
                 return this.dataContext.SetupProceduresSets
                     .Select(s => s.ShutterTest)
-                    .Single();
-            }
-        }
-
-        public VerticalManualMovementsProcedure GetVerticalManualMovements()
-        {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.VerticalManualMovements)
                     .Single();
             }
         }
@@ -188,14 +151,33 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public SetupProcedure GetWeightCheck()
+        public void Import(SetupProceduresSet setupProceduresSet, DataLayerContext context)
         {
-            lock (this.dataContext)
-            {
-                return this.dataContext.SetupProceduresSets
-                    .Select(s => s.WeightCheck)
-                    .Single();
-            }
+            _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
+
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BayHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.BeltBurnishingTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellPanelsCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.CellsHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.DepositAndPickUpTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.LoadFirstDrawerTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.ShutterHeightCheck?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.ShutterTest?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.VerticalOffsetCalibration?.Id));
+            //context.SetupProcedures.Remove(context.SetupProcedures.Find(setupProceduresSet?.VerticalResolutionCalibration?.Id));
+            //context.SetupProceduresSets.Remove(setupProceduresSet);
+
+            context.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+            context.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
         }
 
         public RepeatedTestProcedure IncreasePerformedCycles(RepeatedTestProcedure procedure)
@@ -241,18 +223,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Update(SetupProceduresSet setupProceduresSet)
+        public void Update(SetupProceduresSet setupProceduresSet, DataLayerContext dataContext)
         {
-            if (setupProceduresSet is null)
-            {
-                throw new ArgumentNullException(nameof(setupProceduresSet));
-            }
+            _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            lock (this.dataContext)
-            {
-                this.dataContext.SetupProceduresSets.Update(setupProceduresSet);
-                this.dataContext.SaveChanges();
-            }
+            dataContext = dataContext ?? this.dataContext;
+
+            dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.BeltBurnishingTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.CellPanelsCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.CellsHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.DepositAndPickUpTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.LoadFirstDrawerTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.ShutterHeightCheck, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.ShutterTest, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.VerticalOffsetCalibration, (e) => e.Id);
+            dataContext.AddOrUpdate(setupProceduresSet?.VerticalResolutionCalibration, (e) => e.Id);
+
+            dataContext.SaveChanges();
         }
 
         #endregion

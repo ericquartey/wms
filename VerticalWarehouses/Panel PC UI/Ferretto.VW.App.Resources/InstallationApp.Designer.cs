@@ -529,6 +529,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cell {0}.
+        /// </summary>
+        public static string CellWithNumber {
+            get {
+                return ResourceManager.GetString("CellWithNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Chain calibration.
         /// </summary>
         public static string ChainCalibration {
@@ -957,6 +966,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ElevatorIsInInitialPosition {
             get {
                 return ResourceManager.GetString("ElevatorIsInInitialPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Position.
+        /// </summary>
+        public static string ElevatorLogicalPosition {
+            get {
+                return ResourceManager.GetString("ElevatorLogicalPosition", resourceCulture);
             }
         }
         
@@ -1429,6 +1447,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to in Bay.
+        /// </summary>
+        public static string InBay {
+            get {
+                return ResourceManager.GetString("InBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to in Bay {0}.
+        /// </summary>
+        public static string InBayWithNumber {
+            get {
+                return ResourceManager.GetString("InBayWithNumber", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Information was updated..
         /// </summary>
         public static string InformationSuccessfullyUpdated {
@@ -1677,6 +1713,24 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadFirstDrawerTotCellsToCheck {
             get {
                 return ResourceManager.GetString("LoadFirstDrawerTotCellsToCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string LoadFromBay {
+            get {
+                return ResourceManager.GetString("LoadFromBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load.
+        /// </summary>
+        public static string LoadFromCell {
+            get {
+                return ResourceManager.GetString("LoadFromCell", resourceCulture);
             }
         }
         
@@ -3009,6 +3063,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unload.
+        /// </summary>
+        public static string UnloadToBay {
+            get {
+                return ResourceManager.GetString("UnloadToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unload.
+        /// </summary>
+        public static string UnloadToCell {
+            get {
+                return ResourceManager.GetString("UnloadToCell", resourceCulture);
             }
         }
         

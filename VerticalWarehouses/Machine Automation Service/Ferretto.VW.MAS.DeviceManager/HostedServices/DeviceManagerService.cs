@@ -8,6 +8,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.InverterPowerEnable;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable;
@@ -155,7 +156,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.ProcessShutterPositioningMessage(command, serviceProvider);
                     break;
 
-                case MessageType.Positioning:
+                case MessageType.Positioning when command.Data is IPositioningMessageData:
                     this.ProcessPositioningMessage(command, serviceProvider);
                     break;
 
@@ -386,19 +387,35 @@ namespace Ferretto.VW.MAS.DeviceManager
                 throw new ArgumentNullException(nameof(serviceProvider));
             }
 
-            var baysProvider = serviceProvider.GetRequiredService<IBaysProvider>();
-
-            var messageBayBayIndex = BayNumber.None;
-
-            if (receivedMessage.Source is FieldMessageActor.IoDriver)
+            if (receivedMessage.Status == MessageStatus.OperationUpdateData)
             {
-                var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
-                messageBayBayIndex = baysProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                string s = string.Empty;
             }
-            else if (receivedMessage.Source is FieldMessageActor.InverterDriver)
+
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+
+            BayNumber bayNumber;
+            switch (receivedMessage.Source)
             {
-                var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
-                messageBayBayIndex = baysProvider.GetByInverterIndex(messageInverterIndex);
+                case FieldMessageActor.IoDriver:
+                    {
+                        var messageIoIndex = Enum.Parse<IoIndex>(receivedMessage.DeviceIndex.ToString());
+                        bayNumber = baysDataProvider.GetByIoIndex(messageIoIndex, receivedMessage.Type);
+                        break;
+                    }
+
+                case FieldMessageActor.InverterDriver:
+                    {
+                        var messageInverterIndex = Enum.Parse<InverterIndex>(receivedMessage.DeviceIndex.ToString());
+                        bayNumber = baysDataProvider.GetByInverterIndex(messageInverterIndex);
+                        break;
+                    }
+
+                default:
+                    {
+                        bayNumber = BayNumber.None;
+                        break;
+                    }
             }
 
             var machineResourcesProvider = serviceProvider.GetRequiredService<IMachineResourcesProvider>();
@@ -408,112 +425,115 @@ namespace Ferretto.VW.MAS.DeviceManager
                 case FieldMessageType.InverterPowerOff:
                     break;
 
-                case FieldMessageType.SensorsChanged:
+                case FieldMessageType.SensorsChanged when receivedMessage.Data is ISensorsChangedFieldMessageData:
 
                     this.Logger.LogTrace($"3:IOSensorsChanged received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
-                    if (receivedMessage.Data is ISensorsChangedFieldMessageData dataIOs)
+                    var dataIOs = receivedMessage.Data as ISensorsChangedFieldMessageData;
+
+                    var ioIndex = receivedMessage.DeviceIndex;
+                    if (machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
                     {
-                        var ioIndex = receivedMessage.DeviceIndex;
-                        if (machineResourcesProvider.UpdateInputs(ioIndex, dataIOs.SensorsStates, receivedMessage.Source) || this.forceRemoteIoStatusPublish[ioIndex])
+                        var msgData = new SensorsChangedMessageData
                         {
-                            var msgData = new SensorsChangedMessageData
-                            {
-                                SensorsStates = machineResourcesProvider.DisplayedInputs
-                            };
+                            SensorsStates = machineResourcesProvider.DisplayedInputs
+                        };
 
-                            this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
+                        this.Logger.LogTrace($"FSM: IoIndex {ioIndex}, data {dataIOs.ToString()}");
 
-                            this.EventAggregator
-                                .GetEvent<NotificationEvent>()
-                                .Publish(
-                                    new NotificationMessage(
-                                        msgData,
-                                        "IO sensors status",
-                                        MessageActor.Any,
-                                        MessageActor.DeviceManager,
-                                        MessageType.SensorsChanged,
-                                        messageBayBayIndex,
-                                        messageBayBayIndex,
-                                        MessageStatus.OperationExecuting));
+                        this.EventAggregator
+                            .GetEvent<NotificationEvent>()
+                            .Publish(
+                                new NotificationMessage(
+                                    msgData,
+                                    "IO sensors status",
+                                    MessageActor.Any,
+                                    MessageActor.DeviceManager,
+                                    MessageType.SensorsChanged,
+                                    bayNumber,
+                                    bayNumber,
+                                    MessageStatus.OperationExecuting));
 
-                            this.forceRemoteIoStatusPublish[ioIndex] = false;
-                        }
+                        this.forceRemoteIoStatusPublish[ioIndex] = false;
                     }
+
                     break;
 
-                case FieldMessageType.InverterStatusUpdate:
+                case FieldMessageType.InverterStatusUpdate when receivedMessage.Data is IInverterStatusUpdateFieldMessageData:
 
                     this.Logger.LogTrace($"4:InverterStatusUpdate received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}");
-                    if (receivedMessage.Data is IInverterStatusUpdateFieldMessageData dataInverters)
+
+                    var inverterData = receivedMessage.Data as IInverterStatusUpdateFieldMessageData;
+
+                    if (inverterData.CurrentPosition != null)
                     {
-                        var inverterIndex = receivedMessage.DeviceIndex;
+                        var notificationData = new PositioningMessageData();
+                        var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
 
-                        if (dataInverters.CurrentPosition != null)
+                        // TEMP Update X, Y axis positions
+                        if (inverterData.CurrentAxis is Axis.Vertical)
                         {
-                            var notificationData = new PositioningMessageData();
-                            var elevatorProvider = serviceProvider.GetRequiredService<IElevatorProvider>();
-                            //TEMP Update X, Y axis positions
-                            if (dataInverters.CurrentAxis is Axis.Vertical)
-                            {
-                                elevatorProvider.VerticalPosition = dataInverters.CurrentPosition.Value;
-                                notificationData.AxisMovement = dataInverters.CurrentAxis;
-                            }
-                            else if (dataInverters.CurrentAxis is Axis.Horizontal)
-                            {
-                                elevatorProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
-                                notificationData.AxisMovement = dataInverters.CurrentAxis;
-                            }
-                            else
-                            {
-                                var carouselProvider = serviceProvider.GetRequiredService<ICarouselProvider>();
-                                carouselProvider.HorizontalPosition = dataInverters.CurrentPosition.Value;
-                                notificationData.AxisMovement = Axis.BayChain;
-                                notificationData.MovementMode = MovementMode.BayChain;
-                            }
-                            this.Logger.LogDebug($"InverterStatusUpdate inverter={inverterIndex}; Movement={notificationData.AxisMovement}; value={dataInverters.CurrentPosition.Value:0.0000}");
+                            elevatorProvider.VerticalPosition = inverterData.CurrentPosition.Value;
 
-                            this.currentStateMachines.TryGetValue(messageBayBayIndex, out var tempStateMachine);
-                            if (tempStateMachine == null ||
-                                tempStateMachine is InverterPowerEnableStateMachine ||
-                                tempStateMachine is ResetFaultStateMachine ||
-                                tempStateMachine is PowerEnableStateMachine)
-                            {
-                                notificationData.CurrentPosition = dataInverters.CurrentPosition.Value;
-                                var notificationMessage = new NotificationMessage(
-                                    notificationData,
-                                    $"Current Encoder position: {notificationData.CurrentPosition}",
-                                    MessageActor.AutomationService,
-                                    MessageActor.DeviceManager,
-                                    MessageType.Positioning,
-                                    messageBayBayIndex,
-                                    messageBayBayIndex,
-                                    MessageStatus.OperationExecuting);
+                            notificationData.AxisMovement = inverterData.CurrentAxis;
+                        }
+                        else if (inverterData.CurrentAxis is Axis.Horizontal)
+                        {
+                            elevatorProvider.HorizontalPosition = inverterData.CurrentPosition.Value;
+                            notificationData.AxisMovement = inverterData.CurrentAxis;
+                        }
+                        else
+                        {
+                            baysDataProvider.SetChainPosition(bayNumber, inverterData.CurrentPosition.Value);
 
-                                this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                            }
+                            notificationData.AxisMovement = Axis.BayChain;
+                            notificationData.MovementMode = MovementMode.BayChain;
                         }
 
-                        if (machineResourcesProvider.UpdateInputs(inverterIndex, dataInverters.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                        this.Logger.LogDebug($"InverterStatusUpdate inverter={receivedMessage.DeviceIndex}; Movement={notificationData.AxisMovement}; value={inverterData.CurrentPosition.Value:0.0000}");
+
+                        this.currentStateMachines.TryGetValue(bayNumber, out var tempStateMachine);
+                        if (tempStateMachine is null ||
+                            tempStateMachine is InverterPowerEnableStateMachine ||
+                            tempStateMachine is ResetFaultStateMachine ||
+                            tempStateMachine is PowerEnableStateMachine)
                         {
-                            var msgData = new SensorsChangedMessageData
-                            {
-                                SensorsStates = machineResourcesProvider.DisplayedInputs
-                            };
-
-                            var msg1 = new NotificationMessage(
-                                msgData,
-                                "IO sensors status",
-                                MessageActor.Any,
+                            var notificationMessage = new NotificationMessage(
+                                notificationData,
+                                $"Current Encoder position updated",
+                                MessageActor.AutomationService,
                                 MessageActor.DeviceManager,
-                                MessageType.SensorsChanged,
-                                messageBayBayIndex,
-                                messageBayBayIndex,
+                                MessageType.Positioning,
+                                bayNumber,
+                                bayNumber,
                                 MessageStatus.OperationExecuting);
-                            this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg1);
 
-                            this.forceInverterIoStatusPublish = false;
+                            this.EventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
                         }
                     }
+
+                    var inverterIndex = receivedMessage.DeviceIndex;
+
+                    if (machineResourcesProvider.UpdateInputs(inverterIndex, inverterData.CurrentSensorStatus, receivedMessage.Source) || this.forceInverterIoStatusPublish)
+                    {
+                        var msgData = new SensorsChangedMessageData
+                        {
+                            SensorsStates = machineResourcesProvider.DisplayedInputs
+                        };
+
+                        var msg1 = new NotificationMessage(
+                            msgData,
+                            "IO sensors status",
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            MessageType.SensorsChanged,
+                            bayNumber,
+                            bayNumber,
+                            MessageStatus.OperationExecuting);
+                        this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg1);
+
+                        this.forceInverterIoStatusPublish = false;
+                    }
+
                     break;
 
                 case FieldMessageType.InverterStatusWord:
@@ -527,8 +547,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                         MessageActor.Any,
                         MessageActor.DeviceManager,
                         MessageType.InverterStatusWord,
-                        messageBayBayIndex,
-                        messageBayBayIndex,
+                        bayNumber,
+                        bayNumber,
                         MessageStatus.OperationExecuting);
                         this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg2);
                     }
@@ -548,8 +568,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 MessageActor.Any,
                                 MessageActor.DeviceManager,
                                 MessageType.InverterException,
-                                messageBayBayIndex,
-                                messageBayBayIndex,
+                                bayNumber,
+                                bayNumber,
                                 MessageStatus.OperationError,
                                 receivedMessage.ErrorLevel));
 
@@ -568,19 +588,38 @@ namespace Ferretto.VW.MAS.DeviceManager
                                 MessageActor.Any,
                                 MessageActor.DeviceManager,
                                 MessageType.IoDriverException,
-                                messageBayBayIndex,
-                                messageBayBayIndex,
+                                bayNumber,
+                                bayNumber,
                                 MessageStatus.OperationError,
                                 receivedMessage.ErrorLevel));
 
                     break;
 
                 case FieldMessageType.MeasureProfile:
-                    messageBayBayIndex = BayNumber.ElevatorBay;
+                    bayNumber = BayNumber.ElevatorBay;
+                    break;
+
+                case FieldMessageType.Positioning when receivedMessage.Status is MessageStatus.OperationUpdateData &&
+                                                       receivedMessage.Source is FieldMessageActor.InverterDriver &&
+                                                       receivedMessage.Data is IInverterPositioningFieldMessageData:
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage(
+                                null,
+                                receivedMessage.Description,
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.Positioning,
+                                bayNumber,
+                                bayNumber,
+                                receivedMessage.Status));
+
                     break;
             }
 
-            this.currentStateMachines.TryGetValue(messageBayBayIndex, out var messageCurrentStateMachine);
+            this.currentStateMachines.TryGetValue(bayNumber, out var messageCurrentStateMachine);
             messageCurrentStateMachine?.ProcessFieldNotificationMessage(receivedMessage);
         }
 
@@ -651,6 +690,11 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (data.InnerException != null)
             {
                 this.Logger.LogError(data.InnerException, data.InnerException.Message);
+            }
+
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                System.Diagnostics.Debug.Fail("Exception detected");
             }
 
             this.EventAggregator

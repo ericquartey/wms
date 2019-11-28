@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -18,18 +19,37 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly ILogger<LoadingUnitsProvider> logger;
+
         #endregion
 
         #region Constructors
 
-        public LoadingUnitsProvider(DataLayerContext dataContext)
+        public LoadingUnitsProvider(
+            DataLayerContext dataContext,
+            ILogger<LoadingUnitsProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
 
         #region Methods
+
+        public void Add(IEnumerable<LoadingUnit> loadingUnits)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.AddRange(loadingUnits);
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void ClearAll()
+        {
+        }
 
         public IEnumerable<LoadingUnit> GetAll()
         {
@@ -94,6 +114,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
+        {
+            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
+
+            context.Delete(loadingUnits, (e) => e.Id);
+            loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
+        }
+
         public void Insert(int loadingUnitsId)
         {
             lock (this.dataContext)
@@ -132,36 +160,39 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(e => e.StructuralProperties)
                     .Single();
 
-                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevator.StructuralProperties.ElevatorWeight)
+                var elevatorWeight = elevator.StructuralProperties.ElevatorWeight;
+
+                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
-                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard}kg).");
+                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard + elevatorWeight}kg).");
                 }
 
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == loadingUnitId);
 
-                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevator.StructuralProperties.ElevatorWeight)
+                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight)
                 {
                     throw new ArgumentOutOfRangeException(
                         $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
                 }
 
-                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevator.StructuralProperties.ElevatorWeight;
+                loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 
                 this.dataContext.SaveChanges();
             }
         }
 
-        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits)
+        public void UpdateRange(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext dataContext)
         {
-            lock (this.dataContext)
-            {
-                this.dataContext.LoadingUnits.UpdateRange(loadingUnits);
+            _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
 
-                this.dataContext.SaveChanges();
-            }
+            dataContext = dataContext ?? this.dataContext;
+
+            loadingUnits.ForEach((l) => dataContext.AddOrUpdate(l, (e) => e.Id));
+
+            dataContext.SaveChanges();
         }
 
         #endregion

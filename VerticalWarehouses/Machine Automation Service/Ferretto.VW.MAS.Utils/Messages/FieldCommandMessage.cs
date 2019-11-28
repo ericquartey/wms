@@ -1,16 +1,16 @@
 ﻿using System.Diagnostics;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
-using NLog;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
-    public class FieldCommandMessage
+    public class FieldCommandMessage : Message
     {
         #region Fields
 
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        internal static ILogger logger;
 
         #endregion
 
@@ -23,6 +23,11 @@ namespace Ferretto.VW.MAS.Utils.Messages
 
         public FieldCommandMessage(FieldCommandMessage otherMessage)
         {
+            if (otherMessage is null)
+            {
+                throw new System.ArgumentNullException(nameof(otherMessage));
+            }
+
             this.Data = otherMessage.Data;
             this.Description = otherMessage.Description;
             this.Destination = otherMessage.Destination;
@@ -46,13 +51,16 @@ namespace Ferretto.VW.MAS.Utils.Messages
             this.Type = type;
             this.DeviceIndex = deviceIndex;
 
-            if (Logger?.IsTraceEnabled ?? false)
+            if (logger != null)
             {
-                var st = new StackTrace();
-                var sf = st.GetFrame(1);
-                var trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
+                if (logger.IsEnabled(LogLevel.Trace))
+                {
+                    var st = new StackTrace();
+                    var sf = st.GetFrame(1);
+                    var trace = $"{sf.GetMethod().ReflectedType?.Name}.{sf.GetMethod().Name}()";
 
-                Logger.Trace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data}][{trace}]");
+                    logger.LogTrace($"{source} -> {destination} - type:{type} description:\"{description}\" [{data}][{trace}]");
+                }
             }
         }
 

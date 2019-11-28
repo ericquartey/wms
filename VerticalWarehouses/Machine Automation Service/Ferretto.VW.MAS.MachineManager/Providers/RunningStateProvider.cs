@@ -16,19 +16,19 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         private readonly IErrorsProvider errorsProvider;
 
-        private readonly ISensorsProvider sensorsProvider;
+        private readonly IMachineProvider machineProvider;
 
         #endregion
 
         #region Constructors
 
         public RunningStateProvider(
-            ISensorsProvider sensorsProvider,
+            IMachineProvider machineProvider,
             IEventAggregator eventAggregator,
             IErrorsProvider errorsProvider)
             : base(eventAggregator)
         {
-            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Properties
 
-        public bool IsRunning => this.sensorsProvider.IsMachineRunning;
+        public bool IsRunning => this.machineProvider.IsMachineRunning;
 
         #endregion
 

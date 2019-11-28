@@ -1,0 +1,129 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.ItemPickDetailsView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DesignHeight="450"
+            d:DesignWidth="800"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+    <Grid Margin="100,30,100,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static resources:OperatorApp.DrawerActivityPickingDetailHeader}" />
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <controls:PpcLabeledText Grid.ColumnSpan="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListCode}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonListCode}" />
+
+            <controls:PpcLabeledText Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.PackingListCode}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonPackingListCode}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.ColumnSpan="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListDescription}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="1"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.PackingListDescription}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonPackingListDescription}" />
+
+            <controls:PpcLabeledText Grid.Row="2"
+                                     Grid.ColumnSpan="3"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListRowCode}"
+                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailListRow}" />
+
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemCode}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
+
+
+            <controls:PpcLabeledText Grid.Row="3"
+                                     Grid.Column="1"
+                                     Grid.ColumnSpan="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemDescription}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
+
+
+            <controls:PpcLabeledText Grid.Row="4"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding ProductionDate}"
+                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />
+
+            <controls:PpcLabeledText Grid.Row="4"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.Lot}"
+                                     LabelText="{x:Static resources:OperatorApp.Lot}" />
+
+            <controls:PpcLabeledText Grid.Row="5"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.MaterialStatusId}"
+                                     LabelText="{x:Static resources:OperatorApp.MaterialStatus}" />
+
+            <controls:PpcLabeledText Grid.Row="5"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.PackageTypeId}"
+                                     LabelText="{x:Static resources:OperatorApp.PackagingType}" />
+
+            <controls:PpcLabeledText Grid.Row="6"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.RequestedQuantity}"
+                                     LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingDetailQtyRequest}" />
+
+        </Grid>
+    </Grid>
+</ctrls:View>

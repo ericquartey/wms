@@ -51,18 +51,22 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             string userName,
             string password)
         {
+            this.logger.LogDebug($"Login requested for user '{userName}'.");
+
             if (this.configuration.IsWmsEnabled())
             {
                 try
                 {
-                    this.logger.LogInformation($"Login requested for user '{userName}'. Forwarding authentication request to WMS ...");
+                    var claims = await this.usersDataService
+                        .AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
-                    return this.Ok(await this.usersDataService
-                        .AuthenticateWithResourceOwnerPasswordAsync(userName, password));
+                    this.logger.LogInformation($"Login success for user '{userName}' through WMS.");
+
+                    return this.Ok(claims);
                 }
                 catch
                 {
-                    this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS. Will use local credentials.");
+                    this.logger.LogWarning($"Unable to authenticate user '{userName}' through WMS.");
                 }
             }
 
@@ -72,6 +76,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 this.logger.LogWarning($"Login for '{userName}' failed.");
                 return this.Unauthorized();
             }
+
+            this.logger.LogInformation($"Login success for user '{userName}' using local credentials.");
 
             return this.Ok(new UserClaims
             {

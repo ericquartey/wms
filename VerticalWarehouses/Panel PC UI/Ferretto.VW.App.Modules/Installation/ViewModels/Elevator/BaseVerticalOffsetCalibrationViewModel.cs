@@ -6,6 +6,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
@@ -16,17 +17,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private IEnumerable<Cell> cells;
 
         private double? currentPosition;
 
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private bool isWaitingForResponse;
 
-        private Cell selectedCell;
+        private SubscriptionToken positioningOperationChangedToken;
 
-        private SubscriptionToken subscriptionToken;
+        private Cell selectedCell;
 
         #endregion
 
@@ -35,12 +40,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public BaseVerticalOffsetCalibrationViewModel(
             IMachineCellsWebService machineCellsWebService,
             IMachineElevatorWebService machineElevatorWebService,
-            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService)
-            : base(Services.PresentationMode.Installer)
+            IMachineVerticalOffsetProcedureWebService verticalOffsetWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
             this.MachineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.VerticalOffsetWebService = verticalOffsetWebService ?? throw new ArgumentNullException(nameof(verticalOffsetWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
 
             this.InitializeNavigationMenu();
         }
@@ -127,26 +134,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.subscriptionToken
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.EventAggregator
                     .GetEvent<NotificationEventUI<PositioningMessageData>>()
                     .Subscribe(
-                        this.OnCurrentPositionChanged,
+                        this.OnPositioningOperationChanged,
                         ThreadOption.UIThread,
-                        false,
-                        m => m.Data?.CurrentPosition != null);
+                        false);
 
-            await this.RetrieveCurrentPositionAsync();
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
+            this.CurrentPosition = this.machineElevatorService.Position.Vertical;
 
             await this.RetrieveCellsAsync();
 
             await this.RetrieveProcedureParametersAsync();
         }
 
-        protected virtual void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected virtual void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentPosition = message.Data.CurrentPosition;
+            // do nothing
         }
 
         protected abstract void RaiseCanExecuteChanged();
@@ -168,23 +183,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     trackCurrentView: false));
         }
 
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentPosition = e.VerticalPosition;
+        }
+
         private async Task RetrieveCellsAsync()
         {
             try
             {
                 this.Cells = await this.MachineCellsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task RetrieveCurrentPositionAsync()
-        {
-            try
-            {
-                this.CurrentPosition = await this.MachineElevatorWebService.GetVerticalPositionAsync();
             }
             catch (Exception ex)
             {

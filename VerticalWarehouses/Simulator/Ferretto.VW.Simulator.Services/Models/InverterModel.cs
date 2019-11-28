@@ -1202,7 +1202,7 @@ namespace Ferretto.VW.Simulator.Services.Models
                 if (this.OperationMode == InverterOperationMode.TableTravel)
                 {
                     // simulate positioning error
-                    //this.AxisPosition += (short)(new Random().Next(-5, 5));
+                    this.AxisPosition += (short)(new Random().Next(-3, 3));
                 }
                 this.ControlWord &= 0xFFEF;     // Reset Rfg Enable Signal
                 this.StatusWord |= 0x1000;      // Set Point Ack

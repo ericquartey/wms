@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.DataModels.Enumerations;
+﻿using System.Collections.Generic;
+using Ferretto.VW.MAS.DataModels.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -28,6 +29,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public string Description { get; set; }
 
+        /// <summary>
+        /// Gets or sets the actual gross weight of the loading unit, in kilograms.
+        /// </summary>
         public double GrossWeight
         {
             get => this.grossWeight;
@@ -40,6 +44,9 @@ namespace Ferretto.VW.MAS.DataModels
             }
         }
 
+        /// <summary>
+        /// Gets or sets the height of the loading unit, in millimeters.
+        /// </summary>
         public double Height
         {
             get => this.height;
@@ -56,6 +63,9 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsIntoMachine { get; set; }
 
+        /// <summary>
+        /// Gets or sets the maximum weight,in kilograms, that the loading unit can carry.
+        /// </summary>
         public double MaxNetWeight
         {
             get => this.maxNetWeight;
@@ -83,6 +93,11 @@ namespace Ferretto.VW.MAS.DataModels
                 this.missionsCount = value;
             }
         }
+
+        /// <summary>
+        /// Gets the actual net weight of the loading unit's content.
+        /// </summary>
+        public double NetWeight => System.Math.Max(0, this.GrossWeight - this.Tare);
 
         public LoadingUnitStatus Status { get; set; }
 

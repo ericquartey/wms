@@ -50,8 +50,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
+            IMachineElevatorService machineElevatorService,
             IHealthProbeService healthProbeService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, healthProbeService)
+            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService, healthProbeService)
         {
         }
 
@@ -151,8 +152,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToInitialPositionCommand
             ??
             (this.moveToInitialPositionCommand = new DelegateCommand(
-              async () => await this.MoveToInitialPositionAsync(),
-              this.CanMoveToInitialPosition));
+                async () => await this.MoveToInitialPositionAsync(),
+                this.CanMoveToInitialPosition));
 
         public decimal? NewResolution
         {
@@ -243,7 +244,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsInFinalPosition);
         }
 
-        protected override void OnElevatorPositionChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
             if (this.IsExecutingProcedure)
             {
@@ -257,7 +258,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
 
-            base.OnElevatorPositionChanged(message);
+            base.OnPositioningOperationChanged(message);
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -323,9 +324,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
                 this.IsExecutingProcedure = true;
 
-                await this.MachineElevatorWebService.MoveToVerticalPositionAsync(
+                await this.MachineElevatorWebService.MoveManualToVerticalPositionAsync(
                     this.InitialPosition.Value,
-                    this.ProcedureParameters.FeedRate,
                     false,
                     false);
             }

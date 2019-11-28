@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Ferretto.VW.MAS.DataLayer.Configurations;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +17,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private const string DefaultApplicationSettingsFile = "appsettings.json";
 
+        private readonly IDbContextRedundancyService<DataLayerContext> dbContextRedundancy;
+
         #endregion
 
         #region Constructors
@@ -23,10 +27,11 @@ namespace Ferretto.VW.MAS.DataLayer
         {
         }
 
-        public DataLayerContext(DbContextOptions<DataLayerContext> options)
+        public DataLayerContext(DbContextOptions<DataLayerContext> options, IDbContextRedundancyService<DataLayerContext> dbContextRedundancy)
             : base(options)
         {
             this.Options = options ?? throw new ArgumentNullException(nameof(options));
+            this.dbContextRedundancy = dbContextRedundancy ?? throw new ArgumentNullException(nameof(dbContextRedundancy));
         }
 
         #endregion
@@ -37,6 +42,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<Bay> Bays { get; set; }
 
+        public DbSet<CarouselManualParameters> CarouselManualParameters { get; set; }
+
         public DbSet<Carousel> Carousels { get; set; }
 
         public DbSet<CellPanel> CellPanels { get; set; }
@@ -44,6 +51,8 @@ namespace Ferretto.VW.MAS.DataLayer
         public DbSet<Cell> Cells { get; set; }
 
         public DbSet<ElevatorAxis> ElevatorAxes { get; set; }
+
+        public DbSet<ElevatorAxisManualParameters> ElevatorAxisManualParameters { get; set; }
 
         public DbSet<Elevator> Elevators { get; set; }
 
@@ -67,6 +76,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<MachineStatistics> MachineStatistics { get; set; }
 
+        public DbSet<Mission> Missions { get; set; }
+
         public DbSet<MovementParameters> MovementParameters { get; set; }
 
         public DbSet<MovementProfile> MovementProfiles { get; set; }
@@ -79,11 +90,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<SetupStatus> SetupStatus { get; set; }
 
+        public DbSet<ShutterManualParameters> ShutterManualParameters { get; set; }
+
+        public DbSet<Shutter> Shutters { get; set; }
+
         public DbSet<TorqueCurrentMeasurementSession> TorqueCurrentMeasurementSessions { get; set; }
 
         public DbSet<TorqueCurrentSample> TorqueCurrentSamples { get; set; }
 
         public DbSet<User> Users { get; set; }
+
+        public DbSet<WeightMeasurement> WeightMeasurements { get; set; }
 
         #endregion
 
@@ -97,10 +114,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (optionsBuilder is null)
-            {
-                throw new ArgumentNullException(nameof(optionsBuilder));
-            }
+            _ = optionsBuilder ?? throw new ArgumentNullException(nameof(optionsBuilder));
 
             if (optionsBuilder.IsConfigured)
             {
@@ -108,18 +122,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
 
             var configurationBuilder = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
-                .Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile(DefaultApplicationSettingsFile, optional: false, reloadOnChange: false)
+            .Build();
 
             var connectionString = configurationBuilder.GetConnectionString(ConnectionStringName);
 
             if (string.IsNullOrWhiteSpace(connectionString))
             {
-                throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
+                connectionString = ((Microsoft.EntityFrameworkCore.Infrastructure.RelationalOptionsExtension)this.dbContextRedundancy.ActiveDbContextOptions.Extensions.First()).ConnectionString;
+                //throw new InvalidOperationException($"Unable to locate the connection string '{ConnectionStringName}'.");
             }
 
-            optionsBuilder.UseSqlite(connectionString);
+            optionsBuilder
+                .UseSqlite(connectionString)
+                .EnableSensitiveDataLogging();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -135,6 +152,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new PanelsConfiguration())
                 .ApplyConfiguration(new CellsConfiguration())
                 .ApplyConfiguration(new TorqueCurrentSampleConfiguration())
+                .ApplyConfiguration(new ElevatorAxisManualParametersConfiguration())
+                .ApplyConfiguration(new CarouselManualParametersConfiguration())
                 .ApplyConfiguration(new ErrorDefinitionConfiguration())
                 .ApplyConfiguration(new ErrorConfiguration())
                 .ApplyConfiguration(new ErrorStatisticConfiguration())
@@ -145,6 +164,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new MovementProfilesConfiguration())
                 .ApplyConfiguration(new ServicingInfoConfiguration())
                 .ApplyConfiguration(new SetupStatusConfiguration())
+                .ApplyConfiguration(new ShutterManualParametersConfiguration())
                 .ApplyConfiguration(new ShuttersConfiguration())
                 .ApplyConfiguration(new TorqueCurrentMeasurementSessionsConfiguration())
                 .ApplyConfiguration(new UsersConfiguration());

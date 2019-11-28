@@ -28,13 +28,19 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
                 .AddSingleton<IDbContextRedundancyService<DataLayerContext>, DbContextRedundancyService<DataLayerContext>>()
-                .AddScoped(p =>
-                    new DataLayerContext(
-                       isActiveChannel: true,
-                       p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()));
+
+                //.AddScoped(p =>
+                //    new DataLayerContext(
+                //       isActiveChannel: true,
+                //       p.GetRequiredService<IDbContextRedundancyService<DataLayerContext>>()))
+
+                ;
+
+            services.AddEntityFrameworkSqlite();
+            services.AddDbContext<DataLayerContext>();
 
             services
-                .AddTransient<IBaysProvider, BaysProvider>()
+                .AddTransient<IBaysDataProvider, BaysDataProvider>()
                 .AddTransient<ICellPanelsProvider, CellPanelsProvider>()
                 .AddTransient<ICellsProvider, CellsProvider>()
                 .AddTransient<IDigitalDevicesDataProvider, DigitalDevicesDataProvider>()
@@ -43,7 +49,6 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<IErrorsProvider, ErrorsProvider>()
                 .AddTransient<ILoadingUnitsProvider, LoadingUnitsProvider>()
                 .AddTransient<ILogEntriesProvider, LogEntriesProvider>()
-                .AddTransient<IMachineProvider, MachineProvider>()
                 .AddTransient<IServicingProvider, ServicingProvider>()
                 .AddTransient<ISetupStatusProvider, SetupStatusProvider>()
                 .AddTransient<ISetupProceduresDataProvider, SetupProceduresDataProvider>()
@@ -51,9 +56,11 @@ namespace Ferretto.VW.MAS.DataLayer
                 .AddTransient<IUsersProvider, UsersProvider>();
 
             services
+                .AddSingleton<IMachineProvider, MachineProvider>()
                 .AddSingleton<IVerticalOriginVolatileSetupStatusProvider, VerticalOriginVolatileSetupStatusProvider>()
-                .AddSingleton<IMachineModeDataProvider, MachineModeDataProvider>()
+                .AddSingleton<IMachineModeVolatileDataProvider, MachineModeVolatileDataProvider>()
                 .AddSingleton<IElevatorVolatileDataProvider, ElevatorVolatileDataProvider>()
+                .AddSingleton<IBayChainVolatileDataProvider, BayChainVolatileDataProvider>()
                 .AddSingleton<IMachineMissionsProvider, MachineMissionsProvider>();
 
             return services;

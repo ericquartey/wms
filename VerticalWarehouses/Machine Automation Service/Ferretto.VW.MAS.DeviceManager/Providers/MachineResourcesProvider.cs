@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private const int REMOTEIO_INPUTS = 16;
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ILogger<MachineResourcesProvider> logger;
 
@@ -40,11 +40,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MachineResourcesProvider(
             IMachineProvider machineProvider,
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ILogger<MachineResourcesProvider> logger)
         {
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.logger = logger;
         }
 
@@ -93,9 +93,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public bool IsMachineInFaultState => this.sensorStatus[(int)IOMachineSensors.InverterInFault1];
 
-        public bool IsMachineInRunningState => this.sensorStatus[(int)IOMachineSensors.RunningState];
+        public bool IsMachineInRunningState => this.machineProvider.IsMachineRunning;
 
-        public bool IsMachineRunning => this.IsMachineInRunningState;
+        public bool IsMachineSecurityRunning => this.sensorStatus[(int)IOMachineSensors.RunningState];
 
         public bool IsMicroCarterLeftSide => this.sensorStatus[(int)IOMachineSensors.MicroCarterLeftSide];
 
@@ -139,8 +139,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public ShutterPosition GetShutterPosition(BayNumber bayNumber)
         {
-            var inverterStatus = new AglInverterStatus(
-                this.baysProvider.GetByNumber(bayNumber).Shutter.Inverter.Index);
+            var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            if (bay.Shutter is null)
+            {
+                throw new ArgumentOutOfRangeException(nameof(bayNumber), "The specified bay has no shutter");
+            }
+            if (bay.Shutter.Type == ShutterType.NotSpecified)
+            {
+                return ShutterPosition.NotSpecified;
+            }
+
+            var inverterStatus = new AglInverterStatus(bay.Shutter.Inverter.Index);
 
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (byte)inverterStatus.SystemIndex * inverterStatus.Inputs.Length);
 

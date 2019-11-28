@@ -198,7 +198,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/findzero");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/find-zero");
     
             var client_ = _httpClient;
             try
@@ -509,78 +509,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction)
-        {
-            return MoveAsync(direction, System.Threading.CancellationToken.None);
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
-        {
-            if (direction == null)
-                throw new System.ArgumentNullException("direction");
-    
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/bays/move?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Length--;
-    
-            var client_ = _httpClient;
-            try
-            {
-                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
-                    request_.Method = new System.Net.Http.HttpMethod("POST");
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            return;
-                        }
-                        else
-                        if (status_ == "404") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                        else
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
-                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-            }
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height)
         {
             return UpdateHeightAsync(position, height, System.Threading.CancellationToken.None);
@@ -790,6 +718,77 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction)
+        {
+            return CanMoveAsync(direction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        {
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/can-move?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
@@ -800,7 +799,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         public async System.Threading.Tasks.Task FindZeroAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/findzero");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/find-zero");
     
             var client_ = _httpClient;
             try
@@ -977,14 +976,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, int? loadingUnitId)
+        public System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction)
         {
-            return MoveAsync(direction, loadingUnitId, System.Threading.CancellationToken.None);
+            return MoveAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveAsync(HorizontalMovementDirection direction, int? loadingUnitId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
@@ -992,7 +991,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/move?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(loadingUnitId != null ? ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -1045,14 +1043,81 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction)
+        public System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction)
+        {
+            return MoveAssistedAsync(direction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MoveAssistedAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        {
+            if (direction == null)
+                throw new System.ArgumentNullException("direction");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/move-assisted?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction)
         {
             return MoveManualAsync(direction, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveManualAsync(HorizontalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
@@ -2266,6 +2331,75 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             }
         }
     
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration)
+        {
+            return ImportAsync(vertimagConfiguration, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task ImportAsync(VertimagConfiguration vertimagConfiguration, System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/configuration/import-configuration");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    var content_ = new System.Net.Http.StringContent(Newtonsoft.Json.JsonConvert.SerializeObject(vertimagConfiguration, _settings.Value));
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "200") 
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
         protected struct ObjectResponseResult<T>
         {
             public ObjectResponseResult(T responseObject, string responseText)
@@ -2585,6 +2719,422 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId)
+        {
+            return CanLoadFromBayAsync(bayPositionId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-load-from-bay/{bayPositionId}");
+            urlBuilder_.Replace("{bayPositionId}", System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId)
+        {
+            return CanLoadFromCellAsync(cellId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-load-from-cell/{cellId}");
+            urlBuilder_.Replace("{cellId}", System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId)
+        {
+            return CanMoveToBayPositionAsync(bayPositionId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveToBayPositionAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/can-move-to-bay-position?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bayPositionId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId)
+        {
+            return CanMoveToCellAsync(cellId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/can-move-to-cell?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("cellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId)
+        {
+            return CanUnloadToBayAsync(bayPositionId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-unload-to-bay/{bayPositionId}");
+            urlBuilder_.Replace("{bayPositionId}", System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId)
+        {
+            return CanUnloadToCellAsync(cellId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-unload-to-cell/{cellId}");
+            urlBuilder_.Replace("{cellId}", System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ActionPolicy>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ActionPolicy);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task FindZeroAsync()
         {
             return FindZeroAsync(System.Threading.CancellationToken.None);
@@ -2632,6 +3182,136 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
                             throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
                         }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync()
+        {
+            return GetHorizontalAssistedMovementsParametersAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/assisted-movements-parameters");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ElevatorAxisManualParameters>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ElevatorAxisManualParameters);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync()
+        {
+            return GetHorizontalManualMovementsParametersAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetHorizontalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/manual-movements-parameters");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ElevatorAxisManualParameters>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ElevatorAxisManualParameters);
                     }
                     finally
                     {
@@ -2711,17 +3391,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<double> GetHorizontalPositionAsync()
+        public System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync()
         {
-            return GetHorizontalPositionAsync(System.Threading.CancellationToken.None);
+            return GetPositionAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<double> GetHorizontalPositionAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ElevatorPosition> GetPositionAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/position");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/position");
     
             var client_ = _httpClient;
             try
@@ -2751,7 +3431,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<double>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ElevatorPosition>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -2761,7 +3441,72 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(double);
+                        return default(ElevatorPosition);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync()
+        {
+            return GetVerticalAssistedMovementsParametersAsync(System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalAssistedMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/assisted-movements-parameters");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ElevatorAxisManualParameters>(response_, headers_).ConfigureAwait(false);
+                            return objectResponse_.Object;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(ElevatorAxisManualParameters);
                     }
                     finally
                     {
@@ -2841,14 +3586,14 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<VerticalManualMovementsProcedure> GetVerticalManualMovementsParametersAsync()
+        public System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync()
         {
             return GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<VerticalManualMovementsProcedure> GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ElevatorAxisManualParameters> GetVerticalManualMovementsParametersAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/manual-movements-parameters");
@@ -2881,7 +3626,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                         var status_ = ((int)response_.StatusCode).ToString();
                         if (status_ == "200") 
                         {
-                            var objectResponse_ = await ReadObjectResponseAsync<VerticalManualMovementsProcedure>(response_, headers_).ConfigureAwait(false);
+                            var objectResponse_ = await ReadObjectResponseAsync<ElevatorAxisManualParameters>(response_, headers_).ConfigureAwait(false);
                             return objectResponse_.Object;
                         }
                         else
@@ -2891,7 +3636,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
                             throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
                         }
             
-                        return default(VerticalManualMovementsProcedure);
+                        return default(ElevatorAxisManualParameters);
                     }
                     finally
                     {
@@ -2917,71 +3662,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/offset");
-    
-            var client_ = _httpClient;
-            try
-            {
-                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-    
-                    PrepareRequest(client_, request_, urlBuilder_);
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-                    PrepareRequest(client_, request_, url_);
-    
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-    
-                        ProcessResponse(client_, response_);
-    
-                        var status_ = ((int)response_.StatusCode).ToString();
-                        if (status_ == "200") 
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<double>(response_, headers_).ConfigureAwait(false);
-                            return objectResponse_.Object;
-                        }
-                        else
-                        if (status_ != "200" && status_ != "204")
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
-                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
-                        }
-            
-                        return default(double);
-                    }
-                    finally
-                    {
-                        if (response_ != null)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-            }
-        }
-    
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<double> GetVerticalPositionAsync()
-        {
-            return GetVerticalPositionAsync(System.Threading.CancellationToken.None);
-        }
-    
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<double> GetVerticalPositionAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/position");
     
             var client_ = _httpClient;
             try
@@ -3174,27 +3854,87 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight)
+        public System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId)
         {
-            return MoveHorizontalAutoAsync(direction, isStartedOnBoard, loadingUnitId, loadingUnitGrossWeight, System.Threading.CancellationToken.None);
+            return LoadFromBayAsync(bayPositionId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveHorizontalAutoAsync(HorizontalMovementDirection direction, bool isStartedOnBoard, int? loadingUnitId, double? loadingUnitGrossWeight, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task LoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
         {
-            if (direction == null)
-                throw new System.ArgumentNullException("direction");
-    
-            if (isStartedOnBoard == null)
-                throw new System.ArgumentNullException("isStartedOnBoard");
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/move-auto?");
-            urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("isStartedOnBoard") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isStartedOnBoard, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(loadingUnitId != null ? ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitGrossWeight") + "=").Append(System.Uri.EscapeDataString(loadingUnitGrossWeight != null ? ConvertToString(loadingUnitGrossWeight, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/load-from-bay?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bayPositionId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task LoadFromCellAsync(int cellId)
+        {
+            return LoadFromCellAsync(cellId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task LoadFromCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/load-from-cell?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("cellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -3312,32 +4052,28 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, bool computeElongation)
+        public System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation)
         {
-            return MoveToVerticalPositionAsync(targetPosition, feedRate, measure, computeElongation, System.Threading.CancellationToken.None);
+            return MoveManualToVerticalPositionAsync(targetPosition, performWeighting, computeElongation, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, double feedRate, bool measure, bool computeElongation, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveManualToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken)
         {
             if (targetPosition == null)
                 throw new System.ArgumentNullException("targetPosition");
     
-            if (feedRate == null)
-                throw new System.ArgumentNullException("feedRate");
-    
-            if (measure == null)
-                throw new System.ArgumentNullException("measure");
+            if (performWeighting == null)
+                throw new System.ArgumentNullException("performWeighting");
     
             if (computeElongation == null)
                 throw new System.ArgumentNullException("computeElongation");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move-to?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/manual-move-to?");
             urlBuilder_.Append(System.Uri.EscapeDataString("targetPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(targetPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("feedRate") + "=").Append(System.Uri.EscapeDataString(ConvertToString(feedRate, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("measure") + "=").Append(System.Uri.EscapeDataString(ConvertToString(measure, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("performWeighting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(performWeighting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("computeElongation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(computeElongation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -3402,20 +4138,278 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction)
+        public System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting)
         {
-            return MoveVerticalAsync(direction, System.Threading.CancellationToken.None);
+            return MoveToBayPositionAsync(bayPositionId, computeElongation, performWeighting, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task MoveVerticalAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task MoveToBayPositionAsync(int bayPositionId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
+    
+            if (computeElongation == null)
+                throw new System.ArgumentNullException("computeElongation");
+    
+            if (performWeighting == null)
+                throw new System.ArgumentNullException("performWeighting");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move-to-bay-position?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bayPositionId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("computeElongation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(computeElongation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("performWeighting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(performWeighting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting)
+        {
+            return MoveToCellAsync(cellId, computeElongation, performWeighting, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MoveToCellAsync(int cellId, bool computeElongation, bool performWeighting, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            if (computeElongation == null)
+                throw new System.ArgumentNullException("computeElongation");
+    
+            if (performWeighting == null)
+                throw new System.ArgumentNullException("performWeighting");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move-to-cell?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("cellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("computeElongation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(computeElongation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("performWeighting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(performWeighting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation)
+        {
+            return MoveToVerticalPositionAsync(targetPosition, performWeighting, computeElongation, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MoveToVerticalPositionAsync(double targetPosition, bool performWeighting, bool computeElongation, System.Threading.CancellationToken cancellationToken)
+        {
+            if (targetPosition == null)
+                throw new System.ArgumentNullException("targetPosition");
+    
+            if (performWeighting == null)
+                throw new System.ArgumentNullException("performWeighting");
+    
+            if (computeElongation == null)
+                throw new System.ArgumentNullException("computeElongation");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move-to?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("targetPosition") + "=").Append(System.Uri.EscapeDataString(ConvertToString(targetPosition, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("performWeighting") + "=").Append(System.Uri.EscapeDataString(ConvertToString(performWeighting, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("computeElongation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(computeElongation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        if (status_ == "400") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        if (status_ == "422") 
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction)
+        {
+            return MoveVerticalManualAsync(direction, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task MoveVerticalManualAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/move?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/vertical/manual-move?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
@@ -3667,6 +4661,138 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/weight-check-stop");
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId)
+        {
+            return UnloadToBayAsync(bayPositionId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task UnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (bayPositionId == null)
+                throw new System.ArgumentNullException("bayPositionId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/unload-to-bay?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("bayPositionId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "202") 
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_).ConfigureAwait(false);
+                            throw new SwaggerException<ProblemDetails>("A server side error occurred.", (int)response_.StatusCode, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task UnloadToCellAsync(int cellId)
+        {
+            return UnloadToCellAsync(cellId, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task UnloadToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (cellId == null)
+                throw new System.ArgumentNullException("cellId");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/unload-to-cell?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("cellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(cellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -7341,17 +8467,22 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync()
+        public System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation)
         {
-            return GetParametersAsync(System.Threading.CancellationToken.None);
+            return GetParametersAsync(orientation, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<SetupProcedure> GetParametersAsync(Orientation orientation, System.Threading.CancellationToken cancellationToken)
         {
+            if (orientation == null)
+                throw new System.ArgumentNullException("orientation");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/setup/weight-analysis-procedure/parameters");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/setup/weight-analysis-procedure/parameters?");
+            urlBuilder_.Append(System.Uri.EscapeDataString("orientation") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orientation, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -7667,6 +8798,78 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, string url);
         partial void PrepareRequest(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public System.Threading.Tasks.Task<FileResponse> AbortAsync(int id)
+        {
+            return AbortAsync(id, System.Threading.CancellationToken.None);
+        }
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        public async System.Threading.Tasks.Task<FileResponse> AbortAsync(int id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+    
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/mission-operations/{id}/abort");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+    
+            var client_ = _httpClient;
+            try
+            {
+                using (var request_ = await CreateHttpRequestMessageAsync(cancellationToken).ConfigureAwait(false))
+                {
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
+                    request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
+    
+                    PrepareRequest(client_, request_, urlBuilder_);
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+                    PrepareRequest(client_, request_, url_);
+    
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+    
+                        ProcessResponse(client_, response_);
+    
+                        var status_ = ((int)response_.StatusCode).ToString();
+                        if (status_ == "200" || status_ == "206") 
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse((int)response_.StatusCode, headers_, responseStream_, null, response_); 
+                            client_ = null; response_ = null; // response and client are disposed by FileResponse
+                            return fileResponse_;
+                        }
+                        else
+                        if (status_ != "200" && status_ != "204")
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false); 
+                            throw new SwaggerException("The HTTP status code of the response was not expected (" + (int)response_.StatusCode + ").", (int)response_.StatusCode, responseData_, headers_, null);
+                        }
+            
+                        return default(FileResponse);
+                    }
+                    finally
+                    {
+                        if (response_ != null)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+            }
+        }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         public System.Threading.Tasks.Task<FileResponse> CompleteAsync(int id, double quantity)

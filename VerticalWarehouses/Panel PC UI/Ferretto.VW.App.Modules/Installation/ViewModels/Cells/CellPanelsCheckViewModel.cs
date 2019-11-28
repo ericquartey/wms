@@ -8,6 +8,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Commands;
 using Prism.Events;
@@ -20,6 +21,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineCellPanelsWebService machineCellPanelsWebService;
 
+        private readonly IMachineElevatorService machineElevatorService;
+
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private DelegateCommand applyCorrectionCommand;
@@ -31,6 +34,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private CellPanel currentPanel;
 
         private int currentPanelNumber;
+
+        private SubscriptionToken elevatorPositionChangedToken;
 
         private DelegateCommand goToCellHeightCommand;
 
@@ -72,11 +77,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CellPanelsCheckViewModel(
             IMachineCellPanelsWebService machineCellPanelsWebService,
-            IMachineElevatorWebService machineElevatorWebService)
-            : base(Services.PresentationMode.Installer)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineElevatorService machineElevatorService)
+            : base(PresentationMode.Installer)
         {
             this.machineCellPanelsWebService = machineCellPanelsWebService ?? throw new ArgumentNullException(nameof(machineCellPanelsWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
         }
 
         #endregion
@@ -144,7 +151,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand GoToCellHeightCommand =>
            this.goToCellHeightCommand
            ??
-           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeight(), this.CanGoToCellHeight));
+           (this.goToCellHeightCommand = new DelegateCommand(async () => await this.GoToCellHeightAsync(), this.CanGoToCellHeight));
 
         public ICommand GoToNextPanelCommand =>
            this.goToNextPanelCommand
@@ -241,7 +248,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand StopCommand =>
             this.stopCommand
             ??
-            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStoped));
+            (this.stopCommand = new DelegateCommand(async () => await this.Stop(), this.CanStop));
 
         private bool IsElevatorMoving
         {
@@ -275,6 +282,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+              ??
+              this.EventAggregator
+                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                  .Subscribe(
+                      this.OnElevatorPositionChanged,
+                      ThreadOption.UIThread,
+                      false);
+
             this.subscriptionToken = this.subscriptionToken
                 ??
                 this.EventAggregator
@@ -290,7 +306,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Panels = await this.machineCellPanelsWebService.GetAllAsync();
 
-                this.CurrentHeight = await this.machineElevatorWebService.GetVerticalPositionAsync();
+                this.CurrentHeight = this.machineElevatorService.Position.Vertical;
 
                 this.procedureParameters = await this.machineCellPanelsWebService.GetProcedureParametersAsync();
 
@@ -402,14 +418,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsElevatorMoving;
         }
 
-        private bool CanStoped()
+        private bool CanStop()
         {
             return this.IsElevatorMoving
                 &&
                 !this.IsWaitingForResponse;
         }
 
-        private async Task GoToCellHeight()
+        private async Task GoToCellHeightAsync()
         {
             try
             {
@@ -417,11 +433,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToCell = true;
                 this.HasReachedCellPosition = false;
 
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.CurrentCell.Position,
-                    this.procedureParameters.FeedRate,
-                    false,
-                    true);
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.CurrentCell.Id,
+                    computeElongation: true,
+                    performWeighting: false);
 
                 this.HasReachedCellPosition = true;
                 this.InitialPosition = this.CurrentHeight;
@@ -510,20 +525,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnCurrentPositionChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            this.CurrentHeight = message.Data?.CurrentPosition ?? this.CurrentHeight;
-
-            if (this.isElevatorMovingToCell)
-            {
-                this.InitialPosition = this.CurrentHeight;
-            }
-
-            if (this.isElevatorMovingUp
-                ||
-                this.isElevatorMovingDown)
-            {
-                this.Displacement = this.currentHeight - this.initialPosition;
-            }
-
             if (message.IsErrored())
             {
                 this.IsElevatorMoving = false;
@@ -546,6 +547,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     this.ShowNotification(VW.App.Resources.InstallationApp.ElevatorIsCellPosition);
                 }
+            }
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.CurrentHeight = e.VerticalPosition;
+
+            if (this.isElevatorMovingToCell)
+            {
+                this.InitialPosition = this.CurrentHeight;
+            }
+
+            if (this.isElevatorMovingUp
+                ||
+                this.isElevatorMovingDown)
+            {
+                this.Displacement = this.currentHeight - this.initialPosition;
             }
         }
 

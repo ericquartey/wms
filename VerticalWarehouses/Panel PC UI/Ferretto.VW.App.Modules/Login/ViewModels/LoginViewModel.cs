@@ -16,23 +16,25 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private readonly IAuthenticationService authenticationService;
 
-        private readonly IMachineErrorsService machineErrorsService;
+        private readonly IBayManager bayManager;
 
         private readonly IHealthProbeService healthProbeService;
 
-        private readonly IBayManager bayManager;
+        private readonly IMachineBaysWebService machineBaysWebService;
 
-        private SubscriptionToken subscriptionToken;
+        private readonly IMachineErrorsService machineErrorsService;
 
-        private MachineIdentity machineIdentity;
-
-        private DelegateCommand loginCommand;
-
-        private HealthStatus serviceHealthStatus;
+        private int bayNumber;
 
         private bool isWaitingForResponse;
 
-        private int bayNumber;
+        private DelegateCommand loginCommand;
+
+        private MachineIdentity machineIdentity;
+
+        private HealthStatus serviceHealthStatus;
+
+        private SubscriptionToken subscriptionToken;
 
         #endregion
 
@@ -42,7 +44,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             IAuthenticationService authenticationService,
             IMachineErrorsService machineErrorsService,
             IHealthProbeService healthProbeService,
-            IBayManager bayManager)
+            IBayManager bayManager,
+            IMachineBaysWebService machineBaysWebService)
             : base(PresentationMode.Login)
         {
             if (bayManager is null)
@@ -55,41 +58,45 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.ServiceHealthStatus = this.healthProbeService.HealthStatus;
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
 
-#if DEBUG
             this.UserLogin = new UserLogin
             {
                 UserName = "installer",
                 Password = "password",
             };
-#else
-            this.UserLogin = new UserLogin();
-#endif
         }
 
         #endregion
 
         #region Properties
 
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            set => this.SetProperty(ref this.bayNumber, value);
+        }
+
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public ICommand LoginCommand =>
-            this.loginCommand
+                    this.loginCommand
             ??
             (this.loginCommand = new DelegateCommand(
                 async () => await this.LoginAsync(),
                 this.CanExecuteLogin));
-
-        public UserLogin UserLogin { get; }
-
-        public int BayNumber
-        {
-            get => this.bayNumber;
-            set
-            {
-                this.SetProperty(ref this.bayNumber, value);
-            }
-        }
 
         public MachineIdentity MachineIdentity
         {
@@ -115,19 +122,11 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
+        public UserLogin UserLogin { get; }
 
         #endregion
+
+        #region Methods
 
         public override void Disappear()
         {
@@ -141,23 +140,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
 
                 this.subscriptionToken = null;
-            }
-        }
-
-        public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
-        {
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            this.ServiceHealthStatus = e.HealthStatus;
-
-            if (this.ServiceHealthStatus == HealthStatus.Degraded
-                ||
-                this.ServiceHealthStatus == HealthStatus.Healthy)
-            {
-                this.ClearNotifications();
             }
         }
 
@@ -178,6 +160,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 if (!(bay is null))
                 {
                     this.BayNumber = (int)bay.Number;
+                    await this.machineBaysWebService.DeactivateAsync();
                 }
             }
             catch (Exception ex)
@@ -197,6 +180,23 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
+        public void OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            this.ServiceHealthStatus = e.HealthStatus;
+
+            if (this.ServiceHealthStatus == HealthStatus.Degraded
+                ||
+                this.ServiceHealthStatus == HealthStatus.Healthy)
+            {
+                this.ClearNotifications();
+            }
+        }
+
         private bool CanExecuteLogin()
         {
             return
@@ -208,11 +208,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 (this.ServiceHealthStatus == HealthStatus.Healthy || this.ServiceHealthStatus == HealthStatus.Degraded);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.loginCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task LoginAsync()
@@ -275,9 +270,16 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.OPERATORMENU,
+                Utils.Modules.Operator.OPERATOR_MENU,
                 data: null,
                 trackCurrentView: true);
         }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.loginCommand?.RaiseCanExecuteChanged();
+        }
+
+        #endregion
     }
 }

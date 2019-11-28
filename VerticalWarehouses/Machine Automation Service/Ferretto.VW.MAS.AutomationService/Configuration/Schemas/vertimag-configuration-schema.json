@@ -18,8 +18,8 @@
         "title": "The Items Schema",
         "required": [
           "Tare",
-          "Id",
-          "MaxNetWeight"
+          "MaxNetWeight",
+          "Id"
         ],
         "properties": {
           "Tare": {
@@ -164,9 +164,9 @@
                 "$id": "#/properties/Machine/properties/Bays/items/properties/ChainOffset",
                 "type": "number",
                 "title": "The ChainOffset Schema",
-                "minimum": -10000,
-                "maximum": 10000,
-                "default": -500
+                "minimum": -10,
+                "maximum": 10,
+                "default": -5
               },
               "Number": {
                 "$id": "#/properties/Machine/properties/Bays/items/properties/Number",
@@ -237,7 +237,9 @@
                 "title": "The Shutter Schema",
                 "required": [
                   "Inverter",
-                  "Type"
+                  "Type",
+                  "ManualMovements",
+                  "AssistedMovements"
                 ],
                 "properties": {
                   "Inverter": {
@@ -269,8 +271,95 @@
                     "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/Type",
                     "type": "string",
                     "title": "The Type Schema",
-                    "default": "",
-                    "pattern": "^(.*)$"
+                    "enum": [ "TwoSensors", "ThreeSensors" ]
+                  },
+                  "ManualMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements",
+                    "type": "object",
+                    "title": "The ManualMovements Schema",
+                    "required": [
+                      "FeedRate",
+                      "MaxSpeed",
+                      "MinSpeed",
+                      "HighSpeedDurationOpen",
+                      "HighSpeedDurationClose"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/FeedRate",
+                        "type": "number",
+                        "title": "The FeedRate Schema",
+                        "default": 0
+                      },
+                      "MaxSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MaxSpeed",
+                        "type": "number",
+                        "title": "The Maxspeed Schema",
+                        "default": 0
+                      },
+                      "MinSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/MinSpeed",
+                        "type": "number",
+                        "title": "The Minspeed Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationOpen": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationOpen",
+                        "type": "number",
+                        "title": "The Highspeeddurationopen Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationClose": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/ManualMovements/properties/HighSpeedDurationClose",
+                        "type": "number",
+                        "title": "The Highspeeddurationclose Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "AssistedMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements",
+                    "type": "object",
+                    "title": "The AssistedMovements Schema",
+                    "required": [
+                      "FeedRate",
+                      "MaxSpeed",
+                      "MinSpeed",
+                      "HighSpeedDurationOpen",
+                      "HighSpeedDurationClose"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/FeedRate",
+                        "default": 0,
+                        "title": "The FeedRate Schema",
+                        "type": "number"
+                      },
+                      "MaxSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/MaxSpeed",
+                        "type": "number",
+                        "title": "The Maxspeed Schema",
+                        "default": 0
+                      },
+                      "MinSpeed": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/MinSpeed",
+                        "type": "number",
+                        "title": "The Minspeed Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationOpen": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/HighSpeedDurationOpen",
+                        "type": "number",
+                        "title": "The Highspeeddurationopen Schema",
+                        "default": 0
+                      },
+                      "HighSpeedDurationClose": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Shutter/properties/AssistedMovements/properties/HighSpeedDurationClose",
+                        "type": "number",
+                        "title": "The Highspeeddurationclose Schema",
+                        "default": 0
+                      }
+                    }
                   }
                 }
               },
@@ -279,7 +368,9 @@
                 "type": "object",
                 "title": "The Carousel Schema",
                 "required": [
-                  "ElevatorDistance"
+                  "ElevatorDistance",
+                  "ManualMovements",
+                  "AssistedMovements"
                 ],
                 "properties": {
                   "ElevatorDistance": {
@@ -287,66 +378,38 @@
                     "type": "number",
                     "title": "The Elevatordistance Schema",
                     "default": 0
-                  }
-                }
-              },
-              "FullLoadMovement": {
-                "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement",
-                "type": "object",
-                "title": "The FullLoadMovement Schema",
-                "required": [
-                  "Acceleration",
-                  "Deceleration",
-                  "Speed"
-                ],
-                "properties": {
-                  "Acceleration": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Acceleration",
-                    "type": "number",
-                    "title": "The Acceleration Schema",
-                    "default": 0
                   },
-                  "Deceleration": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Deceleration",
-                    "type": "number",
-                    "title": "The Deceleration Schema",
-                    "default": 0
+                  "ManualMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ManualMovements",
+                    "type": "object",
+                    "title": "The ManualMovements Schema",
+                    "required": [
+                      "FeedRate"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ManualMovements/properties/FeedRate",
+                        "type": "number",
+                        "title": "The FeedRate Schema",
+                        "default": 0
+                      }
+                    }
                   },
-                  "Speed": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/FullLoadMovement/properties/Speed",
-                    "type": "number",
-                    "title": "The Speed Schema",
-                    "default": 0
-                  }
-                }
-              },
-              "EmptyLoadMovement": {
-                "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement",
-                "type": "object",
-                "title": "The Emptyloadmovement Schema",
-                "required": [
-                  "Acceleration",
-                  "Deceleration",
-                  "Speed"
-                ],
-                "properties": {
-                  "Acceleration": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Acceleration",
-                    "type": "number",
-                    "title": "The Acceleration Schema",
-                    "default": 0
-                  },
-                  "Deceleration": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Deceleration",
-                    "type": "number",
-                    "title": "The Deceleration Schema",
-                    "default": 0
-                  },
-                  "Speed": {
-                    "$id": "#/properties/Machine/properties/Bays/items/properties/EmptyLoadMovement/properties/Speed",
-                    "type": "number",
-                    "title": "The Speed Schema",
-                    "default": 0
+                  "AssistedMovements": {
+                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/AssistedMovements",
+                    "type": "object",
+                    "title": "The AssistedMovements Schema",
+                    "required": [
+                      "FeedRate"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/AssistedMovements/properties/FeedRate",
+                        "default": 0,
+                        "title": "The FeedRate Schema",
+                        "type": "number"
+                      }
+                    }
                   }
                 }
               }
@@ -377,7 +440,9 @@
                   "Offset",
                   "ChainOffset",
                   "EmptyLoadMovement",
-                  "FullLoadMovement"
+                  "FullLoadMovement",
+                  "ManualMovements",
+                  "AssistedMovements"
                 ],
                 "properties": {
                   "Inverter": {
@@ -453,9 +518,9 @@
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ChainOffset",
                     "type": "number",
                     "title": "The ChainOffset Schema",
-                    "minimum": -10000,
-                    "maximum": 10000,
-                    "default": -500
+                    "minimum": -10,
+                    "maximum": 10,
+                    "default": -5
                   },
                   "UpperBound": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/UpperBound",
@@ -468,98 +533,6 @@
                     "type": "number",
                     "title": "The Lowerbound Schema",
                     "default": 0
-                  },
-                  "WeightMeasurement": {
-                    "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement",
-                    "type": "object",
-                    "title": "The Weightmeasurement Schema",
-                    "required": [
-                      "MeasureConst0",
-                      "MeasureConst1",
-                      "MeasureConst2",
-                      "MeasureSpeed",
-                      "MeasureTime"
-                    ],
-                    "properties": {
-                      "MeasureConst0": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst0",
-                        "type": "number",
-                        "title": "The MeasureConst0 Schema",
-                        "default": 0.0
-                      },
-                      "MeasureConst1": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst1",
-                        "type": "number",
-                        "title": "The MeasureConst1 Schema",
-                        "default": 0.0
-                      },
-                      "MeasureConst2": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst2",
-                        "type": "number",
-                        "title": "The MeasureConst2 Schema",
-                        "default": 0.0
-                      },
-                      "MeasureSpeed": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSpeed",
-                        "type": "number",
-                        "title": "The Measurespeed Schema",
-                        "default": 0
-                      },
-                      "MeasureTime": {
-                        "$id": "#/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureTime",
-                        "type": "number",
-                        "title": "The Measuretime Schema",
-                        "default": 0
-                      }
-                    }
-                  },
-                  "ProfileCalibrateLength": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",
-                    "type": "number",
-                    "title": "The ProfileCalibrateLength Schema",
-                    "default": 0
-                  },
-                  "ProfileCalibratePosition": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibratePosition",
-                    "type": "number",
-                    "title": "The ProfileCalibratePosition Schema",
-                    "default": 0
-                  },
-                  "ProfileCalibrateSpeed": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateSpeed",
-                    "type": "number",
-                    "title": "The ProfileCalibrateSpeed Schema",
-                    "default": 0
-                  },
-                  "FullLoadMovement": {
-                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
-                    "type": "object",
-                    "title": "The FullLoadMovement Schema",
-                    "required": [
-                      "Acceleration",
-                      "Deceleration",
-                      "Speed"
-                    ],
-                    "properties": {
-                      "Acceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Acceleration",
-                        "type": "number",
-                        "title": "The Acceleration Schema",
-                        "default": 0
-                      },
-                      "Deceleration": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Deceleration",
-                        "type": "number",
-                        "title": "The Deceleration Schema",
-                        "default": 0
-                      },
-                      "Speed": {
-                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Speed",
-                        "type": "number",
-                        "title": "The Speed Schema",
-                        "default": 0
-                      }
-                    }
                   },
                   "EmptyLoadMovement": {
                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement",
@@ -587,6 +560,166 @@
                         "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/EmptyLoadMovement/properties/Speed",
                         "type": "number",
                         "title": "The Speed Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "FullLoadMovement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement",
+                    "type": "object",
+                    "title": "The Fullloadmovement Schema",
+                    "required": [
+                      "Acceleration",
+                      "Deceleration",
+                      "Speed"
+                    ],
+                    "properties": {
+                      "Acceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Acceleration",
+                        "type": "number",
+                        "title": "The Acceleration Schema",
+                        "default": 0
+                      },
+                      "Deceleration": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Deceleration",
+                        "type": "number",
+                        "title": "The Deceleration Schema",
+                        "default": 0
+                      },
+                      "Speed": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/FullLoadMovement/properties/Speed",
+                        "type": "number",
+                        "title": "The Speed Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "WeightMeasurement": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement",
+                    "type": "object",
+                    "title": "The Weightmeasurement Schema",
+                    "required": [
+                      "MeasureConst0",
+                      "MeasureConst1",
+                      "MeasureConst2",
+                      "MeasureSpeed",
+                      "MeasureTime"
+                    ],
+                    "properties": {
+                      "MeasureConst0": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst0",
+                        "type": "number",
+                        "title": "The MeasureConst0 Schema",
+                        "default": 0.0
+                      },
+                      "MeasureConst1": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst1",
+                        "type": "number",
+                        "title": "The MeasureConst1 Schema",
+                        "default": 0.0
+                      },
+                      "MeasureConst2": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureConst2",
+                        "type": "number",
+                        "title": "The MeasureConst2 Schema",
+                        "default": 0.0
+                      },
+                      "MeasureSpeed": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureSpeed",
+                        "type": "number",
+                        "title": "The Measurespeed Schema",
+                        "default": 0
+                      },
+                      "MeasureTime": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/WeightMeasurement/properties/MeasureTime",
+                        "type": "number",
+                        "title": "The Measuretime Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "ProfileCalibrateLength": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateLength",
+                    "type": "number",
+                    "title": "The ProfileCalibrateLength Schema",
+                    "default": 0
+                  },
+                  "ProfileCalibratePosition": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibratePosition",
+                    "type": "number",
+                    "title": "The ProfileCalibratePosition Schema",
+                    "default": 0
+                  },
+                  "ProfileCalibrateSpeed": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ProfileCalibrateSpeed",
+                    "type": "number",
+                    "title": "The ProfileCalibrateSpeed Schema",
+                    "default": 0
+                  },
+                  "ManualMovements": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ManualMovements",
+                    "type": "object",
+                    "title": "The ManualMovements Schema",
+                    "required": [
+                      "FeedRate",
+                      "FeedRateAfterZero",
+                      "TargetDistance",
+                      "TargetDistanceAfterZero"
+                    ],
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ManualMovements/properties/FeedRate",
+                        "type": "number",
+                        "title": "The FeedRate Schema",
+                        "default": 0
+                      },
+                      "FeedRateAfterZero": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ManualMovements/properties/FeedRateAfterZero",
+                        "type": "number",
+                        "title": "The FeedRateAfterZero Schema",
+                        "default": 0
+                      },
+                      "TargetDistance": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ManualMovements/properties/TargetDistance",
+                        "type": "number",
+                        "title": "The TargetDistance Schema",
+                        "default": 0
+                      },
+                      "TargetDistanceAfterZero": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/ManualMovements/properties/TargetDistanceAfterZero",
+                        "type": "number",
+                        "title": "The TargetDistanceAfterZero Schema",
+                        "default": 0
+                      }
+                    }
+                  },
+                  "AssistedMovements": {
+                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/AssistedMovements",
+                    "type": "object",
+                    "title": "The AssistedMovements Schema",
+                    "properties": {
+                      "FeedRate": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/AssistedMovements/properties/FeedRate",
+                        "default": 0,
+                        "title": "The FeedRate Schema",
+                        "type": "number"
+                      },
+                      "FeedRateAfterZero": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/AssistedMovements/properties/FeedRateAfterZero",
+                        "type": "number",
+                        "title": "The FeedRateAfterZero Schema",
+                        "default": 0
+                      },
+                      "TargetDistance": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/AssistedMovements/properties/TargetDistance",
+                        "type": "number",
+                        "title": "The TargetDistance Schema",
+                        "default": 0
+                      },
+                      "TargetDistanceAfterZero": {
+                        "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/AssistedMovements/properties/TargetDistanceAfterZero",
+                        "type": "number",
+                        "title": "The TargetDistanceAfterZero Schema",
                         "default": 0
                       }
                     }
@@ -690,56 +823,63 @@
             ],
             "properties": {
               "Side": {
-                "$id": "#/properties/Machine/properties/Panels/items/properties/side",
+                "$id": "#/properties/Machine/properties/Panels/items/properties/Side",
                 "type": "string",
                 "title": "The Side Schema",
                 "default": "",
                 "enum": [ "Front", "Back" ]
               },
               "Cells": {
-                "$id": "#/properties/Machine/properties/Panels/items/properties/cells",
+                "$id": "#/properties/Machine/properties/Panels/items/properties/Cells",
                 "type": "array",
                 "title": "The Cells Schema",
                 "items": {
-                  "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items",
+                  "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items",
                   "type": "object",
                   "title": "The Items Schema",
                   "required": [
                     "Id",
                     "Position",
-                    "Priority",
-                    "Status"
+                    "Priority"
                   ],
                   "properties": {
                     "Id": {
-                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/id",
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/Id",
                       "type": "integer",
                       "title": "The Id Schema",
                       "default": 0
                     },
                     "Position": {
-                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/position",
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/Position",
                       "type": "number",
                       "title": "The Position Schema",
                       "minimum": 0,
                       "exclusiveMinimum": true
                     },
                     "Priority": {
-                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/priority",
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/Priority",
                       "type": "integer",
                       "title": "The Priority Schema",
                       "default": 0
                     },
                     "Status": {
-                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/status",
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/Cells/items/properties/Status",
                       "type": "string",
                       "title": "The Status Schema",
                       "enum": [
                         "Free",
-                        "Disabled",
-                        "Occupied",
-                        "Unusable"
+                        "Occupied"
                       ]
+                    },
+                    "IsUnusable": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsUnusable",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
+                    },
+                    "IsDeactivated": {
+                      "$id": "#/properties/Machine/properties/Panels/items/properties/cells/items/properties/IsDeactivated",
+                      "type": "boolean",
+                      "title": "The IsUnusable Schema"
                     }
                   }
                 }
@@ -773,15 +913,11 @@
         "CellPanelsCheck",
         "CellsHeightCheck",
         "DepositAndPickUpTest",
-        "HorizontalManualMovements",
         "LoadFirstDrawerTest",
-        "VerticalOffsetCalibration",
         "ShutterHeightCheck",
-        "ShutterManualMovements",
         "ShutterTest",
-        "VerticalManualMovements",
-        "VerticalResolutionCalibration",
-        "WeightCheck"
+        "VerticalOffsetCalibration",
+        "VerticalResolutionCalibration"
       ],
       "properties": {
         "BayHeightCheck": {
@@ -901,36 +1037,6 @@
             }
           }
         },
-        "HorizontalManualMovements": {
-          "$id": "#/properties/SetupProcedures/properties/HorizontalManualMovements",
-          "type": "object",
-          "title": "The Horizontalmanualmovements Schema",
-          "required": [
-            "FeedRate",
-            "InitialTargetPosition",
-            "RecoveryTargetPosition"
-          ],
-          "properties": {
-            "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/HorizontalManualMovements/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            },
-            "InitialTargetPosition": {
-              "$id": "#/properties/SetupProcedures/properties/HorizontalManualMovements/properties/InitialTargetPosition",
-              "type": "number",
-              "title": "The Initialtargetposition Schema",
-              "default": 0
-            },
-            "RecoveryTargetPosition": {
-              "$id": "#/properties/SetupProcedures/properties/HorizontalManualMovements/properties/RecoveryTargetPosition",
-              "type": "number",
-              "title": "The Recoverytargetposition Schema",
-              "default": 0
-            }
-          }
-        },
         "LoadFirstDrawerTest": {
           "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest",
           "type": "object",
@@ -941,36 +1047,6 @@
           "properties": {
             "FeedRate": {
               "$id": "#/properties/SetupProcedures/properties/LoadFirstDrawerTest/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            }
-          }
-        },
-        "VerticalOffsetCalibration": {
-          "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
-          "type": "object",
-          "title": "The VerticalOffsetCalibration Schema",
-          "required": [
-            "ReferenceCellId",
-            "Step",
-            "FeedRate"
-          ],
-          "properties": {
-            "ReferenceCellId": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
-              "type": "integer",
-              "title": "The Referencecellid Schema",
-              "default": 0
-            },
-            "Step": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
-              "type": "number",
-              "title": "The Step Schema",
-              "default": 0.0
-            },
-            "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0
@@ -993,50 +1069,6 @@
             }
           }
         },
-        "ShutterManualMovements": {
-          "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements",
-          "type": "object",
-          "title": "The Shuttermanualmovements Schema",
-          "required": [
-            "FeedRate",
-            "MaxSpeed",
-            "MinSpeed",
-            "HighSpeedDurationOpen",
-            "HighSpeedDurationClose"
-          ],
-          "properties": {
-            "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            },
-            "MaxSpeed": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MaxSpeed",
-              "type": "number",
-              "title": "The Maxspeed Schema",
-              "default": 0
-            },
-            "MinSpeed": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/MinSpeed",
-              "type": "number",
-              "title": "The Minspeed Schema",
-              "default": 0
-            },
-            "HighSpeedDurationOpen": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/HighSpeedDurationOpen",
-              "type": "number",
-              "title": "The Highspeeddurationopen Schema",
-              "default": 0
-            },
-            "HighSpeedDurationClose": {
-              "$id": "#/properties/SetupProcedures/properties/ShutterManualMovements/properties/HighSpeedDurationClose",
-              "type": "number",
-              "title": "The Highspeeddurationclose Schema",
-              "default": 0
-            }
-          }
-        },
         "ShutterTest": {
           "$id": "#/properties/SetupProcedures/properties/ShutterTest",
           "type": "object",
@@ -1053,40 +1085,33 @@
             }
           }
         },
-        "VerticalManualMovements": {
-          "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements",
+        "VerticalOffsetCalibration": {
+          "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration",
           "type": "object",
-          "title": "The Verticalmanualmovements Schema",
+          "title": "The VerticalOffsetCalibration Schema",
           "required": [
-            "FeedRate",
-            "PositiveTargetDirection",
-            "NegativeTargetDirection",
-            "FeedRateAfterZero"
+            "ReferenceCellId",
+            "Step",
+            "FeedRate"
           ],
           "properties": {
+            "ReferenceCellId": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/ReferenceCellId",
+              "type": "integer",
+              "title": "The ReferenceCellId Schema",
+              "default": 0
+            },
+            "Step": {
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/Step",
+              "type": "number",
+              "title": "The Step Schema",
+              "default": 0.0
+            },
             "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            },
-            "PositiveTargetDirection": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/PositiveTargetDirection",
-              "type": "number",
-              "title": "The Positivetargetdirection Schema",
-              "default": 0
-            },
-            "NegativeTargetDirection": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/NegativeTargetDirection",
-              "type": "number",
-              "title": "The Negativetargetdirection Schema",
-              "default": 0
-            },
-            "FeedRateAfterZero": {
-              "$id": "#/properties/SetupProcedures/properties/VerticalManualMovements/properties/FeedRateAfterZero",
-              "type": "number",
-              "title": "The Feedrateafterzero Schema",
-              "default": 0.0
+              "$id": "#/properties/SetupProcedures/properties/VerticalOffsetCalibration/properties/FeedRate",
+              "default": 0.0,
+              "title": "The FeedRate Schema",
+              "type": "number"
             }
           }
         },
@@ -1114,22 +1139,6 @@
             },
             "FeedRate": {
               "$id": "#/properties/SetupProcedures/properties/VerticalResolutionCalibration/properties/FeedRate",
-              "type": "number",
-              "title": "The Feedrate Schema",
-              "default": 0.0
-            }
-          }
-        },
-        "WeightCheck": {
-          "$id": "#/properties/SetupProcedures/properties/WeightCheck",
-          "type": "object",
-          "title": "The Weightcheck Schema",
-          "required": [
-            "FeedRate"
-          ],
-          "properties": {
-            "FeedRate": {
-              "$id": "#/properties/SetupProcedures/properties/WeightCheck/properties/FeedRate",
               "type": "number",
               "title": "The Feedrate Schema",
               "default": 0.0

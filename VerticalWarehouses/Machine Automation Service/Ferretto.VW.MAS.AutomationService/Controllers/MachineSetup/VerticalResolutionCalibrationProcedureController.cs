@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                     });
             }
 
-            var resolution = this.elevatorDataProvider.GetVerticalAxis().Resolution;
+            var resolution = this.elevatorDataProvider.GetAxis(Orientation.Vertical).Resolution;
 
             return resolution * (decimal)expectedDistance / (decimal)measuredDistance;
         }

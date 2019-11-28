@@ -1,16 +1,20 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Data;
+﻿using System;
+using System.Configuration;
+using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Events;
-using IInstallationHubClient = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.IInstallationHubClient;
-using MessageNotifiedEventArgs = Ferretto.VW.MAS.AutomationService.Contracts.Hubs.MessageNotifiedEventArgs;
 
 namespace Ferretto.VW.App.Services
 {
-    internal class HubNotificationService : IHubNotificationService
+    internal sealed class HubNotificationService : IHubNotificationService
     {
         #region Fields
+
+        private readonly BayNumber bayNumber;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -26,31 +30,40 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IInstallationHubClient installationHubClient)
         {
-            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
-            this.installationHubClient = installationHubClient ?? throw new System.ArgumentNullException(nameof(installationHubClient));
+            this.installationHubClient = installationHubClient ?? throw new ArgumentNullException(nameof(installationHubClient));
             this.installationHubClient.MessageReceived += this.OnMessageReceived;
-            this.installationHubClient.MachineModeChanged += this.OnMachineModeChanged;
-            this.installationHubClient.MachinePowerChanged += this.OnMachinePowerChanged;
+            this.installationHubClient.MachineModeChanged += this.OnEventReceived;
+            this.installationHubClient.MachinePowerChanged += this.OnEventReceived;
+            this.installationHubClient.ElevatorPositionChanged += this.OnEventReceived;
+            this.installationHubClient.BayChainPositionChanged += this.OnBayEventReceived;
 
             this.logger = LogManager.GetCurrentClassLogger();
+
+            this.bayNumber = ConfigurationManager.AppSettings.GetBayNumber();
         }
 
         #endregion
 
         #region Methods
 
-        private void OnMachineModeChanged(object sender, MachineModeChangedEventArgs e)
+        private void OnBayEventReceived<TEventArgs>(object sender, TEventArgs e)
+            where TEventArgs : EventArgs, IBayEventArgs
         {
-            this.eventAggregator
-                .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
-                .Publish(e);
+            if (e.BayNumber == this.bayNumber)
+            {
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<TEventArgs>>()
+                    .Publish(e);
+            }
         }
 
-        private void OnMachinePowerChanged(object sender, MachinePowerChangedEventArgs e)
+        private void OnEventReceived<TEventArgs>(object sender, TEventArgs e)
+                    where TEventArgs : EventArgs
         {
             this.eventAggregator
-                .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                .GetEvent<PubSubEvent<TEventArgs>>()
                 .Publish(e);
         }
 
@@ -86,12 +99,6 @@ namespace Ferretto.VW.App.Services
                     this.eventAggregator
                         .GetEvent<NotificationEventUI<HomingMessageData>>()
                         .Publish(h);
-                    break;
-
-                case NotificationMessageUI<CurrentPositionMessageData> cp:
-                    this.eventAggregator
-                        .GetEvent<NotificationEventUI<CurrentPositionMessageData>>()
-                        .Publish(cp);
                     break;
 
                 case NotificationMessageUI<InverterExceptionMessageData> ie:

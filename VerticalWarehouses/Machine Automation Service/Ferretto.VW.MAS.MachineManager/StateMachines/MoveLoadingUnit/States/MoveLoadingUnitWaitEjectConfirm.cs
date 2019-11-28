@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
-        private readonly IBaysProvider baysProvider;
+        private readonly IBaysDataProvider baysDataProvider;
 
         private readonly IErrorsProvider errorsProvider;
 
@@ -30,13 +30,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         #region Constructors
 
         public MoveLoadingUnitWaitEjectConfirm(
-            IBaysProvider baysProvider,
+            IBaysDataProvider baysDataProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
-            this.baysProvider = baysProvider ?? throw new ArgumentNullException(nameof(baysProvider));
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
@@ -63,7 +63,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             if (!this.sensorsProvider.IsLoadingUnitInLocation(this.ejectBay))
 #endif
             {
-                this.baysProvider.UnloadLoadingUnit(this.ejectBay);
+                var bayPosition = this.baysDataProvider.GetPositionByLocation(this.ejectBay);
+
+                var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
+
+                this.baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                this.baysDataProvider.RemoveLoadingUnit(lu);
 
                 returnValue = this.GetState<IMoveLoadingUnitEndState>();
 
