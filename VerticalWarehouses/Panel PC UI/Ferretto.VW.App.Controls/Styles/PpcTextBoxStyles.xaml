@@ -34,6 +34,9 @@
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Disabled}" />
             </Trigger>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 

@@ -12,9 +12,11 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class MovementsViewModel : BaseMainViewModel
+    internal sealed partial class MovementsViewModel : BaseMainViewModel
     {
         #region Fields
+
+        private readonly IMachineService machineService;
 
         private DelegateCommand goToMovementsGuidedCommand;
 
@@ -24,15 +26,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand stopMovingCommand;
+
         private string title;
 
         #endregion
 
         #region Constructors
 
-        public MovementsViewModel()
+        public MovementsViewModel(IMachineService machineService)
             : base(PresentationMode.Installer)
         {
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
         }
 
         #endregion
@@ -64,6 +69,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.isWaitingForResponse;
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand StopMovingCommand =>
+                                                           this.stopMovingCommand
+           ??
+           (this.stopMovingCommand = new DelegateCommand(
+               async () => await this.StopMovingAsync(),
+               this.CanStopMoving));
 
         public string Title
         {
@@ -111,6 +123,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return !this.IsWaitingForResponse;
         }
 
+        private bool CanStopMoving()
+        {
+            return
+                //!this.KeyboardOpened
+                // &&
+                // this.IsMoving
+                // &&
+                !this.IsWaitingForResponse;
+        }
+
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
             this.isMovementsGuided = isGuided;
@@ -128,9 +150,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.goToMovementsGuidedCommand?.RaiseCanExecuteChanged();
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
+            this.stopMovingCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+        }
+
+        private async Task StopMovingAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineService.StopMovingByAllAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         #endregion

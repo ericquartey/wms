@@ -3,9 +3,9 @@
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
-    
+
     <sys:Double x:Key="VWAPP_TextBlock_Normal_FontSize">16</sys:Double>
-    
+
     <Style x:Key="VWAPP_ViewErrorTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ErrorTextBlock_Foreground_Normal}" />
@@ -47,7 +47,7 @@
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_TextBlock_Normal_FontSize}" />
         <Setter Property="Height" Value="22" />
     </Style>
-   
+
     <Style x:Key="VWAPP_ViewHelpDescriptionTextBlockStyle"
            TargetType="{x:Type TextBlock}">
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewTitleViewTextBlock_Foreground_Normal}" />
