@@ -241,8 +241,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //           the elevator must be full with pawl in non-zero position
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
             var isChainInZeroPosition = this.machineResourcesProvider.IsSensorZeroOnCradle;
-            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle && loadingUnit != null;
-            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle && loadingUnit is null;
+            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle; // && loadingUnit != null;
+            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle; // && loadingUnit is null;
 
             if (!(isElevatorFull && !isChainInZeroPosition) && !(isElevatorEmpty && isChainInZeroPosition))
             {
