@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -42,6 +43,36 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnDataLayerReadyAsync();
                     break;
             }
+        }
+
+        /// <summary>
+        /// MOCK questo va fatto dal MissionSchedulingService (c'è già una copia di questo metodo laggiù)
+        /// </summary>
+        private void MOCK_NotifyAssignedMissionOperationChanged(
+           BayNumber bayNumber,
+           int? missionId,
+           int? missionOperationId,
+           int pendingMissionsCount)
+        {
+            var data = new AssignedMissionOperationChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId,
+                MissionOperationId = missionOperationId,
+                PendingMissionsCount = pendingMissionsCount,
+            };
+
+            var notificationMessage = new NotificationMessage(
+                data,
+                $"Mission operation assigned to bay {bayNumber} has changed.",
+                MessageActor.Any,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionOperationChanged,
+                bayNumber);
+
+            this.EventAggregator
+                .GetEvent<NotificationEvent>()
+                .Publish(notificationMessage);
         }
 
         /// <summary>
@@ -105,34 +136,6 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnNewWmsMissionAvailable()
         {
             await this.RetrieveNewWmsMissionsAsync();
-        }
-
-        private void OnWmsMissionOperationCompleted(MissionOperationCompletedMessageData data)
-        {
-            Contract.Requires(data != null);
-
-            using (var scope = this.ServiceScopeFactory.CreateScope())
-            {
-                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-
-                var bay = bayProvider
-                    .GetAll()
-                    .Where(b => b.CurrentWmsMissionOperationId.HasValue && b.CurrentMissionId.HasValue)
-                    .SingleOrDefault(b => b.CurrentWmsMissionOperationId == data.MissionOperationId);
-
-                if (bay != null && bay.CurrentMissionId != null)
-                {
-                    bayProvider.AssignWmsMission(bay.Number, bay.CurrentMissionId.Value, null);
-
-                    this.Logger.LogDebug($"Bay {bay.Number}: operation id={data.MissionOperationId} competed.");
-
-                    this.bayStatusChangedEvent.Set();
-                }
-                else
-                {
-                    this.Logger.LogWarning($"None of the bays is currently executing operation id={data.MissionOperationId}.");
-                }
-            }
         }
 
         #endregion
