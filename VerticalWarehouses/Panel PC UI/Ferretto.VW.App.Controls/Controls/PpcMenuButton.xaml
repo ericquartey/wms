@@ -13,7 +13,7 @@
         <Style TargetType="{x:Type controls:BaseMenuButton}">
             <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-            <Setter Property="FontSize" Value="{DynamicResource PpcMenuButtonFontSize}" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
 
@@ -65,7 +65,7 @@
                                             CornerRadius="4">
                                         <TextBlock HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
-                                                   FontSize="20"
+                                                   FontSize="{StaticResource FontSize_High}"
                                                    FontWeight="Bold"
                                                    Text="{Binding Path=Abbreviation, RelativeSource={RelativeSource TemplatedParent}}" />
                                     </Border>

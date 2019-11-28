@@ -13,9 +13,6 @@
                      Color="{DynamicResource ColorFerrettoPureWhite}" />
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
 
-    <sys:Double x:Key="PpcButtonFontSize">14</sys:Double>
-    <sys:Double x:Key="PpcMenuButtonFontSize">18</sys:Double>
-
     <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />
         <GradientStop Offset="0.5" Color="Transparent" />

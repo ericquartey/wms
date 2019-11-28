@@ -45,7 +45,7 @@
                     </Grid.RowDefinitions>
 
                     <TextBlock Margin="4,0"
-                               FontSize="16"
+                               FontSize="{StaticResource FontSize_Normal}"
                                FontWeight="Bold"
                                Foreground="{DynamicResource FerrettoLightGray}"
                                Text="{Binding ElementName=Card, Path=CardText}" />
@@ -54,7 +54,7 @@
                                Margin="4"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
-                               FontSize="28"
+                               FontSize="{StaticResource FontSize_Very_High}"
                                Foreground="{DynamicResource FerrettoPureWhite}"
                                Text="{Binding ElementName=Card, Path=CardValue}">
                         <TextBlock.Style>
@@ -79,6 +79,7 @@
                                 Orientation="Horizontal">
                         <TextBlock Margin="0,0,4,0"
                                    VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Small}"
                                    Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="Zero" />
                         <Grid Width="19"
@@ -101,6 +102,7 @@
                                 Orientation="Horizontal">
                         <TextBlock Margin="0,0,4,0"
                                    VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Small}"
                                    Foreground="{DynamicResource FerrettoLightGray}"
                                    Text="Front" />
                         <Grid Grid.Column="1"

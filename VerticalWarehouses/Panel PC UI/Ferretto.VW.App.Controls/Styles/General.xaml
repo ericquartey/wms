@@ -10,7 +10,9 @@
     <sys:Double x:Key="PpcButtonHomeWidth">250</sys:Double>
     <sys:Double x:Key="PpcButtonHomeHeight">150</sys:Double>
 
-    <sys:Double x:Key="VWAPP_Normal_FontSize">16</sys:Double>
-
+    <sys:Double x:Key="FontSize_Small">14</sys:Double>
+    <sys:Double x:Key="FontSize_Normal">16</sys:Double>
+    <sys:Double x:Key="FontSize_High">18</sys:Double>
+    <sys:Double x:Key="FontSize_Very_High">28</sys:Double>
 
 </ResourceDictionary>

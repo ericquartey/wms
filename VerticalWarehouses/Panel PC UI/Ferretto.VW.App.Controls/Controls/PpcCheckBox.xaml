@@ -24,10 +24,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="OptionMark.Static.Background"
-                         Color="#FFFFFFFF" />
-        <SolidColorBrush x:Key="OptionMark.Static.Border"
-                         Color="#FF707070" />
         <Style x:Key="OptionMarkFocusVisual">
             <Setter Property="Control.Template">
                 <Setter.Value>
@@ -53,8 +49,8 @@
 
         <Style TargetType="{x:Type CheckBox}">
             <Setter Property="FocusVisualStyle" Value="{StaticResource FocusVisual}" />
-            <Setter Property="Background" Value="{StaticResource OptionMark.Static.Background}" />
-            <Setter Property="BorderBrush" Value="{StaticResource OptionMark.Static.Border}" />
+            <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="Template">
@@ -75,6 +71,14 @@
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
                                     CornerRadius="1">
+                                <Border.Effect>
+                                    <DropShadowEffect BlurRadius="3"
+                                                      Opacity="0.5"
+                                                      RenderingBias="Quality"
+                                                      ShadowDepth="1"
+                                                      Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
+                                </Border.Effect>
+
                                 <Grid x:Name="markGrid">
                                     <Path x:Name="optionMark"
                                           Margin="3"
@@ -127,13 +131,13 @@
 
     <Grid Name="Grid"
           HorizontalAlignment="Stretch">
-        <Grid.Effect>
+        <!--<Grid.Effect>
             <DropShadowEffect BlurRadius="4"
                               Opacity="0.5"
                               RenderingBias="Quality"
                               ShadowDepth="2"
                               Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-        </Grid.Effect>
+        </Grid.Effect>-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
@@ -141,15 +145,16 @@
 
         <Viewbox Height="{Binding ElementName=Grid, Path=ActualHeight}"
                  HorizontalAlignment="Left">
-            <CheckBox IsChecked="{Binding ElementName=UserControl, Path=IsChecked, FallbackValue='True'}"
+            <CheckBox IsChecked="{Binding ElementName=UserControl, Path=IsChecked, FallbackValue=''}"
                       IsThreeState="{Binding ElementName=UserControl, Path=IsThreeState}" />
         </Viewbox>
 
         <TextBlock Grid.Column="1"
-                   Margin="5"
+                   Margin="8,0,0,0"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   FontSize="{DynamicResource PpcButtonFontSize}"
+                   Effect="{x:Null}"
+                   FontSize="{StaticResource FontSize_Normal}"
                    Foreground="{DynamicResource PpcButtonForeground}"
                    Text="{Binding ElementName=UserControl, Path=LabelText, FallbackValue='Descrizione'}"
                    TextWrapping="Wrap" />
