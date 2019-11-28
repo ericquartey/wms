@@ -14,5 +14,174 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,15,15,0" />
+    <Grid Margin="15,15,15,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="GridSensors">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <controls:CardSensor Grid.Row="0"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Verticale (mm)"
+                                 CardValue="9999.99" />
+            <controls:CardSensor Grid.Row="1"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Orizzontale (mm)"
+                                 CardValue="9999.99" />
+            <controls:CardSensor Grid.Row="2"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Baia"
+                                 CardValue="9999.99" />
+            <controls:CardSensor Grid.Row="3"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Posizione"
+                                 CardValue="In Cella" />
+            <controls:CardSensor Grid.Row="4"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Cassetto" />
+            <controls:CardSensor Grid.Row="5"
+                                 Width="250"
+                                 Margin="0,0,15,0"
+                                 CardText="Serranda"
+                                 CardValue="Aperta" />
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="GridTitle">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding Title}" />
+
+                <controls:PpcButton Grid.Column="1"
+                                    Margin="15,0,0,1"
+                                    BorderBrush="{DynamicResource FerrettoBlue}"
+                                    BorderThickness="0,0,0,2"
+                                    Command="{Binding GoToMovementsGuidedCommand}"
+                                    Content="Guidati"
+                                    IsActive="{Binding IsMovementsGuided}"
+                                    IsEnabled="{Binding IsMovementsManual}" />
+
+                <controls:PpcButton Grid.Column="2"
+                                    Margin="15,0,0,1"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    BorderThickness="0,0,0,2"
+                                    Command="{Binding GoToMovementsManualCommand}"
+                                    Content="Manuali"
+                                    IsActive="{Binding IsMovementsManual}"
+                                    IsEnabled="{Binding IsMovementsGuided}" />
+            </Grid>
+
+            <Border x:Name="Body"
+                    Grid.Row="1"
+                    BorderThickness="0,3,0,0">
+                <!--<Border.Effect>
+                    <DropShadowEffect BlurRadius="6"
+                                      Opacity="0.5"
+                                      RenderingBias="Quality"
+                                      ShadowDepth="3"
+                                      Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
+                </Border.Effect>-->
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderBrush" Value="{Binding FerrettoRed}" />
+                        <!--<Style.Resources>
+                            <Storyboard x:Key="AnimationGuided">
+                                <ColorAnimation FillBehavior="HoldEnd"
+                                                Storyboard.TargetProperty="BorderBrush.Color"
+                                                To="{Binding FerrettoBlue}"
+                                                Duration="0:0:0.5" />
+                            </Storyboard>
+                            <Storyboard x:Key="AnimationManual">
+                                <ColorAnimation FillBehavior="HoldEnd"
+                                                Storyboard.TargetProperty="BorderBrush.Color"
+                                                To="{Binding FerrettoRed}"
+                                                Duration="0:0:0.5" />
+                            </Storyboard>
+                        </Style.Resources>-->
+                        <!--<Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMovementsGuided}"
+                                         Value="true">
+                        -->
+                        <!--<DataTrigger.EnterActions>
+                                    <BeginStoryboard Storyboard="{StaticResource AnimationGuided}" />
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard Storyboard="{StaticResource AnimationManual}" />
+                                </DataTrigger.ExitActions>-->
+                        <!--
+                                <Setter Property="BorderBrush" Value="{Binding FerrettoBlue}" />
+                            </DataTrigger>
+                        </Style.Triggers>-->
+                    </Style>
+                </Border.Style>
+
+                <Grid>
+                    <Grid x:Name="GridCommandsGuided">
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMovementsGuided}"
+                                                 Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="Movimenti Guidati" />
+                    </Grid>
+
+                    <Grid x:Name="GridCommandsManual">
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMovementsManual}"
+                                                 Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="Movimenti Manuali" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+
 </ctrls:View>

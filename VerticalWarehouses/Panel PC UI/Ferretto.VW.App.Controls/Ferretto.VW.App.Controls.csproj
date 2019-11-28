@@ -53,6 +53,7 @@
     <None Remove="Assets\spinner_white.gif" />
     <None Remove="Assets\theme_dark.png" />
     <None Remove="Assets\theme_light.png" />
+    <None Remove="Controls\CardSensor.xaml" />
     <None Remove="Controls\PpcBadge.xaml" />
     <None Remove="Controls\PpcButtonMenu.xaml" />
     <None Remove="Controls\PpcMenuButton.xaml" />

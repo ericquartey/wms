@@ -26,4 +26,5 @@
     <SolidColorBrush x:Key="IAPP_CCInput_NotHighlighted_Normal"
                      Color="{DynamicResource ColorFerrettoLightGray}" />
 
+    <Color x:Key="VWAPP_ShadowEffect_Color">White</Color>
 </ResourceDictionary>

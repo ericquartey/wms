@@ -7,6 +7,8 @@
                      Color="{DynamicResource EDBGrayH}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="PpcMenuButtonBorderBrush"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
     <SolidColorBrush x:Key="PpcButtonForeground"
                      Color="{DynamicResource EDBGrayA}" />
     <Thickness x:Key="PpcButtonBorderThicknessActive">2</Thickness>
