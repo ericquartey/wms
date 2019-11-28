@@ -67,11 +67,13 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
-                        WmsId = wmsId,
-                        Priority = wmsPriority,
-                        LoadingUnitId = loadingUnitId,
-                        TargetBay = bayNumber,
                         CreationDate = DateTime.Now,
+                        LoadingUnitId = loadingUnitId,
+                        LoadingUnitSource = LoadingUnitLocation.LoadingUnit,
+                        MissionType = MissionType.WMS,
+                        Priority = wmsPriority,
+                        TargetBay = bayNumber,
+                        WmsId = wmsId,
                     });
 
                 this.dataContext.SaveChanges();

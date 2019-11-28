@@ -77,23 +77,19 @@ namespace Ferretto.VW.MAS.MissionManager
                 notification.Destination is CommonUtils.Messages.Enumerations.MessageActor.MissionManager;
         }
 
-        protected override async Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            switch (command.Type)
-            {
-                case MessageType.MoveLoadingUnit:
-                    await this.OnMoveLoadingUnitAsync(command);
-                    break;
-            }
+            // do nothing
+            return Task.CompletedTask;
         }
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
         {
             switch (message.Type)
             {
-                //case MessageType.MissionOperationCompleted:
-                //    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
-                //    break;
+                case MessageType.MissionOperationCompleted:
+                    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
+                    break;
 
                 case MessageType.AssignedMissionOperationChanged:
                     await this.OnOperationChangedAsync(message);

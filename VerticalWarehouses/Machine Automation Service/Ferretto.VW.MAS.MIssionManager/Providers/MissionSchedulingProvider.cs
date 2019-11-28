@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -21,14 +22,18 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingProvider> logger;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionSchedulingProvider(
+            IMissionsDataProvider missionsDataProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingProvider> logger)
         {
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
@@ -49,27 +54,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
-            var data = new MoveLoadingUnitMessageData(
-                MissionType.WMS,
-                LoadingUnitLocation.LoadingUnit,
-                LoadingUnitLocation.NoLocation,
-                null,
-                null,
-                loadingUnitId);
-
-            data.WmsId = wmsMissionId;
-            data.TargetBay = targetBayNumber;
-
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                    new CommandMessage(
-                        data,
-                        $"Wms mission requested; loadingUnitId {loadingUnitId}; Bay {targetBayNumber}",
-                        MessageActor.MissionManager,
-                        MessageActor.MissionManager,
-                        MessageType.MoveLoadingUnit,
-                        targetBayNumber));
+            this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
             return Task.CompletedTask;
         }
@@ -82,6 +67,11 @@ namespace Ferretto.VW.MAS.MissionManager
         public void QueueLoadingUnitCompactingMission()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task ScheduleMissionsAsync(BayNumber bayNumber)
+        {
+            var activeMissions = this.missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
         }
 
         #endregion

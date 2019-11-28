@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private readonly IMissionsDataService missionsDataService;
 
         private bool dataLayerIsReady;
@@ -36,6 +38,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public WmsMissionProxyService(
             IMachinesDataService machinesDataService,
+            IMissionsDataProvider missionsDataProvider,
             IMissionsDataService missionsDataService,
             IMissionOperationsDataService missionOperationsDataService,
             IConfiguration configuration,
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
 
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -70,7 +74,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var machineId = machineProvider.GetIdentity();
                 var wmsMissions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
 
-                var localMissions = missionSchedulingProvider.GetAllWmsMissions();
+                var localMissions = this.missionsDataProvider.GetAllWmsMissions();
 
                 foreach (var wmsMission in wmsMissions.Where(m => m.BayId.HasValue))
                 {
