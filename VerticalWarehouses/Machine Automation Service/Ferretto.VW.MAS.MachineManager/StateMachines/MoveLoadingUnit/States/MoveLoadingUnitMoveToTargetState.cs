@@ -51,14 +51,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             bool measure = false;
-            if (machineData is IMoveLoadingUnitMachineData machineMoveData)
+            if (machineData is IMoveLoadingUnitMachineData moveData)
             {
-                if (machineMoveData.LoadingUnitSource != LoadingUnitLocation.Cell)
+                if (moveData.LoadingUnitSource != LoadingUnitLocation.Cell)
                 {
-                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(machineMoveData.LoadingUnitSource);
+                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitSource);
                     this.closeShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                     measure = true;
                 }
+                moveData.FsmStateName = this.GetType().Name;
             }
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)

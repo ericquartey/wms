@@ -25,7 +25,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
+
+        private Mission mission;
 
         #endregion
 
@@ -34,6 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         public MoveLoadingUnitEndState(
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IBaysDataProvider baysDataProvider,
+            IMissionsDataProvider missionsDataProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
             : base(logger)
@@ -42,6 +47,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -60,7 +66,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         #region Methods
 
-        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData stateData)
+        protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.EndMessage = new NotificationMessage(
@@ -73,9 +79,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 commandMessage.TargetBay,
                 StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
 
+            if (machineData is Mission moveData)
+            {
+                this.mission = moveData;
+            }
             if (this.StopRequestReason == StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
+                this.missionsDataProvider.Delete(this.mission?.Id);
             }
             else
             {
@@ -106,6 +117,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                 {
                     this.IsCompleted = true;
+                    this.missionsDataProvider.Delete(this.mission?.Id);
                 }
             }
 

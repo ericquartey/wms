@@ -37,6 +37,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private readonly ISensorsProvider sensorsProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         #endregion
 
         #region Constructors
@@ -50,6 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IErrorsProvider errorsProvider,
             IMachineModeVolatileDataProvider machineModeDataProvider,
+            IMissionsDataProvider missionsDataProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
             : base(eventAggregator, logger)
@@ -62,6 +65,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
 
             this.MachineData = new MoveLoadingUnitMachineData(this.InstanceId);
         }
@@ -113,6 +117,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             newState = this.ActiveState.NotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
+                if (this.MachineData is Mission mission)
+                {
+                    mission.FsmStateName = this.ActiveState.GetType().Name;
+                    this.missionsDataProvider.Update(mission);
+                }
                 return newState;
             }
 
@@ -122,6 +131,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         protected override bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
             var returnValue = this.CheckStartConditions(commandMessage);
+            if (returnValue
+                && this.MachineData is Mission mission
+                )
+            {
+                this.missionsDataProvider.Update(mission);
+            }
 
             return returnValue;
         }

@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         LoadingUnitId = loadingUnitId,
-                        BayNumber = bayNumber
+                        TargetBay = bayNumber
                     });
 
                 this.dataContext.SaveChanges();
@@ -68,9 +68,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         WmsId = wmsId,
-                        WmsPriority = wmsPriority,
+                        Priority = wmsPriority,
                         LoadingUnitId = loadingUnitId,
-                        BayNumber = bayNumber,
+                        TargetBay = bayNumber,
                         CreationDate = DateTime.Now,
                     });
 
@@ -82,13 +82,27 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Delete(int? id)
+        {
+            if (!(id is null))
+            {
+                lock (this.dataContext)
+                {
+                    var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
+                    this.dataContext.Missions.Remove(mission);
+
+                    this.dataContext.SaveChanges();
+                }
+            }
+        }
+
         public IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber)
         {
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
                     .AsNoTracking()
-                    .Where(m => m.BayNumber == bayNumber)
+                    .Where(m => m.TargetBay == bayNumber)
                     .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
                     .ToArray();
             }
@@ -116,6 +130,20 @@ namespace Ferretto.VW.MAS.DataLayer
                 this.dataContext.SaveChanges();
 
                 return mission;
+            }
+        }
+
+        public void Update(Mission mission)
+        {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+            lock (this.dataContext)
+            {
+                this.dataContext.Missions.Update(mission);
+
+                this.dataContext.SaveChanges();
             }
         }
 

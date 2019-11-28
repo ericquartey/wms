@@ -10,9 +10,11 @@ namespace Ferretto.VW.MAS.Utils.Missions
     {
         #region Properties
 
-        Guid Id { get; }
+        Guid FsmId { get; }
 
-        FSMType Type { get; }
+        IFiniteStateMachineData MachineData { get; set; }
+
+        FsmType Type { get; }
 
         #endregion
 
