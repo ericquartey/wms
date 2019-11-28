@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Charts" Version="19.1.6" />
+    <PackageReference Include="DevExpress.Wpf.Charts" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="[1.1.0]" />
@@ -32,7 +32,6 @@
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.6.0" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
-    <PackageReference Include="Unity" Version="4.0.1" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -57,11 +56,24 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
+    <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
+    <None Remove="Views\Movements\MovementsView.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Movements\Manual\ElevatorManualMovementsView.xaml.cs">
       <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Movements\MovementsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
   </ItemGroup>
 

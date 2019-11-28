@@ -11,7 +11,7 @@ using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ImmediateDrawerCallViewModel : BaseMainViewModel
+    public class ImmediateDrawerCallViewModel : BaseOperatorViewModel
     {
         #region Fields
 

@@ -11,7 +11,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int? wmsMissionId);
+        void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber);
 
         Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority);
 

@@ -49,6 +49,7 @@
       "type": "object",
       "title": "The Machine Schema",
       "required": [
+        "Id",
         "Bays",
         "Elevator",
         "Height",
@@ -58,6 +59,11 @@
         "SerialNumber"
       ],
       "properties": {
+        "Id": {
+          "$id": "#/properties/Machine/properties/Id",
+          "type": "number",
+          "title": "The Id Schema"
+        },
         "Bays": {
           "$id": "#/properties/Machine/properties/Bays",
           "type": "array",

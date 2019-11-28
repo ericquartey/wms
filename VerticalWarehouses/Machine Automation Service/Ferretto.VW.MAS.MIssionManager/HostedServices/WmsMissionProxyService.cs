@@ -47,6 +47,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 

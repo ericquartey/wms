@@ -17,7 +17,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay AssignMission(BayNumber bayNumber, int missionId);
 
-        Bay AssignWmsMission(BayNumber bayNumber, int? missionId, int? wmsMissionOperationId);
+        Bay AssignWmsMission(BayNumber bayNumber, int missionId, int? wmsMissionOperationId);
 
         Bay ClearMission(BayNumber bayNumber);
 

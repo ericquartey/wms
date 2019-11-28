@@ -27,7 +27,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CurrentMissionId");
 
-                    b.Property<int?>("CurrentMissionOperationId");
+                    b.Property<int?>("CurrentWmsMissionOperationId");
 
                     b.Property<int?>("EmptyLoadMovementId");
 
@@ -1208,11 +1208,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
+                    b.Property<int>("BayNumber");
+
                     b.Property<DateTime>("CreationDate");
 
-                    b.Property<int>("MissionStatus");
+                    b.Property<int>("LoadingUnitId");
+
+                    b.Property<int>("Priority");
+
+                    b.Property<int>("Status");
 
                     b.Property<int?>("WmsId");
+
+                    b.Property<int>("WmsPriority");
 
                     b.HasKey("Id");
 
@@ -1284,7 +1292,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 26, 9, 56, 4, 122, DateTimeKind.Local).AddTicks(320),
+                            InstallationDate = new DateTime(2017, 1, 28, 9, 36, 30, 705, DateTimeKind.Local).AddTicks(1599),
                             ServiceStatus = 86
                         });
                 });
@@ -1531,24 +1539,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsUnique();
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = -1,
-                            AccessLevel = 0,
-                            Name = "installer",
-                            PasswordHash = "DsWpG30CTZweMD4Q+LlgzrsGOWM/jx6enmP8O7RIrvU=",
-                            PasswordSalt = "2xw+hMIYBtLCoUqQGXSL0A=="
-                        },
-                        new
-                        {
-                            Id = -2,
-                            AccessLevel = 2,
-                            Name = "operator",
-                            PasswordHash = "e1IrRSpcUNLIQAmdtSzQqrKT4DLcMaYMh662pgMh2xY=",
-                            PasswordSalt = "iB+IdMnlzvXvitHWJff38A=="
-                        });
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.WeightMeasurement", b =>

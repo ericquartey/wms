@@ -1,0 +1,64 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Menu.Views.CellsMenuView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            d:DataContext="{d:DesignInstance Type=viewmodels:CellsMenuViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="80">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="Menu Celle" />
+
+        <Grid Grid.Row="1"
+              Margin="15">
+            <WrapPanel>
+
+                <controls:PpcButton Grid.Row="0"
+                                    Margin="15"
+                                    Command="{Binding CellsCommand}"
+                                    Content="Gestione celle" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Command="{Binding CellPanelsCheckCommand}"
+                                    Content="Controllo pannelli mensola" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Command="{Binding CellsHeightCheckCommand}"
+                                    Content="Controllo quote celle" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    Margin="15"
+                                    Command="{Binding CellsBlockTuningCommand}"
+                                    Content="Modifica blocco celle" />
+
+            </WrapPanel>
+        </Grid>
+
+    </Grid>
+</ctrls:View>

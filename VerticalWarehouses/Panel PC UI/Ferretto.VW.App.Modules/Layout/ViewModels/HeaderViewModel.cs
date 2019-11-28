@@ -73,6 +73,15 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.Shutdown, true);
                     break;
 
+                case PresentationMode.Menu:
+                    this.Show(PresentationTypes.None, false);
+                    this.Show(PresentationTypes.Help, true);
+                    this.Show(PresentationTypes.Logged, true);
+                    this.Show(PresentationTypes.MachineMode, true);
+                    this.Show(PresentationTypes.MachineMarch, true);
+                    this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
+                    break;
+
                 case PresentationMode.Installer:
                     this.Show(PresentationTypes.None, false);
                     this.Show(PresentationTypes.Help, true);

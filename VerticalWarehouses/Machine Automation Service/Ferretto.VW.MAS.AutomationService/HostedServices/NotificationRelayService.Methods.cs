@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             if (receivedMessage.Status == MessageStatus.OperationEnd)
             {
-                this.machineProvider.IsHomingExetuted = true;
+                this.machineProvider.IsHomingExecuted = true;
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.HomingProcedureStatusChanged(message);
