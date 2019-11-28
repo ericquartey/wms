@@ -22,7 +22,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IWaitListSelectedModel waitListSelectedModel;
 
-        private int areaId;
+        private int? areaId;
 
         private int currentItemIndex;
 
@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                await this.itemListsDataService.ExecuteAsync(this.list.Id, this.areaId);
+                await this.itemListsDataService.ExecuteAsync(this.list.Id, this.areaId ?? 0);
                 await this.LoadListRowsAsync();
             }
             catch

@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IWaitListSelectedModel waitListSelectedModel;
 
-        private int areaId;
+        private int? areaId;
 
         private int currentItemIndex;
 
@@ -134,7 +134,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId);
+                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId ?? 0);
                 await this.LoadListsAsync();
             }
             catch
@@ -210,7 +210,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task LoadListsAsync()
         {
-            this.lists = await this.areasDataService.GetItemListsAsync(this.areaId);
+            this.lists = await this.areasDataService.GetItemListsAsync(this.areaId ?? 0);
             this.RaisePropertyChanged(nameof(this.Lists));
             this.currentItemIndex = 0;
             this.SelectedList = this.lists.FirstOrDefault();
