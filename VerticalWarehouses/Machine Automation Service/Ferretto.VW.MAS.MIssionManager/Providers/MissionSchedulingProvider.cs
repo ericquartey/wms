@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -36,7 +39,17 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int? wmsMissionId)
+        public IEnumerable<Mission> GetAllWmsMissions()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
             var data = new MoveLoadingUnitMessageData(
                 MissionType.WMS,
@@ -57,6 +70,8 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 this.logger.LogError($"Failed to start Move Loading Unit Wms mission: {ex.Message}");
             }
+
+            return Task.CompletedTask;
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)

@@ -19,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<CarouselProvider> logger;
 
@@ -36,7 +36,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IElevatorDataProvider elevatorDataProvider,
             IMachineResourcesProvider machineResourcesProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IEventAggregator eventAggregator,
             ILogger<CarouselProvider> logger)
             : base(eventAggregator)
@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -129,7 +129,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             double scalingFactor = 1;
             if (loadingUnitId.HasValue)
             {
-                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight + loadUnit.Tare > 0 && loadUnit.GrossWeight > 0)
                 {
                     scalingFactor = loadUnit.GrossWeight / (loadUnit.MaxNetWeight + loadUnit.Tare);

@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         #region Properties
 
-        public bool IsHomingExetuted { get; set; }
+        public bool IsHomingExecuted { get; set; }
 
         public bool IsMachineRunning { get; set; }
 
@@ -165,6 +165,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetIdentity()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.Select(m => m.Id).Single();
+            }
+        }
+
         public MachineStatistics GetStatistics()
         {
             lock (this.dataContext)
@@ -222,7 +230,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
 
-            if (dataContext.IsNull())
+            if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }

@@ -1182,4 +1182,12 @@
   <data name="MaterialStatus" xml:space="preserve">
     <value>Material status</value>
   </data>
+  <data name="InventoryOperation" xml:space="preserve">
+    <value>Inventory Operation.</value>
+    <comment>Header txt</comment>
+  </data>
+  <data name="InventoryQuantityDetected" xml:space="preserve">
+    <value>Quantity detected</value>
+    <comment>Label text</comment>
+  </data>
 </root>

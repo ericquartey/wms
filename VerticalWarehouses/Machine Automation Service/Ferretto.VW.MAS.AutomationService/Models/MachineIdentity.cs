@@ -6,15 +6,19 @@ namespace Ferretto.VW.MAS.AutomationService.Models
     {
         #region Properties
 
-        public int AreaId { get; set; }
+        public int? AreaId { get; set; }
 
         public double Depth { get; set; }
+
+        public int Id { get; set; }
 
         public System.DateTime InstallationDate { get; set; }
 
         public bool IsOneTonMachine { get; set; }
 
         public System.DateTime? LastServiceDate { get; set; }
+
+        public int MachineId { get; set; }
 
         public double MaxGrossWeight { get; set; }
 

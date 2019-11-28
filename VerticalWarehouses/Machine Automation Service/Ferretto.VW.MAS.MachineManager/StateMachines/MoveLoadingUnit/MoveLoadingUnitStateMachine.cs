@@ -33,7 +33,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
 
@@ -44,7 +44,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         public MoveLoadingUnitStateMachine(
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             ICellsProvider cellsProvider,
             ISensorsProvider sensorsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
@@ -309,7 +309,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 case LoadingUnitLocation.LoadingUnit:
                     if (messageData.LoadingUnitId != null)
                     {
-                        unitToMove = this.loadingUnitsProvider.GetById(messageData.LoadingUnitId.Value);
+                        unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
                     }
 
                     if (unitToMove != null)
@@ -349,7 +349,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     {
                         if (messageData.LoadingUnitId != null)
                         {
-                            unitToMove = this.loadingUnitsProvider.GetById(messageData.LoadingUnitId.Value);
+                            unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
                         }
                     }
                     else
