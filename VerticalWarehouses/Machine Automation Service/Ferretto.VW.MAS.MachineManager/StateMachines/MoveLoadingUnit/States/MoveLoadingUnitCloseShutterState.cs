@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             this.messageData.LoadingUnitId,
                             this.messageData.InsertLoadingUnit,
                             this.messageData.EjectLoadingUnit,
-                            this.moveData.MachineId,
+                            this.moveData.Id,
                             this.messageData.CommandAction,
                             this.messageData.StopReason,
                             this.messageData.Verbosity);

@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        Mission SetStatus(int id, MissionStatus executing);
+        Mission SetStatus(int id, MissionStatus status);
 
         #endregion
     }

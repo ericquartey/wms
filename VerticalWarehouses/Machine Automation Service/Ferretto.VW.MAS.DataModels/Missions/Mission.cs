@@ -19,8 +19,6 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? WmsId { get; set; }
 
-        public int WmsPriority { get; set; }
-
         #endregion
     }
 }

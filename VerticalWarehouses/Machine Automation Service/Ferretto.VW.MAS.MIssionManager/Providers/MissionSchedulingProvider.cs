@@ -6,6 +6,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -68,6 +70,8 @@ namespace Ferretto.VW.MAS.MissionManager
                         MessageActor.MissionManager,
                         MessageType.MoveLoadingUnit,
                         targetBayNumber));
+
+            return Task.CompletedTask;
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)

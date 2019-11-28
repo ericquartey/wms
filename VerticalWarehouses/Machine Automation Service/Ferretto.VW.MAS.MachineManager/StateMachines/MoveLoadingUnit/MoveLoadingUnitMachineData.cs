@@ -8,22 +8,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
     {
         #region Constructors
 
-        internal MoveLoadingUnitMachineData(Guid machineId)
+        internal MoveLoadingUnitMachineData(Guid id)
         {
-            this.MachineId = machineId;
+            this.Id = id;
         }
 
         #endregion
 
         #region Properties
 
+        public Guid Id { get; protected set; }
+
         public int? LoadingUnitCellSourceId { get; set; }
 
         public int LoadingUnitId { get; set; }
 
         public LoadingUnitLocation LoadingUnitSource { get; set; }
-
-        public Guid MachineId { get; protected set; }
 
         public MissionType MissionType { get; set; }
 

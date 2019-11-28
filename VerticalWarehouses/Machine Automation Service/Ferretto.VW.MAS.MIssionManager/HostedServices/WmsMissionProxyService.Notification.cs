@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -26,10 +25,10 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             switch (message.Type)
             {
-                case MessageType.MissionOperationCompleted:
-                    // this will be handled by the MissionSchedulingService
-                    await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
-                    break;
+                //case MessageType.MissionOperationCompleted:
+                //    // this will be handled by the MissionSchedulingService
+                //    await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
+                //    break;
 
                 case MessageType.BayOperationalStatusChanged:
                     await this.OnBayOperationalStatusChangedAsync();

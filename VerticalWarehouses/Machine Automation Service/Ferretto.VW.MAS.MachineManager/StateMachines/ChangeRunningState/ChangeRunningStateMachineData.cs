@@ -9,14 +9,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState
 
         internal ChangeRunningStateMachineData(Guid machineId)
         {
-            this.MachineId = machineId;
+            this.Id = machineId;
         }
 
         #endregion
 
         #region Properties
 
-        public Guid MachineId { get; }
+        public Guid Id { get; }
 
         #endregion
     }

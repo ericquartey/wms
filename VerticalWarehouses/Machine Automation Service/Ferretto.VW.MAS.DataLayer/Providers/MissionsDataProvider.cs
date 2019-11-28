@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     new Mission
                     {
                         WmsId = wmsId,
-                        WmsPriority = wmsPriority,
+                        Priority = wmsPriority,
                         LoadingUnitId = loadingUnitId,
                         BayNumber = bayNumber,
                         CreationDate = DateTime.Now,
