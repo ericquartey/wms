@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? CurrentMissionId { get; set; }
 
-        public int? CurrentMissionOperationId { get; set; }
+        public int? CurrentWmsMissionOperationId { get; set; }
 
         public MovementParameters EmptyLoadMovement { get; set; }
 
@@ -48,7 +48,7 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 if (this.IsActive)
                 {
-                    return this.CurrentMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
+                    return this.CurrentWmsMissionOperationId.HasValue ? BayStatus.Busy : BayStatus.Idle;
                 }
 
                 return BayStatus.Disconnected;

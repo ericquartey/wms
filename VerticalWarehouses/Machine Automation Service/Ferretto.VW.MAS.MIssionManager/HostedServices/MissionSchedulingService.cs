@@ -126,7 +126,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                         using (var scope = this.ServiceScopeFactory.CreateScope())
                                         {
                                             var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                                            baysDataProvider.AssignMissionOperation(messageData.TargetBay, wmsMission.Id, operation.Id);
+                                            baysDataProvider.AssignWmsMission(messageData.TargetBay, wmsMission.Id, operation.Id);
                                         }
                                     }
                                 }
@@ -221,7 +221,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                            baysDataProvider.AssignMissionOperation(message.RequestingBay, wmsMission.Id, newOperation.Id);
+                            baysDataProvider.AssignWmsMission(message.RequestingBay, wmsMission.Id, newOperation.Id);
                         }
                     }
                     else

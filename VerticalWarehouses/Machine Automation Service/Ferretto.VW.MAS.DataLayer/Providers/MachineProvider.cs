@@ -165,6 +165,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetIdentity()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Machines.Select(m => m.Id).Single();
+            }
+        }
+
         public MachineStatistics GetStatistics()
         {
             lock (this.dataContext)

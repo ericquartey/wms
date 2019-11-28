@@ -91,7 +91,7 @@ namespace Ferretto.VW.MAS.MissionManager
                             this.NotifyAssignedMissionOperationChanged(
                                 bay.Number,
                                 bay.CurrentMissionId,
-                                bay.CurrentMissionOperationId,
+                                bay.CurrentWmsMissionOperationId,
                                 pendingMissionOperationsCount);
                         }
                     }
@@ -139,7 +139,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 this.Logger.LogDebug($"Bay {bay.Number}: all the operations (total={mission.Operations.Count}) for mission id='{mission.Id}' are actioned.");
 
-                baysDataProvider.AssignMissionOperation(bay.Number, null, null);
+                baysDataProvider.AssignWmsMission(bay.Number, null, null);
 
                 this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, pendingMissionOperationsCount);
             }
