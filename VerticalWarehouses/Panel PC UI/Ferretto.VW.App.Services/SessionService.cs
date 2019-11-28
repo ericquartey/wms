@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 #if DEBUG
 using System.Windows;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Events;
 
 #else
 using System.Diagnostics;
@@ -19,12 +21,20 @@ namespace Ferretto.VW.App.Services
 
         private readonly INavigationService navigationService;
 
+        private readonly IEventAggregator eventAggregator;
+
+        public UserAccessLevel UserAccessLevel { get; private set; }
+
+        public MachineIdentity MachineIdentity { get; set; }
+
         public SessionService(
             IAuthenticationService autenticationService,
+            IEventAggregator eventAggregator,
             IHealthProbeService healthProbeService,
             INavigationService navigationService)
         {
             this.autenticationService = autenticationService ?? throw new ArgumentNullException(nameof(autenticationService));
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
 
@@ -65,6 +75,15 @@ namespace Ferretto.VW.App.Services
             {
                 return false;
             }
+        }
+
+        public void SetUserAccessLevel(UserAccessLevel userAccessLevel)
+        {
+            this.UserAccessLevel = userAccessLevel;
+
+            this.eventAggregator
+              .GetEvent<UserAccessLevelNotificationPubSubEvent>()
+              .Publish(new UserAccessLevelNotificationMessage(userAccessLevel));
         }
     }
 }

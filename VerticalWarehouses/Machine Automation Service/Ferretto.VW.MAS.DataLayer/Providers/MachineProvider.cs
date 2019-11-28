@@ -222,7 +222,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
 
-            dataContext = dataContext ?? this.dataContext;
+            if (dataContext.IsNull())
+            {
+                dataContext = this.dataContext;
+            }
 
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Vertical));
             this.cache.Remove(ElevatorDataProvider.GetAxisCacheKey(Orientation.Horizontal));

@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Constructors
 
         public ErrorDetailsViewModel(IMachineErrorsWebService machineErrorsWebService)
-            : base(Services.PresentationMode.Installer)
+            : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
 

@@ -51,8 +51,9 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<VerticalAxisSensorsView>();
             containerRegistry.RegisterForNavigation<OtherSensorsView>();
 
-            containerRegistry.RegisterForNavigation<SemiAutoMovementsView>();
+            containerRegistry.RegisterForNavigation<MovementsView>();
 
+            containerRegistry.RegisterForNavigation<SemiAutoMovementsView>();
             containerRegistry.RegisterForNavigation<ManualMovementsView>();
             containerRegistry.RegisterForNavigation<CarouselManualMovementsView>();
             containerRegistry.RegisterForNavigation<HorizontalEngineManualMovementsView>();
@@ -91,6 +92,10 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<ParametersExportView>();
             containerRegistry.RegisterForNavigation<ParametersImportStep1View>();
             containerRegistry.RegisterForNavigation<ParametersImportStep2View>();
+
+            containerRegistry.RegisterForNavigation<CellsLoadingUnitsMenuView>();
+            containerRegistry.RegisterForNavigation<CellsView>();
+            containerRegistry.RegisterForNavigation<LoadingUnitsView>();
 
             containerRegistry.Register<INavigableView, DevicesView>(nameof(DevicesView));
         }

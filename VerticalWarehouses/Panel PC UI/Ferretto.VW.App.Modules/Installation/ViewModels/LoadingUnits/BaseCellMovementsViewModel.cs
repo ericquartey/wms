@@ -9,7 +9,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
-    public class BaseCellMovementsViewModel : BaseMovementsViewModel, IRegionMemberLifetime
+    public class BaseCellMovementsViewModel : BaseMovementsViewModel
     {
         #region Fields
 
@@ -138,8 +138,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         }
 
         public bool IsLoadingUnitInBay => this.sensorsService.IsLoadingUnitInBay;
-
-        public bool KeepAlive => true;
 
         protected IEnumerable<Cell> Cells
         {

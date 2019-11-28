@@ -227,7 +227,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            dataContext = dataContext ?? this.dataContext;
+            if (dataContext.IsNull())
+            {
+                dataContext = this.dataContext;
+            }
 
             dataContext.AddOrUpdate(setupProceduresSet, (e) => e.Id);
             dataContext.AddOrUpdate(setupProceduresSet?.BayHeightCheck, (e) => e.Id);
