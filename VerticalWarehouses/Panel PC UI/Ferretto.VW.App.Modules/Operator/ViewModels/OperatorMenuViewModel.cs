@@ -97,6 +97,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.IsBackNavigationAllowed = true;
+
             await this.machineBaysWebService.ActivateAsync();
         }
 

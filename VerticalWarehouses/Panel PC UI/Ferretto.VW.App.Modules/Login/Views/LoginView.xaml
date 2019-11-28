@@ -38,7 +38,7 @@
                HorizontalAlignment="Right"
                VerticalAlignment="Center"
                RenderOptions.BitmapScalingMode="HighQuality"
-               Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
+               Source="/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
                Stretch="Uniform" />
 
         <TextBlock Grid.Row="1"

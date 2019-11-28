@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using Ferretto.VW.App.Installation.Attributes;
+using Ferretto.VW.App.Modules.Installation.Models;
 
 namespace Ferretto.VW.App.Installation.Resources
 {
@@ -93,6 +94,10 @@ namespace Ferretto.VW.App.Installation.Resources
         [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Spostamento cassetti da cella in baia")]
         MovemetsFromCellToBay,
+
+        [View(Utils.Modules.Installation.CellsLoadingUnitsMenu.MENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Celle e Cassetti")]
+        CellsLoadingUnits,
 
         None,
     }

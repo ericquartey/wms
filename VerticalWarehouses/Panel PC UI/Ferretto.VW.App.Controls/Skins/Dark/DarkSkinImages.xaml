@@ -14,9 +14,9 @@
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_dark.png" />
 
     <BitmapImage x:Key="SpinnerImageSource"
-                 UriSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Images/spinner_pure_white.gif" />
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/spinner_pure_white.gif" />
 
     <BitmapImage x:Key="ThemeImageSource"
-                 UriSource="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_dark.png" />
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_dark.png" />
 
 </ResourceDictionary>
