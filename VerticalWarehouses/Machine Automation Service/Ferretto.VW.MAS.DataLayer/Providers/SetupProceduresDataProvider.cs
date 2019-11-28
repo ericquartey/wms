@@ -227,7 +227,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = setupProceduresSet ?? throw new System.ArgumentNullException(nameof(setupProceduresSet));
 
-            if (dataContext.IsNull())
+            if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }

@@ -230,7 +230,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = machine ?? throw new System.ArgumentNullException(nameof(machine));
 
-            if (dataContext.IsNull())
+            if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }
