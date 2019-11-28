@@ -6,7 +6,7 @@ using Ferretto.VW.MAS.Utils.Messages.FieldInterfaces;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.Messages
 {
-    public class FieldNotificationMessage
+    public class FieldNotificationMessage : Message
     {
         #region Constructors
 

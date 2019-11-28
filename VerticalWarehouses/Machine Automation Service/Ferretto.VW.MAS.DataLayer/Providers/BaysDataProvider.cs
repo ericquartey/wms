@@ -720,6 +720,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
+        public void RemoveLoadingUnit(int loadingUnitId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
+            if (lu is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
+            }
+
+            this.dataContext.LoadingUnits.Remove(lu);
+            this.dataContext.SaveChanges();
+        }
+
         public void ResetMachine()
         {
             lock (this.dataContext)
