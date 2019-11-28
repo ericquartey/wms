@@ -888,9 +888,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(bay));
             }
 
-            this.dataContext.Bays.Update(bay);
+            lock (this.dataContext)
+            {
+                this.dataContext.Bays.Update(bay);
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
 
             this.notificationEvent.Publish(
                 new NotificationMessage(

@@ -1208,19 +1208,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("BayNumber");
-
                     b.Property<DateTime>("CreationDate");
 
+                    b.Property<string>("FsmStateName");
+
+                    b.Property<int?>("LoadingUnitCellSourceId");
+
                     b.Property<int>("LoadingUnitId");
+
+                    b.Property<int>("LoadingUnitSource");
+
+                    b.Property<int>("MissionType");
 
                     b.Property<int>("Priority");
 
                     b.Property<int>("Status");
 
-                    b.Property<int?>("WmsId");
+                    b.Property<int>("TargetBay");
 
-                    b.Property<int>("WmsPriority");
+                    b.Property<int?>("WmsId");
 
                     b.HasKey("Id");
 
@@ -1292,7 +1298,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 1, 28, 9, 36, 30, 705, DateTimeKind.Local).AddTicks(1599),
+                            InstallationDate = new DateTime(2017, 1, 28, 15, 40, 31, 918, DateTimeKind.Local).AddTicks(2233),
                             ServiceStatus = 86
                         });
                 });

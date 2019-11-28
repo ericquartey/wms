@@ -6,6 +6,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -19,18 +21,14 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingProvider> logger;
 
-        private readonly IMachineMissionsProvider machineMissionsProvider;
-
         #endregion
 
         #region Constructors
 
         public MissionSchedulingProvider(
-            IMachineMissionsProvider missionsProvider,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingProvider> logger)
         {
-            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
         }
@@ -62,14 +60,16 @@ namespace Ferretto.VW.MAS.MissionManager
             data.WmsId = wmsMissionId;
             data.TargetBay = targetBayNumber;
 
-            try
-            {
-                this.machineMissionsProvider.TryCreateMachineMission(FSMType.MoveLoadingUnit, data, targetBayNumber, out var missionId);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError($"Failed to start Move Loading Unit Wms mission: {ex.Message}");
-            }
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        data,
+                        $"Wms mission requested; loadingUnitId {loadingUnitId}; Bay {targetBayNumber}",
+                        MessageActor.MissionManager,
+                        MessageActor.MissionManager,
+                        MessageType.MoveLoadingUnit,
+                        targetBayNumber));
 
             return Task.CompletedTask;
         }

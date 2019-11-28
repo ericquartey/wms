@@ -78,7 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
                 var notificationData = new ChangeRunningStateMessageData(
                     messageData.Enable,
-                    machineData.MachineId,
+                    machineData.FsmId,
                     messageData.CommandAction,
                     messageData.StopReason,
                     messageData.Verbosity);

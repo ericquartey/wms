@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -9,19 +7,25 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public BayNumber BayNumber { get; set; }
-
         public DateTime CreationDate { get; set; }
 
+        public string FsmStateName { get; set; }
+
+        public int? LoadingUnitCellSourceId { get; set; }
+
         public int LoadingUnitId { get; set; }
+
+        public LoadingUnitLocation LoadingUnitSource { get; set; }
+
+        public MissionType MissionType { get; set; }
 
         public int Priority { get; set; }
 
         public MissionStatus Status { get; set; }
 
-        public int? WmsId { get; set; }
+        public BayNumber TargetBay { get; set; }
 
-        public int WmsPriority { get; set; }
+        public int? WmsId { get; set; }
 
         #endregion
     }
