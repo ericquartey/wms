@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public override EnableMask EnableMask => EnableMask.Any;
+
         public virtual bool KeepAlive => false;
 
         #endregion

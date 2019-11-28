@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -27,8 +26,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly List<Item> items = new List<Item>();
-
-        private readonly IItemSearchedModel itemSearchViewModel;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -69,14 +66,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
-            IItemSearchedModel itemSearchedModel,
             IBayManager bayManager,
             IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
@@ -175,7 +170,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
-                    this.itemSearchViewModel.SelectedItem = this.selectedItem;
                     this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == this.bayManager.Identity.MachineId)?.AvailableQuantityItem;
                     this.RaiseCanExecuteChanged();
                 }

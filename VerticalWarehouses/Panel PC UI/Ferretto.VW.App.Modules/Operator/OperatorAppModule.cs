@@ -75,7 +75,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<WaitingListDetailView>();
 
             containerRegistry.RegisterForNavigation<OthersNavigationView>();
-            containerRegistry.RegisterForNavigation<ImmediateDrawerCallView>();
+            containerRegistry.RegisterForNavigation<ImmediateLoadingUnitCallView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingView>();
             containerRegistry.RegisterForNavigation<DrawerCompactingDetailView>();
             containerRegistry.RegisterForNavigation<StatisticsNavigationView>();
@@ -88,7 +88,6 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<MaintenanceView>();
             containerRegistry.RegisterForNavigation<MaintenanceDetailView>();
 
-            containerRegistry.Register<ICustomControlDrawerDataGridViewModel, CustomControlDrawerDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();
             containerRegistry.Register<ICustomControlCellStatisticsDataGridViewModel, CustomControlCellStatisticsDataGridViewModel>();

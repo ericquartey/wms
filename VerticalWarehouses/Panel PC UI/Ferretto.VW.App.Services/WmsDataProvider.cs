@@ -47,9 +47,14 @@ namespace Ferretto.VW.App.Services
 
         public async Task PickAsync(int itemId, int requestedQuantity)
         {
+            if (!this.bayManager.Identity.AreaId.HasValue)
+            {
+                return;
+            }
+
             await this.itemsDataService.PickAsync(itemId, new ItemOptions
             {
-                AreaId = this.bayManager.Identity.AreaId,
+                AreaId = this.bayManager.Identity.AreaId.Value,
                 BayId = (int)ConfigurationManager.AppSettings.GetBayNumber(),
                 RequestedQuantity = requestedQuantity,
                 RunImmediately = true

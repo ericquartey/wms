@@ -1,15 +1,15 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Controls.Controls
+namespace Ferretto.VW.App.Operator.Views
 {
     /// <summary>
     /// Interaction logic for CustomControlArticleDataGrid.xaml
     /// </summary>
-    public partial class CustomControlArticleDataGrid : UserControl
+    public partial class ArticleDataGridView : UserControl
     {
         #region Constructors
 
-        public CustomControlArticleDataGrid()
+        public ArticleDataGridView()
         {
             this.InitializeComponent();
         }
