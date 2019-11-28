@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    internal sealed class LoadingUnitsProvider : ILoadingUnitsProvider
+    internal sealed class LoadingUnitsDataProvider : ILoadingUnitsDataProvider
     {
         #region Fields
 
@@ -19,15 +19,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
-        private readonly ILogger<LoadingUnitsProvider> logger;
+        private readonly ILogger<LoadingUnitsDataProvider> logger;
 
         #endregion
 
         #region Constructors
 
-        public LoadingUnitsProvider(
+        public LoadingUnitsDataProvider(
             DataLayerContext dataContext,
-            ILogger<LoadingUnitsProvider> logger)
+            ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -188,7 +188,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
 
-            if (dataContext.IsNull())
+            if (dataContext is null)
             {
                 dataContext = this.dataContext;
             }

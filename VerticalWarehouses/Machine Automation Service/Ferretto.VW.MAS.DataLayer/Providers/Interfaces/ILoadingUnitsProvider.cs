@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 
 namespace Ferretto.VW.MAS.DataLayer
 {
-    public interface ILoadingUnitsProvider
+    public interface ILoadingUnitsDataProvider
     {
         #region Methods
 

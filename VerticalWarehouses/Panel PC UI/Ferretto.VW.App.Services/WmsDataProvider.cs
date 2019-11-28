@@ -49,7 +49,7 @@ namespace Ferretto.VW.App.Services
         {
             await this.itemsDataService.PickAsync(itemId, new ItemOptions
             {
-                AreaId = this.bayManager.Identity.AreaId,
+                AreaId = this.bayManager.Identity.AreaId ?? 0,
                 BayId = (int)ConfigurationManager.AppSettings.GetBayNumber(),
                 RequestedQuantity = requestedQuantity,
                 RunImmediately = true

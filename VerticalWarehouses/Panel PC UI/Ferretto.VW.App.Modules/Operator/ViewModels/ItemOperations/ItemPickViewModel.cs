@@ -1,4 +1,5 @@
-﻿using System.Windows.Input;
+﻿using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -28,6 +29,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async override Task OnAppearedAsync()
+        {
+            await base.OnAppearedAsync();
+
+            this.InputQuantity = this.MissionOperation.RequestedQuantity;
+        }
 
         protected override void ShowOperationDetails()
         {

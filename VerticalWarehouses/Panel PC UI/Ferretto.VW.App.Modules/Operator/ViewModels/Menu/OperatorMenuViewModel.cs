@@ -11,7 +11,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class OperatorMenuViewModel : BaseMainViewModel
+    public class OperatorMenuViewModel : BaseOperatorViewModel
     {
         #region Fields
 

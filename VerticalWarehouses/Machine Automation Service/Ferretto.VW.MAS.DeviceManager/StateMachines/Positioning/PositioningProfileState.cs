@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IBaysDataProvider baysDataProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitProvider;
 
         private readonly IPositioningMachineData machineData;
 
@@ -49,7 +49,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.machineData = stateData.MachineData as IPositioningMachineData;
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-            this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsProvider>();
+            this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
         }
 
         #endregion

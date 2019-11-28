@@ -89,12 +89,12 @@
                                      LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
 
 
-            <controls:PpcLabeledText Grid.Row="4"
+            <!--<controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding ProductionDate}"
-                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />
+                                     LabelText="{x:Static resources:OperatorApp.ProductionDate}" />-->
 
             <controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="2"

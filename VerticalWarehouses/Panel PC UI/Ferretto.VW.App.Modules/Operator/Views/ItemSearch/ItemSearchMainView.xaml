@@ -86,7 +86,7 @@
             <controls:PpcLabeledText Grid.Column="1"
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="{Binding SelectedItem.TotalAvailable, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                     ContentText="{Binding AvailableQuantity, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                      LabelText="{x:Static Resources:OperatorApp.ItemSearchQtyAvailable}" />
 
             <controls:PpcTextBox Grid.Column="2"

@@ -12,7 +12,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsSpaceSaturationViewModel : BaseMainViewModel
+    public class StatisticsSpaceSaturationViewModel : BaseOperatorViewModel
     {
         #region Fields
 

@@ -6,7 +6,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class DrawerCompactingViewModel : BaseMainViewModel
+    public class DrawerCompactingViewModel : BaseOperatorViewModel
     {
         #region Fields
 
