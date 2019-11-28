@@ -91,9 +91,9 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             switch (message.Type)
             {
-                case MessageType.MissionOperationCompleted:
-                    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
-                    break;
+                //case MessageType.MissionOperationCompleted:
+                //    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
+                //    break;
 
                 case MessageType.AssignedMissionOperationChanged:
                     await this.OnOperationChangedAsync(message);
@@ -151,7 +151,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     case CommandAction.Start:
                         try
                         {
-                            if (this.machineMissionsProvider.TryCreateWmsMission(FSMType.MoveLoadingUnit, messageData, out var missionId))
+                            if (this.machineMissionsProvider.TryCreateWmsMission(FsmType.MoveLoadingUnit, messageData, out var missionId))
                             {
                                 try
                                 {

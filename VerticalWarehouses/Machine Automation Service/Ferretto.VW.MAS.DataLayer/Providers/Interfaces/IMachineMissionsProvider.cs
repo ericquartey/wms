@@ -12,25 +12,25 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
     {
         #region Methods
 
-        bool AbortMachineMission(Guid missionId);
+        bool AbortMachineMission(Guid fsmId);
 
-        IMission GetMissionById(Guid missionId);
+        IMission GetMissionById(Guid fsmId);
 
-        List<IMission> GetMissionsByFSMType(FSMType fsmType);
+        List<IMission> GetMissionsByFsmType(FsmType fsmType);
 
-        IEnumerable<IMission> GetMissionsByType(FSMType fsmType, MissionType type);
+        IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type);
 
-        bool PauseMachineMission(Guid missionId);
+        bool PauseMachineMission(Guid fsmId);
 
-        bool ResumeMachineMission(Guid missionId);
+        bool ResumeMachineMission(Guid fsmId);
 
-        bool StartMachineMission(Guid missionId, CommandMessage command);
+        bool StartMachineMission(Guid fsmId, CommandMessage command);
 
-        bool StopMachineMission(Guid missionId, StopRequestReason reason);
+        bool StopMachineMission(Guid fsmId, StopRequestReason reason);
 
-        bool TryCreateMachineMission(FSMType fsmType, CommandMessage command, out Guid missionId);
+        bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid missionId);
 
-        bool TryCreateWmsMission(FSMType fsmType, MoveLoadingUnitMessageData command, out Guid missionId);
+        bool TryCreateWmsMission(FsmType fsmType, MoveLoadingUnitMessageData command, out Guid missionId);
 
         #endregion
     }

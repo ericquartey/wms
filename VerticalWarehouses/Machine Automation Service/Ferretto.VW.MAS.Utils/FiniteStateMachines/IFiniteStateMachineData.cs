@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
     {
         #region Properties
 
-        Guid Id { get; }
+        Guid FsmId { get; }
 
         #endregion
     }

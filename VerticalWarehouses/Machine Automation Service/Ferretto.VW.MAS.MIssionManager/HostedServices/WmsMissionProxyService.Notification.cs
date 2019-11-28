@@ -25,10 +25,10 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             switch (message.Type)
             {
-                //case MessageType.MissionOperationCompleted:
-                //    // this will be handled by the MissionSchedulingService
-                //    await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
-                //    break;
+                case MessageType.MissionOperationCompleted:
+                    // this will be handled by the MissionSchedulingService
+                    await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
+                    break;
 
                 case MessageType.BayOperationalStatusChanged:
                     await this.OnBayOperationalStatusChangedAsync();

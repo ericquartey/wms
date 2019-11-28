@@ -88,3 +88,4 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #endregion
     }
+}

@@ -35,7 +35,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
             this.cancellationTokenSource = new CancellationTokenSource();
             this.CurrentStateMachine = this.serviceScope.ServiceProvider.GetRequiredService<TMachine>();
-            this.Id = this.CurrentStateMachine.InstanceId;
+            this.FsmId = this.CurrentStateMachine.InstanceId;
             this.MachineData = this.CurrentStateMachine.MachineData;
         }
 
@@ -43,13 +43,13 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #region Properties
 
-        public Guid Id { get; }
+        public Guid FsmId { get; }
 
         public IFiniteStateMachineData MachineData { get; set; }
 
         public MissionStatus Status { get; protected set; }
 
-        public FSMType Type { get; protected set; }
+        public FsmType Type { get; protected set; }
 
         protected TMachine CurrentStateMachine { get; }
 
