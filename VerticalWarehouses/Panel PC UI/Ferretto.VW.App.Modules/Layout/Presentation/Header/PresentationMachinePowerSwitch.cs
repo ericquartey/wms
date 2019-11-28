@@ -144,8 +144,6 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         {
             this.IsMachinePoweredOn = machinePowerState == MachinePowerState.Powered;
 
-            System.Diagnostics.Debug.WriteLine($"{machinePowerState.ToString()}");
-
             this.IsBusy =
                 machinePowerState == MachinePowerState.PoweringDown
                 ||
