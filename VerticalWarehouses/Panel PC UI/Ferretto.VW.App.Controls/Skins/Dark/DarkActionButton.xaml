@@ -25,7 +25,7 @@
     <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
                      Color="{DynamicResource EDBGrayC}" />
     <SolidColorBrush x:Key="PpcButtonForegroundPressed"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayF}" />
 
     <!--  <SolidColorBrush x:Key="PpcButtonBackgroundDisabled"
                      Color="Transparent" />

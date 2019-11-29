@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
 using Prism.Commands;
 using Prism.Regions;
 
@@ -24,6 +27,8 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         private bool isClosed;
 
+        private KeyboardDefinition keyboards;
+
         private ICommand minPlusCommand;
 
         private bool morePressKey;
@@ -33,6 +38,20 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         private string screenText;
 
         private string title;
+
+        #endregion
+
+        #region Constructors
+
+        public PpcKeypadsPopupViewModel()
+        {
+            string filename = Path.Combine(
+                @"C:\Source\WMS - Work\VerticalWarehouses\Panel PC UI\Ferretto.VW.App.Controls\Controls\Keyboards\",
+                @"it.json");
+
+            var s = File.ReadAllText(filename);
+            this.Keyboards = JsonConvert.DeserializeObject<KeyboardDefinition>(s);
+        }
 
         #endregion
 
@@ -78,6 +97,12 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         {
             get => this.isClosed;
             set => this.SetProperty(ref this.isClosed, value);
+        }
+
+        public KeyboardDefinition Keyboards
+        {
+            get => this.keyboards;
+            set => this.SetProperty(ref this.keyboards, value);
         }
 
         public ICommand MinPlusCommand =>

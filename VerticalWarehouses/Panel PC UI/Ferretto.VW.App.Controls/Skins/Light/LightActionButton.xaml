@@ -16,9 +16,9 @@
     <SolidColorBrush x:Key="PpcButtonBackgroundPressed"
                      Color="{DynamicResource EDBGrayD}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrushPressed"
-                     Color="{DynamicResource EDBGrayA}" />
+                     Color="{DynamicResource EDBGrayG}" />
     <SolidColorBrush x:Key="PpcButtonForegroundPressed"
-                     Color="{DynamicResource EDBGrayI}" />
+                     Color="{DynamicResource EDBGrayG}" />
 
     <LinearGradientBrush x:Key="PpcButtonBackgroundDisabled" MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
         <GradientStop Offset="0" Color="Transparent" />

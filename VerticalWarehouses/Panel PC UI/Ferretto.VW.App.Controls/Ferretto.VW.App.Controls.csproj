@@ -61,6 +61,8 @@
     <None Remove="Controls\DataGrids\CustomControlCellsDataGrid.xaml" />
     <None Remove="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml" />
     <None Remove="Controls\PpcTextBoxNew.xaml" />
+    <None Remove="Controls\Keyboards\Keyboards.xaml" />
+    <None Remove="Controls\Keyboards\PpcKeyboard.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
@@ -92,6 +94,12 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\PpcTextBoxNew.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Keyboards\Keyboards.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Keyboards\PpcKeyboard.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
@@ -139,10 +147,6 @@
     <None Update="Templates\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\Keyboards\" />
   </ItemGroup>
 
 </Project>
