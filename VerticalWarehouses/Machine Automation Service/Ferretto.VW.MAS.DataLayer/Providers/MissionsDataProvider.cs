@@ -67,11 +67,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
-                        WmsId = wmsId,
-                        Priority = wmsPriority,
-                        LoadingUnitId = loadingUnitId,
-                        TargetBay = bayNumber,
                         CreationDate = DateTime.Now,
+                        LoadingUnitId = loadingUnitId,
+                        LoadingUnitSource = LoadingUnitLocation.LoadingUnit,
+                        MissionType = MissionType.WMS,
+                        Priority = wmsPriority,
+                        Status = MissionStatus.New,
+                        TargetBay = bayNumber,
+                        WmsId = wmsId,
                     });
 
                 this.dataContext.SaveChanges();
@@ -104,6 +107,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Where(m => m.TargetBay == bayNumber)
                     .Where(m => m.Status != MissionStatus.Completed && m.Status != MissionStatus.Aborted)
+                    .OrderBy(o => o.Priority)
+                    .ThenBy(o => o.CreationDate)
                     .ToArray();
             }
         }
@@ -116,6 +121,17 @@ namespace Ferretto.VW.MAS.DataLayer
                     .AsNoTracking()
                     .Where(m => m.WmsId != null)
                     .ToArray();
+            }
+        }
+
+        public Mission GetExecutingMissionInBay(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m => m.TargetBay == bayNumber
+                        && m.Status == MissionStatus.Executing);
             }
         }
 

@@ -33,8 +33,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.MOCK_OnWmsMissionOperationCompletedAsync(message.Data as MissionOperationCompletedMessageData);
                     break;
 
-                case MessageType.BayOperationalStatusChanged:
-                    await this.OnBayOperationalStatusChangedAsync();
+                case MessageType.BayOperationalStatusChanged when message.Data is BayOperationalStatusChangedMessageData:
+                    await this.OnBayOperationalStatusChangedAsync(message.Data as BayOperationalStatusChangedMessageData);
                     break;
 
                 case MessageType.NewWmsMissionAvailable:
@@ -124,9 +124,13 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task OnBayOperationalStatusChangedAsync()
+        private async Task OnBayOperationalStatusChangedAsync(BayOperationalStatusChangedMessageData data)
         {
-            await this.RetrieveNewWmsMissionsAsync();
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                await missionSchedulingProvider.ScheduleMissionsAsync(data.BayNumber);
+            }
         }
 
         private async Task OnDataLayerReadyAsync()
