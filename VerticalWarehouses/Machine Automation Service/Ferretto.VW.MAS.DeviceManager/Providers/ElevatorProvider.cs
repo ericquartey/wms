@@ -241,8 +241,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //           the elevator must be full with pawl in non-zero position
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
             var isChainInZeroPosition = this.machineResourcesProvider.IsSensorZeroOnCradle;
-            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle && loadingUnit != null;
-            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle && loadingUnit is null;
+            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle; // && loadingUnit != null;
+            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle; // && loadingUnit is null;
 
             if (!(isElevatorFull && !isChainInZeroPosition) && !(isElevatorEmpty && isChainInZeroPosition))
             {
@@ -1180,12 +1180,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"MoveToVerticalPosition: {movementMode}; " +
                 $"manualMovement: {manualMovement}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"homing: {homingDone}" +
+                $"homing: {homingDone}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
                 $"speed: {speed[0]}; " +
                 $"acceleration: {acceleration[0]}; " +
                 $"deceleration: {deceleration[0]}; " +
-                $"speed no feedRate: {movementParameters.Speed}; " +
+                $"speed : {movementParameters.Speed}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(

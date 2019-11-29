@@ -132,6 +132,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInTestMode}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Test}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 

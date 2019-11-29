@@ -310,6 +310,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuElevatorCommand?.RaiseCanExecuteChanged();
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.menuOldCommand?.RaiseCanExecuteChanged();
+            this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.viewParametersCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
