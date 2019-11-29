@@ -188,7 +188,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
 
-            dataContext = dataContext ?? this.dataContext;
+            if (dataContext is null)
+            {
+                dataContext = this.dataContext;
+            }
 
             loadingUnits.ForEach((l) => dataContext.AddOrUpdate(l, (e) => e.Id));
 

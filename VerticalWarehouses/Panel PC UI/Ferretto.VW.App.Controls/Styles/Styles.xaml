@@ -12,7 +12,10 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowErrorButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomControlArticleDataGridStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/NotificationSeverityStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/General.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorSquareStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
+
+
 </ResourceDictionary>

@@ -16,7 +16,7 @@ namespace Ferretto.VW.App.Modules.Operator
     "Major Code Smell",
     "S1200:Classes should not be coupled to too many other classes (Single Responsibility Principle)",
     Justification = "This is a container initialization class, so it is ok to be coupled to many types.")]
-    [Module(ModuleName = nameof(Utils.Modules.Installation), OnDemand = true)]
+    [Module(ModuleName = nameof(Utils.Modules.Operator), OnDemand = true)]
     [ModuleDependency(nameof(Utils.Modules.Errors))]
     public class OperatorAppModule : IModule
     {
