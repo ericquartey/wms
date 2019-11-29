@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -22,29 +21,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IItemListsDataService itemListsDataService;
 
-        private readonly Ferretto.VW.App.Modules.Operator.Interfaces.INavigationService navigationService;
-
-        private readonly IWaitListSelectedModel waitListSelectedModel;
-
         private int? areaId;
 
         private int currentItemIndex;
 
-        private ICommand downDataGridButtonCommand;
+        private DelegateCommand downCommand;
 
         private bool isWaitingForResponse;
 
-        private ICommand listDetailButtonCommand;
+        private DelegateCommand listDetailButtonCommand;
 
-        private ICommand listExecuteCommand;
+        private DelegateCommand listExecuteCommand;
 
         private IList<ItemList> lists;
 
+        private int machineId;
+
         private ItemList selectedList;
 
-        private string serialNumber;
-
-        private ICommand upDataGridButtonCommand;
+        private DelegateCommand upCommand;
 
         #endregion
 
@@ -53,14 +48,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
             IItemListsDataService itemListsDataService,
-            IAreasDataService areasDataService,
-            IWaitListSelectedModel waitListSelectedModel)
+            IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
-            this.waitListSelectedModel = waitListSelectedModel ?? throw new ArgumentNullException(nameof(waitListSelectedModel));
 
             this.lists = new List<ItemList>();
         }
@@ -69,9 +62,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownDataGridButtonCommand => this.downDataGridButtonCommand ?? (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false)));
-
-        public override EnableMask EnableMask => EnableMask.Any;
+        public ICommand DownCommand => this.downCommand ?? (this.downCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false), this.CanDown));
 
         public bool IsWaitingForResponse
         {
@@ -97,15 +88,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedList, value))
                 {
-                    this.waitListSelectedModel.SelectedList = this.selectedList;
-
-                    ((DelegateCommand)this.ListExecuteCommand).RaiseCanExecuteChanged();
-                    ((DelegateCommand)this.ListDetailButtonCommand).RaiseCanExecuteChanged();
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
 
-        public ICommand UpDataGridButtonCommand => this.upDataGridButtonCommand ?? (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true)));
+        public ICommand UpCommand => this.upCommand ?? (this.upCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true), this.CanUp));
 
         #endregion
 
@@ -128,6 +116,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.SelectedList = this.lists[this.currentItemIndex];
             }
+
+            this.SelectLoadingUnit();
         }
 
         public async Task ExecuteListAsync()
@@ -153,10 +143,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-            if (this.selectedList != null)
-            {
-                return;
-            }
 
             var machineIdentity = await this.identityService.GetAsync();
             if (machineIdentity == null)
@@ -164,9 +150,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            this.serialNumber = machineIdentity.SerialNumber;
+            this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
+
             await this.LoadListsAsync();
+            this.SelectLoadingUnit();
         }
 
         private bool CanDetailCommand()
@@ -176,6 +164,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.SelectedList != null;
         }
 
+        private bool CanDown()
+        {
+            return
+                this.currentItemIndex < this.lists.Count - 1;
+        }
+
         private bool CanExecuteList()
         {
             if (this.selectedList == null)
@@ -183,12 +177,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return false;
             }
 
-            if (this.selectedList.Machines.Any(m => m.Id.ToString() == this.serialNumber))
+            if (this.selectedList.Machines.Any(m => m.Id == this.machineId))
             {
                 return true;
             }
 
             return false;
+        }
+
+        private bool CanUp()
+        {
+            return
+                this.currentItemIndex > 0;
         }
 
         private void Detail()
@@ -200,10 +200,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Operator),
                     Utils.Modules.Operator.WaitingLists.DETAIL,
-                    null,
+                    this.selectedList,
                     trackCurrentView: true);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -220,10 +220,37 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            this.lists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
-            this.RaisePropertyChanged(nameof(this.Lists));
-            this.currentItemIndex = 0;
-            this.SelectedList = this.lists.FirstOrDefault();
+            try
+            {
+                this.IsWaitingForResponse = true;
+                this.lists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+                this.RaisePropertyChanged(nameof(this.Lists));
+            }
+            catch (Exception ex)
+            {
+                this.lists?.Clear();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+                this.currentItemIndex = 0;
+                this.SelectedList = this.lists.FirstOrDefault();
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.upCommand?.RaiseCanExecuteChanged();
+            this.downCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+            this.listDetailButtonCommand.RaiseCanExecuteChanged();
+        }
+
+        private void SelectLoadingUnit()
+        {
+            this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
+            this.RaiseCanExecuteChanged();
         }
 
         #endregion

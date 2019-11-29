@@ -1,12 +1,12 @@
 ﻿using System.Windows.Controls;
 
-namespace Ferretto.VW.App.Controls.Controls
+namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class CustomControlListDataGrid : UserControl
+    public partial class ListDetailsDataGridView : UserControl
     {
         #region Constructors
 
-        public CustomControlListDataGrid()
+        public ListDetailsDataGridView()
         {
             this.InitializeComponent();
         }

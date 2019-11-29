@@ -1190,4 +1190,7 @@
     <value>Quantity detected</value>
     <comment>Label text</comment>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Status</value>
+  </data>
 </root>

@@ -193,14 +193,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            if (this.items != null
-               &&
-               this.selectedItem != null)
-            {
-                return;
-            }
-
-            this.currentItemIndex = 0;
             this.InputQuantity = null;
             this.items.Clear();
             var machineIdentity = await this.identityService.GetAsync();
@@ -208,6 +200,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.tokenSource = new CancellationTokenSource();
 
             await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+
+            this.SetSelectedItem();
         }
 
         public async Task RequestItemPickAsync()
@@ -297,7 +291,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
             }
 
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            this.SetSelectedItem();
         }
 
         public async Task SelectPreviousItemAsync()
@@ -360,6 +354,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.showItemDetailsCommand?.RaiseCanExecuteChanged();
             this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
             this.selectNextItemCommand?.RaiseCanExecuteChanged();
+        }
+
+        private void SetSelectedItem()
+        {
+            this.SelectedItem = this.items?.ElementAt(this.currentItemIndex);
         }
 
         private void ShowItemDetails()

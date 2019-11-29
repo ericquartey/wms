@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ??
             (this.loadingUnitCallCommand = new DelegateCommand(
                 async () => await this.RequestLoadingUnitCallAsync(),
-                this.CanRequestLOadingUnitCall));
+                this.CanRequestLoadingUnitCall));
 
         public int? LoadingUnitId
         {
@@ -212,11 +212,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.currentItemIndex--;
-            this.SelectedLoadingUnit = this.loadingUnits.ElementAt(this.currentItemIndex);
             this.SelectLoadingUnit();
         }
 
-        private bool CanRequestLOadingUnitCall()
+        private bool CanRequestLoadingUnitCall()
         {
             return
                 this.SelectedLoadingUnit != null

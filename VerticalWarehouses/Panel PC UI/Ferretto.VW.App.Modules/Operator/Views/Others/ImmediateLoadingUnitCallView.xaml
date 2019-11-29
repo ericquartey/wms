@@ -71,7 +71,7 @@
 
             <controls:PpcLabeledText HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
-                                     ContentText="Cassetto bloccato."
+                                     ContentText="{Binding SelectedLoadingUnit.Description, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
                                      LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
             <ctrls:PpcSpinEdit   Grid.Column="1"

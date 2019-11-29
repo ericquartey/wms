@@ -939,4 +939,7 @@
   <data name="InventoryQuantityDetected" xml:space="preserve">
     <value>Quantità rilevata.</value>
   </data>
+  <data name="Status" xml:space="preserve">
+    <value>Stato</value>
+  </data>
 </root>

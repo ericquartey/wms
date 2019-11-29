@@ -57,8 +57,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 Id = machine.Id,
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
-                TrayCount = loadingUnits.Count(),
-                MachineId = 2, // TODO remove this hardcoded value
+                TrayCount = loadingUnits.Count(),                
                 MaxGrossWeight = machine.MaxGrossWeight,
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
