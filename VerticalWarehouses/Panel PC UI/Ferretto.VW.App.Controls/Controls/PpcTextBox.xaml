@@ -16,7 +16,6 @@
                  Background="{Binding Background}"
                  BorderBrush="{Binding BorderColor}"
                  KeyDown="OnKeyDownHandler"
-                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  TouchEnter="OnKeyboardOpenHandler"
                  Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <TextBox.Style>
