@@ -52,6 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.messageData = messageData;
                 this.moveData = moveData;
+                moveData.FsmStateName = this.GetType().Name;
             }
 
             this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, commandMessage.RequestingBay);
@@ -77,7 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             this.messageData.LoadingUnitId,
                             this.messageData.InsertLoadingUnit,
                             this.messageData.EjectLoadingUnit,
-                            this.moveData.MachineId,
+                            this.moveData.FsmId,
                             this.messageData.CommandAction,
                             this.messageData.StopReason,
                             this.messageData.Verbosity);
@@ -91,6 +92,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             notification.RequestingBay,
                             notification.TargetBay,
                             MessageStatus.OperationWaitResume);
+
+                        if (this.moveData.WmsId.HasValue)
+                        {
+                            this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(notification.RequestingBay, this.moveData.WmsId.Value);
+                        }
 
                         returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -165,6 +166,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return MessageStatus.NotSpecified;
+        }
+
+        public void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId)
+        {
+            var data = new AssignedMissionOperationChangedMessageData
+            {
+                BayNumber = bayNumber,
+                MissionId = missionId
+            };
+
+            this.PublishNotification(
+                data,
+                $"Mission operation assigned to bay {bayNumber} has changed.",
+                MessageActor.MissionManager,
+                MessageActor.MachineManager,
+                MessageType.AssignedMissionOperationChanged,
+                bayNumber,
+                BayNumber.None,
+                MessageStatus.OperationExecuting,
+                ErrorLevel.None);
         }
 
         /// <summary>

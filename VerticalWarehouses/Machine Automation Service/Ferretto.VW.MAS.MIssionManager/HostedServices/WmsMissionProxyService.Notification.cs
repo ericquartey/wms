@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -19,7 +18,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterNotification(NotificationMessage notification)
         {
-            return true;
+            return
+                notification.Destination is CommonUtils.Messages.Enumerations.MessageActor.Any
+                ||
+                notification.Destination is CommonUtils.Messages.Enumerations.MessageActor.MissionManager;
         }
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)

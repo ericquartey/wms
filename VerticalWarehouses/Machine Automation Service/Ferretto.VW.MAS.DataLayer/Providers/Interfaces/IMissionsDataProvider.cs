@@ -12,11 +12,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority);
 
+        void Delete(int? id);
+
         IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber);
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        Mission SetStatus(int id, MissionStatus executing);
+        Mission SetStatus(int id, MissionStatus status);
+
+        void Update(Mission mission);
 
         #endregion
     }

@@ -138,7 +138,7 @@ namespace Ferretto.VW.MAS.DataModels
         {
             if (loadingUnit is null)
             {
-                return this.EmptyLoadMovement;
+                return this.FullLoadMovement;
             }
 
             var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;

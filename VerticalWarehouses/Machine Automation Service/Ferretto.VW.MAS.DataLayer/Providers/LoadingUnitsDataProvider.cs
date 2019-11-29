@@ -126,15 +126,18 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                LoadingUnit loadingUnits = new LoadingUnit
+                if (!this.dataContext.LoadingUnits.Any(a => a.Id.Equals(loadingUnitsId)))
                 {
-                    Id = loadingUnitsId,
-                    Tare = 120,
-                    MaxNetWeight = 800,
-                };
-                this.dataContext.LoadingUnits.Add(loadingUnits);
+                    LoadingUnit loadingUnits = new LoadingUnit
+                    {
+                        Id = loadingUnitsId,
+                        Tare = 120,
+                        MaxNetWeight = 800,
+                    };
+                    this.dataContext.LoadingUnits.Add(loadingUnits);
 
-                this.dataContext.SaveChanges();
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 

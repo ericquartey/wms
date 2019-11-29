@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -8,7 +9,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task AbortAsync(int id);
 
-        Task CompleteAsync(int id, double quantity);
+        Task CompleteAsync(int wmsId, double quantity);
 
         #endregion
     }
