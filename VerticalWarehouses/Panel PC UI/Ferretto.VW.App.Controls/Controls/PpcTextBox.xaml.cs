@@ -93,14 +93,25 @@ namespace Ferretto.VW.App.Controls.Controls
             switch (this.Keyboard)
             {
                 case KeyboardType.QWERTY:
-                    var ppcKeyboard = new Keyboards.Keyboards();
+                    var ppcKeyboard = new PpcKeyboard();
                     var vmKeyboard = new PpcKeypadsPopupViewModel();
-                    ppcKeyboard.Keyboardsss = vmKeyboard.Keyboards;
+                    ppcKeyboard.DataContext = vmKeyboard;
                     vmKeyboard.Update(this.LabelText, this.InputText?.ToString() ?? string.Empty);
                     ppcKeyboard.Topmost = false;
                     ppcKeyboard.ShowInTaskbar = false;
                     PpcMessagePopup.ShowDialog(ppcKeyboard);
                     this.InputText = vmKeyboard.ScreenText;
+                    break;
+
+                case KeyboardType.Multi:
+                    var keyboard = new Keyboards.Keyboards();
+                    var vmMulti = new PpcKeypadsPopupViewModel();
+                    keyboard.Keyboardsss = vmMulti.Keyboards;
+                    vmMulti.Update(this.LabelText, this.InputText?.ToString() ?? string.Empty);
+                    keyboard.Topmost = false;
+                    keyboard.ShowInTaskbar = false;
+                    PpcMessagePopup.ShowDialog(keyboard);
+                    this.InputText = vmMulti.ScreenText;
                     break;
 
                 case KeyboardType.NumpadCenter:

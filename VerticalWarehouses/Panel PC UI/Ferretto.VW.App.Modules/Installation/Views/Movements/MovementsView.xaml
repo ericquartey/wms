@@ -14,57 +14,6 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <ctrls:View.Resources>
-        <Style x:Key="BorderStyle"
-               TargetType="{x:Type Border}">
-            <Setter Property="BorderThickness" Value="3" />
-            <Setter Property="BorderBrush" Value="{Binding FerrettoRed}" />
-            <!--<Border.Effect>
-                    <DropShadowEffect BlurRadius="6"
-                                      Opacity="0.5"
-                                      RenderingBias="Quality"
-                                      ShadowDepth="3"
-                                      Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-                </Border.Effect>-->
-            <!--<Border.Style>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="BorderBrush" Value="{Binding FerrettoRed}" />
-            -->
-            <!--<Style.Resources>
-                            <Storyboard x:Key="AnimationGuided">
-                                <ColorAnimation FillBehavior="HoldEnd"
-                                                Storyboard.TargetProperty="BorderBrush.Color"
-                                                To="{Binding FerrettoBlue}"
-                                                Duration="0:0:0.5" />
-                            </Storyboard>
-                            <Storyboard x:Key="AnimationManual">
-                                <ColorAnimation FillBehavior="HoldEnd"
-                                                Storyboard.TargetProperty="BorderBrush.Color"
-                                                To="{Binding FerrettoRed}"
-                                                Duration="0:0:0.5" />
-                            </Storyboard>
-                        </Style.Resources>-->
-            <!--<Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMovementsGuided}"
-                                         Value="true">
-            -->
-            <!--<DataTrigger.EnterActions>
-                                    <BeginStoryboard Storyboard="{StaticResource AnimationGuided}" />
-                                </DataTrigger.EnterActions>
-                                <DataTrigger.ExitActions>
-                                    <BeginStoryboard Storyboard="{StaticResource AnimationManual}" />
-                                </DataTrigger.ExitActions>-->
-            <!--
-                                <Setter Property="BorderBrush" Value="{Binding FerrettoBlue}" />
-                            </DataTrigger>
-                        </Style.Triggers>-->
-            <!--
-                    </Style>
-                </Border.Style>-->
-
-        </Style>
-    </ctrls:View.Resources>
-
     <Grid Margin="15,15,15,0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -84,32 +33,58 @@
             <controls:CardSensor Grid.Row="0"
                                  Width="250"
                                  Margin="0,0,15,15"
-                                 CardText="Cassetto" />
+                                 CardBadge1="23"
+                                 CardBadge2="99"
+                                 CardBadgeLabel1="Elevatore"
+                                 CardBadgeLabel2="Posizione"
+                                 CardText="Cassetto"
+                                 HasWithBadge1="HasWithBadge1"
+                                 HasWithBadge2="sssss" />
             <controls:CardSensor Grid.Row="1"
                                  Width="250"
                                  Margin="0,0,15,15"
+                                 CardLabelSensor1="Zero"
+                                 CardLabelSensor2="Sopra"
+                                 CardLabelSensor3="Sotto"
                                  CardText="Baia"
-                                 CardValue="9999.99" />
+                                 CardValue="9999.99"
+                                 HasWithBadge1="HasWithBadge1"
+                                 HasWithBadge2="HasWithBadge2" />
             <controls:CardSensor Grid.Row="2"
                                  Width="250"
                                  Margin="0,0,15,15"
+                                 CardLabelSensor1="Zero"
+                                 CardLabelSensor2="Front"
+                                 CardLabelSensor3="Brack"
                                  CardText="Orizzontale (mm)"
-                                 CardValue="9999.99" />
+                                 CardValue="9999.99"
+                                 HasWithBadge1="HasWithBadge1"
+                                 HasWithBadge2="HasWithBadge2" />
             <controls:CardSensor Grid.Row="3"
                                  Width="250"
                                  Margin="0,0,15,15"
+                                 CardLabelSensor1="Zero"
+                                 CardLabelSensor2="Front"
+                                 CardLabelSensor3="Brack"
                                  CardText="Verticale (mm)"
-                                 CardValue="9999.99" />
+                                 CardValue="9999.99"
+                                 HasWithBadge1="HasWithBadge1"
+                                 HasWithBadge2="HasWithBadge2" />
             <controls:CardSensor Grid.Row="4"
                                  Width="250"
                                  Margin="0,0,15,15"
+                                 CardBadge1="44"
                                  CardText="Posizione"
-                                 CardValue="In Cella" />
+                                 CardValue="In Cella"
+                                 HasWithBadge1=""
+                                 HasWithBadge2="HasWithBadge2" />
             <controls:CardSensor Grid.Row="5"
                                  Width="250"
                                  Margin="0,0,15,0"
                                  CardText="Serranda"
-                                 CardValue="Aperta" />
+                                 CardValue="Aperta"
+                                 HasWithBadge1="HasWithBadge1"
+                                 HasWithBadge2="HasWithBadge2" />
         </Grid>
 
         <Grid Grid.Column="1">
@@ -125,38 +100,46 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Margin="0"
+                <TextBlock Margin="10,0,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Bottom"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                            Text="{Binding Title}" />
 
                 <controls:PpcButton Grid.Column="1"
-                                    Margin="15,0,0,1"
+                                    Margin="0,0,0,0"
                                     BorderBrush="{DynamicResource FerrettoBlue}"
-                                    BorderThickness="0,0,0,2"
                                     Command="{Binding GoToMovementsGuidedCommand}"
                                     Content="Guidati"
                                     IsActive="{Binding IsMovementsGuided}"
                                     IsEnabled="{Binding IsMovementsManual}" />
 
                 <controls:PpcButton Grid.Column="2"
-                                    Margin="15,0,0,1"
+                                    Margin="0,0,0,0"
                                     BorderBrush="{DynamicResource FerrettoRed}"
-                                    BorderThickness="0,0,0,2"
                                     Command="{Binding GoToMovementsManualCommand}"
                                     Content="Manuali"
                                     IsActive="{Binding IsMovementsManual}"
                                     IsEnabled="{Binding IsMovementsGuided}" />
             </Grid>
 
-            <Border x:Name="Body"
-                    Grid.Row="1"
-                    BorderBrush="{DynamicResource FerrettoBlue}"
-                    BorderThickness="0,3,0,0"
-                    Style="{Binding BorderStyle}">
-
-                <Grid Margin="5">
+            <Border Grid.Row="1">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderThickness" Value="0,3,0,0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMovementsGuided}"
+                                         Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMovementsManual}"
+                                         Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid Margin="0,10,0,-5">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
@@ -215,14 +198,14 @@
                                            Margin="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
-                                           ButtonSize="50"
+                                           ButtonSize="45"
                                            EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsEnabled="{Binding CanInputLoadingUnitId}"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
                                            Mask="#0"
-                                           WidthNumber="200" />
+                                           WidthNumber="250" />
                         <!--  {x:Static res:InstallationApp.DrawerNumber}  -->
 
                         <controls:PpcButton Grid.Row="1"

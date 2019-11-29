@@ -6,7 +6,7 @@
     <SolidColorBrush x:Key="PpcButtonBackground"
                      Color="{DynamicResource EDBGrayC}" />
     <SolidColorBrush x:Key="PpcButtonBorderBrush"
-                     Color="{DynamicResource EDBGrayH}" />
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcMenuButtonBorderBrush"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcButtonForeground"

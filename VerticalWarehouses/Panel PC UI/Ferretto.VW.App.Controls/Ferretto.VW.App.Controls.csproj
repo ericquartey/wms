@@ -65,6 +65,12 @@
     <None Remove="Controls\Keyboards\PpcKeyboard.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
+    <None Remove="Resources\de.json" />
+    <None Remove="Resources\en.json" />
+    <None Remove="Resources\es.json" />
+    <None Remove="Resources\it.json" />
+    <None Remove="Resources\ru.json" />
+    <None Remove="Resources\tr.json" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
     <None Remove="Skins\Dark\DarkPpcBadge.xaml" />
     <None Remove="Skins\DXStyle.xaml" />
@@ -81,6 +87,15 @@
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\de.json" />
+    <EmbeddedResource Include="Resources\en.json" />
+    <EmbeddedResource Include="Resources\es.json" />
+    <EmbeddedResource Include="Resources\it.json" />
+    <EmbeddedResource Include="Resources\ru.json" />
+    <EmbeddedResource Include="Resources\tr.json" />
   </ItemGroup>
 
   <ItemGroup>

@@ -16,11 +16,12 @@
                  Background="{Binding Background}"
                  BorderBrush="{Binding BorderColor}"
                  KeyDown="OnKeyDownHandler"
-                 TouchEnter="OnKeyboardOpenHandler"
-                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                 MouseDoubleClick="OnKeyboardOpenHandler"
+                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 TouchEnter="OnKeyboardOpenHandler">
             <TextBox.Style>
-                <Style TargetType="{x:Type TextBox}"
-                       BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}">
+                <Style BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                       TargetType="{x:Type TextBox}">
                     <Setter Property="Margin" Value="0,3,5,5" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=TextBlock_LabelText, Path=Text}"

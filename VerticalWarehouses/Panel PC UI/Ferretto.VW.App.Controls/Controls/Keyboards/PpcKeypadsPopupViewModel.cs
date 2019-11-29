@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Xml.Serialization;
@@ -45,12 +46,14 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
 
         public PpcKeypadsPopupViewModel()
         {
-            string filename = Path.Combine(
-                @"C:\Source\WMS - Work\VerticalWarehouses\Panel PC UI\Ferretto.VW.App.Controls\Controls\Keyboards\",
-                @"it.json");
+            var stream2 = Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
-            var s = File.ReadAllText(filename);
-            this.Keyboards = JsonConvert.DeserializeObject<KeyboardDefinition>(s);
+            using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Ferretto.VW.App.Controls.Resources.it.json"))
+            {
+                TextReader tr = new StreamReader(stream);
+                string fileContents = tr.ReadToEnd();
+                this.Keyboards = JsonConvert.DeserializeObject<KeyboardDefinition>(fileContents);
+            }
         }
 
         #endregion
