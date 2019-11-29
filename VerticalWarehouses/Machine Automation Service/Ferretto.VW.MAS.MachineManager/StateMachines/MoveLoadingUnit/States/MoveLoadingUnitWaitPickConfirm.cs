@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private readonly IBaysDataProvider baysDataProvider;
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
@@ -37,6 +39,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitWaitPickConfirm(
             IBaysDataProvider baysDataProvider,
+            IMissionsDataProvider missionsDataProvider,
             ICellsProvider cellsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             ISensorsProvider sensorsProvider,
@@ -47,6 +50,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
@@ -70,7 +74,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(commandMessage.RequestingBay, this.mission.WmsId.Value);
 
-            ((IMoveLoadingUnitMachineData)machineData).FsmStateName = this.GetType().Name;
+            this.mission.FsmStateName = this.GetType().Name;
+            this.missionsDataProvider.Update(this.mission);
         }
 
         protected override IState OnResume(CommandMessage commandMessage)
