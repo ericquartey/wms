@@ -9,6 +9,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         public DateTime CreationDate { get; set; }
 
+        public int? DestinationCellId { get; set; }
+
+        public Guid FsmId { get; set; }
+
         public string FsmStateName { get; set; }
 
         public int? LoadingUnitCellSourceId { get; set; }

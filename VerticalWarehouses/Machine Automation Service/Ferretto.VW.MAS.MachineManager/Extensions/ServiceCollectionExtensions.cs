@@ -49,7 +49,8 @@ namespace Ferretto.VW.MAS.MachineManager
                 .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
                 .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
                 .AddTransient<IMoveLoadingUnitWaitEjectConfirm, MoveLoadingUnitWaitEjectConfirm>()
-                .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>();
+                .AddTransient<IMoveLoadingUnitWaitEjectConfirm, MoveLoadingUnitWaitEjectConfirm>()
+                .AddTransient<IMoveLoadingUnitWaitPickConfirm, MoveLoadingUnitWaitPickConfirm>();
 
             return services;
         }

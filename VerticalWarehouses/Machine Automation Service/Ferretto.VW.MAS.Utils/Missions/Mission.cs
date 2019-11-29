@@ -85,9 +85,9 @@ namespace Ferretto.VW.MAS.Utils.Missions
             this.CurrentStateMachine.Completed -= endHandler;
         }
 
-        public void ResumeMachineMission()
+        public void ResumeMachineMission(CommandMessage command)
         {
-            this.CurrentStateMachine.Resume();
+            this.CurrentStateMachine.Resume(command);
         }
 
         public void StartMachine(CommandMessage command)

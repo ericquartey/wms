@@ -21,16 +21,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<LoadingUnitsDataProvider> logger;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
 
         public LoadingUnitsDataProvider(
             DataLayerContext dataContext,
+            IMachineProvider machineProvider,
             ILogger<LoadingUnitsDataProvider> logger)
         {
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
         }
 
         #endregion
@@ -124,13 +128,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Insert(int loadingUnitsId)
         {
+            var machine = this.machineProvider.Get();
             lock (this.dataContext)
             {
                 LoadingUnit loadingUnits = new LoadingUnit
                 {
                     Id = loadingUnitsId,
-                    Tare = 120,
-                    MaxNetWeight = 800,
+                    Tare = machine.LoadUnitTare,
+                    MaxNetWeight = machine.LoadUnitMaxNetWeight,
                 };
                 this.dataContext.LoadingUnits.Add(loadingUnits);
 

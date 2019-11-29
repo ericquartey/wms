@@ -4,6 +4,8 @@
     {
         Start,
 
+        Activate,
+
         Pause,
 
         Resume,

@@ -30,7 +30,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         void RemoveHandler(EventHandler<FiniteStateMachinesEventArgs> endHandler);
 
-        void ResumeMachineMission();
+        void ResumeMachineMission(CommandMessage command);
 
         void StartMachine(CommandMessage command);
 

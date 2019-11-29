@@ -147,4 +147,7 @@
   <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
     <value>La cella specificata non è situata entro i limiti verticali dell'elevatore.</value>
   </data>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>Non ci sono celle disponibili in magazzino.</value>
+  </data>
 </root>
