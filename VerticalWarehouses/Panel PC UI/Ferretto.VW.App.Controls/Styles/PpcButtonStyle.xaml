@@ -42,12 +42,13 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 CornerRadius="{DynamicResource PpcCornerRadius}">
 
-                            <Grid x:Name="PpcButton_Grid">
+                            <Grid x:Name="PpcButton_Grid"
+                                  Margin="{DynamicResource PpcButtonBorderThicknessActive}">
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition/>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
-                                
+
                                 <ProgressBar Height="{TemplateBinding Height}"
                                              Margin="10"
                                              VerticalAlignment="Bottom"
