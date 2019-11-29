@@ -1,7 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Controls;
 
-namespace Ferretto.VW.App.Controls.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface ISensorsService
     {

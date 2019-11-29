@@ -28,7 +28,8 @@ namespace Ferretto.VW.App.Services
         public MachineService(
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService,
-            IMachineCarouselWebService machineCarouselWebService)
+            IMachineCarouselWebService machineCarouselWebService,
+            ISensorsService sensorsService)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));

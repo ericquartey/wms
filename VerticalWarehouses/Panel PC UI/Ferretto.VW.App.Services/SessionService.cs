@@ -1,15 +1,14 @@
-﻿using System;
-using System.Configuration;
-using System.Threading.Tasks;
-
-#if DEBUG
+﻿#if DEBUG
 using System.Windows;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Prism.Events;
-
 #else
 using System.Diagnostics;
 #endif
+
+using System;
+using System.Configuration;
+using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Services
 {
