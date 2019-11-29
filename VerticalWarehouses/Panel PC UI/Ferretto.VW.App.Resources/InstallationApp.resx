@@ -1286,4 +1286,7 @@
   <data name="InBayWithNumber" xml:space="preserve">
     <value>in Bay {0}</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
 </root>

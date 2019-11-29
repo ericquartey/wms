@@ -1212,4 +1212,7 @@
   <data name="InBayWithNumber" xml:space="preserve">
     <value>in Baia {0}</value>
   </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
 </root>

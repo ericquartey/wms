@@ -139,7 +139,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 };
                 this.dataContext.LoadingUnits.Add(loadingUnits);
 
-                this.dataContext.SaveChanges();
+                    this.dataContext.SaveChanges();
+                }
             }
         }
 
