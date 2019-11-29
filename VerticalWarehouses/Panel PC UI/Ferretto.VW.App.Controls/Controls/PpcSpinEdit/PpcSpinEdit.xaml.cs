@@ -18,6 +18,12 @@ namespace Ferretto.VW.App.Controls
             typeof(SolidColorBrush),
             typeof(PpcSpinEdit));
 
+        public static readonly DependencyProperty ButtonSizeProperty = DependencyProperty.Register(
+            nameof(ButtonSize),
+            typeof(double),
+            typeof(PpcSpinEdit),
+            new PropertyMetadata(60D, new PropertyChangedCallback(OnButtonSizeChanged)));
+
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
             nameof(Highlighted),
             typeof(bool),
@@ -66,7 +72,7 @@ namespace Ferretto.VW.App.Controls
             new PropertyMetadata(null));
 
         public static DependencyProperty KeyboardOpenCommandProperty = DependencyProperty.Register(
-                    nameof(KeyboardOpenCommand),
+            nameof(KeyboardOpenCommand),
             typeof(ICommand),
             typeof(PpcSpinEdit),
             new PropertyMetadata(null));
@@ -109,6 +115,12 @@ namespace Ferretto.VW.App.Controls
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
             set => this.SetValue(BorderColorProperty, value);
+        }
+
+        public double ButtonSize
+        {
+            get => (double)this.GetValue(ButtonSizeProperty);
+            set => this.SetValue(ButtonSizeProperty, value);
         }
 
         public object EditValue
@@ -211,6 +223,19 @@ namespace Ferretto.VW.App.Controls
             }
 
             return property;
+        }
+
+        private static void OnButtonSizeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcSpinEdit ppcSpinEdit
+                &&
+                e.NewValue is double val)
+            {
+                ppcSpinEdit.Button_Add.Height = val;
+                ppcSpinEdit.Button_Add.Width = val;
+                ppcSpinEdit.Button_Min.Height = val;
+                ppcSpinEdit.Button_Min.Width = val;
+            }
         }
 
         private static void OnIncrementChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

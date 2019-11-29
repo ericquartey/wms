@@ -15,4 +15,16 @@
     <sys:Double x:Key="FontSize_High">18</sys:Double>
     <sys:Double x:Key="FontSize_Very_High">28</sys:Double>
 
+    <CornerRadius x:Key="PpcCornerRadius"
+                  BottomLeft="0"
+                  BottomRight="0"
+                  TopLeft="0"
+                  TopRight="0" />
+
+    <Thickness x:Key="PpcBorderThickness"
+               Bottom="2"
+               Left="2"
+               Right="2"
+               Top="2" />
+
 </ResourceDictionary>

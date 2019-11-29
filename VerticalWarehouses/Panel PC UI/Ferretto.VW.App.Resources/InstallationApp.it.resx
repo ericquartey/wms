@@ -1215,4 +1215,10 @@
   <data name="Test" xml:space="preserve">
     <value>Test</value>
   </data>
+  <data name="MovementsGuided" xml:space="preserve">
+    <value>Movimenti Guidati</value>
+  </data>
+  <data name="MovementsManual" xml:space="preserve">
+    <value>Movimenti Manuali</value>
+  </data>
 </root>

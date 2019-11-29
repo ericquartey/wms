@@ -30,8 +30,8 @@
                                        Grid.Column="2"
                                        VerticalAlignment="Stretch"
                                        MouseDoubleClick="OnKeyboardOpenHandler"
-                                       TouchEnter="OnKeyboardOpenHandler"
-                                       Template="{TemplateBinding ActualEditorControlTemplate}" />
+                                       Template="{TemplateBinding ActualEditorControlTemplate}"
+                                       TouchEnter="OnKeyboardOpenHandler" />
                     <dxe:ButtonsControl x:Name="PART_RightButtons"
                                         Grid.Column="3"
                                         Background="Transparent"
@@ -61,8 +61,18 @@
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
         <TextBlock Margin="0,1,5,1"
-                   Style="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
-                   Text="{Binding LabelText}" />
+                   Text="{Binding LabelText}">
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"
+                       TargetType="{x:Type TextBlock}">
+                    <Style.Triggers>
+                        <Trigger Property="Text" Value="">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
         <dxe:SpinEdit Name="InnerSpinEdit"
                       Width="{Binding WidthNumber, FallbackValue=250}"
                       Margin="0,3,5,5"
@@ -76,7 +86,8 @@
                                 IsLeft="True"
                                 TextBlock.FontSize="20">
                     <dxe:ButtonInfo.Content>
-                        <Grid Width="60"
+                        <Grid x:Name="Button_Min"
+                              Width="60"
                               Height="60"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">
@@ -93,7 +104,8 @@
                 <dxe:ButtonInfo Command="{Binding SpinUpCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=dxe:SpinEdit}}"
                                 TextBlock.FontSize="20">
                     <dxe:ButtonInfo.Content>
-                        <Grid Width="60"
+                        <Grid x:Name="Button_Add"
+                              Width="60"
                               Height="60"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch">

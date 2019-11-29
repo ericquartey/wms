@@ -27,10 +27,7 @@ namespace Ferretto.VW.App.Controls.Controls
                 nameof(IsChecked),
                 typeof(bool?),
                 typeof(PpcCheckBox),
-                new FrameworkPropertyMetadata(
-                    false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                    null, null, false, UpdateSourceTrigger.PropertyChanged
-                ));
+                new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsThreeStateProperty =
             DependencyProperty.Register(

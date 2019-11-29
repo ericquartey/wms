@@ -16,47 +16,65 @@
                         <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
                                                                    Invert="True" />
                     </ControlTemplate.Resources>
+                    <Grid>
+                        <Border Name="PpcButton_Border"
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource PpcCornerRadius}"
+                                Cursor="Hand"
+                                FlowDirection="LeftToRight">
+                            <!--<Border.Effect>
+                                <DropShadowEffect BlurRadius="6"
+                                                  Opacity="0.5"
+                                                  RenderingBias="Quality"
+                                                  ShadowDepth="3"
+                                                  Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
+                            </Border.Effect>-->
+                        </Border>
 
-                    <Border Name="PpcButton_Border"
-                            Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}"
-                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            Cursor="Hand"
-                            FlowDirection="LeftToRight">
-                        <Grid>
-                            <ProgressBar Height="{TemplateBinding Height}"
-                                         VerticalAlignment="Bottom"
-                                         Background="Transparent"
-                                         BorderBrush="Transparent"
-                                         Foreground="{DynamicResource PpcButtonForeground}"
-                                         IsIndeterminate="True"
-                                         Opacity="0.2"
-                                         Visibility="{TemplateBinding IsBusy,
-                                                                      Converter={StaticResource BTVC}}" />
+                        <Border Margin="1"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{x:Null}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="{DynamicResource PpcCornerRadius}">
 
-                            <TextBlock Grid.Column="1"
-                                       Margin="10,5,10,5"
-                                       HorizontalAlignment="Stretch"
-                                       VerticalAlignment="Center"
-                                       Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                       TextAlignment="Center"
-                                       TextWrapping="Wrap" />
+                            <Grid>
+                                <ProgressBar Height="{TemplateBinding Height}"
+                                             Margin="10"
+                                             VerticalAlignment="Bottom"
+                                             Background="Transparent"
+                                             BorderBrush="Transparent"
+                                             Foreground="{DynamicResource PpcButtonForeground}"
+                                             IsIndeterminate="True"
+                                             Opacity="0.2"
+                                             Visibility="{TemplateBinding IsBusy,
+                                                                          Converter={StaticResource BTVC}}" />
 
-                            <controls:PpcIcon Height="24"
-                                              Margin="20,5,20,5"
-                                              HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                              ColorizeBrush="{DynamicResource PpcButtonForeground}"
-                                              ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                              Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+                                <TextBlock Grid.Column="1"
+                                           Margin="10,5,10,5"
+                                           HorizontalAlignment="Stretch"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                           TextAlignment="Center"
+                                           TextWrapping="Wrap" />
 
-                        </Grid>
-                    </Border>
+                                <controls:PpcIcon Height="24"
+                                                  Margin="20,5,20,5"
+                                                  HorizontalAlignment="{Binding Content, Converter={StaticResource RTAC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                                  ColorizeBrush="{DynamicResource PpcButtonForeground}"
+                                                  ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
+                                                  Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
-
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                         </Trigger>
                     </ControlTemplate.Triggers>

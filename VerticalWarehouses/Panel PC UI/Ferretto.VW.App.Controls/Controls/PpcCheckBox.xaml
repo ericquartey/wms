@@ -52,11 +52,19 @@
             <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" />
-            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            <Setter Property="Width" Value="50" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type CheckBox}">
                         <Grid x:Name="templateRoot"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"
                               Background="Transparent"
                               SnapsToDevicePixels="True">
                             <Grid.ColumnDefinitions>
@@ -64,20 +72,21 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
                             <Border x:Name="checkBoxBorder"
-                                    Margin="1"
+                                    Width="{TemplateBinding Width}"
+                                    Height="{TemplateBinding Height}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
                                     BorderThickness="{TemplateBinding BorderThickness}"
-                                    CornerRadius="1">
-                                <Border.Effect>
-                                    <DropShadowEffect BlurRadius="3"
+                                    CornerRadius="{DynamicResource PpcCornerRadius}">
+                                <!--<Border.Effect>
+                                    <DropShadowEffect BlurRadius="6"
                                                       Opacity="0.5"
                                                       RenderingBias="Quality"
-                                                      ShadowDepth="1"
+                                                      ShadowDepth="2"
                                                       Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-                                </Border.Effect>
+                                </Border.Effect>-->
 
                                 <Grid x:Name="markGrid">
                                     <Path x:Name="optionMark"
@@ -131,23 +140,15 @@
 
     <Grid Name="Grid"
           HorizontalAlignment="Stretch">
-        <!--<Grid.Effect>
-            <DropShadowEffect BlurRadius="4"
-                              Opacity="0.5"
-                              RenderingBias="Quality"
-                              ShadowDepth="2"
-                              Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-        </Grid.Effect>-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Viewbox Height="{Binding ElementName=Grid, Path=ActualHeight}"
-                 HorizontalAlignment="Left">
-            <CheckBox IsChecked="{Binding ElementName=UserControl, Path=IsChecked, FallbackValue=''}"
-                      IsThreeState="{Binding ElementName=UserControl, Path=IsThreeState}" />
-        </Viewbox>
+        <CheckBox HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  IsChecked="{Binding ElementName=UserControl, Path=IsChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, FallbackValue=''}"
+                  IsThreeState="{Binding ElementName=UserControl, Path=IsThreeState}" />
 
         <TextBlock Grid.Column="1"
                    Margin="8,0,0,0"

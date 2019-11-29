@@ -14,7 +14,7 @@
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontFamily="{DynamicResource PpcFontFamily}"
-                       FontSize="{StaticResource FontSize_Normal}"
+                       FontSize="16"
                        Foreground="{DynamicResource PpcButtonForeground}"
                        Text="{TemplateBinding Content}"
                        TextAlignment="Center"

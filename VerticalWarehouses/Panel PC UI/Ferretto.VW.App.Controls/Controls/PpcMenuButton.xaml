@@ -15,6 +15,7 @@
             <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
             <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
             <Setter Property="BorderBrush" Value="{DynamicResource PpcMenuButtonBorderBrush}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
             <Setter Property="SnapsToDevicePixels" Value="True" />
 
             <Setter Property="Template">
@@ -25,22 +26,22 @@
                                     Margin="1"
                                     Background="{x:Null}"
                                     BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="2"
-                                    CornerRadius="2">
-                                <Border.Effect>
+                                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                                    CornerRadius="{DynamicResource PpcCornerRadius}">
+                                <!--<Border.Effect>
                                     <DropShadowEffect BlurRadius="6"
                                                       Opacity="0.5"
                                                       RenderingBias="Quality"
                                                       ShadowDepth="3"
                                                       Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-                                </Border.Effect>
+                                </Border.Effect>-->
                             </Border>
 
                             <Border Margin="1"
                                     Background="{TemplateBinding Background}"
                                     BorderBrush="{x:Null}"
-                                    BorderThickness="2"
-                                    CornerRadius="2">
+                                    BorderThickness="{DynamicResource PpcBorderThickness}"
+                                    CornerRadius="{DynamicResource PpcCornerRadius}">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*" />
@@ -61,8 +62,8 @@
                                     <Border Grid.Row="1"
                                             Grid.Column="1"
                                             BorderBrush="{Binding Path=MenuBrush, RelativeSource={RelativeSource TemplatedParent}}"
-                                            BorderThickness="3"
-                                            CornerRadius="4">
+                                            BorderThickness="2"
+                                            CornerRadius="3">
                                         <TextBlock HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    FontSize="{StaticResource FontSize_High}"
@@ -98,7 +99,7 @@
                                 <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
                                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
                                 <Setter Property="Cursor" Value="Hand" />
-                                <Setter TargetName="ButtonBorder" Property="Effect">
+                                <!--<Setter TargetName="ButtonBorder" Property="Effect">
                                     <Setter.Value>
                                         <DropShadowEffect x:Name="BorderEffect"
                                                           BlurRadius="0"
@@ -107,7 +108,7 @@
                                                           ShadowDepth="0"
                                                           Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
                                     </Setter.Value>
-                                </Setter>
+                                </Setter>-->
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundDisabled}" />

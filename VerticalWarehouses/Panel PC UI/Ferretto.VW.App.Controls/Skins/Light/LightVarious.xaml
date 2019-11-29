@@ -31,7 +31,7 @@
     <SolidColorBrush x:Key="PpcBackground"
                      Color="{DynamicResource EDBGrayH}" />
     <SolidColorBrush x:Key="PpcBorderBrush"
-                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcForeground"
                      Color="{DynamicResource EDBGrayA}" />
 

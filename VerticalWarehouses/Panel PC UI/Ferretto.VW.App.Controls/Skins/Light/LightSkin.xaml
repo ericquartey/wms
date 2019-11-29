@@ -8,9 +8,9 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightNavigationRepeatButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightMainWindowUserComboBox.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlInputFieldFocusable.xaml" />
-        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightPpcSensorControl.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightPpcTextBox.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightPpcSensorControl.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomLabelTextBlock.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomMainWindowErrorButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomMainWindowToggleButton.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Skins/Light/LightCustomControlLoggedUser.xaml" />

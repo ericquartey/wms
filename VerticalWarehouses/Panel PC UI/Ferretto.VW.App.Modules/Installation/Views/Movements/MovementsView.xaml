@@ -84,27 +84,27 @@
             <controls:CardSensor Grid.Row="0"
                                  Width="250"
                                  Margin="0,0,15,15"
-                                 CardText="Verticale (mm)"
-                                 CardValue="9999.99" />
+                                 CardText="Cassetto" />
             <controls:CardSensor Grid.Row="1"
-                                 Width="250"
-                                 Margin="0,0,15,15"
-                                 CardText="Orizzontale (mm)"
-                                 CardValue="9999.99" />
-            <controls:CardSensor Grid.Row="2"
                                  Width="250"
                                  Margin="0,0,15,15"
                                  CardText="Baia"
                                  CardValue="9999.99" />
+            <controls:CardSensor Grid.Row="2"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Orizzontale (mm)"
+                                 CardValue="9999.99" />
             <controls:CardSensor Grid.Row="3"
+                                 Width="250"
+                                 Margin="0,0,15,15"
+                                 CardText="Verticale (mm)"
+                                 CardValue="9999.99" />
+            <controls:CardSensor Grid.Row="4"
                                  Width="250"
                                  Margin="0,0,15,15"
                                  CardText="Posizione"
                                  CardValue="In Cella" />
-            <controls:CardSensor Grid.Row="4"
-                                 Width="250"
-                                 Margin="0,0,15,15"
-                                 CardText="Cassetto" />
             <controls:CardSensor Grid.Row="5"
                                  Width="250"
                                  Margin="0,0,15,0"
@@ -157,6 +157,12 @@
                     Style="{Binding BorderStyle}">
 
                 <Grid Margin="5">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
                     <Grid x:Name="GridCommandsGuided">
                         <Grid.Style>
                             <Style>
@@ -170,7 +176,6 @@
                         </Grid.Style>
 
                         <Grid.RowDefinitions>
-                            <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
@@ -195,16 +200,8 @@
                                             Content="{x:Static res:InstallationApp.MoveToCellHeight}"
                                             IsBusy="{Binding IsElevatorMovingToCell}" />
 
-                        <controls:PpcTextBox Grid.Row="0"
-                                             Grid.Column="1"
-                                             Width="160"
-                                             Height="60"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             LabelText="Cella" />
-
                         <controls:PpcButton Grid.Row="0"
-                                            Grid.Column="2"
+                                            Grid.Column="1"
                                             Margin="5"
                                             HorizontalAlignment="Center"
                                             VerticalAlignment="Top"
@@ -212,13 +209,21 @@
                                             Content="{x:Static res:InstallationApp.GoToDrawer}"
                                             IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
 
-                        <controls:PpcTextBox Grid.Row="0"
-                                             Grid.Column="3"
-                                             Width="160"
-                                             Height="60"
-                                             HorizontalAlignment="Center"
-                                             VerticalAlignment="Center"
-                                             LabelText="Casseto" />
+                        <ctrls:PpcSpinEdit Grid.Row="0"
+                                           Grid.Column="2"
+                                           Grid.ColumnSpan="2"
+                                           Margin="5"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           ButtonSize="50"
+                                           EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           IsEnabled="{Binding CanInputLoadingUnitId}"
+                                           KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                           KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                           LabelText=""
+                                           Mask="#0"
+                                           WidthNumber="200" />
+                        <!--  {x:Static res:InstallationApp.DrawerNumber}  -->
 
                         <controls:PpcButton Grid.Row="1"
                                             Grid.Column="0"
@@ -230,6 +235,7 @@
 
                         <controls:PpcCheckBox Grid.Row="1"
                                               Grid.Column="1"
+                                              Grid.ColumnSpan="2"
                                               Margin="5"
                                               HorizontalAlignment="Stretch"
                                               LabelText="{x:Static res:InstallationApp.BayPositionUp}" />
@@ -272,9 +278,10 @@
 
                         <controls:PpcCheckBox Grid.Row="2"
                                               Grid.Column="2"
+                                              Grid.ColumnSpan="2"
                                               Margin="5"
                                               HorizontalAlignment="Stretch"
-                                              IsChecked="{Binding IsUseWeightControl, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                              IsChecked="{Binding IsUseWeightControl}"
                                               LabelText="{x:Static res:InstallationApp.UseWeightControl}" />
 
                         <controls:PpcButton Grid.Row="3"
@@ -346,6 +353,180 @@
                                             Content="{x:Static res:InstallationApp.CarouselDown}"
                                             Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
 
+                    </Grid>
+
+                    <Grid x:Name="GridCommandsManual">
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMovementsManual}"
+                                                 Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToCellHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
+                                            IsBusy="{Binding IsElevatorMovingToCell}" />
+
+                        <controls:PpcTextBox Grid.Row="0"
+                                             Grid.Column="1"
+                                             Width="160"
+                                             Height="60"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             LabelText="Cella" />
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="2"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.GoToPosition}"
+                                            IsBusy="{Binding IsElevatorMovingToHeight}" />
+
+                        <controls:PpcTextBox Grid.Row="0"
+                                             Grid.Column="3"
+                                             Width="160"
+                                             Height="60"
+                                             Margin="5"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             LabelText="Quota" />
+
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore su"
+                                                           PressCommand="{Binding MoveUpCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveUpCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore giù"
+                                                           PressCommand="{Binding MoveDownCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveDownCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore indietro"
+                                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore avanti"
+                                                           PressCommand="{Binding MoveForwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveForwardsCommand}"  -->
+
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="3"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Serranda su"
+                                                           PressCommand="{Binding MoveUpCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveUpCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="3"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Serranda giù"
+                                                           PressCommand="{Binding MoveDownCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveDownCommand}"  -->
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="4"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Giostra su"
+                                                           PressCommand="{Binding OpenCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteOpenCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="4"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Giostra giù"
+                                                           PressCommand="{Binding CloseCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteCloseCommand}"  -->
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="5"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Baia su"
+                                                           IsEnabled="{Binding CanExecuteMoveForwardsCommand}"
+                                                           PressCommand="{Binding MoveForwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="5"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Baia giù"
+                                                           IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"
+                                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
                         <controls:PpcButton Grid.Row="6"
                                             Grid.Column="0"
                                             Margin="5"
@@ -366,24 +547,6 @@
                                             Margin="5"
                                             HorizontalAlignment="Center"
                                             Content="Stato sensori" />
-                    </Grid>
-
-                    <Grid x:Name="GridCommandsManual">
-                        <Grid.Style>
-                            <Style>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsMovementsManual}"
-                                                 Value="False">
-                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Grid.Style>
-
-                        <TextBlock HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="Movimenti Manuali" />
                     </Grid>
                 </Grid>
             </Border>

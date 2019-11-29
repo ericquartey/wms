@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly ISensorsService sensorsService;
+
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private bool isDisposed;
@@ -34,6 +36,7 @@ namespace Ferretto.VW.App.Services
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
         }
 
         #endregion

@@ -60,6 +60,7 @@
     <None Remove="Controls\PpcMenuButton.xaml" />
     <None Remove="Controls\DataGrids\CustomControlCellsDataGrid.xaml" />
     <None Remove="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml" />
+    <None Remove="Controls\PpcTextBoxNew.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
@@ -88,6 +89,9 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PpcTextBoxNew.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
