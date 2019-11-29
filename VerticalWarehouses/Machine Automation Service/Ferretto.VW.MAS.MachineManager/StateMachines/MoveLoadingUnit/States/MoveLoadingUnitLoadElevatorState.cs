@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
-                moveData.FsmStateName = this.GetType().Name;
+                this.moveData.FsmStateName = this.GetType().Name;
             }
             else
             {
@@ -169,6 +169,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     {
                         var bayPosition = this.baysDataProvider.GetPositionByLocation(this.moveData.LoadingUnitSource);
                         this.baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                        // TEST
+                        //if (this.moveData.LoadingUnitId > 0)
+                        //{
+                        //    this.moveData.DestinationCellId = this.cellsProvider.FindEmptyCell(this.moveData.LoadingUnitId);
+                        //}
                     }
 
                     transaction.Commit();

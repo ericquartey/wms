@@ -60,25 +60,26 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     measure = true;
                 }
                 moveData.FsmStateName = this.GetType().Name;
-            }
 
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
-            {
-                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData);
-                if (destinationHeight is null)
+                if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
                 {
-                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
+                    messageData.DestinationCellId = moveData.DestinationCellId;
+                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData);
+                    if (destinationHeight is null)
+                    {
+                        var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
+
+                        throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    }
+
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay);
+                }
+                else
+                {
+                    var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                 }
-
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay);
-            }
-            else
-            {
-                var description = $"Move Loading Unit Move To Target State received wrong initialization data ({commandMessage.Data.GetType().Name})";
-
-                throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
             }
         }
 

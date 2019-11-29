@@ -176,6 +176,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private bool IsDestinationOk(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay)
         {
+            var machineData = (IMoveLoadingUnitMachineData)this.MachineData;
             bool returnValue = false;
             switch (messageData.Destination)
             {
@@ -184,6 +185,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     {
                         var destinationCell = this.cellsProvider.GetById(messageData.DestinationCellId.Value);
                         returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
+                        machineData.DestinationCellId = messageData.DestinationCellId;
+                    }
+                    else if (messageData.LoadingUnitId.HasValue)
+                    {
+                        machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
                     }
 
                     if (!returnValue)

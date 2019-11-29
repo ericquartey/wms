@@ -44,7 +44,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public LoadingUnitLocation Destination { get; }
 
-        public int? DestinationCellId { get; }
+        public int? DestinationCellId { get; set; }
 
         public bool EjectLoadingUnit { get; }
 
