@@ -9,7 +9,7 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemOperationWaitViewModel : BaseMainViewModel
+    public class ItemOperationWaitViewModel : BaseOperatorViewModel
     {
         #region Fields
 

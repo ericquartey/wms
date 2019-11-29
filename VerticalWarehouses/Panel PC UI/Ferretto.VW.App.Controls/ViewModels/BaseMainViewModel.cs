@@ -9,15 +9,19 @@ using Prism.Regions;
 
 namespace Ferretto.VW.App.Controls
 {
-    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel
+    public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel, IRegionMemberLifetime
     {
         #region Fields
 
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineErrorsService machineErrorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineErrorsService>();
 
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
+
+        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
 
         private SubscriptionToken healthStatusChangedToken;
 
@@ -44,19 +48,29 @@ namespace Ferretto.VW.App.Controls
 
         public virtual EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
+        public IHealthProbeService HealthProbeService => this.healthProbeService;
+
         public bool IsEnabled
         {
             get => this.isEnabled;
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        public virtual bool KeepAlive => true;
+
+        protected NLog.Logger Logger => this.logger;
+
         public MachineError MachineError => this.machineErrorsService.ActiveError;
+
+        public IMachineModeService MachineModeService => this.machineModeService;
 
         public PresentationMode Mode
         {
             get => this.mode;
             set => this.SetProperty(ref this.mode, value);
         }
+
+        protected bool IsConnectedByMAS => this.healthProbeService.HealthStatus == HealthStatus.Healthy;
 
         #endregion
 
@@ -171,6 +185,8 @@ namespace Ferretto.VW.App.Controls
             {
                 throw new ArgumentNullException(nameof(exception));
             }
+
+            this.Logger.Error(exception);
 
             if (this.IsVisible)
             {

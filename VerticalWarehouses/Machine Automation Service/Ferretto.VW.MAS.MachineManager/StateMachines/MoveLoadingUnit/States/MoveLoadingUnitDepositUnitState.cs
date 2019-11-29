@@ -89,6 +89,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, false, MessageActor.MachineManager, commandMessage.RequestingBay, null);
+                moveData.FsmStateName = this.GetType().Name;
             }
             else
             {

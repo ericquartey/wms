@@ -63,6 +63,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App", "Panel PC
 	ProjectSection(ProjectDependencies) = postProject
 		{ED8D9E03-C5C4-4319-8207-122DA6C2D043} = {ED8D9E03-C5C4-4319-8207-122DA6C2D043}
 		{94F34409-DE62-439C-B597-679A5342EC92} = {94F34409-DE62-439C-B597-679A5342EC92}
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D} = {2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}
 		{68CFD192-D446-42A8-B8C8-44EDD7F357CF} = {68CFD192-D446-42A8-B8C8-44EDD7F357CF}
 		{7A484BAF-AB01-488A-853F-C0CE4305BA56} = {7A484BAF-AB01-488A-853F-C0CE4305BA56}
 	EndProjectSection
@@ -89,6 +90,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Operator", "Panel PC UI\Ferretto.VW.App.Modules\Operator\Ferretto.VW.App.Modules.Operator.csproj", "{94F34409-DE62-439C-B597-679A5342EC92}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.MAS.AutomationService.Contracts.Hubs", "Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj", "{0F709174-2F76-479B-A78B-A8E5EB318AEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ferretto.VW.App.Modules.Menu", "Panel PC UI\Ferretto.VW.App.Modules\Menu\Ferretto.VW.App.Modules.Menu.csproj", "{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -679,6 +682,24 @@ Global
 		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x64.Build.0 = Release|Any CPU
 		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x86.ActiveCfg = Release|Any CPU
 		{0F709174-2F76-479B-A78B-A8E5EB318AEB}.Release|x86.Build.0 = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|Any CPU.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|Any CPU.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|x64.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|x64.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|x86.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug (no autogen)|x86.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|x64.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Debug|x86.Build.0 = Debug|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|x64.ActiveCfg = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|x64.Build.0 = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|x86.ActiveCfg = Release|Any CPU
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -717,6 +738,7 @@ Global
 		{09A8D20C-7695-442F-A5F2-91BEC393222F} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
 		{94F34409-DE62-439C-B597-679A5342EC92} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 		{0F709174-2F76-479B-A78B-A8E5EB318AEB} = {A56DA2EA-602D-4E89-822E-0A1B3CB30AD1}
+		{2882DB43-EBF4-42AF-AC62-EFDF9BC9C39D} = {A938B514-3F27-4483-AF63-2F13A3ACBBA0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {40395CF2-451B-48E4-A29A-0E8AE12146B4}

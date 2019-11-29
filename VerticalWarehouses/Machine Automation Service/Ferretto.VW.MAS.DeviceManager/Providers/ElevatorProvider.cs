@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorDataProvider elevatorDataProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ILogger<ElevatorProvider> logger;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             IMachineProvider machineProvider,
             IMachineResourcesProvider machineResourcesProvider,
             ISensorsProvider sensorsProvider,
-            ILoadingUnitsProvider loadingUnitsProvider)
+            ILoadingUnitsDataProvider loadingUnitsDataProvider)
             : base(eventAggregator)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
         }
 
         #endregion
@@ -241,8 +241,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             //           the elevator must be full with pawl in non-zero position
             var loadingUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
             var isChainInZeroPosition = this.machineResourcesProvider.IsSensorZeroOnCradle;
-            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle && loadingUnit != null;
-            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle && loadingUnit is null;
+            var isElevatorFull = this.machineResourcesProvider.IsDrawerCompletelyOnCradle; // && loadingUnit != null;
+            var isElevatorEmpty = this.machineResourcesProvider.IsDrawerCompletelyOffCradle; // && loadingUnit is null;
 
             if (!(isElevatorFull && !isChainInZeroPosition) && !(isElevatorEmpty && isChainInZeroPosition))
             {
@@ -491,7 +491,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 &&
                 loadingUnitGrossWeight.HasValue)
             {
-                this.loadingUnitsProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
+                this.loadingUnitsDataProvider.SetWeight(loadingUnitId.Value, loadingUnitGrossWeight.Value);
             }
 
             var sensors = this.sensorsProvider.GetAll();
@@ -532,7 +532,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             double scalingFactor = 1;
             if (loadingUnitId.HasValue && !measure)
             {
-                var loadUnit = this.loadingUnitsProvider.GetById(loadingUnitId.Value);
+                var loadUnit = this.loadingUnitsDataProvider.GetById(loadingUnitId.Value);
                 if (loadUnit.MaxNetWeight > 0 && loadUnit.GrossWeight > 0)
                 {
                     if (loadUnit.GrossWeight < loadUnit.Tare)
@@ -616,7 +616,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
-            var targetPosition = this.machineProvider.IsHomingExetuted
+            var targetPosition = this.machineProvider.IsHomingExecuted
                 ? axis.ManualMovements.TargetDistanceAfterZero
                 : axis.ManualMovements.TargetDistance;
 
@@ -752,7 +752,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     Resources.Elevator.MovementDistanceCannotBeZero);
             }
 
-            var homingDone = this.machineProvider.IsHomingExetuted;
+            var homingDone = this.machineProvider.IsHomingExecuted;
             if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
@@ -809,7 +809,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             double targetPosition;
 
             // INFO Absolute movement using the min and max reachable positions for limits
-            var homingDone = this.machineProvider.IsHomingExetuted;
+            var homingDone = this.machineProvider.IsHomingExecuted;
             if (homingDone)
             {
                 feedRate = parameters.FeedRateAfterZero;
@@ -869,7 +869,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     Resources.Elevator.MovementDistanceCannotBeZero);
             }
 
-            var homingDone = this.machineProvider.IsHomingExetuted;
+            var homingDone = this.machineProvider.IsHomingExecuted;
             if (!homingDone)
             {
                 throw new InvalidOperationException(Resources.Elevator.VerticalOriginCalibrationMustBePerformed);
@@ -951,7 +951,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var procedureParameters = this.setupProceduresDataProvider.GetBeltBurnishingTest();
 
-            var homingDone = this.machineProvider.IsHomingExetuted;
+            var homingDone = this.machineProvider.IsHomingExecuted;
 
             var assistedMovementsAxis = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
 
@@ -1132,7 +1132,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     string.Format(Resources.Elevator.TargetPositionMustBeInRange, targetPosition, lowerBound, upperBound));
             }
 
-            var homingDone = this.machineProvider.IsHomingExetuted;
+            var homingDone = this.machineProvider.IsHomingExecuted;
 
             var sensors = this.sensorsProvider.GetAll();
             var isLoadingUnitOnBoard =
@@ -1180,12 +1180,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"MoveToVerticalPosition: {movementMode}; " +
                 $"manualMovement: {manualMovement}; " +
                 $"targetPosition: {targetPosition}; " +
-                $"homing: {homingDone}" +
+                $"homing: {homingDone}; " +
                 $"feedRate: {(sender == MessageActor.AutomationService ? feedRate : 1)}; " +
                 $"speed: {speed[0]}; " +
                 $"acceleration: {acceleration[0]}; " +
                 $"deceleration: {deceleration[0]}; " +
-                $"speed no feedRate: {movementParameters.Speed}; " +
+                $"speed : {movementParameters.Speed}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(

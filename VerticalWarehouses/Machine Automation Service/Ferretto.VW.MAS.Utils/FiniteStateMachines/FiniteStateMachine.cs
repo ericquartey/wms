@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public Guid InstanceId { get; }
 
-        public IFiniteStateMachineData MachineData { get; protected set; }
+        public IFiniteStateMachineData MachineData { get; set; }
 
         public CommandMessage StartData { get; private set; }
 
@@ -331,6 +331,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a command.");
                     this.NotifyError(ex);
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    {
+                        InstanceId = this.InstanceId,
+                    };
+                    this.RaiseCompleted(eventArgs);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -360,6 +365,11 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
+                    var eventArgs = new FiniteStateMachinesEventArgs
+                    {
+                        InstanceId = this.InstanceId,
+                    };
+                    this.RaiseCompleted(eventArgs);
                 }
             }
             while (!cancellationToken.IsCancellationRequested);

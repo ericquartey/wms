@@ -4,11 +4,10 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public abstract class BaseItemOperationViewModel : BaseMainViewModel, IRegionMemberLifetime
+    public abstract class BaseItemOperationViewModel : BaseOperatorViewModel
     {
         #region Fields
 
@@ -55,8 +54,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
             }
         }
-
-        public bool KeepAlive => false;
 
         public MissionWithLoadingUnitDetails Mission
         {

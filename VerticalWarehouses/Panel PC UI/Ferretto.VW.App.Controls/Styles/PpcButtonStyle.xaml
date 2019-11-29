@@ -132,6 +132,11 @@
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
             </DataTrigger>
+            <DataTrigger Binding="{Binding IsMachineInTestMode}"
+                         Value="True">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="Content" Value="{x:Static res:InstallationApp.Test}" />
+            </DataTrigger>
         </Style.Triggers>
     </Style>
 
@@ -154,7 +159,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
-        <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/help.png" />
+        <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/help.png" />
 
     </Style>
 
@@ -163,11 +168,11 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
-        <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_dark.png" />
+        <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_dark.png" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsDarkThemeActive}"
                          Value="False">
-                <Setter Property="ImageSource" Value="pack://application:,,,/Ferretto.VW.App.Themes;Component/Icons/theme_light.png" />
+                <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
             </DataTrigger>
         </Style.Triggers>

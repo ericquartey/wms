@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using DevExpress.Mvvm.POCO;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.Utils.Source.Filters;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
 
@@ -28,7 +23,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand confirmOperationCommand;
 
-        private int? inputQuantity;
+        private double? inputQuantity;
 
         private bool isBusyAbortingOperation;
 
@@ -88,7 +83,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public int? InputQuantity
+        public double? InputQuantity
         {
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);

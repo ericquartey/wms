@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsErrorsViewModel : BaseMainViewModel
+    public class StatisticsErrorsViewModel : BaseOperatorViewModel
     {
         #region Fields
 

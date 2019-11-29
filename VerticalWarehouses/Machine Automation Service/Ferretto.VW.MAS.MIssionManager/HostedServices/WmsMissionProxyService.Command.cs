@@ -10,10 +10,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         protected override bool FilterCommand(CommandMessage command)
         {
-            return
-                command.Destination is CommonUtils.Messages.Enumerations.MessageActor.Any
-                ||
-                command.Destination is CommonUtils.Messages.Enumerations.MessageActor.MissionManager;
+            // do not accept any commands
+            return false;
         }
 
         protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)

@@ -15,7 +15,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void AddElevatorPseudoBay();
 
-        Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId);
+        Bay AssignMission(BayNumber bayNumber, int missionId);
+
+        Bay AssignWmsMission(BayNumber bayNumber, int missionId, int? wmsMissionOperationId);
+
+        Bay ClearMission(BayNumber bayNumber);
 
         double ConvertProfileToHeight(ushort profile);
 
@@ -76,6 +80,8 @@ namespace Ferretto.VW.MAS.DataLayer
         double GetResolution(InverterIndex inverterIndex);
 
         void PerformHoming(BayNumber bayNumber);
+
+        void RemoveLoadingUnit(int loadingUnitId);
 
         void ResetMachine();
 

@@ -1,5 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -29,9 +37,41 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int? wmsMissionId)
+        public IEnumerable<Mission> GetAllWmsMissions()
         {
-            this.logger.LogWarning($"**** Simulating bay({targetBayNumber}) movement.");
+            throw new NotImplementedException();
+        }
+
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
+        {
+            var data = new MoveLoadingUnitMessageData(
+                MissionType.WMS,
+                LoadingUnitLocation.LoadingUnit,
+                LoadingUnitLocation.NoLocation,
+                null,
+                null,
+                loadingUnitId);
+
+            data.WmsId = wmsMissionId;
+            data.TargetBay = targetBayNumber;
+
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        data,
+                        $"Wms mission requested; loadingUnitId {loadingUnitId}; Bay {targetBayNumber}",
+                        MessageActor.MissionManager,
+                        MessageActor.MissionManager,
+                        MessageType.MoveLoadingUnit,
+                        targetBayNumber));
+
+            return Task.CompletedTask;
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)

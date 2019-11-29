@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -42,7 +40,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async Task AbortAsync(int id)
+        public async Task AbortAsync(int wmsId)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -51,7 +49,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.AbortAsync(id);
+                await this.missionOperationsDataService.AbortAsync(wmsId);
             }
             catch (SwaggerException ex)
             {
@@ -59,7 +57,13 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        public async Task CompleteAsync(int id, double quantity)
+        /// <summary>
+        /// the UI informs mission manager that the operation is completed
+        /// </summary>
+        /// <param name="id">operation id</param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public async Task CompleteAsync(int wmsId, double quantity)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -68,11 +72,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.CompleteItemAsync(id, quantity);
+                await this.missionOperationsDataService.CompleteItemAsync(wmsId, quantity);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
-                    MissionOperationId = id,
+                    MissionOperationId = wmsId,
                 };
 
                 var notificationMessage = new NotificationMessage(

@@ -33,9 +33,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
-        private readonly ILoadingUnitsProvider loadingUnitsProvider;
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
+
+        private readonly IMissionsDataProvider missionsDataProvider;
 
         #endregion
 
@@ -44,24 +46,26 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         public MoveLoadingUnitStateMachine(
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider,
-            ILoadingUnitsProvider loadingUnitsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             ICellsProvider cellsProvider,
             ISensorsProvider sensorsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IErrorsProvider errorsProvider,
             IMachineModeVolatileDataProvider machineModeDataProvider,
+            IMissionsDataProvider missionsDataProvider,
             IEventAggregator eventAggregator,
             ILogger<StateBase> logger)
             : base(eventAggregator, logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
-            this.loadingUnitsProvider = loadingUnitsProvider ?? throw new ArgumentNullException(nameof(loadingUnitsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
 
             this.MachineData = new MoveLoadingUnitMachineData(this.InstanceId);
         }
@@ -113,6 +117,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             newState = this.ActiveState.NotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
+                if (this.MachineData is Mission mission)
+                {
+                    mission.FsmStateName = this.ActiveState.GetType().Name;
+                    this.missionsDataProvider.Update(mission);
+                }
                 return newState;
             }
 
@@ -122,6 +131,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         protected override bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)
         {
             var returnValue = this.CheckStartConditions(commandMessage);
+            if (returnValue
+                && this.MachineData is Mission mission
+                )
+            {
+                this.missionsDataProvider.Update(mission);
+            }
 
             return returnValue;
         }
@@ -253,7 +268,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     break;
 
                 default:
-                    return false;
+                    var description = $"Attempting to start {this.GetType()} Finite state machine with invalid MissionType {messageData.MissionType}";
+
+                    throw new StateMachineException(description, null, MessageActor.MachineManager);
             }
             if (!returnValue)
             {
@@ -307,7 +324,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 case LoadingUnitLocation.LoadingUnit:
                     if (messageData.LoadingUnitId != null)
                     {
-                        unitToMove = this.loadingUnitsProvider.GetById(messageData.LoadingUnitId.Value);
+                        unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
                     }
 
                     if (unitToMove != null)
@@ -347,7 +364,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     {
                         if (messageData.LoadingUnitId != null)
                         {
-                            unitToMove = this.loadingUnitsProvider.GetById(messageData.LoadingUnitId.Value);
+                            unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
                         }
                     }
                     else

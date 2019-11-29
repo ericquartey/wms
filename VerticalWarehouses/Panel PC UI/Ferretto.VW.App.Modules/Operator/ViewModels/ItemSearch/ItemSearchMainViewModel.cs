@@ -14,13 +14,15 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemSearchMainViewModel : BaseMainViewModel
+    public class ItemSearchMainViewModel : BaseOperatorViewModel
     {
         #region Fields
 
         private const int DefaultPageSize = 20;
 
         private readonly IAreasDataService areasDataService;
+
+        private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
@@ -68,6 +70,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
             IItemSearchedModel itemSearchedModel,
+            IBayManager bayManager,
             IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
@@ -75,6 +78,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
 
         #endregion
@@ -142,6 +146,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public IEnumerable<Item> Items => new BindingList<Item>(this.items);
 
+        public override bool KeepAlive => true;
+
         public ICommand RequestItemPickCommand =>
             this.requestItemPickCommand
             ??
@@ -170,8 +176,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
                     this.itemSearchViewModel.SelectedItem = this.selectedItem;
-                    this.AvailableQuantity = this.SelectedItem?.TotalAvailable;
-
+                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == this.bayManager.Identity.MachineId)?.AvailableQuantityItem;
                     this.RaiseCanExecuteChanged();
                 }
             }

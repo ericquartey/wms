@@ -7,11 +7,24 @@ namespace Ferretto.VW.App.Installation.Models
     {
         #region Fields
 
+        private CellsLoadingUnitsMenus cellsLoadingUnitsItemType;
+
         private InstallationMenus menuItemType;
 
         #endregion
 
         #region Constructors
+
+        public MainNavigationMenuItem(
+            CellsLoadingUnitsMenus menuItemType,
+            string viewModelName,
+            string moduleName,
+            string description,
+            bool trackCurrentView)
+            : base(viewModelName, moduleName, description, trackCurrentView)
+        {
+            this.CellsLoadingUnitsItemType = menuItemType;
+        }
 
         public MainNavigationMenuItem(
             InstallationMenus menuItemType,
@@ -27,6 +40,12 @@ namespace Ferretto.VW.App.Installation.Models
         #endregion
 
         #region Properties
+
+        public CellsLoadingUnitsMenus CellsLoadingUnitsItemType
+        {
+            get => this.cellsLoadingUnitsItemType;
+            set => this.SetProperty(ref this.cellsLoadingUnitsItemType, value);
+        }
 
         public InstallationMenus MenuItemType
         {

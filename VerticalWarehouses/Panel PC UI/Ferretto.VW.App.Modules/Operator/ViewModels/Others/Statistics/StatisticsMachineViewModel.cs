@@ -5,7 +5,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class StatisticsMachineViewModel : BaseMainViewModel
+    public class StatisticsMachineViewModel : BaseOperatorViewModel
     {
         #region Fields
 

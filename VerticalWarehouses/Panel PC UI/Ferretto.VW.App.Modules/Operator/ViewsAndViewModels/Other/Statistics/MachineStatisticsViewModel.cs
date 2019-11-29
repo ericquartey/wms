@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Operator.ViewModels;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Modules.Operator.ViewsAndViewModels.Other.Statistics
 {
-    public class MachineStatisticsViewModel : BaseMainViewModel
+    public class MachineStatisticsViewModel : BaseOperatorViewModel
     {
         #region Fields
 

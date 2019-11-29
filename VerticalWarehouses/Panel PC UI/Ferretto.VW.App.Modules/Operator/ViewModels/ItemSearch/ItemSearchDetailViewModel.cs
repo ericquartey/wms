@@ -8,7 +8,7 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemSearchDetailViewModel : BaseMainViewModel
+    public class ItemSearchDetailViewModel : BaseOperatorViewModel
     {
         #region Fields
 

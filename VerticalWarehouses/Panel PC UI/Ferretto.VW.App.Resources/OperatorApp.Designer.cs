@@ -1195,6 +1195,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory Operation..
+        /// </summary>
+        public static string InventoryOperation {
+            get {
+                return ResourceManager.GetString("InventoryOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Quantity detected.
+        /// </summary>
+        public static string InventoryQuantityDetected {
+            get {
+                return ResourceManager.GetString("InventoryQuantityDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ItemDetailCategory.
         /// </summary>
         public static string ItemDetailCategory {

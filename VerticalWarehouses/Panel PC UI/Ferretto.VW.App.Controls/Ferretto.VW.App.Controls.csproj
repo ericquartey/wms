@@ -13,17 +13,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="DevExpress.Wpf.Core" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.1.6" />
-    <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.1.6" />
+    <PackageReference Include="DevExpress.Wpf.Core" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Navigation" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.PropertyGrid" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016Black" Version="19.2.4" />
+    <PackageReference Include="DevExpress.Wpf.Themes.Office2016White" Version="19.2.4" />
     <PackageReference Include="MahApps.Metro.IconPacks" Version="2.3.0" />
-    <PackageReference Include="NLog" Version="4.6.7" />
+    <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
     <PackageReference Include="Prism.Wpf" Version="7.1.0.431" />
     <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
-    <PackageReference Include="Unity.Abstractions" Version="3.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,12 +47,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Assets\help.png" />
+    <None Remove="Assets\spinner_black.gif" />
+    <None Remove="Assets\spinner_pure_white.gif" />
+    <None Remove="Assets\spinner_white.gif" />
+    <None Remove="Assets\theme_dark.png" />
+    <None Remove="Assets\theme_light.png" />
+    <None Remove="Controls\PpcBadge.xaml" />
+    <None Remove="Controls\PpcButtonMenu.xaml" />
+    <None Remove="Controls\PpcMenuButton.xaml" />
+    <None Remove="Controls\DataGrids\CustomControlCellsDataGrid.xaml" />
+    <None Remove="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
+    <None Remove="Skins\Dark\DarkPpcBadge.xaml" />
     <None Remove="Skins\DXStyle.xaml" />
     <None Remove="Skins\Light\LightDialogPopup.xaml" />
+    <None Remove="Skins\Light\LightPpcBadge.xaml" />
     <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
+    <None Remove="Styles\General.xaml" />
     <None Remove="Styles\PpcButtonKeyStyle.xaml" />
     <None Remove="Styles\PpcButtonStyle.xaml" />
     <None Remove="Styles\PpcPressAndReleaseButton.xaml" />
@@ -68,6 +81,12 @@
   <ItemGroup>
     <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
       <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\DataGrids\CustomControlCellsDataGrid.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
       <DependentUpon>PpcMessagePopup.xaml</DependentUpon>

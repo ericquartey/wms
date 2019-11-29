@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                     try
                     {
                         this.ParentStateMachine
-                            .GetRequiredService<ILoadingUnitsProvider>()
+                            .GetRequiredService<ILoadingUnitsDataProvider>()
                             .SetWeight(this.data.LoadingUnitId.Value, this.data.MeasuredWeight);
 
                         this.ScaleMovementsByWeight();

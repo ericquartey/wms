@@ -21,10 +21,10 @@
                        Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.InitializingWithEllipsis}" />
 
-            <TextBlock HorizontalAlignment="Center"
-                       Margin="0,60,0,0"
-                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+            <TextBlock Margin="0,60,0,0"
+                       HorizontalAlignment="Center"
                        FontSize="15"
+                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
                        Text="{Binding ApplicationVersion}" />
         </StackPanel>
     </Grid>

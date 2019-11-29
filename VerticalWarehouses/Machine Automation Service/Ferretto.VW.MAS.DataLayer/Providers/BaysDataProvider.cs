@@ -121,18 +121,56 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignMissionOperation(BayNumber bayNumber, int? missionId, int? missionOperationId)
+        public Bay AssignMission(BayNumber bayNumber, int missionId)
         {
             lock (this.dataContext)
             {
-                var bay = this.GetByNumber(bayNumber);
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
                 bay.CurrentMissionId = missionId;
-                bay.CurrentMissionOperationId = missionOperationId;
+                bay.CurrentWmsMissionOperationId = null;
+
+                this.Update(bay);
+
+                return bay;
+            }
+        }
+
+        public Bay AssignWmsMission(BayNumber bayNumber, int missionId, int? wmsMissionOperationId)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.CurrentMissionId = missionId;
+                bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
+
+                this.Update(bay);
+
+                return bay;
+            }
+        }
+
+        public Bay ClearMission(BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.CurrentMissionId = null;
+                bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
 
@@ -720,6 +758,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 bayNumber);
         }
 
+        public void RemoveLoadingUnit(int loadingUnitId)
+        {
+            var lu = this.dataContext.LoadingUnits.SingleOrDefault(p => p.Id.Equals(loadingUnitId));
+            if (lu is null)
+            {
+                throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
+            }
+
+            this.dataContext.LoadingUnits.Remove(lu);
+            this.dataContext.SaveChanges();
+        }
+
         public void ResetMachine()
         {
             lock (this.dataContext)
@@ -737,7 +787,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 foreach (var bay in this.dataContext.Bays)
                 {
                     bay.CurrentMissionId = null;
-                    bay.CurrentMissionOperationId = null;
+                    bay.CurrentWmsMissionOperationId = null;
                     this.Update(bay);
                 }
             }
@@ -838,9 +888,12 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(bay));
             }
 
-            this.dataContext.Bays.Update(bay);
+            lock (this.dataContext)
+            {
+                this.dataContext.Bays.Update(bay);
 
-            this.dataContext.SaveChanges();
+                this.dataContext.SaveChanges();
+            }
 
             this.notificationEvent.Publish(
                 new NotificationMessage(

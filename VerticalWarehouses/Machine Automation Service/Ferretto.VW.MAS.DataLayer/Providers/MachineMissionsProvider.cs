@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Enumerations;
@@ -42,9 +44,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         #region Methods
 
-        public bool AbortMachineMission(Guid missionId)
+        public bool AbortMachineMission(Guid fsmId)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
                 return false;
@@ -54,19 +56,26 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public IMission GetMissionById(Guid missionId)
+        public IMission GetMissionById(Guid fsmId)
         {
-            return this.machineMissions.FirstOrDefault(m => m.Id == missionId);
+            return this.machineMissions.FirstOrDefault(m => m.FsmId == fsmId);
         }
 
-        public List<IMission> GetMissionsByType(FSMType type)
+        public List<IMission> GetMissionsByFsmType(FsmType fsmType)
         {
-            return this.machineMissions.Where(m => m.Type == type).ToList();
+            return this.machineMissions.Where(m => m.Type == fsmType).ToList();
         }
 
-        public bool PauseMachineMission(Guid missionId)
+        public IEnumerable<IMission> GetMissionsByType(FsmType fsmType, MissionType type)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            return this.machineMissions.Where(m => (m.Type == fsmType)
+                    && (m.MachineData is IMoveLoadingUnitMachineData data)
+                    && data.MissionType == type);
+        }
+
+        public bool PauseMachineMission(Guid fsmId)
+        {
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
                 return false;
@@ -76,9 +85,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool ResumeMachineMission(Guid missionId)
+        public bool ResumeMachineMission(Guid fsmId)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
                 return false;
@@ -88,9 +97,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool StartMachineMission(Guid missionId, CommandMessage command)
+        public bool StartMachineMission(Guid fsmId, CommandMessage command)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
                 return false;
@@ -100,9 +109,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool StopMachineMission(Guid missionId, StopRequestReason reason)
+        public bool StopMachineMission(Guid fsmId, StopRequestReason reason)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(missionId));
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
             {
                 return false;
@@ -113,20 +122,20 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool TryCreateMachineMission(FSMType missionType, CommandMessage command, out Guid missionId)
+        public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid fsmId)
         {
-            missionId = Guid.Empty;
+            fsmId = Guid.Empty;
 
-            if (this.CanCreateStateMachine(missionType, command))
+            if (this.CanCreateStateMachine(fsmType, command))
             {
                 IMission newMission = null;
-                switch (missionType)
+                switch (fsmType)
                 {
-                    case FSMType.ChangeRunningType:
+                    case FsmType.ChangeRunningType:
                         newMission = new MachineMission<IChangeRunningStateStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
 
-                    case FSMType.MoveLoadingUnit:
+                    case FsmType.MoveLoadingUnit:
                         newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
                 }
@@ -135,7 +144,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 {
                     this.machineMissions.Add(newMission);
 
-                    missionId = newMission.Id;
+                    fsmId = newMission.FsmId;
+
                     return true;
                 }
             }
@@ -144,12 +154,64 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         /// <summary>
+        /// We try to limit the number of active Wms missions:
+        ///     one for each bay, only in Automatic mode.
+        ///     WmsId must be unique (in active missions)
+        ///     LoadUnitId must be unique
+        /// </summary>
+        /// <param name="fsmType"></param>
+        /// <param name="command"></param>
+        /// <param name="bayNumber"></param>
+        /// <param name="fsmId"></param>
+        /// <returns></returns>
+        public bool TryCreateWmsMission(FsmType fsmType, MoveLoadingUnitMessageData command, out Guid fsmId)
+        {
+            fsmId = Guid.Empty;
+            var returnValue = false;
+
+            var missions = this.GetMissionsByType(fsmType, command.MissionType);
+            if (command.WmsId.HasValue)
+            {
+                returnValue = !missions.Any(m => (m.MachineData is IMoveLoadingUnitMachineData data)
+                    && data.WmsId.HasValue
+                    && data.WmsId == command.WmsId);
+            }
+
+            if (returnValue && command.TargetBay != BayNumber.None)
+            {
+                returnValue = !missions.Any(m => (m.MachineData is IMoveLoadingUnitMachineData data)
+                    && data.TargetBay == command.TargetBay);
+            }
+
+            if (returnValue)
+            {
+                using (var scope = this.serviceScopeFactory.CreateScope())
+                {
+                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                    returnValue = (machineModeDataProvider.Mode == MachineMode.Automatic);
+                }
+            }
+            if (returnValue)
+            {
+                IMission newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
+                var machineData = (IMoveLoadingUnitMachineData)newMission.MachineData;
+                machineData.TargetBay = command.TargetBay;
+                machineData.WmsId = command.WmsId;
+                machineData.LoadingUnitId = command.LoadingUnitId ?? 0;
+
+                this.machineMissions.Add(newMission);
+                fsmId = newMission.FsmId;
+            }
+            return returnValue;
+        }
+
+        /// <summary>
         /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
         /// <param name="requestedMission">TYpe of mission to be created</param>
         /// <param name="command">Command received to create mission. Provides information useful to decide id mission two or more missions of the same type are allowed or not</param>
         /// <returns>True if the mission type can be created, false otherwise</returns>
-        private bool CanCreateStateMachine(FSMType requestedMission, CommandMessage command)
+        private bool CanCreateStateMachine(FsmType requestedMission, CommandMessage command)
         {
             var returnValue = this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
 
@@ -161,14 +223,14 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return returnValue;
         }
 
-        private bool EvaluateMissionPolicies(FSMType moveRequestedMission, CommandMessage command)
+        private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command)
         {
             return true;
         }
 
         private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)
         {
-            var mission = this.machineMissions.FirstOrDefault(mm => mm.Id.Equals(eventArgs.InstanceId));
+            var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(eventArgs.InstanceId));
             if (mission != null)
             {
                 mission.EndMachine();

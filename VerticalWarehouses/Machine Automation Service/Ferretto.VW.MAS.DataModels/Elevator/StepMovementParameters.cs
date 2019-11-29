@@ -25,17 +25,11 @@ namespace Ferretto.VW.MAS.DataModels
 
             if (this.AdjustByWeight)
             {
-                var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
-                if (this.Speed - deltaSpeed > axis.FullLoadMovement.Speed)
-                {
-                    this.Speed -= deltaSpeed;
-                }
+                var deltaSpeed = (Math.Min(axis.EmptyLoadMovement.Speed, this.Speed) - Math.Min(axis.FullLoadMovement.Speed, this.Speed)) * scalingFactor;
+                this.Speed = Math.Max(this.Speed - deltaSpeed, axis.FullLoadMovement.Speed);
 
-                var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;
-                if (this.Acceleration - deltaAcceleration > axis.FullLoadMovement.Acceleration)
-                {
-                    this.Acceleration -= deltaAcceleration;
-                }
+                var deltaAcceleration = (Math.Min(axis.EmptyLoadMovement.Acceleration, this.Acceleration) - Math.Min(axis.FullLoadMovement.Acceleration, this.Acceleration)) * scalingFactor;
+                this.Acceleration = Math.Max(this.Acceleration - deltaAcceleration, axis.FullLoadMovement.Acceleration);
             }
         }
 

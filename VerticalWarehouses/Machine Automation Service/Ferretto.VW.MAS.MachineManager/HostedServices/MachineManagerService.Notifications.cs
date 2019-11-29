@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         MessageType.ChangeRunningState,
                         message.RequestingBay);
 
-                    if (this.machineMissionsProvider.TryCreateMachineMission(FSMType.ChangeRunningType, command, out var missionId))
+                    if (this.machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                     {
                         var errorCode = reason == StopRequestReason.FaultStateChanged
                             ? DataModels.MachineErrorCode.InverterFaultStateDetected
