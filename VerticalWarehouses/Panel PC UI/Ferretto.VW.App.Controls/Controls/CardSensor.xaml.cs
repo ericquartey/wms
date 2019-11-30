@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Controls.Controls
                 new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge1Property =
-                    DependencyProperty.Register(
+            DependencyProperty.Register(
                 nameof(CardBadge1),
                 typeof(string),
                 typeof(CardSensor),
@@ -50,23 +50,23 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty CardLabelSensor1Property =
+        public static readonly DependencyProperty CardSensorLabel1Property =
             DependencyProperty.Register(
-                nameof(CardLabelSensor1),
+                nameof(CardSensorLabel1),
                 typeof(string),
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty CardLabelSensor2Property =
+        public static readonly DependencyProperty CardSensorLabel2Property =
             DependencyProperty.Register(
-                nameof(CardLabelSensor2),
+                nameof(CardSensorLabel2),
                 typeof(string),
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty CardLabelSensor3Property =
+        public static readonly DependencyProperty CardSensorLabel3Property =
             DependencyProperty.Register(
-                nameof(CardLabelSensor3),
+                nameof(CardSensorLabel3),
                 typeof(string),
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
@@ -78,6 +78,13 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty CardTypeProperty =
+            DependencyProperty.Register(
+                nameof(Type),
+                typeof(CardType),
+                typeof(CardSensor),
+                new PropertyMetadata(CardType.Axis));
+
         public static readonly DependencyProperty CardValueProperty =
             DependencyProperty.Register(
                 nameof(CardValue),
@@ -85,40 +92,26 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty HasCardBadge1Property =
+        public static readonly DependencyProperty Sensor1Property =
             DependencyProperty.Register(
-                nameof(HasCardBadge1),
+                nameof(Sensor1),
                 typeof(bool),
                 typeof(CardSensor),
                 new PropertyMetadata(false));
 
-        public static readonly DependencyProperty HasCardBadgeProperty =
+        public static readonly DependencyProperty Sensor2Property =
             DependencyProperty.Register(
-                nameof(HasCardBadge),
+                nameof(Sensor2),
                 typeof(bool),
                 typeof(CardSensor),
                 new PropertyMetadata(false));
 
-        public static readonly DependencyProperty HasCardValueProperty =
+        public static readonly DependencyProperty Sensor3Property =
             DependencyProperty.Register(
-                nameof(HasCardValue),
+                nameof(Sensor3),
                 typeof(bool),
                 typeof(CardSensor),
                 new PropertyMetadata(false));
-
-        public static readonly DependencyProperty HasWithBadge1Property =
-            DependencyProperty.Register(
-                nameof(HasWithBadge1),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata("XXX"));
-
-        public static readonly DependencyProperty HasWithBadge2Property =
-            DependencyProperty.Register(
-                nameof(HasWithBadge2),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata("XXX"));
 
         #endregion
 
@@ -127,6 +120,21 @@ namespace Ferretto.VW.App.Controls.Controls
         public CardSensor()
         {
             this.InitializeComponent();
+        }
+
+        #endregion
+
+        #region Enums
+
+        public enum CardType
+        {
+            Axis,
+
+            Drawer,
+
+            Position,
+
+            Shutter,
         }
 
         #endregion
@@ -157,22 +165,22 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardBadge2LabelProperty, value);
         }
 
-        public string CardLabelSensor1
+        public string CardSensorLabel1
         {
-            get => (string)this.GetValue(CardLabelSensor1Property);
-            set => this.SetValue(CardLabelSensor1Property, value);
+            get => (string)this.GetValue(CardSensorLabel1Property);
+            set => this.SetValue(CardSensorLabel1Property, value);
         }
 
-        public string CardLabelSensor2
+        public string CardSensorLabel2
         {
-            get => (string)this.GetValue(CardLabelSensor2Property);
-            set => this.SetValue(CardLabelSensor2Property, value);
+            get => (string)this.GetValue(CardSensorLabel2Property);
+            set => this.SetValue(CardSensorLabel2Property, value);
         }
 
-        public string CardLabelSensor3
+        public string CardSensorLabel3
         {
-            get => (string)this.GetValue(CardLabelSensor3Property);
-            set => this.SetValue(CardLabelSensor3Property, value);
+            get => (string)this.GetValue(CardSensorLabel3Property);
+            set => this.SetValue(CardSensorLabel3Property, value);
         }
 
         public string CardText
@@ -187,34 +195,28 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CardValueProperty, value);
         }
 
-        public bool HasCardBadge
+        public bool Sensor1
         {
-            get => !string.IsNullOrEmpty(this.CardBadge1) &&
-                   !string.IsNullOrEmpty(this.CardBadge2) &&
-                   !string.IsNullOrEmpty(this.CardBadgeLabel1) &&
-                   !string.IsNullOrEmpty(this.CardBadgeLabel2);
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
         }
 
-        public bool HasCardBadge1
+        public bool Sensor2
         {
-            get => !string.IsNullOrEmpty(this.CardBadge1);
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
         }
 
-        public bool HasCardValue
+        public bool Sensor3
         {
-            get => !string.IsNullOrEmpty(this.CardValue);
+            get => (bool)this.GetValue(Sensor1Property);
+            set => this.SetValue(Sensor1Property, value);
         }
 
-        public string HasWithBadge1
+        public CardType Type
         {
-            get => (string)this.GetValue(HasWithBadge1Property);
-            set => this.SetValue(HasWithBadge1Property, value);
-        }
-
-        public string HasWithBadge2
-        {
-            get => (string)this.GetValue(HasWithBadge2Property);
-            set => this.SetValue(HasWithBadge2Property, value);
+            get => (CardType)this.GetValue(CardTypeProperty);
+            set => this.SetValue(CardTypeProperty, value);
         }
 
         #endregion

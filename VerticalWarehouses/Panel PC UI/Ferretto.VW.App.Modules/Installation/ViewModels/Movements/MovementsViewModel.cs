@@ -58,6 +58,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private SubscriptionToken sensorsToken;
+
         private SubscriptionToken shutterPositionToken;
 
         private DelegateCommand stopMovingCommand;
@@ -162,6 +164,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
+        public ISensorsService SensorsService => this.sensorsService;
+
         public ICommand StopMovingCommand =>
             this.stopMovingCommand
             ??
@@ -183,6 +187,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
+            this.sensorsToken?.Dispose();
+            this.sensorsToken = null;
+
             this.shutterPositionToken?.Dispose();
             this.shutterPositionToken = null;
         }
@@ -198,6 +205,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 await this.RefreshMachineInfoAsync();
+
+                await this.sensorsService.RefreshAsync(true);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
@@ -250,6 +259,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            //this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaiseCanExecuteChanged();
+        }
+
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             switch (message.Status)
@@ -299,6 +314,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
         }
@@ -378,15 +394,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             //         ThreadOption.UIThread,
             //         false);
 
-            //this.sensorsToken = this.sensorsToken
-            //    ??
-            //    this.EventAggregator
-            //        .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-            //        .Subscribe(
-            //            this.OnSensorsChanged,
-            //            ThreadOption.UIThread,
-            //            false,
-            //            m => m.Data != null);
+            this.sensorsToken = this.sensorsToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
         }
 
         #endregion
