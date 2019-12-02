@@ -19,7 +19,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 .AddHostedService<WmsMissionProxyService>();
 
             services
+#if MOCK
+                .AddTransient<IMissionSchedulingProvider, MockedMissionSchedulingProvider>()
+#else
                 .AddTransient<IMissionSchedulingProvider, MissionSchedulingProvider>()
+#endif
                 .AddTransient<IMissionOperationsProvider, MissionOperationsProvider>();
 
             return services;

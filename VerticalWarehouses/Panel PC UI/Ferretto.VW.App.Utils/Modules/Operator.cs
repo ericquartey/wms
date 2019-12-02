@@ -50,7 +50,7 @@
         {
             #region Fields
 
-            public const string IMMEDIATEDRAWERCALL = "ImmediateDrawerCallViewModel";
+            public const string IMMEDIATELOADINGUNITCALL = "ImmediateLoadingUnitCallViewModel";
 
             public const string NAVIGATION = "OthersNavigationViewModel";
 
