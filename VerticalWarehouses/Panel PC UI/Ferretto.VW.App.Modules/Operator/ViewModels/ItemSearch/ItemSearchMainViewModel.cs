@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -27,8 +26,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly List<Item> items = new List<Item>();
-
-        private readonly IItemSearchedModel itemSearchViewModel;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -69,14 +66,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
-            IItemSearchedModel itemSearchedModel,
             IBayManager bayManager,
             IAreasDataService areasDataService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemSearchViewModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
         }
@@ -175,8 +170,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
-                    this.itemSearchViewModel.SelectedItem = this.selectedItem;
-                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == this.bayManager.Identity.MachineId)?.AvailableQuantityItem;
+                    var machineId = this.bayManager.Identity.Id;
+                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -199,14 +194,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            if (this.items != null
-               &&
-               this.selectedItem != null)
-            {
-                return;
-            }
-
-            this.currentItemIndex = 0;
             this.InputQuantity = null;
             this.items.Clear();
             var machineIdentity = await this.identityService.GetAsync();
@@ -214,6 +201,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.tokenSource = new CancellationTokenSource();
 
             await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
+
+            this.SetSelectedItem();
         }
 
         public async Task RequestItemPickAsync()
@@ -227,7 +216,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.SelectedItem.Id,
                     this.InputQuantity.Value);
 
-                this.ShowNotification($"TODO**Successfully requested {this.InputQuantity} pieces of item '{this.SelectedItem.Code}'.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(
+                    string.Format(
+                        Resources.OperatorApp.PickRequestWasAccepted,
+                        this.SelectedItem.Code,
+                        this.InputQuantity),
+                    Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -303,7 +297,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
             }
 
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            this.SetSelectedItem();
         }
 
         public async Task SelectPreviousItemAsync()
@@ -325,9 +319,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 this.SelectedItem != null
                 &&
+                this.AvailableQuantity.HasValue
+                &&
+                this.AvailableQuantity.Value > 0
+                &&
                 this.InputQuantity.HasValue
                 &&
                 this.InputQuantity > 0
+                &&
+                this.InputQuantity <= this.AvailableQuantity.Value
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -368,12 +368,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
+        private void SetSelectedItem()
+        {
+            this.SelectedItem = this.items?.ElementAt(this.currentItemIndex);
+        }
+
         private void ShowItemDetails()
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                null,
+                this.SelectedItem,
                 trackCurrentView: true);
         }
 

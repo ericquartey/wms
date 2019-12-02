@@ -188,9 +188,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.activeState = this.OnPause();
         }
 
-        public void Resume()
+        public void Resume(CommandMessage commandMessage)
         {
-            this.ActiveState = this.OnResume();
+            this.ActiveState = this.OnResume(commandMessage);
         }
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
@@ -287,9 +287,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.ActiveState.Pause();
         }
 
-        protected virtual IState OnResume()
+        protected virtual IState OnResume(CommandMessage commandMessage)
         {
-            return this.ActiveState.Resume();
+            return this.ActiveState.Resume(commandMessage);
         }
 
         protected virtual bool OnStart(CommandMessage commandMessage, CancellationToken cancellationToken)

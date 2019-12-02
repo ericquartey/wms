@@ -175,6 +175,17 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("{id}/move-to-bay")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToBay(int id)
+        {
+            // TO DO move to this.BayNumber
+
+            return this.Accepted();
+        }
+
         [HttpGet("pause-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]
@@ -189,7 +200,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Resume(Guid? missionId, BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.ResumeMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

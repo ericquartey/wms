@@ -21,7 +21,7 @@
     }
   ],
   "Machine": {
-    "Id": 1,
+    "Id": 2,
     "Bays": [
       {
         "AlphaNumericBar": null,
@@ -401,8 +401,6 @@
     "Height": 4563,
     "MaxGrossWeight": 50000,
     "ModelName": "Simulation Vertimag 800kg",
-    "LoadUnitTare": 120,
-    "LoadUnitMaxNetWeight": 800,
     "Panels": [
       {
         "Side": "Front",

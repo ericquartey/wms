@@ -576,6 +576,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task InsertLoadingUnitOnlyDbAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveToBayAsync(int id);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MoveToBayAsync(int id, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task PauseAsync(System.Guid? missionId, BayNumber targetBay);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1794,6 +1801,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("loadUnitMaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitMaxNetWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadUnitTare", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitTare { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     
@@ -2537,9 +2550,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastServiceDate { get; set; }
-    
-        [Newtonsoft.Json.JsonProperty("machineId", Required = Newtonsoft.Json.Required.Always)]
-        public int MachineId { get; set; }
     
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }

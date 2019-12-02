@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ISensorsProvider sensorsProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private LoadingUnitLocation ejectBay;
 
         private BayNumber requestingBay;
@@ -31,6 +33,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitWaitEjectConfirm(
             IBaysDataProvider baysDataProvider,
+            IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
@@ -39,6 +42,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -54,10 +58,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.ejectBay = messageData.Destination;
             }
-            ((IMoveLoadingUnitMachineData)machineData).FsmStateName = this.GetType().Name;
+            var mission = (Mission)machineData;
+            mission.FsmStateName = this.GetType().Name;
+            this.missionsDataProvider.Update(mission);
         }
 
-        protected override IState OnResume()
+        protected override IState OnResume(CommandMessage commandMessage)
         {
             IState returnValue = this;
 #if CHECK_BAY_SENSOR

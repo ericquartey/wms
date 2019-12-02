@@ -75,8 +75,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public IBayManager BayManagerService => this.bayManagerService;
-
         public Guid? CurrentMissionId { get; private set; }
 
         public bool IsExecutingProcedure
@@ -181,14 +179,18 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
 
         public ICommand SelectBayPositionDownCommand =>
-                                this.selectBayPositionDownCommand
-                        ??
-                        (this.selectBayPositionDownCommand = new DelegateCommand(this.SelectBayPositionDown));
+            this.selectBayPositionDownCommand
+            ??
+            (this.selectBayPositionDownCommand = new DelegateCommand(
+                this.SelectBayPositionDown,
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse));
 
         public ICommand SelectBayPositionUpCommand =>
-                                this.selectBayPositionUpCommand
-                        ??
-                        (this.selectBayPositionUpCommand = new DelegateCommand(this.SelectBayPositionUp));
+            this.selectBayPositionUpCommand
+            ??
+            (this.selectBayPositionUpCommand = new DelegateCommand(
+                this.SelectBayPositionUp,
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -234,7 +236,12 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
         {
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayOne)
+            return this.GetLoadingUnitSourceByDestination(this.Bay.Number);
+        }
+
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSourceByDestination(MAS.AutomationService.Contracts.BayNumber bayNumber)
+        {
+            if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
             {
                 if (this.IsPositionDownSelected)
                 {
@@ -246,7 +253,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
             }
 
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
             {
                 if (this.IsPositionDownSelected)
                 {
@@ -258,7 +265,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
             }
 
-            if (this.Bay.Number == MAS.AutomationService.Contracts.BayNumber.BayThree)
+            if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
             {
                 if (this.IsPositionDownSelected)
                 {
@@ -290,8 +297,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         public virtual void RaiseCanExecuteChanged()
         {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
+            this.startCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
         }
 
         public async Task RetrieveLoadingUnitsAsync()

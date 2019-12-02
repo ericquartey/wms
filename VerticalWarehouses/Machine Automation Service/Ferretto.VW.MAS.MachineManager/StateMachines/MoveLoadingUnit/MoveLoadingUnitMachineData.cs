@@ -15,11 +15,5 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
         }
 
         #endregion
-
-        #region Properties
-
-        public Guid FsmId { get; protected set; }
-
-        #endregion
     }
 }

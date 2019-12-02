@@ -25,6 +25,10 @@ namespace Ferretto.VW.App.Services
 
         bool IsZeroChain { get; }
 
+        string LoadingUnitPositionDownInBayCode { get; }
+
+        string LoadingUnitPositionUpInBayCode { get;  }
+
         Sensors Sensors { get; }
 
         ShutterSensors ShutterSensors { get; }
