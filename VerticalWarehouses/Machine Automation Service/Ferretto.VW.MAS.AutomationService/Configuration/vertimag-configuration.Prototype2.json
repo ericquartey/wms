@@ -10,9 +10,35 @@
             "Tare": 120,
             "MaxNetWeight": 930,
             "Id": 2
+        },
+        {
+            "Tare": 120,
+            "MaxNetWeight": 930,
+            "Id": 3
+        },
+        {
+            "Tare": 120,
+            "MaxNetWeight": 930,
+            "Id": 4
+        },
+        {
+            "Tare": 120,
+            "MaxNetWeight": 930,
+            "Id": 5
+        },
+        {
+            "Tare": 120,
+            "MaxNetWeight": 930,
+            "Id": 6
+        },
+        {
+            "Tare": 120,
+            "MaxNetWeight": 930,
+            "Id": 7
         }
     ],
     "Machine": {
+        "Id": 1,
         "Bays": [
             {
                 "Inverter": {
@@ -34,7 +60,7 @@
                         "Location": "InternalBay1Down"
                     },
                     {
-                        "Height": 770,
+                        "Height": 768,
                         "Location": "InternalBay1Up"
                     }
                 ],
@@ -322,6 +348,8 @@
         "Height": 9460,
         "MaxGrossWeight": 50000,
         "ModelName": "Vertimag 1000kg",
+        "LoadUnitTare": 120,
+        "LoadUnitMaxNetWeight": 930,
         "Panels": [
             {
                 "Side": "Front",
@@ -330,115 +358,115 @@
                         "Id": 1,
                         "Position": 1438.0,
                         "Priority": 1,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 3,
                         "Position": 1463.0,
                         "Priority": 3,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 5,
                         "Position": 1488.0,
                         "Priority": 5,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 7,
                         "Position": 1513.0,
                         "Priority": 7,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 9,
                         "Position": 1538.0,
                         "Priority": 9,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 11,
                         "Position": 1563.0,
                         "Priority": 11,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 13,
                         "Position": 1588.0,
                         "Priority": 13,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 15,
                         "Position": 1613.0,
                         "Priority": 15,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 17,
                         "Position": 1638.0,
                         "Priority": 17,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 19,
                         "Position": 1663.0,
                         "Priority": 19,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 21,
                         "Position": 1688.0,
                         "Priority": 21,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 23,
                         "Position": 1713.0,
                         "Priority": 23,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 25,
                         "Position": 1738.0,
                         "Priority": 25,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 27,
                         "Position": 1763.0,
                         "Priority": 27,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 29,
                         "Position": 1788.0,
                         "Priority": 29,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 31,
                         "Position": 1813.0,
                         "Priority": 31,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 33,
                         "Position": 1838.0,
                         "Priority": 33,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 35,
                         "Position": 1863.0,
                         "Priority": 35,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 37,
                         "Position": 1888.0,
                         "Priority": 37,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 39,
@@ -492,55 +520,55 @@
                         "Id": 55,
                         "Position": 2113.0,
                         "Priority": 55,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 57,
                         "Position": 2138.0,
                         "Priority": 57,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 59,
                         "Position": 2163.0,
                         "Priority": 59,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 61,
                         "Position": 2188.0,
                         "Priority": 61,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 63,
                         "Position": 2213.0,
                         "Priority": 63,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 65,
                         "Position": 2238.0,
                         "Priority": 65,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 67,
                         "Position": 2263.0,
                         "Priority": 67,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 69,
                         "Position": 2288.0,
                         "Priority": 69,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 71,
                         "Position": 2314.0,
                         "Priority": 71,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 73,
@@ -594,19 +622,19 @@
                         "Id": 89,
                         "Position": 2539.0,
                         "Priority": 89,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 91,
                         "Position": 2564.0,
                         "Priority": 91,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 93,
                         "Position": 2589.0,
                         "Priority": 93,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 95,
@@ -660,25 +688,25 @@
                         "Id": 111,
                         "Position": 2814.0,
                         "Priority": 111,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 113,
                         "Position": 2839.0,
                         "Priority": 113,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 115,
                         "Position": 2864.0,
                         "Priority": 115,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 117,
                         "Position": 2889.0,
                         "Priority": 117,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 119,
@@ -732,1405 +760,1405 @@
                         "Id": 135,
                         "Position": 3114.0,
                         "Priority": 135,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 137,
                         "Position": 3139.0,
                         "Priority": 137,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 139,
                         "Position": 3164.0,
                         "Priority": 139,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 141,
                         "Position": 3189.0,
                         "Priority": 141,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 143,
                         "Position": 3214.0,
                         "Priority": 143,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 145,
                         "Position": 3239.0,
                         "Priority": 145,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 147,
                         "Position": 3264.0,
                         "Priority": 147,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 149,
                         "Position": 3289.0,
                         "Priority": 149,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 151,
                         "Position": 3314.0,
                         "Priority": 151,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 153,
                         "Position": 3339.0,
                         "Priority": 153,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 155,
                         "Position": 3364.0,
                         "Priority": 155,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 157,
                         "Position": 3389.0,
                         "Priority": 157,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 159,
                         "Position": 3414.0,
                         "Priority": 159,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 161,
                         "Position": 3439.0,
                         "Priority": 161,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 163,
                         "Position": 3464.0,
                         "Priority": 163,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 165,
                         "Position": 3489.0,
                         "Priority": 165,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 167,
                         "Position": 3514.0,
                         "Priority": 167,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 169,
                         "Position": 3539.0,
                         "Priority": 169,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 171,
                         "Position": 3564.0,
                         "Priority": 171,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 173,
                         "Position": 3589.0,
                         "Priority": 173,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 175,
                         "Position": 3614.0,
                         "Priority": 175,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 177,
                         "Position": 3639.0,
                         "Priority": 177,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 179,
                         "Position": 3664.0,
                         "Priority": 179,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 181,
                         "Position": 3689.0,
                         "Priority": 181,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 183,
                         "Position": 3714.0,
                         "Priority": 183,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 185,
                         "Position": 3739.0,
                         "Priority": 185,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 187,
                         "Position": 3764.0,
                         "Priority": 187,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 189,
                         "Position": 3789.0,
                         "Priority": 189,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 191,
                         "Position": 3814.0,
                         "Priority": 191,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 193,
                         "Position": 3839.0,
                         "Priority": 193,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 195,
                         "Position": 3864.0,
                         "Priority": 195,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 197,
                         "Position": 3889.0,
                         "Priority": 197,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 199,
                         "Position": 3914.0,
                         "Priority": 199,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 201,
                         "Position": 3939.0,
                         "Priority": 201,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 203,
                         "Position": 3964.0,
                         "Priority": 203,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 205,
                         "Position": 3989.0,
                         "Priority": 205,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 207,
                         "Position": 4014.0,
                         "Priority": 207,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 209,
                         "Position": 4039.0,
                         "Priority": 209,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 211,
                         "Position": 4064.0,
                         "Priority": 211,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 213,
                         "Position": 4089.0,
                         "Priority": 213,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 215,
                         "Position": 4114.0,
                         "Priority": 215,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 217,
                         "Position": 4139.0,
                         "Priority": 217,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 219,
                         "Position": 4164.0,
                         "Priority": 219,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 221,
                         "Position": 4189.0,
                         "Priority": 221,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 223,
                         "Position": 4214.0,
                         "Priority": 223,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 225,
                         "Position": 4239.0,
                         "Priority": 225,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 227,
                         "Position": 4264.0,
                         "Priority": 227,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 229,
                         "Position": 4289.0,
                         "Priority": 229,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 231,
                         "Position": 4314.0,
                         "Priority": 231,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 233,
                         "Position": 4339.0,
                         "Priority": 233,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 235,
                         "Position": 4364.0,
                         "Priority": 235,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 237,
                         "Position": 4389.0,
                         "Priority": 237,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 239,
                         "Position": 4415.0,
                         "Priority": 239,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 241,
                         "Position": 4439.0,
                         "Priority": 241,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 243,
                         "Position": 4464.0,
                         "Priority": 243,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 245,
                         "Position": 4489.0,
                         "Priority": 245,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 247,
                         "Position": 4514.0,
                         "Priority": 247,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 249,
                         "Position": 4539.0,
                         "Priority": 249,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 251,
                         "Position": 4564.0,
                         "Priority": 251,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 253,
                         "Position": 4589.0,
                         "Priority": 253,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 255,
                         "Position": 4614.0,
                         "Priority": 255,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 257,
                         "Position": 4639.0,
                         "Priority": 257,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 259,
                         "Position": 4664.0,
                         "Priority": 259,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 261,
                         "Position": 4689.0,
                         "Priority": 261,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 263,
                         "Position": 4714.0,
                         "Priority": 263,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 265,
                         "Position": 4739.0,
                         "Priority": 265,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 267,
                         "Position": 4764.0,
                         "Priority": 267,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 269,
                         "Position": 4789.0,
                         "Priority": 269,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 271,
                         "Position": 4814.0,
                         "Priority": 271,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 273,
                         "Position": 4839.0,
                         "Priority": 273,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 275,
                         "Position": 4864.0,
                         "Priority": 275,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 277,
                         "Position": 4889.0,
                         "Priority": 277,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 279,
                         "Position": 4914.0,
                         "Priority": 279,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 281,
                         "Position": 4939.0,
                         "Priority": 281,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 283,
                         "Position": 4964.0,
                         "Priority": 283,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 285,
                         "Position": 4989.0,
                         "Priority": 285,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 287,
                         "Position": 5014.0,
                         "Priority": 287,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 289,
                         "Position": 5039.0,
                         "Priority": 289,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 291,
                         "Position": 5064.0,
                         "Priority": 291,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 293,
                         "Position": 5089.0,
                         "Priority": 293,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 295,
                         "Position": 5114.0,
                         "Priority": 295,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 297,
                         "Position": 5139.0,
                         "Priority": 297,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 299,
                         "Position": 5164.0,
                         "Priority": 299,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 301,
                         "Position": 5189.0,
                         "Priority": 301,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 303,
                         "Position": 5214.0,
                         "Priority": 303,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 305,
                         "Position": 5239.0,
                         "Priority": 305,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 307,
                         "Position": 5264.0,
                         "Priority": 307,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 309,
                         "Position": 5289.0,
                         "Priority": 309,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 311,
                         "Position": 5314.0,
                         "Priority": 311,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 313,
                         "Position": 5339.0,
                         "Priority": 313,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 315,
                         "Position": 5364.0,
                         "Priority": 315,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 317,
                         "Position": 5389.0,
                         "Priority": 317,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 319,
                         "Position": 5414.0,
                         "Priority": 319,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 321,
                         "Position": 5439.0,
                         "Priority": 321,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 323,
                         "Position": 5464.0,
                         "Priority": 323,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 325,
                         "Position": 5489.0,
                         "Priority": 325,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 327,
                         "Position": 5514.0,
                         "Priority": 327,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 329,
                         "Position": 5539.0,
                         "Priority": 329,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 331,
                         "Position": 5564.0,
                         "Priority": 331,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 333,
                         "Position": 5589.0,
                         "Priority": 333,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 335,
                         "Position": 5614.0,
                         "Priority": 335,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 337,
                         "Position": 5639.0,
                         "Priority": 337,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 339,
                         "Position": 5664.0,
                         "Priority": 339,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 341,
                         "Position": 5689.0,
                         "Priority": 341,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 343,
                         "Position": 5714.0,
                         "Priority": 343,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 345,
                         "Position": 5739.0,
                         "Priority": 345,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 347,
                         "Position": 5764.0,
                         "Priority": 347,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 349,
                         "Position": 5789.0,
                         "Priority": 349,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 351,
                         "Position": 5814.0,
                         "Priority": 351,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 353,
                         "Position": 5839.0,
                         "Priority": 353,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 355,
                         "Position": 5864.0,
                         "Priority": 355,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 357,
                         "Position": 5889.0,
                         "Priority": 357,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 359,
                         "Position": 5914.0,
                         "Priority": 359,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 361,
                         "Position": 5939.0,
                         "Priority": 361,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 363,
                         "Position": 5964.0,
                         "Priority": 363,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 365,
                         "Position": 5989.0,
                         "Priority": 365,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 367,
                         "Position": 6014.0,
                         "Priority": 367,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 369,
                         "Position": 6039.0,
                         "Priority": 369,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 371,
                         "Position": 6064.0,
                         "Priority": 371,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 373,
                         "Position": 6089.0,
                         "Priority": 373,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 375,
                         "Position": 6114.0,
                         "Priority": 375,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 377,
                         "Position": 6139.0,
                         "Priority": 377,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 379,
                         "Position": 6164.0,
                         "Priority": 379,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 381,
                         "Position": 6189.0,
                         "Priority": 381,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 383,
                         "Position": 6214.0,
                         "Priority": 383,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 385,
                         "Position": 6239.0,
                         "Priority": 385,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 387,
                         "Position": 6264.0,
                         "Priority": 387,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 389,
                         "Position": 6289.0,
                         "Priority": 389,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 391,
                         "Position": 6314.0,
                         "Priority": 391,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 393,
                         "Position": 6339.0,
                         "Priority": 393,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 395,
                         "Position": 6364.0,
                         "Priority": 395,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 397,
                         "Position": 6389.0,
                         "Priority": 397,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 399,
                         "Position": 6414.0,
                         "Priority": 399,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 401,
                         "Position": 6439.0,
                         "Priority": 401,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 403,
                         "Position": 6464.0,
                         "Priority": 403,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 405,
                         "Position": 6489.0,
                         "Priority": 405,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 407,
                         "Position": 6514.0,
                         "Priority": 407,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 409,
                         "Position": 6539.0,
                         "Priority": 409,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 411,
                         "Position": 6564.0,
                         "Priority": 411,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 413,
                         "Position": 6589.0,
                         "Priority": 413,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 415,
                         "Position": 6614.0,
                         "Priority": 415,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 417,
                         "Position": 6639.0,
                         "Priority": 417,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 419,
                         "Position": 6664.0,
                         "Priority": 419,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 421,
                         "Position": 6689.0,
                         "Priority": 421,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 423,
                         "Position": 6714.0,
                         "Priority": 423,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 425,
                         "Position": 6739.0,
                         "Priority": 425,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 427,
                         "Position": 6764.0,
                         "Priority": 427,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 429,
                         "Position": 6789.0,
                         "Priority": 429,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 431,
                         "Position": 6814.0,
                         "Priority": 431,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 433,
                         "Position": 6839.0,
                         "Priority": 433,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 435,
                         "Position": 6864.0,
                         "Priority": 435,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 437,
                         "Position": 6889.0,
                         "Priority": 437,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 439,
                         "Position": 6914.0,
                         "Priority": 439,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 441,
                         "Position": 6939.0,
                         "Priority": 441,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 443,
                         "Position": 6964.0,
                         "Priority": 443,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 445,
                         "Position": 6989.0,
                         "Priority": 445,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 447,
                         "Position": 7014.0,
                         "Priority": 447,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 449,
                         "Position": 7039.0,
                         "Priority": 449,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 451,
                         "Position": 7064.0,
                         "Priority": 451,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 453,
                         "Position": 7089.0,
                         "Priority": 453,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 455,
                         "Position": 7114.0,
                         "Priority": 455,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 457,
                         "Position": 7139.0,
                         "Priority": 457,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 459,
                         "Position": 7164.0,
                         "Priority": 459,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 461,
                         "Position": 7189.0,
                         "Priority": 461,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 463,
                         "Position": 7214.0,
                         "Priority": 463,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 465,
                         "Position": 7239.0,
                         "Priority": 465,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 467,
                         "Position": 7264.0,
                         "Priority": 467,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 469,
                         "Position": 7289.0,
                         "Priority": 469,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 471,
                         "Position": 7314.0,
                         "Priority": 471,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 473,
                         "Position": 7339.0,
                         "Priority": 473,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 475,
                         "Position": 7364.0,
                         "Priority": 475,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 477,
                         "Position": 7389.0,
                         "Priority": 477,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 479,
                         "Position": 7414.0,
                         "Priority": 479,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 481,
                         "Position": 7439.0,
                         "Priority": 481,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 483,
                         "Position": 7464.0,
                         "Priority": 483,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 485,
                         "Position": 7489.0,
                         "Priority": 485,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 487,
                         "Position": 7514.0,
                         "Priority": 487,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 489,
                         "Position": 7539.0,
                         "Priority": 489,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 491,
                         "Position": 7564.0,
                         "Priority": 491,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 493,
                         "Position": 7589.0,
                         "Priority": 493,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 495,
                         "Position": 7614.0,
                         "Priority": 495,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 497,
                         "Position": 7639.0,
                         "Priority": 497,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 499,
                         "Position": 7664.0,
                         "Priority": 499,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 501,
                         "Position": 7689.0,
                         "Priority": 501,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 503,
                         "Position": 7714.0,
                         "Priority": 503,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 505,
                         "Position": 7739.0,
                         "Priority": 505,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 507,
                         "Position": 7764.0,
                         "Priority": 507,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 509,
                         "Position": 7789.0,
                         "Priority": 509,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 511,
                         "Position": 7814.0,
                         "Priority": 511,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 513,
                         "Position": 7839.0,
                         "Priority": 513,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 515,
                         "Position": 7864.0,
                         "Priority": 515,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 517,
                         "Position": 7889.0,
                         "Priority": 517,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 519,
                         "Position": 7914.0,
                         "Priority": 519,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 521,
                         "Position": 7939.0,
                         "Priority": 521,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 523,
                         "Position": 7964.0,
                         "Priority": 523,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 525,
                         "Position": 7989.0,
                         "Priority": 525,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 527,
                         "Position": 8014.0,
                         "Priority": 527,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 529,
                         "Position": 8039.0,
                         "Priority": 529,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 531,
                         "Position": 8064.0,
                         "Priority": 531,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 533,
                         "Position": 8089.0,
                         "Priority": 533,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 535,
                         "Position": 8114.0,
                         "Priority": 535,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 537,
                         "Position": 8139.0,
                         "Priority": 537,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 539,
                         "Position": 8164.0,
                         "Priority": 539,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 541,
                         "Position": 8189.0,
                         "Priority": 541,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 543,
                         "Position": 8214.0,
                         "Priority": 543,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 545,
                         "Position": 8239.0,
                         "Priority": 545,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 547,
                         "Position": 8264.0,
                         "Priority": 547,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 549,
                         "Position": 8289.0,
                         "Priority": 549,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 551,
                         "Position": 8314.0,
                         "Priority": 551,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 553,
                         "Position": 8339.0,
                         "Priority": 553,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 555,
                         "Position": 8364.0,
                         "Priority": 555,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 557,
                         "Position": 8389.0,
                         "Priority": 557,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 559,
                         "Position": 8414.0,
                         "Priority": 559,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 561,
                         "Position": 8439.0,
                         "Priority": 561,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 563,
                         "Position": 8464.0,
                         "Priority": 563,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 565,
                         "Position": 8489.0,
                         "Priority": 565,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 567,
                         "Position": 8514.0,
                         "Priority": 567,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 569,
                         "Position": 8539.0,
                         "Priority": 569,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 571,
                         "Position": 8564.0,
                         "Priority": 571,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 573,
                         "Position": 8589.0,
                         "Priority": 573,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 575,
                         "Position": 8615.0,
                         "Priority": 575,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 577,
                         "Position": 8640.0,
                         "Priority": 577,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 579,
                         "Position": 8665.0,
                         "Priority": 579,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 581,
                         "Position": 8690.0,
                         "Priority": 581,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 583,
                         "Position": 8715.0,
                         "Priority": 583,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 585,
                         "Position": 8740.0,
                         "Priority": 585,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 587,
                         "Position": 8765.0,
                         "Priority": 587,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 589,
                         "Position": 8790.0,
                         "Priority": 589,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 591,
                         "Position": 8815.0,
                         "Priority": 591,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 593,
                         "Position": 8840.0,
                         "Priority": 593,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 595,
                         "Position": 8865.0,
                         "Priority": 595,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 597,
                         "Position": 8890.0,
                         "Priority": 597,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 599,
                         "Position": 8915.0,
                         "Priority": 599,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 601,
                         "Position": 8940.0,
                         "Priority": 601,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     }
 
                 ]
@@ -2142,115 +2170,115 @@
                         "Id": 2,
                         "Position": 1439.0,
                         "Priority": 2,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 4,
                         "Position": 1464.0,
                         "Priority": 4,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 6,
                         "Position": 1489.0,
                         "Priority": 6,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 8,
                         "Position": 1514.0,
                         "Priority": 8,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 10,
                         "Position": 1539.0,
                         "Priority": 10,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 12,
                         "Position": 1564.0,
                         "Priority": 12,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 14,
                         "Position": 1589.0,
                         "Priority": 14,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 16,
                         "Position": 1614.0,
                         "Priority": 16,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 18,
                         "Position": 1639.0,
                         "Priority": 18,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 20,
                         "Position": 1664.0,
                         "Priority": 20,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 22,
                         "Position": 1689.0,
                         "Priority": 22,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 24,
                         "Position": 1714.0,
                         "Priority": 24,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 26,
                         "Position": 1739.0,
                         "Priority": 26,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 28,
                         "Position": 1764.0,
                         "Priority": 28,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 30,
                         "Position": 1789.0,
                         "Priority": 30,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 32,
                         "Position": 1814.0,
                         "Priority": 32,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 34,
                         "Position": 1839.0,
                         "Priority": 34,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 36,
                         "Position": 1864.0,
                         "Priority": 36,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 38,
                         "Position": 1889.0,
                         "Priority": 38,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 40,
@@ -2304,55 +2332,55 @@
                         "Id": 56,
                         "Position": 2114.0,
                         "Priority": 56,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 58,
                         "Position": 2139.0,
                         "Priority": 58,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 60,
                         "Position": 2164.0,
                         "Priority": 60,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 62,
                         "Position": 2189.0,
                         "Priority": 62,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 64,
                         "Position": 2214.0,
                         "Priority": 64,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 66,
                         "Position": 2239.0,
                         "Priority": 66,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 68,
                         "Position": 2264.0,
                         "Priority": 68,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 70,
                         "Position": 2289.0,
                         "Priority": 70,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 72,
                         "Position": 2314.0,
                         "Priority": 72,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 74,
@@ -2406,19 +2434,19 @@
                         "Id": 90,
                         "Position": 2539.0,
                         "Priority": 90,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 92,
                         "Position": 2564.0,
                         "Priority": 92,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 94,
                         "Position": 2589.0,
                         "Priority": 94,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 96,
@@ -2472,1477 +2500,1477 @@
                         "Id": 112,
                         "Position": 2814.0,
                         "Priority": 112,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 114,
                         "Position": 2839.0,
                         "Priority": 114,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 116,
                         "Position": 2864.0,
                         "Priority": 116,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 118,
                         "Position": 2889.0,
                         "Priority": 118,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 120,
                         "Position": 2914.0,
                         "Priority": 120,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 122,
                         "Position": 2939.0,
                         "Priority": 122,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 124,
                         "Position": 2964.0,
                         "Priority": 124,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 126,
                         "Position": 2989.0,
                         "Priority": 126,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 128,
                         "Position": 3014.0,
                         "Priority": 128,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 130,
                         "Position": 3039.0,
                         "Priority": 130,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 132,
                         "Position": 3064.0,
                         "Priority": 132,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 134,
                         "Position": 3089.0,
                         "Priority": 134,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 136,
                         "Position": 3114.0,
                         "Priority": 136,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 138,
                         "Position": 3139.0,
                         "Priority": 138,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 140,
                         "Position": 3164.0,
                         "Priority": 140,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 142,
                         "Position": 3189.0,
                         "Priority": 142,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 144,
                         "Position": 3214.0,
                         "Priority": 144,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 146,
                         "Position": 3239.0,
                         "Priority": 146,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 148,
                         "Position": 3264.0,
                         "Priority": 148,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 150,
                         "Position": 3289.0,
                         "Priority": 150,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 152,
                         "Position": 3314.0,
                         "Priority": 152,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 154,
                         "Position": 3339.0,
                         "Priority": 154,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 156,
                         "Position": 3364.0,
                         "Priority": 156,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 158,
                         "Position": 3389.0,
                         "Priority": 158,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 160,
                         "Position": 3414.0,
                         "Priority": 160,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 162,
                         "Position": 3439.0,
                         "Priority": 162,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 164,
                         "Position": 3464.0,
                         "Priority": 164,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 166,
                         "Position": 3489.0,
                         "Priority": 166,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 168,
                         "Position": 3514.0,
                         "Priority": 168,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 170,
                         "Position": 3539.0,
                         "Priority": 170,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 172,
                         "Position": 3564.0,
                         "Priority": 172,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 174,
                         "Position": 3589.0,
                         "Priority": 174,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 176,
                         "Position": 3614.0,
                         "Priority": 176,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 178,
                         "Position": 3639.0,
                         "Priority": 178,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 180,
                         "Position": 3664.0,
                         "Priority": 180,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 182,
                         "Position": 3689.0,
                         "Priority": 182,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 184,
                         "Position": 3714.0,
                         "Priority": 184,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 186,
                         "Position": 3739.0,
                         "Priority": 186,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 188,
                         "Position": 3764.0,
                         "Priority": 188,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 190,
                         "Position": 3789.0,
                         "Priority": 190,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 192,
                         "Position": 3814.0,
                         "Priority": 192,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 194,
                         "Position": 3839.0,
                         "Priority": 194,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 196,
                         "Position": 3864.0,
                         "Priority": 196,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 198,
                         "Position": 3889.0,
                         "Priority": 198,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 200,
                         "Position": 3914.0,
                         "Priority": 200,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 202,
                         "Position": 3939.0,
                         "Priority": 202,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 204,
                         "Position": 3964.0,
                         "Priority": 204,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 206,
                         "Position": 3989.0,
                         "Priority": 206,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 208,
                         "Position": 4014.0,
                         "Priority": 208,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 210,
                         "Position": 4039.0,
                         "Priority": 210,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 212,
                         "Position": 4064.0,
                         "Priority": 212,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 214,
                         "Position": 4089.0,
                         "Priority": 214,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 216,
                         "Position": 4114.0,
                         "Priority": 216,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 218,
                         "Position": 4139.0,
                         "Priority": 218,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 220,
                         "Position": 4164.0,
                         "Priority": 220,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 222,
                         "Position": 4189.0,
                         "Priority": 222,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 224,
                         "Position": 4214.0,
                         "Priority": 224,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 226,
                         "Position": 4239.0,
                         "Priority": 226,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 228,
                         "Position": 4264.0,
                         "Priority": 228,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 230,
                         "Position": 4289.0,
                         "Priority": 230,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 232,
                         "Position": 4314.0,
                         "Priority": 232,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 234,
                         "Position": 4339.0,
                         "Priority": 234,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 236,
                         "Position": 4364.0,
                         "Priority": 236,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 238,
                         "Position": 4389.0,
                         "Priority": 238,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 240,
                         "Position": 4415.0,
                         "Priority": 240,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 242,
                         "Position": 4439.0,
                         "Priority": 242,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 244,
                         "Position": 4464.0,
                         "Priority": 244,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 246,
                         "Position": 4489.0,
                         "Priority": 246,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 248,
                         "Position": 4514.0,
                         "Priority": 248,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 250,
                         "Position": 4539.0,
                         "Priority": 250,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 252,
                         "Position": 4564.0,
                         "Priority": 252,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 254,
                         "Position": 4589.0,
                         "Priority": 254,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 256,
                         "Position": 4614.0,
                         "Priority": 256,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 258,
                         "Position": 4639.0,
                         "Priority": 258,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 260,
                         "Position": 4664.0,
                         "Priority": 260,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 262,
                         "Position": 4689.0,
                         "Priority": 262,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 264,
                         "Position": 4714.0,
                         "Priority": 264,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 266,
                         "Position": 4739.0,
                         "Priority": 266,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 268,
                         "Position": 4764.0,
                         "Priority": 268,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 270,
                         "Position": 4789.0,
                         "Priority": 270,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 272,
                         "Position": 4814.0,
                         "Priority": 272,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 274,
                         "Position": 4839.0,
                         "Priority": 274,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 276,
                         "Position": 4864.0,
                         "Priority": 276,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 278,
                         "Position": 4889.0,
                         "Priority": 278,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 280,
                         "Position": 4914.0,
                         "Priority": 280,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 282,
                         "Position": 4939.0,
                         "Priority": 282,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 284,
                         "Position": 4964.0,
                         "Priority": 284,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 286,
                         "Position": 4989.0,
                         "Priority": 286,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 288,
                         "Position": 5014.0,
                         "Priority": 288,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 290,
                         "Position": 5039.0,
                         "Priority": 290,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 292,
                         "Position": 5064.0,
                         "Priority": 292,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 294,
                         "Position": 5089.0,
                         "Priority": 294,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 296,
                         "Position": 5114.0,
                         "Priority": 296,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 298,
                         "Position": 5139.0,
                         "Priority": 298,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 300,
                         "Position": 5164.0,
                         "Priority": 300,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 302,
                         "Position": 5189.0,
                         "Priority": 302,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 304,
                         "Position": 5214.0,
                         "Priority": 304,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 306,
                         "Position": 5239.0,
                         "Priority": 306,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 308,
                         "Position": 5264.0,
                         "Priority": 308,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 310,
                         "Position": 5289.0,
                         "Priority": 310,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 312,
                         "Position": 5314.0,
                         "Priority": 312,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 314,
                         "Position": 5339.0,
                         "Priority": 314,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 316,
                         "Position": 5364.0,
                         "Priority": 316,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 318,
                         "Position": 5389.0,
                         "Priority": 318,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 320,
                         "Position": 5414.0,
                         "Priority": 320,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 322,
                         "Position": 5439.0,
                         "Priority": 322,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 324,
                         "Position": 5464.0,
                         "Priority": 324,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 326,
                         "Position": 5489.0,
                         "Priority": 326,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 328,
                         "Position": 5514.0,
                         "Priority": 328,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 330,
                         "Position": 5539.0,
                         "Priority": 330,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 332,
                         "Position": 5564.0,
                         "Priority": 332,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 334,
                         "Position": 5589.0,
                         "Priority": 334,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 336,
                         "Position": 5614.0,
                         "Priority": 336,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 338,
                         "Position": 5639.0,
                         "Priority": 338,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 340,
                         "Position": 5664.0,
                         "Priority": 340,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 342,
                         "Position": 5689.0,
                         "Priority": 342,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 344,
                         "Position": 5714.0,
                         "Priority": 344,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 346,
                         "Position": 5739.0,
                         "Priority": 346,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 348,
                         "Position": 5764.0,
                         "Priority": 348,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 350,
                         "Position": 5789.0,
                         "Priority": 350,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 352,
                         "Position": 5814.0,
                         "Priority": 352,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 354,
                         "Position": 5839.0,
                         "Priority": 354,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 356,
                         "Position": 5864.0,
                         "Priority": 356,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 358,
                         "Position": 5889.0,
                         "Priority": 358,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 360,
                         "Position": 5914.0,
                         "Priority": 360,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 362,
                         "Position": 5939.0,
                         "Priority": 362,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 364,
                         "Position": 5964.0,
                         "Priority": 364,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 366,
                         "Position": 5989.0,
                         "Priority": 366,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 368,
                         "Position": 6014.0,
                         "Priority": 368,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 370,
                         "Position": 6039.0,
                         "Priority": 370,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 372,
                         "Position": 6064.0,
                         "Priority": 372,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 374,
                         "Position": 6089.0,
                         "Priority": 374,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 376,
                         "Position": 6114.0,
                         "Priority": 376,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 378,
                         "Position": 6139.0,
                         "Priority": 378,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 380,
                         "Position": 6164.0,
                         "Priority": 380,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 382,
                         "Position": 6189.0,
                         "Priority": 382,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 384,
                         "Position": 6214.0,
                         "Priority": 384,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 386,
                         "Position": 6239.0,
                         "Priority": 386,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 388,
                         "Position": 6264.0,
                         "Priority": 388,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 390,
                         "Position": 6289.0,
                         "Priority": 390,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 392,
                         "Position": 6314.0,
                         "Priority": 392,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 394,
                         "Position": 6339.0,
                         "Priority": 394,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 396,
                         "Position": 6364.0,
                         "Priority": 396,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 398,
                         "Position": 6389.0,
                         "Priority": 398,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 400,
                         "Position": 6414.0,
                         "Priority": 400,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 402,
                         "Position": 6439.0,
                         "Priority": 402,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 404,
                         "Position": 6464.0,
                         "Priority": 404,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 406,
                         "Position": 6489.0,
                         "Priority": 406,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 408,
                         "Position": 6514.0,
                         "Priority": 408,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 410,
                         "Position": 6539.0,
                         "Priority": 410,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 412,
                         "Position": 6564.0,
                         "Priority": 412,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 414,
                         "Position": 6589.0,
                         "Priority": 414,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 416,
                         "Position": 6614.0,
                         "Priority": 416,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 418,
                         "Position": 6639.0,
                         "Priority": 418,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 420,
                         "Position": 6664.0,
                         "Priority": 420,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 422,
                         "Position": 6689.0,
                         "Priority": 422,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 424,
                         "Position": 6714.0,
                         "Priority": 424,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 426,
                         "Position": 6739.0,
                         "Priority": 426,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 428,
                         "Position": 6764.0,
                         "Priority": 428,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 430,
                         "Position": 6789.0,
                         "Priority": 430,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 432,
                         "Position": 6814.0,
                         "Priority": 432,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 434,
                         "Position": 6839.0,
                         "Priority": 434,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 436,
                         "Position": 6864.0,
                         "Priority": 436,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 438,
                         "Position": 6889.0,
                         "Priority": 438,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 440,
                         "Position": 6914.0,
                         "Priority": 440,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 442,
                         "Position": 6939.0,
                         "Priority": 442,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 444,
                         "Position": 6964.0,
                         "Priority": 444,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 446,
                         "Position": 6989.0,
                         "Priority": 446,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 448,
                         "Position": 7014.0,
                         "Priority": 448,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 450,
                         "Position": 7039.0,
                         "Priority": 450,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 452,
                         "Position": 7064.0,
                         "Priority": 452,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 454,
                         "Position": 7089.0,
                         "Priority": 454,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 456,
                         "Position": 7114.0,
                         "Priority": 456,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 458,
                         "Position": 7139.0,
                         "Priority": 458,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 460,
                         "Position": 7164.0,
                         "Priority": 460,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 462,
                         "Position": 7189.0,
                         "Priority": 462,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 464,
                         "Position": 7214.0,
                         "Priority": 464,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 466,
                         "Position": 7239.0,
                         "Priority": 466,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 468,
                         "Position": 7264.0,
                         "Priority": 468,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 470,
                         "Position": 7289.0,
                         "Priority": 470,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 472,
                         "Position": 7314.0,
                         "Priority": 472,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 474,
                         "Position": 7339.0,
                         "Priority": 474,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 476,
                         "Position": 7364.0,
                         "Priority": 476,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 478,
                         "Position": 7389.0,
                         "Priority": 478,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 480,
                         "Position": 7414.0,
                         "Priority": 480,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 482,
                         "Position": 7439.0,
                         "Priority": 482,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 484,
                         "Position": 7464.0,
                         "Priority": 484,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 486,
                         "Position": 7489.0,
                         "Priority": 486,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 488,
                         "Position": 7514.0,
                         "Priority": 488,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 490,
                         "Position": 7539.0,
                         "Priority": 490,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 492,
                         "Position": 7564.0,
                         "Priority": 492,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 494,
                         "Position": 7589.0,
                         "Priority": 494,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 496,
                         "Position": 7614.0,
                         "Priority": 496,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 498,
                         "Position": 7639.0,
                         "Priority": 498,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 500,
                         "Position": 7664.0,
                         "Priority": 500,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 502,
                         "Position": 7689.0,
                         "Priority": 502,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 504,
                         "Position": 7714.0,
                         "Priority": 504,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 506,
                         "Position": 7739.0,
                         "Priority": 506,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 508,
                         "Position": 7764.0,
                         "Priority": 508,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 510,
                         "Position": 7789.0,
                         "Priority": 510,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 512,
                         "Position": 7814.0,
                         "Priority": 512,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 514,
                         "Position": 7839.0,
                         "Priority": 514,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 516,
                         "Position": 7864.0,
                         "Priority": 516,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 518,
                         "Position": 7889.0,
                         "Priority": 518,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 520,
                         "Position": 7914.0,
                         "Priority": 520,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 522,
                         "Position": 7939.0,
                         "Priority": 522,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 524,
                         "Position": 7964.0,
                         "Priority": 524,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 526,
                         "Position": 7989.0,
                         "Priority": 526,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 528,
                         "Position": 8014.0,
                         "Priority": 528,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 530,
                         "Position": 8039.0,
                         "Priority": 530,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 532,
                         "Position": 8064.0,
                         "Priority": 532,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 534,
                         "Position": 8089.0,
                         "Priority": 534,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 536,
                         "Position": 8114.0,
                         "Priority": 536,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 538,
                         "Position": 8139.0,
                         "Priority": 538,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 540,
                         "Position": 8164.0,
                         "Priority": 540,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 542,
                         "Position": 8189.0,
                         "Priority": 542,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 544,
                         "Position": 8214.0,
                         "Priority": 544,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 546,
                         "Position": 8239.0,
                         "Priority": 546,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 548,
                         "Position": 8264.0,
                         "Priority": 548,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 550,
                         "Position": 8289.0,
                         "Priority": 550,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 552,
                         "Position": 8314.0,
                         "Priority": 552,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 554,
                         "Position": 8339.0,
                         "Priority": 554,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 556,
                         "Position": 8364.0,
                         "Priority": 556,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 558,
                         "Position": 8389.0,
                         "Priority": 558,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 560,
                         "Position": 8414.0,
                         "Priority": 560,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 562,
                         "Position": 8439.0,
                         "Priority": 562,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 564,
                         "Position": 8464.0,
                         "Priority": 564,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 566,
                         "Position": 8489.0,
                         "Priority": 566,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 568,
                         "Position": 8514.0,
                         "Priority": 568,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 570,
                         "Position": 8539.0,
                         "Priority": 570,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 572,
                         "Position": 8564.0,
                         "Priority": 572,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 574,
                         "Position": 8589.0,
                         "Priority": 574,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 576,
                         "Position": 8615.0,
                         "Priority": 576,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 578,
                         "Position": 8640.0,
                         "Priority": 578,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 580,
                         "Position": 8665.0,
                         "Priority": 580,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 582,
                         "Position": 8690.0,
                         "Priority": 582,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 584,
                         "Position": 8715.0,
                         "Priority": 584,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 586,
                         "Position": 8740.0,
                         "Priority": 586,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 588,
                         "Position": 8765.0,
                         "Priority": 588,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 590,
                         "Position": 8790.0,
                         "Priority": 590,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 592,
                         "Position": 8815.0,
                         "Priority": 592,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 594,
                         "Position": 8840.0,
                         "Priority": 594,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 596,
                         "Position": 8865.0,
                         "Priority": 596,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 598,
                         "Position": 8890.0,
                         "Priority": 598,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 600,
                         "Position": 8915.0,
                         "Priority": 600,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 602,
                         "Position": 8940.0,
                         "Priority": 602,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     }
 
                 ]
