@@ -374,23 +374,35 @@ namespace Ferretto.VW.MAS.DeviceManager
                         )
                     {
                         errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
                     }
-                    else if (machineResourcesProvider.IsAntiIntrusionBarrierBay1
+                    if (machineResourcesProvider.IsAntiIntrusionBarrierBay1
                         || machineResourcesProvider.IsAntiIntrusionBarrierBay2
                         || machineResourcesProvider.IsAntiIntrusionBarrierBay3
                         )
                     {
                         errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
                     }
-                    else if (machineResourcesProvider.IsMicroCarterLeftSide
+                    if (machineResourcesProvider.IsMicroCarterLeftSide
                         || machineResourcesProvider.IsMicroCarterRightSide
                         )
                     {
                         errorCode = MachineErrorCode.SecuritySensorWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
                     }
-                    scope.ServiceProvider
-                        .GetRequiredService<IErrorsProvider>()
-                        .RecordNew(errorCode);
+                    if (errorCode == MachineErrorCode.SecurityWasTriggered)
+                    {
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
                 }
             }
 
