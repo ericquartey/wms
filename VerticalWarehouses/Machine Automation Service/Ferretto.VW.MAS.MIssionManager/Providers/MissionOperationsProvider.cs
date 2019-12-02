@@ -97,6 +97,11 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        public async Task<MissionOperation> GetByIdAsync(int wmsId)
+        {
+            return await this.missionOperationsDataService.GetByIdAsync(wmsId);
+        }
+
         private void NegativeResult(SwaggerException exception)
         {
             var problemDetails = new ProblemDetails();

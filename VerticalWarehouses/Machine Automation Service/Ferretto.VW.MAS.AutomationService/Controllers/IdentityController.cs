@@ -53,12 +53,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             var machine = this.machineProvider.Get();
             var machineInfo = new MachineIdentity
             {
-                AreaId = 2, // TODO remove this hardcoded value
+                AreaId = 1, // TODO remove this hardcoded value
                 Id = machine.Id,
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
-                TrayCount = loadingUnits.Count(),
-                MachineId = 1, // TODO remove this hardcoded value
+                TrayCount = loadingUnits.Count(),                
                 MaxGrossWeight = machine.MaxGrossWeight,
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,

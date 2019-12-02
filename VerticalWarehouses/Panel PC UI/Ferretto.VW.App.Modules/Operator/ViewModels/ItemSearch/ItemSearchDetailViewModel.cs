@@ -12,8 +12,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        public readonly IItemSearchedModel itemSearchedModel;
-
         private readonly IWmsImagesProvider wmsImagesProvider;
 
         private Image image;
@@ -24,11 +22,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider, IItemSearchedModel itemSearchedModel)
+        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider)
             : base(PresentationMode.Operator)
         {
             this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
-            this.itemSearchedModel = itemSearchedModel ?? throw new ArgumentNullException(nameof(itemSearchedModel));
         }
 
         #endregion
@@ -37,12 +34,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
+        public Image Image
+        {
+            get => this.image;
+            set => this.SetProperty(ref this.image, value);
+        }
 
         public Item Item
         {
             get => this.item;
-            set => this.item = value;
+            set => this.SetProperty(ref this.item, value);
         }
 
         #endregion
@@ -62,19 +63,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            // Sistema di cache, potenzialmente errato!
-            if (this.itemSearchedModel != null &&
-                this.itemSearchedModel.SelectedItem != null)
-            {
-                this.Item = this.itemSearchedModel.SelectedItem;
-
-                // await this.LoadImage(this.item.Code);
-                this.RaisePropertyChanged(nameof(this.Item));
-            }
-            else
-            {
-                // effettuare la chiamata?
-            }
+            this.Item = this.Data as Item;
         }
 
         private async Task LoadImage(string code)

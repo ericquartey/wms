@@ -148,6 +148,7 @@ namespace Ferretto.VW.App
             container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
             container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMachinesDataService>(wmsServiceUrl));
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)
