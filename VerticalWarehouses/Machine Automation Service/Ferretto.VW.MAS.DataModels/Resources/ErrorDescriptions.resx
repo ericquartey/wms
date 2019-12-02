@@ -276,4 +276,7 @@
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
     <value>SecuritySensorWasTriggered</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
+    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+  </data>
 </root>

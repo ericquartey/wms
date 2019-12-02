@@ -391,9 +391,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 default:
                     if (messageData.InsertLoadingUnit)
                     {
-                        if (messageData.LoadingUnitId != null)
+                        if (messageData.LoadingUnitId.HasValue)
                         {
-                            unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
+                            var bayPosition = this.baysDataProvider.GetLoadingUnitLocationByLoadingUnit(messageData.LoadingUnitId.Value);
+                            if (bayPosition == LoadingUnitLocation.NoLocation
+                                || bayPosition == messageData.Source
+                                )
+                            {
+                                unitToMove = this.loadingUnitsDataProvider.GetById(messageData.LoadingUnitId.Value);
+                            }
+                            else
+                            {
+                                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitOtherBay);
+                                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitOtherBay);
+                            }
                         }
                     }
                     else
