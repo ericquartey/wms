@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToCellViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineCellsWebService machineCellsWebService,
-            Controls.Interfaces.ISensorsService sensorsService,
+            ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,

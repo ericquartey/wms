@@ -1,7 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Enumerations;
 using Prism.Mvvm;
 
-namespace Ferretto.VW.App.Controls.Controls
+namespace Ferretto.VW.App.Services
 {
     public class ShutterSensors : BindableBase
     {
@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Controls.Controls
         private bool midWay;
 
         private bool open;
+
+        private string status;
 
         #endregion
 
@@ -33,6 +35,8 @@ namespace Ferretto.VW.App.Controls.Controls
         public bool MidWay { get => this.midWay; set => this.SetProperty(ref this.midWay, value); }
 
         public bool Open { get => this.open; set => this.SetProperty(ref this.open, value); }
+
+        public string Status { get => this.status; set => this.SetProperty(ref this.status, value); }
 
         #endregion
 
@@ -94,6 +98,23 @@ namespace Ferretto.VW.App.Controls.Controls
 
                         break;
                     }
+            }
+
+            if (this.Open)
+            {
+                this.Status = Resources.InstallationApp.Open;
+            }
+            else if (this.MidWay)
+            {
+                this.Status = Resources.InstallationApp.ShutterMidWay;
+            }
+            else if (this.Closed)
+            {
+                this.Status = Resources.InstallationApp.Closed;
+            }
+            else
+            {
+                this.Status = string.Empty;
             }
         }
 

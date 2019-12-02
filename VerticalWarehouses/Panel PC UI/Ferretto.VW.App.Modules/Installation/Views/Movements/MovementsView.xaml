@@ -14,5 +14,528 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,15,15,0" />
+    <Grid Margin="15,15,15,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="GridSensors">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <controls:CardSensor Grid.Row="0"
+                                 Width="250"
+                                 Margin="0,0,15,5"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardText="Posizione"
+                                 CardValue="{Binding SensorsService.ElevatorLogicalPosition, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Type="Position" />
+            <controls:CardSensor Grid.Row="1"
+                                 Width="250"
+                                 Margin="0,0,15,5"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge2="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge3="{Binding SensorsService.LoadingUnitPositionDownInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadgeLabel1="Elevatore"
+                                 CardBadgeLabel2="Posizione Up"
+                                 CardBadgeLabel3="Posizione Down"
+                                 CardText="Cassetto"
+                                 Type="Drawer" />
+            <controls:CardSensor Grid.Row="2"
+                                 Width="250"
+                                 Margin="0,0,15,5"
+                                 CardSensorLabel1="Zero"
+                                 CardSensorLabel2=""
+                                 CardSensorLabel3=""
+                                 CardText="Verticale (mm)"
+                                 CardValue="{Binding SensorsService.ElevatorVerticalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Sensor1="{Binding SensorsService.Sensors.ZeroVerticalSensor}"
+                                 Sensor2="False"
+                                 Sensor3="False" />
+            <controls:CardSensor Grid.Row="3"
+                                 Width="250"
+                                 Margin="0,0,15,5"
+                                 CardSensorLabel1="Zero"
+                                 CardSensorLabel2="Front"
+                                 CardSensorLabel3="Brack"
+                                 CardText="Orizzontale (mm)"
+                                 CardValue="{Binding SensorsService.ElevatorHorizontalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Sensor1="{Binding SensorsService.IsZeroChain}"
+                                 Sensor2="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
+                                 Sensor3="{Binding SensorsService.Sensors.LuPresentInOperatorSide}" />
+            <controls:CardSensor Grid.Row="4"
+                                 Width="250"
+                                 Margin="0,0,15,5"
+                                 CardSensorLabel1="Zero"
+                                 CardSensorLabel2="Sopra"
+                                 CardSensorLabel3="Sotto"
+                                 CardText="Baia"
+                                 CardValue="{Binding SensorsService.BayChainPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Sensor1="{Binding SensorsService.BayZeroChain}"
+                                 Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"
+                                 Sensor3="{Binding SensorsService.IsLoadingUnitInMiddleBottomBay}" />
+            <controls:CardSensor Grid.Row="5"
+                                 Width="250"
+                                 Margin="0,0,15,0"
+                                 CardText="Serranda"
+                                 CardValue="{Binding SensorsService.ShutterSensors.Status, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Type="Shutter" />
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <Grid x:Name="GridTitle">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Margin="10,0,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Bottom"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding Title}" />
+
+                <controls:PpcButton Grid.Column="1"
+                                    Margin="0,0,0,0"
+                                    BorderBrush="{DynamicResource FerrettoBlue}"
+                                    Command="{Binding GoToMovementsGuidedCommand}"
+                                    Content="Guidati"
+                                    IsActive="{Binding IsMovementsGuided}"
+                                    IsEnabled="{Binding IsMovementsManual}" />
+
+                <controls:PpcButton Grid.Column="2"
+                                    Margin="0,0,0,0"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding GoToMovementsManualCommand}"
+                                    Content="Manuali"
+                                    IsActive="{Binding IsMovementsManual}"
+                                    IsEnabled="{Binding IsMovementsGuided}" />
+            </Grid>
+
+            <Border Grid.Row="1">
+                <Border.Style>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="BorderThickness" Value="0,3,0,0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMovementsGuided}"
+                                         Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsMovementsManual}"
+                                         Value="true">
+                                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>
+                <Grid Margin="0,10,0,-5">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <Grid x:Name="GridCommandsGuided">
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMovementsGuided}"
+                                                 Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToCellHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
+                                            IsBusy="{Binding IsElevatorMovingToCell}" />
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToLoadingUnitHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.GoToDrawer}"
+                                            IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
+
+                        <ctrls:PpcSpinEdit Grid.Row="0"
+                                           Grid.Column="2"
+                                           Grid.ColumnSpan="2"
+                                           Margin="5"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Center"
+                                           ButtonSize="45"
+                                           EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                           IsEnabled="{Binding CanInputLoadingUnitId}"
+                                           KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
+                                           KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
+                                           LabelText=""
+                                           Mask="#0"
+                                           WidthNumber="250" />
+                        <!--  {x:Static res:InstallationApp.DrawerNumber}  -->
+
+                        <controls:PpcButton Grid.Row="1"
+                                            Grid.Column="0"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding MoveToBayPositionCommand}"
+                                            Content="{x:Static res:InstallationApp.GoToBay}"
+                                            IsBusy="{Binding IsElevatorMovingToBay}" />
+
+                        <controls:PpcCheckBox Grid.Row="1"
+                                              Grid.Column="1"
+                                              Grid.ColumnSpan="1"
+                                              Margin="5"
+                                              HorizontalAlignment="Center"
+                                              LabelText="{x:Static res:InstallationApp.BayPositionUp}" />
+
+                        <controls:PpcButton Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding UnloadToBayCommand}"
+                                            Content="{x:Static res:InstallationApp.UnloadToBay}"
+                                            IsBusy="{Binding IsBusyUnloadingToBay}"
+                                            Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
+
+                        <controls:PpcButton Grid.Row="2"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding UnloadToCellCommand}"
+                                            Content="{x:Static res:InstallationApp.UnloadToCell}"
+                                            IsBusy="{Binding IsBusyUnloadingToCell}"
+                                            Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
+
+                        <controls:PpcButton Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding LoadFromBayCommand}"
+                                            Content="{x:Static res:InstallationApp.LoadFromBay}"
+                                            IsBusy="{Binding IsBusyLoadingFromBay}"
+                                            Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
+
+                        <controls:PpcButton Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding LoadFromCellCommand}"
+                                            Content="{x:Static res:InstallationApp.LoadFromCell}"
+                                            IsBusy="{Binding IsBusyLoadingFromCell}"
+                                            Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
+
+                        <controls:PpcCheckBox Grid.Row="2"
+                                              Grid.Column="2"
+                                              Grid.ColumnSpan="2"
+                                              Margin="5"
+                                              HorizontalAlignment="Stretch"
+                                              IsChecked="{Binding IsUseWeightControl}"
+                                              LabelText="{x:Static res:InstallationApp.UseWeightControl}" />
+
+                        <controls:PpcButton Grid.Row="3"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding TuningChainCommand}"
+                                            Content="{x:Static res:InstallationApp.ChainCalibration}"
+                                            IsBusy="{Binding IsTuningChain}" />
+
+                        <controls:PpcButton Grid.Row="3"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding TuningBayCommand}"
+                                            Content="{x:Static res:InstallationApp.BayCalibration}"
+                                            IsBusy="{Binding IsTuningBay}" />
+
+                        <controls:PpcButton Grid.Row="4"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding OpenShutterCommand}"
+                                            Content="{x:Static res:InstallationApp.GateOpen}"
+                                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+
+                        <controls:PpcButton Grid.Row="4"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding IntermediateShutterCommand}"
+                                            Content="{x:Static res:InstallationApp.IntermediatePosition}"
+                                            Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
+
+                        <controls:PpcButton Grid.Row="4"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding ClosedShutterCommand}"
+                                            Content="{x:Static res:InstallationApp.GateClose}"
+                                            Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
+                            <controls:PpcButton.Style>
+                                <Style BasedOn="{StaticResource PpcButtonStyle}"
+                                       TargetType="{x:Type controls:PpcButton}">
+                                    <Setter Property="Grid.Column" Value="2" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding BayIsShutterThreeSensors}"
+                                                     Value="False">
+                                            <Setter Property="Grid.Column" Value="1" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </controls:PpcButton.Style>
+                        </controls:PpcButton>
+
+
+                        <controls:PpcButton Grid.Row="5"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding CarouselUpCommand}"
+                                            Content="{x:Static res:InstallationApp.CarouselUp}"
+                                            Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
+
+                        <controls:PpcButton Grid.Row="5"
+                                            Grid.Column="1"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding CarouselDownCommand}"
+                                            Content="{x:Static res:InstallationApp.CarouselDown}"
+                                            Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}" />
+
+                    </Grid>
+
+                    <Grid x:Name="GridCommandsManual">
+                        <Grid.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding IsMovementsManual}"
+                                                 Value="False">
+                                        <Setter Property="Grid.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Style>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToCellHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.MoveToCellHeight}"
+                                            IsBusy="{Binding IsElevatorMovingToCell}" />
+
+                        <controls:PpcTextBox Grid.Row="0"
+                                             Grid.Column="1"
+                                             Width="160"
+                                             Height="60"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             LabelText="Cella" />
+
+                        <controls:PpcButton Grid.Row="0"
+                                            Grid.Column="2"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Top"
+                                            Command="{Binding MoveToHeightCommand}"
+                                            Content="{x:Static res:InstallationApp.GoToPosition}"
+                                            IsBusy="{Binding IsElevatorMovingToHeight}" />
+
+                        <controls:PpcTextBox Grid.Row="0"
+                                             Grid.Column="3"
+                                             Width="160"
+                                             Height="60"
+                                             Margin="5"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"
+                                             LabelText="Quota" />
+
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore su"
+                                                           PressCommand="{Binding MoveUpCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveUpCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="1"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore giù"
+                                                           PressCommand="{Binding MoveDownCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveDownCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore indietro"
+                                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="2"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Elevatore avanti"
+                                                           PressCommand="{Binding MoveForwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveForwardsCommand}"  -->
+
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="3"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Serranda su"
+                                                           PressCommand="{Binding MoveUpCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveUpCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="3"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Serranda giù"
+                                                           PressCommand="{Binding MoveDownCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteMoveDownCommand}"  -->
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="4"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Giostra su"
+                                                           PressCommand="{Binding OpenCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteOpenCommand}"  -->
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="4"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Giostra giù"
+                                                           PressCommand="{Binding CloseCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+                        <!--  IsEnabled="{Binding CanExecuteCloseCommand}"  -->
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="5"
+                                                           Grid.Column="0"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Baia su"
+                                                           IsEnabled="{Binding CanExecuteMoveForwardsCommand}"
+                                                           PressCommand="{Binding MoveForwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+
+
+                        <controls:PpcPressAndReleaseButton Grid.Row="5"
+                                                           Grid.Column="1"
+                                                           Margin="5"
+                                                           HorizontalAlignment="Center"
+                                                           Content="Baia giù"
+                                                           IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"
+                                                           PressCommand="{Binding MoveBackwardsCommand}"
+                                                           ReleaseCommand="{Binding StopMovementCommand}" />
+
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <controls:PpcButton Grid.Row="6"
+                                            Grid.Column="0"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding ResetCommand}"
+                                            Content="Reset macchina" />
+
+                        <controls:PpcButton Grid.Row="6"
+                                            Grid.Column="2"
+                                            Margin="5"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding StopMovingCommand}"
+                                            Content="{x:Static res:InstallationApp.Stop}" />
+
+
+                        <controls:PpcButton Grid.Row="6"
+                                            Grid.Column="3"
+                                            Margin="5,0"
+                                            HorizontalAlignment="Center"
+                                            Command="{Binding GoToStatusSensorsCommand}"
+                                            Content="{x:Static res:InstallationApp.SensorsState}" />
+                    </Grid>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+
 </ctrls:View>

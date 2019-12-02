@@ -15,5 +15,7 @@ namespace Ferretto.VW.App.Controls.Controls.Keyboards
         Numpad,
 
         QWERTY,
+
+        Multi,
     }
 }

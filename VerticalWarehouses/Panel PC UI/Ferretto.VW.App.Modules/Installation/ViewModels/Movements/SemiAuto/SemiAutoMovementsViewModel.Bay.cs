@@ -114,7 +114,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToBayPosition()
         {
             return
-               !this.KeyboardOpened
+                !this.KeyboardOpened
                 &&
                 this.SelectedBayPosition != null
                 &&

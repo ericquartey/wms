@@ -2158,6 +2158,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movimenti Guidati.
+        /// </summary>
+        public static string MovementsGuided {
+            get {
+                return ResourceManager.GetString("MovementsGuided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movimenti Manuali.
+        /// </summary>
+        public static string MovementsManual {
+            get {
+                return ResourceManager.GetString("MovementsManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move to cell height.
         /// </summary>
         public static string MoveToCellHeight {
