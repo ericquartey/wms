@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double Height { get; set; }
 
+        public double LoadUnitMaxNetWeight { get; set; }
+
+        public double LoadUnitTare { get; set; }
+
         /// <summary>
         /// Gets or sets the maximum gross weight that the machine can have.
         /// </summary>

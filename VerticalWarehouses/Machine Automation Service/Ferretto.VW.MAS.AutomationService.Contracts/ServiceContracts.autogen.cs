@@ -1794,6 +1794,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("height", Required = Newtonsoft.Json.Required.Always)]
         public double Height { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("loadUnitMaxNetWeight", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitMaxNetWeight { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadUnitTare", Required = Newtonsoft.Json.Required.Always)]
+        public double LoadUnitTare { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     

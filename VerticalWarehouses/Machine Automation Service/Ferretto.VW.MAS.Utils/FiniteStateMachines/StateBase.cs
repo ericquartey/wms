@@ -100,10 +100,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this.OnPause();
         }
 
-        public IState Resume()
+        public IState Resume(CommandMessage commandMessage)
         {
             this.Logger.LogDebug($"Resuming state {this.GetType().Name}.");
-            return this.OnResume();
+            return this.OnResume(commandMessage);
         }
 
         public IState Stop(StopRequestReason reason)
@@ -153,7 +153,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             return this;
         }
 
-        protected virtual IState OnResume()
+        protected virtual IState OnResume(CommandMessage commandMessage)
         {
             return this;
         }

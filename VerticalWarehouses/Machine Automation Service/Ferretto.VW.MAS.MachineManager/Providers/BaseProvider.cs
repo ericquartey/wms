@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Methods
 
-        protected void SendCommandToMissionManager(
+        protected void SendCommandToMachineManager(
             IMessageData messageData,
             string description,
             MessageActor sender,

@@ -1,17 +1,17 @@
 {
-    "$schema": "./schemas/vertimag-configuration-schema.json",
-    "LoadingUnits": [
-        {
-            "Tare": 120,
-            "MaxNetWeight": 930,
-            "Id": 1
-        },
-        {
-            "Tare": 120,
-            "MaxNetWeight": 930,
-            "Id": 2
-        }
-    ],
+  "$schema": "./schemas/vertimag-configuration-schema.json",
+  "LoadingUnits": [
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 1
+    },
+    {
+      "Tare": 120,
+      "MaxNetWeight": 930,
+      "Id": 2
+    }
+  ],
   "Machine": {
     "Id": 1,
     "Bays": [
@@ -323,6 +323,8 @@
     "Height": 9460,
     "MaxGrossWeight": 50000,
     "ModelName": "Vertimag 1000kg",
+    "LoadUnitTare": 120,
+    "LoadUnitMaxNetWeight": 930,
     "Panels": [
       {
         "Side": "Front",
@@ -3952,47 +3954,47 @@
     "ProductionDate": "2019-10-19T16:39:57-08:00",
     "SerialNumber": "Prototype #2"
   },
-    "SetupProcedures": {
-        "BayHeightCheck": {
-            "Step": 0.5,
-            "FeedRate": 0.2
-        },
-        "BeltBurnishingTest": {
-            "RequiredCycles": 200
-        },
-        "CarouselManualMovements": {
-            "FeedRate": 0.04
-        },
-        "CellPanelsCheck": {
-            "FeedRate": 0.2,
-            "Step": 0.5
-        },
-        "CellsHeightCheck": {
-            "Step": 0.5,
-            "FeedRate": 0.2
-        },
-        "DepositAndPickUpTest": {
-            "RequiredCycles": 10
-        },
-        "LoadFirstDrawerTest": {
-            "FeedRate": 0.2
-        },
-        "ShutterHeightCheck": {
-            "FeedRate": 0.1
-        },
-        "ShutterTest": {
-            "FeedRate": 1.0,
-            "RequiredCycles": 10000
-        },
-        "VerticalOffsetCalibration": {
-            "ReferenceCellId": 50, //TEMP Temporary value for software test
-            "Step": 0.5,
-            "FeedRate": 0.2
-        },
-        "VerticalResolutionCalibration": {
-            "InitialPosition": 1000, //TEMP Temporary value for software test
-            "FinalPosition": 5500, //TEMP Temporary value for software test
-            "FeedRate": 0.2
-        }
+  "SetupProcedures": {
+    "BayHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "BeltBurnishingTest": {
+      "RequiredCycles": 200
+    },
+    "CarouselManualMovements": {
+      "FeedRate": 0.04
+    },
+    "CellPanelsCheck": {
+      "FeedRate": 0.2,
+      "Step": 0.5
+    },
+    "CellsHeightCheck": {
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "DepositAndPickUpTest": {
+      "RequiredCycles": 10
+    },
+    "LoadFirstDrawerTest": {
+      "FeedRate": 0.2
+    },
+    "ShutterHeightCheck": {
+      "FeedRate": 0.1
+    },
+    "ShutterTest": {
+      "FeedRate": 1.0,
+      "RequiredCycles": 10000
+    },
+    "VerticalOffsetCalibration": {
+      "ReferenceCellId": 50, //TEMP Temporary value for software test
+      "Step": 0.5,
+      "FeedRate": 0.2
+    },
+    "VerticalResolutionCalibration": {
+      "InitialPosition": 1000, //TEMP Temporary value for software test
+      "FinalPosition": 5500, //TEMP Temporary value for software test
+      "FeedRate": 0.2
     }
+  }
 }

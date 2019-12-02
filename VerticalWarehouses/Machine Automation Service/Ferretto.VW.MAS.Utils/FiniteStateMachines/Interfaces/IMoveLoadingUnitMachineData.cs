@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         DateTime CreationDate { get; set; }
 
+        int? DestinationCellId { get; set; }
+
         string FsmStateName { get; set; }
 
         // Used only if LoadingUnitSource in this object is LoadingUnitDestination.Cell

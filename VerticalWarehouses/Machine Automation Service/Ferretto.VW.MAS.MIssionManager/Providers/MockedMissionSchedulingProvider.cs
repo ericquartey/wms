@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public IEnumerable<Mission> GetAllWmsMissions()
+        public IEnumerable<DataModels.Mission> GetAllWmsMissions()
         {
             return this.missionsDataProvider.GetAllWmsMissions();
         }
@@ -158,6 +158,11 @@ namespace Ferretto.VW.MAS.MissionManager
         public void QueueLoadingUnitCompactingMission()
         {
             throw new NotImplementedException();
+        }
+
+        public async Task ScheduleMissionsAsync(BayNumber bayNumber)
+        {
+            throw new NotSupportedException();
         }
 
         private void NotifyAssignedMissionOperationChanged(
