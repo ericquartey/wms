@@ -267,4 +267,16 @@
   <data name="MachineModeNotValid" xml:space="preserve">
     <value>MachineModeNotValid</value>
   </data>
+  <data name="SecurityBarrierWasTriggered" xml:space="preserve">
+    <value>SecurityBarrierWasTriggered</value>
+  </data>
+  <data name="SecurityButtonWasTriggered" xml:space="preserve">
+    <value>SecurityButtonWasTriggered</value>
+  </data>
+  <data name="SecuritySensorWasTriggered" xml:space="preserve">
+    <value>SecuritySensorWasTriggered</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
+    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+  </data>
 </root>

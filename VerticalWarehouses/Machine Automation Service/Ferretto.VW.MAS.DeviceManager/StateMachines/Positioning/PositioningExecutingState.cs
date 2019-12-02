@@ -505,18 +505,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     {
                         if (this.IsLoadingErrorDuringPickup())
                         {
-                    this.Logger.LogWarning("Cradle not correctly loaded during pickup");
-                    //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
+                            this.Logger.LogWarning("Cradle not correctly loaded during pickup");
+                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
 
-                    //this.stateData.FieldMessage = message;
-                    //this.Stop(StopRequestReason.Stop);
+                            //this.stateData.FieldMessage = message;
+                            //this.Stop(StopRequestReason.Stop);
                         }
                         else if (this.IsUnloadingErrorDuringDeposit())
                         {
-                    this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
-                    //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                    //this.stateData.FieldMessage = message;
-                    //this.Stop(StopRequestReason.Stop);
+                            this.Logger.LogWarning("Cradle not correctly unloaded during deposit");
+                            //this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
+                            //this.stateData.FieldMessage = message;
+                            //this.Stop(StopRequestReason.Stop);
                         }
 
                         break;
@@ -682,6 +682,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     break;
 
                 case MovementMode.BeltBurnishing:
+                    this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
                     this.machineData.MessageData.ExecutedCycles = this.performedCycles;
 
                     if (this.performedCycles >= this.machineData.MessageData.RequiredCycles)

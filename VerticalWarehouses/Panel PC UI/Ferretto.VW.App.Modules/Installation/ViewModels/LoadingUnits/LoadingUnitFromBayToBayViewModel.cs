@@ -172,30 +172,37 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
-                                      this.sensorsService.LoadingUnitPositionUpInBayCode :
-                                      this.sensorsService.LoadingUnitPositionDownInBayCode;
+                var source = this.GetLoadingUnitSource();
 
-                this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
-
-                if (this.LoadingUnitId is null)
+                if (source == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
+                //var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
+                //                      this.sensorsService.LoadingUnitPositionUpInBayCode :
+                //                      this.sensorsService.LoadingUnitPositionDownInBayCode;
+
+                //this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
+
+                //if (this.LoadingUnitId is null)
+                //{
+                //    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
+                //    return;
+                //}
 
                 var bay = this.IsBay1Destination ? BayNumber.BayOne : this.IsBay2Destination ? BayNumber.BayTwo : BayNumber.BayThree;
                 var destination = this.GetLoadingUnitSourceByDestination(bay);
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
-                    this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
+                    this.ShowNotification("Tipo scelta destinazione non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitId.Value, destination);
+                await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, destination, null, null);
             }
             catch (Exception ex)
             {

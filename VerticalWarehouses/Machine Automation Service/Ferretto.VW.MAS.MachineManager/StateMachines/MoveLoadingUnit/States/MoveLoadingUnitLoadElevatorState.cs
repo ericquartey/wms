@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
-                moveData.FsmStateName = this.GetType().Name;
+                this.moveData.FsmStateName = this.GetType().Name;
             }
             else
             {
@@ -172,6 +172,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
 
                     transaction.Commit();
+                }
+                // in automatic bay-to-cell movements the profile may have changed so we have to find a new empty cell
+                if (this.moveData.LoadingUnitSource != LoadingUnitLocation.Cell
+                    && this.moveData.LoadingUnitDestination == LoadingUnitLocation.Cell
+                    && !this.moveData.DestinationCellId.HasValue
+                    && this.moveData.LoadingUnitId > 0
+                    )
+                {
+                    this.moveData.DestinationCellId = this.cellsProvider.FindEmptyCell(this.moveData.LoadingUnitId);
                 }
 
                 returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();

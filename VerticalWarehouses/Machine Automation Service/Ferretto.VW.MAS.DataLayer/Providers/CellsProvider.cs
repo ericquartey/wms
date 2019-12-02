@@ -19,14 +19,19 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly ILogger<DataLayerContext> logger;
 
         #endregion
 
         #region Constructors
 
-        public CellsProvider(DataLayerContext dataContext, ILogger<DataLayerContext> logger)
+        public CellsProvider(DataLayerContext dataContext,
+            IElevatorDataProvider elevatorDataProvider,
+            ILogger<DataLayerContext> logger)
         {
+            this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -73,8 +78,10 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
-            var cells = this.GetAll();
             var availableCell = new List<AvailableCell>();
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+            var cells = this.GetAll().Where(x => x.Position >= verticalAxis.LowerBound
+                && x.Position < verticalAxis.UpperBound);
             foreach (var cell in cells)
             {
                 var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
@@ -94,7 +101,14 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
             }
-            return availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+            if (availableCell.Count > cells.Count() / 2)
+            {
+                return availableCell.OrderBy(t => t.Cell.Priority).First().Cell.Id;
+            }
+            else
+            {
+                return availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+            }
         }
 
         public IEnumerable<Cell> GetAll()

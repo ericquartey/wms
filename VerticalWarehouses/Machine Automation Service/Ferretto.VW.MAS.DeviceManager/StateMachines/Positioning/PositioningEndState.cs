@@ -171,6 +171,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Logger.LogTrace($"4:Publishing Field Command Message {inverterMessage.Type} Destination {inverterMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(inverterMessage);
+
+            if (this.machineData.MessageData.MovementMode == MovementMode.BeltBurnishing)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Manual;
+            }
         }
 
         public override void Stop(StopRequestReason reason)
