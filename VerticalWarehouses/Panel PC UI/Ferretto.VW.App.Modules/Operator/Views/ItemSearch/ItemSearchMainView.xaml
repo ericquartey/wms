@@ -32,9 +32,9 @@
                    Text="{x:Static Resources:OperatorApp.ItemSearchHeader}" />
 
         <views:ArticleDataGridView Grid.Row="1"
-                                               Grid.Column="0"
-                                               HorizontalAlignment="Left"
-                                               VerticalAlignment="Stretch" />
+                                   Grid.Column="0"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Stretch" />
 
         <Grid Grid.Row="1"
               Grid.Column="1">

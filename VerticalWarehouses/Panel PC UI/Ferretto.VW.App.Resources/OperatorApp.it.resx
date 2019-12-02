@@ -942,4 +942,7 @@
   <data name="Status" xml:space="preserve">
     <value>Stato</value>
   </data>
+  <data name="PickRequestWasAccepted" xml:space="preserve">
+    <value>La richiesta di prelievo per l'articolo {0} (quantità {1}) è stata accettata.</value>
+  </data>
 </root>

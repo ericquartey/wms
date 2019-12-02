@@ -143,11 +143,11 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public async Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
             this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
-            await this.MOCK_ScheduleMissionsAsync(targetBayNumber);
+            this.MOCK_ScheduleMissionsAsync(targetBayNumber);
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)

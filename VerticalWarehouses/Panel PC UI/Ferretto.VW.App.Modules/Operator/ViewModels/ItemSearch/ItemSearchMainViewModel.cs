@@ -170,7 +170,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.selectedItem, value))
                 {
-                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == this.bayManager.Identity.MachineId)?.AvailableQuantityItem;
+                    var machineId = this.bayManager.Identity.Id;
+                    this.AvailableQuantity = this.SelectedItem?.Machines.SingleOrDefault(m => m.Id == machineId)?.AvailableQuantityItem;
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -215,7 +216,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.SelectedItem.Id,
                     this.InputQuantity.Value);
 
-                this.ShowNotification($"TODO**Successfully requested {this.InputQuantity} pieces of item '{this.SelectedItem.Code}'.", Services.Models.NotificationSeverity.Success);
+                this.ShowNotification(
+                    string.Format(
+                        Resources.OperatorApp.PickRequestWasAccepted,
+                        this.SelectedItem.Code,
+                        this.InputQuantity),
+                    Services.Models.NotificationSeverity.Success);
             }
             catch (Exception ex)
             {
@@ -313,9 +319,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 this.SelectedItem != null
                 &&
+                this.AvailableQuantity.HasValue
+                &&
+                this.AvailableQuantity.Value > 0
+                &&
                 this.InputQuantity.HasValue
                 &&
                 this.InputQuantity > 0
+                &&
+                this.InputQuantity <= this.AvailableQuantity.Value
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -366,7 +378,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
-                null,
+                this.SelectedItem,
                 trackCurrentView: true);
         }
 

@@ -36,9 +36,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public OperatorMenuViewModel(
-            IMachineBaysWebService machineBaysWebService,
-            IMissionOperationsService missionOperationsService)
-            : base(PresentationMode.Operator)
+        IMachineBaysWebService machineBaysWebService,
+        IMissionOperationsService missionOperationsService)
+        : base(PresentationMode.Operator)
         {
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.CanShowItemLists));
 
         public ICommand ShowItemSearchCommand =>
-                    this.showItemSearchCommand
+            this.showItemSearchCommand
             ??
             (this.showItemSearchCommand = new DelegateCommand(
                 this.ShowItemSearch,

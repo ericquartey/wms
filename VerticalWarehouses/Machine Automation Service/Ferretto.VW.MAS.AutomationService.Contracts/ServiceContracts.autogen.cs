@@ -2545,9 +2545,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("lastServiceDate", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public System.DateTime? LastServiceDate { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("machineId", Required = Newtonsoft.Json.Required.Always)]
-        public int MachineId { get; set; }
-    
         [Newtonsoft.Json.JsonProperty("maxGrossWeight", Required = Newtonsoft.Json.Required.Always)]
         public double MaxGrossWeight { get; set; }
     

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -17,9 +12,9 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Fields
 
-        private readonly IEventAggregator eventAggregator;
+        private readonly CommandEvent commandEvent;
 
-        private readonly ILogger<MissionSchedulingProvider> logger;
+        private readonly ILogger<MissionSchedulingService> logger;
 
         #endregion
 
@@ -27,27 +22,27 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionSchedulingProvider(
             IEventAggregator eventAggregator,
-            ILogger<MissionSchedulingProvider> logger)
+            ILogger<MissionSchedulingService> logger)
         {
-            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
+            if (eventAggregator is null)
+            {
+                throw new ArgumentNullException(nameof(eventAggregator));
+            }
+
+            this.commandEvent = eventAggregator.GetEvent<CommandEvent>();
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
 
         #region Methods
 
-        public IEnumerable<Mission> GetAllWmsMissions()
-        {
-            throw new NotImplementedException();
-        }
-
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {
             throw new NotImplementedException();
         }
 
-        public Task QueueBayMissionAsync(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
+        public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
             var data = new MoveLoadingUnitMessageData(
                 MissionType.WMS,
@@ -60,18 +55,16 @@ namespace Ferretto.VW.MAS.MissionManager
             data.WmsId = wmsMissionId;
             data.TargetBay = targetBayNumber;
 
-            this.eventAggregator
-                .GetEvent<CommandEvent>()
-                .Publish(
-                    new CommandMessage(
-                        data,
-                        $"Wms mission requested; loadingUnitId {loadingUnitId}; Bay {targetBayNumber}",
-                        MessageActor.MissionManager,
-                        MessageActor.MissionManager,
-                        MessageType.MoveLoadingUnit,
-                        targetBayNumber));
+            this.logger.LogDebug($"New mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
 
-            return Task.CompletedTask;
+            this.commandEvent.Publish(
+                new CommandMessage(
+                    data,
+                    $"Wms mission requested; loadingUnitId {loadingUnitId}; Bay {targetBayNumber}",
+                    MessageActor.MissionManager,
+                    MessageActor.MissionManager,
+                    MessageType.MoveLoadingUnit,
+                    targetBayNumber));
         }
 
         public void QueueCellMission(int loadingUnitId, int targetCellId)
