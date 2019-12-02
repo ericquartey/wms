@@ -19,6 +19,15 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorCondition(typeof(ISecurityIsClearedConditionEvaluator))]
         SecurityWasTriggered,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityButtonWasTriggered))]
+        SecurityButtonWasTriggered,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecurityBarrierWasTriggered))]
+        SecurityBarrierWasTriggered,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SecuritySensorWasTriggered))]
+        SecuritySensorWasTriggered,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterFaultStateDetected))]
         InverterFaultStateDetected,
 

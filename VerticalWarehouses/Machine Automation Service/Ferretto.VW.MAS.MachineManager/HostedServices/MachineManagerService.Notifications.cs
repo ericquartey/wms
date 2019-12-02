@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.DependencyInjection;
@@ -72,14 +73,6 @@ namespace Ferretto.VW.MAS.MachineManager
 
                     if (this.machineMissionsProvider.TryCreateMachineMission(FsmType.ChangeRunningType, command, out var missionId))
                     {
-                        var errorCode = reason == StopRequestReason.FaultStateChanged
-                            ? DataModels.MachineErrorCode.InverterFaultStateDetected
-                            : DataModels.MachineErrorCode.SecurityWasTriggered;
-
-                        this.serviceScope.ServiceProvider
-                            .GetRequiredService<IErrorsProvider>()
-                            .RecordNew(errorCode);
-
                         this.machineMissionsProvider.StartMachineMission(missionId, command);
                     }
                     else

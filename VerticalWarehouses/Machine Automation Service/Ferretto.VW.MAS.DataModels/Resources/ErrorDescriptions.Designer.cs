@@ -457,6 +457,33 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to SecurityBarrierWasTriggered.
+        /// </summary>
+        public static string SecurityBarrierWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityBarrierWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecurityButtonWasTriggered.
+        /// </summary>
+        public static string SecurityButtonWasTriggered {
+            get {
+                return ResourceManager.GetString("SecurityButtonWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SecuritySensorWasTriggered.
+        /// </summary>
+        public static string SecuritySensorWasTriggered {
+            get {
+                return ResourceManager.GetString("SecuritySensorWasTriggered", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to È scattata la funzione di sicurezza..
         /// </summary>
         public static string SecurityWasTriggered {
