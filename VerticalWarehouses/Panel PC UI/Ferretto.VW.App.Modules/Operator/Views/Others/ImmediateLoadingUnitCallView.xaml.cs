@@ -1,10 +1,10 @@
 ﻿namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class ImmediateDrawerCallView
+    public partial class ImmediateLoadingUnitCallView
     {
         #region Constructors
 
-        public ImmediateDrawerCallView()
+        public ImmediateLoadingUnitCallView()
         {
             this.InitializeComponent();
         }

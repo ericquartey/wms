@@ -19,9 +19,9 @@ namespace Ferretto.VW.MAS.MissionManager
         protected override bool FilterNotification(NotificationMessage notification)
         {
             return
-                notification.Destination is CommonUtils.Messages.Enumerations.MessageActor.Any
+                notification.Destination is MessageActor.Any
                 ||
-                notification.Destination is CommonUtils.Messages.Enumerations.MessageActor.MissionManager;
+                notification.Destination is MessageActor.MissionManager;
         }
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)

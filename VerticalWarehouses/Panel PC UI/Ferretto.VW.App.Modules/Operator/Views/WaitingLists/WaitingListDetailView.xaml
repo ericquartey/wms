@@ -4,6 +4,7 @@
             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -66,10 +67,10 @@
                                      LabelText="{x:Static Resources:OperatorApp.CommonListDescription}" />
         </Grid>
 
-        <controls:CustomControlListDetailDataGrid Grid.Row="2"
-                                                  Grid.Column="0"
-                                                  HorizontalAlignment="Left"
-                                                  VerticalAlignment="Stretch" />
+        <views:ListDetailsDataGridView Grid.Row="2"
+                                       Grid.Column="0"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Stretch" />
 
         <Grid Grid.Row="2"
               Grid.Column="1">
@@ -83,14 +84,14 @@
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Command="{Binding UpDataGridButtonCommand}"
+                                Command="{Binding UpCommand}"
                                 Content="{x:Static Resources:OperatorApp.CommonUp}" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="15,0,15,15"
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
-                                Command="{Binding DownDataGridButtonCommand}"
+                                Command="{Binding DownCommand}"
                                 Content="{x:Static Resources:OperatorApp.CommonDown}" />
 
         </Grid>
@@ -100,8 +101,8 @@
                                  Margin="0,15,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="Lista non eseguibile nella macchina corrente"
-                                 LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
+                                 ContentText="{Binding SelectedListRow.Status}"
+                                 LabelText="{x:Static Resources:OperatorApp.Status}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"

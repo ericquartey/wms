@@ -23,12 +23,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMachinesDataService machinesDataService;
 
-        private readonly IMissionOperationsDataService missionOperationsDataService;
-
-        private readonly IMissionsDataProvider missionsDataProvider;
-
-        private readonly IMissionsDataService missionsDataService;
-
         private bool dataLayerIsReady;
 
         #endregion
@@ -37,9 +31,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public WmsMissionProxyService(
             IMachinesDataService machinesDataService,
-            IMissionsDataProvider missionsDataProvider,
-            IMissionsDataService missionsDataService,
-            IMissionOperationsDataService missionOperationsDataService,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,
@@ -47,10 +38,6 @@ namespace Ferretto.VW.MAS.MissionManager
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
-            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
-            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
-            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -65,21 +52,27 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
+            this.Logger.LogInformation("Checking for new WMS missions.");
+
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                 var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
+                // 1. Get all missions from WMS
                 var machineId = machineProvider.GetIdentity();
                 var wmsMissions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
 
-                var localMissions = this.missionsDataProvider.GetAllWmsMissions();
+                // 2. Get all known WMS missions (already recorded in the local database)
+                var localMissions = missionsDataProvider.GetAllWmsMissions();
 
                 foreach (var wmsMission in wmsMissions.Where(m => m.BayId.HasValue))
                 {
                     if (!localMissions.Any(m => m.WmsId == wmsMission.Id))
                     {
-                        await missionSchedulingProvider.QueueBayMissionAsync(
+                        // 3. If the mission is not found in database, queue a new mission request
+                        missionSchedulingProvider.QueueBayMission(
                             wmsMission.LoadingUnitId,
                             (BayNumber)wmsMission.BayId, // TODO **** careful here: bayId && bayNumber
                             wmsMission.Id,

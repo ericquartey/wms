@@ -1,10 +1,11 @@
-﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CustomControlArticleDataGrid"
+﻿<UserControl x:Class="Ferretto.VW.App.Operator.Views.ArticleDataGridView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Behaviors="clr-namespace:Ferretto.VW.App.Controls.Behaviours"
-             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+             xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"             
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+             xmlns:Behaviors1="clr-namespace:Ferretto.VW.App.Controls.Behaviours;assembly=Ferretto.VW.App.Controls">
 
 
     <UserControl.Resources>
@@ -41,7 +42,7 @@
                 </Style>
             </DataGrid.Style>
             <i:Interaction.Behaviors>
-                <Behaviors:ScrollIntoViewDataGridBehaviour />
+                <Behaviors1:ScrollIntoViewDataGridBehaviour />
             </i:Interaction.Behaviors>
 
             <DataGrid.CellStyle>

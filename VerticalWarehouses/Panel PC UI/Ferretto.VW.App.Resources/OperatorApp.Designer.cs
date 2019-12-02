@@ -2086,6 +2086,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Pick request for item {0} (q.ty {1}) was accepted..
+        /// </summary>
+        public static string PickRequestWasAccepted {
+            get {
+                return ResourceManager.GetString("PickRequestWasAccepted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position.
         /// </summary>
         public static string Position {
@@ -2397,6 +2406,15 @@ namespace Ferretto.VW.App.Resources {
         public static string StatisticsNavigationMachine {
             get {
                 return ResourceManager.GetString("StatisticsNavigationMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Status.
+        /// </summary>
+        public static string Status {
+            get {
+                return ResourceManager.GetString("Status", resourceCulture);
             }
         }
         
