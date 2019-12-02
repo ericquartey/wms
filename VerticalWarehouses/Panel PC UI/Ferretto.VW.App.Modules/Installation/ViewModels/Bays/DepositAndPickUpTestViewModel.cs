@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
@@ -24,9 +25,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly IMachineSensorsWebService machineSensorsWebService;
-
         private readonly Controls.Interfaces.ISensorsService sensorsService;
+
+        private readonly IBayManager bayManagerService;
 
         private Bay bay;
 
@@ -38,7 +39,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private int? inputRequiredCycles;
 
+        private bool bayIsMultiPosition;
+
         private bool isExecutingProcedure;
+
+        private bool isPositionDownSelected;
+
+        private bool isPositionUpSelected;
+
+        private LoadingUnit loadingUnitInBay;
+
+        private DelegateCommand selectBayPositionDownCommand;
+
+        private DelegateCommand selectBayPositionUpCommand;
+
+        private BayPosition selectedBayPosition;
 
         private bool isStopping;
 
@@ -90,25 +105,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        #region Enums
-
-        public enum DepositAndPickUpState
-        {
-            None,
-
-            GotoBay,
-
-            PickUp,
-
-            GotoBayAdjusted,
-
-            Deposit,
-
-            EndLoaded,
-        }
-
-        #endregion
-
         #region Properties
 
         public int? CompletedCycles
@@ -147,6 +143,64 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
+
+        public bool IsPositionDownSelected
+        {
+            get => this.isPositionDownSelected;
+            set
+            {
+                if (this.SetProperty(ref this.isPositionDownSelected, value))
+                {
+                    this.IsPositionUpSelected = !this.IsPositionDownSelected;
+                }
+            }
+        }
+
+        public bool IsPositionUpSelected
+        {
+            get => this.isPositionUpSelected;
+            set
+            {
+                if (this.SetProperty(ref this.isPositionUpSelected, value))
+                {
+                    this.IsPositionDownSelected = !this.IsPositionUpSelected;
+                }
+            }
+        }
+
+        public LoadingUnit LoadingUnitInBay
+        {
+            get => this.loadingUnitInBay;
+            set => this.SetProperty(ref this.loadingUnitInBay, value);
+        }
+
+        public ICommand SelectBayPosition1Command =>
+            this.selectBayPositionDownCommand
+            ??
+            (this.selectBayPositionDownCommand = new DelegateCommand(this.SelectBayPositionDown));
+
+        public ICommand SelectBayPosition2Command =>
+            this.selectBayPositionUpCommand
+            ??
+            (this.selectBayPositionUpCommand = new DelegateCommand(this.SelectBayPositionUp));
+
+        public BayPosition SelectedBayPosition
+        {
+            get => this.selectedBayPosition;
+            private set
+            {
+                if (this.SetProperty(ref this.selectedBayPosition, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public int? InputRequiredCycles
         {
             get => this.inputRequiredCycles;
@@ -158,13 +212,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
-
-        public bool IsElevatorMoving =>
-            this.IsElevatorMovingToBay
-            ||
-            this.IsElevatorDisembarking
-            ||
-            this.IsElevatorEmbarking;
 
         public bool IsExecutingProcedure
         {
@@ -313,6 +360,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.SelectBayPositionDown();
         }
 
+        private void SelectBayPositionDown()
+        {
+            this.IsPositionDownSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
+        }
+
+        private void SelectBayPositionUp()
+        {
+            this.IsPositionUpSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
+        }
+
         public async Task RetrieveLoadingUnitsAsync()
         {
             try
@@ -336,9 +395,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             if (e.MachinePowerState != MachinePowerState.Powered)
             {
-                this.IsElevatorMovingToBay = false;
-                this.IsElevatorDisembarking = false;
-                this.IsElevatorEmbarking = false;
                 this.IsExecutingProcedure = false;
             }
         }
@@ -365,44 +421,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private async Task ExecuteNextStateAsync()
-        {
-            if (this.IsStopping)
-            {
-                this.IsStopping = false;
-                this.IsExecutingProcedure = false;
-                this.Stopped();
-            }
-
-            if (!this.IsExecutingProcedure)
-            {
-                return;
-            }
-
-            switch (this.currentState)
-            {
-                case DepositAndPickUpState.None:
-                    await this.MoveToBayHeightAsync();
-                    break;
-
-                case DepositAndPickUpState.GotoBay:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.PickUp:
-                    await this.Restart();
-                    break;
-
-                case DepositAndPickUpState.GotoBayAdjusted:
-                    await this.StartMovementAsync();
-                    break;
-
-                case DepositAndPickUpState.Deposit:
-                    await this.MoveToBayHeightAsync();
-                    break;
-            }
-        }
-
         private async Task OnElevatorPositionChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
             switch (message.Status)
@@ -415,22 +433,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case MessageStatus.OperationEnd:
                     {
-                        if (!this.IsExecutingProcedure)
-                        {
-                            break;
-                        }
-
-                        this.IsElevatorDisembarking = false;
-                        this.IsElevatorEmbarking = false;
-                        this.IsElevatorMovingToBay = false;
-
-                        if (this.currentState == DepositAndPickUpState.PickUp)
-                        {
-                            this.CumulativePerformedCycles = await this.machineDepositAndPickupProcedureWebService.IncreasePerformedCyclesAsync();
-                            this.CompletedCycles++;
-                        }
-
-                        await this.ExecuteNextStateAsync();
+                        this.Stopped();
 
                         break;
                     }
@@ -445,8 +448,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     }
 
                 case MessageStatus.OperationError:
-                    this.IsExecutingProcedure = false;
-
+                    this.Stopped();
                     break;
             }
         }
@@ -496,11 +498,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     return;
                 }
 
-                this.currentState = DepositAndPickUpState.None;
-
                 this.isExecutingProcedure = true;
-
-                await this.ExecuteNextStateAsync();
             }
             catch (Exception ex)
             {
@@ -515,9 +513,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void Stopped()
         {
-            this.IsElevatorDisembarking = false;
-            this.IsElevatorEmbarking = false;
-            this.IsElevatorMovingToBay = false;
             this.IsExecutingProcedure = false;
 
             this.ShowNotification(
