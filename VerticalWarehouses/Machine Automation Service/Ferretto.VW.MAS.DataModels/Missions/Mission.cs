@@ -17,6 +17,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public int? LoadingUnitCellSourceId { get; set; }
 
+        public LoadingUnitLocation LoadingUnitDestination { get; set; }
+
         public int LoadingUnitId { get; set; }
 
         public LoadingUnitLocation LoadingUnitSource { get; set; }

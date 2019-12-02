@@ -27,9 +27,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ISensorsProvider sensorsProvider;
 
-        private LoadingUnitLocation ejectBay;
+        private LoadingUnitLocation ejectBayLocation;
 
-        private BayNumber requestingBay;
+        private BayNumber ejectBay;
 
         private Mission mission;
 
@@ -62,20 +62,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-            this.requestingBay = commandMessage.RequestingBay;
 
             if (machineData is Mission moveData)
             {
                 this.mission = moveData;
-            }
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
-            {
-                this.ejectBay = messageData.Destination;
-            }
-            this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(commandMessage.RequestingBay, this.mission.WmsId.Value);
+                this.ejectBayLocation = moveData.LoadingUnitDestination;
+                var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
+                this.ejectBay = bay.Number;
 
-            this.mission.FsmStateName = this.GetType().Name;
-            this.missionsDataProvider.Update(this.mission);
+                this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.mission.WmsId.Value);
+
+                this.mission.FsmStateName = this.GetType().Name;
+                this.missionsDataProvider.Update(this.mission);
+            }
         }
 
         protected override IState OnResume(CommandMessage commandMessage)
@@ -87,7 +86,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
                 {
-                    var bayPosition = this.baysDataProvider.GetPositionByLocation(this.ejectBay);
+                    var bayPosition = this.baysDataProvider.GetPositionByLocation(this.ejectBayLocation);
                     if (messageData.MissionType == MissionType.NoType)
                     {
                         // Remove LoadUnit
@@ -111,10 +110,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         {
                             // prepare for finding a new empty cell
                             this.mission.DestinationCellId = null;
+                            this.mission.LoadingUnitDestination = LoadingUnitLocation.Cell;
                         }
                         else
                         {
-                            // TODO bay to bay movement
+                            // bay to bay movement
+                            this.mission.LoadingUnitDestination = messageData.Destination;
                         }
                         returnValue = this.GetState<IMoveLoadingUnitStartState>();
                     }

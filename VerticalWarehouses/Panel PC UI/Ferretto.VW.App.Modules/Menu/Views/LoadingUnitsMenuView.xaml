@@ -68,7 +68,7 @@
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
                                     Command="{Binding LoadingUnitsBayToBayCommand}"
-                                    Content="Spostamento ba Baia a Baia" />
+                                    Content="Spostamento da Baia a Baia" />
 
             </WrapPanel>
         </Grid>

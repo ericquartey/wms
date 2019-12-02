@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -17,6 +18,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
     {
         #region Fields
 
+        private readonly IBaysDataProvider baysDataProvider;
+
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
         private IMoveLoadingUnitMessageData messageData;
@@ -28,10 +31,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         #region Constructors
 
         public MoveLoadingUnitCloseShutterState(
+            IBaysDataProvider baysDataProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
+            this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
         }
 
@@ -48,14 +53,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && machineData is IMoveLoadingUnitMachineData moveData
+                )
             {
                 this.messageData = messageData;
                 this.moveData = moveData;
                 moveData.FsmStateName = this.GetType().Name;
-            }
 
-            this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, commandMessage.RequestingBay);
+                var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
+                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number);
+            }
         }
 
         protected override IState OnNotificationReceived(NotificationMessage notification)
@@ -69,6 +77,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case MessageStatus.OperationEnd:
                     if (this.messageData.EjectLoadingUnit)
                     {
+                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitDestination);
                         var messageData = new MoveLoadingUnitMessageData(
                             this.messageData.MissionType,
                             this.messageData.Source,
@@ -85,21 +94,25 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                         this.Message = new NotificationMessage(
                             messageData,
-                            $"Loading Unit {this.moveData.LoadingUnitId} placed on bay {this.messageData.Destination}",
+                            $"Loading Unit {this.moveData.LoadingUnitId} placed on bay {bay.Number}",
                             MessageActor.AutomationService,
                             MessageActor.MachineManager,
                             MessageType.MoveLoadingUnit,
                             notification.RequestingBay,
-                            notification.TargetBay,
+                            bay.Number,
                             MessageStatus.OperationWaitResume);
 
                         if (this.moveData.WmsId.HasValue)
                         {
                             returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                         }
-                        else
+                        else if (bay.Number == notification.RequestingBay)
                         {
                             returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
+                        }
+                        else
+                        {
+                            returnValue = this.GetState<IMoveLoadingUnitEndState>();
                         }
                     }
                     else

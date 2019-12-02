@@ -62,18 +62,21 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && machineData is IMoveLoadingUnitMachineData moveData
+                )
             {
                 this.messageData = messageData;
                 this.moveData = moveData;
 
                 var direction = HorizontalMovementDirection.Backwards;
+                var bayNumber = commandMessage.RequestingBay;
                 switch (this.messageData.Destination)
                 {
                     case LoadingUnitLocation.Cell:
-                        if (this.messageData.DestinationCellId != null)
+                        if (moveData.DestinationCellId != null)
                         {
-                            var cell = this.cellsProvider.GetById(this.messageData.DestinationCellId.Value);
+                            var cell = this.cellsProvider.GetById(moveData.DestinationCellId.Value);
 
                             direction = cell.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         }
@@ -81,14 +84,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         break;
 
                     default:
-                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.messageData.Destination);
+                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
-
+                        bayNumber = bay.Number;
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, false, MessageActor.MachineManager, commandMessage.RequestingBay, null);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, false, this.openShutter, false, MessageActor.MachineManager, bayNumber, null);
                 moveData.FsmStateName = this.GetType().Name;
             }
             else
@@ -132,7 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 {
                     this.elevatorDataProvider.SetLoadingUnit(null);
 
-                    if (this.messageData.Destination is LoadingUnitLocation.Cell)
+                    if (this.moveData.LoadingUnitDestination is LoadingUnitLocation.Cell)
                     {
                         var destinationCellId = this.messageData.DestinationCellId;
                         if (destinationCellId.HasValue)
@@ -146,7 +149,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     else
                     {
-                        var bayPosition = this.baysDataProvider.GetPositionByLocation(this.messageData.Destination);
+                        var bayPosition = this.baysDataProvider.GetPositionByLocation(this.moveData.LoadingUnitDestination);
                         this.baysDataProvider.SetLoadingUnit(bayPosition.Id, this.moveData.LoadingUnitId);
                     }
 

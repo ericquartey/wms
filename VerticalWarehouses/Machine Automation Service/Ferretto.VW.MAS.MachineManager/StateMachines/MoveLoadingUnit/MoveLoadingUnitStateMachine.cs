@@ -186,10 +186,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         var destinationCell = this.cellsProvider.GetById(messageData.DestinationCellId.Value);
                         returnValue = destinationCell.LoadingUnit == null && destinationCell.Status == CellStatus.Free;
                         machineData.DestinationCellId = messageData.DestinationCellId;
+                        machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }
                     else if (messageData.LoadingUnitId.HasValue)
                     {
                         machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                        machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }
 
                     if (!returnValue)
@@ -210,7 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
 #endif
                     {
-                        returnValue = this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null;
+                        returnValue = (this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null);
                     }
                     if (!returnValue)
                     {
@@ -224,6 +226,27 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
                         returnValue = false;
+                    }
+                    if (returnValue
+                        && messageData.Destination != LoadingUnitLocation.NoLocation)
+                    {
+                        var destinationBay = this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
+                        if (destinationBay.Number != requestingBay)
+                        {
+                            // move from bay to bay
+                            if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
+                                && this.sensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
+                                )
+                            {
+                                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                                returnValue = false;
+                            }
+                        }
+                    }
+                    if (returnValue)
+                    {
+                        machineData.LoadingUnitDestination = messageData.Destination;
                     }
 
                     break;
