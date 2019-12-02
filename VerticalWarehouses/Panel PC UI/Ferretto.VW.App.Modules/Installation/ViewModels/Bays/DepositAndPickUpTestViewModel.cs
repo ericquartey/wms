@@ -25,11 +25,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private readonly Controls.Interfaces.ISensorsService sensorsService;
+        private readonly ISensorsService sensorsService;
 
-        private readonly Controls.Interfaces.ISensorsService sensorsService;
-
-        private Bay bay;
+        private readonly IBayManager bayManagerService;
 
         private int? completedCycles;
 
@@ -76,6 +74,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private double? tare;
 
         private int? totalCompletedCycles;
+
+        private Bay bay;
 
         #endregion
 
