@@ -176,8 +176,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
         }
 
-        public IMachineBaysWebService MachineBaysWebService => this.machineBaysWebService;
-
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
 
         public ICommand SelectBayPositionDownCommand =>
