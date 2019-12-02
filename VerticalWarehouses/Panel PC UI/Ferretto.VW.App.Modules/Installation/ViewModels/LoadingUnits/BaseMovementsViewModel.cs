@@ -75,8 +75,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public IBayManager BayManagerService => this.bayManagerService;
-
         public Guid? CurrentMissionId { get; private set; }
 
         public bool IsExecutingProcedure
@@ -177,6 +175,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
             }
         }
+
+        public IMachineBaysWebService MachineBaysWebService => this.machineBaysWebService;
 
         public IMachineLoadingUnitsWebService MachineLoadingUnitsWebService => this.machineLoadingUnitsWebService;
 

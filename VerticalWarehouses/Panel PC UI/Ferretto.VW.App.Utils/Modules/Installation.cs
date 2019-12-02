@@ -98,6 +98,8 @@
         {
             #region Fields
 
+            public const string LOADINGUNITFROMBAYTOBAY = "LoadingUnitFromBayToBayViewModel";
+
             public const string LOADINGUNITFROMBAYTOCELL = "LoadingUnitFromBayToCellViewModel";
 
             public const string LOADINGUNITFROMCELLTOBAY = "LoadingUnitFromCellToBayViewModel";

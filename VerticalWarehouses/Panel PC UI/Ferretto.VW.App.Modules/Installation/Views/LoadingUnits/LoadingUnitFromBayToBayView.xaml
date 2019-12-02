@@ -1,0 +1,96 @@
+﻿<ctrls:View x:Class="Ferretto.VW.App.Modules.Installation.Views.LoadingUnitFromBayToBayView"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:prism="http://prismlibrary.com/"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:LoadingUnitFromBayToBayViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="80,15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto"
+                              MinWidth="280" />
+            <ColumnDefinition Width="Auto"
+                              MinWidth="280" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.ColumnSpan="3"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCell}" />
+
+        <ctrls:SensorsPanel Grid.Row="1"
+                            Grid.RowSpan="3"
+                            Margin="0,5,5,5" />
+
+        <StackPanel Grid.Row="1"
+                    Grid.Column="1"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+
+            <controls:PpcButton Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding SendToBay1Command}"
+                                Content="{x:Static res:InstallationApp.Bay1}"
+                                Visibility="{Binding IsBay1Present, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcButton Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding SendToBay2Command}"
+                                Content="{x:Static res:InstallationApp.Bay2}"
+                                Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}" />
+
+            <controls:PpcButton Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding SendToBay3Command}"
+                                Content="{x:Static res:InstallationApp.Bay3}"
+                                Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}" />
+
+        </StackPanel>
+
+        <controls:PpcCheckBox Grid.Row="2"
+                              Grid.ColumnSpan="2"
+                              Margin="15"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"
+                              Content="{x:Static res:InstallationApp.BayPositionUp}"
+                              IsChecked="{Binding}"
+                              Visibility="{Binding IsBay1Visible, Converter={StaticResource BTVC}}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
+
+        <controls:PpcButton Grid.Row="3"
+                            Grid.Column="1"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}" />
+
+    </Grid>
+</ctrls:View>

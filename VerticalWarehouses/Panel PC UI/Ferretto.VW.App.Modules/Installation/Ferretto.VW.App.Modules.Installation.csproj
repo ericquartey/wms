@@ -59,12 +59,16 @@
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
     <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
+    <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">
+      <DependentUpon>LoadingUnitFromBayToBayView.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\Movements\Manual\ElevatorManualMovementsView.xaml.cs">
       <DependentUpon>ElevatorManualMovementsView.xaml</DependentUpon>
