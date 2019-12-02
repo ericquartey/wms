@@ -61,6 +61,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NoEmptyCellsAvailable.
+        /// </summary>
+        public static string NoEmptyCellsAvailable {
+            get {
+                return ResourceManager.GetString("NoEmptyCellsAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The cell already contains another loading unit..
         /// </summary>
         public static string TheCellAlreadyContainsAnotherLoadingUnit {

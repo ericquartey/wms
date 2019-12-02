@@ -200,7 +200,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Resume(Guid? missionId, BayNumber targetBay)
         {
-            this.moveLoadingUnitProvider.ResumeMove(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
+            this.moveLoadingUnitProvider.RemoveLoadUnit(missionId, this.BayNumber, targetBay, MessageActor.AutomationService);
             return this.Accepted();
         }
 

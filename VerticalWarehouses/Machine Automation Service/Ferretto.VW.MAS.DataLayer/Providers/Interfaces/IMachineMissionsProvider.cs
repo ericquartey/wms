@@ -22,7 +22,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         bool PauseMachineMission(Guid fsmId);
 
-        bool ResumeMachineMission(Guid fsmId);
+        bool ResumeMachineMission(Guid fsmId, CommandMessage command);
 
         bool StartMachineMission(Guid fsmId, CommandMessage command);
 

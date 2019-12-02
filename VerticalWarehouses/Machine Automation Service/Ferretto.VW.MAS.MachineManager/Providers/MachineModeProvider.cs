@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }
 
-            this.SendCommandToMissionManager(
+            this.SendCommandToMachineManager(
                 new MachineModeMessageData(machineMode),
                 $"Request mode change to '{machineMode}'",
                 MessageActor.MissionManager,
