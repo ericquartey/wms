@@ -34,7 +34,7 @@
         <TextBlock Grid.ColumnSpan="3"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.InsertLoadingUnitFromBayToCell}" />
+                   Text="Inserimento cassetto da baia a baia" />
 
         <ctrls:SensorsPanel Grid.Row="1"
                             Grid.RowSpan="3"
@@ -51,6 +51,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay1Command}"
                                 Content="{x:Static res:InstallationApp.Bay1}"
+                                IsActive="{Binding IsBay1Destination}"
                                 Visibility="{Binding IsBay1Present, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Margin="15"
@@ -58,6 +59,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay2Command}"
                                 Content="{x:Static res:InstallationApp.Bay2}"
+                                IsActive="{Binding IsBay2Destination}"
                                 Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Margin="15"
@@ -65,6 +67,7 @@
                                 VerticalAlignment="Center"
                                 Command="{Binding SendToBay3Command}"
                                 Content="{x:Static res:InstallationApp.Bay3}"
+                                IsActive="{Binding IsBay3Destination}"
                                 Visibility="{Binding IsBay3Present, Converter={StaticResource BTVC}}" />
 
         </StackPanel>
@@ -96,7 +99,7 @@
                             Grid.Column="2"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            Command="{Binding StartCommand}"
+                            Command="{Binding StartToBayCommand}"
                             Content="{x:Static res:InstallationApp.Start}" />
 
         <controls:PpcButton Grid.Row="3"

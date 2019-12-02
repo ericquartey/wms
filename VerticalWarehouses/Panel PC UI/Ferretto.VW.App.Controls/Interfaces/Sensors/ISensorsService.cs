@@ -15,6 +15,10 @@ namespace Ferretto.VW.App.Controls.Interfaces
 
         bool IsZeroChain { get; }
 
+        string LoadingUnitPositionDownInBayCode { get; }
+
+        string LoadingUnitPositionUpInBayCode { get;  }
+
         Sensors Sensors { get; }
 
         ShutterSensors ShutterSensors { get; }

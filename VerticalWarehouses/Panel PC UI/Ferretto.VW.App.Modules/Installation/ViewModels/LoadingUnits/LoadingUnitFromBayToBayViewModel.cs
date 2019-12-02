@@ -19,17 +19,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly ISensorsService sensorsService;
 
+        private bool isBay1Destination;
+
         private bool isBay1Present;
+
+        private bool isBay2Destination;
 
         private bool isBay2Present;
 
+        private bool isBay3Destination;
+
         private bool isBay3Present;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
 
         private DelegateCommand sendToBay1Command;
 
         private DelegateCommand sendToBay2Command;
 
         private DelegateCommand sendToBay3Command;
+
+        private DelegateCommand startToBayCommand;
 
         #endregion
 
@@ -52,16 +62,34 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         #region Properties
 
+        public bool IsBay1Destination
+        {
+            get => this.isBay1Destination;
+            set => this.SetProperty(ref this.isBay1Destination, value);
+        }
+
         public bool IsBay1Present
         {
             get => this.isBay1Present;
             set => this.SetProperty(ref this.isBay1Present, value);
         }
 
+        public bool IsBay2Destination
+        {
+            get => this.isBay2Destination;
+            set => this.SetProperty(ref this.isBay2Destination, value);
+        }
+
         public bool IsBay2Present
         {
             get => this.isBay2Present;
             set => this.SetProperty(ref this.isBay2Present, value);
+        }
+
+        public bool IsBay3Destination
+        {
+            get => this.isBay3Destination;
+            set => this.SetProperty(ref this.isBay3Destination, value);
         }
 
         public bool IsBay3Present
@@ -73,17 +101,33 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public ICommand SendToBay1Command =>
             this.sendToBay1Command
             ??
-            (this.sendToBay1Command = new DelegateCommand(async () => await this.StartToBayAsync(1)));
+            (this.sendToBay1Command = new DelegateCommand(
+                () => this.ChangeDestination(BayNumber.BayOne),
+                () => !this.IsBay1Destination && !this.IsExecutingProcedure && !this.IsWaitingForResponse));
 
         public ICommand SendToBay2Command =>
             this.sendToBay2Command
             ??
-            (this.sendToBay2Command = new DelegateCommand(async () => await this.StartToBayAsync(2)));
+            (this.sendToBay2Command = new DelegateCommand(
+                () => this.ChangeDestination(BayNumber.BayTwo),
+                () => !this.IsBay2Destination && !this.IsExecutingProcedure && !this.IsWaitingForResponse));
 
         public ICommand SendToBay3Command =>
             this.sendToBay3Command
             ??
-            (this.sendToBay3Command = new DelegateCommand(async () => await this.StartToBayAsync(3)));
+            (this.sendToBay3Command = new DelegateCommand(
+                () => this.ChangeDestination(BayNumber.BayThree),
+                () => !this.IsBay3Destination && !this.IsExecutingProcedure && !this.IsWaitingForResponse));
+
+        public ICommand StartToBayCommand =>
+            this.startToBayCommand
+            ??
+            (this.startToBayCommand = new DelegateCommand(
+                async () => await this.StartToBayAsync(),
+                () => !this.IsExecutingProcedure &&
+                      !this.IsWaitingForResponse &&
+                      (!string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ||
+                       !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionDownInBayCode))));
 
         #endregion
 
@@ -93,18 +137,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                if (this.LoadingUnitId is null)
-                {
-                    var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
-                    if (lst.Count() > 0)
-                    {
-                        this.LoadingUnitId = lst.Max(o => o.Id) + 1;
-                    }
-                    else
-                    {
-                        this.LoadingUnitId = null;
-                    }
-                }
+                var lst = await this.MachineLoadingUnitsWebService.GetAllAsync();
+                this.loadingUnits = lst;
             }
             catch (Exception ex)
             {
@@ -124,17 +158,34 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             await this.SetDataBays();
         }
 
-        public async Task StartToBayAsync(int bayDestination)
+        public override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.sendToBay1Command?.RaiseCanExecuteChanged();
+            this.sendToBay2Command?.RaiseCanExecuteChanged();
+            this.sendToBay3Command?.RaiseCanExecuteChanged();
+            this.startToBayCommand?.RaiseCanExecuteChanged();
+        }
+
+        public async Task StartToBayAsync()
         {
             try
             {
-                if (!this.IsLoadingUnitIdValid)
+                var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
+                                      this.sensorsService.LoadingUnitPositionUpInBayCode :
+                                      this.sensorsService.LoadingUnitPositionDownInBayCode;
+
+                this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
+
+                if (this.LoadingUnitId is null)
                 {
                     this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                var destination = this.GetLoadingUnitSource();
+                var bay = this.IsBay1Destination ? BayNumber.BayOne : this.IsBay2Destination ? BayNumber.BayTwo : BayNumber.BayThree;
+                var destination = this.GetLoadingUnitSourceByDestination(bay);
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
@@ -163,6 +214,28 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.GetLoadingUnits().ConfigureAwait(false);
         }
 
+        private void ChangeDestination(BayNumber bayDestination)
+        {
+            if (bayDestination == BayNumber.BayOne)
+            {
+                this.IsBay1Destination = true;
+                this.IsBay2Destination = false;
+                this.IsBay3Destination = false;
+            }
+            else if (bayDestination == BayNumber.BayTwo)
+            {
+                this.IsBay1Destination = false;
+                this.IsBay2Destination = true;
+                this.IsBay3Destination = false;
+            }
+            else
+            {
+                this.IsBay1Destination = false;
+                this.IsBay2Destination = false;
+                this.IsBay3Destination = true;
+            }
+        }
+
         private async Task InitialinngData()
         {
             await this.GetLoadingUnits();
@@ -177,6 +250,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.IsBay1Present = bays.Any(b => b.Number == BayNumber.BayOne && b.Number != this.Bay.Number);
             this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo && b.Number != this.Bay.Number);
             this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree && b.Number != this.Bay.Number);
+
+            var lst = new List<bool>() { this.IsBay1Present, this.IsBay2Present, this.IsBay3Present };
+            if (lst.Count(a => a) == 1)
+            {
+                if (this.IsBay1Present)
+                {
+                    this.ChangeDestination(BayNumber.BayOne);
+                }
+
+                if (this.IsBay2Present)
+                {
+                    this.ChangeDestination(BayNumber.BayTwo);
+                }
+
+                if (this.IsBay3Present)
+                {
+                    this.ChangeDestination(BayNumber.BayThree);
+                }
+            }
         }
 
         #endregion
