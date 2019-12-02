@@ -170,6 +170,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition />
+                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Row="0"
@@ -225,6 +226,32 @@
                                Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding ElementName=Card, Path=CardBadgeLabel2}" />
 
+
+                    <Border Grid.Row="0"
+                            Grid.Column="2"
+                            Width="35"
+                            Height="35"
+                            Margin="2"
+                            HorizontalAlignment="Center"
+                            BorderBrush="{DynamicResource PpcBorderBrush}"
+                            BorderThickness="{DynamicResource PpcBorderThickness}"
+                            CornerRadius="4">
+                        <TextBlock Margin="4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_High}"
+                                   FontStyle="Italic"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding ElementName=Card, Path=CardBadge3}" />
+                    </Border>
+                    <TextBlock Grid.Row="1"
+                               Grid.Column="2"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_Small}"
+                               FontStyle="Italic"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding ElementName=Card, Path=CardBadgeLabel3}" />
                 </Grid>
 
             </Grid>

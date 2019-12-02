@@ -33,28 +33,30 @@
             <controls:CardSensor Grid.Row="0"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="44"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardText="Posizione"
-                                 CardValue="In Cella"
+                                 CardValue="{Binding SensorsService.ElevatorLogicalPosition, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  Type="Position" />
             <controls:CardSensor Grid.Row="1"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="23"
-                                 CardBadge2="99"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge2="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge3="{Binding SensorsService.LoadingUnitPositionDownInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardBadgeLabel1="Elevatore"
-                                 CardBadgeLabel2="Posizione"
+                                 CardBadgeLabel2="Posizione Up"
+                                 CardBadgeLabel3="Posizione Down"
                                  CardText="Cassetto"
                                  Type="Drawer" />
             <controls:CardSensor Grid.Row="2"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardSensorLabel1="{Binding SensorsService.Sensors.ZeroVerticalSensor}"
-                                 CardSensorLabel2="Front"
-                                 CardSensorLabel3="Brack"
+                                 CardSensorLabel1="Zero"
+                                 CardSensorLabel2=""
+                                 CardSensorLabel3=""
                                  CardText="Verticale (mm)"
-                                 CardValue="9999.99"
-                                 Sensor1="True"
+                                 CardValue="{Binding SensorsService.ElevatorVerticalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Sensor1="{Binding SensorsService.Sensors.ZeroVerticalSensor}"
                                  Sensor2="False"
                                  Sensor3="False" />
             <controls:CardSensor Grid.Row="3"
@@ -64,10 +66,10 @@
                                  CardSensorLabel2="Front"
                                  CardSensorLabel3="Brack"
                                  CardText="Orizzontale (mm)"
-                                 CardValue="9999.99"
+                                 CardValue="{Binding SensorsService.ElevatorHorizontalPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  Sensor1="{Binding SensorsService.IsZeroChain}"
-                                 Sensor2="False"
-                                 Sensor3="False" />
+                                 Sensor2="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
+                                 Sensor3="{Binding SensorsService.Sensors.LuPresentInOperatorSide}" />
             <controls:CardSensor Grid.Row="4"
                                  Width="250"
                                  Margin="0,0,15,5"
@@ -75,15 +77,15 @@
                                  CardSensorLabel2="Sopra"
                                  CardSensorLabel3="Sotto"
                                  CardText="Baia"
-                                 CardValue="9999.99"
-                                 Sensor1="True"
-                                 Sensor2="True"
-                                 Sensor3="True" />
+                                 CardValue="{Binding SensorsService.BayChainPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 Sensor1="{Binding SensorsService.BayZeroChain}"
+                                 Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"
+                                 Sensor3="{Binding SensorsService.IsLoadingUnitInMiddleBottomBay}" />
             <controls:CardSensor Grid.Row="5"
                                  Width="250"
                                  Margin="0,0,15,0"
                                  CardText="Serranda"
-                                 CardValue="Aperta"
+                                 CardValue="{Binding SensorsService.ShutterSensors.Status, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  Type="Shutter" />
         </Grid>
 
@@ -526,9 +528,10 @@
 
                         <controls:PpcButton Grid.Row="6"
                                             Grid.Column="3"
-                                            Margin="5"
+                                            Margin="5,0"
                                             HorizontalAlignment="Center"
-                                            Content="Stato sensori" />
+                                            Command="{Binding GoToStatusSensorsCommand}"
+                                            Content="{x:Static res:InstallationApp.SensorsState}" />
                     </Grid>
                 </Grid>
             </Border>

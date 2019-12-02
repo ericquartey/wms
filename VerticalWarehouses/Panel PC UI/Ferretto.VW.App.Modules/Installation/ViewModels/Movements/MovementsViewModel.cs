@@ -50,6 +50,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToMovementsManualCommand;
 
+        private DelegateCommand goToStatusSensorsCommand;
+
         private bool isKeyboardOpened;
 
         private bool isMovementsGuided = true;
@@ -107,6 +109,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.goToMovementsGuidedCommand = new DelegateCommand(
                 () => this.GoToMovementsExecuteCommand(true),
                 this.CanGoToMovementsExecuteCommand));
+
+        public ICommand GoToStatusSensorsCommand =>
+            this.goToStatusSensorsCommand
+            ??
+            (this.goToStatusSensorsCommand = new DelegateCommand(
+                () => this.StatusSensorsCommand()));
 
         public ICommand GoToMovementsManualCommand =>
             this.goToMovementsManualCommand
@@ -182,6 +190,28 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        private void StatusSensorsCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    data: null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
 
         public override void Disappear()
         {
