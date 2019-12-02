@@ -109,7 +109,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         this.mission.LoadingUnitSource = bayPosition.Location;
                         if (messageData.Destination == LoadingUnitLocation.Cell)
                         {
-                            this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                            // prepare for finding a new empty cell
+                            this.mission.DestinationCellId = null;
                         }
                         else
                         {

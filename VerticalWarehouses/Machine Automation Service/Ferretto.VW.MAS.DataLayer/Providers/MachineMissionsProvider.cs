@@ -154,58 +154,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         }
 
         /// <summary>
-        /// We try to limit the number of active Wms missions:
-        ///     one for each bay, only in Automatic mode.
-        ///     WmsId must be unique (in active missions)
-        ///     LoadUnitId must be unique
-        /// </summary>
-        /// <param name="fsmType"></param>
-        /// <param name="command"></param>
-        /// <param name="bayNumber"></param>
-        /// <param name="fsmId"></param>
-        /// <returns></returns>
-        public bool TryCreateWmsMission(FsmType fsmType, MoveLoadingUnitMessageData command, out Guid fsmId)
-        {
-            fsmId = Guid.Empty;
-            var returnValue = false;
-
-            var missions = this.GetMissionsByType(fsmType, command.MissionType);
-            if (command.WmsId.HasValue)
-            {
-                returnValue = !missions.Any(m => (m.MachineData is IMoveLoadingUnitMachineData data)
-                    && data.WmsId.HasValue
-                    && data.WmsId == command.WmsId);
-            }
-
-            if (returnValue && command.TargetBay != BayNumber.None)
-            {
-                returnValue = !missions.Any(m => (m.MachineData is IMoveLoadingUnitMachineData data)
-                    && data.TargetBay == command.TargetBay);
-            }
-
-            if (returnValue)
-            {
-                using (var scope = this.serviceScopeFactory.CreateScope())
-                {
-                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                    returnValue = (machineModeDataProvider.Mode == MachineMode.Automatic);
-                }
-            }
-            if (returnValue)
-            {
-                IMission newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
-                var machineData = (IMoveLoadingUnitMachineData)newMission.MachineData;
-                machineData.TargetBay = command.TargetBay;
-                machineData.WmsId = command.WmsId;
-                machineData.LoadingUnitId = command.LoadingUnitId ?? 0;
-
-                this.machineMissions.Add(newMission);
-                fsmId = newMission.FsmId;
-            }
-            return returnValue;
-        }
-
-        /// <summary>
         /// Handles logic for deciding if a specific mission type can be created or not. Mostly based on related finite state machine type, instances and statuses.
         /// </summary>
         /// <param name="requestedMission">TYpe of mission to be created</param>

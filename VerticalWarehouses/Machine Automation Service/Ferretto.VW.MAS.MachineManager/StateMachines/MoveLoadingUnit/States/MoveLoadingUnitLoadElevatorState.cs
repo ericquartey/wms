@@ -169,14 +169,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     {
                         var bayPosition = this.baysDataProvider.GetPositionByLocation(this.moveData.LoadingUnitSource);
                         this.baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
-                        // TEST
-                        //if (this.moveData.LoadingUnitId > 0)
-                        //{
-                        //    this.moveData.DestinationCellId = this.cellsProvider.FindEmptyCell(this.moveData.LoadingUnitId);
-                        //}
                     }
 
                     transaction.Commit();
+                }
+                // in automatic bay-to-cell movements the profile may have changed so we have to find a new empty cell
+                if (this.moveData.LoadingUnitSource != LoadingUnitLocation.Cell
+                    && !this.moveData.DestinationCellId.HasValue
+                    && this.moveData.LoadingUnitId > 0
+                    )
+                {
+                    this.moveData.DestinationCellId = this.cellsProvider.FindEmptyCell(this.moveData.LoadingUnitId);
                 }
 
                 returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();

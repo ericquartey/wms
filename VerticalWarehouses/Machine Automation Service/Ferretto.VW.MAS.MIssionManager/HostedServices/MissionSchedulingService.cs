@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
-using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -87,9 +85,9 @@ namespace Ferretto.VW.MAS.MissionManager
         {
             switch (message.Type)
             {
-                //case MessageType.MissionOperationCompleted:
-                //    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
-                //    break;
+                case MessageType.MissionOperationCompleted:
+                    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
+                    break;
 
                 case MessageType.AssignedMissionOperationChanged:
                     await this.OnOperationChangedAsync(message);
@@ -172,65 +170,6 @@ namespace Ferretto.VW.MAS.MissionManager
                             this.Logger.LogError($"Failed to Schedule missions to bay {bay.Number}: {ex.Message}");
                         }
                     }
-                }
-            }
-        }
-
-        private async Task OnMoveLoadingUnitAsync(CommandMessage command)
-        {
-            if (!this.configuration.IsWmsEnabled() || !this.dataLayerIsReady)
-            {
-                return;
-            }
-
-            if (command is null)
-            {
-                return;
-            }
-
-            if (command.Data is MoveLoadingUnitMessageData messageData)
-            {
-                switch (messageData.CommandAction)
-                {
-                    case CommandAction.Start:
-                        try
-                        {
-                            if (this.machineMissionsProvider.TryCreateWmsMission(FsmType.MoveLoadingUnit, messageData, out var missionId))
-                            {
-                                try
-                                {
-                                    this.machineMissionsProvider.StartMachineMission(missionId, command);
-
-                                    if (messageData.WmsId.HasValue)
-                                    {
-                                        var wmsMission = await this.missionsDataService.GetByIdAsync(messageData.WmsId.Value);
-                                        var newOperations = wmsMission.Operations
-                                            .Where(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.New);
-                                        var operation = newOperations.OrderBy(o => o.Priority).First();
-                                        using (var scope = this.ServiceScopeFactory.CreateScope())
-                                        {
-                                            var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-                                            baysDataProvider.AssignWmsMission(messageData.TargetBay, wmsMission.Id, operation.Id);
-                                        }
-                                    }
-                                }
-                                catch (Exception ex)
-                                {
-                                    this.Logger.LogDebug($"Failed to start Move Loading Unit State machine mission {missionId}: {ex.Message}");
-                                    this.machineMissionsProvider.StopMachineMission(missionId, StopRequestReason.Stop);
-                                }
-                            }
-                            else
-                            {
-                                this.Logger.LogDebug($"Conditions not verified for creating Wms mission {messageData.WmsId ?? 0} on Bay {messageData.TargetBay}; LU {messageData.LoadingUnitId}");
-                                // TODO try to send LU back to cell or another bay
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            this.Logger.LogError($"Failed to start Move Loading Unit Wms mission {messageData.WmsId ?? 0}: {ex.Message}");
-                        }
-                        break;
                 }
             }
         }
