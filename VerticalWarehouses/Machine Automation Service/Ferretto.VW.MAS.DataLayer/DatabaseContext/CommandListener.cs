@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DataLayer
             bool async,
             DateTimeOffset startTime)
         {
-            this.logger.LogDebug($"{connectionId}|{command.CommandText}");
+            this.logger.LogTrace($"{connectionId}|{command.CommandText}");
 
             lock (this.redundancyService)
             {
