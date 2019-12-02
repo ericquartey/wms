@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Controls.Interfaces.ISensorsService sensorsService;
 
-        private readonly IBayManager bayManagerService;
+        private readonly Controls.Interfaces.ISensorsService sensorsService;
 
         private Bay bay;
 
@@ -85,7 +85,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorWebService machineElevatorWebService,
             IMachineDepositAndPickupProcedureWebService machineDepositPickupProcedure,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            Controls.Interfaces.ISensorsService sensorsService,
+            ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(PresentationMode.Installer)
         {
