@@ -95,22 +95,21 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="messageData"></param>
         private async Task OnMachineModeChangedAsync(MachineModeMessageData messageData)
         {
-            if (messageData is null)
-            {
-                this.Logger.LogError($"Message data not correct ");
-                return;
-            }
+            Contract.Requires(messageData != null);
+
             if (!this.dataLayerIsReady)
             {
-                this.Logger.LogError($"DataLayer not ready");
+                this.Logger.LogError("DataLayer is not ready");
                 return;
             }
+
             if (!this.configuration.IsWmsEnabled())
             {
-                this.Logger.LogError($"Wms not enabled.");
+                this.Logger.LogError("Wms is not enabled.");
                 return;
             }
-            if (messageData.MachineMode == MachineMode.Automatic)
+
+            if (messageData.MachineMode is MachineMode.Automatic)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
@@ -202,7 +201,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 var missionId = messageData.MissionId.Value;
                 var wmsMission = await this.missionsDataService.GetByIdAsync(missionId);
                 var newOperations = wmsMission.Operations
-                    .Where(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.New);
+                    .Where(o => o.Status == MissionOperationStatus.New);
                 var operation = newOperations.OrderBy(o => o.Priority).First();
 
                 using (var scope = this.ServiceScopeFactory.CreateScope())
@@ -218,6 +217,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         pendingMissionsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
                     }
+
                     this.NotifyAssignedMissionOperationChanged(bayNumber, missionId, operation?.Id ?? 0, pendingMissionsCount);
                 }
             }
@@ -259,7 +259,8 @@ namespace Ferretto.VW.MAS.MissionManager
                     else
                     {
                         // check what is the next operation for this bay
-                        var currentOperation = await this.missionOperationsDataService.GetByIdAsync(messageData.MissionOperationId);
+                        var currentOperation = await this.missionOperationsProvider.GetByIdAsync(messageData.MissionOperationId);
+
                         // close operation and schedule next
                         bayProvider.AssignWmsMission(bay.Number, currentOperation.MissionId, null);
                         var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();

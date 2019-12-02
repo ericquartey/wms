@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 command.Destination is MessageActor.MissionManager;
         }
 
-        protected override async Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
             // do nothing
             return Task.CompletedTask;
