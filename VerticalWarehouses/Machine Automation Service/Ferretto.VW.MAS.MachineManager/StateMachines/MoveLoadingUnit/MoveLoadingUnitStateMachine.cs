@@ -191,6 +191,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     else if (messageData.LoadingUnitId.HasValue)
                     {
                         machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                        returnValue = true;
                         machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }
 

@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -73,41 +75,47 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public int FindEmptyCell(int loadingUnitId)
         {
-            var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+            var loadingUnit = this.dataContext.LoadingUnits
+                .AsNoTracking()
+                .SingleOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
-            var availableCell = new List<AvailableCell>();
-            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
-            var cells = this.GetAll().Where(x => x.Position >= verticalAxis.LowerBound
-                && x.Position < verticalAxis.UpperBound);
-            foreach (var cell in cells)
+            using (var availableCell = new BlockingCollection<AvailableCell>())
             {
-                var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
-                    && c.Position >= cell.Position
-                    && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
-                    .OrderBy(o => o.Position);
-
-                if (cellsInRange.Any()
-                    && !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable)
-                    && (cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight >= loadingUnit.Height + VerticalPositionTolerance)
-                    )
+                var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+                var cells = this.GetAll().Where(x => x.Position >= verticalAxis.LowerBound
+                    && x.Position < verticalAxis.UpperBound);
+                Parallel.ForEach(cells, (cell) =>
                 {
-                    availableCell.Add(new AvailableCell(cell, cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight));
+                    var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
+                        && c.Position >= cell.Position
+                        && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
+                        .OrderBy(o => o.Position);
+
+                    if (cellsInRange.Any()
+                        && !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable)
+                        && (cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight >= loadingUnit.Height + VerticalPositionTolerance)
+                        )
+                    {
+                        availableCell.Add(new AvailableCell(cell, cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight));
+                    }
+                });
+                if (!availableCell.Any())
+                {
+                    throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
-            }
-            if (!availableCell.Any())
-            {
-                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
-            }
-            if (availableCell.Count > cells.Count() / 2)
-            {
-                return availableCell.OrderBy(t => t.Cell.Priority).First().Cell.Id;
-            }
-            else
-            {
-                return availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+                int cellId = 0;
+                if (availableCell.Count > cells.Count() / 2)
+                {
+                    cellId = availableCell.OrderBy(t => t.Cell.Priority).First().Cell.Id;
+                }
+                else
+                {
+                    cellId = availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+                }
+                return cellId;
             }
         }
 

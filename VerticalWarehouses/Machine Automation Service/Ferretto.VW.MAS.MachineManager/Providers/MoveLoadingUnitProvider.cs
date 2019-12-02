@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                  requestingBay);
         }
 
-        public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(

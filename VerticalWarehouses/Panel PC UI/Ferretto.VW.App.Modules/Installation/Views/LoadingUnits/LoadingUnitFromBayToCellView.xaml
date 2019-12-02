@@ -68,13 +68,6 @@
                            IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                            LabelText="{x:Static res:InstallationApp.InsertDesiredLoadingUnitId}" />
 
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="2"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           EditValue="{Binding DestinationCellId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.InsertDestinationCellId}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="2"
