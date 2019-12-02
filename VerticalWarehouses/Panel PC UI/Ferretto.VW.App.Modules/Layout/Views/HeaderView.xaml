@@ -70,7 +70,7 @@
                                     Style="{DynamicResource PpcButtonHelpHeaderStyle}" />
             </ctrls:PpcControl>
 
-            <controls:CustomControlLoggedUser Margin="15,0,15,0"
+            <controls:CustomControlLoggedUser Margin="15,0,0,0"
                                               Items="{Binding States}"
                                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}" />
 

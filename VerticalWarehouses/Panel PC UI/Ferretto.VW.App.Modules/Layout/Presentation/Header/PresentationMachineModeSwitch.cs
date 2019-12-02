@@ -208,7 +208,9 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             this.IsBusy =
                 this.MachineMode is MachineMode.SwitchingToAutomatic
                 ||
-                this.MachineMode is MachineMode.SwitchingToManual;
+                this.MachineMode is MachineMode.SwitchingToManual
+                ||
+                this.MachineMode is MachineMode.Test;
         }
 
         private void OnMachinePowerChanged(MachinePowerChangedEventArgs e)
