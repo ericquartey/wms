@@ -16,7 +16,7 @@
                             BorderBrush="Transparent"
                             Command="{Binding CustomCommand}"
                             Content="{Binding LabelText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            FontSize="{DynamicResource VWAPP_MainWindowUserComboBox_FontSize_Normal}"
+                            FontSize="{StaticResource FontSize_Normal}"
                             Foreground="{DynamicResource VWAPP_MainWindowUserComboBox_Foreground_Normal}" />
 
     </Grid>

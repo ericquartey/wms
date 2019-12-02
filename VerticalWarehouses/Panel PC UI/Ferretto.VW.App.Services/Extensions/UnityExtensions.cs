@@ -34,6 +34,7 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
+            containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
             // Operator

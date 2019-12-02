@@ -15,7 +15,7 @@
             <Setter Property="Margin" Value="8" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="HorizontalAlignment" Value="Center" />
-            <Setter Property="FontSize" Value="28" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_Very_High}" />
             <Setter Property="Foreground" Value="{DynamicResource PpcBadge_TextBlock_Foreground}" />
         </Style>
         <Style x:Key="PpcBadge_Ellipse_Style"

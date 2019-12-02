@@ -53,13 +53,24 @@
     <None Remove="Assets\spinner_white.gif" />
     <None Remove="Assets\theme_dark.png" />
     <None Remove="Assets\theme_light.png" />
+    <None Remove="Controls\CardSensor.xaml" />
     <None Remove="Controls\PpcBadge.xaml" />
     <None Remove="Controls\PpcButtonMenu.xaml" />
+    <None Remove="Controls\PpcCheckBox.xaml" />
     <None Remove="Controls\PpcMenuButton.xaml" />
     <None Remove="Controls\DataGrids\CustomControlCellsDataGrid.xaml" />
     <None Remove="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml" />
+    <None Remove="Controls\PpcTextBoxNew.xaml" />
+    <None Remove="Controls\Keyboards\Keyboards.xaml" />
+    <None Remove="Controls\Keyboards\PpcKeyboard.xaml" />
     <None Remove="Controls\Sensors\SensorsPanel.xaml" />
     <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
+    <None Remove="Resources\de.json" />
+    <None Remove="Resources\en.json" />
+    <None Remove="Resources\es.json" />
+    <None Remove="Resources\it.json" />
+    <None Remove="Resources\ru.json" />
+    <None Remove="Resources\tr.json" />
     <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
     <None Remove="Skins\Dark\DarkPpcBadge.xaml" />
     <None Remove="Skins\DXStyle.xaml" />
@@ -79,6 +90,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Resources\de.json" />
+    <EmbeddedResource Include="Resources\en.json" />
+    <EmbeddedResource Include="Resources\es.json" />
+    <EmbeddedResource Include="Resources\it.json" />
+    <EmbeddedResource Include="Resources\ru.json" />
+    <EmbeddedResource Include="Resources\tr.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
       <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
     </Compile>
@@ -86,6 +106,15 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\PpcTextBoxNew.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Keyboards\Keyboards.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Controls\Keyboards\PpcKeyboard.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
@@ -133,10 +162,6 @@
     <None Update="Templates\Templates.xaml">
       <Generator>MSBuild:Compile</Generator>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controls\Keyboards\" />
   </ItemGroup>
 
 </Project>
