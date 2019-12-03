@@ -234,16 +234,16 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             */
         }
 
-        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource()
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSource(bool isPositionDownSelected)
         {
-            return this.GetLoadingUnitSourceByDestination(this.Bay.Number);
+            return this.GetLoadingUnitSourceByDestination(this.Bay.Number, isPositionDownSelected);
         }
 
-        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSourceByDestination(MAS.AutomationService.Contracts.BayNumber bayNumber)
+        public MAS.AutomationService.Contracts.LoadingUnitLocation GetLoadingUnitSourceByDestination(MAS.AutomationService.Contracts.BayNumber bayNumber, bool isPositionDownSelected)
         {
             if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayOne)
             {
-                if (this.IsPositionDownSelected)
+                if (isPositionDownSelected)
                 {
                     return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay1Down;
                 }
@@ -255,7 +255,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayTwo)
             {
-                if (this.IsPositionDownSelected)
+                if (isPositionDownSelected)
                 {
                     return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay2Down;
                 }
@@ -267,7 +267,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             if (bayNumber == MAS.AutomationService.Contracts.BayNumber.BayThree)
             {
-                if (this.IsPositionDownSelected)
+                if (isPositionDownSelected)
                 {
                     return MAS.AutomationService.Contracts.LoadingUnitLocation.InternalBay3Down;
                 }

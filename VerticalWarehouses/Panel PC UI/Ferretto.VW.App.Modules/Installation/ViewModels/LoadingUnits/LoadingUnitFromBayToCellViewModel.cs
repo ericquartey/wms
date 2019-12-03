@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
                 }
 
-                var source = this.GetLoadingUnitSource();
+                var source = this.GetLoadingUnitSource(this.IsPositionDownSelected);
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {

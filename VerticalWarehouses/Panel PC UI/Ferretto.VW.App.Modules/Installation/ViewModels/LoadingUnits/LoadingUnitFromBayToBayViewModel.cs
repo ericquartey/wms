@@ -172,27 +172,27 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var source = this.GetLoadingUnitSource();
+                var source = this.GetLoadingUnitSource(string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode));
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
-                //var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
-                //                      this.sensorsService.LoadingUnitPositionUpInBayCode :
-                //                      this.sensorsService.LoadingUnitPositionDownInBayCode;
+                var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
+                                      this.sensorsService.LoadingUnitPositionUpInBayCode :
+                                      this.sensorsService.LoadingUnitPositionDownInBayCode;
 
-                //this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
+                this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
 
-                //if (this.LoadingUnitId is null)
-                //{
-                //    this.ShowNotification("Id cassetto inserito non valido", Services.Models.NotificationSeverity.Warning);
-                //    return;
-                //}
+                if (this.LoadingUnitId is null)
+                {
+                    this.ShowNotification("Id cassetto in baia non valido", Services.Models.NotificationSeverity.Warning);
+                    return;
+                }
 
                 var bay = this.IsBay1Destination ? BayNumber.BayOne : this.IsBay2Destination ? BayNumber.BayTwo : BayNumber.BayThree;
-                var destination = this.GetLoadingUnitSourceByDestination(bay);
+                var destination = this.GetLoadingUnitSourceByDestination(bay, this.IsPositionDownSelected);
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {

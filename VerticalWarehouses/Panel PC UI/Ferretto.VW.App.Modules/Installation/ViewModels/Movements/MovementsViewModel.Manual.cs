@@ -14,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
+using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -32,11 +33,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canInputLoadingUnitId;
 
+        private bool canMoveElevatorBackwardsCommand;
+
+        private bool canMoveElevatorDownCommand;
+
+        private bool canMoveElevatorForwardCommand;
+
+        private bool canMoveElevatorUpCommand;
+
         private bool isCompleted;
+
+        private bool isElevatorMoving;
+
+        private bool isMovingElevatorBackwards;
+
+        private bool isMovingElevatorDown;
+
+        private bool isMovingElevatorForwards;
+
+        private bool isMovingElevatorUp;
 
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
+
+        private DelegateCommand moveElevatorBackwardsCommand;
+
+        private DelegateCommand moveElevatorDownCommand;
+
+        private DelegateCommand moveElevatorForwardsCommand;
+
+        private DelegateCommand moveElevatorUpCommand;
 
         private DelegateCommand moveToCellHeightCommand;
 
@@ -80,6 +107,60 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
         }
 
+        public bool CanMoveElevatorBackwards
+        {
+            get => this.canMoveElevatorBackwardsCommand;
+            private set => this.SetProperty(ref this.canMoveElevatorBackwardsCommand, value);
+        }
+
+        public bool CanMoveElevatorDown
+        {
+            get => this.canMoveElevatorDownCommand;
+            private set => this.SetProperty(ref this.canMoveElevatorDownCommand, value);
+        }
+
+        public bool CanMoveElevatorForwards
+        {
+            get => this.canMoveElevatorForwardCommand;
+            private set => this.SetProperty(ref this.canMoveElevatorForwardCommand, value);
+        }
+
+        public bool CanMoveElevatorUp
+        {
+            get => this.canMoveElevatorUpCommand;
+            private set => this.SetProperty(ref this.canMoveElevatorUpCommand, value);
+        }
+
+        public bool IsElevatorMoving
+        {
+            get => this.isElevatorMoving;
+            private set => this.SetProperty(ref this.isElevatorMoving, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMovingElevatorBackwards
+        {
+            get => this.isMovingElevatorBackwards;
+            private set => this.SetProperty(ref this.isMovingElevatorBackwards, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMovingElevatorDown
+        {
+            get => this.isMovingElevatorDown;
+            private set => this.SetProperty(ref this.isMovingElevatorDown, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMovingElevatorForwards
+        {
+            get => this.isMovingElevatorForwards;
+            private set => this.SetProperty(ref this.isMovingElevatorForwards, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsMovingElevatorUp
+        {
+            get => this.isMovingElevatorUp;
+            private set => this.SetProperty(ref this.isMovingElevatorUp, value, this.RaiseCanExecuteChanged);
+        }
+
         public bool IsShutterMovingDown
         {
             get => this.isShutterMovingDown;
@@ -104,6 +185,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand MoveElevatorBackwardsCommand =>
+                    this.moveElevatorBackwardsCommand
+            ??
+            (this.moveElevatorBackwardsCommand = new DelegateCommand(async () => await this.MoveElevatorBackwardsAsync()));
+
+        public ICommand MoveElevatorDownCommand =>
+                    this.moveElevatorDownCommand
+            ??
+            (this.moveElevatorDownCommand = new DelegateCommand(async () => await this.MoveElevatorDownAsync()));
+
+        public ICommand MoveElevatorForwardsCommand =>
+            this.moveElevatorForwardsCommand
+            ??
+            (this.moveElevatorForwardsCommand = new DelegateCommand(async () => await this.MoveElevatorForwardsAsync()));
+
+        public ICommand MoveElevatorUpCommand =>
+            this.moveElevatorUpCommand
+            ??
+            (this.moveElevatorUpCommand = new DelegateCommand(async () => await this.MoveElevatorUpAsync()));
+
         public ICommand MoveToCellHeightCommand =>
            this.moveToCellHeightCommand
            ??
@@ -119,7 +220,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.CanMoveToHeight));
 
         public ICommand ShutterMoveDownCommand =>
-            this.shutterMoveDownCommand
+                    this.shutterMoveDownCommand
             ??
             (this.shutterMoveDownCommand = new DelegateCommand(async () => await this.ShutterMoveDownAsync()));
 
@@ -131,6 +232,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task MoveElevatorBackwardsAsync()
+        {
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Backwards);
+        }
+
+        public async Task MoveElevatorDownAsync()
+        {
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Down);
+        }
+
+        public async Task MoveElevatorForwardsAsync()
+        {
+            await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Forwards);
+        }
+
+        public async Task MoveElevatorUpAsync()
+        {
+            await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
+        }
 
         public async Task OnManualAppearedAsync()
         {
@@ -185,6 +306,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
             this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
+
+            this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
+            this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
+            this.CanMoveElevatorUp = !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
+            this.CanMoveElevatorDown = !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
         }
 
         private bool CanMoveToCellHeight()
@@ -216,7 +342,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void CloseOperation()
         {
             this.StopMoving();
-            this.IsShutterMoving = false;
             this.isCompleted = true;
         }
 
@@ -302,6 +427,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task OnManualPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (!this.IsMovementsManual)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.WriteInfo(message.Data?.AxisMovement);
+                    this.isCompleted = false;
+                    this.IsElevatorMoving = true;
+                    break;
+
+                case MessageStatus.OperationExecuting:
+                    if (!this.isCompleted)
+                    {
+                        this.WriteInfo(message.Data?.AxisMovement);
+                    }
+
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
+                    this.CloseOperation();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.ClearNotifications();
+                    this.CloseOperation();
+
+                    break;
+            }
+        }
+
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             if (!this.IsMovementsManual)
@@ -338,11 +501,84 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task StartHorizontalMovementAsync(HorizontalMovementDirection direction)
+        {
+            if (this.IsMovingElevatorForwards || this.IsMovingElevatorBackwards)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.machineElevatorWebService.MoveHorizontalManualAsync(direction);
+                if (direction == HorizontalMovementDirection.Backwards)
+                {
+                    this.IsMovingElevatorBackwards = true;
+                }
+                else
+                {
+                    this.IsMovingElevatorForwards = true;
+                }
+                this.IsElevatorMoving = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
+
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task StartVerticalMovementAsync(VerticalMovementDirection direction)
+        {
+            if (this.IsMovingElevatorUp || this.IsMovingElevatorDown)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.machineElevatorWebService.MoveVerticalManualAsync(direction);
+                if (direction == VerticalMovementDirection.Down)
+                {
+                    this.IsMovingElevatorDown = true;
+                }
+                else
+                {
+                    this.IsMovingElevatorUp = true;
+                }
+                this.IsElevatorMoving = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
+
+                this.ShowNotification(ex);
+            }
+        }
+
         private void StopMoving()
         {
             this.IsShutterMovingUp = false;
             this.IsShutterMovingDown = false;
             this.IsShutterMoving = false;
+            this.IsMovingElevatorUp = false;
+            this.IsMovingElevatorDown = false;
+            this.IsMovingElevatorForwards = false;
+            this.IsMovingElevatorBackwards = false;
+            this.IsElevatorMoving = false;
+        }
+
+        private void WriteInfo(Axis? axisMovement)
+        {
+            if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+            {
+                this.ShowNotification("Movimento asse verticale in corso...", Services.Models.NotificationSeverity.Info);
+            }
+            else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+            {
+                this.ShowNotification("Movimento asse orizzontale in corso...", Services.Models.NotificationSeverity.Info);
+            }
         }
 
         #endregion

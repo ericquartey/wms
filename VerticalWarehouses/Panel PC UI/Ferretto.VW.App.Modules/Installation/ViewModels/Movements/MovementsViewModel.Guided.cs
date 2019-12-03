@@ -608,6 +608,49 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task OnGuidedPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (!this.IsMovementsGuided)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.ShowNotification(string.Empty);
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.ShowNotification(InstallationApp.ProcedureCompleted);
+
+                        this.IsMoving = false;
+
+                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
+
+                        await this.RefreshMachineInfoAsync();
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        await this.RefreshMachineInfoAsync();
+
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
+
         private void OnGuidedShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             if (!this.IsMovementsGuided)

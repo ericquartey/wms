@@ -208,7 +208,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get =>
                 this.IsElevatorMovingToCell
-                //|| this.IsElevatorMovingToHeight
+                || this.IsElevatorMovingToHeight
                 //|| this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 //|| this.IsBusyLoadingFromBay
@@ -218,11 +218,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsTuningChain
                 || this.IsTuningBay
                 //|| this.IsCarouselMoving
-                || this.IsShutterMoving;
+                || this.IsShutterMoving
+                || this.IsElevatorMoving;
             set
             {
                 this.IsElevatorMovingToCell = value;
-                //this.IsElevatorMovingToHeight = value;
+                this.IsElevatorMovingToHeight = value;
                 //this.IsElevatorMovingToLoadingUnit = value;
                 this.IsElevatorMovingToBay = value;
                 //this.IsBusyLoadingFromBay = value;
@@ -233,6 +234,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 //this.IsCarouselMoving = value;
                 this.IsTuningBay = value;
                 this.IsShutterMoving = value;
+                this.IsElevatorMoving = value;
             }
         }
 
@@ -287,6 +289,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.shutterPositionToken?.Dispose();
             this.shutterPositionToken = null;
+
+            this.homingToken?.Dispose();
+            this.homingToken = null;
+
+            this.positioningOperationChangedToken?.Dispose();
+            this.positioningOperationChangedToken = null;
+
+            this.elevatorPositionChangedToken?.Dispose();
+            this.elevatorPositionChangedToken = null;
         }
 
         public override async Task OnAppearedAsync()
@@ -471,40 +482,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.ShowNotification(string.Empty);
-
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.ShowNotification(InstallationApp.ProcedureCompleted);
-
-                        this.IsMoving = false;
-
-                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
-                        {
-                            this.IsCarouselMoving = false;
-                        }
-
-                        await this.RefreshMachineInfoAsync();
-
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        await this.RefreshMachineInfoAsync();
-
-                        this.OperationWarningOrError(message.Status, message.Description);
-                        break;
-                    }
-            }
+            await this.OnManualPositioningOperationChangedAsync(message);
+            await this.OnGuidedPositioningOperationChangedAsync(message);
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -771,13 +750,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false);
 
             this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-             ??
-             this.EventAggregator
-                 .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                 .Subscribe(
-                     this.OnElevatorPositionChanged,
-                     ThreadOption.UIThread,
-                     false);
+           ??
+           this.EventAggregator
+               .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+               .Subscribe(
+                   this.OnElevatorPositionChanged,
+                   ThreadOption.UIThread,
+                   false);
 
             this.sensorsToken = this.sensorsToken
                 ??

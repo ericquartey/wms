@@ -81,7 +81,7 @@
 
             <StackPanel x:Name="LayoutRoot"
                         VerticalAlignment="Center">
-                <TextBlock Margin="0,1,0,1"
+                <TextBlock Margin="0"
                            Text="{Binding LabelText}">
                     <TextBlock.Style>
                         <Style BasedOn="{StaticResource VWAPP_PpcSpinEdit_TextBlockStyle}"

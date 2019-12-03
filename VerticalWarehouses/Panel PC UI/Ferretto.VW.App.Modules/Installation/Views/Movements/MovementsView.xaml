@@ -196,14 +196,14 @@
                                            Margin="5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
-                                           ButtonSize="45"
+                                           ButtonSize="54"
                                            EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                            IsEnabled="False"
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
                                            Mask="#0"
-                                           WidthNumber="250" />
+                                           WidthNumber="200" />
                         <!--  IsEnabled="{Binding CanInputLoadingUnitId}"  -->
 
                         <Grid Grid.Row="1"
@@ -527,22 +527,20 @@
                                                                Margin="5"
                                                                HorizontalAlignment="Left"
                                                                Content="Elevatore su"
-                                                               IsEnabled="False"
+                                                               IsEnabled="{Binding CanMoveElevatorUp}"
                                                                Kind="ArrowUp"
-                                                               PressCommand="{Binding MoveUpCommand}"
+                                                               PressCommand="{Binding MoveElevatorUpCommand}"
                                                                ReleaseCommand="{Binding StopMovingCommand}" />
-                            <!--  IsEnabled="{Binding CanExecuteMoveUpCommand}"  -->
 
                             <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                                Grid.Column="1"
                                                                Margin="5"
                                                                HorizontalAlignment="Left"
                                                                Content="Elevatore giù"
-                                                               IsEnabled="False"
+                                                               IsEnabled="{Binding CanMoveElevatorDown}"
                                                                Kind="ArrowDown"
-                                                               PressCommand="{Binding MoveDownCommand}"
+                                                               PressCommand="{Binding MoveElevatorDownCommand}"
                                                                ReleaseCommand="{Binding StopMovingCommand}" />
-                            <!--  IsEnabled="{Binding CanExecuteMoveDownCommand}"  -->
 
                             <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                                Grid.RowSpan="2"
@@ -550,11 +548,10 @@
                                                                Margin="5"
                                                                HorizontalAlignment="Left"
                                                                Content="Elevatore indietro"
-                                                               IsEnabled="False"
+                                                               IsEnabled="{Binding CanMoveElevatorBackwards}"
                                                                Kind="ArrowLeft"
-                                                               PressCommand="{Binding MoveBackwardsCommand}"
+                                                               PressCommand="{Binding MoveElevatorBackwardsCommand}"
                                                                ReleaseCommand="{Binding StopMovingCommand}" />
-                            <!--  IsEnabled="{Binding CanExecuteMoveBackwardsCommand}"  -->
 
                             <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                                Grid.RowSpan="2"
@@ -562,11 +559,10 @@
                                                                Margin="5"
                                                                HorizontalAlignment="Left"
                                                                Content="Elevatore avanti"
-                                                               IsEnabled="False"
+                                                               IsEnabled="{Binding CanMoveElevatorForwards}"
                                                                Kind="ArrowRight"
-                                                               PressCommand="{Binding MoveForwardsCommand}"
+                                                               PressCommand="{Binding MoveElevatorForwardsCommand}"
                                                                ReleaseCommand="{Binding StopMovingCommand}" />
-                            <!--  IsEnabled="{Binding CanExecuteMoveForwardsCommand}"  -->
 
                         </Grid>
 
