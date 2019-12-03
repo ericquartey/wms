@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
+using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -21,6 +22,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IItemListsDataService itemListsDataService;
 
+        private readonly IList<ItemListExecution> lists;
+
         private int? areaId;
 
         private int currentItemIndex;
@@ -33,11 +36,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand listExecuteCommand;
 
-        private IList<ItemList> lists;
-
         private int machineId;
 
-        private ItemList selectedList;
+        private ItemListExecution selectedList;
 
         private DelegateCommand upCommand;
 
@@ -55,7 +56,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
 
-            this.lists = new List<ItemList>();
+            this.lists = new List<ItemListExecution>();
         }
 
         #endregion
@@ -79,9 +80,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ??
             (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
-        public IList<ItemList> Lists => new List<ItemList>(this.lists);
+        public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
 
-        public ItemList SelectedList
+        public ItemListExecution SelectedList
         {
             get => this.selectedList;
             set
@@ -154,7 +155,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.areaId = machineIdentity.AreaId;
 
             await this.LoadListsAsync();
-            this.SelectLoadingUnit();
         }
 
         private bool CanDetailCommand()
@@ -177,7 +177,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return false;
             }
 
-            if (this.selectedList.Machines.Any(m => m.Id == this.machineId))
+            //if (this.selectedItemList.Machines.Any(m => m.Id == this.machineId))
+            if (this.selectedList.ExecutionMode != ListExecutionMode.None)
             {
                 return true;
             }
@@ -223,8 +224,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-                this.lists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+
+                var lastItemListId = this.selectedList?.Id;
+                var lists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+
+                this.lists.Clear();
+                lists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
+
                 this.RaisePropertyChanged(nameof(this.Lists));
+
+                this.SetCurrentIndex(lastItemListId);
+
+                this.SelectLoadingUnit();
             }
             catch (Exception ex)
             {
@@ -234,8 +245,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-                this.currentItemIndex = 0;
-                this.SelectedList = this.lists.FirstOrDefault();
             }
         }
 
@@ -251,6 +260,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
             this.RaiseCanExecuteChanged();
+        }
+
+        private void SetCurrentIndex(int? itemListId)
+        {
+            if (itemListId.HasValue
+                &&
+                this.lists.FirstOrDefault(l => l.Id == itemListId.Value) is ItemListExecution itemListFound)
+            {
+                this.currentItemIndex = this.Lists.IndexOf(itemListFound);
+            }
+            else
+            {
+                this.currentItemIndex = 0;
+            }
         }
 
         #endregion

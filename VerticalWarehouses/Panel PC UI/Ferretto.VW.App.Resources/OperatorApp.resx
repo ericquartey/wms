@@ -1190,10 +1190,11 @@
     <value>Quantity detected</value>
     <comment>Label text</comment>
   </data>
-  <data name="Status" xml:space="preserve">
-    <value>Status</value>
-  </data>
   <data name="PickRequestWasAccepted" xml:space="preserve">
     <value>Pick request for item {0} (q.ty {1}) was accepted.</value>
+  </data>
+  <data name="WaitingListDataGridHeaderExecution" xml:space="preserve">
+    <value>Execution</value>
+    <comment>Waiting lists header </comment>
   </data>
 </root>
