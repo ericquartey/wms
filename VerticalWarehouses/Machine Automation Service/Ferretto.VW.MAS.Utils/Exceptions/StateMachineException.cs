@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.Utils.Messages;
 
 namespace Ferretto.VW.MAS.Utils.Exceptions
 {
+    [Serializable]
     public class StateMachineException : Exception
     {
         #region Constructors
@@ -38,7 +39,7 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
                 ErrorLevel.Error);
         }
 
-        public StateMachineException()
+        public StateMachineException() : base()
         {
         }
 

@@ -173,7 +173,33 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command)
         {
-            return true;
+            var returnValue = true;
+            if (command.Type == MessageType.MoveLoadingUnit)
+            {
+                if (command.Data is MoveLoadingUnitMessageData messageData)
+                {
+                    switch (messageData.MissionType)
+                    {
+                        case MissionType.Manual:
+                            // no duplicate of LU
+                            returnValue = !this.machineMissions.Any(m =>
+                                m.Type == moveRequestedMission
+                                && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
+                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId);
+
+                            if (returnValue)
+                            {
+                                // no duplicate of targetBay
+                                returnValue = !this.machineMissions.Any(m =>
+                                    m.Type == moveRequestedMission
+                                    && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
+                                    && ((DataModels.Mission)m.MachineData).TargetBay == messageData.TargetBay);
+                            }
+                            break;
+                    }
+                }
+            }
+            return returnValue;
         }
 
         private void OnActiveStateMachineCompleted(object sender, FiniteStateMachinesEventArgs eventArgs)
