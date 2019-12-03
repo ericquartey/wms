@@ -123,8 +123,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     }
                     catch (StateMachineException ex)
                     {
-                        this.Logger.LogError(ex, "Error while activating a State.");
-                        this.NotifyError(ex);
+                        this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                        this.notificationEvent.Publish(ex.NotificationMessage);
 
                         if (this.activeState == null)
                         {

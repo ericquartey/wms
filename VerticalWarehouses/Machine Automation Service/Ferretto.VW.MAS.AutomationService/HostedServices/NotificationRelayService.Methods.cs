@@ -142,8 +142,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnFsmException(NotificationMessage receivedMessage)
         {
-            var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
-            this.installationHub.Clients.All.FsmException(messageToUi);
+            if (receivedMessage.Data is FsmExceptionMessageData)
+            {
+                var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+                this.installationHub.Clients.All.FsmException(messageToUi);
+            }
         }
 
         private void OnInverterStatusWordChanged(NotificationMessage receivedMessage)

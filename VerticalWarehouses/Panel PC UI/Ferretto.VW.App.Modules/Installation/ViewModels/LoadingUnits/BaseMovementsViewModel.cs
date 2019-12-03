@@ -370,14 +370,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 Services.Models.NotificationSeverity.Success);
         }
 
-        protected virtual void Error(Exception ex)
+        protected virtual void Error(Exception ex, string errorMessage)
         {
             this.IsBackNavigationAllowed = true;
             this.IsStopping = false;
 
             this.RestoreStates();
-
-            this.ShowNotification(ex);
+            if (!string.IsNullOrEmpty(errorMessage))
+            {
+                this.ShowNotification(ex);
+            }
+            else
+            {
+                this.ShowNotification(errorMessage, Services.Models.NotificationSeverity.Error);
+            }
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -409,7 +415,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             var data = message?.Data as FsmExceptionMessageData;
             var ex = data?.InnerException as Exception;
 
-            this.Error(ex);
+            this.Error(ex, data.ExceptionDescription);
         }
 
         private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)

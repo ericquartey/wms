@@ -1,5 +1,6 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 
@@ -23,12 +24,12 @@ namespace Ferretto.VW.MAS.Utils.Exceptions
             switch (source)
             {
                 case MessageActor.MachineManager:
-                    notificationType = MessageType.MachineManagerException;
+                    notificationType = MessageType.FsmException;
                     break;
             }
 
             this.NotificationMessage = new NotificationMessage(
-                command?.Data,
+                new FsmExceptionMessageData(this, description, 0),
                 description,
                 MessageActor.Any,
                 source,
