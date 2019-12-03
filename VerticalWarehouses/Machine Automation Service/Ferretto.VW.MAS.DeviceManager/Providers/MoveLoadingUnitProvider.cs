@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers
@@ -75,16 +76,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationRunningStop);
         }
 
-        public double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData)
+        public double? GetDestinationHeight(IMoveLoadingUnitMachineData moveData)
         {
             double? targetPosition = null;
-            switch (messageData.Destination)
+            switch (moveData.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.LoadingUnit:
                     // Retrieve loading unit position
-                    if (messageData.LoadingUnitId != null)
+                    if (moveData.LoadingUnitId != 0)
                     {
-                        var cell = this.cellsProvider.GetByLoadingUnitId(messageData.LoadingUnitId.Value);
+                        var cell = this.cellsProvider.GetByLoadingUnitId(moveData.LoadingUnitId);
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
@@ -94,9 +95,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case LoadingUnitLocation.Cell:
                     // Retrieve Cell height
-                    if (messageData.DestinationCellId != null)
+                    if (moveData.DestinationCellId != null)
                     {
-                        var cell = this.cellsProvider.GetById(messageData.DestinationCellId.Value);
+                        var cell = this.cellsProvider.GetById(moveData.DestinationCellId.Value);
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
@@ -105,22 +106,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 default:
-                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(messageData.Destination);
+                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadingUnitDestination);
                     break;
             }
             return targetPosition;
         }
 
-        public double? GetSourceHeight(IMoveLoadingUnitMessageData messageData)
+        public double? GetSourceHeight(IMoveLoadingUnitMachineData moveData)
         {
             double? targetPosition = null;
-            switch (messageData.Source)
+            switch (moveData.LoadingUnitSource)
             {
                 case LoadingUnitLocation.LoadingUnit:
                     // Retrieve loading unit position
-                    if (messageData.LoadingUnitId != null)
+                    if (moveData.LoadingUnitId != 0)
                     {
-                        var cell = this.cellsProvider.GetByLoadingUnitId(messageData.LoadingUnitId.Value);
+                        var cell = this.cellsProvider.GetByLoadingUnitId(moveData.LoadingUnitId);
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
@@ -130,9 +131,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
                 case LoadingUnitLocation.Cell:
                     // Retrieve Cell height
-                    if (messageData.SourceCellId != null)
+                    if (moveData.LoadingUnitCellSourceId != null)
                     {
-                        var cell = this.cellsProvider.GetById(messageData.SourceCellId.Value);
+                        var cell = this.cellsProvider.GetById(moveData.LoadingUnitCellSourceId.Value);
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
@@ -141,7 +142,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
 
                 default:
-                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(messageData.Source);
+                    targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadingUnitSource);
                     break;
             }
             return targetPosition;

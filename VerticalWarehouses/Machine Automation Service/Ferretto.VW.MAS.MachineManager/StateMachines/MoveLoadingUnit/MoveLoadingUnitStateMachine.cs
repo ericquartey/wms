@@ -214,7 +214,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
 #endif
                     {
-                        returnValue = (this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null);
+                        returnValue = (messageData.Source == messageData.Destination)
+                            || (this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null);
                     }
                     if (!returnValue)
                     {
@@ -233,7 +234,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         && messageData.Destination != LoadingUnitLocation.NoLocation)
                     {
                         var destinationBay = this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
-                        if (destinationBay.Number != requestingBay)
+                        if (destinationBay != null)
                         {
                             // move from bay to bay
                             if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
