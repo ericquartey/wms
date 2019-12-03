@@ -62,7 +62,7 @@
                                            Margin="10,5"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Center"
-                                           FontSize="{DynamicResource FontSize_Normal}"
+                                           FontSize="{TemplateBinding FontSize}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                            TextWrapping="Wrap">
                                     <TextBlock.Style>

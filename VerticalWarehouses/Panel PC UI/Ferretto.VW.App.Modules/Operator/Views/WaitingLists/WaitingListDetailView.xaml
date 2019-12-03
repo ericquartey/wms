@@ -96,14 +96,6 @@
 
         </Grid>
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="0"
-                                 Margin="0,15,0,0"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding SelectedListRow.Status}"
-                                 LabelText="{x:Static Resources:OperatorApp.Status}" />
-
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"
                             Margin="15,15,15,0"

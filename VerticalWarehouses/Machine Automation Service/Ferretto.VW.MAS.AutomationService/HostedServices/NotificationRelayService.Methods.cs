@@ -59,6 +59,17 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.MachineStatusActiveNotify(message);
         }
 
+        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
+        {
+            Contract.Requires(e != null);
+
+            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
+                e.BayNumber,
+                e.MissionId,
+                e.MissionOperationId,
+                e.PendingMissionsCount);
+        }
+
         private void OnBayChainPositionChanged(BayChainPositionMessageData data)
         {
             Contract.Requires(data != null);
@@ -129,6 +140,12 @@ namespace Ferretto.VW.MAS.AutomationService
             this.operatorHub.Clients.All.ErrorStatusChanged(machineErrorMessageData.ErrorId);
         }
 
+        private void OnFsmException(NotificationMessage receivedMessage)
+        {
+            var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
+            this.installationHub.Clients.All.FsmException(messageToUi);
+        }
+
         private void OnInverterStatusWordChanged(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
@@ -147,17 +164,6 @@ namespace Ferretto.VW.MAS.AutomationService
         {
             var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
-        }
-
-        private async Task OnAssignedMissionOperationChanged(AssignedMissionOperationChangedMessageData e)
-        {
-            Contract.Requires(e != null);
-
-            await this.operatorHub.Clients.All.AssignedMissionOperationChanged(
-                e.BayNumber,
-                e.MissionId,
-                e.MissionOperationId,
-                e.PendingMissionsCount);
         }
 
         private void OnPositioningChanged(NotificationMessage receivedMessage)

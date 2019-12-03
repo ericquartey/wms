@@ -53,8 +53,6 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterSingleton<IItemSearchedModel, ItemSearchedModel>();
-
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
             containerRegistry.RegisterForNavigation<LoadingUnitView>();

@@ -241,6 +241,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 this.IsBay2Destination = false;
                 this.IsBay3Destination = true;
             }
+
+            this.RaiseCanExecuteChanged();
         }
 
         private async Task InitialinngData()

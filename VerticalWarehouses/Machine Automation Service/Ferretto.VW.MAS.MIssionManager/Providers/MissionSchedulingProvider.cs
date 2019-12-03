@@ -63,12 +63,14 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"Queuing mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+
+            this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
-            this.logger.LogDebug($"Queuing mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+            this.logger.LogDebug($"Queuing WMS mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
 
             this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
         }

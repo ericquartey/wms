@@ -83,34 +83,37 @@ namespace Ferretto.VW.MAS.DataLayer
                 var wmsLoadingUnits = await this.machineDataService.GetLoadingUnitsByIdAsync(machineId);
                 var wmsIds = wmsLoadingUnits.Select(l => l.Id);
 
-                // 2. Get all loading units configured in this machine
-                IEnumerable<DataModels.LoadingUnit> localLoadingUnits;
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    localLoadingUnits = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>().GetAll();
-                }
+                    var loadingUnitsDataProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
 
-                // 3. Identify missing loading units in WMS and send them
-                var missingWmsLoadingUnits = localLoadingUnits.Where(l => wmsLoadingUnits.All(extLu => extLu.Id != l.Id));
-                foreach (var loadingUnit in missingWmsLoadingUnits)
-                {
-                    this.Logger.LogDebug($"Pushing new loading unit {loadingUnit.Id} to WMS.");
-                    await this.loadingUnitsDataService.CreateAsync(
-                        new LoadingUnitDetails
-                        {
-                            Id = loadingUnit.Id,
-                            MachineId = machineId,
-                            Code = $"{machineId:00}{loadingUnit.Id:000}",
-                            CreationDate = DateTime.Now
-                        });
-                }
+                    // 2. Get all loading units configured in this machine
+                    var localLoadingUnits = loadingUnitsDataProvider.GetAll();
 
-                // 4. Identify missing loading units in machine and delete them from WMS
-                var missingLocalLoadingUnits = wmsLoadingUnits.Where(l => localLoadingUnits.All(localLu => localLu.Id != l.Id));
-                foreach (var loadingUnit in missingLocalLoadingUnits)
-                {
-                    this.Logger.LogDebug($"Removing loading unit {loadingUnit.Id} from WMS.");
-                    await this.loadingUnitsDataService.DeleteAsync(loadingUnit.Id);
+                    // 3. Identify missing loading units in WMS and send them
+                    var missingWmsLoadingUnits = localLoadingUnits.Where(l => wmsLoadingUnits.All(extLu => extLu.Id != l.Id));
+                    foreach (var loadingUnit in missingWmsLoadingUnits)
+                    {
+                        this.Logger.LogDebug($"Pushing new loading unit {loadingUnit.Id} to WMS.");
+                        var createdLoadingUnit = await this.loadingUnitsDataService.CreateAsync(
+                            new LoadingUnitDetails
+                            {
+                                Id = loadingUnit.Id,
+                                MachineId = machineId,
+                                Code = "n/a",
+                                CreationDate = DateTime.Now
+                            });
+
+                        loadingUnitsDataProvider.SetCode(loadingUnit.Id, createdLoadingUnit.Code);
+                    }
+
+                    // 4. Identify missing loading units in machine and delete them from WMS
+                    var missingLocalLoadingUnits = wmsLoadingUnits.Where(l => localLoadingUnits.All(localLu => localLu.Id != l.Id));
+                    foreach (var loadingUnit in missingLocalLoadingUnits)
+                    {
+                        this.Logger.LogDebug($"Removing loading unit {loadingUnit.Id} from WMS.");
+                        await this.loadingUnitsDataService.DeleteAsync(loadingUnit.Id);
+                    }
                 }
 
                 this.Logger.LogDebug("Loading unit catalog aligned with WMS.");

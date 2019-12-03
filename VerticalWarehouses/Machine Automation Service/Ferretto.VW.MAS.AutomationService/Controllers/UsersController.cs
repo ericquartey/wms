@@ -81,11 +81,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
             this.logger.LogInformation($"Login success for user '{userName}' using local credentials.");
 
-            return this.Ok(new UserClaims
-            {
-                Name = userName,
-                AccessLevel = (UserAccessLevel)accessLevel.Value,
-            });
+            return this.Ok(
+                new UserClaims
+                {
+                    Name = userName,
+                    AccessLevel = (UserAccessLevel)accessLevel.Value,
+                });
         }
 
         #endregion

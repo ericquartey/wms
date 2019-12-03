@@ -43,10 +43,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineSensorsWebService machineSensorsWebService,
             IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(elevatorWebService,
-                   machineSensorsWebService,
-                   healthProbeService,
-                   bayManager)
+            : base(
+                elevatorWebService,
+                machineSensorsWebService,
+                healthProbeService,
+                bayManager)
         {
             this.machineCarouselWebService = machineCarouselWebService;
 

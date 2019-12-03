@@ -71,8 +71,8 @@
                                  Margin="0,15,0,0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 ContentText="{Binding SelectedList.Status, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
-                                 LabelText="{x:Static Resources:OperatorApp.Status}" />
+                                 ContentText="{Binding SelectedList.MachinesInfo, TargetNullValue={x:Static Resources:General.TargetNullValue}, FallbackValue={x:Static Resources:General.TargetNullValue}}"
+                                 LabelText="{x:Static Resources:OperatorApp.Machines}" />
 
         <controls:PpcButton Grid.Row="3"
                             Grid.Column="1"

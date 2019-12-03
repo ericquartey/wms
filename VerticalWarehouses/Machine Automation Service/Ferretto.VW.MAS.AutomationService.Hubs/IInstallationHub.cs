@@ -7,6 +7,8 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
     {
         #region Methods
 
+        Task BayChainPositionChanged(double position, BayNumber bayNumber);
+
         Task CalibrateAxisNotify(IBaseNotificationMessageUI message);
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
@@ -15,7 +17,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
 
-        Task BayChainPositionChanged(double position, BayNumber bayNumber);
+        Task FsmException(IBaseNotificationMessageUI message);
 
         Task HomingProcedureStatusChanged(IBaseNotificationMessageUI message);
 

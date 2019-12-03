@@ -6,6 +6,7 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
+using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,11 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
+        private readonly IMachineProvider machineProvider;
+
         private readonly IMachinesDataService machinesDataService;
+
+        private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
         private readonly IMoveLoadingUnitProvider moveLoadingUnitProvider;
 
@@ -33,9 +38,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         public LoadingUnitsController(
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineProvider machineProvider,
+            IMissionSchedulingProvider missionSchedulingProvider,
             IMachinesDataService machinesDataService)
         {
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
+            this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
             this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
@@ -93,7 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value and use machine serial number
+                    var machineId = this.machineProvider.GetIdentity();
                     var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
@@ -128,7 +137,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value
+                    var machineId = this.machineProvider.GetIdentity();
                     var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
@@ -155,11 +164,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
-            if (source == LoadingUnitLocation.Cell || source == LoadingUnitLocation.LoadingUnit)
-            {
-                return this.BadRequest();
-            }
-
             this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -181,7 +185,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveToBay(int id)
         {
-            // TO DO move to this.BayNumber
+            this.missionSchedulingProvider.QueueBayMission(id, this.BayNumber);
 
             return this.Accepted();
         }
@@ -210,11 +214,6 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult StartMovingLoadingUnitToBay(int loadingUnitId, LoadingUnitLocation destination)
         {
-            if (destination == LoadingUnitLocation.Cell)
-            {
-                return this.BadRequest();
-            }
-
             this.moveLoadingUnitProvider.MoveLoadingUnitToBay(MissionType.Manual, loadingUnitId, destination, this.BayNumber, MessageActor.AutomationService);
 
             return this.Accepted();
@@ -256,7 +255,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
-        // Instantaneously interrupts current operation leaving machine in a potentially unsafe condition
+        /// <summary>
+        ///  Instantly stops the current operation leaving machine in a potentially unsafe condition.
+        /// </summary>
+        /// <param name="missionId"></param>
+        /// <param name="targetBay"></param>
+        /// <returns></returns>
         [HttpGet("stop-moving")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesDefaultResponseType]

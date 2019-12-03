@@ -62,6 +62,7 @@
 
         <ctrls:PpcSpinEdit Grid.Row="2"
                            Grid.Column="1"
+                           Grid.ColumnSpan="2"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            EditValue="{Binding LoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

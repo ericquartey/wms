@@ -33,6 +33,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Database\MachineAutomationService.Simulation.Secondary.db-journal" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Hosting.WindowsServices" Version="[2.2.0]" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Api.Analyzers" Version="[2.2.6]" />
