@@ -54,7 +54,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Data
 
         public Guid? MissionId { get; }
 
-        public MissionType MissionType { get; }
+        public MissionType MissionType { get; set; }
 
         public LoadingUnitLocation Source { get; }
 

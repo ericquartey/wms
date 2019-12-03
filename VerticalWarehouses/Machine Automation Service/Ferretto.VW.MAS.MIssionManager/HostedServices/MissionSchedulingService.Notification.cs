@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -31,8 +32,12 @@ namespace Ferretto.VW.MAS.MissionManager
                 //    await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
                 //    break;
 
-                case MessageType.AssignedMissionOperationChanged when message.Data is AssignedMissionOperationChangedMessageData:
+                case MessageType.AssignedMissionOperationChanged:
                     await this.OnOperationChangedAsync(message);
+                    break;
+
+                case MessageType.MachineMode when message.Data is MachineModeMessageData:
+                    await this.OnMachineModeChangedAsync(message.Data as MachineModeMessageData);
                     break;
 
                 case MessageType.DataLayerReady:

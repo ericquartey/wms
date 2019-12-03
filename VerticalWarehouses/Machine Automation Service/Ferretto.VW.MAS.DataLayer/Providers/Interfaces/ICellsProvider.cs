@@ -10,6 +10,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool CanFitLoadingUnit(int cellId, int loadingUnitId);
 
+        int FindEmptyCell(int loadingUnitId);
+
         IEnumerable<Cell> GetAll();
 
         Cell GetById(int cellId);
@@ -20,9 +22,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void SetLoadingUnit(int cellId, int? loadingUnitId);
 
-        Cell UpdatePosition(int cellId, double height);
-
         IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height);
+
+        Cell UpdatePosition(int cellId, double height);
 
         #endregion
     }

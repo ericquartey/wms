@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllWmsMissions();
 
+        Mission GetExecutingMissionInBay(BayNumber bayNumber);
+
         Mission SetStatus(int id, MissionStatus status);
 
         void Update(Mission mission);

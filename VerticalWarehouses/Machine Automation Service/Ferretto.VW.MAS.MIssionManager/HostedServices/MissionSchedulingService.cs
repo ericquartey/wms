@@ -89,6 +89,49 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Publish(notificationMessage);
         }
 
+        /// <summary>
+        /// try to assign automatic missions to bays when switching to Automatic mode
+        /// </summary>
+        /// <param name="messageData"></param>
+        private async Task OnMachineModeChangedAsync(MachineModeMessageData messageData)
+        {
+            Contract.Requires(messageData != null);
+
+            if (!this.dataLayerIsReady)
+            {
+                this.Logger.LogError("DataLayer is not ready");
+                return;
+            }
+
+            if (!this.configuration.IsWmsEnabled())
+            {
+                this.Logger.LogError("Wms is not enabled.");
+                return;
+            }
+
+            if (messageData.MachineMode is MachineMode.Automatic)
+            {
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+
+                    var bays = bayProvider.GetAll();
+                    var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                    foreach (var bay in bays)
+                    {
+                        try
+                        {
+                            await missionSchedulingProvider.ScheduleMissionsAsync(bay.Number);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"Failed to Schedule missions to bay {bay.Number}: {ex.Message}");
+                        }
+                    }
+                }
+            }
+        }
+
         private async Task OnMoveLoadingUnitAsync(CommandMessage command)
         {
             Contract.Requires(command != null);
@@ -160,17 +203,23 @@ namespace Ferretto.VW.MAS.MissionManager
                 var newOperations = wmsMission.Operations
                     .Where(o => o.Status == MissionOperationStatus.New);
                 var operation = newOperations.OrderBy(o => o.Priority).First();
-                var machineId = 1; // TODO ***** use serial number instead
-                var pendingMissionsOnBay = (await this.machinesDataService.GetMissionsByIdAsync(machineId))
-                    .Where(m => m.BayId.Value == (int)bayNumber
-                        && m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed);
 
-                var pendingMissionsCount = 0;
-                if (pendingMissionsOnBay.Any())
+                using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
-                    pendingMissionsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                    var machineId = machineProvider.GetIdentity();
+                    var pendingMissionsOnBay = (await this.machinesDataService.GetMissionsByIdAsync(machineId))
+                        .Where(m => m.BayId.Value == (int)bayNumber
+                            && m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed);
+
+                    var pendingMissionsCount = 0;
+                    if (pendingMissionsOnBay.Any())
+                    {
+                        pendingMissionsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
+                    }
+
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, missionId, operation?.Id ?? 0, pendingMissionsCount);
                 }
-                this.NotifyAssignedMissionOperationChanged(bayNumber, missionId, operation?.Id ?? 0, pendingMissionsCount);
             }
         }
 
@@ -211,31 +260,17 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         // check what is the next operation for this bay
                         var currentOperation = await this.missionOperationsProvider.GetByIdAsync(messageData.MissionOperationId);
-                        var currentWmsMission = await this.missionsDataService.GetByIdAsync(currentOperation.MissionId);
-                        var newOperations = currentWmsMission.Operations
-                            .Where(o => o.Status == MissionOperationStatus.New);
-                        if (newOperations.Any())
+
+                        // close operation and schedule next
+                        bayProvider.AssignWmsMission(bay.Number, currentOperation.MissionId, null);
+                        var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                        try
                         {
-                            // there are more operations for the same wms mission
-                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
-
-                            bayProvider.AssignWmsMission(bay.Number, currentWmsMission.Id, newOperation.Id);
-
-                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
-                            var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bay.Number);
-                            this.NotifyAssignedMissionOperationChanged(bay.Number, currentWmsMission.Id, newOperation.Id, activeMissions.Count());
+                            await missionSchedulingProvider.ScheduleMissionsAsync(bay.Number);
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            // are there other missions for this LU in this bay?
-                            {
-                                // update WmsId in the current machine mission
-                            }
-                            // else are there other missions for this LU and another bay?
-                            {
-                                // update WmsId in the current machine mission and move to another bay
-                            }
-                            // else send back the LU
+                            this.Logger.LogError($"Failed to Schedule missions to bay {bay.Number}: {ex.Message}");
                         }
                     }
                 }

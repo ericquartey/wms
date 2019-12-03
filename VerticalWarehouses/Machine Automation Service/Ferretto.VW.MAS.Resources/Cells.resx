@@ -147,4 +147,7 @@
   <data name="TheSpecifiedCellIsNotWithinTheElevatorVerticalBounds" xml:space="preserve">
     <value>The specified cell is not within the elevator's vertical bounds.</value>
   </data>
+  <data name="NoEmptyCellsAvailable" xml:space="preserve">
+    <value>NoEmptyCellsAvailable</value>
+  </data>
 </root>

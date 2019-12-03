@@ -85,7 +85,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
             return true;
         }
 
-        public bool ResumeMachineMission(Guid fsmId)
+        public bool ResumeMachineMission(Guid fsmId, CommandMessage command)
         {
             var mission = this.machineMissions.FirstOrDefault(mm => mm.FsmId.Equals(fsmId));
             if (mission is null)
@@ -93,7 +93,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                 return false;
             }
 
-            mission.ResumeMachineMission();
+            mission.ResumeMachineMission(command);
             return true;
         }
 

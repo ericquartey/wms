@@ -13,6 +13,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Fields
 
+        private const double CellHeight = 25;
+
         private const double VerticalPositionTolerance = 12.5;
 
         private readonly DataLayerContext dataContext;
@@ -62,6 +64,37 @@ namespace Ferretto.VW.MAS.DataLayer
                     c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance);
 
             return !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable);
+        }
+
+        public int FindEmptyCell(int loadingUnitId)
+        {
+            var loadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+            if (loadingUnit is null)
+            {
+                throw new EntityNotFoundException(loadingUnitId);
+            }
+            var cells = this.GetAll();
+            var availableCell = new List<AvailableCell>();
+            foreach (var cell in cells)
+            {
+                var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
+                    && c.Position >= cell.Position
+                    && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
+                    .OrderBy(o => o.Position);
+
+                if (cellsInRange.Any()
+                    && !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable)
+                    && (cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight >= loadingUnit.Height + VerticalPositionTolerance)
+                    )
+                {
+                    availableCell.Add(new AvailableCell(cell, cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight));
+                }
+            }
+            if (!availableCell.Any())
+            {
+                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+            }
+            return availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
         }
 
         public IEnumerable<Cell> GetAll()

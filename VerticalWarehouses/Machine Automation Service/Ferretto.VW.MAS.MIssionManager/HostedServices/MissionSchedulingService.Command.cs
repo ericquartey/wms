@@ -21,16 +21,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 command.Destination is MessageActor.MissionManager;
         }
 
-        protected override async Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
+        protected override Task OnCommandReceivedAsync(CommandMessage command, IServiceProvider serviceProvider)
         {
-            Contract.Requires(command != null);
-
-            switch (command.Type)
-            {
-                case MessageType.MoveLoadingUnit when command.Data is MoveLoadingUnitMessageData:
-                    await this.OnMoveLoadingUnitAsync(command);
-                    break;
-            }
+            // do nothing
+            return Task.CompletedTask;
         }
 
         #endregion

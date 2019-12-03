@@ -21,12 +21,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private bool GotoPickConfirm;
+
         #endregion
 
         #region Constructors
 
         public MoveLoadingUnitStartState(
-            ILoadingUnitMovementProvider loadingUnitMovementProvider,
+                    ILoadingUnitMovementProvider loadingUnitMovementProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
@@ -46,44 +48,63 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData && machineData is IMoveLoadingUnitMachineData moveData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && machineData is IMoveLoadingUnitMachineData moveData
+                )
             {
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData);
-
-                if (sourceHeight is null)
+                if (messageData.Source == messageData.Destination
+                    && messageData.SourceCellId == null)
                 {
-                    var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
-
-                    throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    this.Message = new NotificationMessage(
+                        null,
+                        $"Loading Unit {moveData.LoadingUnitId} is already on bay {messageData.Destination}",
+                        MessageActor.MachineManager,
+                        MessageActor.MachineManager,
+                        MessageType.Positioning,
+                        commandMessage.RequestingBay,
+                        commandMessage.TargetBay,
+                        MessageStatus.OperationExecuting);
+                    this.GotoPickConfirm = true;
                 }
+                else
+                {
+                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(messageData);
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay);
+                    if (sourceHeight is null)
+                    {
+                        var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
 
-                var newMessageData = new MoveLoadingUnitMessageData(
-                    messageData.MissionType,
-                    messageData.Source,
-                    messageData.Destination,
-                    messageData.SourceCellId,
-                    messageData.DestinationCellId,
-                    messageData.LoadingUnitId,
-                    messageData.InsertLoadingUnit,
-                    messageData.EjectLoadingUnit,
-                    moveData.FsmId,
-                    messageData.CommandAction,
-                    messageData.StopReason,
-                    messageData.Verbosity);
+                        throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    }
 
-                this.Message = new NotificationMessage(
-                    newMessageData,
-                    $"Loading Unit {moveData.LoadingUnitId} placed on bay {messageData.Destination}",
-                    MessageActor.AutomationService,
-                    MessageActor.MachineManager,
-                    MessageType.MoveLoadingUnit,
-                    commandMessage.RequestingBay,
-                    commandMessage.TargetBay,
-                    MessageStatus.OperationStart);
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay);
 
+                    var newMessageData = new MoveLoadingUnitMessageData(
+                        messageData.MissionType,
+                        messageData.Source,
+                        messageData.Destination,
+                        messageData.SourceCellId,
+                        messageData.DestinationCellId,
+                        messageData.LoadingUnitId,
+                        messageData.InsertLoadingUnit,
+                        messageData.EjectLoadingUnit,
+                        moveData.FsmId,
+                        messageData.CommandAction,
+                        messageData.StopReason,
+                        messageData.Verbosity);
+
+                    this.Message = new NotificationMessage(
+                        newMessageData,
+                        $"Loading Unit {moveData.LoadingUnitId} start movement to bay {messageData.Destination}",
+                        MessageActor.AutomationService,
+                        MessageActor.MachineManager,
+                        MessageType.MoveLoadingUnit,
+                        commandMessage.RequestingBay,
+                        commandMessage.TargetBay,
+                        MessageStatus.OperationStart);
+                }
                 moveData.FsmStateName = this.GetType().Name;
+                moveData.Status = MissionStatus.Executing;
             }
             else
             {
@@ -97,6 +118,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue = this;
 
+            if (this.GotoPickConfirm)
+            {
+                return this.GetState<IMoveLoadingUnitWaitPickConfirm>();
+            }
             var notificationStatus = this.loadingUnitMovementProvider.PositionElevatorToPositionStatus(notification);
 
             switch (notificationStatus)

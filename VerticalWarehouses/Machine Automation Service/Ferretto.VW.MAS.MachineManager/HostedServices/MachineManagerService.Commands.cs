@@ -134,6 +134,17 @@ namespace Ferretto.VW.MAS.MachineManager
 
                         break;
 
+                    case CommandAction.Activate:
+                        try
+                        {
+                            this.machineMissionsProvider.StartMachineMission(messageData.MissionId.Value, command);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: {ex.Message}");
+                        }
+                        break;
+
                     case CommandAction.Abort:
                         if (messageData.MissionId != null)
                         {
@@ -194,7 +205,7 @@ namespace Ferretto.VW.MAS.MachineManager
                     case CommandAction.Resume:
                         if (messageData.MissionId != null)
                         {
-                            if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value))
+                            if (!this.machineMissionsProvider.ResumeMachineMission(messageData.MissionId.Value, command))
                             {
                                 this.Logger.LogError("Supplied mission Id to be stopped is no longer valid");
                                 this.NotifyCommandError(command);
@@ -204,7 +215,7 @@ namespace Ferretto.VW.MAS.MachineManager
                         {
                             foreach (var mission in this.machineMissionsProvider.GetMissionsByFsmType(FsmType.MoveLoadingUnit))
                             {
-                                mission.ResumeMachineMission();
+                                mission.ResumeMachineMission(command);
                             }
                         }
 

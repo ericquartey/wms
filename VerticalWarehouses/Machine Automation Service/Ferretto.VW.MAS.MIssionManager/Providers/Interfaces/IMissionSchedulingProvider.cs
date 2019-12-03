@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.MissionManager
         void QueueCellMission(int loadingUnitId, int targetCellId);
 
         void QueueLoadingUnitCompactingMission();
+
+        Task ScheduleMissionsAsync(BayNumber bayNumber);
 
         #endregion
     }
