@@ -116,6 +116,10 @@ namespace Ferretto.VW.MAS.AutomationService
                 case MessageType.MoveLoadingUnit:
                     this.OnMoveLoadingUnit(message);
                     break;
+
+                case MessageType.FsmException:
+                    this.OnFsmException(message);
+                    break;
             }
         }
 
