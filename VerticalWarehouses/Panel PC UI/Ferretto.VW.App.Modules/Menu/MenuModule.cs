@@ -25,6 +25,8 @@ namespace Ferretto.VW.App.Modules.Menu
 
         #region Constructors
 
+        #region Constructors
+
         public MenuModule(IUnityContainer container)
         {
             this.container = container;
@@ -36,7 +38,7 @@ namespace Ferretto.VW.App.Modules.Menu
 
         public static void BindViewModelToView<TViewModel, TView>(IContainerProvider containerProvider)
         {
-            ViewModelLocaddddddtionProvider.Register(typeof(TView).ToString(), () => containerProvider.Resolve<TViewModel>());
+            ViewModelLocationProvider.Register(typeof(TView).ToString(), () => containerProvider.Resolve<TViewModel>());
         }
 
         public void OnInitialized(IContainerProvider containerProvider)
