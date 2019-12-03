@@ -1301,4 +1301,10 @@
   <data name="ResetMachineSuccessfull" xml:space="preserve">
     <value>Machine reset successful.</value>
   </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Shutter down</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Shutter up</value>
+  </data>
 </root>

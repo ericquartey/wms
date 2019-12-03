@@ -32,9 +32,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
-
-        private bool isShutterStopping;
-
+        
         private DelegateCommand shutterMoveDownCommand;
 
         private DelegateCommand shutterMoveUpCommand;
@@ -85,25 +83,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsShutterStopping
-        {
-            get => this.isShutterStopping;
-            private set
-            {
-                if (this.SetProperty(ref this.isShutterStopping, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public ICommand ShutterMoveDownCommand =>
-                    this.shutterMoveDownCommand
+            this.shutterMoveDownCommand
             ??
             (this.shutterMoveDownCommand = new DelegateCommand(async () => await this.ShutterMoveDownAsync()));
 
         public ICommand ShutterMoveUpCommand =>
-                    this.shutterMoveUpCommand
+            this.shutterMoveUpCommand
             ??
             (this.shutterMoveUpCommand = new DelegateCommand(async () => await this.ShutterMoveUpAsync()));
 
@@ -131,7 +117,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!(this.MachineError is null))
             {
                 this.StopMoving();
-                this.IsShutterStopping = false;
             }
         }
 
@@ -142,20 +127,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!this.IsEnabled)
             {
                 this.StopMoving();
-                this.IsShutterStopping = false;
             }
         }
 
         protected void OnManualRaiseCanExecuteChanged()
         {
-            this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown && !this.IsShutterStopping;
-            this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp && !this.IsShutterStopping;
+            this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown;
+            this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp;
         }
 
         private void CloseOperation()
         {
             this.StopMoving();
-            this.IsShutterStopping = false;
+            this.IsShutterMoving = false;
             this.isCompleted = true;
         }
 
@@ -177,6 +161,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsShutterMovingUp = true;
                 }
+                this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
             {
@@ -198,6 +183,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationStart:
                     this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
                     this.isCompleted = false;
+                    this.IsShutterMoving = true;
                     break;
 
                 case MessageStatus.OperationExecuting:
@@ -225,6 +211,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.IsShutterMovingUp = false;
             this.IsShutterMovingDown = false;
+            this.IsShutterMoving = false;
         }
 
         #endregion

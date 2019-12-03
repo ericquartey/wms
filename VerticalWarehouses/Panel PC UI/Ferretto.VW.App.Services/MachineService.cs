@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private readonly ISensorsService sensorsService;
 
         private readonly IMachineShuttersWebService shuttersWebService;
@@ -31,11 +33,13 @@ namespace Ferretto.VW.App.Services
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             ISensorsService sensorsService)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
         }
 
@@ -51,6 +55,7 @@ namespace Ferretto.VW.App.Services
 
         public async Task StopMovingByAllAsync()
         {
+            //this.machineLoadingUnitsWebService?.StopAsync();
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();

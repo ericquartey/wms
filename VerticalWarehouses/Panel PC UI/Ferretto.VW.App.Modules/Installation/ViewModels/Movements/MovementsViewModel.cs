@@ -276,7 +276,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsExecuteCommand()
         {
-            return !this.IsWaitingForResponse;
+            return !this.IsWaitingForResponse &&
+                !this.IsMoving;
         }
 
         private bool CanResetCommand()
@@ -301,7 +302,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
-            this.isMovementsGuided = isGuided;
+            if (!isGuided)
+            {
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.MovementsManual, DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult is DialogResult.No)
+                {
+                    return;
+                }
+            }
+
             if (isGuided)
             {
                 this.Title = InstallationApp.MovementsGuided;
@@ -310,6 +320,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Title = InstallationApp.MovementsManual;
             }
+
+            this.isMovementsGuided = isGuided;
+
+            this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
+            this.RaisePropertyChanged(nameof(this.IsMovementsManual));
         }
 
         private void KeyboardClose()
@@ -447,11 +462,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             try
             {
-                if (this.IsMovementsManual)
-                {
-                    this.IsShutterStopping = true;
-                }
-
                 this.IsWaitingForResponse = true;
 
                 await this.machineService.StopMovingByAllAsync();
@@ -463,6 +473,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
             finally
             {
+                this.StopMoving();
                 this.IsWaitingForResponse = false;
             }
         }

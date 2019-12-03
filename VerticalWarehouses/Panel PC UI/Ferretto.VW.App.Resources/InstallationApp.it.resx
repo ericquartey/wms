@@ -1227,4 +1227,10 @@
   <data name="ResetMachineSuccessfull" xml:space="preserve">
     <value>Reset macchina avvenuta con successo.</value>
   </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Serranda giù</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Serranda su</value>
+  </data>
 </root>
