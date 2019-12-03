@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -50,6 +51,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Cell> cells;
 
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private DelegateCommand goToMovementsGuidedCommand;
 
         private DelegateCommand goToMovementsManualCommand;
@@ -61,6 +64,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool hasCarousel;
 
         private bool hasShutter;
+
+        private SubscriptionToken homingToken;
+
+        private bool isCarouselMoving;
+
+        private bool isElevatorInBay;
+
+        private bool isElevatorInCell;
 
         private bool isKeyboardOpened;
 
@@ -74,13 +85,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
+        private SubscriptionToken positioningOperationChangedToken;
+
         private DelegateCommand resetCommand;
 
         private SubscriptionToken sensorsToken;
 
         private SubscriptionToken shutterPositionToken;
-
-        private SubscriptionToken homingToken;
 
         private DelegateCommand stopMovingCommand;
 
@@ -165,6 +176,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.hasShutter, value);
         }
 
+        public bool IsCarouselMoving
+        {
+            get => this.isCarouselMoving;
+            private set => this.SetProperty(ref this.isCarouselMoving, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsElevatorInBay
+        {
+            get => this.isElevatorInBay;
+            private set => this.SetProperty(ref this.isElevatorInBay, value, this.ElevatorChanged);
+        }
+
+        public bool IsElevatorInCell
+        {
+            get => this.isElevatorInCell;
+            private set => this.SetProperty(ref this.isElevatorInCell, value, this.ElevatorChanged);
+        }
+
         public bool IsKeyboardOpened
         {
             get => this.isKeyboardOpened;
@@ -178,25 +207,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsMoving
         {
             get =>
-                //this.IsElevatorMovingToCell
+                this.IsElevatorMovingToCell
                 //|| this.IsElevatorMovingToHeight
                 //|| this.IsElevatorMovingToLoadingUnit
-                //|| this.IsElevatorMovingToBay
+                || this.IsElevatorMovingToBay
                 //|| this.IsBusyLoadingFromBay
                 //|| this.IsBusyLoadingFromCell
                 //|| this.IsBusyUnloadingToBay
                 //|| this.IsBusyUnloadingToCell
-                //||
-                this.IsTuningChain
+                || this.IsTuningChain
                 || this.IsTuningBay
                 //|| this.IsCarouselMoving
                 || this.IsShutterMoving;
             set
             {
-                //this.IsElevatorMovingToCell = value;
+                this.IsElevatorMovingToCell = value;
                 //this.IsElevatorMovingToHeight = value;
                 //this.IsElevatorMovingToLoadingUnit = value;
-                //this.IsElevatorMovingToBay = value;
+                this.IsElevatorMovingToBay = value;
                 //this.IsBusyLoadingFromBay = value;
                 //this.IsBusyLoadingFromCell = value;
                 //this.IsBusyUnloadingToBay = value;
@@ -267,7 +295,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-            await base.OnAppearedAsync();
+                await base.OnAppearedAsync();
 
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
@@ -276,6 +304,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.sensorsService.RefreshAsync(true);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
+
+                this.SelectBayPositionUp();
+                this.InputLoadingUnitIdPropertyChanged();
+                this.InputCellIdPropertyChanged();
+
+                var elevatorPosition = await this.machineElevatorWebService.GetPositionAsync();
+
+                this.IsElevatorInCell = elevatorPosition.CellId != null;
+                this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
+                if (this.IsElevatorInCell)
+                {
+                    this.InputCellId = elevatorPosition.CellId;
+                }
+                else if (this.IsElevatorInBay)
+                {
+                    this.SelectedBayPosition = this.bay.Positions.SingleOrDefault(p => p.Id == elevatorPosition.BayPositionId);
+                }
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
 
@@ -339,6 +384,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse;
         }
 
+        private void ElevatorChanged()
+        {
+            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
+        }
+
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
             if (!isGuided && this.isMovementsGuided)
@@ -374,6 +424,87 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void KeyboardOpen()
         {
             this.IsKeyboardOpened = true;
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.IsElevatorInBay = e.BayPositionId != null;
+            this.IsElevatorInCell = e.CellId != null;
+        }
+
+        private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsTuningChain = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsTuningChain = false;
+                        this.IsTuningBay = false;
+                        await this.RefreshMachineInfoAsync();
+                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
+                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
+                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
+                        }*/
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        await this.RefreshMachineInfoAsync();
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
+
+        private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.ShowNotification(string.Empty);
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.ShowNotification(InstallationApp.ProcedureCompleted);
+
+                        this.IsMoving = false;
+
+                        if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
+
+                        await this.RefreshMachineInfoAsync();
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        await this.RefreshMachineInfoAsync();
+
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
@@ -428,7 +559,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine("*************");
                 this.Log = $"*************{Environment.NewLine}{this.Log}";
-                /*
+
                 var selectedBayPosition = this.SelectedBayPosition;
                 if (selectedBayPosition != null)
                 {
@@ -507,7 +638,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselDown - {this.moveCarouselDownPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
                 }
-                */
             }
             catch (Exception ex)
             {
@@ -563,42 +693,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
-        {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.IsTuningChain = true;
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.IsTuningChain = false;
-                        this.IsTuningBay = false;
-                        await this.RefreshMachineInfoAsync();
-                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
-                        {
-                            this.IsCarouselMoving = false;
-                        }
-                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
-                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                        {
-                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
-                        }*/
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        await this.RefreshMachineInfoAsync();
-                        this.OperationWarningOrError(message.Status, message.Description);
-                        break;
-                    }
-            }
-        }
         private void StatusSensorsCommand()
         {
             try
@@ -667,23 +761,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            //this.positioningOperationChangedToken = this.positioningOperationChangedToken
-            //    ??
-            //    this.EventAggregator
-            //        .GetEvent<NotificationEventUI<PositioningMessageData>>()
-            //        .Subscribe(
-            //            async m => await this.OnPositioningOperationChangedAsync(m),
-            //            ThreadOption.UIThread,
-            //            false);
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        async m => await this.OnPositioningOperationChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
 
-            //this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-            // ??
-            // this.EventAggregator
-            //     .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-            //     .Subscribe(
-            //         this.OnElevatorPositionChanged,
-            //         ThreadOption.UIThread,
-            //         false);
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+             ??
+             this.EventAggregator
+                 .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                 .Subscribe(
+                     this.OnElevatorPositionChanged,
+                     ThreadOption.UIThread,
+                     false);
 
             this.sensorsToken = this.sensorsToken
                 ??

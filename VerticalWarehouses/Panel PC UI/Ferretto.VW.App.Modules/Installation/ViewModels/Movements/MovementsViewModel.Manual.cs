@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommonServiceLocator;
@@ -25,6 +26,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool canExecuteShutterMoveUpCommand;
 
+        private bool canInputCellId;
+
+        private bool canInputHeight;
+
         private bool canInputLoadingUnitId;
 
         private bool isCompleted;
@@ -32,6 +37,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
+
+        private DelegateCommand moveToCellHeightCommand;
+
+        private DelegateCommand moveToHeightCommand;
 
         private DelegateCommand shutterMoveDownCommand;
 
@@ -51,6 +60,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canExecuteShutterMoveUpCommand;
             private set => this.SetProperty(ref this.canExecuteShutterMoveUpCommand, value);
+        }
+
+        public bool CanInputCellId
+        {
+            get => this.canInputCellId;
+            private set => this.SetProperty(ref this.canInputCellId, value);
+        }
+
+        public bool CanInputHeight
+        {
+            get => this.canInputHeight;
+            private set => this.SetProperty(ref this.canInputHeight, value);
         }
 
         public bool CanInputLoadingUnitId
@@ -82,6 +103,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public ICommand MoveToCellHeightCommand =>
+           this.moveToCellHeightCommand
+           ??
+           (this.moveToCellHeightCommand = new DelegateCommand(
+               async () => await this.MoveToCellHeightAsync(),
+               this.CanMoveToCellHeight));
+
+        public ICommand MoveToHeightCommand =>
+                   this.moveToHeightCommand
+           ??
+           (this.moveToHeightCommand = new DelegateCommand(
+               async () => await this.MoveToHeightAsync(),
+               this.CanMoveToHeight));
 
         public ICommand ShutterMoveDownCommand =>
             this.shutterMoveDownCommand
@@ -132,8 +167,50 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected void OnManualRaiseCanExecuteChanged()
         {
+            this.CanInputCellId =
+                !this.IsKeyboardOpened
+                &&
+                this.cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
+            this.CanInputHeight =
+                !this.IsKeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
             this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
             this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
+        }
+
+        private bool CanMoveToCellHeight()
+        {
+            return
+               !this.IsKeyboardOpened
+                &&
+                this.SelectedCell != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                this.moveToCellPolicy?.IsAllowed == true;
+        }
+
+        private bool CanMoveToHeight()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.InputHeight != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving;
         }
 
         private void CloseOperation()
@@ -168,6 +245,60 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CloseOperation();
 
                 this.ShowNotification(ex);
+            }
+        }
+
+        private async Task MoveToCellHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                Debug.Assert(
+                    this.SelectedCell != null,
+                    "The selected cell should be specified.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedCell.Id,
+                    performWeighting: this.isUseWeightControl,
+                    computeElongation: true);
+
+                this.IsElevatorMovingToCell = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToCell = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveToHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
+                    this.InputHeight.Value,
+                    this.isUseWeightControl,
+                    false);
+
+                this.IsElevatorMovingToHeight = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToHeight = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
