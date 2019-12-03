@@ -401,6 +401,9 @@
     "Height": 4563,
     "MaxGrossWeight": 50000,
     "ModelName": "Simulation Vertimag 800kg",
+    "LoadUnitTare": 120,
+    "LoadUnitMaxNetWeight": 930,
+    "LoadUnitMaxHeight": 750,
     "Panels": [
       {
         "Side": "Front",

@@ -135,6 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 && this.MachineData is Mission mission
                 )
             {
+                mission.CreationDate = DateTime.Now;
                 this.missionsDataProvider.Update(mission);
             }
 

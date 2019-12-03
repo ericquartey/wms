@@ -128,6 +128,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                             InstanceId = this.InstanceId,
                             NotificationMessage = ex.NotificationMessage,
                         };
+                        this.activeState = this.activeState?.Stop(StopRequestReason.Error);
 
                         this.RaiseCompleted(eventArgs);
                     }

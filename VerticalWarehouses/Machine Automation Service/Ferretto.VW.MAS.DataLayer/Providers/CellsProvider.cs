@@ -25,16 +25,20 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly ILogger<DataLayerContext> logger;
 
+        private readonly IMachineProvider machineProvider;
+
         #endregion
 
         #region Constructors
 
         public CellsProvider(DataLayerContext dataContext,
             IElevatorDataProvider elevatorDataProvider,
+            IMachineProvider machineProvider,
             ILogger<DataLayerContext> logger)
         {
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
+            this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -82,18 +86,30 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
+            if (loadingUnit.Height == 0)
+            {
+                var machine = this.machineProvider.Get();
+                loadingUnit.Height = machine.LoadUnitMaxHeight;
+            }
             using (var availableCell = new BlockingCollection<AvailableCell>())
             {
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
-                var cells = this.GetAll().Where(x => x.Position >= verticalAxis.LowerBound
-                    && x.Position < verticalAxis.UpperBound);
-                Parallel.ForEach(cells, (cell) =>
+
+                // load all cells, since we have to browse all cells we don't use order by to maximize speed
+                var cells = this.GetAll()
+                    .Where(x => x.Position >= verticalAxis.LowerBound
+                             && x.Position < verticalAxis.UpperBound)
+                    .ToList();
+                // for each available cell we check if there is space for the requested height
+                Parallel.ForEach(cells.Where(c => c.Status != CellStatus.Occupied && !c.IsUnusable), (cell) =>
                 {
+                    // load all cells following the selected cell
                     var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
                         && c.Position >= cell.Position
                         && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
                         .OrderBy(o => o.Position);
 
+                    // all cells must be available and the total space must be sufficient
                     if (cellsInRange.Any()
                         && !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable)
                         && (cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight >= loadingUnit.Height + VerticalPositionTolerance)
@@ -104,17 +120,23 @@ namespace Ferretto.VW.MAS.DataLayer
                 });
                 if (!availableCell.Any())
                 {
+                    this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; ");
                     throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
+
+                // select shortest available space, but only when vertimag is full enough, we don't want to start from the top
                 int cellId = 0;
-                if (availableCell.Count > cells.Count() / 2)
+                if (availableCell.Count > cells.Count / 3)
                 {
+                    // empty vertimag: start from lower cells
                     cellId = availableCell.OrderBy(t => t.Cell.Priority).First().Cell.Id;
                 }
                 else
                 {
+                    // vertimag partially full: optimize space
                     cellId = availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
                 }
+                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; available cells {availableCell.Count}");
                 return cellId;
             }
         }
