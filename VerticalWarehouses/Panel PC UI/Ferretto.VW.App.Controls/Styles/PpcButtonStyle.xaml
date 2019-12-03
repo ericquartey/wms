@@ -111,7 +111,6 @@
         <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize_Small}" />
-        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
@@ -234,4 +233,57 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="PpcButtonMovementsGuidedTabStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PpcButtonMovementsManualTabStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PpcButtonStopStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="1" Color="#e1323f" />
+                    <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayC}" />
+                    <GradientStop Offset="0" Color="{DynamicResource EDBGrayC}" />
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <DataTrigger Binding="{Binding IsDarkThemeActive}"
+                         Value="False">
+                <Setter Property="Background">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="1" Color="#e1323f" />
+                            <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayH}" />
+                            <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+            </DataTrigger>
+        </Style.Triggers>
+    </Style>
 </ResourceDictionary>

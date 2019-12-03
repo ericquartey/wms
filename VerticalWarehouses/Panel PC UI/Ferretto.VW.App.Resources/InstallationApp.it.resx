@@ -1221,4 +1221,16 @@
   <data name="MovementsManual" xml:space="preserve">
     <value>Movimenti Manuali</value>
   </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Reset machina</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Reset macchina avvenuta con successo.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Serranda giù</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Serranda su</value>
+  </data>
 </root>

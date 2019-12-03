@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using DevExpress.Mvvm;
+using MahApps.Metro.IconPacks;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -14,8 +15,11 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty KindProperty =
+            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialKind?), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
+
         public static readonly DependencyProperty PressCommandProperty =
-            DependencyProperty.Register(nameof(PressCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
+                    DependencyProperty.Register(nameof(PressCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty ReleaseCommandProperty =
             DependencyProperty.Register(nameof(ReleaseCommand), typeof(ICommand), typeof(PpcPressAndReleaseButton), new PropertyMetadata(null));
@@ -46,12 +50,22 @@ namespace Ferretto.VW.App.Controls.Controls
                 this.OnButtonDown();
             };
 
+            this.Style = Application.Current.FindResource("PpcPressAndReleaseButtonStyle") as Style;
+
             //this.Command = new DelegateCommand(() => { }, this.CanExecuteCommand);
         }
 
         #endregion
 
         #region Properties
+
+        public bool HasKind => !(this.Kind is null);
+
+        public PackIconMaterialKind? Kind
+        {
+            get => (PackIconMaterialKind?)this.GetValue(KindProperty);
+            set => this.SetValue(KindProperty, value);
+        }
 
         public ICommand PressCommand
         {
