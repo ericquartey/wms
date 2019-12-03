@@ -144,6 +144,8 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             Axis,
 
+            Bay,
+
             Drawer,
 
             Position,

@@ -111,7 +111,6 @@
         <Setter Property="Background" Value="{DynamicResource PpcButtonBackground}" />
         <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
         <Setter Property="FontSize" Value="{StaticResource FontSize_Small}" />
-        <Setter Property="Padding" Value="5,0,5,0" />
         <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
 
@@ -231,6 +230,32 @@
                 <Setter Property="ImageSource" Value="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
             </DataTrigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PpcButtonMovementsGuidedTabStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="PpcButtonMovementsManualTabStyle"
+           BasedOn="{StaticResource PpcButtonStyle}"
+           TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderThickness" Value="0,1,0,0" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 

@@ -2482,6 +2482,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset machine.
+        /// </summary>
+        public static string ResetMachine {
+            get {
+                return ResourceManager.GetString("ResetMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine reset successful..
+        /// </summary>
+        public static string ResetMachineSuccessfull {
+            get {
+                return ResourceManager.GetString("ResetMachineSuccessfull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Security Function.
         /// </summary>
         public static string ResetSecurityFunction {
