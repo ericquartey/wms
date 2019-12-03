@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     foreach (var loadingUnit in missingWmsLoadingUnits)
                     {
                         this.Logger.LogDebug($"Pushing new loading unit {loadingUnit.Id} to WMS.");
-                        var createdLoadingUnit = await this.loadingUnitsDataService.CreateAsync(
+                        await this.loadingUnitsDataService.CreateAsync(
                             new LoadingUnitDetails
                             {
                                 Id = loadingUnit.Id,
@@ -103,6 +103,8 @@ namespace Ferretto.VW.MAS.DataLayer
                                 Code = "n/a",
                                 CreationDate = DateTime.Now
                             });
+
+                        var createdLoadingUnit = await this.loadingUnitsDataService.GetByIdAsync(loadingUnit.Id);
 
                         loadingUnitsDataProvider.SetCode(loadingUnit.Id, createdLoadingUnit.Code);
                     }

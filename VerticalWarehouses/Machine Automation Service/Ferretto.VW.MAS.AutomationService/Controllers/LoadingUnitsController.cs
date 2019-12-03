@@ -88,8 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
-            var loadingUnits = this.loadingUnitsDataProvider.GetAll();
-            return this.Ok(loadingUnits);
+            return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
         [HttpGet("statistics/space")]
