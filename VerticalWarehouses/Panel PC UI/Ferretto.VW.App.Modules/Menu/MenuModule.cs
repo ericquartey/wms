@@ -25,8 +25,6 @@ namespace Ferretto.VW.App.Modules.Menu
 
         #region Constructors
 
-        #region Constructors
-
         public MenuModule(IUnityContainer container)
         {
             this.container = container;
