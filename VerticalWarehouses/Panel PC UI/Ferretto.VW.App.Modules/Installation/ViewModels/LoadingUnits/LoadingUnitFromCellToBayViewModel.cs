@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                var destination = this.GetLoadingUnitSource();
+                var destination = this.GetLoadingUnitSource(this.IsPositionDownSelected);
 
                 if (destination == LoadingUnitLocation.NoLocation)
                 {
