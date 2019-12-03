@@ -454,14 +454,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 if (this.HasCarousel)
                 {
-                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up);
+                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up, MovementCategory.Assisted);
                     this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
                     {
                         this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselUp - {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
                     }
 
-                    this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down);
+                    this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down, MovementCategory.Assisted);
                     this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
                     if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
                     {
