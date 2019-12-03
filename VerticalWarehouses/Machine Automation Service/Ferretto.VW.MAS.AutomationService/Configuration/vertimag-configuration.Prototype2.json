@@ -117,12 +117,12 @@
                     "Resolution": 99.177657,
                     "Offset": 350,
                     "ChainOffset": 0,
-                    "UpperBound": 8600, 
+                    "UpperBound": 8600,
                     "LowerBound": 350,
                     "EmptyLoadMovement": {
                         "Acceleration": 1000,
                         "Deceleration": 1000,
-                        "Speed": 600 
+                        "Speed": 600
                     },
                     "FullLoadMovement": {
                         "Acceleration": 400,
@@ -230,7 +230,7 @@
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Speed": 100,
+                                    "Speed": 200,
                                     "Number": 1,
                                     "Position": 350
                                 },
@@ -309,7 +309,7 @@
                                 },
                                 {
                                     "Acceleration": 1000,
-                                    "Speed": 100,
+                                    "Speed": 200,
                                     "Position": 350,
                                     "Number": 1
                                 },
