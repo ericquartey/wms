@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -33,11 +34,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand intermediateShutterCommand;
 
+        private bool isElevatorMovingToBay;
+
         private bool isElevatorMovingToCell;
 
         private bool isElevatorMovingToHeight;
 
         private bool isElevatorMovingToLoadingUnit;
+
+        private bool isPositionDownSelected;
+
+        private bool isPositionUpSelected;
 
         private bool isShutterMoving;
 
@@ -47,11 +54,39 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isUseWeightControl;
 
+        private DelegateCommand loadFromBayCommand;
+
+        private ActionPolicy loadFromBayPolicy;
+
+        private DelegateCommand loadFromCellCommand;
+
+        private ActionPolicy loadFromCellPolicy;
+
         private LoadingUnit loadingUnitInCell;
 
         private string log;
 
+        private DelegateCommand moveCarouselDownCommand;
+
+        private ActionPolicy moveCarouselDownPolicy;
+
+        private DelegateCommand moveCarouselUpCommand;
+
+        private ActionPolicy moveCarouselUpPolicy;
+
+        private DelegateCommand moveToBayPositionCommand;
+
+        private ActionPolicy moveToBayPositionPolicy;
+
+        private ActionPolicy moveToCellPolicy;
+
         private DelegateCommand openShutterCommand;
+
+        private DelegateCommand selectBayPositionDownCommand;
+
+        private DelegateCommand selectBayPositionUpCommand;
+
+        private BayPosition selectedBayPosition;
 
         private Cell selectedCell;
 
@@ -60,6 +95,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand tuningBayCommand;
 
         private DelegateCommand tuningChainCommand;
+
+        private DelegateCommand unloadToBayCommand;
+
+        private ActionPolicy unloadToBayPolicy;
+
+        private DelegateCommand unloadToCellCommand;
+
+        private ActionPolicy unloadToCellPolicy;
 
         #endregion
 
@@ -103,6 +146,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.IntermediateShutterAsync(),
                 this.CanExecuteIntermediateCommand));
 
+        public bool IsElevatorMovingToBay
+        {
+            get => this.isElevatorMovingToBay;
+            private set
+            {
+                if (this.SetProperty(ref this.isElevatorMovingToBay, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsElevatorMovingToCell
         {
             get => this.isElevatorMovingToCell;
@@ -138,6 +194,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsPositionDownSelected
+        {
+            get => this.isPositionDownSelected;
+            private set
+            {
+                if (this.SetProperty(ref this.isPositionDownSelected, value))
+                {
+                    this.IsPositionUpSelected = !this.IsPositionDownSelected;
+                }
+            }
+        }
+
+        public bool IsPositionUpSelected
+        {
+            get => this.isPositionUpSelected;
+            private set
+            {
+                if (this.SetProperty(ref this.isPositionUpSelected, value))
+                {
+                    this.IsPositionDownSelected = !this.IsPositionUpSelected;
                 }
             }
         }
@@ -190,12 +270,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.log, value);
         }
 
+        public ICommand MoveToBayPositionCommand =>
+            this.moveToBayPositionCommand
+            ??
+            (this.moveToBayPositionCommand = new DelegateCommand(
+                async () => await this.MoveToBayPositionAsync(),
+                this.CanMoveToBayPosition));
+
         public ICommand OpenShutterCommand =>
             this.openShutterCommand
             ??
             (this.openShutterCommand = new DelegateCommand(
                 async () => await this.OpenShutterAsync(),
                 this.CanOpenShutter));
+
+        public ICommand SelectBayPositionDownCommand =>
+                                                                                                                                                                            this.selectBayPositionDownCommand
+            ??
+            (this.selectBayPositionDownCommand = new DelegateCommand(
+                this.SelectBayPositionDown,
+                this.CanSelectBayPosition));
+
+        public ICommand SelectBayPositionUpCommand =>
+            this.selectBayPositionUpCommand
+            ??
+            (this.selectBayPositionUpCommand = new DelegateCommand(
+                this.SelectBayPositionUp,
+                this.CanSelectBayPosition));
+
+        public BayPosition SelectedBayPosition
+        {
+            get => this.selectedBayPosition;
+            private set
+            {
+                if (this.SetProperty(ref this.selectedBayPosition, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
 
         public Cell SelectedCell
         {
@@ -227,7 +340,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand TuningBayCommand =>
-                                                                                                            this.tuningBayCommand
+            this.tuningBayCommand
             ??
             (this.tuningBayCommand = new DelegateCommand(
                 async () => await this.TuneBayAsync(),
@@ -246,22 +359,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected void OnGuidedRaiseCanExecuteChanged()
         {
-            //this.CanInputCellId =
-            //    !this.KeyboardOpened
-            //    &&
-            //    this.cells != null
-            //    &&
-            //    !this.IsMoving
-            //    &&
-            //    !this.IsWaitingForResponse;
-
-            //this.CanInputHeight =
-            //    !this.KeyboardOpened
-            //    &&
-            //    !this.IsMoving
-            //    &&
-            //    !this.IsWaitingForResponse;
-
             this.CanInputLoadingUnitId =
                 !this.IsKeyboardOpened
                 &&
@@ -286,8 +383,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.closedShutterCommand?.RaiseCanExecuteChanged();
             //this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
             //this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
-            //this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
-            //this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+            this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+
             //this.setWeightControlCommand?.RaiseCanExecuteChanged();
 
             //this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
@@ -323,6 +423,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
         }
 
+        private bool CanMoveToBayPosition()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedBayPosition != null
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                this.moveToBayPositionPolicy?.IsAllowed == true;
+        }
+
         private bool CanOpenShutter()
         {
             return
@@ -335,6 +449,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsShutterMoving
                 &&
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Closed || this.sensorsService.ShutterSensors.MidWay));
+        }
+
+        private bool CanSelectBayPosition()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving;
         }
 
         private bool CanTuneBay()
@@ -453,6 +577,37 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task MoveToBayPositionAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                Debug.Assert(
+                    this.SelectedBayPosition != null,
+                    "A bay position should be selected.");
+
+                this.InputHeight = this.SelectedBayPosition.Height;
+
+                await this.machineElevatorWebService.MoveToBayPositionAsync(
+                    this.SelectedBayPosition.Id,
+                    computeElongation: true,
+                    performWeighting: false);
+
+                this.IsElevatorMovingToBay = true;
+            }
+            catch (Exception ex)
+            {
+                this.IsElevatorMovingToBay = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private void OnGuidedShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             if (!this.IsMovementsGuided)
@@ -500,6 +655,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        private void SelectBayPositionDown()
+        {
+            this.IsPositionDownSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Min(pos => pos.Height));
+        }
+
+        private void SelectBayPositionUp()
+        {
+            this.IsPositionUpSelected = true;
+            this.SelectedBayPosition = this.bay.Positions.Single(p => p.Height == this.bay.Positions.Max(pos => pos.Height));
         }
 
         private async Task TuneBayAsync()
