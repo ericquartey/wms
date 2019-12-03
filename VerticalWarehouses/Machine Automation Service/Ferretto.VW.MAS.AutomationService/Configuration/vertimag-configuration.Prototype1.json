@@ -356,6 +356,7 @@
     "ModelName": "Vertimag 800kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 800,
+    "LoadUnitMaxHeight": 750,
     "Panels": [
       {
         "Side": "Front",

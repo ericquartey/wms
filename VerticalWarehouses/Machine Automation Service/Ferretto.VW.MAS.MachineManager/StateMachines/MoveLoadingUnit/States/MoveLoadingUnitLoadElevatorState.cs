@@ -173,10 +173,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     transaction.Commit();
                 }
-                // in automatic bay-to-cell movements the profile may have changed so we have to find a new empty cell
+                // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
                 if (this.moveData.LoadingUnitSource != LoadingUnitLocation.Cell
                     && this.moveData.LoadingUnitDestination == LoadingUnitLocation.Cell
-                    && !this.moveData.DestinationCellId.HasValue
                     && this.moveData.LoadingUnitId > 0
                     )
                 {

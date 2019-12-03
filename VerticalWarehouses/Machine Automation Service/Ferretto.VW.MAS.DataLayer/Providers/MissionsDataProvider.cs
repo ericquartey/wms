@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
+                        CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber
                     });
