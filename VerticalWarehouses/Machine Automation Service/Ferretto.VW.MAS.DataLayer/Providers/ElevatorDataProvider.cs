@@ -265,13 +265,13 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public MovementParameters ScaleMovementsByWeight(Orientation orientation)
+        public MovementParameters ScaleMovementsByWeight(Orientation orientation, bool isLoadingUnitOnBoard)
         {
             var axis = this.GetAxis(orientation);
 
             var loadingUnit = this.GetLoadingUnitOnBoard();
 
-            return axis.ScaleMovementsByWeight(loadingUnit);
+            return axis.ScaleMovementsByWeight(loadingUnit, isLoadingUnitOnBoard);
         }
 
         public void SetCurrentBayPosition(int? bayPositionId)
