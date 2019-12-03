@@ -53,10 +53,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineSensorsWebService machineSensorsWebService,
             IHealthProbeService healthProbeService,
             IBayManager bayManager)
-            : base(elevatorWebService,
-                   machineSensorsWebService,
-                   healthProbeService,
-                   bayManager)
+            : base(
+                elevatorWebService,
+                machineSensorsWebService,
+                healthProbeService,
+                bayManager)
         {
         }
 
@@ -194,7 +195,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void OnErrorStatusChanged()
         {
-            //if (!this.IsEnabled)
             if (!(this.MachineError is null))
             {
                 this.StopMoving();

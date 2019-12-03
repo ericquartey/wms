@@ -82,6 +82,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
+            if (sourceBay is LoadingUnitLocation.Cell || sourceBay is LoadingUnitLocation.LoadingUnit)
+            {
+                throw new ArgumentException();
+            }
+
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,
@@ -163,6 +168,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void MoveLoadingUnitToBay(MissionType missionType, int loadingUnitId, LoadingUnitLocation destination, BayNumber requestingBay, MessageActor sender)
         {
+            if (destination is LoadingUnitLocation.Cell)
+            {
+                throw new ArgumentException();
+            }
+
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
                     missionType,

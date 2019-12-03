@@ -12,5 +12,5 @@ namespace Ferretto.VW.App.Operator.Views
         }
 
         #endregion
-    } 
+    }
 }

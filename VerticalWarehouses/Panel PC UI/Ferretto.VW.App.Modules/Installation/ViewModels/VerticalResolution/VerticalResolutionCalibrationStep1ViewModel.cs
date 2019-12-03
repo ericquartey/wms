@@ -219,7 +219,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.SetIsLoadingUnitOnBord(sensors);
             }
-            catch (Exception ex)
+            catch
             {
                 throw;
             }

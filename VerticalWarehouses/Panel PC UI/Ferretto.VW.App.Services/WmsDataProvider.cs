@@ -52,10 +52,13 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
+            var bay = await this.bayManager.GetBayAsync();
+
             await this.itemsDataService.PickAsync(itemId, new ItemOptions
             {
                 AreaId = this.bayManager.Identity.AreaId.Value,
-                BayId = (int)ConfigurationManager.AppSettings.GetBayNumber(),
+                BayId = bay.Id,
+                MachineId = this.bayManager.Identity.Id,
                 RequestedQuantity = requestedQuantity,
                 RunImmediately = true
             });

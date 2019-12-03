@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -49,10 +48,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
-        }
-
-        public void ClearAll()
-        {
         }
 
         public IEnumerable<LoadingUnit> GetAll()
@@ -120,7 +115,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Import(IEnumerable<LoadingUnit> loadingUnits, DataLayerContext context)
         {
-            _ = loadingUnits ?? throw new System.ArgumentNullException(nameof(loadingUnits));
+            _ = loadingUnits ?? throw new ArgumentNullException(nameof(loadingUnits));
 
             context.Delete(loadingUnits, (e) => e.Id);
             loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
@@ -131,25 +126,50 @@ namespace Ferretto.VW.MAS.DataLayer
             var machine = this.machineProvider.Get();
             lock (this.dataContext)
             {
-                LoadingUnit loadingUnits = new LoadingUnit
+                var loadingUnits = new LoadingUnit
                 {
                     Id = loadingUnitsId,
                     Tare = machine.LoadUnitTare,
                     MaxNetWeight = machine.LoadUnitMaxNetWeight,
                 };
+
                 this.dataContext.LoadingUnits.Add(loadingUnits);
 
                 this.dataContext.SaveChanges();
             }
         }
 
-        public void SetHeight(int loadingUnitId, double height)
+        public void SetCode(int id, string code)
         {
             lock (this.dataContext)
             {
                 var loadingUnit = this.dataContext
                     .LoadingUnits
-                    .SingleOrDefault(l => l.Id == loadingUnitId);
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
+
+                loadingUnit.Code = code;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
+        public void SetHeight(int id, double height)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
 
                 loadingUnit.Height = height;
 
@@ -157,7 +177,7 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void SetWeight(int loadingUnitId, double loadingUnitGrossWeight)
+        public void SetWeight(int id, double loadingUnitGrossWeight)
         {
             lock (this.dataContext)
             {
@@ -175,7 +195,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var loadingUnit = this.dataContext
                     .LoadingUnits
-                    .SingleOrDefault(l => l.Id == loadingUnitId);
+                    .SingleOrDefault(l => l.Id == id);
 
                 if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight)
                 {

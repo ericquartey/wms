@@ -24,6 +24,8 @@
     "Id": 2,
     "Bays": [
       {
+        "Number": "BayOne",
+        "Id": 21,
         "AlphaNumericBar": null,
         "Inverter": {
           "Type": "Acu",
@@ -37,7 +39,6 @@
         },
         "IsExternal": false,
         "ChainOffset": -5,
-        "Number": "BayOne",
         "Positions": [
           {
             "Height": 446,
@@ -68,6 +69,8 @@
         }
       },
       {
+        "Number": "BayTwo",
+        "Id": 22,
         "IoDevice": {
           "Index": "IoDevice2",
           "IpAddress": "127.0.0.1",
@@ -79,7 +82,6 @@
         "LaserPointer": {
           "Heights": [ 680, 1080 ]
         },
-        "Number": "BayTwo",
         "Positions": [
           {
             "Height": 446,

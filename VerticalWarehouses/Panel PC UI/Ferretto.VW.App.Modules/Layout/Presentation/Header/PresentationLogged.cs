@@ -78,7 +78,7 @@ namespace Ferretto.VW.App.Modules.Layout
         public ICommand LogOutCommand =>
             this.logOutCommand
             ??
-            (this.logOutCommand = new DelegateCommand(async() => await this.ExecuteLogOutCommand()));
+            (this.logOutCommand = new DelegateCommand(async () => await this.ExecuteLogOutCommand()));
 
         public ICommand ToggleThemeCommand =>
          this.toggleThemeCommand
