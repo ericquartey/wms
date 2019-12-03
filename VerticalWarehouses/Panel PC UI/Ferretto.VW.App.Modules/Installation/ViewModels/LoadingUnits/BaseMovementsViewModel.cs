@@ -378,11 +378,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RestoreStates();
             if (!string.IsNullOrEmpty(errorMessage))
             {
-                this.ShowNotification(ex);
+                this.ShowNotification(errorMessage, Services.Models.NotificationSeverity.Error);
             }
             else
             {
-                this.ShowNotification(errorMessage, Services.Models.NotificationSeverity.Error);
+                this.ShowNotification(ex);
             }
         }
 
