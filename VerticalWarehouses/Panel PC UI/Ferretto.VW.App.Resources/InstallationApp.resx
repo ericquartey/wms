@@ -1295,4 +1295,16 @@
   <data name="MovementsManual" xml:space="preserve">
     <value>Movimenti Manuali</value>
   </data>
+  <data name="ResetMachine" xml:space="preserve">
+    <value>Reset machine</value>
+  </data>
+  <data name="ResetMachineSuccessfull" xml:space="preserve">
+    <value>Machine reset successful.</value>
+  </data>
+  <data name="ShutterDown" xml:space="preserve">
+    <value>Shutter down</value>
+  </data>
+  <data name="ShutterUp" xml:space="preserve">
+    <value>Shutter up</value>
+  </data>
 </root>

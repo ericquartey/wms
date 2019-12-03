@@ -23,6 +23,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
+        private readonly IMachineProvider machineProvider;
+
         private LoadingUnitLocation ejectBay;
 
         private BayNumber requestingBay;
@@ -33,6 +37,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitWaitEjectConfirm(
             IBaysDataProvider baysDataProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
+            IMachineProvider machineProvider,
             IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
@@ -40,8 +46,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
@@ -61,6 +69,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             var mission = (Mission)machineData;
             mission.FsmStateName = this.GetType().Name;
             this.missionsDataProvider.Update(mission);
+            if (mission.LoadingUnitId > 0)
+            {
+                var machine = this.machineProvider.Get();
+                this.loadingUnitsDataProvider.SetHeight(mission.LoadingUnitId, machine.LoadUnitMaxHeight);
+            }
         }
 
         protected override IState OnResume(CommandMessage commandMessage)

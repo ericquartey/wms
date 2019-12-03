@@ -63,11 +63,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
                 {
-                    messageData.DestinationCellId = moveData.DestinationCellId;
-                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(messageData);
+                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData);
                     if (destinationHeight is null)
                     {
-                        var description = $"GetSourceHeight error: position not found ({messageData.Source} {(messageData.Source == LoadingUnitLocation.Cell ? messageData.SourceCellId : messageData.LoadingUnitId)})";
+                        var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
 
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }

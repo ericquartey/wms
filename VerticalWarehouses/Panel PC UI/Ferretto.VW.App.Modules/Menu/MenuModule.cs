@@ -36,9 +36,7 @@ namespace Ferretto.VW.App.Modules.Menu
 
         public static void BindViewModelToView<TViewModel, TView>(IContainerProvider containerProvider)
         {
-            ViewModelLocationProvider.Register(
-                typeof(TView).ToString(),
-                () => containerProvider.Resolve<TViewModel>());
+            ViewModelLocationProvider.Register(typeof(TView).ToString(), () => containerProvider.Resolve<TViewModel>());
         }
 
         public void OnInitialized(IContainerProvider containerProvider)

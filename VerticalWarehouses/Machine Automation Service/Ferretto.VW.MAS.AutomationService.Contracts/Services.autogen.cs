@@ -6035,20 +6035,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
+        public System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
             return InsertLoadingUnitAsync(source, destinationCellId, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (source == null)
                 throw new System.ArgumentNullException("source");
-    
-            if (destinationCellId == null)
-                throw new System.ArgumentNullException("destinationCellId");
     
             if (loadingUnitId == null)
                 throw new System.ArgumentNullException("loadingUnitId");
@@ -6056,7 +6053,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/insert-loading-unit?");
             urlBuilder_.Append(System.Uri.EscapeDataString("source") + "=").Append(System.Uri.EscapeDataString(ConvertToString(source, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("destinationCellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(destinationCellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("destinationCellId") + "=").Append(System.Uri.EscapeDataString(destinationCellId != null ? ConvertToString(destinationCellId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     

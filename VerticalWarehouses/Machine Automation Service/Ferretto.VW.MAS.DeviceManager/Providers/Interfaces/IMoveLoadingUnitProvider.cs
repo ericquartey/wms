@@ -1,6 +1,7 @@
 ﻿using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -14,9 +15,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
-        double? GetDestinationHeight(IMoveLoadingUnitMessageData messageData);
+        double? GetDestinationHeight(IMoveLoadingUnitMachineData moveData);
 
-        double? GetSourceHeight(IMoveLoadingUnitMessageData messageData);
+        double? GetSourceHeight(IMoveLoadingUnitMachineData moveData);
 
         void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
