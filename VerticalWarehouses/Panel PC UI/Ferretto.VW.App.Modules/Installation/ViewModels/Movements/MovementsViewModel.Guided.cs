@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -12,6 +13,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Regions;
+using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -22,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool bayIsShutterThreeSensors;
 
         private DelegateCommand closedShutterCommand;
-
-        private bool hasShutter;
 
         private int? inputCellId;
 
@@ -41,15 +41,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterMoving;
 
+        private bool isTuningBay;
+
+        private bool isTuningChain;
+
         private bool isUseWeightControl;
 
         private LoadingUnit loadingUnitInCell;
+
+        private string log;
 
         private DelegateCommand openShutterCommand;
 
         private Cell selectedCell;
 
         private LoadingUnit selectedLoadingUnit;
+
+        private DelegateCommand tuningBayCommand;
+
+        private DelegateCommand tuningChainCommand;
 
         #endregion
 
@@ -67,12 +77,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
-
-        public bool HasShutter
-        {
-            get => this.hasShutter;
-            set => this.SetProperty(ref this.hasShutter, value);
-        }
 
         public int? InputCellId
         {
@@ -144,6 +148,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isShutterMoving, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsTuningBay
+        {
+            get => this.isTuningBay;
+            private set
+            {
+                if (this.SetProperty(ref this.isTuningBay, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsTuningChain
+        {
+            get => this.isTuningChain;
+            private set
+            {
+                if (this.SetProperty(ref this.isTuningChain, value))
+                {
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsUseWeightControl
         {
             get => this.isUseWeightControl;
@@ -154,6 +182,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.loadingUnitInCell;
             private set => this.SetProperty(ref this.loadingUnitInCell, value);
+        }
+
+        public string Log
+        {
+            get => this.log;
+            set => this.SetProperty(ref this.log, value);
         }
 
         public ICommand OpenShutterCommand =>
@@ -192,6 +226,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand TuningBayCommand =>
+                                                                                                            this.tuningBayCommand
+            ??
+            (this.tuningBayCommand = new DelegateCommand(
+                async () => await this.TuneBayAsync(),
+                this.CanTuneBay));
+
+        public ICommand TuningChainCommand =>
+            this.tuningChainCommand
+            ??
+            (this.tuningChainCommand = new DelegateCommand(
+                async () => await this.TuningChainAsync(),
+                this.CanTuningChain));
+
         #endregion
 
         #region Methods
@@ -225,12 +273,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse;
 
-            //this.RefreshActionPoliciesAsync();
+            this.RefreshActionPoliciesAsync().ConfigureAwait(false);
 
             //this.moveToHeightCommand?.RaiseCanExecuteChanged();
             //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
-            //this.tuningBayCommand?.RaiseCanExecuteChanged();
-            //this.tuningChainCommand?.RaiseCanExecuteChanged();
+
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+            this.tuningChainCommand?.RaiseCanExecuteChanged();
 
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
@@ -286,6 +335,38 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsShutterMoving
                 &&
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Closed || this.sensorsService.ShutterSensors.MidWay));
+        }
+
+        private bool CanTuneBay()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                !this.IsTuningBay
+                &&
+                this.sensorsService.Sensors.ACUBay1S3IND;
+        }
+
+        private bool CanTuningChain()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                !this.IsTuningChain
+                &&
+                this.sensorsService.IsZeroChain
+                &&
+                !this.sensorsService.Sensors.LuPresentInMachineSide
+                &&
+                !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
         private async Task ClosedShutterAsync()
@@ -418,6 +499,57 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuneBayAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult == DialogResult.Yes)
+                {
+                    await this.machineCarouselWebService.FindZeroAsync();
+                    this.IsTuningBay = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.IsTuningBay = false;
+
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task TuningChainAsync()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult is DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsWaitingForResponse = true;
+                    await this.machineElevatorWebService.SearchHorizontalZeroAsync();
+                    this.IsTuningChain = true;
+                }
+                catch (Exception ex)
+                {
+                    this.IsTuningChain = false;
+
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
             }
         }
 

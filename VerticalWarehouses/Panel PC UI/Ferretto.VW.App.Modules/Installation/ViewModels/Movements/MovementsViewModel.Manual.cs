@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
-        
+
         private DelegateCommand shutterMoveDownCommand;
 
         private DelegateCommand shutterMoveUpCommand;
@@ -132,8 +132,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected void OnManualRaiseCanExecuteChanged()
         {
-            this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown;
-            this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp;
+            this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
+            this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
         }
 
         private void CloseOperation()

@@ -44,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private Bay bay;
 
+        private bool bayIsMultiPosition;
+
         private IEnumerable<Bay> bays;
 
         private IEnumerable<Cell> cells;
@@ -53,6 +55,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private DelegateCommand goToMovementsManualCommand;
 
         private DelegateCommand goToStatusSensorsCommand;
+
+        private bool hasBayExternal;
+
+        private bool hasCarousel;
+
+        private bool hasShutter;
 
         private bool isKeyboardOpened;
 
@@ -71,6 +79,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken sensorsToken;
 
         private SubscriptionToken shutterPositionToken;
+
+        private SubscriptionToken homingToken;
 
         private DelegateCommand stopMovingCommand;
 
@@ -109,6 +119,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public bool BayIsMultiPosition
+        {
+            get => this.bayIsMultiPosition;
+            set => this.SetProperty(ref this.bayIsMultiPosition, value);
+        }
+
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public ICommand GoToMovementsGuidedCommand =>
@@ -131,6 +147,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.goToStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand()));
 
+        public bool HasBayExternal
+        {
+            get => this.hasBayExternal;
+            set => this.SetProperty(ref this.hasBayExternal, value);
+        }
+
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
+
+        public bool HasShutter
+        {
+            get => this.hasShutter;
+            set => this.SetProperty(ref this.hasShutter, value);
+        }
+
         public bool IsKeyboardOpened
         {
             get => this.isKeyboardOpened;
@@ -152,11 +186,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 //|| this.IsBusyLoadingFromCell
                 //|| this.IsBusyUnloadingToBay
                 //|| this.IsBusyUnloadingToCell
-                //|| this.IsTuningChain
-                //|| this.IsTuningBay
-                //|| this.IsCarouselMoving
                 //||
-                this.IsShutterMoving;
+                this.IsTuningChain
+                || this.IsTuningBay
+                //|| this.IsCarouselMoving
+                || this.IsShutterMoving;
             set
             {
                 //this.IsElevatorMovingToCell = value;
@@ -167,9 +201,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 //this.IsBusyLoadingFromCell = value;
                 //this.IsBusyUnloadingToBay = value;
                 //this.IsBusyUnloadingToCell = value;
-                //this.IsTuningChain = value;
+                this.IsTuningChain = value;
                 //this.IsCarouselMoving = value;
-                //this.IsTuningBay = value;
+                this.IsTuningBay = value;
                 this.IsShutterMoving = value;
             }
         }
@@ -229,12 +263,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            this.IsWaitingForResponse = true;
+            try
+            {
+                this.IsWaitingForResponse = true;
 
             await base.OnAppearedAsync();
 
-            try
-            {
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 await this.RefreshMachineInfoAsync();
@@ -243,8 +277,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
+                this.BayIsMultiPosition = this.bay.IsDouble;
+
+                this.HasCarousel = this.bay.Carousel != null;
                 this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
                 this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
+
+                this.HasBayExternal = this.bay.IsExternal;
 
                 await this.OnManualAppearedAsync();
 
@@ -302,7 +341,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
-            if (!isGuided)
+            if (!isGuided && this.isMovementsGuided)
             {
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
                 var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.MovementsManual, DialogType.Question, DialogButtons.YesNo);
@@ -377,9 +416,103 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
 
+            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
+        }
+
+        private async Task RefreshActionPoliciesAsync()
+        {
+            try
+            {
+                System.Diagnostics.Debug.WriteLine("*************");
+                this.Log = $"*************{Environment.NewLine}{this.Log}";
+                /*
+                var selectedBayPosition = this.SelectedBayPosition;
+                if (selectedBayPosition != null)
+                {
+                    this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id);
+                    this.loadFromBayCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.loadFromBayPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - LoadFromBay - {this.loadFromBayPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
+
+                    this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id);
+                    this.unloadToBayCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.unloadToBayPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - UnloadToBay - {this.unloadToBayPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV -> BAY: {this.unloadToBayPolicy.IsAllowed} {this.unloadToBayPolicy.Reason}");
+
+                    this.moveToBayPositionPolicy = await this.machineElevatorWebService.CanMoveToBayPositionAsync(selectedBayPosition.Id);
+                    this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveToBayPositionPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToBayPosition - {this.moveToBayPositionPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV ^ BAY: {this.moveToBayPositionPolicy.IsAllowed} {this.moveToBayPositionPolicy.Reason}");
+                }
+
+                var selectedCell = this.SelectedCell;
+                if (selectedCell != null)
+                {
+                    this.loadFromCellPolicy = await this.machineElevatorWebService.CanLoadFromCellAsync(selectedCell.Id);
+                    this.loadFromCellCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.loadFromCellPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - LoadFromCell - {this.loadFromCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV <- CELL: {this.loadFromCellPolicy.IsAllowed} {this.loadFromCellPolicy.Reason}");
+
+                    this.unloadToCellPolicy = await this.machineElevatorWebService.CanUnloadToCellAsync(selectedCell.Id);
+                    this.unloadToCellCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.unloadToCellPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - UnloadToCell - {this.unloadToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV -> CELL: {this.unloadToCellPolicy.IsAllowed} {this.unloadToCellPolicy.Reason}");
+
+                    this.moveToCellPolicy = await this.machineElevatorWebService.CanMoveToCellAsync(selectedCell.Id);
+                    this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveToCellPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveToCellHeight - {this.moveToCellPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    System.Diagnostics.Debug.WriteLine($"ELEV ^ CELL: {this.moveToCellPolicy.IsAllowed} {this.moveToCellPolicy.Reason}");
+                }
+
+                if (this.HasCarousel)
+                {
+                    this.moveCarouselUpPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Up);
+                    this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveCarouselUpPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselUp - {this.moveCarouselUpPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+
+                    this.moveCarouselDownPolicy = await this.machineCarouselWebService.CanMoveAsync(VerticalMovementDirection.Down);
+                    this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+                    if (!string.IsNullOrEmpty(this.moveCarouselDownPolicy.Reason))
+                    {
+                        this.Log = $"{DateTime.Now.ToLocalTime()} - MoveCarouselDown - {this.moveCarouselDownPolicy.Reason}{Environment.NewLine}{this.Log}";
+                    }
+                }
+                */
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         private async Task RefreshMachineInfoAsync()
@@ -430,6 +563,42 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task OnHomingChangedAsync(NotificationMessageUI<HomingMessageData> message)
+        {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsTuningChain = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsTuningChain = false;
+                        this.IsTuningBay = false;
+                        await this.RefreshMachineInfoAsync();
+                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
+                        {
+                            this.IsCarouselMoving = false;
+                        }
+                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
+                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                        {
+                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
+                        }*/
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        await this.RefreshMachineInfoAsync();
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
+            }
+        }
         private void StatusSensorsCommand()
         {
             try
@@ -480,14 +649,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void SubscribeToEvents()
         {
-            //this.homingToken = this.homingToken
-            //    ??
-            //    this.EventAggregator
-            //        .GetEvent<NotificationEventUI<HomingMessageData>>()
-            //        .Subscribe(
-            //            async m => await this.OnHomingChangedAsync(m),
-            //            ThreadOption.UIThread,
-            //            false);
+            this.homingToken = this.homingToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<HomingMessageData>>()
+                    .Subscribe(
+                        async m => await this.OnHomingChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
 
             this.shutterPositionToken = this.shutterPositionToken
                 ??
