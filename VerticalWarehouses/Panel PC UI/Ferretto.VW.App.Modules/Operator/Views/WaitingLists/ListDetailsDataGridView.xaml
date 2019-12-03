@@ -88,7 +88,7 @@
             <DataGrid.Columns>
                 <DataGridTextColumn x:Name="Column1"
                                     Width="0.5*"
-                                    Binding="{Binding Path=Code}"
+                                    Binding="{Binding Path=ItemListId}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderRow}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
@@ -115,7 +115,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn x:Name="Column2"
                                     Width="1*"
-                                    Binding="{Binding Path=ItemListId}"
+                                    Binding="{Binding Path=Code}"
                                     Header="{x:Static Resources:OperatorApp.WaitingListDetailDataGridHeaderItem}">
                     <DataGridTextColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
