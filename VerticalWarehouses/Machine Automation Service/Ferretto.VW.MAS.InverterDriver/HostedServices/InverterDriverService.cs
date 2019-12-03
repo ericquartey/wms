@@ -50,6 +50,8 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly bool[] forceStatusPublish;
+
         private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
@@ -85,8 +87,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private readonly InverterDiagnosticsData WriteRoundtripTimeData = new InverterDiagnosticsData();
 
         private Axis currentAxis;
-
-        private bool[] forceStatusPublish;
 
         private bool isDisposed;
 
@@ -267,10 +267,10 @@ namespace Ferretto.VW.MAS.InverterDriver
                     else
                     {
                         this.Logger.LogInformation($"Connected to inverter's TCP address {this.inverterAddress}:{this.inverterPort}");
-                            for (var i = 0; i < this.forceStatusPublish.Length; i++)
-                            {
-                                this.forceStatusPublish[i] = true;
-                            }
+                        for (var i = 0; i < this.forceStatusPublish.Length; i++)
+                        {
+                            this.forceStatusPublish[i] = true;
+                        }
                     }
 
                     this.writeEnableEvent.Set();
