@@ -37,8 +37,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public CellsViewModel(
             IMachineCellsWebService machineCellsWebService,
-            IHealthProbeService healthProbeService
-            )
+            IHealthProbeService healthProbeService)
             : base(Services.PresentationMode.Installer)
         {
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));

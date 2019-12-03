@@ -70,9 +70,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public ICommand StartRecallButtonCommand => this.startRecallButtonCommand ?? (this.startRecallButtonCommand = new DelegateCommand(async () => await this.StartRecallButtonAsync()));
 
-        public ICommand StartStoreButtonCommand => this.startStoreButtonCommand ?? (this.startStoreButtonCommand = new DelegateCommand(async () => await this.StartStoreButtonAsync()));
+        public ICommand StartStoreButtonCommand =>
+            this.startStoreButtonCommand
+            ??
+            (this.startStoreButtonCommand = new DelegateCommand(async () => await this.StartStoreButtonAsync()));
 
-        public ICommand StopButtonCommand => this.stopButtonCommand ?? (this.stopButtonCommand = new DelegateCommand(async () => await this.StopButtonMethodAsync()));
+        public ICommand StopButtonCommand =>
+            this.stopButtonCommand
+            ??
+            (this.stopButtonCommand = new DelegateCommand(this.Stop));
 
         #endregion
 
@@ -112,7 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StopButtonMethodAsync()
+        private void Stop()
         {
             try
             {

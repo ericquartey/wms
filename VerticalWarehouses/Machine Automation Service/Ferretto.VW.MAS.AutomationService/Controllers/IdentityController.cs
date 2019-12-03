@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Models;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -13,6 +14,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
     public class IdentityController : ControllerBase
     {
         #region Fields
+
+        private readonly IConfiguration configuration;
 
         private readonly ILoadingUnitsDataProvider loadingUnitStatisticsProvider;
 
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
+            this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
             this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
         }
 
@@ -44,20 +48,28 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpGet]
-        public ActionResult<MachineIdentity> Get()
+        public async Task<ActionResult<MachineIdentity>> Get()
         {
             var servicingInfo = this.servicingProvider.GetInfo();
 
             var loadingUnits = this.loadingUnitStatisticsProvider.GetWeightStatistics();
 
             var machine = this.machineProvider.Get();
+
+            int? areaId = null;
+            if (this.configuration.IsWmsEnabled())
+            {
+                var area = await this.machinesDataService.GetAreaByIdAsync(machine.Id);
+                areaId = area.Id;
+            }
+
             var machineInfo = new MachineIdentity
             {
-                AreaId = 1, // TODO remove this hardcoded value
+                AreaId = areaId,
                 Id = machine.Id,
                 ModelName = machine.ModelName,
                 SerialNumber = machine.SerialNumber,
-                TrayCount = loadingUnits.Count(),                
+                TrayCount = loadingUnits.Count(),
                 MaxGrossWeight = machine.MaxGrossWeight,
                 InstallationDate = servicingInfo.InstallationDate,
                 NextServiceDate = servicingInfo.NextServiceDate,
@@ -77,10 +89,10 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var machineId = 1; // TODO HACK remove this hardcoded value and use the machine serial number
-                    var machine = await this.machinesDataService.GetByIdAsync(machineId);
+                    var machine = this.machineProvider.Get();
+                    var wmsMachine = await this.machinesDataService.GetByIdAsync(machine.Id);
 
-                    statistics.AreaFillPercentage = machine.AreaFillRate;
+                    statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
                 }
                 catch (System.Exception)
                 {

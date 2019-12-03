@@ -37,9 +37,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public LoadingUnitsViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
-            IHealthProbeService healthProbeService
-            )
-            : base(Services.PresentationMode.Installer)
+            IHealthProbeService healthProbeService)
+            : base(PresentationMode.Installer)
         {
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
