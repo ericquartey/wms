@@ -780,6 +780,7 @@
     "ModelName": "Simulation Vertimag 1000kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
+    "LoadUnitMaxHeight": 750,
     "Panels": [
       {
         "Side": "Front",

@@ -23,6 +23,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ICellsProvider cellsProvider;
 
+        private readonly IMachineProvider machineProvider;
+
         private readonly IErrorsProvider errorsProvider;
 
         private readonly ISensorsProvider sensorsProvider;
@@ -33,6 +35,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private Mission mission;
 
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
         #endregion
 
         #region Constructors
@@ -41,7 +45,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             IBaysDataProvider baysDataProvider,
             IMissionsDataProvider missionsDataProvider,
             ICellsProvider cellsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IMachineProvider machineProvider,
             ISensorsProvider sensorsProvider,
             IErrorsProvider errorsProvider,
             ILogger<StateBase> logger)
@@ -49,7 +55,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
@@ -74,6 +82,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.mission.FsmStateName = this.GetType().Name;
                 this.missionsDataProvider.Update(this.mission);
+                if (moveData.LoadingUnitId > 0)
+                {
+                    var machine = this.machineProvider.Get();
+                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
+                }
             }
         }
 

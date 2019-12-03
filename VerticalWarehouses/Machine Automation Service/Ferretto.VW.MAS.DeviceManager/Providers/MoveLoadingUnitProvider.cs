@@ -267,7 +267,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public MessageStatus StopOperationStatus(NotificationMessage message)
         {
             if (message.Type == MessageType.Stop
-                || message.Type == MessageType.InverterStop)
+                || message.Type == MessageType.InverterStop
+                || message.Type == MessageType.InverterPowerEnable)
             {
                 return message.Status;
             }

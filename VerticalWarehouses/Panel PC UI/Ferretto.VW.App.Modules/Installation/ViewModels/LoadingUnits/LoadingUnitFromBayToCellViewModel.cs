@@ -71,18 +71,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
                 }
 
-                if (!this.IsCellIdValid)
-                {
-                    this.ShowNotification("Id cella inserito non valido", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (!this.IsCellFree)
-                {
-                    this.ShowNotification("la cella inserita non è libera", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
                 var source = this.GetLoadingUnitSource();
 
                 if (source == LoadingUnitLocation.NoLocation)
@@ -93,7 +81,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
+                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {

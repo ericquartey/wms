@@ -135,6 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 && this.MachineData is Mission mission
                 )
             {
+                mission.CreationDate = DateTime.Now;
                 this.missionsDataProvider.Update(mission);
             }
 
@@ -191,6 +192,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     else if (messageData.LoadingUnitId.HasValue)
                     {
                         machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                        returnValue = true;
                         machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }
 
