@@ -254,9 +254,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             var bays = await this.machineBaysWebService.GetAllAsync();
 
-            this.IsBay1Present = bays.Any(b => b.Number == BayNumber.BayOne && b.Number != this.Bay.Number);
-            this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo && b.Number != this.Bay.Number);
-            this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree && b.Number != this.Bay.Number);
+            this.IsBay1Present = bays.Any(b => b.Number == BayNumber.BayOne);
+            this.IsBay2Present = bays.Any(b => b.Number == BayNumber.BayTwo);
+            this.IsBay3Present = bays.Any(b => b.Number == BayNumber.BayThree);
 
             var lst = new List<bool>() { this.IsBay1Present, this.IsBay2Present, this.IsBay3Present };
             if (lst.Count(a => a) == 1)
