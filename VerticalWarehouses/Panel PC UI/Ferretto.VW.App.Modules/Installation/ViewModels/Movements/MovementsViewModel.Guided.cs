@@ -7,8 +7,10 @@ using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Installation.ViewModels
@@ -194,6 +196,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        protected void OnGuidedRaiseCanExecuteChanged()
+        {
+            //this.CanInputCellId =
+            //    !this.KeyboardOpened
+            //    &&
+            //    this.cells != null
+            //    &&
+            //    !this.IsMoving
+            //    &&
+            //    !this.IsWaitingForResponse;
+
+            //this.CanInputHeight =
+            //    !this.KeyboardOpened
+            //    &&
+            //    !this.IsMoving
+            //    &&
+            //    !this.IsWaitingForResponse;
+
+            this.CanInputLoadingUnitId =
+                !this.IsKeyboardOpened
+                &&
+                this.loadingUnits != null
+                &&
+                this.cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
+            //this.RefreshActionPoliciesAsync();
+
+            //this.moveToHeightCommand?.RaiseCanExecuteChanged();
+            //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+            //this.tuningBayCommand?.RaiseCanExecuteChanged();
+            //this.tuningChainCommand?.RaiseCanExecuteChanged();
+
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
+            //this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+            //this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+            //this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            //this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+            //this.setWeightControlCommand?.RaiseCanExecuteChanged();
+
+            //this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+        }
+
         private bool CanCloseShutter()
         {
             return
@@ -319,6 +369,36 @@ namespace Ferretto.VW.App.Installation.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnGuidedShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
+        {
+            if (!this.IsMovementsGuided)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    {
+                        this.IsShutterMoving = true;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.IsShutterMoving = false;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.OperationWarningOrError(message.Status, message.Description);
+                        break;
+                    }
             }
         }
 

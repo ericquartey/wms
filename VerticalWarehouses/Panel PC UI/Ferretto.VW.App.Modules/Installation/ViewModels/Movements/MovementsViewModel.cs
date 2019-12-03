@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
@@ -13,6 +14,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using Prism.Regions;
+using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -58,7 +60,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
+
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private DelegateCommand resetCommand;
 
         private SubscriptionToken sensorsToken;
 
@@ -110,18 +118,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 () => this.GoToMovementsExecuteCommand(true),
                 this.CanGoToMovementsExecuteCommand));
 
-        public ICommand GoToStatusSensorsCommand =>
-            this.goToStatusSensorsCommand
-            ??
-            (this.goToStatusSensorsCommand = new DelegateCommand(
-                () => this.StatusSensorsCommand()));
-
         public ICommand GoToMovementsManualCommand =>
             this.goToMovementsManualCommand
             ??
             (this.goToMovementsManualCommand = new DelegateCommand(
                 () => this.GoToMovementsExecuteCommand(false),
                 this.CanGoToMovementsExecuteCommand));
+
+        public ICommand GoToStatusSensorsCommand =>
+            this.goToStatusSensorsCommand
+            ??
+            (this.goToStatusSensorsCommand = new DelegateCommand(
+                () => this.StatusSensorsCommand()));
 
         public bool IsKeyboardOpened
         {
@@ -172,6 +180,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand KeyboardCloseCommand =>
+            this.keyboardCloseCommand
+            ??
+            (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
+
+        public ICommand ResetCommand =>
+            this.resetCommand
+            ??
+            (this.resetCommand = new DelegateCommand(
+               async () => await this.ResetCommandAsync(),
+               this.CanResetCommand));
+
         public ISensorsService SensorsService => this.sensorsService;
 
         public ICommand StopMovingCommand =>
@@ -190,28 +215,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Methods
-
-        private void StatusSensorsCommand()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
-                    data: null,
-                    trackCurrentView: true);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
 
         public override void Disappear()
         {
@@ -243,6 +246,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
                 this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
 
+                await this.OnManualAppearedAsync();
+
                 this.SubscribeToEvents();
             }
             catch (System.Exception ex)
@@ -255,15 +260,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override async Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)
+        {
+            await base.OnErrorStatusChangedAsync(e);
+
+            this.OnManualErrorStatusChanged();
+        }
+
         protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
         {
             await base.OnMachineModeChangedAsync(e);
+            this.OnManualMachinePowerChanged();
             this.RaiseCanExecuteChanged();
         }
 
         private bool CanGoToMovementsExecuteCommand()
         {
             return !this.IsWaitingForResponse;
+        }
+
+        private bool CanResetCommand()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private bool CanStopMoving()
@@ -289,6 +312,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private void KeyboardClose()
+        {
+            this.IsKeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.IsKeyboardOpened = true;
+        }
+
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
             //this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
@@ -297,27 +330,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
-            switch (message.Status)
-            {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.IsShutterMoving = true;
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
-                    {
-                        this.IsShutterMoving = false;
-                        break;
-                    }
-
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
-                    {
-                        this.OperationWarningOrError(message.Status, message.Description);
-                        break;
-                    }
-            }
+            this.OnManualShutterPositionChanged(message);
+            this.OnGuidedShutterPositionChanged(message);
         }
 
         private void OperationWarningOrError(CommonUtils.Messages.Enumerations.MessageStatus status, string errorDescription)
@@ -340,9 +354,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.OnManualRaiseCanExecuteChanged();
+            this.OnGuidedRaiseCanExecuteChanged();
+
             this.goToMovementsGuidedCommand?.RaiseCanExecuteChanged();
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.resetCommand?.RaiseCanExecuteChanged();
 
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
@@ -368,16 +386,79 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private async Task StopMovingAsync()
+        private async Task ResetCommandAsync()
+        {
+            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
+            if (messageBoxResult is DialogResult.Yes)
+            {
+                try
+                {
+                    this.IsWaitingForResponse = true;
+
+                    await this.machineMissionOperationsWebService.ResetMachineAsync();
+
+                    await this.sensorsService.RefreshAsync(false);
+
+                    this.RaiseCanExecuteChanged();
+
+                    this.ShowNotification(InstallationApp.ResetMachineSuccessfull, Services.Models.NotificationSeverity.Success);
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+                finally
+                {
+                    this.IsWaitingForResponse = false;
+                }
+            }
+        }
+
+        private void StatusSensorsCommand()
         {
             try
             {
                 this.IsWaitingForResponse = true;
 
-                await this.machineService.StopMovingByAllAsync();
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    data: null,
+                    trackCurrentView: true);
             }
             catch (Exception ex)
             {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopMovingAsync()
+        {
+            // In caso di fine operazione
+            if (this.IsMovementsManual && this.isCompleted)
+            {
+                return;
+            }
+
+            try
+            {
+                if (this.IsMovementsManual)
+                {
+                    this.IsShutterStopping = true;
+                }
+
+                this.IsWaitingForResponse = true;
+
+                await this.machineService.StopMovingByAllAsync();
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
                 this.ShowNotification(ex);
             }
             finally
