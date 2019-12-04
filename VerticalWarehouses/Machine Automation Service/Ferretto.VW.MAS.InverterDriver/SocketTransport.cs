@@ -75,33 +75,13 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            if (this.inverterAddress is null)
-            {
-                throw new ArgumentNullException(
-                    nameof(this.inverterAddress),
-                    $"{nameof(this.inverterAddress)} can't be null");
-            }
+            Debug.Assert(this.inverterAddress != null, $"{nameof(this.inverterAddress)} can't be null");
 
-            if (this.inverterAddress.AddressFamily != AddressFamily.InterNetwork)
-            {
-                throw new ArgumentException(
-                    "Inverter Address is not a valid IPV4 address",
-                    nameof(this.inverterAddress));
-            }
+            Debug.Assert(this.inverterAddress.AddressFamily == AddressFamily.InterNetwork, "Inverter Address is not a valid IPV4 address");
 
-            if (this.sendPort == 0)
-            {
-                throw new ArgumentNullException(
-                    nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} can't be zero");
-            }
+            Debug.Assert(this.sendPort != 0, $"{nameof(this.sendPort)} can't be zero");
 
-            if (this.sendPort < 1024 || this.sendPort > IPEndPoint.MaxPort)
-            {
-                throw new ArgumentOutOfRangeException(
-                    nameof(this.sendPort),
-                    $"{nameof(this.sendPort)} value must be between 1204 and {IPEndPoint.MaxPort}");
-            }
+            Debug.Assert(this.sendPort >= 1024 && this.sendPort <= IPEndPoint.MaxPort, $"{nameof(this.sendPort)} value must be between 1024 and {IPEndPoint.MaxPort}");
 
             if (this.transportClient != null || this.transportStream != null)
             {
@@ -267,6 +247,13 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (this.isDisposed)
             {
                 throw new InvalidOperationException($"Cannot access the disposed instance of {this.GetType().Name}.");
+            }
+
+            if (inverterMessage is null)
+            {
+                throw new InverterDriverException(
+                    "Inverter message is null",
+                    InverterDriverExceptionCode.InverterPacketMalformed);
             }
 
             if (this.transportStream is null)
