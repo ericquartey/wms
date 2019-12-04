@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     if (this.moveData.LoadingUnitDestination is LoadingUnitLocation.Cell)
                     {
-                        var destinationCellId = this.messageData.DestinationCellId;
+                        var destinationCellId = this.moveData.DestinationCellId;
                         if (destinationCellId.HasValue)
                         {
                             this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.moveData.LoadingUnitId);
