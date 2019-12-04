@@ -313,11 +313,11 @@ namespace Ferretto.VW.App.Controls
             }
             else if (this.sensorsService.BayChainPosition is null)
             {
-                this.ShowNotification("Posizione catena sconoscuta.", NotificationSeverity.Error);
+                this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
             }
             else if (!string.IsNullOrEmpty(this.sensorsService.ElevatorLogicalPosition))
             {
-                this.ShowNotification("Posizione elevatore sconoscuta.", NotificationSeverity.Warning); // da mettere giallo
+                this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Warning); // da mettere giallo
             }
         }
 
