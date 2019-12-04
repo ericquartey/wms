@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
+        private readonly IMachinesDataService machinesDataService;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
             IConfiguration configuration,
-            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService)
+            IMachinesDataService machinesDataService)
         {
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));

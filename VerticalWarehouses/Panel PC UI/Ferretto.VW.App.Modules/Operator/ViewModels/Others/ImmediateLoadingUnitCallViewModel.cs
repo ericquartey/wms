@@ -125,12 +125,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                var loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
                 this.loadingUnits.Clear();
-                foreach (var loadingUnit in loadingUnits)
-                {
-                    this.loadingUnits.Add(loadingUnit);
-                }
+                var loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.loadingUnits.AddRange(loadingUnits);
             }
             catch (Exception ex)
             {
@@ -152,16 +149,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            if (this.loadingUnits != null
-               &&
-               this.selectedUnitUnit != null)
-            {
-                return;
-            }
-
             this.currentItemIndex = 0;
             this.LoadingUnitId = null;
-            this.loadingUnits.Clear();
+      
             await this.GetLoadingUnitsAsync();
             this.SelectLoadingUnit();
         }
