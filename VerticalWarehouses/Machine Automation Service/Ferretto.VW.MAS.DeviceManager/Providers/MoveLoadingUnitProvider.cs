@@ -53,9 +53,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
-        public void CloseShutter(MessageActor sender, BayNumber requestingBay)
+        public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
-            this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+            try
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (restore)
+                {
+                    this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         public void ContinuePositioning(MessageActor sender, BayNumber requestingBay)
@@ -169,6 +183,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
+        public void MoveManualLoadingUnit(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+        }
+
         public void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId)
         {
             var data = new AssignedMissionOperationChangedMessageData
@@ -189,6 +210,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ErrorLevel.None);
         }
 
+        public void OpenShutter(MessageActor sender, BayNumber requestingBay, bool restore)
+        {
+            try
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Opened, requestingBay, sender);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (restore)
+                {
+                    this.shutterProvider.Move(ShutterMovementDirection.Up, requestingBay, sender);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
         /// <summary>
         /// Moves elevator to targetHeight.
         /// At the same time if sourceType is a bay it closes the shutter (only for external bays)
@@ -197,13 +237,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay)
+        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore)
         {
-            var parameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
-
             if (closeShutter)
             {
-                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                try
+                {
+                    this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    if (restore)
+                    {
+                        this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
 
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(

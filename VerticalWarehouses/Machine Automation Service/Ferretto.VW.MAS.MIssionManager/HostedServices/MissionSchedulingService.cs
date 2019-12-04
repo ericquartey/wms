@@ -101,11 +101,12 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogError("Wms is not enabled.");
-                return;
-            }
+            // TEST
+            //if (!this.configuration.IsWmsEnabled())
+            //{
+            //    this.Logger.LogError("Wms is not enabled.");
+            //    return;
+            //}
 
             if (messageData.MachineMode is MachineMode.Automatic)
             {

@@ -102,8 +102,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 else
                 {
                     this.logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadingUnitId}; bay {bayNumber}");
-                    return;
                 }
+                return;
             }
 
             // first, try to continue executing mission

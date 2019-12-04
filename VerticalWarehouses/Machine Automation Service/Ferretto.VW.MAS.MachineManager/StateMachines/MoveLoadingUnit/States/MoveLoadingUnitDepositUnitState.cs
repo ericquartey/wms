@@ -72,7 +72,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 var direction = HorizontalMovementDirection.Backwards;
                 var bayNumber = commandMessage.RequestingBay;
-                switch (messageData.Destination)
+                switch (moveData.LoadingUnitDestination)
                 {
                     case LoadingUnitLocation.Cell:
                         if (moveData.DestinationCellId != null)

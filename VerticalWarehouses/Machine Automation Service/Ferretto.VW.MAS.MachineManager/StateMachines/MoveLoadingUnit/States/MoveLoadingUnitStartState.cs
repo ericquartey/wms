@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                 }
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay);
+                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
 
                 var newMessageData = new MoveLoadingUnitMessageData(
                     messageData.MissionType,
