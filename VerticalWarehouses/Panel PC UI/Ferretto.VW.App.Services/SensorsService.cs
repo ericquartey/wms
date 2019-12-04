@@ -313,6 +313,39 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public void RetrieveElevatorPosition(ElevatorPosition position)
+        {
+            if (position is null)
+            {
+                return;
+            }
+
+            this.ElevatorVerticalPosition = position.Vertical;
+            this.ElevatorHorizontalPosition = position.Horizontal;
+
+            if (position.CellId != null)
+            {
+                this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
+            }
+            else if (position.BayPositionId != null)
+            {
+                if (this.bays != null)
+                {
+                    var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
+                    System.Diagnostics.Debug.Assert(bay != null);
+                    this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                }
+                else
+                {
+                    this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
+                }
+            }
+            else
+            {
+                this.ElevatorLogicalPosition = null;
+            }
+        }
+
         private async Task GetBayAsync()
         {
             try
@@ -474,39 +507,6 @@ namespace Ferretto.VW.App.Services
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitOnElevator));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInBay));
             this.RaisePropertyChanged(nameof(this.IsLoadingUnitInMiddleBottomBay));
-        }
-
-        private void RetrieveElevatorPosition(ElevatorPosition position)
-        {
-            if (position is null)
-            {
-                return;
-            }
-
-            this.ElevatorVerticalPosition = position.Vertical;
-            this.ElevatorHorizontalPosition = position.Horizontal;
-
-            if (position.CellId != null)
-            {
-                this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
-            }
-            else if (position.BayPositionId != null)
-            {
-                if (this.bays != null)
-                {
-                    var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
-                    System.Diagnostics.Debug.Assert(bay != null);
-                    this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
-                }
-                else
-                {
-                    this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
-                }
-            }
-            else
-            {
-                this.ElevatorLogicalPosition = null;
-            }
         }
 
         private void ShowNotification(Exception exception)

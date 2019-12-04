@@ -39,6 +39,8 @@ namespace Ferretto.VW.App.Controls
 
         private SubscriptionToken machinePowerChangedToken;
 
+        private SubscriptionToken machineStatusChangesToken;
+
         private PresentationMode mode;
 
         #endregion
@@ -165,9 +167,16 @@ namespace Ferretto.VW.App.Controls
                             this.UpdateIsEnabled(
                                 this.machineModeService.MachinePower,
                                 this.machineModeService.MachineMode,
-                                this.healthProbeService.HealthStatus,
-                                m.IsHoming);
+                                this.healthProbeService.HealthStatus);
                         },
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.EventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
                         ThreadOption.UIThread,
                         false);
 
@@ -179,8 +188,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus,
-                this.machineService.IsHoming);
+                this.healthProbeService.HealthStatus);
 
             await base.OnAppearedAsync();
         }
@@ -264,8 +272,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus,
-                this.machineService.IsHoming);
+                this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
@@ -275,8 +282,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                e.HealthStatus,
-                this.machineService.IsHoming);
+                e.HealthStatus);
 
             return Task.CompletedTask;
         }
@@ -286,8 +292,7 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 e.MachineMode,
-                this.healthProbeService.HealthStatus,
-                this.machineService.IsHoming);
+                this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
@@ -297,8 +302,17 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 e.MachinePowerState,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus,
-                this.machineService.IsHoming);
+                this.healthProbeService.HealthStatus);
+
+            return Task.CompletedTask;
+        }
+
+        protected virtual Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
         }
@@ -308,15 +322,13 @@ namespace Ferretto.VW.App.Controls
             this.UpdateIsEnabled(
                 this.machineModeService.MachinePower,
                 this.machineModeService.MachineMode,
-                this.healthProbeService.HealthStatus,
-                this.machineService.IsHoming);
+                this.healthProbeService.HealthStatus);
         }
 
         private void UpdateIsEnabled(
             MachinePowerState machinePower,
             MachineMode machineMode,
-            HealthStatus healthStatus,
-            bool isHoming)
+            HealthStatus healthStatus)
         {
             var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
 
@@ -346,7 +358,7 @@ namespace Ferretto.VW.App.Controls
                  );
 
             // Gestione Warning
-            if (!isHoming)
+            if (!this.machineService.IsHoming)
             {
                 this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
             }
@@ -354,11 +366,11 @@ namespace Ferretto.VW.App.Controls
             {
                 this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
             }
-            else if (this.sensorsService.BayChainPosition is null)
+            else if (this.machineService.MachineStatus.BayChainPosition is null)
             {
                 this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
             }
-            else if (!string.IsNullOrEmpty(this.sensorsService.ElevatorLogicalPosition))
+            else if (string.IsNullOrEmpty(this.machineService.MachineStatus.ElevatorLogicalPosition))
             {
                 this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Warning); // da mettere giallo
             }

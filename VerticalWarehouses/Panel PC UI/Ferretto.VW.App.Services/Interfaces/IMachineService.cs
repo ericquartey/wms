@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Services.Models;
 
 namespace Ferretto.VW.App.Services
 {
@@ -7,6 +8,8 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         bool IsHoming { get; }
+
+        MachineStatus MachineStatus { get; }
 
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -8,10 +9,11 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using NLog;
 using Prism.Commands;
 using Prism.Events;
+using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services
 {
-    internal sealed class MachineService : IMachineService, IDisposable
+    internal sealed class MachineService : BindableBase, IMachineService, IDisposable
     {
         #region Fields
 
@@ -29,9 +31,15 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineShuttersWebService shuttersWebService;
 
+        private SubscriptionToken bayChainPositionChangedToken;
+
+        private SubscriptionToken elevatorPositionChangedToken;
+
         private bool isDisposed;
 
         private bool isHoming;
+
+        private MachineStatus machineStatus;
 
         private SubscriptionToken receiveHomingUpdateToken;
 
@@ -56,10 +64,30 @@ namespace Ferretto.VW.App.Services
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
 
+            this.machineStatus = new MachineStatus();
+
             this.receiveHomingUpdateToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
                         async (m) => await this.OnHomingProcedureStatusChanged(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
                         ThreadOption.UIThread,
                         false);
         }
@@ -68,7 +96,17 @@ namespace Ferretto.VW.App.Services
 
         #region Properties
 
-        public bool IsHoming { get; set; }
+        public bool IsHoming
+        {
+            get => this.isHoming;
+            set => this.SetProperty(ref this.isHoming, value);
+        }
+
+        public MachineStatus MachineStatus
+        {
+            get => this.machineStatus;
+            set => this.SetProperty(ref this.machineStatus, value, this.MachineStatusNotificationProperty);
+        }
 
         #endregion
 
@@ -81,6 +119,12 @@ namespace Ferretto.VW.App.Services
 
             this.receiveHomingUpdateToken?.Dispose();
             this.receiveHomingUpdateToken = null;
+
+            this.elevatorPositionChangedToken?.Dispose();
+            this.elevatorPositionChangedToken = null;
+
+            this.bayChainPositionChangedToken?.Dispose();
+            this.bayChainPositionChangedToken = null;
         }
 
         public async Task StopMovingByAllAsync()
@@ -105,6 +149,23 @@ namespace Ferretto.VW.App.Services
             this.isDisposed = true;
         }
 
+        private void MachineStatusNotificationProperty()
+        {
+            this.eventAggregator
+                .GetEvent<MachineStatusChangedPubSubEvent>()
+                .Publish(new MachineStatusChangedMessage(this.MachineStatus));
+        }
+
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.UpdateMachineStatus(e);
+        }
+
+        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
+        {
+            this.UpdateMachineStatus(e);
+        }
+
         private async Task OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
         {
             var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
@@ -119,6 +180,39 @@ namespace Ferretto.VW.App.Services
             }
 
             this.IsHoming = isHoming;
+        }
+
+        private void UpdateMachineStatus(EventArgs e)
+        {
+            var ms = new MachineStatus();
+
+            if (e is ElevatorPositionChangedEventArgs dataElevatorPosition)
+            {
+                this.sensorsService.RetrieveElevatorPosition(
+                    new ElevatorPosition
+                    {
+                        Horizontal = dataElevatorPosition.HorizontalPosition,
+                        Vertical = dataElevatorPosition.VerticalPosition,
+                        BayPositionId = dataElevatorPosition.BayPositionId,
+                        CellId = dataElevatorPosition.CellId
+                    });
+                ms.ElevatorLogicalPosition = this.sensorsService?.ElevatorLogicalPosition;
+            }
+            else
+            {
+                ms.ElevatorLogicalPosition = this.MachineStatus.ElevatorLogicalPosition;
+            }
+
+            if (e is BayChainPositionChangedEventArgs dataBayChainPosition)
+            {
+                ms.BayChainPosition = dataBayChainPosition.Position;
+            }
+            else
+            {
+                ms.BayChainPosition = this.MachineStatus.BayChainPosition;
+            }
+
+            this.MachineStatus = ms;
         }
 
         #endregion
