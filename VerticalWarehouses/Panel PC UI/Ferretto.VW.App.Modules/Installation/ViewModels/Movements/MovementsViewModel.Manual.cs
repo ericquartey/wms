@@ -653,6 +653,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsCarouselClosing = false;
             this.IsCarouselOpening = false;
             this.IsCarouselMoving = false;
+            this.IsMoving = false;
         }
 
         private void WriteInfo(Axis? axisMovement)

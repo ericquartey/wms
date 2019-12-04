@@ -308,7 +308,6 @@
                                                 Command="{Binding UnloadToBayCommand}"
                                                 Content="{x:Static res:InstallationApp.UnloadToBay}"
                                                 IsBusy="{Binding IsBusyUnloadingToBay}"
-                                                IsEnabled="False"
                                                 Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
                             <controls:PpcButton Grid.Column="1"
@@ -317,7 +316,6 @@
                                                 Command="{Binding UnloadToCellCommand}"
                                                 Content="{x:Static res:InstallationApp.UnloadToCell}"
                                                 IsBusy="{Binding IsBusyUnloadingToCell}"
-                                                IsEnabled="False"
                                                 Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
 
                             <controls:PpcButton Grid.Column="2"
@@ -326,7 +324,6 @@
                                                 Command="{Binding LoadFromBayCommand}"
                                                 Content="{x:Static res:InstallationApp.LoadFromBay}"
                                                 IsBusy="{Binding IsBusyLoadingFromBay}"
-                                                IsEnabled="False"
                                                 Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVIC}}" />
 
                             <controls:PpcButton Grid.Column="2"
@@ -335,7 +332,6 @@
                                                 Command="{Binding LoadFromCellCommand}"
                                                 Content="{x:Static res:InstallationApp.LoadFromCell}"
                                                 IsBusy="{Binding IsBusyLoadingFromCell}"
-                                                IsEnabled="False"
                                                 Visibility="{Binding IsElevatorInCell, Converter={StaticResource BTVC}}" />
                         </Grid>
 

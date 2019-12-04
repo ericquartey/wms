@@ -234,10 +234,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 || this.IsElevatorMovingToHeight
                 || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
-                //|| this.IsBusyLoadingFromBay
-                //|| this.IsBusyLoadingFromCell
-                //|| this.IsBusyUnloadingToBay
-                //|| this.IsBusyUnloadingToCell
+                || this.IsBusyLoadingFromBay
+                || this.IsBusyLoadingFromCell
+                || this.IsBusyUnloadingToBay
+                || this.IsBusyUnloadingToCell
                 || this.IsTuningChain
                 || this.IsTuningBay
                 || this.IsCarouselMoving
@@ -249,10 +249,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsElevatorMovingToHeight = value;
                 this.IsElevatorMovingToLoadingUnit = value;
                 this.IsElevatorMovingToBay = value;
-                //this.IsBusyLoadingFromBay = value;
-                //this.IsBusyLoadingFromCell = value;
-                //this.IsBusyUnloadingToBay = value;
-                //this.IsBusyUnloadingToCell = value;
+                this.IsBusyLoadingFromBay = value;
+                this.IsBusyLoadingFromCell = value;
+                this.IsBusyUnloadingToBay = value;
+                this.IsBusyUnloadingToCell = value;
                 this.IsTuningChain = value;
                 this.IsCarouselMoving = value;
                 this.IsTuningBay = value;
@@ -441,15 +441,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void GoToMovementsExecuteCommand(bool isGuided)
         {
-            if (!isGuided && this.isMovementsGuided)
-            {
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.MovementsManual, DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult is DialogResult.No)
-                {
-                    return;
-                }
-            }
+            //if (!isGuided && this.isMovementsGuided)
+            //{
+            //    var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
+            //    var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, InstallationApp.MovementsManual, DialogType.Question, DialogButtons.YesNo);
+            //    if (messageBoxResult is DialogResult.No)
+            //    {
+            //        return;
+            //    }
+            //}
 
             if (isGuided)
             {

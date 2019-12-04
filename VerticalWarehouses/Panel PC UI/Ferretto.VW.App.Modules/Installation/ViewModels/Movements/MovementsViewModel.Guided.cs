@@ -34,6 +34,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand intermediateShutterCommand;
 
+        private bool isBusyLoadingFromBay;
+
+        private bool isBusyLoadingFromCell;
+
+        private bool isBusyUnloadingToBay;
+
+        private bool isBusyUnloadingToCell;
+
         private bool isElevatorMovingToBay;
 
         private bool isElevatorMovingToCell;
@@ -162,6 +170,58 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.IntermediateShutterAsync(),
                 this.CanExecuteIntermediateCommand));
 
+        public bool IsBusyLoadingFromBay
+        {
+            get => this.isBusyLoadingFromBay;
+            private set
+            {
+                if (this.SetProperty(ref this.isBusyLoadingFromBay, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsBusyLoadingFromCell
+        {
+            get => this.isBusyLoadingFromCell;
+            private set
+            {
+                if (this.SetProperty(ref this.isBusyLoadingFromCell, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsBusyUnloadingToBay
+        {
+            get => this.isBusyUnloadingToBay;
+            private set
+            {
+                if (this.SetProperty(ref this.isBusyUnloadingToBay, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public bool IsBusyUnloadingToCell
+        {
+            get => this.isBusyUnloadingToCell;
+            private set
+            {
+                if (this.SetProperty(ref this.isBusyUnloadingToCell, value))
+                {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
         public bool IsElevatorMovingToBay
         {
             get => this.isElevatorMovingToBay;
@@ -274,6 +334,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isUseWeightControl, value);
         }
 
+        public ICommand LoadFromBayCommand =>
+                                                                                                                                                            this.loadFromBayCommand
+            ??
+            (this.loadFromBayCommand = new DelegateCommand(
+                async () => await this.LoadFromBayAsync(),
+                this.CanLoadFromBay));
+
+        public ICommand LoadFromCellCommand =>
+            this.loadFromCellCommand
+            ??
+            (this.loadFromCellCommand = new DelegateCommand(
+                async () => await this.LoadFromCellAsync(),
+                this.CanLoadFromCell));
+
         public LoadingUnit LoadingUnitInCell
         {
             get => this.loadingUnitInCell;
@@ -376,6 +450,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.TuningChainAsync(),
                 this.CanTuningChain));
 
+        public ICommand UnloadToBayCommand =>
+                                                                                                            this.unloadToBayCommand
+            ??
+            (this.unloadToBayCommand = new DelegateCommand(
+                async () => await this.UnloadToBayAsync(),
+                this.CanUnloadToBay));
+
+        public ICommand UnloadToCellCommand =>
+            this.unloadToCellCommand
+            ??
+            (this.unloadToCellCommand = new DelegateCommand(
+                async () => await this.UnloadToCellAsync(),
+                this.CanUnloadToCell));
+
         #endregion
 
         #region Methods
@@ -406,6 +494,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
             this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+
+            this.loadFromBayCommand?.RaiseCanExecuteChanged();
+            this.loadFromCellCommand?.RaiseCanExecuteChanged();
+            this.unloadToBayCommand?.RaiseCanExecuteChanged();
+            this.unloadToCellCommand?.RaiseCanExecuteChanged();
 
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
@@ -442,6 +535,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.BayIsShutterThreeSensors
                 &&
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
+        }
+
+        private bool CanLoadFromBay()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedBayPosition != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.loadFromBayPolicy?.IsAllowed == true;
+        }
+
+        private bool CanLoadFromCell()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedCell != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.loadFromCellPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveCarouselDown()
@@ -556,6 +677,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.sensorsService.Sensors.LuPresentInOperatorSide;
         }
 
+        private bool CanUnloadToBay()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedBayPosition != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.unloadToBayPolicy?.IsAllowed == true;
+        }
+
+        private bool CanUnloadToCell()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedCell != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.unloadToCellPolicy?.IsAllowed == true;
+        }
+
         private async Task ClosedShutterAsync()
         {
             this.IsWaitingForResponse = true;
@@ -631,6 +780,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task LoadFromBayAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                System.Diagnostics.Debug.Assert(
+                    this.SelectedBayPosition != null,
+                    "A bay position should be selected");
+
+                await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
+
+                this.IsBusyLoadingFromBay = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task LoadFromCellAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                System.Diagnostics.Debug.Assert(
+                    this.SelectedCell != null,
+                    "A cell should be selected");
+
+                await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
+
+                this.IsBusyLoadingFromCell = true;
+            }
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
@@ -889,6 +1086,54 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsWaitingForResponse = false;
                 }
+            }
+        }
+
+        private async Task UnloadToBayAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                System.Diagnostics.Debug.Assert(
+                    this.SelectedBayPosition != null,
+                    "A bay position should be selected");
+
+                await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
+
+                this.IsBusyUnloadingToBay = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task UnloadToCellAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                System.Diagnostics.Debug.Assert(
+                    this.SelectedCell != null,
+                    "A cell should be selected");
+
+                await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
+
+                this.IsBusyUnloadingToCell = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 
