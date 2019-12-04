@@ -80,7 +80,8 @@
             <controls:PpcTextBox Grid.Column="0"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
-                                 InputText="{Binding SearchItemCode, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 Width="100"
+                                 InputText="{Binding SearchItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static Resources:OperatorApp.ItemSearchKeySearch}" />
 
 

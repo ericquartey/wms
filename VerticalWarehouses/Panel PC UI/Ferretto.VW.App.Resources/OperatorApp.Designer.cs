@@ -1393,7 +1393,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Search by code.
+        ///   Looks up a localized string similar to Search.
         /// </summary>
         public static string ItemSearchKeySearch {
             get {
@@ -2419,11 +2419,11 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Execution.
+        ///   Looks up a localized string similar to Executable.
         /// </summary>
-        public static string WaitingListDataGridHeaderExecution {
+        public static string WaitingListDataGridHeaderExecutable {
             get {
-                return ResourceManager.GetString("WaitingListDataGridHeaderExecution", resourceCulture);
+                return ResourceManager.GetString("WaitingListDataGridHeaderExecutable", resourceCulture);
             }
         }
         
