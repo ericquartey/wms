@@ -260,6 +260,9 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.notificationEventSubscriptionToken?.Dispose();
             this.notificationEventSubscriptionToken = null;
 
+            this.commandQueue?.Dispose();
+            this.notificationQueue?.Dispose();
+
             this.isDisposed = true;
         }
 

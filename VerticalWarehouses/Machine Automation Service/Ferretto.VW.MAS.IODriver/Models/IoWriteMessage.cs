@@ -182,7 +182,7 @@ namespace Ferretto.VW.MAS.IODriver
             {
                 case 0x10:
                     // Payload output
-                    telegram[3] = this.BoolArrayToByte(this.outputs);
+                    telegram[3] = BoolArrayToByte(this.outputs);
 
                     // Configuration data
                     Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
@@ -195,7 +195,7 @@ namespace Ferretto.VW.MAS.IODriver
                     telegram[3] = 0x00;
 
                     // Payload output
-                    telegram[4] = this.BoolArrayToByte(this.outputs);
+                    telegram[4] = BoolArrayToByte(this.outputs);
 
                     // Configuration data
                     Array.Copy(this.configurationData, 0, telegram, 5, this.configurationData.Length);
@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.IODriver
 
                 default:
                     // Payload output
-                    telegram[3] = this.BoolArrayToByte(this.outputs);
+                    telegram[3] = BoolArrayToByte(this.outputs);
 
                     // Configuration data
                     Array.Copy(this.configurationData, 0, telegram, 4, this.configurationData.Length);
@@ -284,7 +284,7 @@ namespace Ferretto.VW.MAS.IODriver
             return returnString.ToString();
         }
 
-        private byte BoolArrayToByte(bool[] b)
+        private static byte BoolArrayToByte(bool[] b)
         {
             byte value = 0x00;
             var index = 0;

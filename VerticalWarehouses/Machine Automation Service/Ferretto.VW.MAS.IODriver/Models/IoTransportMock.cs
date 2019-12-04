@@ -95,7 +95,7 @@ namespace Ferretto.VW.MAS.IODriver
             return await this.WriteAsync(dataMessage, stoppingToken);
         }
 
-        private byte BoolArrayToByte(bool[] b)
+        private static byte BoolArrayToByte(bool[] b)
         {
             byte value = 0x00;
             var index = 0;
@@ -135,7 +135,7 @@ namespace Ferretto.VW.MAS.IODriver
                 outputs[i] = false;
             }
 
-            rawMessage[4] = this.BoolArrayToByte(outputs);
+            rawMessage[4] = BoolArrayToByte(outputs);
 
             // Payload input
             var lowByteInputs = new bool[8];
@@ -146,8 +146,8 @@ namespace Ferretto.VW.MAS.IODriver
                 highByteInputs[i] = false;
             }
 
-            rawMessage[5] = this.BoolArrayToByte(lowByteInputs);
-            rawMessage[6] = this.BoolArrayToByte(highByteInputs);
+            rawMessage[5] = BoolArrayToByte(lowByteInputs);
+            rawMessage[6] = BoolArrayToByte(highByteInputs);
 
             // Configuration data
             var configurationData = new byte[8];
@@ -186,8 +186,8 @@ namespace Ferretto.VW.MAS.IODriver
                         highByteInputs[i] = false;
                     }
 
-                    this.responseMessage[5] = this.BoolArrayToByte(lowByteInputs);
-                    this.responseMessage[6] = this.BoolArrayToByte(highByteInputs);
+                    this.responseMessage[5] = BoolArrayToByte(lowByteInputs);
+                    this.responseMessage[6] = BoolArrayToByte(highByteInputs);
 
                     // configuration
                     for (var i = 0; i < 8; i++)
