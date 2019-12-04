@@ -346,7 +346,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchCradleMotor(bool switchOn)
         {
-            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
+            Trace.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             if (switchOn)
             {
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchElevatorMotor(bool switchOn)
         {
-            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
+            Trace.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             if (switchOn)
             {
@@ -388,7 +388,7 @@ namespace Ferretto.VW.MAS.IODriver
 
         public bool SwitchResetSecurity(bool switchOn)
         {
-            Debug.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
+            Trace.Assert(this.outputs == null, "Message Digital Outputs are not initialized correctly");
 
             this.outputs[(int)IoPorts.ResetSecurity] = switchOn;
 

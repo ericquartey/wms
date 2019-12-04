@@ -75,13 +75,13 @@ namespace Ferretto.VW.MAS.InverterDriver
         /// <inheritdoc />
         public async Task ConnectAsync()
         {
-            Debug.Assert(this.inverterAddress != null, $"{nameof(this.inverterAddress)} can't be null");
+            Trace.Assert(this.inverterAddress != null, $"{nameof(this.inverterAddress)} can't be null");
 
-            Debug.Assert(this.inverterAddress.AddressFamily == AddressFamily.InterNetwork, "Inverter Address is not a valid IPV4 address");
+            Trace.Assert(this.inverterAddress.AddressFamily == AddressFamily.InterNetwork, "Inverter Address is not a valid IPV4 address");
 
-            Debug.Assert(this.sendPort != 0, $"{nameof(this.sendPort)} can't be zero");
+            Trace.Assert(this.sendPort != 0, $"{nameof(this.sendPort)} can't be zero");
 
-            Debug.Assert(this.sendPort >= 1024 && this.sendPort <= IPEndPoint.MaxPort, $"{nameof(this.sendPort)} value must be between 1024 and {IPEndPoint.MaxPort}");
+            Trace.Assert(this.sendPort >= 1024 && this.sendPort <= IPEndPoint.MaxPort, $"{nameof(this.sendPort)} value must be between 1024 and {IPEndPoint.MaxPort}");
 
             if (this.transportClient != null || this.transportStream != null)
             {
