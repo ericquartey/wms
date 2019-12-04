@@ -185,14 +185,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse));
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && this.IsPositionUpSelected));
 
         public ICommand SelectBayPositionUpCommand =>
             this.selectBayPositionUpCommand
             ??
             (this.selectBayPositionUpCommand = new DelegateCommand(
                 this.SelectBayPositionUp,
-                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse));
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && !this.IsPositionUpSelected));
 
         public ICommand StartCommand =>
                this.startCommand
@@ -326,11 +326,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public virtual void SelectBayPositionDown()
         {
             this.IsPositionDownSelected = true;
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
         }
 
         public virtual void SelectBayPositionUp()
         {
             this.IsPositionUpSelected = true;
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
         }
 
         public virtual Task StartAsync()

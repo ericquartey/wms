@@ -325,12 +325,12 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
-                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
+                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
-                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
+                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
                     }
 

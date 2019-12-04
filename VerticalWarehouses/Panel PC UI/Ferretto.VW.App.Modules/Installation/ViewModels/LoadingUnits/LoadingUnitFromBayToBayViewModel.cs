@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private readonly ISensorsService sensorsService;
 
+        private DelegateCommand confirmEjectLoadingUnitCommand;
+
         private bool isBay1Destination;
 
         private bool isBay1Present;
@@ -30,6 +32,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         private bool isBay3Destination;
 
         private bool isBay3Present;
+
+        private bool isEjectLoadingUnitConfirmationEnabled;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
@@ -61,6 +65,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #endregion
 
         #region Properties
+
+        public ICommand ConfirmEjectLoadingUnitCommand =>
+                this.confirmEjectLoadingUnitCommand
+                ??
+                (this.confirmEjectLoadingUnitCommand = new DelegateCommand(async () => await this.ConfirmEjectLoadingUnit(), this.CanConfirmEjectLoadingUnit));
 
         public bool IsBay1Destination
         {
@@ -127,7 +136,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 () => !this.IsExecutingProcedure &&
                       !this.IsWaitingForResponse &&
                       (!string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ||
-                       !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionDownInBayCode))));
+                       !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionDownInBayCode))
+                ));
 
         #endregion
 
@@ -155,7 +165,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             await this.InitialinngData();
 
-            await this.SetDataBays();
+            await this.SetDataBays()
+                .ContinueWith((m) => this.RaiseCanExecuteChanged());
         }
 
         public override void RaiseCanExecuteChanged()
@@ -166,6 +177,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.sendToBay2Command?.RaiseCanExecuteChanged();
             this.sendToBay3Command?.RaiseCanExecuteChanged();
             this.startToBayCommand?.RaiseCanExecuteChanged();
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         public async Task StartToBayAsync()
@@ -179,11 +191,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
-                var loadingUnitCode = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
+
+                var loadingUnit = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
                                       this.sensorsService.LoadingUnitPositionUpInBayCode :
                                       this.sensorsService.LoadingUnitPositionDownInBayCode;
+                int id = 0;
+                int.TryParse(loadingUnit, out id);
 
-                this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Code.Equals(loadingUnitCode))?.Id;
+                this.LoadingUnitId = this.loadingUnits.FirstOrDefault(f => f.Id == id)?.Id;
 
                 if (this.LoadingUnitId is null)
                 {
@@ -202,6 +217,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
+                this.isEjectLoadingUnitConfirmationEnabled = false;
+
+                this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+
                 await this.MachineLoadingUnitsWebService.StartMovingSourceDestinationAsync(source, destination, null, null);
             }
             catch (Exception ex)
@@ -218,7 +237,25 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             base.Ended();
 
+            this.isEjectLoadingUnitConfirmationEnabled = false;
+
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+
             this.GetLoadingUnits().ConfigureAwait(false);
+        }
+
+        protected override void OnWaitResume()
+        {
+            this.RaiseCanExecuteChanged();
+
+            this.isEjectLoadingUnitConfirmationEnabled = true;
+
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanConfirmEjectLoadingUnit()
+        {
+            return this.isEjectLoadingUnitConfirmationEnabled;
         }
 
         private void ChangeDestination(BayNumber bayDestination)
@@ -243,6 +280,11 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             }
 
             this.RaiseCanExecuteChanged();
+        }
+
+        private async Task ConfirmEjectLoadingUnit()
+        {
+            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.Bay.Number);
         }
 
         private async Task InitialinngData()
@@ -274,6 +316,23 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 }
 
                 if (this.IsBay3Present)
+                {
+                    this.ChangeDestination(BayNumber.BayThree);
+                }
+            }
+            else
+            {
+                if (this.Bay.Number == BayNumber.BayOne)
+                {
+                    this.ChangeDestination(BayNumber.BayOne);
+                }
+
+                if (this.Bay.Number == BayNumber.BayTwo)
+                {
+                    this.ChangeDestination(BayNumber.BayTwo);
+                }
+
+                if (this.Bay.Number == BayNumber.BayThree)
                 {
                     this.ChangeDestination(BayNumber.BayThree);
                 }

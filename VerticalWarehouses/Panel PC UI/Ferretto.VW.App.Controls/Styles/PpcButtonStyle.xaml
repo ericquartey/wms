@@ -118,7 +118,7 @@
             <DataTrigger Binding="{Binding IsActive}"
                          Value="True">
                 <Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
+                <!--<Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />-->
             </DataTrigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
