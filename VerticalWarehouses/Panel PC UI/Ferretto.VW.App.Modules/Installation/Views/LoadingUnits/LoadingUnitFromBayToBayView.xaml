@@ -21,6 +21,7 @@
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
+            <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -37,7 +38,7 @@
                    Text="Inserimento cassetto da baia a baia" />
 
         <ctrls:SensorsPanel Grid.Row="1"
-                            Grid.RowSpan="3"
+                            Grid.RowSpan="4"
                             Margin="0,5,5,5" />
 
         <StackPanel Grid.Row="1"
@@ -78,7 +79,7 @@
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
 
-            <controls:PpcButton Margin="5"
+            <controls:PpcButton Margin="15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Command="{Binding SelectBayPositionDownCommand}"
@@ -96,14 +97,25 @@
         </StackPanel>
 
         <controls:PpcButton Grid.Row="3"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            Margin="15"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            Command="{Binding ConfirmEjectLoadingUnitCommand}"
+                            Content="{x:Static res:InstallationApp.ConfirmEjectLoadingUnit}" />
+
+        <controls:PpcButton Grid.Row="4"
                             Grid.Column="2"
+                            Margin="15"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding StartToBayCommand}"
                             Content="{x:Static res:InstallationApp.Start}" />
 
-        <controls:PpcButton Grid.Row="3"
+        <controls:PpcButton Grid.Row="4"
                             Grid.Column="1"
+                            Margin="15"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Command="{Binding StopCommand}"
