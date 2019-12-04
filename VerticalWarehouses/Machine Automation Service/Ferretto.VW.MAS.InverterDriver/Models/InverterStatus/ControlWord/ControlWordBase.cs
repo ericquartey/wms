@@ -39,6 +39,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool EnableOperation
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0008) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)
@@ -57,6 +64,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool EnableVoltage
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0002) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)
@@ -100,6 +114,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool Halt
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0100) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)
@@ -159,6 +180,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool QuickStop
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0004) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)
@@ -177,6 +205,13 @@ namespace Ferretto.VW.MAS.InverterDriver.InverterStatus.ControlWord
 
         public bool SwitchOn
         {
+            get
+            {
+                lock (this.controlWordLockObject)
+                {
+                    return (this.controlWord & 0x0001) > 0;
+                }
+            }
             set
             {
                 lock (this.controlWordLockObject)

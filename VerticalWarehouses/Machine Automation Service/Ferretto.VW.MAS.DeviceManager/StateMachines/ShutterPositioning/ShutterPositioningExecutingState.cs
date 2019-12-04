@@ -143,6 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             {
                 this.delayTimerDown?.Dispose();
                 this.delayTimerUp?.Dispose();
+                this.scope?.Dispose();
             }
 
             this.disposed = true;

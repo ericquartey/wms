@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         void QueueLoadingUnitCompactingMission();
 
-        Task ScheduleMissionsAsync(BayNumber bayNumber);
+        Task ScheduleMissionsAsync(BayNumber bayNumber, bool restore = false);
 
         #endregion
     }

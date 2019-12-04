@@ -12,7 +12,7 @@ using Prism.Events;
 namespace Ferretto.VW.MAS.Utils
 {
     public abstract class AutomationBackgroundService<TCommandMessage, TNotificationMessage, TCommandEvent, TNotificationEvent> : BackgroundService
-        where TCommandMessage : class
+            where TCommandMessage : class
         where TNotificationMessage : class
         where TCommandEvent : PubSubEvent<TCommandMessage>, new()
         where TNotificationEvent : PubSubEvent<TNotificationMessage>, new()
@@ -217,11 +217,13 @@ namespace Ferretto.VW.MAS.Utils
             {
                 this.commandEventSubscriptionToken?.Dispose();
                 this.notificationEventSubscriptionToken?.Dispose();
+                this.commandQueue?.Dispose();
+                this.notificationQueue?.Dispose();
+
+                base.Dispose();
+
+                this.isDisposed = true;
             }
-
-            base.Dispose();
-
-            this.isDisposed = true;
         }
 
         private void InitializeSubscriptions()

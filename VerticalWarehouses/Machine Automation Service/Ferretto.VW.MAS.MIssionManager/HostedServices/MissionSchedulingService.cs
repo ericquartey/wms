@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         try
                         {
-                            await missionSchedulingProvider.ScheduleMissionsAsync(bay.Number);
+                            await missionSchedulingProvider.ScheduleMissionsAsync(bay.Number, true);
                         }
                         catch (Exception ex)
                         {
