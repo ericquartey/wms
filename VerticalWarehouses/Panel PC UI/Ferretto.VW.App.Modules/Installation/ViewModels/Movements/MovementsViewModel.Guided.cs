@@ -269,7 +269,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsUseWeightControl
         {
             get => this.isUseWeightControl;
-            private set => this.SetProperty(ref this.isUseWeightControl, value);
+            set => this.SetProperty(ref this.isUseWeightControl, value);
         }
 
         public LoadingUnit LoadingUnitInCell
