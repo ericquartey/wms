@@ -466,7 +466,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
 

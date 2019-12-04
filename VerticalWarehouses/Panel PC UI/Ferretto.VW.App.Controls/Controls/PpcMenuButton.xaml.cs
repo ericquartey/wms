@@ -48,14 +48,14 @@ namespace Ferretto.VW.App.Controls.Controls
                 new PropertyMetadata(null));
 
         public static readonly DependencyProperty MenuBrushProperty =
-                                    DependencyProperty.Register(
+            DependencyProperty.Register(
                 nameof(MenuBrush),
                 typeof(Brush),
                 typeof(PpcMenuButton),
                 new PropertyMetadata(Brushes.Green));
 
         public static readonly DependencyProperty PermitionProperty =
-                    DependencyProperty.Register(
+            DependencyProperty.Register(
                 nameof(Permition),
                 typeof(UserAccessLevel),
                 typeof(PpcMenuButton),

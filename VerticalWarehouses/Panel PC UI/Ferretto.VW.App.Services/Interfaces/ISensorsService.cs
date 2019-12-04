@@ -1,11 +1,21 @@
 ﻿using System.Threading.Tasks;
-using Ferretto.VW.App.Controls.Controls;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
-namespace Ferretto.VW.App.Controls.Interfaces
+namespace Ferretto.VW.App.Services
 {
     public interface ISensorsService
     {
         #region Properties
+
+        double? BayChainPosition { get; }
+
+        double? ElevatorHorizontalPosition { get; }
+
+        string ElevatorLogicalPosition { get; }
+
+        double? ElevatorVerticalPosition { get; }
+
+        LoadingUnit EmbarkedLoadingUnit { get; }
 
         bool IsLoadingUnitInBay { get; }
 
@@ -14,6 +24,10 @@ namespace Ferretto.VW.App.Controls.Interfaces
         bool IsLoadingUnitOnElevator { get; }
 
         bool IsZeroChain { get; }
+
+        string LoadingUnitPositionDownInBayCode { get; }
+
+        string LoadingUnitPositionUpInBayCode { get;  }
 
         Sensors Sensors { get; }
 

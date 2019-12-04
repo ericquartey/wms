@@ -204,7 +204,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                     InverterDriverExceptionCode.NetworkStreamWriteFailure);
             }
 
-            byte[] receivedData = null;
+            byte[] receivedData;
             try
             {
                 this.readStopwatch.Reset();

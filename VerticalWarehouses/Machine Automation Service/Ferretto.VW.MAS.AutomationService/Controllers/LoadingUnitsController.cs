@@ -161,7 +161,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
+        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
             this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 

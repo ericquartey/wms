@@ -320,6 +320,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             if (e.NewState)
             {
                 this.Logger.LogError($"Inverter Fault signal detected! Begin Stop machine procedure.");
+
                 var messageData = new StateChangedMessageData(e.NewState);
                 var msg = new NotificationMessage(
                     messageData,
@@ -332,6 +333,10 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
+                    scope.ServiceProvider
+                        .GetRequiredService<IErrorsProvider>()
+                        .RecordNew(MachineErrorCode.InverterFaultStateDetected);
+
                     var inverterProvider = scope.ServiceProvider.GetRequiredService<IInvertersProvider>();
                     foreach (var inverter in inverterProvider.GetAll())
                     {
@@ -361,6 +366,43 @@ namespace Ferretto.VW.MAS.DeviceManager
                     this.Logger.LogDebug($"Emergency button status are [1:{machineResourcesProvider.IsMushroomEmergencyButtonBay1}, 2:{machineResourcesProvider.IsMushroomEmergencyButtonBay2}, 3:{machineResourcesProvider.IsMushroomEmergencyButtonBay3}]");
                     this.Logger.LogDebug($"Anti intrusion barrier status are [1:{machineResourcesProvider.IsAntiIntrusionBarrierBay1}, 2:{machineResourcesProvider.IsAntiIntrusionBarrierBay2}, 3:{machineResourcesProvider.IsAntiIntrusionBarrierBay3}]");
                     this.Logger.LogDebug($"Micro carter status are [Left:{machineResourcesProvider.IsMicroCarterLeftSide}, Right:{machineResourcesProvider.IsMicroCarterRightSide}]");
+
+                    var errorCode = MachineErrorCode.SecurityWasTriggered;
+                    if (machineResourcesProvider.IsMushroomEmergencyButtonBay1
+                        || machineResourcesProvider.IsMushroomEmergencyButtonBay2
+                        || machineResourcesProvider.IsMushroomEmergencyButtonBay3
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecurityButtonWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (machineResourcesProvider.IsAntiIntrusionBarrierBay1
+                        || machineResourcesProvider.IsAntiIntrusionBarrierBay2
+                        || machineResourcesProvider.IsAntiIntrusionBarrierBay3
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecurityBarrierWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (machineResourcesProvider.IsMicroCarterLeftSide
+                        || machineResourcesProvider.IsMicroCarterRightSide
+                        )
+                    {
+                        errorCode = MachineErrorCode.SecuritySensorWasTriggered;
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
+                    if (errorCode == MachineErrorCode.SecurityWasTriggered)
+                    {
+                        scope.ServiceProvider
+                            .GetRequiredService<IErrorsProvider>()
+                            .RecordNew(errorCode);
+                    }
                 }
             }
 

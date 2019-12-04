@@ -22,6 +22,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand loadingUnitsBayToBayCommand;
+
         private DelegateCommand loadingUnitsCommand;
 
         private DelegateCommand moveLoadingUnitsCommand;
@@ -54,6 +56,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             MoveLoadingUnits,
 
             ExtractionLoadingUnits,
+
+            LoadingUnitsBayToBay,
 
             TestDepositAndPickUp,
 
@@ -92,6 +96,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             get => this.isWaitingForResponse;
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand LoadingUnitsBayToBayCommand =>
+            this.loadingUnitsBayToBayCommand
+            ??
+            (this.loadingUnitsBayToBayCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.LoadingUnitsBayToBay),
+                this.CanExecuteCommand));
 
         public ICommand LoadingUnitsCommand =>
             this.loadingUnitsCommand
@@ -198,6 +209,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        trackCurrentView: true);
                     break;
 
+                case Menu.LoadingUnitsBayToBay:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOBAY,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
                 case Menu.TestComplete:
                     break;
             }
@@ -212,6 +231,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.moveLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.testCompleteCommand?.RaiseCanExecuteChanged();
             this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
+            this.loadingUnitsBayToBayCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

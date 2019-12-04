@@ -48,6 +48,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 .AddTransient<IMoveLoadingUnitCloseShutterState, MoveLoadingUnitCloseShutterState>()
                 .AddTransient<IMoveLoadingUnitMoveToTargetState, MoveLoadingUnitMoveToTargetState>()
                 .AddTransient<IMoveLoadingUnitEndState, MoveLoadingUnitEndState>()
+                .AddTransient<IMoveLoadingUnitErrorState, MoveLoadingUnitErrorState>()
                 .AddTransient<IMoveLoadingUnitDepositUnitState, MoveLoadingUnitDepositUnitState>()
                 .AddTransient<IMoveLoadingUnitWaitEjectConfirm, MoveLoadingUnitWaitEjectConfirm>()
                 .AddTransient<IMoveLoadingUnitWaitEjectConfirm, MoveLoadingUnitWaitEjectConfirm>()

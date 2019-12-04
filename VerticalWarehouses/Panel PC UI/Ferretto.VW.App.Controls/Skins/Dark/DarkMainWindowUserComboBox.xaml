@@ -3,8 +3,6 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:Double x:Key="VWAPP_MainWindowUserComboBox_FontSize_Normal">14</sys:Double>
-
     <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Background_Normal"
                      Color="Transparent" />
     <SolidColorBrush x:Key="VWAPP_MainWindowUserComboBox_Foreground_Normal"

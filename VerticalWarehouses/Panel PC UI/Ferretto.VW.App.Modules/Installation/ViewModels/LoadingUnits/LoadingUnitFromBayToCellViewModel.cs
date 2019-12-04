@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         public LoadingUnitFromBayToCellViewModel(
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineCellsWebService machineCellsWebService,
-            Controls.Interfaces.ISensorsService sensorsService,
+            ISensorsService sensorsService,
             IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
@@ -71,19 +71,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     await this.MachineLoadingUnitsWebService.InsertLoadingUnitOnlyDbAsync(this.LoadingUnitId.Value);
                 }
 
-                if (!this.IsCellIdValid)
-                {
-                    this.ShowNotification("Id cella inserito non valido", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                if (!this.IsCellFree)
-                {
-                    this.ShowNotification("la cella inserita non è libera", Services.Models.NotificationSeverity.Warning);
-                    return;
-                }
-
-                var source = this.GetLoadingUnitSource();
+                var source = this.GetLoadingUnitSource(this.IsPositionDownSelected);
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
@@ -93,7 +81,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
                 this.IsWaitingForResponse = true;
 
-                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, this.DestinationCellId.Value, this.LoadingUnitId.Value);
+                await this.MachineLoadingUnitsWebService.InsertLoadingUnitAsync(source, null, this.LoadingUnitId.Value);
             }
             catch (Exception ex)
             {

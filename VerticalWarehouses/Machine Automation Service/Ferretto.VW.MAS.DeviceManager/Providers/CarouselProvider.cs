@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
-        public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber)
+        public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory)
         {
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
             if (bay.Carousel is null)
@@ -86,7 +86,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     throw new InvalidEnumArgumentException(nameof(direction), (int)direction, typeof(VerticalMovementDirection));
             }
 
-            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber) && movementCategory != MovementCategory.Manual)
             {
                 return new ActionPolicy { Reason = Resources.Bays.TheBayChainIsNotInZeroPosition };
             }
@@ -114,7 +114,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanMove(direction, bayNumber);
+            var policy = this.CanMove(direction, bayNumber, MovementCategory.Automatic);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
@@ -172,7 +172,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveAssisted(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanMove(direction, bayNumber);
+            var policy = this.CanMove(direction, bayNumber, MovementCategory.Assisted);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void MoveManual(VerticalMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanMove(direction, bayNumber);
+            var policy = this.CanMove(direction, bayNumber, MovementCategory.Manual);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);

@@ -367,142 +367,166 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 5,
                             Code = 5,
-                            Description = "È stato rilevato un errore in uno degli inverter.",
-                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
+                            Description = "SecurityButtonWasTriggered",
+                            Reason = "SecurityButtonWasTriggered",
                             Severity = 0
                         },
                         new
                         {
                             Id = 6,
                             Code = 6,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
-                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
+                            Description = "SecurityBarrierWasTriggered",
+                            Reason = "SecurityBarrierWasTriggered",
                             Severity = 0
                         },
                         new
                         {
                             Id = 7,
                             Code = 7,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
-                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
+                            Description = "SecuritySensorWasTriggered",
+                            Reason = "SecuritySensorWasTriggered",
                             Severity = 0
                         },
                         new
                         {
                             Id = 8,
                             Code = 8,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
+                            Description = "È stato rilevato un errore in uno degli inverter.",
+                            Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 9,
                             Code = 9,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 10,
                             Code = 10,
-                            Description = "InvalidPresenceSensors",
-                            Reason = "Sensori di presenza invalidi",
+                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 11,
                             Code = 11,
-                            Description = "MissingZeroSensorWithEmptyElevator",
-                            Reason = "MissingZeroSensorWithEmptyElevator",
+                            Description = "ZeroSensorErrorAfterPickup",
+                            Reason = "ZeroSensorErrorAfterPickup",
                             Severity = 0
                         },
                         new
                         {
                             Id = 12,
                             Code = 12,
-                            Description = "ZeroSensorActiveWithFullElevator",
-                            Reason = "ZeroSensorActiveWithFullElevator",
+                            Description = "ZeroSensorErrorAfterDeposit",
+                            Reason = "ZeroSensorErrorAfterDeposit",
                             Severity = 0
                         },
                         new
                         {
                             Id = 13,
                             Code = 13,
-                            Description = "LoadUnitPresentOnEmptyElevator",
-                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
+                            Description = "InvalidPresenceSensors",
+                            Reason = "Sensori di presenza invalidi",
                             Severity = 0
                         },
                         new
                         {
                             Id = 14,
                             Code = 14,
-                            Description = "TopLevelBayOccupied",
-                            Reason = "Livello alto baia occupato",
+                            Description = "MissingZeroSensorWithEmptyElevator",
+                            Reason = "MissingZeroSensorWithEmptyElevator",
                             Severity = 0
                         },
                         new
                         {
                             Id = 15,
                             Code = 15,
-                            Description = "BottomLevelBayOccupied",
-                            Reason = "Livello basso baia occupato.",
+                            Description = "ZeroSensorActiveWithFullElevator",
+                            Reason = "ZeroSensorActiveWithFullElevator",
                             Severity = 0
                         },
                         new
                         {
                             Id = 16,
                             Code = 16,
-                            Description = "SensoZeroBayNotActiveAtStart",
-                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Description = "LoadUnitPresentOnEmptyElevator",
+                            Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 17,
                             Code = 17,
+                            Description = "TopLevelBayOccupied",
+                            Reason = "Livello alto baia occupato",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Code = 18,
+                            Description = "BottomLevelBayOccupied",
+                            Reason = "Livello basso baia occupato.",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Code = 19,
+                            Description = "SensoZeroBayNotActiveAtStart",
+                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Code = 20,
                             Description = "Il peso massimo caricato sul cassetto è eccessivo.",
                             Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 18,
-                            Code = 18,
+                            Id = 21,
+                            Code = 21,
                             Description = "DestinationBelowLowerBound",
                             Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 19,
-                            Code = 19,
+                            Id = 22,
+                            Code = 22,
                             Description = "DestinationOverUpperBound",
                             Reason = "DestinationOverUpperBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 20,
-                            Code = 20,
+                            Id = 23,
+                            Code = 23,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 21,
-                            Code = 21,
+                            Id = 24,
+                            Code = 24,
                             Description = "IoDeviceError",
                             Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 22,
-                            Code = 22,
+                            Id = 25,
+                            Code = 25,
                             Description = "MachineModeNotValid",
                             Reason = "MachineModeNotValid",
                             Severity = 1
@@ -738,6 +762,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "MachineManagerErrorLoadingUnitPresentInCell",
                             Reason = "MachineManagerErrorLoadingUnitPresentInCell",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300014,
+                            Code = 300014,
+                            Description = "MachineManagerErrorLoadingUnitOtherBay",
+                            Reason = "MachineManagerErrorLoadingUnitOtherBay",
+                            Severity = 1
                         });
                 });
 
@@ -860,6 +892,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 22,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 23,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 24,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 25,
                             TotalErrors = 0
                         },
                         new
@@ -1006,6 +1053,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Code = 300013,
                             TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300014,
+                            TotalErrors = 0
                         });
                 });
 
@@ -1121,6 +1173,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("Height");
 
+                    b.Property<double>("LoadUnitMaxHeight");
+
                     b.Property<double>("LoadUnitMaxNetWeight");
 
                     b.Property<double>("LoadUnitTare");
@@ -1222,25 +1276,19 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("LoadingUnitCellSourceId");
 
+                    b.Property<int>("LoadingUnitDestination");
+
                     b.Property<int>("LoadingUnitId");
 
-                    b.Property<string>("LoadingUnitSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("LoadingUnitSource");
 
-                    b.Property<string>("MissionType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("MissionType");
 
                     b.Property<int>("Priority");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status");
 
-                    b.Property<string>("TargetBay")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TargetBay");
 
                     b.Property<int?>("WmsId");
 
@@ -1314,7 +1362,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 4, 11, 48, 46, 368, DateTimeKind.Local).AddTicks(3840),
+                            InstallationDate = new DateTime(2017, 2, 3, 9, 21, 4, 551, DateTimeKind.Local).AddTicks(2387),
                             ServiceStatus = 86
                         });
                 });

@@ -84,6 +84,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
 
             connection.On<NotificationMessageUI<MoveLoadingUnitMessageData>>(
                 nameof(IInstallationHub.MoveLoadingUnit), this.OnMoveLoadingUnit);
+
+            connection.On<NotificationMessageUI<FsmExceptionMessageData>>(
+                nameof(IInstallationHub.FsmException), this.OnFsmException);
         }
 
         private void OnBayChainPositionChanged(double position, BayNumber bayNumber)
@@ -108,6 +111,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.ElevatorPositionChanged?.Invoke(
                 this,
                 new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId));
+        }
+
+        private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)
+        {
+            this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
         private void OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)

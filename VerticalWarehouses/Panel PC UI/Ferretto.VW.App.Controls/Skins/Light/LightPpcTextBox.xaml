@@ -3,7 +3,7 @@
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Skins"
                     xmlns:sys="clr-namespace:System;assembly=mscorlib">
 
-    <sys:Double x:Key="VWAPP_PpcTextBox_TextBox_FontSize">18</sys:Double>
+    <sys:Double x:Key="VWAPP_PpcTextBox_TextBox_FontSize">20</sys:Double>
     <sys:Double x:Key="VWAPP_PpcTextBox_TextBlock_FontSize">14</sys:Double>
     <Thickness x:Key="VWAPP_PpcTextBox_TextBox_BorderThickness">1,1,1,1</Thickness>
 

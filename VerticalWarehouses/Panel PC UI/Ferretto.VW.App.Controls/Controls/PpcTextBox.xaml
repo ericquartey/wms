@@ -7,7 +7,8 @@
              mc:Ignorable="d">
     <StackPanel x:Name="LayoutRoot"
                 VerticalAlignment="Center">
-        <TextBlock Margin="0,1,5,1"
+        <TextBlock Name="TextBlock_LabelText"
+                   Margin="0,1,5,1"
                    Style="{StaticResource VWAPP_PpcTextBox_TextBlockStyle}"
                    Text="{Binding LabelText}" />
         <TextBox Name="InputTextBox"
@@ -15,7 +16,21 @@
                  Background="{Binding Background}"
                  BorderBrush="{Binding BorderColor}"
                  KeyDown="OnKeyDownHandler"
-                 Style="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
-                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                 MouseDoubleClick="OnKeyboardOpenHandler"
+                 Text="{Binding InputText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                 TouchEnter="OnKeyboardOpenHandler">
+            <TextBox.Style>
+                <Style BasedOn="{StaticResource VWAPP_PpcTextBox_TextBoxStyle}"
+                       TargetType="{x:Type TextBox}">
+                    <Setter Property="Margin" Value="0,3,5,5" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=TextBlock_LabelText, Path=Text}"
+                                     Value="True">
+                            <Setter Property="Margin" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
     </StackPanel>
 </UserControl>

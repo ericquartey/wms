@@ -17,9 +17,10 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         // Used only if LoadingUnitSource in this object is LoadingUnitDestination.Cell
         int? LoadingUnitCellSourceId { get; set; }
 
+        LoadingUnitLocation LoadingUnitDestination { get; set; }
+
         int LoadingUnitId { get; set; }
 
-        // Used only if source in command is LoadingUnitDestination.LoadingUnit
         LoadingUnitLocation LoadingUnitSource { get; set; }
 
         MissionType MissionType { get; set; }

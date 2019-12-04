@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DevExpress.Xpf.Data.Native;
-using Ferretto.VW.App.Controls.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -327,12 +325,12 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
-                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Code;
+                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
-                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Code;
+                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
                     }
 

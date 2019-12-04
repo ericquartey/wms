@@ -82,7 +82,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.LoadingUnitCode}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding EmbarkedLoadingUnit.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
