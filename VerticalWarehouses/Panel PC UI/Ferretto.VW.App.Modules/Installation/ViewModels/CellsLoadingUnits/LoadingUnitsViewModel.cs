@@ -19,17 +19,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
-        private int currentIndex;
+        private DelegateCommand freeDrawerCommand;
 
-        private DelegateCommand downDataGridButtonCommand;
+        private DelegateCommand immediateDrawerCallCommand;
+
+        private DelegateCommand insertDrawerCommand;
+
+        private bool isExecutingProcedure;
 
         private bool isWaitingForResponse;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
-        private LoadingUnit selectedLU;
+        private DelegateCommand removeDrawerCommand;
 
-        private DelegateCommand upDataGridButtonCommand;
+        private DelegateCommand saveDrawerCommand;
+
+        private LoadingUnit selectedLU;
 
         #endregion
 
@@ -48,12 +54,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public ICommand DownDataGridButtonCommand =>
-            this.downDataGridButtonCommand
-            ??
-            (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false), this.IsWaitingForResponse));
-
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public ICommand FreeDrawerCommand =>
+            this.freeDrawerCommand
+            ??
+            (this.freeDrawerCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+
+        public ICommand ImmediateDrawerCallCommand =>
+            this.immediateDrawerCallCommand
+            ??
+            (this.immediateDrawerCallCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+
+        public ICommand InsertDrawerCommand =>
+            this.insertDrawerCommand
+            ??
+            (this.insertDrawerCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+
+        public bool IsExecutingProcedure
+        {
+            get => this.isExecutingProcedure;
+            private set => this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged);
+        }
 
         public bool IsWaitingForResponse
         {
@@ -67,39 +95,29 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.loadingUnits, value, this.RaiseCanExecuteChanged);
         }
 
+        public ICommand RemoveDrawerCommand =>
+            this.removeDrawerCommand
+            ??
+            (this.removeDrawerCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+
+        public ICommand SaveDrawerCommand =>
+            this.saveDrawerCommand
+            ??
+            (this.saveDrawerCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
+
         public LoadingUnit SelectedLU
         {
             get => this.selectedLU;
             set => this.SetProperty(ref this.selectedLU, value);
         }
 
-        public ICommand UpDataGridButtonCommand =>
-            this.upDataGridButtonCommand
-            ??
-            (this.upDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(true), this.IsWaitingForResponse));
-
         #endregion
 
         #region Methods
-
-        public void ChangeSelectedItemAsync(bool isUp)
-        {
-            if (this.LoadingUnits == null)
-            {
-                return;
-            }
-
-            if (this.LoadingUnits.Count() > 0)
-            {
-                this.currentIndex = isUp ? --this.currentIndex : ++this.currentIndex;
-                if (this.currentIndex < 0 || this.currentIndex >= this.LoadingUnits.Count())
-                {
-                    this.currentIndex = (this.currentIndex < 0) ? 0 : this.LoadingUnits.Count() - 1;
-                }
-
-                this.SelectedLU = this.LoadingUnits?.ToList()[this.currentIndex];
-            }
-        }
 
         public override async Task OnAppearedAsync()
         {
@@ -110,6 +128,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.RetrieveLoadingUnitsAsync().ContinueWith((e) => { this.IsWaitingForResponse = false; });
 
             this.IsBackNavigationAllowed = true;
+        }
+
+        private void ImmediateDrawerCall()
+        {
         }
 
         private void RaiseCanExecuteChanged()
@@ -124,7 +146,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 if (this.healthProbeService.HealthStatus == HealthStatus.Healthy)
                 {
                     this.LoadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
-                    this.SelectedLU = this.LoadingUnits?.ToList()[this.currentIndex];
+                    this.SelectedLU = this.LoadingUnits?.ToList()[0];
                 }
             }
             catch (Exception ex)
