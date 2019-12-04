@@ -17,7 +17,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2.5*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         <Grid Grid.Row="0"
               Grid.RowSpan="2"
               Grid.Column="1"
-              Margin="0,50,30,30">
+              Margin="0,0,70,20">
             <Image Grid.Row="1"
                    Grid.Column="2"
                    Margin="0"
