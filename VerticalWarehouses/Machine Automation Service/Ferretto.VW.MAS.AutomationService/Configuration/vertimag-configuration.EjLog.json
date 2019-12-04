@@ -5,27 +5,27 @@
       "Tare": 120,
       "MaxNetWeight": 800,
       "Height": 100,
-      "Id": 1
+      "Id": 43 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
       "Height": 100,
-      "Id": 2
+      "Id": 44 // same ID as on EjLog
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
       "Height": 100,
-      "Id": 3
+      "Id": 45 // same ID as on EjLog
     }
   ],
   "Machine": {
-    "Id": 2,
+    "Id": 2, // same ID as on EjLog
     "Bays": [
       {
         "Number": "BayOne",
-        "Id": 21,
+        "Id": 21, // same ID as on EjLog
         "AlphaNumericBar": null,
         "Inverter": {
           "Type": "Acu",
@@ -70,7 +70,7 @@
       },
       {
         "Number": "BayTwo",
-        "Id": 22,
+        "Id": 22, // same ID as on EjLog
         "IoDevice": {
           "Index": "IoDevice2",
           "IpAddress": "127.0.0.1",

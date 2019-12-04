@@ -39,6 +39,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay GetByBayPositionId(int id);
 
+        /// <summary>
+        /// Gets the bay identified by the given identifier.
+        /// </summary>
+        /// <param name="id">The identifier of the bay to retrieve.</param>
+        /// <returns>The bay identified by the given identifier, or null if no bay with the given identifier exists.</returns>
+        Bay GetByIdOrDefault(int id);
+
         BayNumber GetByInverterIndex(InverterIndex inverterIndex);
 
         BayNumber GetByIoIndex(IoIndex ioIndex, FieldMessageType messageType);
@@ -49,6 +56,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         BayNumber GetByMovementType(IPositioningMessageData data);
 
+        /// <summary>
+        /// Gets the bay identified by the given number.
+        /// </summary>
+        /// <param name="bayNumber">The number of the bay to retrieve.</param>
+        /// <returns>The bay identified by the given number.</returns>
         Bay GetByNumber(BayNumber bayNumber);
 
         double GetChainOffset(InverterIndex inverterIndex);
@@ -73,6 +85,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ShutterManualParameters GetManualMovementsShutter(BayNumber bayNumber);
 
+        /// <summary>
+        /// Gets the bay containing the specified bay position.
+        /// </summary>
+        /// <param name="bayPositionId">The id of the bay position contained in the bay to retrieve.</param>
+        /// <returns>The bay containing the specified bay position.</returns>
         BayPosition GetPositionById(int bayPositionId);
 
         BayPosition GetPositionByLocation(LoadingUnitLocation destination);
@@ -89,6 +106,11 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay SetCurrentOperation(BayNumber bayNumber, BayOperation newOperation);
 
+        /// <summary>
+        /// Specifies that the given loading unit is now located in a bay position.
+        /// </summary>
+        /// <param name="bayPositionId">The identifier of the bay position where the loading unit is now located.</param>
+        /// <param name="loadingUnitId">The identifier of the loading unit.</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
 
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);

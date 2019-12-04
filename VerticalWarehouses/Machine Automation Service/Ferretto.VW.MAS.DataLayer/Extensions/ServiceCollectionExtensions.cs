@@ -24,8 +24,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
             services.AddMemoryCache();
 
-            services.AddHostedService<WmsDataSyncService>();
-
             services
                 .AddSingleton<IDataLayerService, DataLayerService>()
                 .AddSingleton(p => p.GetService<IDataLayerService>() as IHostedService)
