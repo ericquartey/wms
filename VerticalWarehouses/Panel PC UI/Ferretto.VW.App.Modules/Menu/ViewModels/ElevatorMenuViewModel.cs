@@ -166,7 +166,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.VerticalOffsetCalibration:
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.VERTICALORIGINCALIBRATION,
+                       Utils.Modules.Installation.VerticalOffsetCalibration.STEP1,
                        data: null,
                        trackCurrentView: true);
                     break;
@@ -182,7 +182,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.VerticalOriginCalibration:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
-                        Utils.Modules.Installation.VerticalOffsetCalibration.STEP1,
+                        Utils.Modules.Installation.VERTICALORIGINCALIBRATION,
                         data: null,
                         trackCurrentView: true);
                     break;
