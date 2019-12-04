@@ -203,8 +203,7 @@
                                                 VerticalAlignment="Top"
                                                 Command="{Binding MoveToLoadingUnitHeightCommand}"
                                                 Content="{x:Static res:InstallationApp.GoToDrawer}"
-                                                IsBusy="{Binding IsElevatorMovingToLoadingUnit}"
-                                                IsEnabled="False" />
+                                                IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
 
                             <StackPanel Grid.Column="2"
                                         Grid.ColumnSpan="3"
@@ -214,13 +213,12 @@
                                                    VerticalAlignment="Center"
                                                    ButtonSize="54"
                                                    EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                   IsEnabled="False"
+                                                   IsEnabled="{Binding CanInputLoadingUnitId}"
                                                    KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                                    KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                                    LabelText=""
                                                    Mask="#0"
                                                    WidthNumber="200" />
-                                <!--  IsEnabled="{Binding CanInputLoadingUnitId}"  -->
 
                                 <controls:PpcCheckBox Margin="5"
                                                       HorizontalAlignment="Left"

@@ -232,7 +232,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get =>
                 this.IsElevatorMovingToCell
                 || this.IsElevatorMovingToHeight
-                //|| this.IsElevatorMovingToLoadingUnit
+                || this.IsElevatorMovingToLoadingUnit
                 || this.IsElevatorMovingToBay
                 //|| this.IsBusyLoadingFromBay
                 //|| this.IsBusyLoadingFromCell
@@ -247,7 +247,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsElevatorMovingToCell = value;
                 this.IsElevatorMovingToHeight = value;
-                //this.IsElevatorMovingToLoadingUnit = value;
+                this.IsElevatorMovingToLoadingUnit = value;
                 this.IsElevatorMovingToBay = value;
                 //this.IsBusyLoadingFromBay = value;
                 //this.IsBusyLoadingFromCell = value;
