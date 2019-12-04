@@ -36,6 +36,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         #region Properties
 
+        public bool IsHoming => this.machineProvider.IsHomingExecuted;
+
         public bool IsRunning => this.machineProvider.IsMachineRunning;
 
         #endregion
