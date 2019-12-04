@@ -85,15 +85,32 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public async Task ScheduleMissionsAsync(BayNumber bayNumber)
+        public async Task ScheduleMissionsAsync(BayNumber bayNumber, bool restore = false)
         {
             var activeMissions = this.missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
 
+            var missionToRestore = activeMissions.SingleOrDefault(x => x.Status == MissionStatus.Executing
+                && x.IsMissionToRestore()
+                );
+
+            if (missionToRestore != null)
+            {
+                if (restore)
+                {
+                    this.moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.FsmId, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                }
+                else
+                {
+                    this.logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadingUnitId}; bay {bayNumber}");
+                    return;
+                }
+            }
+
             // first, try to continue executing mission
             var executingMission = activeMissions.SingleOrDefault(x => x.Status == MissionStatus.Executing);
-            if (!(executingMission is null)
-                &&
-                executingMission.WmsId.HasValue)
+            if (executingMission != null
+                && executingMission.WmsId.HasValue
+                )
             {
                 var currentWmsMission = await this.missionsDataService.GetByIdAsync(executingMission.WmsId.Value);
                 var newOperations = currentWmsMission.Operations.Where(o => o.Status == MissionOperationStatus.New);

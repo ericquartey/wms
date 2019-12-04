@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private LoadingUnitLocation ejectBay;
 
+        private Mission mission;
+
         private BayNumber requestingBay;
 
         #endregion
@@ -62,17 +64,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             this.requestingBay = commandMessage.RequestingBay;
 
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
+                && machineData is Mission moveData
+                )
             {
                 this.ejectBay = messageData.Destination;
-            }
-            var mission = (Mission)machineData;
-            mission.FsmStateName = this.GetType().Name;
-            this.missionsDataProvider.Update(mission);
-            if (mission.LoadingUnitId > 0)
-            {
-                var machine = this.machineProvider.Get();
-                this.loadingUnitsDataProvider.SetHeight(mission.LoadingUnitId, machine.LoadUnitMaxHeight);
+
+                this.mission = moveData;
+                if (moveData.LoadingUnitId > 0)
+                {
+                    var machine = this.machineProvider.Get();
+                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
+                }
+                this.mission.FsmStateName = this.GetType().Name;
+                this.missionsDataProvider.Update(this.mission);
             }
         }
 
@@ -105,9 +110,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-            ((IEndState)returnValue).StopRequestReason = reason;
+            IState returnValue;
+            if (reason == StopRequestReason.Error
+                && this.mission.IsRestoringType()
+                )
+            {
+                this.mission.FsmRestoreStateName = this.mission.FsmStateName;
+                returnValue = this.GetState<IMoveLoadingUnitErrorState>();
+            }
+            else
+            {
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+            }
+            if (returnValue is IEndState endState)
+            {
+                endState.StopRequestReason = reason;
+            }
 
             return returnValue;
         }
