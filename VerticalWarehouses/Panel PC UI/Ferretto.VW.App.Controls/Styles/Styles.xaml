@@ -3,6 +3,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcButtonKeyStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcPressAndReleaseButtonStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/CustomMainWindowUserComboBoxItemStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcSensorControlStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/PpcTextBoxStyles.xaml" />

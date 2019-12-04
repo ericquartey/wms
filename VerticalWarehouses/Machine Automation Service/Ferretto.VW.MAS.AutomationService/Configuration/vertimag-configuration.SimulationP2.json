@@ -449,6 +449,11 @@
             "Location": "InternalBay1Up"
           }
         ],
+        "FullLoadMovement": {
+          "Acceleration": 300,
+          "Deceleration": 300,
+          "Speed": 140
+        },
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
@@ -780,6 +785,7 @@
     "ModelName": "Simulation Vertimag 1000kg",
     "LoadUnitTare": 120,
     "LoadUnitMaxNetWeight": 930,
+    "LoadUnitMaxHeight": 750,
     "Panels": [
       {
         "Side": "Front",

@@ -301,7 +301,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanResetCommand()
         {
             return
-               !this.KeyboardOpened
+                !this.KeyboardOpened
                 &&
                 !this.IsMoving
                 &&

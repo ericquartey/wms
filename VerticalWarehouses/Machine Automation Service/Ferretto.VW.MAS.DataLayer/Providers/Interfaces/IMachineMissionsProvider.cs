@@ -30,8 +30,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers.Interfaces
 
         bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid missionId);
 
-        bool TryCreateWmsMission(FsmType fsmType, MoveLoadingUnitMessageData command, out Guid missionId);
-
         #endregion
     }
 }

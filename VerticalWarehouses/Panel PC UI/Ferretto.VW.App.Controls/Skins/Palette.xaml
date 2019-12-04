@@ -23,6 +23,27 @@
     <Color x:Key="ColorFerrettoGreen">#009933</Color>
     <Color x:Key="ColorFerrettoPureWhite">#FFFFFF</Color>
 
+    <SolidColorBrush x:Key="GrayA"
+                     Color="{StaticResource EDBGrayA}" />
+    <SolidColorBrush x:Key="GrayA1"
+                     Color="{StaticResource EDBGrayA1}" />
+    <SolidColorBrush x:Key="GrayB"
+                     Color="{StaticResource EDBGrayB}" />
+    <SolidColorBrush x:Key="GrayC"
+                     Color="{StaticResource EDBGrayC}" />
+    <SolidColorBrush x:Key="GrayD"
+                     Color="{StaticResource EDBGrayD}" />
+    <SolidColorBrush x:Key="GrayE"
+                     Color="{StaticResource EDBGrayE}" />
+    <SolidColorBrush x:Key="GrayF"
+                     Color="{StaticResource EDBGrayF}" />
+    <SolidColorBrush x:Key="GrayG"
+                     Color="{StaticResource EDBGrayG}" />
+    <SolidColorBrush x:Key="GrayH"
+                     Color="{StaticResource EDBGrayH}" />
+    <SolidColorBrush x:Key="GrayI"
+                     Color="{StaticResource EDBGrayI}" />
+
     <SolidColorBrush x:Key="FerrettoWhiteGray"
                      Color="{StaticResource ColorFerrettoWhiteGray}" />
     <SolidColorBrush x:Key="FerrettoLightGray"

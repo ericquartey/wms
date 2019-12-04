@@ -21,7 +21,11 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
+        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
+
         private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+        private SubscriptionToken bayChainPositionChangedToken;
 
         private SubscriptionToken healthStatusChangedToken;
 
@@ -137,6 +141,15 @@ namespace Ferretto.VW.App.Controls
                        async e => await this.OnMachinePowerChangedAsync(e),
                        ThreadOption.UIThread,
                        false);
+
+            this.bayChainPositionChangedToken = this.bayChainPositionChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BayChainPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnBayChainPositionChanged,
+                        ThreadOption.UIThread,
+                        false);
 
             this.machineErrorsService.ErrorStatusChanged += async (s, e) =>
             {
@@ -255,6 +268,14 @@ namespace Ferretto.VW.App.Controls
             return Task.CompletedTask;
         }
 
+        private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
+        {
+            this.UpdateIsEnabled(
+                this.machineModeService.MachinePower,
+                this.machineModeService.MachineMode,
+                this.healthProbeService.HealthStatus);
+        }
+
         private void UpdateIsEnabled(MachinePowerState machinePower, MachineMode machineMode, HealthStatus healthStatus)
         {
             var enabeIfPoweredOn = (this.EnableMask & EnableMask.MachinePoweredOn) == EnableMask.MachinePoweredOn;
@@ -283,6 +304,21 @@ namespace Ferretto.VW.App.Controls
                  (machineMode == MachineMode.Manual || machineMode == MachineMode.Test)
                  //&& this.MachineError is null
                  );
+
+            // Gestione Warning
+            //aggiungere condizione homing
+            if (machinePower != MachinePowerState.Powered)
+            {
+                this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
+            }
+            else if (this.sensorsService.BayChainPosition is null)
+            {
+                this.ShowNotification("Posizione catena sconoscuta.", NotificationSeverity.Error);
+            }
+            else if (!string.IsNullOrEmpty(this.sensorsService.ElevatorLogicalPosition))
+            {
+                this.ShowNotification("Posizione elevatore sconoscuta.", NotificationSeverity.Warning); // da mettere giallo
+            }
         }
 
         private void UpdatePresentation()

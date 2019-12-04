@@ -79,13 +79,21 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Test di Imbarco/Sbarco")]
         HorizontalHoming,
 
-        [View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Puntatore Laser")]
-        BayLaser,
+        //[View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        //[Display(Description = "Puntatore Laser")]
+        //BayLaser,
+
+        [View(Utils.Modules.Installation.CellsLoadingUnitsMenu.MENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Celle e Cassetti")]
+        CellsLoadingUnits,
 
         [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Inserimento cassetti da baia in cella")]
         MovementsFromBayToCell,
+
+        [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMBAYTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [Display(Description = "Spostamento cassetti da baia a baia")]
+        MovementsFromBayToBay,
 
         [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOCELL, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Spostamento cassetti da cella a cella")]
@@ -94,10 +102,6 @@ namespace Ferretto.VW.App.Installation.Resources
         [View(Utils.Modules.Installation.LoadingUnits.LOADINGUNITFROMCELLTOBAY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Spostamento cassetti da cella in baia")]
         MovemetsFromCellToBay,
-
-        [View(Utils.Modules.Installation.CellsLoadingUnitsMenu.MENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        [Display(Description = "Celle e Cassetti")]
-        CellsLoadingUnits,
 
         None,
     }

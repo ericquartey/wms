@@ -2158,6 +2158,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Movimenti Guidati.
+        /// </summary>
+        public static string MovementsGuided {
+            get {
+                return ResourceManager.GetString("MovementsGuided", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Movimenti Manuali.
+        /// </summary>
+        public static string MovementsManual {
+            get {
+                return ResourceManager.GetString("MovementsManual", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Move to cell height.
         /// </summary>
         public static string MoveToCellHeight {
@@ -2464,6 +2482,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset machine.
+        /// </summary>
+        public static string ResetMachine {
+            get {
+                return ResourceManager.GetString("ResetMachine", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Machine reset successful..
+        /// </summary>
+        public static string ResetMachineSuccessfull {
+            get {
+                return ResourceManager.GetString("ResetMachineSuccessfull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Reset Security Function.
         /// </summary>
         public static string ResetSecurityFunction {
@@ -2752,6 +2788,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Shutter down.
+        /// </summary>
+        public static string ShutterDown {
+            get {
+                return ResourceManager.GetString("ShutterDown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Shutter Test.
         /// </summary>
         public static string ShutterEnduranceTest {
@@ -2802,6 +2847,15 @@ namespace Ferretto.VW.App.Resources {
         public static string ShutterSensorB {
             get {
                 return ResourceManager.GetString("ShutterSensorB", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shutter up.
+        /// </summary>
+        public static string ShutterUp {
+            get {
+                return ResourceManager.GetString("ShutterUp", resourceCulture);
             }
         }
         

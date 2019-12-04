@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Newtonsoft.Json;
@@ -19,7 +20,7 @@ namespace Ferretto.VW.CommonUtils.ContractResolver
                 default:
                     return input.First()
                            .ToString()
-                           .ToUpper() + input.Substring(1);
+                           .ToUpper(CultureInfo.InvariantCulture) + input.Substring(1);
             }
         }
 

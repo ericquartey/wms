@@ -37,9 +37,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         #region Methods
 
         [HttpPost("can-move")]
-        public ActionResult<ActionPolicy> CanMove(VerticalMovementDirection direction)
+        public ActionResult<ActionPolicy> CanMove(VerticalMovementDirection direction, MovementCategory movementCategory)
         {
-            return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber));
+            return this.Ok(this.carouselProvider.CanMove(direction, this.BayNumber, movementCategory));
         }
 
         [HttpPost("find-zero")]

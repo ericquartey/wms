@@ -123,13 +123,23 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     }
                     catch (StateMachineException ex)
                     {
-                        var eventArgs = new FiniteStateMachinesEventArgs
-                        {
-                            InstanceId = this.InstanceId,
-                            NotificationMessage = ex.NotificationMessage,
-                        };
+                        this.Logger.LogError(ex.NotificationMessage.Description, "Error while activating a State.");
+                        this.notificationEvent.Publish(ex.NotificationMessage);
 
-                        this.RaiseCompleted(eventArgs);
+                        if (this.activeState == null)
+                        {
+                            var eventArgs = new FiniteStateMachinesEventArgs
+                            {
+                                InstanceId = this.InstanceId,
+                                NotificationMessage = ex.NotificationMessage,
+                            };
+                            this.RaiseCompleted(eventArgs);
+                        }
+                        else
+                        {
+                            this.activeState = this.activeState?.Stop(StopRequestReason.Error);
+                            this.activeState?.Enter(this.StartData, this.serviceProvider, this.MachineData);
+                        }
                     }
 
                     if (this.activeState is IStartMessageState startMessageState)
@@ -331,11 +341,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a command.");
                     this.NotifyError(ex);
-                    var eventArgs = new FiniteStateMachinesEventArgs
+                    if (this.activeState is null)
                     {
-                        InstanceId = this.InstanceId,
-                    };
-                    this.RaiseCompleted(eventArgs);
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        {
+                            InstanceId = this.InstanceId,
+                        };
+                        this.RaiseCompleted(eventArgs);
+                    }
+                    else
+                    {
+                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                    }
                 }
             }
             while (!cancellationToken.IsCancellationRequested);
@@ -365,11 +382,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     this.Logger.LogError(ex, "Error while processing a notification.");
                     this.NotifyError(ex);
-                    var eventArgs = new FiniteStateMachinesEventArgs
+                    if (this.activeState is null)
                     {
-                        InstanceId = this.InstanceId,
-                    };
-                    this.RaiseCompleted(eventArgs);
+                        var eventArgs = new FiniteStateMachinesEventArgs
+                        {
+                            InstanceId = this.InstanceId,
+                        };
+                        this.RaiseCompleted(eventArgs);
+                    }
+                    else
+                    {
+                        this.ActiveState = this.activeState?.Stop(StopRequestReason.Error);
+                    }
                 }
             }
             while (!cancellationToken.IsCancellationRequested);

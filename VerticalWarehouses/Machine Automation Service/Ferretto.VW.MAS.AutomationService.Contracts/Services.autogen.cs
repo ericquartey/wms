@@ -718,21 +718,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         partial void ProcessResponse(Ferretto.VW.MAS.AutomationService.Contracts.RetryHttpClient client, System.Net.Http.HttpResponseMessage response);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction)
+        public System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory)
         {
-            return CanMoveAsync(direction, System.Threading.CancellationToken.None);
+            return CanMoveAsync(direction, movementCategory, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ActionPolicy> CanMoveAsync(VerticalMovementDirection direction, MovementCategory movementCategory, System.Threading.CancellationToken cancellationToken)
         {
             if (direction == null)
                 throw new System.ArgumentNullException("direction");
     
+            if (movementCategory == null)
+                throw new System.ArgumentNullException("movementCategory");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/carousel/can-move?");
             urlBuilder_.Append(System.Uri.EscapeDataString("direction") + "=").Append(System.Uri.EscapeDataString(ConvertToString(direction, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("movementCategory") + "=").Append(System.Uri.EscapeDataString(ConvertToString(movementCategory, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     
             var client_ = _httpClient;
@@ -6031,20 +6035,17 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
+        public System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
             return InsertLoadingUnitAsync(source, destinationCellId, loadingUnitId, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task InsertLoadingUnitAsync(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId, System.Threading.CancellationToken cancellationToken)
         {
             if (source == null)
                 throw new System.ArgumentNullException("source");
-    
-            if (destinationCellId == null)
-                throw new System.ArgumentNullException("destinationCellId");
     
             if (loadingUnitId == null)
                 throw new System.ArgumentNullException("loadingUnitId");
@@ -6052,7 +6053,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/loading-units/insert-loading-unit?");
             urlBuilder_.Append(System.Uri.EscapeDataString("source") + "=").Append(System.Uri.EscapeDataString(ConvertToString(source, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
-            urlBuilder_.Append(System.Uri.EscapeDataString("destinationCellId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(destinationCellId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Append(System.Uri.EscapeDataString("destinationCellId") + "=").Append(System.Uri.EscapeDataString(destinationCellId != null ? ConvertToString(destinationCellId, System.Globalization.CultureInfo.InvariantCulture) : "")).Append("&");
             urlBuilder_.Append(System.Uri.EscapeDataString("loadingUnitId") + "=").Append(System.Uri.EscapeDataString(ConvertToString(loadingUnitId, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             urlBuilder_.Length--;
     

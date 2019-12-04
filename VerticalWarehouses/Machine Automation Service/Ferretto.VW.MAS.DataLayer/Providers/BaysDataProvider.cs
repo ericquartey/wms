@@ -314,11 +314,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Bay GetByIdOrDefault(int id)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.AsNoTracking().SingleOrDefault(b => b.Id == id);
+            }
+        }
+
         public BayNumber GetByInverterIndex(InverterIndex inverterIndex)
         {
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b =>
+                var bay = this.dataContext.Bays.AsNoTracking().SingleOrDefault(b =>
                     b.Inverter.Index == inverterIndex
                     ||
                     b.Shutter.Inverter.Index == inverterIndex);
@@ -458,7 +466,9 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.Inverter)
                     .Include(b => b.Carousel)
-                    .Include(b => b.EmptyLoadMovement)
+                        .ThenInclude(s => s.ManualMovements)
+                    .Include(b => b.Carousel)
+                        .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
 

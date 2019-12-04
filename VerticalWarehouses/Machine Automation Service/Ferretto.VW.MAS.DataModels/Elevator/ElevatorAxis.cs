@@ -134,11 +134,11 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Methods
 
-        public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit)
+        public MovementParameters ScaleMovementsByWeight(LoadingUnit loadingUnit, bool isLoadingUnitOnBoard)
         {
             if (loadingUnit is null)
             {
-                return this.FullLoadMovement;
+                return isLoadingUnitOnBoard ? this.FullLoadMovement : this.EmptyLoadMovement;
             }
 
             var maxGrossWeight = loadingUnit.MaxNetWeight + loadingUnit.Tare;

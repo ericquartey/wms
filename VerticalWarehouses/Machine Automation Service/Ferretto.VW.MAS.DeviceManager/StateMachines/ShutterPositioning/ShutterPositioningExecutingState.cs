@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private readonly IShutterPositioningMachineData machineData;
 
+        private readonly IServiceScope scope;
+
         private readonly IShutterPositioningStateData stateData;
 
         private bool disposed;
@@ -40,6 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
             : base(stateData.ParentMachine, stateData.MachineData.Logger)
         {
             this.stateData = stateData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
             this.delayTimerDown = new Timer(this.DelayTimerMethodDown, null, -1, Timeout.Infinite);
             this.delayTimerUp = new Timer(this.DelayTimerMethodUp, null, -1, Timeout.Infinite);
@@ -165,6 +168,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         private void OnShutterTestStageCompleted(FieldNotificationMessage message, InverterShutterPositioningFieldMessageData messageData)
         {
+            this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
             switch (messageData.ShutterPosition)
             {
                 case ShutterPosition.Opened:

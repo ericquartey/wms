@@ -7,7 +7,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
-        ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber);
+        ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory);
 
         double GetPosition(BayNumber bayNumber);
 

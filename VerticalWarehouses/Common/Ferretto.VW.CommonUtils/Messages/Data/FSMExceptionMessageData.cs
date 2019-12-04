@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 
 namespace Ferretto.VW.CommonUtils.Messages.Data
 {
+    [Serializable]
     public class FsmExceptionMessageData : IFsmExceptionMessageData
     {
         #region Constructors

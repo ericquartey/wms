@@ -88,8 +88,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<DataModels.LoadingUnit>> GetAll()
         {
-            var loadingUnits = this.loadingUnitsDataProvider.GetAll();
-            return this.Ok(loadingUnits);
+            return this.Ok(this.loadingUnitsDataProvider.GetAll());
         }
 
         [HttpGet("statistics/space")]
@@ -162,7 +161,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
-        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int destinationCellId, int loadingUnitId)
+        public IActionResult InsertLoadingUnit(LoadingUnitLocation source, int? destinationCellId, int loadingUnitId)
         {
             this.moveLoadingUnitProvider.InsertToCell(MissionType.Manual, source, destinationCellId, loadingUnitId, this.BayNumber, MessageActor.AutomationService);
 

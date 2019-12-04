@@ -13,9 +13,13 @@ namespace Ferretto.VW.MAS.DataModels
 
         public Guid FsmId { get; set; }
 
+        //public string FsmRestoreStateName { get; set; }
+
         public string FsmStateName { get; set; }
 
         public int? LoadingUnitCellSourceId { get; set; }
+
+        public LoadingUnitLocation LoadingUnitDestination { get; set; }
 
         public int LoadingUnitId { get; set; }
 
@@ -24,6 +28,8 @@ namespace Ferretto.VW.MAS.DataModels
         public MissionType MissionType { get; set; }
 
         public int Priority { get; set; }
+
+        //public bool RestoreConditions { get; set; }
 
         public MissionStatus Status { get; set; }
 

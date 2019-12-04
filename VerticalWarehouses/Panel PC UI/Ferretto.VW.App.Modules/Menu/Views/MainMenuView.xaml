@@ -17,7 +17,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="2.5*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -28,7 +28,7 @@
         <Grid Grid.Row="0"
               Grid.RowSpan="2"
               Grid.Column="1"
-              Margin="0,50,30,30">
+              Margin="0,0,70,20">
             <Image Grid.Row="1"
                    Grid.Column="2"
                    Margin="0"
@@ -69,14 +69,16 @@
             <WrapPanel Margin="0,0,30,80"
                        VerticalAlignment="Center">
 
-                <controls:PpcMenuButton Margin="30,30,0,0"
+                <controls:PpcMenuButton Height="140"
+                                        Margin="30,30,0,0"
                                         Abbreviation="O"
                                         Command="{Binding MenuOperationCommand}"
                                         Kind="Account"
                                         MenuBrush="{StaticResource FerrettoGreen}"
                                         Text="{x:Static res:Menu.MenuOperation}" />
 
-                <controls:PpcMenuButton Margin="30,30,0,0"
+                <controls:PpcMenuButton Height="140"
+                                        Margin="30,30,0,0"
                                         Abbreviation="M"
                                         Command="{Binding MenuMaintenanceCommand}"
                                         Kind="Settings"
@@ -84,7 +86,8 @@
                                         Permition="Installer"
                                         Text="{x:Static res:Menu.MenuMaintenance}" />
 
-                <controls:PpcMenuButton Margin="30,30,0,0"
+                <controls:PpcMenuButton Height="140"
+                                        Margin="30,30,0,0"
                                         Abbreviation="I"
                                         Command="{Binding MenuInstalationCommand}"
                                         Kind="AutoFix"
@@ -92,7 +95,8 @@
                                         Permition="Installer"
                                         Text="{x:Static res:Menu.MenuInstalation}" />
 
-                <controls:PpcMenuButton Margin="30,30,0,0"
+                <controls:PpcMenuButton Height="140"
+                                        Margin="30,30,0,0"
                                         Abbreviation="A"
                                         Command="{Binding MenuAboutCommand}"
                                         Kind="AlertCircleOutline"

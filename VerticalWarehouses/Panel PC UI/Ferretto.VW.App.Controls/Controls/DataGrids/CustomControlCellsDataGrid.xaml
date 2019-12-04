@@ -21,7 +21,7 @@
                   CanUserResizeColumns="False"
                   CanUserResizeRows="False"
                   CanUserSortColumns="False"
-                  FontSize="18"
+                  FontSize="{StaticResource FontSize_High}"
                   HeadersVisibility="Column"
                   HorizontalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   IsHitTestVisible="False"

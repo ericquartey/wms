@@ -3,6 +3,7 @@ using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager.ShutterPositioning.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus;
@@ -10,6 +11,7 @@ using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
@@ -20,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         #region Fields
 
         private readonly IShutterPositioningMachineData machineData;
+
+        private readonly IServiceScope scope;
 
         private readonly IShutterPositioningStateData stateData;
 
@@ -32,6 +36,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         {
             this.stateData = stateData;
             this.machineData = stateData.MachineData as IShutterPositioningMachineData;
+            this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
         }
 
         #endregion
@@ -138,6 +143,10 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
                 this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
                 this.Logger.LogDebug("FSM Shutter Positioning End");
+            }
+            if (this.machineData.PositioningMessageData.MovementMode == MovementMode.ShutterTest)
+            {
+                this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Manual;
             }
         }
 

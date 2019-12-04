@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                  requestingBay);
         }
 
-        public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             if (sourceBay is LoadingUnitLocation.Cell || sourceBay is LoadingUnitLocation.LoadingUnit)
             {
@@ -111,7 +111,9 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 destinationBay,
                 null,
                 null,
-                null),
+                null,
+                false,
+                true),
             $"Bay {requestingBay} requested to move Loading unit in Bay {sourceBay} to Bay {destinationBay}",
             sender,
             MessageType.MoveLoadingUnit,

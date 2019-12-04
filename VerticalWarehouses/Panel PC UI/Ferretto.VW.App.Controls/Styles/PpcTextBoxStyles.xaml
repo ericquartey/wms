@@ -3,6 +3,28 @@
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles">
 
+    <Style x:Key="PpcTextBoxStyleNew"
+           TargetType="{x:Type controls:PpcTextBoxNew}">
+        <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+
+        <Style.Triggers>
+            <Trigger Property="Highlighted" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="false">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Disabled}" />
+            </Trigger>
+            <Trigger Property="Highlighted" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Highlighted}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style x:Key="PpcTextBoxStyle"
            TargetType="{x:Type controls:PpcTextBox}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
@@ -33,6 +55,9 @@
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Disabled}" />
+            </Trigger>
+            <Trigger Property="Text" Value="">
+                <Setter Property="Visibility" Value="Collapsed" />
             </Trigger>
         </Style.Triggers>
     </Style>

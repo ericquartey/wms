@@ -131,28 +131,10 @@ namespace Ferretto.VW.MAS.DataLayer
                     Id = loadingUnitsId,
                     Tare = machine.LoadUnitTare,
                     MaxNetWeight = machine.LoadUnitMaxNetWeight,
+                    Height = machine.LoadUnitMaxHeight
                 };
 
                 this.dataContext.LoadingUnits.Add(loadingUnits);
-
-                this.dataContext.SaveChanges();
-            }
-        }
-
-        public void SetCode(int id, string code)
-        {
-            lock (this.dataContext)
-            {
-                var loadingUnit = this.dataContext
-                    .LoadingUnits
-                    .SingleOrDefault(l => l.Id == id);
-
-                if (loadingUnit is null)
-                {
-                    throw new EntityNotFoundException(id);
-                }
-
-                loadingUnit.Code = code;
 
                 this.dataContext.SaveChanges();
             }
