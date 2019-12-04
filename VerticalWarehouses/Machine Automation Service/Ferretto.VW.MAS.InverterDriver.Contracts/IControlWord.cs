@@ -7,16 +7,16 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         #region Properties
 
         [Column(Order = 3)]
-        bool EnableOperation { set; }
+        bool EnableOperation { get; set; }
 
         [Column(Order = 1)]
-        bool EnableVoltage { set; }
+        bool EnableVoltage { get; set; }
 
         [Column(Order = 7)]
         bool FaultReset { get; set; }
 
         [Column(Order = 8)]
-        bool Halt { set; }
+        bool Halt { get; set; }
 
         [Column(Order = 10)]
         bool HeartBeat { get; set; }
@@ -25,10 +25,10 @@ namespace Ferretto.VW.MAS.InverterDriver.Contracts
         bool HorizontalAxis { get; set; }
 
         [Column(Order = 2)]
-        bool QuickStop { set; }
+        bool QuickStop { get; set; }
 
         [Column(Order = 0)]
-        bool SwitchOn { set; }
+        bool SwitchOn { get; set; }
 
         ushort Value { get; set; }
 
