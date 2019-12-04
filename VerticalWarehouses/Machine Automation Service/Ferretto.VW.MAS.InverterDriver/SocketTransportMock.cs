@@ -144,6 +144,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (disposing)
                 {
                     this.readCompleteEventSlim?.Dispose();
+                    this.homingTimer?.Dispose();
+                    this.targetTimer.Dispose();
                 }
 
                 this.disposed = true;
