@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191203153551_Initial")]
+    [Migration("20191204104847_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1062,8 +1062,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int?>("CellId");
 
-                    b.Property<string>("Code");
-
                     b.Property<string>("Description");
 
                     b.Property<double>("GrossWeight");
@@ -1228,15 +1226,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("LoadingUnitId");
 
-                    b.Property<int>("LoadingUnitSource");
+                    b.Property<string>("LoadingUnitSource")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("MissionType");
+                    b.Property<string>("MissionType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Priority");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("TargetBay");
+                    b.Property<string>("TargetBay")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("WmsId");
 
@@ -1310,7 +1316,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 3, 16, 35, 50, 765, DateTimeKind.Local).AddTicks(3094),
+                            InstallationDate = new DateTime(2017, 2, 4, 11, 48, 46, 368, DateTimeKind.Local).AddTicks(3840),
                             ServiceStatus = 86
                         });
                 });

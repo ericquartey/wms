@@ -58,6 +58,7 @@ namespace Ferretto.VW.MAS.MissionManager
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
                 var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
@@ -68,14 +69,24 @@ namespace Ferretto.VW.MAS.MissionManager
                 // 2. Get all known WMS missions (already recorded in the local database)
                 var localMissions = missionsDataProvider.GetAllWmsMissions();
 
-                foreach (var wmsMission in wmsMissions.Where(m => m.BayId.HasValue))
+                // 3. Select the new WMS missions and queue them
+                var newMissions = wmsMissions
+                    .Where(m => m.BayId.HasValue)
+                    .Where(m => !localMissions.Any(m1 => m1.WmsId == m.Id));
+
+                foreach (var wmsMission in newMissions)
                 {
-                    if (!localMissions.Any(m => m.WmsId == wmsMission.Id))
+                    var bay = baysDataProvider.GetByIdOrDefault(wmsMission.BayId.Value);
+
+                    if (bay is null)
                     {
-                        // 3. If the mission is not found in database, queue a new mission request
+                        this.Logger.LogWarning($"The WMS mission id={wmsMission.Id} cannot be accepted because no bay with id={wmsMission.BayId.Value} exists on the machine.");
+                    }
+                    else
+                    {
                         missionSchedulingProvider.QueueBayMission(
                             wmsMission.LoadingUnitId,
-                            (BayNumber)wmsMission.BayId, // TODO **** careful here: bayId && bayNumber
+                            bay.Number,
                             wmsMission.Id,
                             wmsMission.Priority);
                     }

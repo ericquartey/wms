@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Insert(int loadingUnitsId);
 
-        void SetCode(int id, string code);
-
         void SetHeight(int loadingUnitId, double height);
 
         void SetWeight(int loadingUnitId, double loadingUnitGrossWeight);
