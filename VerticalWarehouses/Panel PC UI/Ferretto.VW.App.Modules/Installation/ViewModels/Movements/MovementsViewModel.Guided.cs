@@ -114,6 +114,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsShutterThreeSensors, value);
         }
 
+        public ICommand CarouselDownCommand =>
+                    this.moveCarouselDownCommand
+            ??
+            (this.moveCarouselDownCommand = new DelegateCommand(
+            async () => await this.MoveCarouselDownAsync(),
+            this.CanMoveCarouselDown));
+
+        public ICommand CarouselUpCommand =>
+            this.moveCarouselUpCommand
+            ??
+            (this.moveCarouselUpCommand = new DelegateCommand(
+            async () => await this.MoveCarouselUpAsync(),
+            this.CanMoveCarouselUp));
+
         public ICommand ClosedShutterCommand =>
             this.closedShutterCommand
             ??
@@ -372,25 +386,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RefreshActionPoliciesAsync().ConfigureAwait(false);
 
-            //this.moveToHeightCommand?.RaiseCanExecuteChanged();
-            //this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
-
             this.tuningBayCommand?.RaiseCanExecuteChanged();
             this.tuningChainCommand?.RaiseCanExecuteChanged();
 
             this.openShutterCommand?.RaiseCanExecuteChanged();
             this.intermediateShutterCommand?.RaiseCanExecuteChanged();
             this.closedShutterCommand?.RaiseCanExecuteChanged();
-            //this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
-            //this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
 
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
 
-            //this.setWeightControlCommand?.RaiseCanExecuteChanged();
-
-            //this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         private bool CanCloseShutter()
@@ -421,6 +430,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.BayIsShutterThreeSensors
                 &&
                 (this.sensorsService.ShutterSensors != null && (this.sensorsService.ShutterSensors.Open || this.sensorsService.ShutterSensors.Closed));
+        }
+
+        private bool CanMoveCarouselDown()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselDownPolicy?.IsAllowed == true;
+        }
+
+        private bool CanMoveCarouselUp()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.moveCarouselUpPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveToBayPosition()
@@ -568,6 +601,44 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsShutterMoving = true;
             }
             catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveCarouselDownAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Down);
+                this.IsCarouselMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveCarouselUpAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Up);
+                this.IsCarouselMoving = true;
+            }
+            catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }

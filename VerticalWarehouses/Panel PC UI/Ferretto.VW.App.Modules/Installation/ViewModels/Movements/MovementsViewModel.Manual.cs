@@ -23,15 +23,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private bool canExecuteShutterMoveDownCommand;
-
-        private bool canExecuteShutterMoveUpCommand;
-
         private bool canInputCellId;
 
         private bool canInputHeight;
 
         private bool canInputLoadingUnitId;
+
+        private bool canMoveCarouselCloseCommand;
+
+        private bool canMoveCarouselOpenCommand;
 
         private bool canMoveElevatorBackwardsCommand;
 
@@ -40,6 +40,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool canMoveElevatorForwardCommand;
 
         private bool canMoveElevatorUpCommand;
+
+        private bool canShutterMoveDownCommand;
+
+        private bool canShutterMoveUpCommand;
+
+        private bool isCarouselClosing;
+
+        private bool isCarouselOpening;
 
         private bool isCompleted;
 
@@ -56,6 +64,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
+
+        private DelegateCommand moveCarouselCloseCommand;
+
+        private DelegateCommand moveCarouselOpenCommand;
 
         private DelegateCommand moveElevatorBackwardsCommand;
 
@@ -77,18 +89,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool CanExecuteShutterMoveDownCommand
-        {
-            get => this.canExecuteShutterMoveDownCommand;
-            private set => this.SetProperty(ref this.canExecuteShutterMoveDownCommand, value);
-        }
-
-        public bool CanExecuteShutterMoveUpCommand
-        {
-            get => this.canExecuteShutterMoveUpCommand;
-            private set => this.SetProperty(ref this.canExecuteShutterMoveUpCommand, value);
-        }
-
         public bool CanInputCellId
         {
             get => this.canInputCellId;
@@ -105,6 +105,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
+        }
+
+        public bool CanMoveCarouselCloseCommand
+        {
+            get => this.canMoveCarouselCloseCommand;
+            private set => this.SetProperty(ref this.canMoveCarouselCloseCommand, value);
+        }
+
+        public bool CanMoveCarouselOpenCommand
+        {
+            get => this.canMoveCarouselOpenCommand;
+            private set => this.SetProperty(ref this.canMoveCarouselOpenCommand, value);
         }
 
         public bool CanMoveElevatorBackwards
@@ -129,6 +141,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.canMoveElevatorUpCommand;
             private set => this.SetProperty(ref this.canMoveElevatorUpCommand, value);
+        }
+
+        public bool CanShutterMoveDownCommand
+        {
+            get => this.canShutterMoveDownCommand;
+            private set => this.SetProperty(ref this.canShutterMoveDownCommand, value);
+        }
+
+        public bool CanShutterMoveUpCommand
+        {
+            get => this.canShutterMoveUpCommand;
+            private set => this.SetProperty(ref this.canShutterMoveUpCommand, value);
+        }
+
+        public bool IsCarouselClosing
+        {
+            get => this.isCarouselClosing;
+            private set => this.SetProperty(ref this.isCarouselClosing, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsCarouselOpening
+        {
+            get => this.isCarouselOpening;
+            private set => this.SetProperty(ref this.isCarouselOpening, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsElevatorMoving
@@ -185,8 +221,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public ICommand MoveCarouselCloseCommand =>
+            this.moveCarouselCloseCommand
+            ??
+            (this.moveCarouselCloseCommand = new DelegateCommand(async () => await this.CloseCarouselAsync()));
+
+        public ICommand MoveCarouselOpenCommand =>
+            this.moveCarouselOpenCommand
+            ??
+            (this.moveCarouselOpenCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
+
         public ICommand MoveElevatorBackwardsCommand =>
-                    this.moveElevatorBackwardsCommand
+                            this.moveElevatorBackwardsCommand
             ??
             (this.moveElevatorBackwardsCommand = new DelegateCommand(async () => await this.MoveElevatorBackwardsAsync()));
 
@@ -233,6 +279,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
+        public async Task CloseCarouselAsync()
+        {
+            await this.StartMovementAsync(VerticalMovementDirection.Down);
+        }
+
         public async Task MoveElevatorBackwardsAsync()
         {
             await this.StartHorizontalMovementAsync(HorizontalMovementDirection.Backwards);
@@ -256,6 +307,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task OnManualAppearedAsync()
         {
             this.isCompleted = false;
+        }
+
+        public async Task OpenCarouselAsync()
+        {
+            await this.StartMovementAsync(VerticalMovementDirection.Up);
         }
 
         public async Task ShutterMoveDownAsync()
@@ -304,13 +360,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse;
 
-            this.CanExecuteShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
-            this.CanExecuteShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
+            this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
+            this.CanShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
 
             this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
             this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
             this.CanMoveElevatorUp = !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
             this.CanMoveElevatorDown = !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
+
+            this.CanMoveCarouselCloseCommand = !this.IsCarouselOpening && this.moveCarouselDownPolicy?.IsAllowed == true;
+            this.CanMoveCarouselOpenCommand = !this.IsCarouselClosing && this.moveCarouselUpPolicy?.IsAllowed == true;
         }
 
         private bool CanMoveToCellHeight()
@@ -529,6 +588,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        private async Task StartMovementAsync(VerticalMovementDirection direction)
+        {
+            if (this.IsCarouselClosing || this.IsCarouselOpening)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.machineCarouselWebService.MoveManualAsync(direction);
+
+                this.IsCarouselClosing = direction is VerticalMovementDirection.Down;
+                this.IsCarouselOpening = direction is VerticalMovementDirection.Up;
+
+                this.IsCarouselMoving = true;
+            }
+            catch (System.Exception ex)
+            {
+                this.CloseOperation();
+
+                this.ShowNotification(ex);
+            }
+        }
+
         private async Task StartVerticalMovementAsync(VerticalMovementDirection direction)
         {
             if (this.IsMovingElevatorUp || this.IsMovingElevatorDown)
@@ -567,6 +650,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsMovingElevatorForwards = false;
             this.IsMovingElevatorBackwards = false;
             this.IsElevatorMoving = false;
+            this.IsCarouselClosing = false;
+            this.IsCarouselOpening = false;
+            this.IsCarouselMoving = false;
         }
 
         private void WriteInfo(Axis? axisMovement)

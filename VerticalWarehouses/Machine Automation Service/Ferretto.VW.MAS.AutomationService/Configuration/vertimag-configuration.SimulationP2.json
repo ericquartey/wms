@@ -449,6 +449,11 @@
             "Location": "InternalBay1Up"
           }
         ],
+        "FullLoadMovement": {
+          "Acceleration": 300,
+          "Deceleration": 300,
+          "Speed": 140
+        },
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {

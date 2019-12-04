@@ -53,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken elevatorPositionChangedToken;
 
+        private LoadingUnit embarkedLoadingUnit;
+
         private DelegateCommand goToMovementsGuidedCommand;
 
         private DelegateCommand goToMovementsManualCommand;
@@ -136,6 +138,27 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
+        public LoadingUnit EmbarkedLoadingUnit
+        {
+            // TODO  for the moment we use only presence sensors
+            // get => this.embarkedLoadingUnit;
+            get
+            {
+                if (this.CanEmbark())
+                {
+                    this.embarkedLoadingUnit = new LoadingUnit();
+                }
+                else
+                {
+                    this.embarkedLoadingUnit = null;
+                }
+
+                return this.embarkedLoadingUnit;
+            }
+
+            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+        }
+
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public ICommand GoToMovementsGuidedCommand =>
@@ -217,7 +240,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 //|| this.IsBusyUnloadingToCell
                 || this.IsTuningChain
                 || this.IsTuningBay
-                //|| this.IsCarouselMoving
+                || this.IsCarouselMoving
                 || this.IsShutterMoving
                 || this.IsElevatorMoving;
             set
@@ -231,7 +254,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 //this.IsBusyUnloadingToBay = value;
                 //this.IsBusyUnloadingToCell = value;
                 this.IsTuningChain = value;
-                //this.IsCarouselMoving = value;
+                this.IsCarouselMoving = value;
                 this.IsTuningBay = value;
                 this.IsShutterMoving = value;
                 this.IsElevatorMoving = value;
@@ -367,6 +390,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await base.OnMachineModeChangedAsync(e);
             this.OnManualMachinePowerChanged();
             this.RaiseCanExecuteChanged();
+        }
+
+        private bool CanEmbark()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                !this.sensorsService.Sensors.LuPresentInMachineSide
+                &&
+                !this.sensorsService.Sensors.LuPresentInOperatorSide
+                &&
+                this.sensorsService.IsZeroChain;
         }
 
         private bool CanGoToMovementsExecuteCommand()
