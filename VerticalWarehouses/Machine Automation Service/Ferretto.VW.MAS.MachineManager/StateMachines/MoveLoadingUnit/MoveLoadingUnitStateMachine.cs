@@ -117,11 +117,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             newState = this.ActiveState.NotificationReceived(notificationMessage);
             if (newState != this.ActiveState)
             {
-                if (this.MachineData is Mission mission)
-                {
-                    mission.FsmStateName = this.ActiveState.GetType().Name;
-                    this.missionsDataProvider.Update(mission);
-                }
                 return newState;
             }
 
@@ -135,13 +130,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 && this.MachineData is Mission mission
                 )
             {
-                mission.CreationDate = DateTime.Now;
                 this.missionsDataProvider.Update(mission);
             }
 
             return returnValue;
         }
 
+        // it not only checks, but also updates some values
         private bool CheckStartConditions(CommandMessage commandMessage)
         {
             bool returnValue;

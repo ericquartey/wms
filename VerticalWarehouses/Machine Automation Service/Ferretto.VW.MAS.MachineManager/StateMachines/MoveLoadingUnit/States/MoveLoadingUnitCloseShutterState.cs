@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -22,9 +23,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private IMoveLoadingUnitMessageData messageData;
 
-        private IMoveLoadingUnitMachineData moveData;
+        private Mission mission;
 
         #endregion
 
@@ -33,11 +36,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         public MoveLoadingUnitCloseShutterState(
             IBaysDataProvider baysDataProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IMissionsDataProvider missionsDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -54,12 +59,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
-                && machineData is IMoveLoadingUnitMachineData moveData
+                && machineData is Mission moveData
                 )
             {
                 this.messageData = messageData;
-                this.moveData = moveData;
-                moveData.FsmStateName = this.GetType().Name;
+                this.mission = moveData;
+                this.mission.FsmStateName = this.GetType().Name;
+                this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
                 this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number);
@@ -77,7 +83,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case MessageStatus.OperationEnd:
                     if (this.messageData.EjectLoadingUnit)
                     {
-                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.moveData.LoadingUnitDestination);
+                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
                         var messageData = new MoveLoadingUnitMessageData(
                             this.messageData.MissionType,
                             this.messageData.Source,
@@ -87,14 +93,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             this.messageData.LoadingUnitId,
                             this.messageData.InsertLoadingUnit,
                             this.messageData.EjectLoadingUnit,
-                            this.moveData.FsmId,
+                            this.mission.FsmId,
                             this.messageData.CommandAction,
                             this.messageData.StopReason,
                             this.messageData.Verbosity);
 
                         this.Message = new NotificationMessage(
                             messageData,
-                            $"Loading Unit {this.moveData.LoadingUnitId} placed on bay {bay.Number}",
+                            $"Loading Unit {this.mission.LoadingUnitId} placed on bay {bay.Number}",
                             MessageActor.AutomationService,
                             MessageActor.MachineManager,
                             MessageType.MoveLoadingUnit,
@@ -102,7 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             bay.Number,
                             MessageStatus.OperationWaitResume);
 
-                        if (this.moveData.WmsId.HasValue)
+                        if (this.mission.WmsId.HasValue)
                         {
                             returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                         }
@@ -124,10 +130,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationRunningStop:
-                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-                    ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
-                    ((IEndState)returnValue).ErrorMessage = notification;
+                    returnValue = this.OnStop(StopRequestReason.Error);
+                    if (returnValue is IEndState endState)
+                    {
+                        endState.ErrorMessage = notification;
+                    }
                     break;
             }
 
@@ -136,9 +143,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-            ((IEndState)returnValue).StopRequestReason = reason;
+            IState returnValue;
+            if (reason == StopRequestReason.Error
+                && this.mission.IsRestoringType()
+                )
+            {
+                this.mission.FsmRestoreStateName = this.mission.FsmStateName;
+                returnValue = this.GetState<IMoveLoadingUnitErrorState>();
+            }
+            else
+            {
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+            }
+            if (returnValue is IEndState endState)
+            {
+                endState.StopRequestReason = reason;
+            }
 
             return returnValue;
         }

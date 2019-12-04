@@ -46,8 +46,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
-            this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+
+            this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
 
         #endregion
@@ -68,7 +69,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, request reason {this.StopRequestReason}, {commandMessage.Description}");
             this.EndMessage = new NotificationMessage(
                 commandMessage.Data,
                 commandMessage.Description,
@@ -92,6 +93,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 var newMessageData = new StopMessageData(this.StopRequestReason);
                 this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+                this.mission.FsmStateName = this.GetType().Name;
+                this.missionsDataProvider.Update(this.mission);
             }
         }
 
