@@ -64,9 +64,8 @@
                    Height="180"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/Ingranaggio.jpg"
+                   Source="{Binding Image, Converter={StaticResource ITSC}, Mode=OneWay}"
                    Stretch="Uniform" />
-            <!--  {Binding Image, Converter={StaticResource ITSC}, Mode=OneWay}  -->
 
             <controls:PpcLabeledText Grid.Row="1"
                                      Grid.Column="1"

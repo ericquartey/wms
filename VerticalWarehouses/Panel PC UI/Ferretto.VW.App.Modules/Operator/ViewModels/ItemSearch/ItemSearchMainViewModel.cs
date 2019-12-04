@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,6 +17,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Fields
 
         private const int DefaultPageSize = 20;
+
+        private const int ItemsToCheckBeforeLoad = 2;
+
+        private const int ItemsVisiblePageSize = 12;
 
         private readonly IAreasDataService areasDataService;
 
@@ -45,9 +48,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isWaitingForResponse;
 
+        private int maxKnownIndexSelection;
+
         private DelegateCommand requestItemPickCommand;
 
-        private string searchItemCode;
+        private string searchItem;
 
         private Item selectedItem;
 
@@ -74,6 +79,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+
+            this.maxKnownIndexSelection = ItemsVisiblePageSize;
         }
 
         #endregion
@@ -139,7 +146,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ShowItemDetails,
                 this.CanShowItemDetails));
 
-        public IEnumerable<Item> Items => new BindingList<Item>(this.items);
+        public IList<Item> Items => new List<Item>(this.items);
 
         public override bool KeepAlive => true;
 
@@ -150,12 +157,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 async () => await this.RequestItemPickAsync(),
                 this.CanRequestItemPick));
 
-        public string SearchItemCode
+        public string SearchItem
         {
-            get => this.searchItemCode;
+            get => this.searchItem;
             set
             {
-                if (this.SetProperty(ref this.searchItemCode, value))
+                if (this.SetProperty(ref this.searchItem, value))
                 {
                     this.IsSearching = true;
                     this.TriggerSearchAsync().GetAwaiter();
@@ -195,14 +202,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.InputQuantity = null;
-            this.items.Clear();
+            this.SearchItem = null;
             var machineIdentity = await this.identityService.GetAsync();
             this.areaId = machineIdentity.AreaId;
             this.tokenSource = new CancellationTokenSource();
 
             await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
-
-            this.SetSelectedItem();
         }
 
         public async Task RequestItemPickAsync()
@@ -245,18 +250,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if (skip == 0)
             {
                 this.items.Clear();
+                this.maxKnownIndexSelection = 0;
             }
+
+            var selectedItemId = this.SelectedItem?.Id;
 
             try
             {
                 var newItems = await this.areasDataService.GetItemsAsync(
-                    this.areaId.Value,
-                    skip,
-                    DefaultPageSize,
-                    null,
-                    null,
-                    this.searchItemCode,
-                    cancellationToken);
+                this.areaId.Value,
+                skip,
+                DefaultPageSize,
+                null,
+                null,
+                this.searchItem,
+                cancellationToken);
 
                 foreach (var item in newItems)
                 {
@@ -269,32 +277,36 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.items.Clear();
                 this.SelectedItem = null;
                 this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
             }
             finally
             {
-                this.RaisePropertyChanged(nameof(this.Items));
-
-                if (skip == 0 || this.currentItemIndex >= this.items.Count - 1)
-                {
-                    this.SelectedItem = this.items?.FirstOrDefault();
-                    this.currentItemIndex = 0;
-                }
-
                 this.IsSearching = false;
                 this.IsBusyLoadingNextPage = false;
+                this.RaisePropertyChanged(nameof(this.Items));
             }
+            
+            this.RaisePropertyChanged(nameof(this.Items));
+
+            this.SetCurrentIndex(selectedItemId);
+            this.AdjustItemsAppearance();
+            this.SetSelectedItem();
         }
 
         public async Task SelectNextItemAsync()
         {
             this.currentItemIndex++;
+            if (this.currentItemIndex > this.maxKnownIndexSelection)
+            {
+                this.maxKnownIndexSelection = this.currentItemIndex;
+            }
 
-            if (this.currentItemIndex > Math.Max(this.items.Count - 2, DefaultPageSize - 2))
+            if (this.currentItemIndex > Math.Max(this.items.Count - ItemsToCheckBeforeLoad, DefaultPageSize - ItemsToCheckBeforeLoad))
             {
                 this.IsSearching = true;
                 this.tokenSource = new CancellationTokenSource();
                 this.IsBusyLoadingNextPage = true;
-                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
 
             this.SetSelectedItem();
@@ -303,15 +315,34 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public async Task SelectPreviousItemAsync()
         {
             this.currentItemIndex--;
+            if ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > this.currentItemIndex)
+            {
+                this.maxKnownIndexSelection--;
+            }
 
-            if (this.currentItemIndex > (DefaultPageSize - 2))
+            if (this.currentItemIndex > (DefaultPageSize - ItemsToCheckBeforeLoad))
             {
                 this.IsSearching = true;
                 this.tokenSource = new CancellationTokenSource();
-                await this.SearchItemAsync(this.currentItemIndex + 2, this.tokenSource.Token);
+                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
 
-            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
+            this.SetSelectedItem();
+        }
+
+        private void AdjustItemsAppearance()
+        {
+            if (this.maxKnownIndexSelection == 0)
+            {
+                this.maxKnownIndexSelection = Math.Min(this.items.Count(), ItemsVisiblePageSize);
+            }
+
+            if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
+                &&
+                this.Items.Count() > this.maxKnownIndexSelection)
+            {
+                this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
+            }
         }
 
         private bool CanRequestItemPick()
@@ -368,9 +399,34 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
+        private void SetCurrentIndex(int? itemId)
+        {
+            if (itemId.HasValue
+                &&
+                this.items.FirstOrDefault(l => l.Id == itemId.Value) is Item itemFound)
+            {
+                this.currentItemIndex = this.items.IndexOf(itemFound);
+            }
+            else
+            {
+                this.currentItemIndex = 0;
+                this.maxKnownIndexSelection = 0;
+            }
+        }
+
         private void SetSelectedItem()
         {
-            this.SelectedItem = this.items?.ElementAt(this.currentItemIndex);
+            if (this.items.Count == 0)
+            {
+                this.SelectedItem = null;
+                return;
+            }
+
+            var elemSelected = this.items.ElementAt(this.currentItemIndex);
+            if (elemSelected?.Id != this.SelectedItem?.Id)
+            {
+                this.SelectedItem = elemSelected;
+            }
         }
 
         private void ShowItemDetails()

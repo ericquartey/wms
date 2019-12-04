@@ -170,7 +170,7 @@
                         </DataGridTextColumn>
                         <DataGridTemplateColumn x:Name="Column4"
                                             Width="100"
-                                            Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecution}">
+                                            Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecutable}">
                             <DataGridTemplateColumn.HeaderStyle>
                                 <Style TargetType="DataGridColumnHeader">
                                     <Setter Property="HorizontalContentAlignment" Value="Center" />
