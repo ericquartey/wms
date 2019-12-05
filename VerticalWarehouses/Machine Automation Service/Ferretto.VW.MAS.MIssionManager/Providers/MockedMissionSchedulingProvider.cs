@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        public async Task ScheduleMissionsAsync(BayNumber bayNumber)
+        public async Task ScheduleMissionsAsync(BayNumber bayNumber, bool restore = false)
         {
             throw new NotSupportedException();
         }

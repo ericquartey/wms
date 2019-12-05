@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
@@ -31,9 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ISensorsProvider sensorsProvider;
 
-        private BayNumber ejectBay;
-
-        private LoadingUnitLocation ejectBayLocation;
+        private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
         private Mission mission;
 
@@ -61,6 +63,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+
+            this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
 
         #endregion
@@ -75,12 +79,86 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission = moveData;
             }
+
+            var newMessageData = new StopMessageData(StopRequestReason.Error);
+            this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+            this.mission.FsmStateName = this.GetType().Name;
+            this.missionsDataProvider.Update(this.mission);
+        }
+
+        protected override IState OnNotificationReceived(NotificationMessage notification)
+        {
+            IState returnValue = this;
+
+            var notificationStatus = this.loadingUnitMovementProvider.StopOperationStatus(notification);
+
+            if (notificationStatus != MessageStatus.NotSpecified)
+            {
+                switch (notificationStatus)
+                {
+                    // State machine is in error, any response from device manager state machines will do to complete state machine shutdown
+                    case MessageStatus.OperationError:
+                    case MessageStatus.OperationEnd:
+                    case MessageStatus.OperationStop:
+                    case MessageStatus.OperationRunningStop:
+                        this.UpdateResponseList(notificationStatus, notification.TargetBay);
+                        break;
+                }
+
+                if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
+                {
+                    // TODO remove stop mission
+                    {
+                        // stop mission
+                        this.mission.FsmRestoreStateName = null;
+                        returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                        ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+                    }
+                    //{
+                    //    // wait for resume or stop
+                    //    this.mission.RestoreConditions = true;
+                    //    this.missionsDataProvider.Update(this.mission);
+                    //}
+                }
+            }
+
+            return returnValue;
         }
 
         protected override IState OnResume(CommandMessage commandMessage)
         {
             IState returnValue = this;
-            // try to continue the mission from where it stopped
+            // TODO try to continue the mission from where it stopped
+            switch (this.mission.FsmRestoreStateName)
+            {
+                case nameof(MoveLoadingUnitCloseShutterState):
+                    break;
+
+                case nameof(MoveLoadingUnitDepositUnitState):
+                    break;
+
+                case nameof(MoveLoadingUnitLoadElevatorState):
+                    break;
+
+                case nameof(MoveLoadingUnitMoveToTargetState):
+                    break;
+
+                case nameof(MoveLoadingUnitStartState):
+                    break;
+
+                case nameof(MoveLoadingUnitWaitEjectConfirm):
+                    break;
+
+                case nameof(MoveLoadingUnitWaitPickConfirm):
+                    break;
+
+                default:
+                    this.Logger.LogError($"OnResume: no valid FsmRestoreStateName {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                    ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+                    break;
+            }
             return returnValue;
         }
 
@@ -91,6 +169,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             ((IEndState)returnValue).StopRequestReason = reason;
 
             return returnValue;
+        }
+
+        private void UpdateResponseList(MessageStatus status, BayNumber targetBay)
+        {
+            if (this.stateMachineResponses.TryGetValue(targetBay, out var stateMachineResponse))
+            {
+                stateMachineResponse = status;
+                this.stateMachineResponses[targetBay] = stateMachineResponse;
+            }
+            else
+            {
+                this.stateMachineResponses.Add(targetBay, status);
+            }
         }
 
         #endregion

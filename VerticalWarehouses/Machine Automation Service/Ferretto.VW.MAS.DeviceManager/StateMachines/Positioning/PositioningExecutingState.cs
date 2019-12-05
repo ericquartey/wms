@@ -587,7 +587,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         /// <param name="message"></param>
         private void ProcessEndMeasureProfile(FieldNotificationMessage message)
         {
-            Debug.Assert(message.Data is MeasureProfileFieldMessageData);
+            Trace.Assert(message.Data is MeasureProfileFieldMessageData);
 
             if (this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration)
             {

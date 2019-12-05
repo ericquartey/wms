@@ -76,7 +76,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationRunningStop);
         }
 
-        public double? GetDestinationHeight(IMoveLoadingUnitMachineData moveData)
+        public double? GetDestinationHeight(Mission moveData)
         {
             double? targetPosition = null;
             switch (moveData.LoadingUnitDestination)
@@ -112,7 +112,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public double? GetSourceHeight(IMoveLoadingUnitMachineData moveData)
+        public double? GetSourceHeight(Mission moveData)
         {
             double? targetPosition = null;
             switch (moveData.LoadingUnitSource)
@@ -268,6 +268,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         public MessageStatus StopOperationStatus(NotificationMessage message)
         {
             if (message.Type == MessageType.Stop
+                || message.Type == MessageType.PowerEnable
                 || message.Type == MessageType.InverterStop
                 || message.Type == MessageType.InverterPowerEnable)
             {

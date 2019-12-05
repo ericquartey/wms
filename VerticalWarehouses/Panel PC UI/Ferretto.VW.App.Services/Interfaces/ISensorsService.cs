@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Services
 
         string LoadingUnitPositionDownInBayCode { get; }
 
-        string LoadingUnitPositionUpInBayCode { get;  }
+        string LoadingUnitPositionUpInBayCode { get; }
 
         Sensors Sensors { get; }
 
@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Services
         #region Methods
 
         Task RefreshAsync(bool forceRefresh);
+
+        void RetrieveElevatorPosition(ElevatorPosition position);
 
         #endregion
     }

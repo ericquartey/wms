@@ -65,6 +65,11 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             this.PublishNotificationMessage(notificationMessage);
 
+            if (this.CurrentState is IDisposable disposableState)
+            {
+                disposableState.Dispose();
+            }
+
             lock (this.CurrentState)
             {
                 this.CurrentState = newState;
@@ -147,37 +152,6 @@ namespace Ferretto.VW.MAS.DeviceManager
 
             if (disposing)
             {
-                // This is very bad. this code should not be here.
-                // Avoid improper use of disposal routines.
-                {
-                    var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        notificationMessageData,
-                        $"FSM current status null",
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        MessageType.MachineStatusActive,
-                        BayNumber.None,
-                        BayNumber.None,
-                        MessageStatus.OperationStart);
-
-                    this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                }
-
-                {
-                    var notificationMessageData = new MachineStateActiveMessageData(MessageActor.DeviceManager, string.Empty, MessageVerbosity.Info);
-                    var notificationMessage = new NotificationMessage(
-                        notificationMessageData,
-                        $"FSM current state null",
-                        MessageActor.Any,
-                        MessageActor.DeviceManager,
-                        MessageType.MachineStateActive,
-                        BayNumber.None,
-                        BayNumber.None,
-                        MessageStatus.OperationStart);
-
-                    this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-                }
             }
 
             this.disposed = true;
