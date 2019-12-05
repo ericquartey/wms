@@ -50,7 +50,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     {
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
-                        TargetBay = bayNumber
+                        TargetBay = bayNumber,
+                        MissionType = MissionType.Manual
                     });
 
                 this.dataContext.SaveChanges();

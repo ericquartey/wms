@@ -19,11 +19,18 @@
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_Disabled"
                      Color="Transparent" />
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_TextBox_Disabled"
-                     Color="Transparent" />
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBox_Foreground_Disabled"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_TextBlock_Foreground_Disabled"
                      Color="{DynamicResource ColorFerrettoMediumGray}" />
+
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Background_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoLightGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
+    <SolidColorBrush x:Key="VWAPP_PpcTextBox_Foreground_TextBox_Readonly"
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
 
     <SolidColorBrush x:Key="VWAPP_PpcTextBox_BorderColor_Highlighted"
                      Color="{DynamicResource ColorFerrettoRed}" />

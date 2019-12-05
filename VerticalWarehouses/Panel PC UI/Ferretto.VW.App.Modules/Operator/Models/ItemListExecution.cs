@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
             if (itemList.Machines.Any())
             {
-                this.MachinesInfo = string.Join(",", itemList.Machines.Select(m => m.Nickname).ToArray());
+                this.MachinesInfo = string.Join(", ", itemList.Machines.Select(m => m.Nickname).ToArray());
             }
         }
 

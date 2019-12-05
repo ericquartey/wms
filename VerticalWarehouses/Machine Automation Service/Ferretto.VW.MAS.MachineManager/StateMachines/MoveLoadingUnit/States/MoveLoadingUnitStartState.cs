@@ -3,6 +3,8 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
+using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -21,16 +23,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
+        private Mission mission;
+
         #endregion
 
         #region Constructors
 
         public MoveLoadingUnitStartState(
-                    ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            IMissionsDataProvider missionsDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -47,9 +55,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
-                && machineData is IMoveLoadingUnitMachineData moveData
+                && machineData is Mission moveData
                 )
             {
+                this.mission = moveData;
                 var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData);
 
                 if (sourceHeight is null)
@@ -86,6 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     MessageStatus.OperationStart);
                 moveData.FsmStateName = this.GetType().Name;
                 moveData.Status = MissionStatus.Executing;
+                this.missionsDataProvider.Update(moveData);
             }
             else
             {
@@ -109,10 +119,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationRunningStop:
-                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-                    ((IEndState)returnValue).StopRequestReason = StopRequestReason.Error;
-                    ((IEndState)returnValue).ErrorMessage = notification;
+                    returnValue = this.OnStop(StopRequestReason.Error);
+                    if (returnValue is IEndState endState)
+                    {
+                        endState.ErrorMessage = notification;
+                    }
                     break;
             }
 
@@ -121,9 +132,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-            ((IEndState)returnValue).StopRequestReason = reason;
+            IState returnValue;
+            if (reason == StopRequestReason.Error
+                && this.mission.IsRestoringType()
+                )
+            {
+                this.mission.FsmRestoreStateName = this.mission.FsmStateName;
+                returnValue = this.GetState<IMoveLoadingUnitErrorState>();
+            }
+            else
+            {
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+            }
+            if (returnValue is IEndState endState)
+            {
+                endState.StopRequestReason = reason;
+            }
 
             return returnValue;
         }

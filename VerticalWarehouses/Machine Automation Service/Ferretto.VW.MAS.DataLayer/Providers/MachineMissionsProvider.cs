@@ -142,6 +142,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
                 if (newMission != null)
                 {
+                    if (newMission.MachineData is DataModels.Mission mission)
+                    {
+                        mission.MissionType = MissionType.Manual;
+                        mission.CreationDate = DateTime.Now;
+                    }
                     this.machineMissions.Add(newMission);
 
                     fsmId = newMission.FsmId;

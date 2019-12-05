@@ -80,13 +80,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.loadingUnitMovementProvider.NotifyAssignedMissionOperationChanged(bay.Number, this.mission.WmsId.Value);
 
-                this.mission.FsmStateName = this.GetType().Name;
-                this.missionsDataProvider.Update(this.mission);
                 if (moveData.LoadingUnitId > 0)
                 {
                     var machine = this.machineProvider.Get();
                     this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
                 }
+                this.mission.FsmStateName = this.GetType().Name;
+                this.missionsDataProvider.Update(this.mission);
             }
         }
 
@@ -146,9 +146,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override IState OnStop(StopRequestReason reason)
         {
-            var returnValue = this.GetState<IMoveLoadingUnitEndState>();
-
-            ((IEndState)returnValue).StopRequestReason = reason;
+            IState returnValue;
+            if (reason == StopRequestReason.Error
+                && this.mission.IsRestoringType()
+                )
+            {
+                this.mission.FsmRestoreStateName = this.mission.FsmStateName;
+                returnValue = this.GetState<IMoveLoadingUnitErrorState>();
+            }
+            else
+            {
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+            }
+            if (returnValue is IEndState endState)
+            {
+                endState.StopRequestReason = reason;
+            }
 
             return returnValue;
         }

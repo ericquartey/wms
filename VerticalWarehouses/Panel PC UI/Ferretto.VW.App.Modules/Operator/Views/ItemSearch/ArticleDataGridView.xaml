@@ -30,7 +30,7 @@
                   IsReadOnly="True"
                   ItemsSource="{Binding Items}"
                   RowHeight="30"
-                  SelectedItem="{Binding SelectedItem}"
+                  SelectedItem="{Binding SelectedItem, Mode=OneWay}"
                   SelectionMode="Single"
                   VerticalGridLinesBrush="{DynamicResource PpcButtonBorderBrush}"
                   VerticalScrollBarVisibility="Hidden">

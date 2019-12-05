@@ -6,10 +6,16 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
+            d:DataContext="{d:DesignInstance Type=viewmodels:LoadingUnitsViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="80,15,0,0">
+
+    <Grid Margin="15,0">
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
@@ -17,8 +23,9 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
@@ -29,51 +36,164 @@
                    Text="Gestione Cassetti" />
 
         <controls:CustomControlLoadingUnitsDataGrid Grid.Row="1"
+                                                    Grid.ColumnSpan="2"
                                                     ItemsSource="{Binding LoadingUnits}"
-                                                    SelectedItem="{Binding SelectedLU}" />
+                                                    SelectedItem="{Binding SelectedLU, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <Border Grid.Row="2"
+                Grid.ColumnSpan="2"
+                Margin="0,15,0,0"
+                BorderBrush="{DynamicResource PpcBorderBrush}"
+                BorderThickness="{DynamicResource PpcBorderThickness}"
+                CornerRadius="2">
+            <Grid Margin="15">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="1"
-                    Grid.Column="1"
-                    Orientation="Vertical">
-            <controls:PpcButton Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding UpDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonUp}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
 
-            <controls:PpcButton Margin="15,0,15,15"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Top"
-                                Command="{Binding DownDataGridButtonCommand}"
-                                Content="{x:Static resources:OperatorApp.CommonDown}" />
-        </StackPanel>
+                <controls:PpcTextBox Grid.Column="0"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Id}"
+                                     IsEnabled="False"
+                                     LabelText="Id" />
 
-        <controls:PpcButton Grid.Row="2"
-                            Grid.Column="1"
-                            Margin="15,15,15,0"
-                            HorizontalAlignment="Right"
-                            VerticalAlignment="Bottom"
-                            Content="{x:Static resources:OperatorApp.ImmediateDrawerCallDrawerCall}"
-                            Visibility="Collapsed" />
+                <controls:PpcTextBox Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Code}"
+                                     IsEnabled="False"
+                                     LabelText="Code" />
+
+                <controls:PpcTextBox Grid.Column="2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Description}"
+                                     IsEnabled="False"
+                                     LabelText="Description" />
+
+                <controls:PpcTextBox Grid.Column="3"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.GrossWeight}"
+                                     IsEnabled="False"
+                                     LabelText="GrossWeight" />
+
+                <controls:PpcTextBox Grid.Column="4"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.NetWeight}"
+                                     IsEnabled="False"
+                                     LabelText="NetWeight" />
+
+                <controls:PpcTextBox Grid.Column="5"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.MaxNetWeight}"
+                                     IsEnabled="False"
+                                     LabelText="Height" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="0"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Height}"
+                                     IsEnabled="False"
+                                     LabelText="Height" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="1"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.MissionsCount}"
+                                     IsEnabled="False"
+                                     LabelText="MissionsCount" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="2"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Status}"
+                                     IsEnabled="False"
+                                     LabelText="Status" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="3"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.Tare}"
+                                     IsEnabled="False"
+                                     LabelText="Tare" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="4"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     IsEnabled="False"
+                                     LabelText="IsIntoMachine" />
+
+                <controls:PpcTextBox Grid.Row="1"
+                                     Grid.Column="5"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Stretch"
+                                     InputText="{Binding SelectedLU.CellId}"
+                                     IsEnabled="False"
+                                     LabelText="CellId" />
+            </Grid>
+        </Border>
 
         <Grid Grid.Row="3"
-              Margin="0,15,0,0"
-              Visibility="Collapsed">
-
+              Grid.Column="0"
+              Grid.ColumnSpan="2"
+              Margin="0,15,0,0">
             <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
                 <ColumnDefinition />
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <controls:PpcLabeledText HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="Cassetto bloccato."
-                                     LabelText="{x:Static resources:OperatorApp.CommonNote}" />
+            <controls:PpcButton Grid.Column="0"
+                                Margin="0,0,15,0"
+                                Command="{Binding SaveDrawerCommand}"
+                                Content="Salva cassetto" />
 
-            <controls:PpcTextBox Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 LabelText="{x:Static resources:OperatorApp.ImmediateDrawerCallRequiredDrawer}" />
+            <controls:PpcButton Grid.Column="1"
+                                Margin="0,0,15,0"
+                                Command="{Binding FreeDrawerCommand}"
+                                Content="Libera cassetto" />
+
+            <controls:PpcButton Grid.Column="2"
+                                Margin="0,0,15,0"
+                                Command="{Binding InsertDrawerCommand}"
+                                Content="Inserisci cassetto" />
+
+            <controls:PpcButton Grid.Column="3"
+                                Margin="0,0,15,0"
+                                Command="{Binding RemoveDrawerCommand}"
+                                Content="Elimina cassetto" />
+
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                Command="{Binding StopMovingCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}"
+                                Style="{DynamicResource PpcButtonStopStyle}" />
+
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                Command="{Binding ImmediateDrawerCallCommand}"
+                                Content="Chiamata cassetto" />
 
         </Grid>
 

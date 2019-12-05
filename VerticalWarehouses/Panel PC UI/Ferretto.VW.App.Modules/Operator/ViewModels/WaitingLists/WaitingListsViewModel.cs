@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IAreasDataService areasDataService;
 
+        private readonly IBayManager bayManager;
+
         private readonly IMachineIdentityWebService identityService;
 
         private readonly IItemListsDataService itemListsDataService;
@@ -49,13 +51,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
             IItemListsDataService itemListsDataService,
-            IAreasDataService areasDataService)
+            IAreasDataService areasDataService,
+            IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
-
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.lists = new List<ItemListExecution>();
         }
 
@@ -129,8 +132,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 {
                     return;
                 }
-
-                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value);
+                var bay = await this.bayManager.GetBayAsync();
+                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
             catch
@@ -176,8 +179,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 return false;
             }
-
-            //if (this.selectedItemList.Machines.Any(m => m.Id == this.machineId))
             if (this.selectedList.ExecutionMode != ListExecutionMode.None)
             {
                 return true;

@@ -64,13 +64,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.Item = this.Data as Item;
+
+            this.LoadItemImage();
         }
 
-        private async Task LoadImage(string code)
+        private async Task LoadItemImage()
         {
             this.Image?.Dispose();
             this.Image = null;
-            var stream = await this.wmsImagesProvider.GetImageAsync(code);
+
+            if (this.Item == null)
+            {
+                return;
+            }
+
+            var stream = await this.wmsImagesProvider.GetImageAsync(this.Item.Id.ToString());
             this.Image = Image.FromStream(stream);
         }
 

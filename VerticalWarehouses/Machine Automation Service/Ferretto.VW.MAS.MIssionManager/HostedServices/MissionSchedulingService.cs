@@ -56,11 +56,26 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider)
+        public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
 
             var activeMissions = missionsDataProvider.GetAllActiveMissionsByBay(bayNumber);
+
+            var missionToRestore = activeMissions.SingleOrDefault(x => x.Status == MissionStatus.Executing && x.IsMissionToRestore());
+            if (missionToRestore != null)
+            {
+                if (restore)
+                {
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(missionToRestore.FsmId, LoadingUnitLocation.NoLocation, LoadingUnitLocation.NoLocation, bayNumber, null, MessageActor.MissionManager);
+                }
+                else
+                {
+                    this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadingUnitId}; bay {bayNumber}");
+                    return;
+                }
+            }
 
             var mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.Executing);
             if (mission is null)
@@ -109,7 +124,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     &&
                     m.WmsId != mission.WmsId);
 
-                var moveLoadingUnitProvider = serviceProvider.GetRequiredService<IMoveLoadingUnitProvider>();
                 var loadingUnitSource = baysDataProvider.GetLoadingUnitLocationByLoadingUnit(mission.LoadingUnitId);
 
                 if (nextMission is null)

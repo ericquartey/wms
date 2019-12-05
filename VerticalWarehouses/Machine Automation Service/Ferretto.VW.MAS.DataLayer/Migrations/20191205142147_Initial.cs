@@ -155,6 +155,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     CreationDate = table.Column<DateTime>(nullable: false),
                     DestinationCellId = table.Column<int>(nullable: true),
                     FsmId = table.Column<Guid>(nullable: false),
+                    FsmRestoreStateName = table.Column<string>(nullable: true),
                     FsmStateName = table.Column<string>(nullable: true),
                     LoadingUnitCellSourceId = table.Column<int>(nullable: true),
                     LoadingUnitDestination = table.Column<int>(nullable: false),
@@ -162,6 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     LoadingUnitSource = table.Column<string>(type: "text", nullable: false),
                     MissionType = table.Column<string>(type: "text", nullable: false),
                     Priority = table.Column<int>(nullable: false),
+                    RestoreConditions = table.Column<bool>(nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
                     TargetBay = table.Column<string>(type: "text", nullable: false),
                     WmsId = table.Column<int>(nullable: true)
@@ -1111,7 +1113,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 5, 12, 24, 47, 614, DateTimeKind.Local).AddTicks(5158), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 5, 15, 21, 46, 599, DateTimeKind.Local).AddTicks(6631), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
