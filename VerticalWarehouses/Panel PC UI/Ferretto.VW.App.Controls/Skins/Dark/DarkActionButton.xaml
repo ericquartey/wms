@@ -27,10 +27,8 @@
     <SolidColorBrush x:Key="PpcButtonForegroundPressed"
                      Color="{DynamicResource EDBGrayF}" />
 
-    <!--  <SolidColorBrush x:Key="PpcButtonBackgroundDisabled"
-                     Color="Transparent" />
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
-                     Color="{DynamicResource ColorFerrettoDarkGray}" />-->
+                     Color="{DynamicResource ColorFerrettoDarkGray}" />
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
                      Color="{DynamicResource EDBGrayG}" />
 

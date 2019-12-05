@@ -3,7 +3,7 @@
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Styles">
 
-    <Style x:Key="PpcTextBoxStyleNew"
+    <Style x:Key="{x:Type controls:PpcTextBoxNew}"
            TargetType="{x:Type controls:PpcTextBoxNew}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -25,7 +25,7 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PpcTextBoxStyle"
+    <Style x:Key="{x:Type controls:PpcTextBox}"
            TargetType="{x:Type controls:PpcTextBox}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
         <Setter Property="HorizontalAlignment" Value="Left" />
@@ -43,6 +43,9 @@
             </Trigger>
             <Trigger Property="Highlighted" Value="true">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Highlighted}" />
+            </Trigger>
+            <Trigger Property="IsReadOnly" Value="true">
+                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Readonly}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -66,8 +69,10 @@
            TargetType="{x:Type TextBox}">
         <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_Normal}" />
         <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
         <Setter Property="BorderThickness" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_BorderThickness}" />
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_FontSize}" />
+        <Setter Property="Opacity" Value="1" />
         <Setter Property="CaretBrush" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Normal}" />
         <Setter Property="Template">
             <Setter.Value>
@@ -86,8 +91,15 @@
             </Setter.Value>
         </Setter>
         <Style.Triggers>
+            <Trigger Property="IsReadOnly" Value="true">
+                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_Foreground_TextBox_Readonly}" />
+                <Setter Property="Background" Value="{DynamicResource VWAPP_PpcTextBox_Background_TextBox_Readonly}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Readonly}" />
+                <Setter Property="Opacity" Value="0.5" />
+            </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBox_Foreground_Disabled}" />
+                <Setter Property="Background" Value="{DynamicResource PpcBackgroundDisabled}" />
             </Trigger>
         </Style.Triggers>
     </Style>
