@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:LoadingUnitsViewModel,
                                              IsDesignTimeCreatable=False}"
@@ -14,6 +14,7 @@
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
+
     <Grid Margin="15,0">
 
         <Grid.ColumnDefinitions>
@@ -63,36 +64,42 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Id}"
+                                     IsEnabled="False"
                                      LabelText="Id" />
 
                 <controls:PpcTextBox Grid.Column="1"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Code}"
+                                     IsEnabled="False"
                                      LabelText="Code" />
 
                 <controls:PpcTextBox Grid.Column="2"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Description}"
+                                     IsEnabled="False"
                                      LabelText="Description" />
 
                 <controls:PpcTextBox Grid.Column="3"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.GrossWeight}"
+                                     IsEnabled="False"
                                      LabelText="GrossWeight" />
 
                 <controls:PpcTextBox Grid.Column="4"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.NetWeight}"
+                                     IsEnabled="False"
                                      LabelText="NetWeight" />
 
                 <controls:PpcTextBox Grid.Column="5"
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.MaxNetWeight}"
+                                     IsEnabled="False"
                                      LabelText="Height" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -100,6 +107,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Height}"
+                                     IsEnabled="False"
                                      LabelText="Height" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -107,6 +115,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.MissionsCount}"
+                                     IsEnabled="False"
                                      LabelText="MissionsCount" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -114,6 +123,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Status}"
+                                     IsEnabled="False"
                                      LabelText="Status" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -121,6 +131,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.Tare}"
+                                     IsEnabled="False"
                                      LabelText="Tare" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -128,6 +139,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.IsIntoMachine}"
+                                     IsEnabled="False"
                                      LabelText="IsIntoMachine" />
 
                 <controls:PpcTextBox Grid.Row="1"
@@ -135,6 +147,7 @@
                                      HorizontalAlignment="Stretch"
                                      VerticalAlignment="Stretch"
                                      InputText="{Binding SelectedLU.CellId}"
+                                     IsEnabled="False"
                                      LabelText="CellId" />
             </Grid>
         </Border>
@@ -170,6 +183,12 @@
                                 Margin="0,0,15,0"
                                 Command="{Binding RemoveDrawerCommand}"
                                 Content="Elimina cassetto" />
+
+            <controls:PpcButton Grid.Column="4"
+                                Margin="0"
+                                Command="{Binding StopMovingCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}"
+                                Style="{DynamicResource PpcButtonStopStyle}" />
 
             <controls:PpcButton Grid.Column="4"
                                 Margin="0"

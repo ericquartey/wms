@@ -26,8 +26,9 @@
         <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
         <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
     </LinearGradientBrush>
+
     <SolidColorBrush x:Key="PpcButtonBorderBrushDisabled"
-                     Color="Transparent" />
+                     Color="{DynamicResource ColorFerrettoMediumGray}" />
     <SolidColorBrush x:Key="PpcButtonForegroundDisabled"
                      Color="{DynamicResource EDBGrayF}" />
 

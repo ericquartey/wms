@@ -27,6 +27,11 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcTextBox),
             new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty IsReadOnlyProperty = DependencyProperty.Register(
+            nameof(IsReadOnly),
+            typeof(bool),
+            typeof(PpcTextBox));
+
         public static readonly DependencyProperty KeyboardProperty = DependencyProperty.Register(
             nameof(Keyboard),
             typeof(KeyboardType),
@@ -72,6 +77,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(InputTextProperty, value);
         }
 
+        public bool IsReadOnly
+        {
+            get => (bool)this.GetValue(IsReadOnlyProperty);
+            set => this.SetValue(IsReadOnlyProperty, value);
+        }
+
         public KeyboardType Keyboard
         {
             get => (KeyboardType)this.GetValue(KeyboardProperty);
@@ -90,6 +101,11 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void OnKeyboardOpenHandler(object sender, InputEventArgs e)
         {
+            if (this.IsReadOnly)
+            {
+                return;
+            }
+
             switch (this.Keyboard)
             {
                 case KeyboardType.QWERTY:
