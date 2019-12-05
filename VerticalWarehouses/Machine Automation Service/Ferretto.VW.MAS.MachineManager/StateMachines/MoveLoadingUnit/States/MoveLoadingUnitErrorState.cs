@@ -7,8 +7,10 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -36,6 +38,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
+
+        private HorizontalMovementDirection direction;
+
+        private bool isMovingManual;
+
+        private bool isMovingShutter;
 
         private Mission mission;
 
@@ -71,6 +79,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         #region Methods
 
+        #region Methods
+
+        #region Methods
+
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
@@ -82,6 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             var newMessageData = new StopMessageData(StopRequestReason.Error);
             this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
+            this.mission.RestoreConditions = false;
             this.mission.FsmStateName = this.GetType().Name;
             this.missionsDataProvider.Update(this.mission);
         }
@@ -108,52 +121,126 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                 {
                     // TODO remove stop mission
-                    {
-                        // stop mission
-                        this.mission.FsmRestoreStateName = null;
-                        returnValue = this.GetState<IMoveLoadingUnitEndState>();
-                        ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
-                    }
                     //{
-                    //    // wait for resume or stop
-                    //    this.mission.RestoreConditions = true;
-                    //    this.missionsDataProvider.Update(this.mission);
+                    //    // stop mission
+                    //    this.mission.FsmRestoreStateName = null;
+                    //    returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                    //    ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
                     //}
+                    {
+                        // wait for resume (by ScheduleMissionsAsync) or stop
+                    }
                 }
             }
 
+            if (this.isMovingManual || this.isMovingShutter)
+            {
+                notificationStatus = this.loadingUnitMovementProvider.MoveLoadingUnitStatus(notification);
+                switch (notificationStatus)
+                {
+                    case MessageStatus.OperationEnd:
+                        if (notification.Type == MessageType.ShutterPositioning)
+                        {
+                            var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
+                            if (shutterPosition == ShutterPosition.Opened
+                                || shutterPosition == ShutterPosition.NotSpecified)
+                            {
+                                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                                this.isMovingManual = true;
+                                this.isMovingShutter = false;
+                            }
+                            else
+                            {
+                                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterClosed);
+                                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterClosed);
+
+                                this.isMovingManual = false;
+                                this.isMovingShutter = false;
+                                this.stateMachineResponses.Clear();
+                                var newMessageData = new StopMessageData(StopRequestReason.Error);
+                                this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.mission.TargetBay);
+                            }
+                        }
+                        else
+                        {
+                            this.isMovingManual = false;
+                            this.isMovingShutter = false;
+                            this.mission.RestoreConditions = false;
+                            this.mission.FsmRestoreStateName = null;
+                            if (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitLoadElevatorState))
+                            {
+                                returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                            }
+                            else
+                            {
+                                returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                            }
+                        }
+                        break;
+
+                    case MessageStatus.OperationError:
+                    case MessageStatus.OperationRunningStop:
+                        {
+                            this.isMovingManual = false;
+                            this.isMovingShutter = false;
+                            this.stateMachineResponses.Clear();
+                            var newMessageData = new StopMessageData(StopRequestReason.Error);
+                            this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, this.mission.TargetBay);
+                        }
+                        break;
+                }
+            }
             return returnValue;
         }
 
         protected override IState OnResume(CommandMessage commandMessage)
         {
             IState returnValue = this;
-            // TODO try to continue the mission from where it stopped
+
+            this.Logger.LogDebug($"{this.GetType().Name}: Resume mission {this.mission.Id}, wmsId {this.mission.WmsId}, from {this.mission.FsmRestoreStateName}, loadUnit {this.mission.LoadingUnitId}");
+
             switch (this.mission.FsmRestoreStateName)
             {
                 case nameof(MoveLoadingUnitCloseShutterState):
+                    this.mission.RestoreConditions = true;
+                    this.mission.FsmRestoreStateName = null;
+                    returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
                     break;
 
                 case nameof(MoveLoadingUnitDepositUnitState):
+                    this.MoveLoadUnitDeposit();
                     break;
 
                 case nameof(MoveLoadingUnitLoadElevatorState):
+                    this.MoveLoadUnitLoadElevatorBack();
                     break;
 
                 case nameof(MoveLoadingUnitMoveToTargetState):
+                    this.mission.RestoreConditions = true;
+                    this.mission.FsmRestoreStateName = null;
+                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
                     break;
 
                 case nameof(MoveLoadingUnitStartState):
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.RestoreConditions = false;
+                    returnValue = this.GetState<IMoveLoadingUnitStartState>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitEjectConfirm):
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.RestoreConditions = false;
+                    returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitPickConfirm):
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.RestoreConditions = false;
+                    returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                     break;
 
                 default:
-                    this.Logger.LogError($"OnResume: no valid FsmRestoreStateName {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+                    this.Logger.LogError($"{this.GetType().Name}: no valid FsmRestoreStateName {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
@@ -169,6 +256,102 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             ((IEndState)returnValue).StopRequestReason = reason;
 
             return returnValue;
+        }
+
+        private void MoveLoadUnitDeposit()
+        {
+            this.direction = HorizontalMovementDirection.Backwards;
+            bool measure = false;
+            bool openShutter = false;
+            switch (this.mission.LoadingUnitDestination)
+            {
+                case LoadingUnitLocation.Cell:
+                    if (this.mission.DestinationCellId != null)
+                    {
+                        var cell = this.cellsProvider.GetById(this.mission.DestinationCellId.Value);
+
+                        this.direction = cell.Side != WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                    }
+
+                    break;
+
+                default:
+                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
+                    this.direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
+                    openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                    measure = true;
+                    break;
+            }
+            if (!measure)
+            {
+                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingManual = true;
+            }
+            else
+            {
+                var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
+                if (openShutter
+                    && shutterPosition != ShutterPosition.Opened
+                    && shutterPosition != ShutterPosition.NotSpecified
+                    )
+                {
+                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.mission.TargetBay, true);
+                    this.isMovingShutter = true;
+                }
+                else
+                {
+                    this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                    this.isMovingManual = true;
+                }
+            }
+        }
+
+        private void MoveLoadUnitLoadElevatorBack()
+        {
+            this.direction = HorizontalMovementDirection.Backwards;
+            bool measure = false;
+            bool openShutter = false;
+            switch (this.mission.LoadingUnitSource)
+            {
+                case LoadingUnitLocation.Cell:
+                    if (this.mission.LoadingUnitCellSourceId != null)
+                    {
+                        var cell = this.cellsProvider.GetById(this.mission.LoadingUnitCellSourceId.Value);
+
+                        this.direction = cell.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                    }
+
+                    break;
+
+                default:
+                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitSource);
+                    this.direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
+                    openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                    measure = true;
+                    break;
+            }
+            if (!measure)
+            {
+                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingManual = true;
+            }
+            else
+            {
+                var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
+                if (openShutter
+                    && shutterPosition != ShutterPosition.Opened
+                    && shutterPosition != ShutterPosition.NotSpecified
+                    )
+                {
+                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.mission.TargetBay, true);
+                    this.isMovingShutter = true;
+                }
+                else
+                {
+                    this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                    this.isMovingManual = true;
+                }
+            }
         }
 
         private void UpdateResponseList(MessageStatus status, BayNumber targetBay)

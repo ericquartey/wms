@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             else
             {
-                var description = $"Move Loading Unit Load Unit Sate received wrong initialization data ({commandMessage.Data.GetType().Name})";
+                var description = $"Move Loading Unit Load Unit State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
             }

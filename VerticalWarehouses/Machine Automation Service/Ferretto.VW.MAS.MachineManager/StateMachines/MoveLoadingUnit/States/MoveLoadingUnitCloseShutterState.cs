@@ -64,11 +64,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.messageData = messageData;
                 this.mission = moveData;
-                this.mission.FsmStateName = this.GetType().Name;
-                this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
-                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number);
+                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, moveData.RestoreConditions);
+
+                this.mission.FsmStateName = this.GetType().Name;
+                moveData.RestoreConditions = false;
+                this.missionsDataProvider.Update(this.mission);
             }
         }
 

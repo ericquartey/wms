@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     if (newMission.MachineData is DataModels.Mission mission)
                     {
                         mission.MissionType = MissionType.Manual;
+                        mission.TargetBay = command.RequestingBay;
                         mission.CreationDate = DateTime.Now;
                     }
                     this.machineMissions.Add(newMission);

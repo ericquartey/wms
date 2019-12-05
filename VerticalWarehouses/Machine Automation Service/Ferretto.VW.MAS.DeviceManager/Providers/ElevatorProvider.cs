@@ -610,15 +610,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, BayNumber requestingBay, MessageActor sender)
         {
-            var setupStatus = this.setupStatusProvider.Get();
-
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
             var targetPosition = this.machineProvider.IsHomingExecuted
                 ? axis.ManualMovements.TargetDistanceAfterZero
                 : axis.ManualMovements.TargetDistance;
+            if (distance > 0)
+            {
+                targetPosition = distance;
+            }
 
             targetPosition *= direction == HorizontalMovementDirection.Forwards ? 1 : -1;
 
