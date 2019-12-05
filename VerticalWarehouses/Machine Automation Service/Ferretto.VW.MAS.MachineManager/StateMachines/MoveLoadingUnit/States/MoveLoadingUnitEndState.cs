@@ -94,6 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 var newMessageData = new StopMessageData(this.StopRequestReason);
                 this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
                 this.mission.FsmStateName = this.GetType().Name;
+                this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
         }

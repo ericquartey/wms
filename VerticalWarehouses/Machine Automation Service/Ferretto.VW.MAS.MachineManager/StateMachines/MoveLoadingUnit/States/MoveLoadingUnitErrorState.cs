@@ -241,7 +241,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private IState MoveLoadUnitDeposit()
         {
+            if (this.loadingUnitMovementProvider.GetDestinationHeight(this.mission) != this.loadingUnitMovementProvider.GetCurrentVerticalPosition())
+            {
+                this.isMovingManual = false;
+                this.isMovingShutter = false;
+                this.mission.RestoreConditions = true;
+                this.mission.FsmRestoreStateName = null;
+
+                return this.GetState<IMoveLoadingUnitMoveToTargetState>();
+            }
             IState returnValue = this;
+
             this.direction = HorizontalMovementDirection.Backwards;
             bool measure = false;
             bool openShutter = false;
@@ -303,6 +313,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private IState MoveLoadUnitLoadElevatorBack()
         {
+            if (this.loadingUnitMovementProvider.GetDestinationHeight(this.mission) != this.loadingUnitMovementProvider.GetCurrentVerticalPosition())
+            {
+                this.isMovingManual = false;
+                this.isMovingShutter = false;
+                this.mission.RestoreConditions = true;
+                this.mission.FsmRestoreStateName = null;
+
+                return this.GetState<IMoveLoadingUnitStartState>();
+            }
             IState returnValue = this;
             this.direction = HorizontalMovementDirection.Backwards;
             bool measure = false;

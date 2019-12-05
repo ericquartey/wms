@@ -110,7 +110,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogError("DataLayer is not ready");
                 return;
             }
-            var machineMode = messageData.MachineMode;
             if (messageData.MachineMode is MachineMode.SwitchingToAutomatic)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
@@ -121,7 +120,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         machineModeDataProvider.Mode = MachineMode.Automatic;
                         this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
-                        machineMode = MachineMode.Automatic;
                     }
                     else
                     {
@@ -148,7 +146,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 #endif
 
-            if (machineMode is MachineMode.Automatic)
+            if (messageData.MachineMode is MachineMode.Automatic)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {
