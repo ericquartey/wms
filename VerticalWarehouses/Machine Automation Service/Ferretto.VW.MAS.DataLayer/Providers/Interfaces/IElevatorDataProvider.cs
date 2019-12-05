@@ -45,7 +45,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void ResetMachine();
 
-        MovementParameters ScaleMovementsByWeight(Orientation orientation);
+        MovementParameters ScaleMovementsByWeight(Orientation orientation, bool isLoadingUnitOnBoard);
 
         /// <summary>
         /// Sets the bay position where the elevator is currently located, or null if the elevator is not located opposite a bay.
