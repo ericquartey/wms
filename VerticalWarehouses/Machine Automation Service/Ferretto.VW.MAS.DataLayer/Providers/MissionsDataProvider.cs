@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
-                this.logger.LogInformation("Created MAS bay mission from WMS mission id={wmsId}");
+                this.logger.LogInformation($"Created MAS bay mission from WMS mission id={wmsId}");
 
                 return entry.Entity;
             }

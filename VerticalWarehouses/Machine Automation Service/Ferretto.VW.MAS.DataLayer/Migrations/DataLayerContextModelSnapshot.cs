@@ -59,6 +59,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasIndex("CarouselId");
 
+                    b.HasIndex("CurrentMissionId");
+
                     b.HasIndex("EmptyLoadMovementId");
 
                     b.HasIndex("FullLoadMovementId");
@@ -1280,15 +1282,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("LoadingUnitId");
 
-                    b.Property<int>("LoadingUnitSource");
+                    b.Property<string>("LoadingUnitSource")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("MissionType");
+                    b.Property<string>("MissionType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Priority");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("TargetBay");
+                    b.Property<string>("TargetBay")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("WmsId");
 
@@ -1362,7 +1372,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 3, 9, 21, 4, 551, DateTimeKind.Local).AddTicks(2387),
+                            InstallationDate = new DateTime(2017, 2, 5, 12, 24, 47, 614, DateTimeKind.Local).AddTicks(5158),
                             ServiceStatus = 86
                         });
                 });
@@ -1693,6 +1703,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
                         .WithMany()
                         .HasForeignKey("CarouselId");
+
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Mission", "CurrentMission")
+                        .WithMany()
+                        .HasForeignKey("CurrentMissionId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
                         .WithMany()
