@@ -180,6 +180,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         .PerformedCycles;
 
                     this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+                    this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
                 }
             }
 

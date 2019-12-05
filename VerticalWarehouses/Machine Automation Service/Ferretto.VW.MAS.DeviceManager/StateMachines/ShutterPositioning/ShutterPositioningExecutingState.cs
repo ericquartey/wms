@@ -170,6 +170,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
         private void OnShutterTestStageCompleted(FieldNotificationMessage message, InverterShutterPositioningFieldMessageData messageData)
         {
             this.scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>().Mode = MachineMode.Test;
+            this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
             switch (messageData.ShutterPosition)
             {
                 case ShutterPosition.Opened:

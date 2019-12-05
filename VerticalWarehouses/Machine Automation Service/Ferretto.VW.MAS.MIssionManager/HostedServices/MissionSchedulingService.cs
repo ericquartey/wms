@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -87,6 +88,15 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Publish(notificationMessage);
         }
 
+        private async Task OnDataLayerReady()
+        {
+            using (var scope = this.ServiceScopeFactory.CreateScope())
+            {
+                var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
+                missionSchedulingProvider.GetPersistedMissions();
+            }
+        }
+
         /// <summary>
         /// try to assign automatic missions to bays when switching to Automatic mode
         /// </summary>
@@ -100,15 +110,45 @@ namespace Ferretto.VW.MAS.MissionManager
                 this.Logger.LogError("DataLayer is not ready");
                 return;
             }
+            var machineMode = messageData.MachineMode;
+            if (messageData.MachineMode is MachineMode.SwitchingToAutomatic)
+            {
+                using (var scope = this.ServiceScopeFactory.CreateScope())
+                {
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                    if (machineProvider.IsHomingExecuted)
+                    {
+                        machineModeDataProvider.Mode = MachineMode.Automatic;
+                        this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                        machineMode = MachineMode.Automatic;
+                    }
+                    else
+                    {
+                        IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
 
-            // TEST
-            //if (!this.configuration.IsWmsEnabled())
-            //{
-            //    this.Logger.LogError("Wms is not enabled.");
-            //    return;
-            //}
+                        this.EventAggregator
+                            .GetEvent<CommandEvent>()
+                            .Publish(
+                                new CommandMessage(
+                                    homingData,
+                                    "Execute Homing Command",
+                                    MessageActor.DeviceManager,
+                                    MessageActor.MissionManager,
+                                    MessageType.Homing,
+                                    BayNumber.BayOne));
+                    }
+                }
+            }
+#if !TEST_ERROR_STATE
+            if (!this.configuration.IsWmsEnabled())
+            {
+                this.Logger.LogError("Wms is not enabled.");
+                return;
+            }
+#endif
 
-            if (messageData.MachineMode is MachineMode.Automatic)
+            if (machineMode is MachineMode.Automatic)
             {
                 using (var scope = this.ServiceScopeFactory.CreateScope())
                 {

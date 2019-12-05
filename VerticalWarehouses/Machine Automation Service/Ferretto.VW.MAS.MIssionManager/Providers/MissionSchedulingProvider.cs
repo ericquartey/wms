@@ -5,8 +5,10 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -22,6 +24,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingService> logger;
 
+        private readonly IMachineMissionsProvider machineMissionsProvider;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly IMissionsDataService missionsDataService;
@@ -36,6 +40,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionSchedulingProvider(
             IBaysDataProvider bayProvider,
+            IMachineMissionsProvider missionsProvider,
             IMissionsDataProvider missionsDataProvider,
             IMissionsDataService missionsDataService,
             IMoveLoadingUnitProvider moveLoadingUnitProvider,
@@ -50,6 +55,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.bayProvider = bayProvider ?? throw new ArgumentNullException(nameof(bayProvider));
+            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
@@ -60,6 +66,21 @@ namespace Ferretto.VW.MAS.MissionManager
         #endregion
 
         #region Methods
+
+        public void GetPersistedMissions()
+        {
+            var missions = this.missionsDataProvider.GetAllExecutingMissions().ToList();
+            foreach (var mission in missions)
+            {
+                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                {
+                    mission.FsmRestoreStateName = mission.FsmStateName;
+                    mission.FsmStateName = "MoveLoadingUnitErrorState";
+                    this.missionsDataProvider.Update(mission);
+                }
+                this.machineMissionsProvider.AddMission(mission, mission.FsmId);
+            }
+        }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {

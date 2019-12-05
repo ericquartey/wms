@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
@@ -54,6 +54,37 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
             mission.AbortMachineMission();
             return true;
+        }
+
+        public void AddMission(Mission mission, Guid fsmId)
+        {
+            if (mission != null
+                && this.GetMissionById(fsmId) is null
+                )
+            {
+                var newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
+                newMission.FsmId = fsmId;
+                if (newMission.MachineData is DataModels.Mission data)
+                {
+                    data.CreationDate = mission.CreationDate;
+                    data.DestinationCellId = mission.DestinationCellId;
+                    data.FsmId = mission.FsmId;
+                    data.FsmRestoreStateName = mission.FsmRestoreStateName;
+                    data.FsmStateName = mission.FsmStateName;
+                    data.Id = mission.Id;
+                    data.LoadingUnitCellSourceId = mission.LoadingUnitCellSourceId;
+                    data.LoadingUnitDestination = mission.LoadingUnitDestination;
+                    data.LoadingUnitId = mission.LoadingUnitId;
+                    data.LoadingUnitSource = mission.LoadingUnitSource;
+                    data.MissionType = mission.MissionType;
+                    data.Priority = mission.Priority;
+                    data.RestoreConditions = mission.RestoreConditions;
+                    data.Status = mission.Status;
+                    data.TargetBay = mission.TargetBay;
+                    data.WmsId = mission.WmsId;
+                }
+                this.machineMissions.Add(newMission);
+            }
         }
 
         public IMission GetMissionById(Guid fsmId)

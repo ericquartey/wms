@@ -41,6 +41,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     break;
 
                 case MessageType.DataLayerReady:
+                    await this.OnDataLayerReady();
                     this.dataLayerIsReady = true;
                     break;
             }

@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllActiveMissionsByBay(BayNumber bayNumber);
 
+        IEnumerable<Mission> GetAllExecutingMissions();
+
         IEnumerable<Mission> GetAllWmsMissions();
 
         Mission GetExecutingMissionInBay(BayNumber bayNumber);

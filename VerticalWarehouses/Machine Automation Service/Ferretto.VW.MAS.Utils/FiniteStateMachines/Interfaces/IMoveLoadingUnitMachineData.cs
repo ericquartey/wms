@@ -1,6 +1,5 @@
 ﻿using System;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {

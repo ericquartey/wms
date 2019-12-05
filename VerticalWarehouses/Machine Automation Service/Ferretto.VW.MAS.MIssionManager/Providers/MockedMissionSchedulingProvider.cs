@@ -6,8 +6,9 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -23,6 +24,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingProvider> logger;
 
+        private readonly IMachineMissionsProvider machineMissionsProvider;
+
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
 
         private readonly IMissionsDataProvider missionsDataProvider;
@@ -37,6 +40,7 @@ namespace Ferretto.VW.MAS.MissionManager
             IEventAggregator eventAggregator,
             IMissionsDataProvider missionsDataProvider,
             IBaysDataProvider baysDataProvider,
+            IMachineMissionsProvider missionsProvider,
             WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService,
             WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationssDataService,
             ILogger<MissionSchedulingProvider> logger)
@@ -44,6 +48,7 @@ namespace Ferretto.VW.MAS.MissionManager
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.missionOperationsDataService = missionOperationssDataService ?? throw new ArgumentNullException(nameof(missionOperationssDataService));
             this.logger = logger ?? throw new ArgumentNullException(nameof(eventAggregator));
@@ -56,6 +61,15 @@ namespace Ferretto.VW.MAS.MissionManager
         public IEnumerable<DataModels.Mission> GetAllWmsMissions()
         {
             return this.missionsDataProvider.GetAllWmsMissions();
+        }
+
+        public void GetPersistedMissions()
+        {
+            var missions = this.missionsDataProvider.GetAllExecutingMissions();
+            foreach (var mission in missions)
+            {
+                this.machineMissionsProvider.AddMission(mission, mission.FsmId);
+            }
         }
 
         public async Task MOCK_ScheduleMissionsAsync(BayNumber bayNumber)

@@ -46,7 +46,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.Homing:
-                    this.HomingMethod(message);
+                    this.HomingMethod(message, serviceProvider);
                     break;
 
                 case MessageType.SwitchAxis:

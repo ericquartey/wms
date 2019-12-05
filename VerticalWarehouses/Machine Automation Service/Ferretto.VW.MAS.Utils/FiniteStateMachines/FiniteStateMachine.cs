@@ -3,6 +3,7 @@ using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
@@ -16,8 +17,9 @@ using Prism.Events;
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 {
-    public abstract class FiniteStateMachine<TStartState> : IFiniteStateMachine, IDisposable
+    public abstract class FiniteStateMachine<TStartState, TErrorState> : IFiniteStateMachine, IDisposable
         where TStartState : IState
+        where TErrorState : IState
     {
         #region Fields
 
@@ -198,8 +200,25 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             this.activeState = this.OnPause();
         }
 
-        public void Resume(CommandMessage commandMessage)
+        public void Resume(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
+            if (this.ActiveState is null)
+            {
+                this.isStarted = true;
+
+                this.serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+
+                this.StartData = commandMessage;
+
+                this.requestingBay = commandMessage.RequestingBay;
+
+                this.commandsDequeuingThread.Start(cancellationToken);
+                this.notificationsDequeuingThread.Start(cancellationToken);
+
+                this.InitializeSubscriptions();
+
+                this.ActiveState = this.GetState<TErrorState>();
+            }
             this.ActiveState = this.OnResume(commandMessage);
         }
 

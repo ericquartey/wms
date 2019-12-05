@@ -4,13 +4,11 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -79,10 +77,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         #region Methods
 
-        #region Methods
-
-        #region Methods
-
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
             this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
@@ -117,20 +111,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         this.UpdateResponseList(notificationStatus, notification.TargetBay);
                         break;
                 }
-
-                if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
-                {
-                    // TODO remove stop mission
-                    //{
-                    //    // stop mission
-                    //    this.mission.FsmRestoreStateName = null;
-                    //    returnValue = this.GetState<IMoveLoadingUnitEndState>();
-                    //    ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
-                    //}
-                    {
-                        // wait for resume (by ScheduleMissionsAsync) or stop
-                    }
-                }
             }
 
             if (this.isMovingManual || this.isMovingShutter)
@@ -145,9 +125,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             if (shutterPosition == ShutterPosition.Opened
                                 || shutterPosition == ShutterPosition.NotSpecified)
                             {
-                                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
-                                this.isMovingManual = true;
-                                this.isMovingShutter = false;
+                                if (this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
+                                {
+                                    this.isMovingManual = true;
+                                    this.isMovingShutter = false;
+                                }
+                                else
+                                {
+                                    returnValue = this.RestoreOriginalStep();
+                                }
                             }
                             else
                             {
@@ -163,18 +149,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         }
                         else
                         {
-                            this.isMovingManual = false;
-                            this.isMovingShutter = false;
-                            this.mission.RestoreConditions = false;
-                            this.mission.FsmRestoreStateName = null;
-                            if (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitLoadElevatorState))
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
-                            }
-                            else
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
-                            }
+                            returnValue = this.RestoreOriginalStep();
                         }
                         break;
 
@@ -208,11 +183,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     break;
 
                 case nameof(MoveLoadingUnitDepositUnitState):
-                    this.MoveLoadUnitDeposit();
+                    returnValue = this.MoveLoadUnitDeposit();
+                    break;
+
+                case nameof(MoveLoadingUnitEndState):
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.RestoreConditions = false;
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     break;
 
                 case nameof(MoveLoadingUnitLoadElevatorState):
-                    this.MoveLoadUnitLoadElevatorBack();
+                    returnValue = this.MoveLoadUnitLoadElevatorBack();
                     break;
 
                 case nameof(MoveLoadingUnitMoveToTargetState):
@@ -258,8 +239,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             return returnValue;
         }
 
-        private void MoveLoadUnitDeposit()
+        private IState MoveLoadUnitDeposit()
         {
+            IState returnValue = this;
             this.direction = HorizontalMovementDirection.Backwards;
             bool measure = false;
             bool openShutter = false;
@@ -284,8 +266,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             if (!measure)
             {
-                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
-                this.isMovingManual = true;
+                if (this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
+                {
+                    this.isMovingManual = true;
+                }
+                else
+                {
+                    returnValue = this.RestoreOriginalStep();
+                }
             }
             else
             {
@@ -300,14 +288,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
                 else
                 {
-                    this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
-                    this.isMovingManual = true;
+                    if (this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
+                    {
+                        this.isMovingManual = true;
+                    }
+                    else
+                    {
+                        returnValue = this.RestoreOriginalStep();
+                    }
                 }
             }
+            return returnValue;
         }
 
-        private void MoveLoadUnitLoadElevatorBack()
+        private IState MoveLoadUnitLoadElevatorBack()
         {
+            IState returnValue = this;
             this.direction = HorizontalMovementDirection.Backwards;
             bool measure = false;
             bool openShutter = false;
@@ -332,8 +328,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             if (!measure)
             {
-                this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
-                this.isMovingManual = true;
+                if (this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
+                {
+                    this.isMovingManual = true;
+                }
+                else
+                {
+                    returnValue = this.RestoreOriginalStep();
+                }
             }
             else
             {
@@ -348,10 +350,36 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
                 else
                 {
-                    this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
-                    this.isMovingManual = true;
+                    if (this.loadingUnitMovementProvider.MoveManualLoadingUnit(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
+                    {
+                        this.isMovingManual = true;
+                    }
+                    else
+                    {
+                        returnValue = this.RestoreOriginalStep();
+                    }
                 }
             }
+            return returnValue;
+        }
+
+        private IState RestoreOriginalStep()
+        {
+            IState returnValue;
+            this.isMovingManual = false;
+            this.isMovingShutter = false;
+            this.mission.RestoreConditions = true;
+            if (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitLoadElevatorState))
+            {
+                returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+            }
+            else
+            {
+                returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+            }
+            this.mission.FsmRestoreStateName = null;
+
+            return returnValue;
         }
 
         private void UpdateResponseList(MessageStatus status, BayNumber targetBay)
