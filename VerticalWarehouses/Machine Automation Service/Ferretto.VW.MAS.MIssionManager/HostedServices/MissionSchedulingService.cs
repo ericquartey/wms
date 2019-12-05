@@ -182,6 +182,34 @@ namespace Ferretto.VW.MAS.MissionManager
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+
+                if (modeProvider.GetCurrent() is MachineMode.SwitchingToAutomatic)
+                {
+                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+
+                    if (machineProvider.IsHomingExecuted)
+                    {
+                        machineModeDataProvider.Mode = MachineMode.Automatic;
+                        this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                    }
+                    else
+                    {
+                        IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+
+                        this.EventAggregator
+                            .GetEvent<CommandEvent>()
+                            .Publish(
+                                new CommandMessage(
+                                    homingData,
+                                    "Execute Homing Command",
+                                    MessageActor.DeviceManager,
+                                    MessageActor.MissionManager,
+                                    MessageType.Homing,
+                                    BayNumber.BayOne));
+                    }
+                }
+
                 if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
                     var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
