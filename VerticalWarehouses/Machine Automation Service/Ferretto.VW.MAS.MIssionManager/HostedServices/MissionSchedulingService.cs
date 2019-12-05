@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -219,7 +220,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         try
                         {
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
+                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
                         }
                         catch (Exception ex)
                         {
@@ -296,8 +297,25 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task OnDataLayerReadyAsync()
+        private void GetPersistedMissions(IServiceProvider serviceProvider)
         {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
+            foreach (var mission in missions)
+            {
+                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                {
+                    mission.FsmRestoreStateName = mission.FsmStateName;
+                    mission.FsmStateName = "MoveLoadingUnitErrorState";
+                    missionsDataProvider.Update(mission);
+                }
+                serviceProvider.GetRequiredService<IMachineMissionsProvider>().AddMission(mission, mission.FsmId);
+            }
+        }
+
+        private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
+        {
+            this.GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }
