@@ -31,9 +31,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnOperationComplete(message.Data as MissionOperationCompletedMessageData);
                     break;
 
-                // case MessageType.AssignedMissionOperationChanged:
-                //       await this.OnAssignedMissionOperationChangedAsync(message);
-                //    break;
+                case MessageType.BayOperationalStatusChanged:
+                    await this.OnBayOperationalStatusChangedAsync();
+                    break;
 
                 case MessageType.NewMachineMissionAvailable:
                     await this.OnNewMachineMissionAvailableAsync();

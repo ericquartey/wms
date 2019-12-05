@@ -56,6 +56,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
+        private async Task OnBayOperationalStatusChangedAsync()
+        {
+            await this.InvokeSchedulerAsync();
+        }
+
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -73,8 +78,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 else
                 {
                     this.Logger.LogTrace($"ScheduleMissionsAsync: waiting for mission to restore {missionToRestore.WmsId}, LoadUnit {missionToRestore.LoadingUnitId}; bay {bayNumber}");
-                    return;
                 }
+
+                return;
             }
 
             var mission = activeMissions.FirstOrDefault(x => x.Status == MissionStatus.Executing);

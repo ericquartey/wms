@@ -4,13 +4,11 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
-using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
@@ -76,10 +74,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         }
 
         #endregion
-
-        #region Methods
-
-        #region Methods
 
         #region Methods
 
@@ -261,8 +255,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private void MoveLoadUnitDeposit()
         {
             this.direction = HorizontalMovementDirection.Backwards;
-            bool measure = false;
-            bool openShutter = false;
+            var measure = false;
+            var openShutter = false;
             switch (this.mission.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
@@ -309,8 +303,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private void MoveLoadUnitLoadElevatorBack()
         {
             this.direction = HorizontalMovementDirection.Backwards;
-            bool measure = false;
-            bool openShutter = false;
+            var measure = false;
+            var openShutter = false;
             switch (this.mission.LoadingUnitSource)
             {
                 case LoadingUnitLocation.Cell:
