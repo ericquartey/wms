@@ -173,11 +173,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
+#if !TEST_ERROR_STATE
             if (!this.configuration.IsWmsEnabled())
             {
                 this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                 return;
             }
+#endif
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
@@ -209,8 +211,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                     BayNumber.BayOne));
                     }
                 }
-
-                if (modeProvider.GetCurrent() is MachineMode.Automatic)
+                else if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
                     var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
