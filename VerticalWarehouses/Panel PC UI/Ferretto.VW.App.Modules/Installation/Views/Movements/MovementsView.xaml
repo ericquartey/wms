@@ -414,7 +414,7 @@
                                                 Command="{Binding ClosedShutterCommand}"
                                                 Content="{x:Static res:InstallationApp.GateClose}">
                                 <controls:PpcButton.Style>
-                                    <Style BasedOn="{StaticResource PpcButtonStyle}"
+                                    <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                                            TargetType="{x:Type controls:PpcButton}">
                                         <Setter Property="Grid.Column" Value="3" />
                                         <Style.Triggers>
