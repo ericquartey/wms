@@ -10,6 +10,8 @@
 
         Warning,
 
+        Low,
+
         Success,
     }
 }

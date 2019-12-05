@@ -356,28 +356,6 @@ namespace Ferretto.VW.App.Controls
                  (machineMode == MachineMode.Manual || machineMode == MachineMode.Test)
                  //&& this.MachineError is null
                  );
-
-            // Gestione Warning
-            if (!this.machineService.IsHoming)
-            {
-                this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-            }
-            else if (machinePower != MachinePowerState.Powered)
-            {
-                this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
-            }
-            else if (this.machineService.MachineStatus.BayChainPosition is null)
-            {
-                this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
-            }
-            else if (string.IsNullOrEmpty(this.machineService.MachineStatus.ElevatorLogicalPosition))
-            {
-                this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Warning); // da mettere giallo
-            }
-            else
-            {
-                this.UpdateNotifications();
-            }
         }
 
         private void UpdatePresentation()
