@@ -15,7 +15,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOff
     {
         #region Fields
 
-        private DateTime startTime;
+        private readonly DateTime startTime;
 
         #endregion
 

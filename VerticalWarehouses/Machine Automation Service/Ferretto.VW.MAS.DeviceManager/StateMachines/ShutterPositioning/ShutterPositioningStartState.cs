@@ -215,6 +215,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                     return;
                 }
                 this.machineModeDataProvider.Mode = MachineMode.Test;
+                this.Logger.LogInformation($"Machine status switched to {MachineMode.Test}");
 
                 // first move the shutter in Open position
                 messageData = new ShutterPositioningFieldMessageData(

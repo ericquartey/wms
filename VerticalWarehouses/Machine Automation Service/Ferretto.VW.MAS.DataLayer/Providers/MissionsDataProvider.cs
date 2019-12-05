@@ -115,6 +115,16 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Mission> GetAllExecutingMissions()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .AsNoTracking()
+                    .Where(m => m.Status == MissionStatus.Executing);
+            }
+        }
+
         public IEnumerable<Mission> GetAllWmsMissions()
         {
             lock (this.dataContext)

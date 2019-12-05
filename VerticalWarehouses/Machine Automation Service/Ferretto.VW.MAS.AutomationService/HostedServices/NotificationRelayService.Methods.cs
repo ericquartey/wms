@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 // ReSharper disable InconsistentNaming
@@ -37,11 +38,17 @@ namespace Ferretto.VW.MAS.AutomationService
             this.Logger.LogTrace($"30:Sent SignalR Message:{receivedMessage.Type}, with Status:{receivedMessage.Status}");
         }
 
-        private void HomingMethod(NotificationMessage receivedMessage)
+        private void HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             if (receivedMessage.Status == MessageStatus.OperationEnd)
             {
                 this.machineProvider.IsHomingExecuted = true;
+                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+                {
+                    machineModeDataProvider.Mode = MachineMode.Automatic;
+                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                }
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.HomingProcedureStatusChanged(message);

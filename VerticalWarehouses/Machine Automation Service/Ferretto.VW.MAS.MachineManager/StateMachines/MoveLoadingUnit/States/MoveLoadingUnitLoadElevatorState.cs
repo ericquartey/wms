@@ -94,12 +94,21 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitSource);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                        if (this.openShutter)
+                        {
+                            var shutterPosition = this.sensorsProvider.GetShutterPosition(bay.Number);
+                            if (shutterPosition == ShutterPosition.Opened)
+                            {
+                                this.openShutter = false;
+                            }
+                        }
                         measure = true;
                         break;
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
                 this.mission.FsmStateName = this.GetType().Name;
+                this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
             else

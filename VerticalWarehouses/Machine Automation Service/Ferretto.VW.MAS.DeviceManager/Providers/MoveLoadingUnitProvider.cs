@@ -183,11 +183,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public void MoveManualLoadingUnit(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnit(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            if (distance < Math.Abs(axis.ChainOffset / 2))
+            {
+                return false;
+            }
             this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            return true;
         }
 
         public void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId)

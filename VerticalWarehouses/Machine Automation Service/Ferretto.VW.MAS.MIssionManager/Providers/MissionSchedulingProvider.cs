@@ -5,8 +5,10 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -19,6 +21,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingService> logger;
 
+        private readonly IMachineMissionsProvider machineMissionsProvider;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly NotificationEvent notificationEvent;
@@ -30,6 +34,7 @@ namespace Ferretto.VW.MAS.MissionManager
         public MissionSchedulingProvider(
             IEventAggregator eventAggregator,
             IMissionsDataProvider missionsDataProvider,
+            IMachineMissionsProvider missionsProvider,
             ILogger<MissionSchedulingService> logger)
         {
             if (eventAggregator is null)
@@ -39,12 +44,28 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
+            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
 
         #region Methods
+
+        public void GetPersistedMissions()
+        {
+            var missions = this.missionsDataProvider.GetAllExecutingMissions().ToList();
+            foreach (var mission in missions)
+            {
+                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                {
+                    mission.FsmRestoreStateName = mission.FsmStateName;
+                    mission.FsmStateName = "MoveLoadingUnitErrorState";
+                    this.missionsDataProvider.Update(mission);
+                }
+                this.machineMissionsProvider.AddMission(mission, mission.FsmId);
+            }
+        }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {

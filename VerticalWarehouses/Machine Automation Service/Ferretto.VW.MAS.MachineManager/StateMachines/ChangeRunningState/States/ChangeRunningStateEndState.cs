@@ -94,6 +94,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     }
 
                     this.machineModeDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
                 }
                 else
                 {

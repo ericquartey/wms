@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         #region Properties
 
-        public Guid FsmId { get; }
+        public Guid FsmId { get; set; }
 
         public IFiniteStateMachineData MachineData { get; set; }
 
@@ -87,7 +87,7 @@ namespace Ferretto.VW.MAS.Utils.Missions
 
         public void ResumeMachineMission(CommandMessage command)
         {
-            this.CurrentStateMachine.Resume(command);
+            this.CurrentStateMachine.Resume(command, this.serviceScope.ServiceProvider, this.cancellationTokenSource.Token);
         }
 
         public void StartMachine(CommandMessage command)
