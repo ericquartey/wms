@@ -45,6 +45,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 : CommonUtils.Messages.MachinePowerState.Unpowered;
         }
 
+        [HttpGet("power-ishoming")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<bool> GetIsHoming()
+        {
+            return this.Ok(this.runningStateProvider?.IsHoming ?? false);
+        }
+
         [HttpPost("power-off")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
