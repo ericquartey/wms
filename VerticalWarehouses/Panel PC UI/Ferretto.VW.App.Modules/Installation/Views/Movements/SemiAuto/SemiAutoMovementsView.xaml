@@ -332,7 +332,7 @@
                                 Content="{x:Static res:InstallationApp.GateClose}"
                                 Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                 <controls:PpcButton.Style>
-                    <Style BasedOn="{StaticResource PpcButtonStyle}"
+                    <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                            TargetType="{x:Type controls:PpcButton}">
                         <Setter Property="Grid.Column" Value="2" />
                         <Style.Triggers>

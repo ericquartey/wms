@@ -37,6 +37,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private LoadingUnit selectedLU;
 
+        private DelegateCommand stopMovingCommand;
+
         #endregion
 
         #region Constructors
@@ -114,6 +116,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.selectedLU;
             set => this.SetProperty(ref this.selectedLU, value);
         }
+
+        public ICommand StopMovingCommand =>
+                                                                                    this.stopMovingCommand
+            ??
+            (this.stopMovingCommand = new DelegateCommand(
+                () => this.ImmediateDrawerCall(),
+                () => !this.IsExecutingProcedure && !this.IsWaitingForResponse && false));
 
         #endregion
 

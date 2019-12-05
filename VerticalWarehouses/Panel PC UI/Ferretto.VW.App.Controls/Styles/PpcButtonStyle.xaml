@@ -4,7 +4,7 @@
                     xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters"
                     xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
-    <Style x:Key="PpcButtonStyle"
+    <Style x:Key="{x:Type controls:PpcButton}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Template">
             <Setter.Value>
@@ -137,7 +137,7 @@
     </Style>
 
     <Style x:Key="PpcHeaderButtonStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderThickness" Value="1,1,1,10" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
@@ -211,7 +211,7 @@
     </Style>
 
     <Style x:Key="PpcButtonHelpHeaderStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
@@ -220,7 +220,7 @@
     </Style>
 
     <Style x:Key="PpcButtonThemeStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Width" Value="60" />
         <Setter Property="Height" Value="60" />
@@ -235,7 +235,7 @@
     </Style>
 
     <Style x:Key="PpcButtonMovementsGuidedTabStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
@@ -248,7 +248,7 @@
     </Style>
 
     <Style x:Key="PpcButtonMovementsManualTabStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
@@ -261,7 +261,7 @@
     </Style>
 
     <Style x:Key="PpcButtonStopStyle"
-           BasedOn="{StaticResource PpcButtonStyle}"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Background">
             <Setter.Value>
