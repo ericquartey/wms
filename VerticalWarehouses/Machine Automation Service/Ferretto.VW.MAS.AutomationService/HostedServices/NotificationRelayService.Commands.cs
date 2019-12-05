@@ -11,6 +11,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         protected override bool FilterCommand(CommandMessage command)
         {
+            // do not accept any commands
             return false;
         }
 

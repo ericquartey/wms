@@ -12,7 +12,7 @@ namespace Ferretto.VW.MAS.DataModels
 
         public double ChainOffset { get; set; }
 
-        public int? CurrentMissionId { get; set; }
+        public Mission CurrentMission { get; set; }
 
         public int? CurrentWmsMissionOperationId { get; set; }
 

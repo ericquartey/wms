@@ -253,8 +253,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             IState returnValue = this;
 
             this.direction = HorizontalMovementDirection.Backwards;
-            bool measure = false;
-            bool openShutter = false;
+            var measure = false;
+            var openShutter = false;
             switch (this.mission.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
@@ -324,8 +324,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             IState returnValue = this;
             this.direction = HorizontalMovementDirection.Backwards;
-            bool measure = false;
-            bool openShutter = false;
+            var measure = false;
+            var openShutter = false;
             switch (this.mission.LoadingUnitSource)
             {
                 case LoadingUnitLocation.Cell:

@@ -180,7 +180,13 @@
                                     <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                                 </Style>
                             </DataGridTemplateColumn.HeaderStyle>
-                            <DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="BorderThickness" Value="0" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+                        </Style>
+                    </DataGridTemplateColumn.CellStyle>
+                    <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <dxga:StateIndicatorControl Name="stateIndicatorControl1" Margin="0 0 0 2" RenderOptions.EdgeMode="Aliased">
                                         <dxga:StateIndicatorControl.Model>

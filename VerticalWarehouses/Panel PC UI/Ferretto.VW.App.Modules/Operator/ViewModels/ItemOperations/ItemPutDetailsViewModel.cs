@@ -102,6 +102,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
+
             try
             {
                 var imageStream = await this.WmsImagesProvider.GetImageAsync(this.ItemDetail.Image);

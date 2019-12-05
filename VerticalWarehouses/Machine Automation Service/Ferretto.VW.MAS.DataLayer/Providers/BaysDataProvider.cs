@@ -121,17 +121,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignMission(BayNumber bayNumber, int missionId)
+        public Bay AssignMission(BayNumber bayNumber, Mission mission)
         {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                var bay = this.dataContext.Bays
+                    .Include(b => b.CurrentMission)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.CurrentMissionId = missionId;
+                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id) ?? mission;
                 bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
@@ -140,17 +148,25 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Bay AssignWmsMission(BayNumber bayNumber, int missionId, int? wmsMissionOperationId)
+        public Bay AssignWmsMission(BayNumber bayNumber, Mission mission, int? wmsMissionOperationId)
         {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
             lock (this.dataContext)
             {
-                var bay = this.dataContext.Bays.SingleOrDefault(b => b.Number == bayNumber);
+                var bay = this.dataContext.Bays
+                    .Include(b => b.CurrentMission)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.CurrentMissionId = missionId;
+                bay.CurrentMission = this.dataContext.Missions.SingleOrDefault(m => m.Id == mission.Id) ?? mission;
                 bay.CurrentWmsMissionOperationId = wmsMissionOperationId;
 
                 this.Update(bay);
@@ -169,7 +185,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.CurrentMissionId = null;
+                bay.CurrentMission = null;
                 bay.CurrentWmsMissionOperationId = null;
 
                 this.Update(bay);
@@ -796,7 +812,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 foreach (var bay in this.dataContext.Bays)
                 {
-                    bay.CurrentMissionId = null;
+                    bay.CurrentMission = null;
                     bay.CurrentWmsMissionOperationId = null;
                     this.Update(bay);
                 }

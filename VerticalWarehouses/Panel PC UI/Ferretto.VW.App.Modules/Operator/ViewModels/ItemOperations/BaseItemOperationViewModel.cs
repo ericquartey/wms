@@ -102,7 +102,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             try
             {
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemCode);
+                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
 
                 this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
             }
@@ -112,9 +112,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        private async Task LoadImageAsync(string code)
+        private async Task LoadImageAsync(string imageKey)
         {
-            var stream = await this.WmsImagesProvider.GetImageAsync(code);
+            var stream = await this.WmsImagesProvider.GetImageAsync(imageKey);
             this.ItemImage = Image.FromStream(stream);
         }
 

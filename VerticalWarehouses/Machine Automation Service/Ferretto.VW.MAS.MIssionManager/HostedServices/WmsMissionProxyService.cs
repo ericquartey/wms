@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.Utils;
 using Ferretto.VW.MAS.Utils.Events;
@@ -68,7 +67,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // 2. Get all known WMS missions (already recorded in the local database)
                 var localMissions = missionsDataProvider.GetAllWmsMissions();
 
-                // 3. Select the new WMS missions and queue them
+                // 3. Select the new unknown WMS missions and queue them
                 var newMissions = wmsMissions
                     .Where(m => m.BayId.HasValue)
                     .Where(m => !localMissions.Any(m1 => m1.WmsId == m.Id));

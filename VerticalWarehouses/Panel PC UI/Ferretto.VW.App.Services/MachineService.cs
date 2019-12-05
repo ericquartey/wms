@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
@@ -10,6 +14,7 @@ using NLog;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Mvvm;
+using Prism.Regions;
 
 namespace Ferretto.VW.App.Services
 {
@@ -25,7 +30,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
+        private readonly IMachineModeService machineModeService;
+
         private readonly IMachinePowerWebService machinePowerWebService;
+
+        private readonly INavigationService navigationService;
+
+        private readonly IRegionManager regionManager;
 
         private readonly ISensorsService sensorsService;
 
@@ -39,37 +50,55 @@ namespace Ferretto.VW.App.Services
 
         private bool isHoming;
 
+        private SubscriptionToken machineModeChangedToken;
+
+        private SubscriptionToken machinePowerChangedToken;
+
         private MachineStatus machineStatus;
 
+        private string notification;
+
+        private SubscriptionToken positioningOperationChangedToken;
+
         private SubscriptionToken receiveHomingUpdateToken;
+
+        private SubscriptionToken shutterPositionToken;
 
         #endregion
 
         #region Constructors
 
         public MachineService(
+            IRegionManager regionManager,
             IEventAggregator eventAggregator,
+            INavigationService navigationService,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachinePowerWebService machinePowerWebService,
+            IMachineModeService machineModeService,
             ISensorsService sensorsService)
         {
+            this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machinePowerWebService = machinePowerWebService ?? throw new ArgumentNullException(nameof(machinePowerWebService));
+            this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
 
             this.machineStatus = new MachineStatus();
+            this.InitializatioHoming().ConfigureAwait(false);
+            this.InitializatioBay().ConfigureAwait(false);
 
             this.receiveHomingUpdateToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<HomingMessageData>>()
                     .Subscribe(
-                        async (m) => await this.OnHomingProcedureStatusChanged(m),
+                        this.OnDataChanged,
                         ThreadOption.UIThread,
                         false);
 
@@ -90,6 +119,45 @@ namespace Ferretto.VW.App.Services
                         this.OnBayChainPositionChanged,
                         ThreadOption.UIThread,
                         false);
+
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.shutterPositionToken = this.shutterPositionToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<ShutterPositioningMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineModeChangedToken = this.machineModeChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                    .Subscribe(
+                       this.OnChangedEventArgs,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.machinePowerChangedToken = this.machinePowerChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Subscribe(
+                       this.OnChangedEventArgs,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.navigationService.SubscribeToNavigationCompleted(
+               e => this.WarningManagement(e.ViewModelName));
         }
 
         #endregion
@@ -108,23 +176,27 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.machineStatus, value, this.MachineStatusNotificationProperty);
         }
 
+        public string Notification
+        {
+            get => this.notification;
+            set => this.SetProperty(ref this.notification, value, () => this.ShowNotification(this.notification, NotificationSeverity.Info));
+        }
+
         #endregion
 
         #region Methods
+
+        public void ClearNotifications()
+        {
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(true));
+        }
 
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing).
             this.Dispose(true);
-
-            this.receiveHomingUpdateToken?.Dispose();
-            this.receiveHomingUpdateToken = null;
-
-            this.elevatorPositionChangedToken?.Dispose();
-            this.elevatorPositionChangedToken = null;
-
-            this.bayChainPositionChangedToken?.Dispose();
-            this.bayChainPositionChangedToken = null;
         }
 
         public async Task StopMovingByAllAsync()
@@ -133,6 +205,7 @@ namespace Ferretto.VW.App.Services
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();
+            this.StopMoving();
         }
 
         private void Dispose(bool disposing)
@@ -144,9 +217,51 @@ namespace Ferretto.VW.App.Services
 
             if (disposing)
             {
+                this.receiveHomingUpdateToken?.Dispose();
+                this.receiveHomingUpdateToken = null;
+
+                this.elevatorPositionChangedToken?.Dispose();
+                this.elevatorPositionChangedToken = null;
+
+                this.bayChainPositionChangedToken?.Dispose();
+                this.bayChainPositionChangedToken = null;
+
+                this.positioningOperationChangedToken?.Dispose();
+                this.positioningOperationChangedToken = null;
+
+                this.shutterPositionToken?.Dispose();
+                this.shutterPositionToken = null;
+
+                this.machineModeChangedToken?.Dispose();
+                this.machineModeChangedToken = null;
+
+                this.machinePowerChangedToken?.Dispose();
+                this.machinePowerChangedToken = null;
             }
 
             this.isDisposed = true;
+        }
+
+        private string GetActiveView()
+        {
+            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
+            return activeView?.GetType()?.Name;
+        }
+
+        private async Task InitializatioBay()
+        {
+            var ms = (MachineStatus)this.MachineStatus.Clone();
+            ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
+            this.MachineStatus = ms;
+        }
+
+        private async Task InitializatioHoming()
+        {
+            this.IsHoming = await this.machinePowerWebService.GetIsHomingAsync();
+
+            this.eventAggregator
+                .GetEvent<HomingChangedPubSubEvent>()
+                .Publish(new HomingChangedMessage(this.IsHoming));
         }
 
         private void MachineStatusNotificationProperty()
@@ -161,58 +276,273 @@ namespace Ferretto.VW.App.Services
             this.UpdateMachineStatus(e);
         }
 
+        private void OnChangedEventArgs(EventArgs e)
+        {
+            this.WarningManagement(this.GetActiveView());
+
+            if (e is MachinePowerChangedEventArgs eventPower)
+            {
+                if (eventPower.MachinePowerState == MachinePowerState.Unpowered)
+                {
+                    this.StopMoving();
+                }
+            }
+        }
+
+        private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
+            where TData : class, IMessageData
+        {
+            Debug.WriteLine($"message.Status: {message.Status}");
+
+            if (message?.Data is HomingMessageData dataHoming)
+            {
+                this.machinePowerWebService.GetIsHomingAsync()
+                    .ContinueWith((m) =>
+                    {
+                        if (!m.IsFaulted)
+                        {
+                            bool isHoming = m.Result;
+                            if (isHoming != this.IsHoming ||
+                                isHoming && message?.Status == MessageStatus.OperationEnd ||
+                                !isHoming && message?.Status == MessageStatus.OperationError)
+                            {
+                                this.eventAggregator
+                                    .GetEvent<HomingChangedPubSubEvent>()
+                                    .Publish(new HomingChangedMessage(isHoming));
+                            }
+
+                            this.IsHoming = isHoming;
+                        }
+                    });
+            }
+
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                case MessageStatus.OperationStepStart:
+                    {
+                        var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                        ms.IsError = false;
+                        ms.IsMoving = true;
+
+                        if (message?.Data is PositioningMessageData dataPositioning)
+                        {
+                            ms.IsMovingElevator = true;
+
+                            this.WriteInfo(dataPositioning?.AxisMovement);
+                        }
+
+                        if (message?.Data is ShutterPositioningMessageData)
+                        {
+                            ms.IsMovingShutter = true;
+                        }
+
+                        this.MachineStatus = ms;
+                        break;
+                    }
+
+                case MessageStatus.OperationExecuting:
+                    {
+                        if (this.MachineStatus.IsMoving)
+                        {
+                            if (message?.Data is PositioningMessageData dataPositioningInfo)
+                            {
+                                this.WriteInfo(dataPositioningInfo?.AxisMovement);
+                            }
+                        }
+                        break;
+                    }
+
+                case MessageStatus.OperationEnd:
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationStepStop:
+                    {
+                        var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                        ms.IsMoving = false;
+
+                        if (message?.Data is PositioningMessageData)
+                        {
+                            ms.IsMovingElevator = false;
+                        }
+
+                        if (message?.Data is ShutterPositioningMessageData)
+                        {
+                            ms.IsMovingShutter = false;
+                        }
+
+                        this.ClearNotifications();
+
+                        this.MachineStatus = ms;
+                        break;
+                    }
+
+                case MessageStatus.OperationError:
+                    {
+                        var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                        ms.IsMoving = false;
+                        ms.IsError = true;
+                        ms.ErrorDescription = message.Description;
+
+                        if (message?.Data is PositioningMessageData)
+                        {
+                            ms.IsMovingElevator = false;
+                        }
+
+                        if (message?.Data is ShutterPositioningMessageData)
+                        {
+                            ms.IsMovingShutter = false;
+                        }
+
+                        this.ClearNotifications();
+
+                        this.MachineStatus = ms;
+                        break;
+                    }
+            }
+
+            this.WarningManagement(this.GetActiveView());
+        }
+
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
             this.UpdateMachineStatus(e);
         }
 
-        private async Task OnHomingProcedureStatusChanged(NotificationMessageUI<HomingMessageData> message)
+        private void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
-            var isHoming = await this.machinePowerWebService.GetIsHomingAsync();
+            this.eventAggregator
+             .GetEvent<PresentationNotificationPubSubEvent>()
+             .Publish(new PresentationNotificationMessage(message, severity));
+        }
 
-            if (isHoming != this.IsHoming ||
-                isHoming && message?.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd ||
-                !isHoming && message?.Status == CommonUtils.Messages.Enumerations.MessageStatus.OperationError)
-            {
-                this.eventAggregator
-                    .GetEvent<HomingChangedPubSubEvent>()
-                    .Publish(new HomingChangedMessage(isHoming));
-            }
+        private void StopMoving()
+        {
+            var ms = (MachineStatus)this.MachineStatus.Clone();
 
-            this.IsHoming = isHoming;
+            ms.IsMoving = false;
+            ms.IsError = false;
+            ms.IsMovingElevator = false;
+            ms.IsMovingShutter = false;
+            ms.ErrorDescription = string.Empty;
+
+            this.MachineStatus = ms;
         }
 
         private void UpdateMachineStatus(EventArgs e)
         {
-            var ms = new MachineStatus();
-
             if (e is ElevatorPositionChangedEventArgs dataElevatorPosition)
             {
                 this.sensorsService.RetrieveElevatorPosition(
-                    new ElevatorPosition
-                    {
-                        Horizontal = dataElevatorPosition.HorizontalPosition,
-                        Vertical = dataElevatorPosition.VerticalPosition,
-                        BayPositionId = dataElevatorPosition.BayPositionId,
-                        CellId = dataElevatorPosition.CellId
-                    });
-                ms.ElevatorLogicalPosition = this.sensorsService?.ElevatorLogicalPosition;
-            }
-            else
-            {
-                ms.ElevatorLogicalPosition = this.MachineStatus.ElevatorLogicalPosition;
+                       new ElevatorPosition
+                       {
+                           Horizontal = dataElevatorPosition.HorizontalPosition,
+                           Vertical = dataElevatorPosition.VerticalPosition,
+                           BayPositionId = dataElevatorPosition.BayPositionId,
+                           CellId = dataElevatorPosition.CellId
+                       });
+                if (this.MachineStatus.ElevatorLogicalPosition == this.sensorsService?.ElevatorLogicalPosition)
+                {
+                    var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                    ms.ElevatorLogicalPosition = this.sensorsService?.ElevatorLogicalPosition;
+                    this.MachineStatus = ms;
+                }
             }
 
             if (e is BayChainPositionChangedEventArgs dataBayChainPosition)
             {
-                ms.BayChainPosition = dataBayChainPosition.Position;
+                if (this.MachineStatus.BayChainPosition == dataBayChainPosition.Position)
+                {
+                    var ms = (MachineStatus)this.MachineStatus.Clone();
+                    ms.BayChainPosition = dataBayChainPosition.Position;
+                    this.MachineStatus = ms;
+                }
+            }
+        }
+
+        private void WarningManagement(string view)
+        {
+            if (!(view is null) && !this.MachineStatus.IsMoving)
+            {
+                switch (true)
+                {
+                    case var b when view.Equals("MovementsView", StringComparison.InvariantCultureIgnoreCase):
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (!this.IsHoming)
+                        {
+                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
+                        }
+                        else if (this.MachineStatus.BayChainPosition is null)
+                        {
+                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
+                        }
+                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
+                        {
+                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
+                        }
+                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
+                        {
+                            this.ShowNotification("Mettere la macchina in automatico.", NotificationSeverity.Warning);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
+                        }
+                        break;
+
+                    default:
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (!this.IsHoming)
+                        {
+                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
+                        }
+                        else if (this.MachineStatus.BayChainPosition is null)
+                        {
+                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
+                        }
+                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
+                        {
+                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void WriteInfo(Axis? axisMovement)
+        {
+            if (this.machineModeService.MachineMode == MachineMode.Manual)
+            {
+                if (axisMovement.HasValue && axisMovement == Axis.Vertical)
+                {
+                    this.Notification = "Movimento verticale in corso...";
+                }
+                else if (axisMovement.HasValue && axisMovement == Axis.Horizontal)
+                {
+                    this.Notification = "Movimento orizzontale in corso...";
+                }
+                else if (axisMovement.HasValue && axisMovement == Axis.BayChain)
+                {
+                    this.Notification = "Movimento catena baia in corso...";
+                }
             }
             else
             {
-                ms.BayChainPosition = this.MachineStatus.BayChainPosition;
+                this.Notification = "Movimento in corso...";
             }
-
-            this.MachineStatus = ms;
         }
 
         #endregion
