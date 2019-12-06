@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.INVENTORY,
                         null,
-                        trackCurrentView: false);
+                        trackCurrentView: true);
                     break;
 
                 case MissionOperationType.Pick:
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.PICK,
                         null,
-                        trackCurrentView: false);
+                        trackCurrentView: true);
                     break;
 
                 case MissionOperationType.Put:
@@ -109,7 +109,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.ItemOperations.PUT,
                         null,
-                        trackCurrentView: false);
+                        trackCurrentView: true);
                     break;
             }
         }

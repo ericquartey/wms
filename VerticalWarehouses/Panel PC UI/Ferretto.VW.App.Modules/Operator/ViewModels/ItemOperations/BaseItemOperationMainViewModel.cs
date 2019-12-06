@@ -168,6 +168,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public override void Disappear()
+        {
+            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+
+            base.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
