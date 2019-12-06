@@ -8,6 +8,8 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Methods
 
+        Mission Complete(int id);
+
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber);
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority);
@@ -26,8 +28,6 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Mission> GetAllWmsMissions();
 
         Mission GetExecutingMissionInBay(BayNumber bayNumber);
-
-        Mission SetStatus(int id, MissionStatus status);
 
         void Update(Mission mission);
 

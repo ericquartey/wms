@@ -90,6 +90,10 @@ namespace Ferretto.VW.App.Services
             {
                 this.CurrentMission = null;
                 this.CurrentMissionOperation = null;
+
+                this.eventAggregator
+                  .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                  .Publish(e);
             }
         }
 

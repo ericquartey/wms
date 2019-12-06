@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var wmsMission = await this.missionsDataService.GetByIdAsync(mission.WmsId.Value);
-            var newOperations = wmsMission.Operations.Where(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.New);
+            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
             if (newOperations.Any())
             {
                 // there are more operations for the same wms mission
@@ -120,6 +120,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // wms mission is finished
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 
+                missionsDataProvider.Complete(mission.Id);
                 baysDataProvider.ClearMission(bayNumber);
                 this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
 
@@ -136,9 +137,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (nextMission is null)
                 {
                     // send back the LU
-#if MOCK
-                    await Task.Delay(5000);
+#if !MOCK
                     this.Logger.LogWarning("*** SIMULATION: moving back the LU into the warehouse***");
+                    await Task.Delay(5000);
+                    this.Logger.LogWarning("*** SIMULATION: loading unit is in cell now ***");
 #else
 
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
@@ -150,9 +152,10 @@ namespace Ferretto.VW.MAS.MissionManager
                 //}
                 else
                 {
-#if MOCK
+#if !MOCK
+                    this.Logger.LogWarning("*** SIMULATION: moving the loading unit to bay ***");
                     await Task.Delay(5000);
-                    this.Logger.LogWarning("*** SIMULATION: moving the loading unit to its new location***");
+                    this.Logger.LogWarning("*** SIMULATION: loading unit is bay ***");
 
 #else
                     // close current mission
@@ -343,9 +346,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     // close operation and schedule next
                     baysDataProvider.ClearMission(bay.Number);
-                    this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, 0); // TODO : is this needed
-
-                    var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
                     await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
                 }

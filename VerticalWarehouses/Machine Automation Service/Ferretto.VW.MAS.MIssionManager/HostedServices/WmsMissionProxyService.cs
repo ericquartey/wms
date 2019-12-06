@@ -51,7 +51,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-            this.Logger.LogInformation("Checking for new WMS missions.");
+            this.Logger.LogDebug("Checking for new WMS missions ...");
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
@@ -71,6 +71,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 var newMissions = wmsMissions
                     .Where(m => m.BayId.HasValue)
                     .Where(m => !localMissions.Any(m1 => m1.WmsId == m.Id));
+
+                this.Logger.LogDebug("A total of {newMissionsCount} is available", newMissions.Count());
 
                 foreach (var wmsMission in newMissions)
                 {
