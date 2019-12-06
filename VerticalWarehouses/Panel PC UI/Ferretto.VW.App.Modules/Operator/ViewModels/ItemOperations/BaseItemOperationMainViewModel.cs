@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand abortOperationCommand;
 
+        private Ferretto.VW.MAS.AutomationService.Contracts.Bay bay;
+
         private IEnumerable<TrayControlCompartment> compartments;
 
         private DelegateCommand confirmOperationCommand;
@@ -88,6 +90,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             get => this.inputQuantity;
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
+
+        public bool IsBaySideBack => this.bay?.Side == MAS.AutomationService.Contracts.WarehouseSide.Back;
 
         public bool IsBusyAbortingOperation
         {
@@ -163,6 +167,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.bay = await this.BayManager.GetBayAsync();
+
+            this.RaisePropertyChanged(nameof(this.IsBaySideBack));
 
             this.GetLoadingUnitDetails();
         }

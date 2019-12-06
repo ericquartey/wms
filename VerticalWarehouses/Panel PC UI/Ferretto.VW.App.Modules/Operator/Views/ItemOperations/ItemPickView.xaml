@@ -27,7 +27,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityPickingPageHeader}" />
 
-        <localControls:LoadinUnitControlView Grid.Row="1" />
+        <localControls:LoadingUnitControlView Grid.Row="1" />
 
 
         <Grid Grid.Row="2"

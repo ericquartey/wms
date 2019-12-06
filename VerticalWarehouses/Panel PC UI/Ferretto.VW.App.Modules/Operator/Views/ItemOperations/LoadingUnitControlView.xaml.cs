@@ -2,11 +2,11 @@
 
 namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class LoadinUnitControlView : UserControl
+    public partial class LoadingUnitControlView : UserControl
     {
         #region Constructors
 
-        public LoadinUnitControlView()
+        public LoadingUnitControlView()
         {
             this.InitializeComponent();
         }

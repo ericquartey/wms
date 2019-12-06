@@ -963,8 +963,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("chainOffset", Required = Newtonsoft.Json.Required.Always)]
         public double ChainOffset { get; set; }
     
-        [Newtonsoft.Json.JsonProperty("currentMissionId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public int? CurrentMissionId { get; set; }
+        [Newtonsoft.Json.JsonProperty("currentMission", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Mission CurrentMission { get; set; }
     
         [Newtonsoft.Json.JsonProperty("currentWmsMissionOperationId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int? CurrentWmsMissionOperationId { get; set; }
@@ -1080,6 +1080,164 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<DataModel>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Mission : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("creationDate", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.DateTime CreationDate { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("destinationCellId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? DestinationCellId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fsmId", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
+        public System.Guid FsmId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fsmRestoreStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FsmRestoreStateName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("fsmStateName", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string FsmStateName { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitCellSourceId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? LoadingUnitCellSourceId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitDestination", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation LoadingUnitDestination { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitId", Required = Newtonsoft.Json.Required.Always)]
+        public int LoadingUnitId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("loadingUnitSource", Required = Newtonsoft.Json.Required.Always)]
+        public LoadingUnitLocation LoadingUnitSource { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("missionType", Required = Newtonsoft.Json.Required.Always)]
+        public MissionType MissionType { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
+        public int Priority { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("restoreConditions", Required = Newtonsoft.Json.Required.Always)]
+        public bool RestoreConditions { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("status", Required = Newtonsoft.Json.Required.Always)]
+        public MissionStatus Status { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("targetBay", Required = Newtonsoft.Json.Required.Always)]
+        public BayNumber TargetBay { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("wmsId", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public int? WmsId { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static Mission FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Mission>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum LoadingUnitLocation
+    {
+        NoLocation = 0,
+    
+        InternalBay1Up = 1,
+    
+        InternalBay1Down = 2,
+    
+        InternalBay2Up = 3,
+    
+        InternalBay2Down = 4,
+    
+        InternalBay3Up = 5,
+    
+        InternalBay3Down = 6,
+    
+        ExternalBay1Up = 7,
+    
+        ExternalBay1Down = 8,
+    
+        ExternalBay2Up = 9,
+    
+        ExternalBay2Down = 10,
+    
+        ExternalBay3Up = 11,
+    
+        ExternalBay3Down = 12,
+    
+        CarouselBay1Up = 13,
+    
+        CarouselBay1Down = 14,
+    
+        CarouselBay2Up = 15,
+    
+        CarouselBay2Down = 16,
+    
+        CarouselBay3Up = 17,
+    
+        CarouselBay3Down = 18,
+    
+        Cell = 19,
+    
+        LoadingUnit = 20,
+    
+        Elevator = 21,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionType
+    {
+        NoType = 0,
+    
+        Manual = 1,
+    
+        WMS = 2,
+    
+        IN = 3,
+    
+        OUT = 4,
+    
+        Test = 5,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MissionStatus
+    {
+        New = 0,
+    
+        Executing = 1,
+    
+        Completed = 2,
+    
+        Aborted = 3,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum BayNumber
+    {
+        None = 0,
+    
+        BayOne = 1,
+    
+        BayTwo = 2,
+    
+        BayThree = 3,
+    
+        ElevatorBay = 4,
+    
+        All = 10,
     
     }
     
@@ -1279,23 +1437,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum BayNumber
-    {
-        None = 0,
-    
-        BayOne = 1,
-    
-        BayTwo = 2,
-    
-        BayThree = 3,
-    
-        ElevatorBay = 4,
-    
-        All = 10,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
     public enum BayOperation
     {
         Idle = 0,
@@ -1450,55 +1591,6 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         OnMovementToBay = 3,
     
         InLocation = 4,
-    
-    }
-    
-    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum LoadingUnitLocation
-    {
-        NoLocation = 0,
-    
-        InternalBay1Up = 1,
-    
-        InternalBay1Down = 2,
-    
-        InternalBay2Up = 3,
-    
-        InternalBay2Down = 4,
-    
-        InternalBay3Up = 5,
-    
-        InternalBay3Down = 6,
-    
-        ExternalBay1Up = 7,
-    
-        ExternalBay1Down = 8,
-    
-        ExternalBay2Up = 9,
-    
-        ExternalBay2Down = 10,
-    
-        ExternalBay3Up = 11,
-    
-        ExternalBay3Down = 12,
-    
-        CarouselBay1Up = 13,
-    
-        CarouselBay1Down = 14,
-    
-        CarouselBay2Up = 15,
-    
-        CarouselBay2Down = 16,
-    
-        CarouselBay3Up = 17,
-    
-        CarouselBay3Down = 18,
-    
-        Cell = 19,
-    
-        LoadingUnit = 20,
-    
-        Elevator = 21,
     
     }
     
