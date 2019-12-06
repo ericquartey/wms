@@ -71,10 +71,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"MoveLoadingUnitLoadElevatorState: received command {commandMessage.Type}, {commandMessage.Description}");
+
             if (machineData is Mission machineMoveData)
             {
                 this.mission = machineMoveData;
+                this.mission.FsmStateName = nameof(MoveLoadingUnitLoadElevatorState);
+                this.missionsDataProvider.Update(this.mission);
 
                 var direction = HorizontalMovementDirection.Backwards;
                 bool measure = false;
@@ -107,7 +110,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
-                this.mission.FsmStateName = this.GetType().Name;
                 this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
@@ -210,6 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue;
             if (reason == StopRequestReason.Error
+                && this.mission != null
                 && this.mission.IsRestoringType()
                 )
             {

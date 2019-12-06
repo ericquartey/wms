@@ -302,7 +302,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         protected virtual IState OnCommandReceived(CommandMessage command)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {command?.Type}, {command?.Description}");
+            this.Logger.LogTrace($"{this.GetType().Name}: received command {command?.Type}, {command?.Description}");
 
             return this.ActiveState;
         }

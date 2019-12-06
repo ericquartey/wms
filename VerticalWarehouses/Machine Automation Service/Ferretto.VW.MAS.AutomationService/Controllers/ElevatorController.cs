@@ -216,8 +216,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 true,
                 targetPosition,
-                performWeighting,
                 computeElongation,
+                performWeighting,
                 this.BayNumber,
                 MessageActor.AutomationService);
 

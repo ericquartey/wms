@@ -89,14 +89,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Delete(int? id)
         {
-            if (!(id is null))
+            if (id != null)
             {
                 lock (this.dataContext)
                 {
                     var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
-                    this.dataContext.Missions.Remove(mission);
+                    if (mission != null)
+                    {
+                        this.dataContext.Missions.Remove(mission);
 
-                    this.dataContext.SaveChanges();
+                        this.dataContext.SaveChanges();
+                    }
                 }
             }
         }
