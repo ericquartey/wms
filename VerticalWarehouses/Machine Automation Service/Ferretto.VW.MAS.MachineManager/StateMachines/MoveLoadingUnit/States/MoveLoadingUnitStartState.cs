@@ -95,6 +95,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     MessageStatus.OperationStart);
                 moveData.FsmStateName = this.GetType().Name;
                 moveData.Status = MissionStatus.Executing;
+                this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(moveData);
             }
             else

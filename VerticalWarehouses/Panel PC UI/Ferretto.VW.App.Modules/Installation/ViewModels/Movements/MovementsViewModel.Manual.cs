@@ -2,18 +2,12 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Resources;
-using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
-using Prism.Events;
-using Prism.Regions;
 using HorizontalMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.HorizontalMovementDirection;
 using ShutterMovementDirection = Ferretto.VW.MAS.AutomationService.Contracts.ShutterMovementDirection;
 
@@ -349,6 +343,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.cells != null
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
@@ -356,28 +352,61 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CanInputHeight =
                 !this.IsKeyboardOpened
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsMoving
                 &&
                 !this.IsWaitingForResponse;
 
-            this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false);
-            this.CanShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false);
+            this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false) &&
+                                           !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                           !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                           !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
-            this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
-            this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown;
-            this.CanMoveElevatorUp = !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
-            this.CanMoveElevatorDown = !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards;
+            this.CanShutterMoveDownCommand = !this.IsShutterMovingUp && !(this.SensorsService?.ShutterSensors?.Closed ?? false) &&
+                                             !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
 
-            this.CanMoveCarouselCloseCommand = !this.IsCarouselOpening && this.moveCarouselDownPolicy?.IsAllowed == true;
-            this.CanMoveCarouselOpenCommand = !this.IsCarouselClosing && this.moveCarouselUpPolicy?.IsAllowed == true;
+            this.CanMoveElevatorBackwards = !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+            this.CanMoveElevatorForwards = !this.IsMovingElevatorBackwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+
+            this.CanMoveElevatorUp = !this.IsMovingElevatorDown && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards && (this.SensorsService?.IsZeroChain ?? false) &&
+                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+            this.CanMoveElevatorDown = !this.IsMovingElevatorUp && !this.isMovingElevatorForwards && !this.IsMovingElevatorBackwards && (this.SensorsService?.IsZeroChain ?? false) &&
+                                             !this.IsCarouselOpening && !this.IsCarouselOpening &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+
+            this.CanMoveCarouselCloseCommand = !this.IsCarouselOpening && this.moveCarouselDownPolicy?.IsAllowed == true &&
+                                             !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+            this.CanMoveCarouselOpenCommand = !this.IsCarouselClosing && this.moveCarouselUpPolicy?.IsAllowed == true &&
+                                             !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&
+                                             !this.IsShutterMovingDown && !this.IsShutterMovingUp &&
+                                             !this.IsElevatorMovingToCell && !this.IsElevatorMovingToHeight;
+
+            this.moveToCellHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToHeightCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanMoveToCellHeight()
         {
             return
-               !this.IsKeyboardOpened
+                !this.IsKeyboardOpened
                 &&
                 this.SelectedCell != null
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -392,6 +421,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 this.InputHeight != null
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -448,11 +479,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     computeElongation: true);
 
                 this.IsElevatorMovingToCell = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
-                this.IsElevatorMovingToCell = false;
-
                 this.ShowNotification(ex);
             }
             finally
@@ -473,11 +503,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     false);
 
                 this.IsElevatorMovingToHeight = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
-                this.IsElevatorMovingToHeight = false;
-
                 this.ShowNotification(ex);
             }
             finally
@@ -496,28 +525,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.WriteInfo(message.Data?.AxisMovement);
                     this.isCompleted = false;
                     this.IsElevatorMoving = true;
                     break;
 
-                case MessageStatus.OperationExecuting:
-                    if (!this.isCompleted)
-                    {
-                        this.WriteInfo(message.Data?.AxisMovement);
-                    }
-
-                    break;
-
                 case MessageStatus.OperationError:
-                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
                     this.CloseOperation();
 
                     break;
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationEnd:
-                    this.ClearNotifications();
                     this.CloseOperation();
 
                     break;
@@ -534,27 +552,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             switch (message.Status)
             {
                 case MessageStatus.OperationStart:
-                    this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
                     this.isCompleted = false;
                     this.IsShutterMoving = true;
                     break;
 
-                case MessageStatus.OperationExecuting:
-                    if (!this.isCompleted)
-                    {
-                        this.ShowNotification("Movimento serranda in corso...", Services.Models.NotificationSeverity.Info);
-                    }
-
-                    break;
-
                 case MessageStatus.OperationError:
-                    this.ShowNotification(message.Description, Services.Models.NotificationSeverity.Error);
                     this.CloseOperation();
                     break;
 
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationEnd:
-                    this.ClearNotifications();
                     this.CloseOperation();
                     break;
             }
@@ -653,8 +660,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsCarouselClosing = false;
             this.IsCarouselOpening = false;
             this.IsCarouselMoving = false;
-            this.IsMoving = false;
+            this.IsElevatorMovingToCell = false;
+            this.IsElevatorMovingToBay = false;
+            this.IsElevatorMovingToHeight = false;
+            this.IsElevatorMovingToLoadingUnit = false;
         }
+
 
         private void WriteInfo(Axis? axisMovement)
         {

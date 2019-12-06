@@ -242,6 +242,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private IState MoveLoadUnitDeposit()
         {
             IState returnValue = this;
+            if (this.loadingUnitMovementProvider.GetDestinationHeight(this.mission) != this.loadingUnitMovementProvider.GetCurrentVerticalPosition())
+            {
+                this.Logger.LogError($"{this.GetType().Name}: Vertical position is not valid {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+
+                return this.GetState<IMoveLoadingUnitMoveToTargetState>();
+            }
+
             this.direction = HorizontalMovementDirection.Backwards;
             var measure = false;
             var openShutter = false;
@@ -304,6 +314,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private IState MoveLoadUnitLoadElevatorBack()
         {
             IState returnValue = this;
+            if (this.loadingUnitMovementProvider.GetSourceHeight(this.mission) != this.loadingUnitMovementProvider.GetCurrentVerticalPosition())
+            {
+                this.Logger.LogError($"{this.GetType().Name}: Vertical position is not valid {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                ((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
+
+                return this.GetState<IMoveLoadingUnitMoveToTargetState>();
+            }
+
             this.direction = HorizontalMovementDirection.Backwards;
             var measure = false;
             var openShutter = false;

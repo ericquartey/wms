@@ -479,6 +479,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse;
 
             this.RefreshActionPoliciesAsync().ConfigureAwait(false);
@@ -514,6 +516,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsMoving
                 &&
                 !this.IsShutterMoving
@@ -527,6 +531,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 !this.IsWaitingForResponse
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsMoving
                 &&
@@ -546,6 +552,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 this.loadFromBayPolicy?.IsAllowed == true;
@@ -560,6 +568,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 this.loadFromCellPolicy?.IsAllowed == true;
@@ -571,6 +581,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 !this.IsMoving
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -584,6 +596,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 this.moveCarouselUpPolicy?.IsAllowed == true;
@@ -595,6 +609,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsKeyboardOpened
                 &&
                 this.SelectedBayPosition != null
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -612,6 +628,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 this.SelectedLoadingUnit.CellId != null
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving
@@ -625,6 +643,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.IsKeyboardOpened
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -640,6 +660,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 !this.IsMoving;
@@ -649,6 +671,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.IsKeyboardOpened
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -663,6 +687,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             return
                 !this.IsKeyboardOpened
+                &&
+                !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
                 &&
@@ -686,6 +712,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 this.unloadToBayPolicy?.IsAllowed == true;
@@ -700,6 +728,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsMoving
                 &&
+                !this.IsExecutingProcedure
+                &&
                 !this.IsWaitingForResponse
                 &&
                 this.unloadToCellPolicy?.IsAllowed == true;
@@ -713,6 +743,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.shuttersWebService.MoveToAsync(ShutterPosition.Closed);
                 this.IsShutterMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (System.Exception ex)
             {
@@ -778,6 +809,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.shuttersWebService.MoveToAsync(ShutterPosition.Half);
                 this.IsShutterMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (System.Exception ex)
             {
@@ -802,6 +834,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
 
                 this.IsBusyLoadingFromBay = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -826,6 +859,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
 
                 this.IsBusyLoadingFromCell = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -845,6 +879,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Down);
                 this.IsCarouselMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -864,6 +899,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.machineCarouselWebService.MoveAssistedAsync(VerticalMovementDirection.Up);
                 this.IsCarouselMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -893,6 +929,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     performWeighting: false);
 
                 this.IsElevatorMovingToBay = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -921,6 +958,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     computeElongation: true);
 
                 this.IsElevatorMovingToLoadingUnit = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -943,19 +981,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             switch (message.Status)
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.ShowNotification(string.Empty);
-
-                        break;
-                    }
-
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        this.ShowNotification(InstallationApp.ProcedureCompleted);
-
-                        this.IsMoving = false;
-
                         if (message.Data?.MovementMode == CommonUtils.Messages.Enumerations.MovementMode.BayChain)
                         {
                             this.IsCarouselMoving = false;
@@ -1015,6 +1042,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 await this.shuttersWebService.MoveToAsync(ShutterPosition.Opened);
                 this.IsShutterMoving = true;
+                this.IsExecutingProcedure = true;
             }
             catch (System.Exception ex)
             {
@@ -1050,6 +1078,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     await this.machineCarouselWebService.FindZeroAsync();
                     this.IsTuningBay = true;
+                    this.IsExecutingProcedure = true;
                 }
             }
             catch (Exception ex)
@@ -1075,6 +1104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsWaitingForResponse = true;
                     await this.machineElevatorWebService.SearchHorizontalZeroAsync();
                     this.IsTuningChain = true;
+                    this.IsExecutingProcedure = true;
                 }
                 catch (Exception ex)
                 {
@@ -1102,6 +1132,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
 
                 this.IsBusyUnloadingToBay = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
@@ -1126,6 +1157,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
 
                 this.IsBusyUnloadingToCell = true;
+                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {

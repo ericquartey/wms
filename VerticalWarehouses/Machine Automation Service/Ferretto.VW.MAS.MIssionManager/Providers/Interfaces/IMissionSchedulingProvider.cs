@@ -7,8 +7,6 @@ namespace Ferretto.VW.MAS.MissionManager
     {
         #region Methods
 
-        void GetPersistedMissions();
-
         void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber);
 
         void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority);

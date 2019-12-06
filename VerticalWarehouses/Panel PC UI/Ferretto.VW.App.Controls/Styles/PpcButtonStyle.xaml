@@ -255,7 +255,7 @@
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
             </Trigger>
         </Style.Triggers>
     </Style>

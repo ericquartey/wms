@@ -15,6 +15,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
+        double GetCurrentVerticalPosition();
+
         double? GetDestinationHeight(Mission moveData);
 
         double? GetSourceHeight(Mission moveData);
