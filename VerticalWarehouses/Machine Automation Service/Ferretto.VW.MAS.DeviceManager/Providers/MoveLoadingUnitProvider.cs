@@ -90,6 +90,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationRunningStop);
         }
 
+        public double GetCurrentVerticalPosition()
+        {
+            return this.elevatorProvider.VerticalPosition;
+        }
+
         public double? GetDestinationHeight(Mission moveData)
         {
             double? targetPosition = null;

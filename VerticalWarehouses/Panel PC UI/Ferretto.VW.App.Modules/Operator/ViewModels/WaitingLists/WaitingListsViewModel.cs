@@ -259,7 +259,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void SelectLoadingUnit()
         {
-            this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
+            this.SelectedList = this.lists.ElementAtOrDefault(this.currentItemIndex);
             this.RaiseCanExecuteChanged();
         }
 

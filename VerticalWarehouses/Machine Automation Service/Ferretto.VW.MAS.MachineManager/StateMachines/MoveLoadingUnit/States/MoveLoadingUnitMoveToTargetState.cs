@@ -78,6 +78,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
                 this.mission.FsmStateName = this.GetType().Name;
+                this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
             else

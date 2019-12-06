@@ -21,8 +21,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingService> logger;
 
-        private readonly IMachineMissionsProvider machineMissionsProvider;
-
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly NotificationEvent notificationEvent;
@@ -34,7 +32,6 @@ namespace Ferretto.VW.MAS.MissionManager
         public MissionSchedulingProvider(
             IEventAggregator eventAggregator,
             IMissionsDataProvider missionsDataProvider,
-            IMachineMissionsProvider missionsProvider,
             ILogger<MissionSchedulingService> logger)
         {
             if (eventAggregator is null)
@@ -44,7 +41,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
-            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -52,24 +48,12 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        public void GetPersistedMissions()
-        {
-            var missions = this.missionsDataProvider.GetAllExecutingMissions().ToList();
-            foreach (var mission in missions)
-            {
-                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
-                {
-                    mission.FsmRestoreStateName = mission.FsmStateName;
-                    mission.FsmStateName = "MoveLoadingUnitErrorState";
-                    this.missionsDataProvider.Update(mission);
-                }
-                this.machineMissionsProvider.AddMission(mission, mission.FsmId);
-            }
-        }
-
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {
-            this.logger.LogDebug($"Queuing local mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+            this.logger.LogDebug(
+                "Queuing local mission for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                loadingUnitId,
+                targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
 
@@ -78,7 +62,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
-            this.logger.LogDebug($"Queuing WMS mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+            this.logger.LogDebug(
+                "Queuing WMS mission {wmsMissionId} for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                wmsMissionId,
+                loadingUnitId,
+                targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 

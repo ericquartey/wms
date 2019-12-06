@@ -23,6 +23,9 @@
     <Color x:Key="ColorFerrettoGreen">#009933</Color>
     <Color x:Key="ColorFerrettoPureWhite">#FFFFFF</Color>
 
+    <Color x:Key="ColorFerrettoYellow">#FFDD51</Color>
+
+
     <SolidColorBrush x:Key="GrayA"
                      Color="{StaticResource EDBGrayA}" />
     <SolidColorBrush x:Key="GrayA1"

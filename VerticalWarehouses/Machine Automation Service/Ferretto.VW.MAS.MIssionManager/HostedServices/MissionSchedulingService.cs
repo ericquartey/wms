@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils;
@@ -105,7 +106,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var wmsMission = await this.missionsDataService.GetByIdAsync(mission.WmsId.Value);
-            var newOperations = wmsMission.Operations.Where(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.New);
+            var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
             if (newOperations.Any())
             {
                 // there are more operations for the same wms mission
@@ -120,6 +121,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 // wms mission is finished
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} completed.", bayNumber, mission.WmsId.Value);
 
+                missionsDataProvider.Complete(mission.Id);
                 baysDataProvider.ClearMission(bayNumber);
                 this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
 
@@ -137,8 +139,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     // send back the LU
 #if MOCK
-                    await Task.Delay(5000);
                     this.Logger.LogWarning("*** SIMULATION: moving back the LU into the warehouse***");
+                    await Task.Delay(5000);
+                    this.Logger.LogWarning("*** SIMULATION: loading unit is in cell now ***");
 #else
 
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
@@ -151,8 +154,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 else
                 {
 #if MOCK
+                    this.Logger.LogWarning("*** SIMULATION: moving the loading unit to bay ***");
                     await Task.Delay(5000);
-                    this.Logger.LogWarning("*** SIMULATION: moving the loading unit to its new location***");
+                    this.Logger.LogWarning("*** SIMULATION: loading unit is bay ***");
 
 #else
                     // close current mission
@@ -173,11 +177,13 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
+#if !TEST_ERROR_STATE
             if (!this.configuration.IsWmsEnabled())
             {
                 this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                 return;
             }
+#endif
 
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
@@ -209,8 +215,7 @@ namespace Ferretto.VW.MAS.MissionManager
                                     BayNumber.BayOne));
                     }
                 }
-
-                if (modeProvider.GetCurrent() is MachineMode.Automatic)
+                else if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
                     var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
@@ -218,7 +223,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         try
                         {
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
+                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
                         }
                         catch (Exception ex)
                         {
@@ -295,8 +300,25 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private async Task OnDataLayerReadyAsync()
+        private void GetPersistedMissions(IServiceProvider serviceProvider)
         {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
+            foreach (var mission in missions)
+            {
+                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                {
+                    mission.FsmRestoreStateName = mission.FsmStateName;
+                    mission.FsmStateName = "MoveLoadingUnitErrorState";
+                    missionsDataProvider.Update(mission);
+                }
+                serviceProvider.GetRequiredService<IMachineMissionsProvider>().AddMission(mission, mission.FsmId);
+            }
+        }
+
+        private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
+        {
+            this.GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }
@@ -343,9 +365,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     // close operation and schedule next
                     baysDataProvider.ClearMission(bay.Number);
-                    this.NotifyAssignedMissionOperationChanged(bay.Number, null, null, 0); // TODO : is this needed
-
-                    var missionSchedulingProvider = scope.ServiceProvider.GetRequiredService<IMissionSchedulingProvider>();
 
                     await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
                 }
