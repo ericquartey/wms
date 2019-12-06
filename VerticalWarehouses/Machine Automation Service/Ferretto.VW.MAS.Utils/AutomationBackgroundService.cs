@@ -152,8 +152,6 @@ namespace Ferretto.VW.MAS.Utils
                         &&
                         command != null)
                     {
-                        this.Logger.LogTrace($"Dequeued command {command}.");
-
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             this.OnCommandReceivedAsync(command, scope.ServiceProvider).Wait();
@@ -185,8 +183,6 @@ namespace Ferretto.VW.MAS.Utils
                         &&
                         notification != null)
                     {
-                        this.Logger.LogTrace($"Dequeued notification {notification}");
-
                         using (var scope = this.ServiceScopeFactory.CreateScope())
                         {
                             this.OnNotificationReceivedAsync(notification, scope.ServiceProvider).Wait();

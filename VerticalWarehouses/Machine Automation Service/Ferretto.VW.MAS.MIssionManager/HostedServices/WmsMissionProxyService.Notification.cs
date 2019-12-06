@@ -36,6 +36,10 @@ namespace Ferretto.VW.MAS.MissionManager
                     await this.OnBayOperationalStatusChangedAsync();
                     break;
 
+                case MessageType.MachineMode:
+                    await this.OnMachineModeChangedAsync();
+                    break;
+
                 case MessageType.NewWmsMissionAvailable:
                     await this.OnNewWmsMissionAvailable();
                     break;
@@ -54,6 +58,11 @@ namespace Ferretto.VW.MAS.MissionManager
         private async Task OnDataLayerReadyAsync()
         {
             this.dataLayerIsReady = true;
+            await this.RetrieveNewWmsMissionsAsync();
+        }
+
+        private async Task OnMachineModeChangedAsync()
+        {
             await this.RetrieveNewWmsMissionsAsync();
         }
 
