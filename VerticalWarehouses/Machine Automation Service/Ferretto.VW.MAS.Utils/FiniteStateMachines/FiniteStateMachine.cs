@@ -132,7 +132,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                         {
                             var eventArgs = new FiniteStateMachinesEventArgs
                             {
-                                InstanceId = this.InstanceId,
+                                InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                                 NotificationMessage = ex.NotificationMessage,
                             };
                             this.RaiseCompleted(eventArgs);
@@ -155,7 +155,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                 {
                     var eventArgs = new FiniteStateMachinesEventArgs
                     {
-                        InstanceId = this.InstanceId,
+                        InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                         NotificationMessage = endState.EndMessage,
                     };
 
@@ -255,7 +255,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
             {
                 var eventArgs = new FiniteStateMachinesEventArgs
                 {
-                    InstanceId = this.InstanceId,
+                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                 };
                 this.RaiseCompleted(eventArgs);
             }
@@ -367,7 +367,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     {
                         var eventArgs = new FiniteStateMachinesEventArgs
                         {
-                            InstanceId = this.InstanceId,
+                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                         };
                         this.RaiseCompleted(eventArgs);
                     }
@@ -408,7 +408,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
                     {
                         var eventArgs = new FiniteStateMachinesEventArgs
                         {
-                            InstanceId = this.InstanceId,
+                            InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
                         };
                         this.RaiseCompleted(eventArgs);
                     }

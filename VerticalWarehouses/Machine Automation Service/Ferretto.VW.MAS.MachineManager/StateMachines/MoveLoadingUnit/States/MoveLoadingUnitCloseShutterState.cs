@@ -137,6 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     break;
 
                 case MessageStatus.OperationError:
+                case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
                     returnValue = this.OnStop(StopRequestReason.Error);
                     if (returnValue is IEndState endState)
@@ -152,8 +153,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         protected override IState OnStop(StopRequestReason reason)
         {
             IState returnValue;
-            if (reason == StopRequestReason.Error
-                && this.mission != null
+            if (this.mission != null
                 && this.mission.IsRestoringType()
                 )
             {

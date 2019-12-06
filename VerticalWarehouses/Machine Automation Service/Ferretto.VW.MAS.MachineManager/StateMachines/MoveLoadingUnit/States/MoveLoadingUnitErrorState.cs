@@ -145,6 +145,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         }
                         break;
 
+                    case MessageStatus.OperationStop:
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                         {
