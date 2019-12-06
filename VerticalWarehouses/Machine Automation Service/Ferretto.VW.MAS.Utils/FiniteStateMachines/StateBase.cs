@@ -110,7 +110,8 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
         {
             if (this.hasStopped)
             {
-                throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+                //throw new InvalidOperationException($"FSM State {this.GetType().Name} was already stopped.");
+                this.Logger.LogDebug($"FSM State {this.GetType().Name} was already stopped.");
             }
 
             this.hasStopped = true;

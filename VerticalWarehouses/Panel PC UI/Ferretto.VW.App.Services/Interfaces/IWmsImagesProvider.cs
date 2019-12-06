@@ -7,7 +7,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Methods
 
-        Task<Stream> GetImageAsync(string imageCode);
+        Task<Stream> GetImageAsync(string imageKey);
 
         #endregion
     }

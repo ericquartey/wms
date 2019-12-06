@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191206164342_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20191205142147_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -60,6 +60,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
+
+                    b.HasIndex("CurrentMissionId");
 
                     b.HasIndex("EmptyLoadMovementId");
 
@@ -1107,25 +1109,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("IoDevices");
                 });
 
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("BayId");
-
-                    b.Property<string>("IpAddress")
-                        .HasColumnType("text");
-
-                    b.Property<int>("TcpPort");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BayId");
-
-                    b.ToTable("Lasers");
-                });
-
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
@@ -1395,7 +1378,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 6, 17, 43, 41, 703, DateTimeKind.Local).AddTicks(3947),
+                            InstallationDate = new DateTime(2017, 2, 5, 15, 21, 46, 599, DateTimeKind.Local).AddTicks(6631),
                             ServiceStatus = 86
                         });
                 });
@@ -1727,6 +1710,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .WithMany()
                         .HasForeignKey("CarouselId");
 
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Mission", "CurrentMission")
+                        .WithMany()
+                        .HasForeignKey("CurrentMissionId");
+
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
                         .WithMany()
                         .HasForeignKey("EmptyLoadMovementId");
@@ -1844,13 +1831,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
                         .WithOne("Statistics")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
-                });
-
-            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
-                {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
-                        .WithMany()
-                        .HasForeignKey("BayId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>

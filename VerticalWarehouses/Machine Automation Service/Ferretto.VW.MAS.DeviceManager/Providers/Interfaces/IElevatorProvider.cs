@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -31,6 +32,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         AxisBounds GetVerticalBounds();
 
+        bool IsZeroChainSensor();
+
         void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor automationService);
 
         void LoadFromCell(int cellId, BayNumber bayNumber, MessageActor automationService);
@@ -49,7 +52,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? sourceCellId = null,
             int? sourceBayPositionId = null);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, BayNumber requestingBay, MessageActor sender);
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
@@ -64,6 +67,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
+        MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit);
 
         void StartBeltBurnishing(
             double upperBoundPosition,

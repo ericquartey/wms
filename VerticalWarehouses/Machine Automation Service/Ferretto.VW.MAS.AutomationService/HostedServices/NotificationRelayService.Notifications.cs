@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.AutomationService
             Contract.Requires(notification != null);
 
             return
+                notification.Destination is MessageActor.WebApi
+                ||
                 notification.Destination is MessageActor.AutomationService
                 ||
                 notification.Destination is MessageActor.Any;
@@ -46,7 +48,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     break;
 
                 case MessageType.Homing:
-                    this.HomingMethod(message);
+                    this.HomingMethod(message, serviceProvider);
                     break;
 
                 case MessageType.SwitchAxis:

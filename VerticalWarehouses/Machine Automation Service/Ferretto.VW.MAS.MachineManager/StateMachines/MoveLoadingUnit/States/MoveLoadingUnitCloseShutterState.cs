@@ -57,18 +57,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"MoveLoadingUnitCloseShutterState: received command {commandMessage.Type}, {commandMessage.Description}");
+
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
                 && machineData is Mission moveData
                 )
             {
                 this.messageData = messageData;
                 this.mission = moveData;
-                this.mission.FsmStateName = this.GetType().Name;
+                this.mission.FsmStateName = nameof(MoveLoadingUnitCloseShutterState);
                 this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
-                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number);
+                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, moveData.RestoreConditions);
+
+                moveData.RestoreConditions = false;
+                this.missionsDataProvider.Update(this.mission);
             }
         }
 
@@ -81,18 +85,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    if (this.messageData.EjectLoadingUnit)
+                    bool isEject = this.mission.LoadingUnitDestination != LoadingUnitLocation.Cell
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
+                    if (isEject)
                     {
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
                         var messageData = new MoveLoadingUnitMessageData(
-                            this.messageData.MissionType,
-                            this.messageData.Source,
-                            this.messageData.Destination,
-                            this.messageData.SourceCellId,
-                            this.messageData.DestinationCellId,
-                            this.messageData.LoadingUnitId,
-                            this.messageData.InsertLoadingUnit,
-                            this.messageData.EjectLoadingUnit,
+                            this.mission.MissionType,
+                            this.mission.LoadingUnitSource,
+                            this.mission.LoadingUnitDestination,
+                            this.mission.LoadingUnitCellSourceId,
+                            this.mission.DestinationCellId,
+                            this.mission.LoadingUnitId,
+                            (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                            isEject,
                             this.mission.FsmId,
                             this.messageData.CommandAction,
                             this.messageData.StopReason,
@@ -145,6 +153,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue;
             if (reason == StopRequestReason.Error
+                && this.mission != null
                 && this.mission.IsRestoringType()
                 )
             {

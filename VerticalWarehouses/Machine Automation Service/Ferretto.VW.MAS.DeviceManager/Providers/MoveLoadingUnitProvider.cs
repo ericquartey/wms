@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -53,9 +54,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
-        public void CloseShutter(MessageActor sender, BayNumber requestingBay)
+        public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
-            this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+            try
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (restore)
+                {
+                    this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                }
+                else
+                {
+                    throw;
+                }
+            }
         }
 
         public void ContinuePositioning(MessageActor sender, BayNumber requestingBay)
@@ -74,6 +89,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
                  notification.Status == MessageStatus.OperationRunningStop);
+        }
+
+        public double GetCurrentVerticalPosition()
+        {
+            return this.elevatorProvider.VerticalPosition;
         }
 
         public double? GetDestinationHeight(Mission moveData)
@@ -169,6 +189,36 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
+        public bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            if (distance < Math.Abs(axis.ChainOffset / 2))
+            {
+                return false;
+            }
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            return true;
+        }
+
+        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, MessageActor sender, BayNumber requestingBay)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            var distance = profileSteps.Last().Position - compensation;
+            if (distance > profileSteps.Last().Position)
+            {
+                distance = profileSteps.Last().Position;
+            }
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            return true;
+        }
+
         public void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId)
         {
             var data = new AssignedMissionOperationChangedMessageData
@@ -189,6 +239,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ErrorLevel.None);
         }
 
+        public void OpenShutter(MessageActor sender, BayNumber requestingBay, bool restore)
+        {
+            try
+            {
+                this.shutterProvider.MoveTo(ShutterPosition.Opened, requestingBay, sender);
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (restore)
+                {
+                    this.shutterProvider.Move(ShutterMovementDirection.Up, requestingBay, sender);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
         /// <summary>
         /// Moves elevator to targetHeight.
         /// At the same time if sourceType is a bay it closes the shutter (only for external bays)
@@ -197,20 +266,32 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay)
+        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore)
         {
-            var parameters = this.elevatorDataProvider.GetAssistedMovementsAxis(Orientation.Vertical);
-
             if (closeShutter)
             {
-                this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                try
+                {
+                    this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    if (restore)
+                    {
+                        this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
             }
 
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 false,
                 targetHeight,
-                measure,
                 true,
+                measure,
                 requestingBay,
                 MessageActor.MachineManager);
         }
@@ -283,6 +364,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return MessageStatus.NotSpecified;
+        }
+
+        public void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
+            this.elevatorDataProvider.UpdateLastIdealPosition(axis.LastIdealPosition + (profileSteps.Last().Position * directionMultiplier));
         }
 
         #endregion

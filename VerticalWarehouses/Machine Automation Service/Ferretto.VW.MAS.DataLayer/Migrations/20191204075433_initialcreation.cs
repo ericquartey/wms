@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -160,12 +160,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     LoadingUnitCellSourceId = table.Column<int>(nullable: true),
                     LoadingUnitDestination = table.Column<int>(nullable: false),
                     LoadingUnitId = table.Column<int>(nullable: false),
-                    LoadingUnitSource = table.Column<string>(type: "text", nullable: false),
-                    MissionType = table.Column<string>(type: "text", nullable: false),
+                    LoadingUnitSource = table.Column<int>(nullable: false),
+                    MissionType = table.Column<int>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     RestoreConditions = table.Column<bool>(nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    TargetBay = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(nullable: false),
+                    TargetBay = table.Column<int>(nullable: false),
                     WmsId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -652,21 +652,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Lasers",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    BayId = table.Column<int>(nullable: true),
-                    IpAddress = table.Column<string>(type: "text", nullable: true),
-                    TcpPort = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Lasers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Bays",
                 columns: table => new
                 {
@@ -1122,7 +1107,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 6, 17, 43, 41, 703, DateTimeKind.Local).AddTicks(3947), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 4, 8, 54, 32, 857, DateTimeKind.Local).AddTicks(9488), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1554,11 +1539,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Lasers_BayId",
-                table: "Lasers",
-                column: "BayId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
@@ -1694,14 +1674,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Lasers_Bays_BayId",
-                table: "Lasers",
-                column: "BayId",
-                principalTable: "Bays",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-
-            migrationBuilder.AddForeignKey(
                 name: "FK_Bays_MovementParameters_EmptyLoadMovementId",
                 table: "Bays",
                 column: "EmptyLoadMovementId",
@@ -1757,9 +1729,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ErrorStatistics");
-
-            migrationBuilder.DropTable(
-                name: "Lasers");
 
             migrationBuilder.DropTable(
                 name: "LogEntries");

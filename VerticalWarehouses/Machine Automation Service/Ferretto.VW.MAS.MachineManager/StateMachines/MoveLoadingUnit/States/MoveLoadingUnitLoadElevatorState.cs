@@ -71,10 +71,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"MoveLoadingUnitLoadElevatorState: received command {commandMessage.Type}, {commandMessage.Description}");
+
             if (machineData is Mission machineMoveData)
             {
                 this.mission = machineMoveData;
+                this.mission.FsmStateName = nameof(MoveLoadingUnitLoadElevatorState);
+                this.missionsDataProvider.Update(this.mission);
 
                 var direction = HorizontalMovementDirection.Backwards;
                 bool measure = false;
@@ -94,17 +97,25 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitSource);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                        if (this.openShutter)
+                        {
+                            var shutterPosition = this.sensorsProvider.GetShutterPosition(bay.Number);
+                            if (shutterPosition == ShutterPosition.Opened)
+                            {
+                                this.openShutter = false;
+                            }
+                        }
                         measure = true;
                         break;
                 }
 
                 this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
-                this.mission.FsmStateName = this.GetType().Name;
+                this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
             else
             {
-                var description = $"Move Loading Unit Load Unit Sate received wrong initialization data ({commandMessage.Data.GetType().Name})";
+                var description = $"Move Loading Unit Load Unit State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
             }
@@ -201,6 +212,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue;
             if (reason == StopRequestReason.Error
+                && this.mission != null
                 && this.mission.IsRestoringType()
                 )
             {

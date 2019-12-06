@@ -2,7 +2,6 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -10,11 +9,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
-        void CloseShutter(MessageActor sender, BayNumber requestingBay);
+        void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
+
+        double GetCurrentVerticalPosition();
 
         double? GetDestinationHeight(Mission moveData);
 
@@ -24,9 +25,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
+        bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay);
+
+        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, MessageActor sender, BayNumber requestingBay);
+
         void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId);
 
-        void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay);
+        void OpenShutter(MessageActor sender, BayNumber requestingBay, bool restore);
+
+        void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
@@ -35,6 +42,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus StopOperationStatus(NotificationMessage message);
+
+        void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard);
 
         #endregion
     }

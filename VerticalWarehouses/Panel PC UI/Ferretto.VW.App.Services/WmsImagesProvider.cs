@@ -29,29 +29,24 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public async Task<Stream> GetImageAsync(string id)
+        public async Task<Stream> GetImageAsync(string imageKey)
         {
-            Stream imageStream = null;
-            if (id != null)
+            if (imageKey is null)
             {
-                try
-                {
-                    using (var response = await this.imagesDataService.DownloadAsync(id))
-                    {
-                        imageStream = new MemoryStream(this.ReadFully(response.Stream));
-                    }
-                }
-                catch (Exception)
-                {
-                    imageStream = this.LoadFallbackImage();
-                }
-            }
-            else
-            {
-                imageStream = this.LoadFallbackImage();
+                return this.LoadFallbackImage();
             }
 
-            return imageStream;
+            try
+            {
+                using (var response = await this.imagesDataService.DownloadAsync(imageKey))
+                {
+                    return new MemoryStream(this.ReadFully(response.Stream));
+                }
+            }
+            catch (Exception)
+            {
+                return this.LoadFallbackImage();
+            }
         }
 
         public byte[] ReadFully(Stream input)

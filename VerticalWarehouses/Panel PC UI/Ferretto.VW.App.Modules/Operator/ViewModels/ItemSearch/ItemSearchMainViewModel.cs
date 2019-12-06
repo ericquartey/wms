@@ -227,6 +227,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         this.SelectedItem.Code,
                         this.InputQuantity),
                     Services.Models.NotificationSeverity.Success);
+
+                this.tokenSource = new CancellationTokenSource();
+                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
             catch (Exception ex)
             {
@@ -285,7 +288,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsBusyLoadingNextPage = false;
                 this.RaisePropertyChanged(nameof(this.Items));
             }
-            
+
             this.RaisePropertyChanged(nameof(this.Items));
 
             this.SetCurrentIndex(selectedItemId);

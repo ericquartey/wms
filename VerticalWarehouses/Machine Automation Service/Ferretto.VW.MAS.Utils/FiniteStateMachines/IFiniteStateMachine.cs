@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         void Pause();
 
-        void Resume(CommandMessage commandMessage);
+        void Resume(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 
         void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken);
 

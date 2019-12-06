@@ -731,10 +731,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            var increment = 1d;
+            var increment = 50d;
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
             {
                 increment = 0.1;
+            }
+            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 50)
+            {
+                increment = 1;
             }
 
             if (this.AxisPosition < this.TargetPosition[this.currentAxis])

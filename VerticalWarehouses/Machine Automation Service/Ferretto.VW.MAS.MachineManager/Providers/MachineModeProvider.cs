@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.MachineManager.Providers
@@ -9,6 +10,8 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
     internal class MachineModeProvider : BaseProvider, IMachineModeProvider
     {
         #region Fields
+
+        private readonly ILogger<MachineModeProvider> logger;
 
         private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
 
@@ -18,10 +21,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public MachineModeProvider(
             IMachineModeVolatileDataProvider machineModeDataProvider,
+            ILogger<MachineModeProvider> logger,
             IEventAggregator eventAggregator)
             : base(eventAggregator)
         {
             this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
+            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         #endregion
@@ -44,10 +49,12 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
             {
                 case MachineMode.Automatic:
                     this.machineModeDataProvider.Mode = MachineMode.SwitchingToAutomatic;
+                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
                     break;
 
                 case MachineMode.Manual:
                     this.machineModeDataProvider.Mode = MachineMode.SwitchingToManual;
+                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
                     break;
 
                 default:
@@ -63,13 +70,10 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
             // HACK: this is a mocked implementation of the mode switch
             // HACK: begin
-            if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToAutomatic)
-            {
-                this.machineModeDataProvider.Mode = MachineMode.Automatic;
-            }
-            else if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToManual)
+            if (this.machineModeDataProvider.Mode is MachineMode.SwitchingToManual)
             {
                 this.machineModeDataProvider.Mode = MachineMode.Manual;
+                this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
             }
 
             // HACK: end

@@ -24,6 +24,7 @@ namespace Ferretto.VW.App.Modules.Layout.Converters
                 case NotificationSeverity.Error:
                     return MahApps.Metro.IconPacks.PackIconModernKind.WarningCircle;
 
+                case NotificationSeverity.Low:
                 case NotificationSeverity.Info:
                     return MahApps.Metro.IconPacks.PackIconModernKind.InformationCircle;
 

@@ -3,14 +3,16 @@ using System;
 using Ferretto.VW.MAS.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    partial class DataLayerContextModelSnapshot : ModelSnapshot
+    [Migration("20191204075433_initialcreation")]
+    partial class initialcreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,8 +60,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CarouselId");
-
-                    b.HasIndex("CurrentMissionId");
 
                     b.HasIndex("EmptyLoadMovementId");
 
@@ -1284,25 +1284,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("LoadingUnitId");
 
-                    b.Property<string>("LoadingUnitSource")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("LoadingUnitSource");
 
-                    b.Property<string>("MissionType")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("MissionType");
 
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Status");
 
-                    b.Property<string>("TargetBay")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("TargetBay");
 
                     b.Property<int?>("WmsId");
 
@@ -1376,7 +1368,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 5, 15, 21, 46, 599, DateTimeKind.Local).AddTicks(6631),
+                            InstallationDate = new DateTime(2017, 2, 4, 8, 54, 32, 857, DateTimeKind.Local).AddTicks(9488),
                             ServiceStatus = 86
                         });
                 });
@@ -1707,10 +1699,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.Carousel", "Carousel")
                         .WithMany()
                         .HasForeignKey("CarouselId");
-
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Mission", "CurrentMission")
-                        .WithMany()
-                        .HasForeignKey("CurrentMissionId");
 
                     b.HasOne("Ferretto.VW.MAS.DataModels.MovementParameters", "EmptyLoadMovement")
                         .WithMany()

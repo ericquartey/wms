@@ -8,7 +8,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:PpcButton">
+                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
                     <ControlTemplate.Resources>
                         <BooleanToVisibilityConverter x:Key="BTVC" />
                         <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
@@ -49,6 +49,17 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
+                                <ProgressBar Grid.ColumnSpan="2"
+                                             Height="40"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Bottom"
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             Foreground="{DynamicResource PpcButtonForeground}"
+                                             IsIndeterminate="True"
+                                             Opacity="0.2"
+                                             Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
+
                                 <controls:PpcIcon x:Name="PpcButton_Icon"
                                                   Height="24"
                                                   Margin="15,5"
@@ -77,15 +88,6 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-
-                                <ProgressBar VerticalAlignment="Bottom"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             Foreground="{DynamicResource PpcButtonForeground}"
-                                             IsIndeterminate="True"
-                                             Opacity="0.2"
-                                             Visibility="{TemplateBinding IsBusy,
-                                                                          Converter={StaticResource BTVC}}" />
 
                             </Grid>
                         </Border>
@@ -255,7 +257,7 @@
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
                 <Setter Property="BorderThickness" Value="0,1,0,0" />
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -263,13 +265,15 @@
     <Style x:Key="PpcButtonStopStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
         <Setter Property="Background">
             <Setter.Value>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                <!--<LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                     <GradientStop Offset="1" Color="#e1323f" />
                     <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayC}" />
                     <GradientStop Offset="0" Color="{DynamicResource EDBGrayC}" />
-                </LinearGradientBrush>
+                </LinearGradientBrush>-->
+                <SolidColorBrush Color="#E1323F" />
             </Setter.Value>
         </Setter>
         <Style.Triggers>
@@ -277,11 +281,14 @@
                          Value="False">
                 <Setter Property="Background">
                     <Setter.Value>
+                        <!--
                         <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
                             <GradientStop Offset="1" Color="#e1323f" />
                             <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayH}" />
                             <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
                         </LinearGradientBrush>
+                        -->
+                        <SolidColorBrush Color="#E1323F" />
                     </Setter.Value>
                 </Setter>
             </DataTrigger>

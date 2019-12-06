@@ -82,18 +82,22 @@ namespace Ferretto.VW.App.Services
         private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
         {
             this.PendingMissionOperationsCount = e.PendingMissionOperationsCount;
-            if (e.MissionOperationId.HasValue)
+            if (e.MissionId.HasValue && e.MissionOperationId.HasValue)
             {
-                await this.RetrieveMissionOperation(e.MissionOperationId.Value, e);
+                await this.RetrieveMissionOperation(e.MissionOperationId.Value, e.MissionId.Value, e);
             }
             else
             {
                 this.CurrentMission = null;
                 this.CurrentMissionOperation = null;
+
+                this.eventAggregator
+                  .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                  .Publish(e);
             }
         }
 
-        private async Task RetrieveMissionOperation(int missionOperationId, AssignedMissionOperationChangedEventArgs e)
+        private async Task RetrieveMissionOperation(int missionOperationId, int missionId, AssignedMissionOperationChangedEventArgs e)
         {
             if (missionOperationId != this.CurrentMissionOperation?.Id)
             {
@@ -101,7 +105,7 @@ namespace Ferretto.VW.App.Services
                 {
                     this.CurrentMissionOperation =
                         await this.missionOperationsDataService.GetByIdAsync(missionOperationId);
-                    this.CurrentMission = await this.missionsDataService.GetByIdAsync(this.CurrentMissionOperation.MissionId);
+                    this.CurrentMission = await this.missionsDataService.GetByIdAsync(missionId);
 
                     this.eventAggregator
                         .GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()

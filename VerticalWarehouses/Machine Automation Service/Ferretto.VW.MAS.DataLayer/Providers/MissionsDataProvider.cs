@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -40,6 +39,24 @@ namespace Ferretto.VW.MAS.DataLayer
         #endregion
 
         #region Methods
+
+        public Mission Complete(int id)
+        {
+            lock (this.dataContext)
+            {
+                var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
+                if (mission is null)
+                {
+                    throw new EntityNotFoundException(nameof(mission));
+                }
+
+                mission.Status = MissionStatus.Completed;
+
+                this.dataContext.SaveChanges();
+
+                return mission;
+            }
+        }
 
         public Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber)
         {
@@ -81,7 +98,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
 
-                this.logger.LogInformation("Created MAS bay mission from WMS mission id={wmsId}");
+                this.logger.LogInformation($"Created MAS bay mission from WMS mission id={wmsId}");
 
                 return entry.Entity;
             }
@@ -89,14 +106,17 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void Delete(int? id)
         {
-            if (!(id is null))
+            if (id != null)
             {
                 lock (this.dataContext)
                 {
                     var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
-                    this.dataContext.Missions.Remove(mission);
+                    if (mission != null)
+                    {
+                        this.dataContext.Missions.Remove(mission);
 
-                    this.dataContext.SaveChanges();
+                        this.dataContext.SaveChanges();
+                    }
                 }
             }
         }
@@ -112,6 +132,16 @@ namespace Ferretto.VW.MAS.DataLayer
                     .OrderBy(o => o.Priority)
                     .ThenBy(o => o.CreationDate)
                     .ToArray();
+            }
+        }
+
+        public IEnumerable<Mission> GetAllExecutingMissions()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Missions
+                    .AsNoTracking()
+                    .Where(m => m.Status == MissionStatus.Executing);
             }
         }
 
@@ -137,26 +167,13 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission SetStatus(int id, MissionStatus status)
-        {
-            lock (this.dataContext)
-            {
-                var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
-
-                mission.Status = status;
-
-                this.dataContext.SaveChanges();
-
-                return mission;
-            }
-        }
-
         public void Update(Mission mission)
         {
             if (mission is null)
             {
                 throw new ArgumentNullException(nameof(mission));
             }
+
             lock (this.dataContext)
             {
                 this.dataContext.Missions.Update(mission);

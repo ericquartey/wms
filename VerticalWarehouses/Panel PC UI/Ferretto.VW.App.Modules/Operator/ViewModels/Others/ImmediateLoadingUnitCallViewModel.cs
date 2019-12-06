@@ -91,7 +91,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 if (this.SetProperty(ref this.loadingUnitId, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    this.CheckToSelectLoadingUnit();
                 }
             }
         }
@@ -149,9 +149,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBackNavigationAllowed = true;
 
-            this.currentItemIndex = 0;
             this.LoadingUnitId = null;
-      
+
             await this.GetLoadingUnitsAsync();
             this.SelectLoadingUnit();
         }
@@ -235,6 +234,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !this.IsSearching;
         }
 
+        private void CheckToSelectLoadingUnit()
+        {
+            if (this.loadingUnits.FirstOrDefault(l => l.Id == this.loadingUnitId) is LoadingUnit loadingUnitfound)
+            {
+                if (loadingUnitfound.Id == this.selectedUnitUnit.Id)
+                {
+                    return;
+                }
+
+                this.currentItemIndex = this.loadingUnits.IndexOf(loadingUnitfound);
+                this.SelectLoadingUnit();
+            }
+            else
+            {
+                this.currentItemIndex = 0;
+                this.SelectLoadingUnit();
+            }
+        }
+
         private void RaiseCanExecuteChanged()
         {
             this.loadingUnitCallCommand?.RaiseCanExecuteChanged();
@@ -244,6 +262,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void SelectLoadingUnit()
         {
+            if (this.loadingUnits.Count == 0)
+            {
+                return;
+            }
+
             this.SelectedLoadingUnit = this.loadingUnits.ElementAt(this.currentItemIndex);
             this.RaiseCanExecuteChanged();
         }
