@@ -47,22 +47,34 @@ namespace Ferretto.VW.MAS.LaserDriver.HostedServices
 
         protected override bool FilterCommand(FieldCommandMessage command)
         {
-            throw new NotImplementedException();
+            return
+                command.Destination == FieldMessageActor.LaserDriver
+                ||
+                command.Destination == FieldMessageActor.Any;
         }
 
         protected override bool FilterNotification(FieldNotificationMessage notification)
         {
-            throw new NotImplementedException();
+            return
+                notification.Destination == FieldMessageActor.LaserDriver
+                ||
+                notification.Destination == FieldMessageActor.Any;
         }
 
-        protected override Task OnCommandReceivedAsync(FieldCommandMessage command, IServiceProvider serviceProvider)
+        protected override async Task OnCommandReceivedAsync(FieldCommandMessage command, IServiceProvider serviceProvider)
         {
             throw new NotImplementedException();
         }
 
-        protected override Task OnNotificationReceivedAsync(FieldNotificationMessage message, IServiceProvider serviceProvider)
+        protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage message, IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            switch (message.Type)
+            {
+                case FieldMessageType.DataLayerReady:
+
+                    //await this.StartHardwareCommunicationsAsync(serviceProvider);
+                    break;
+            }
         }
 
         #endregion

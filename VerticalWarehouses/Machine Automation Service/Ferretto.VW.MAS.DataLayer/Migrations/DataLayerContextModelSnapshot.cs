@@ -1105,6 +1105,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("IoDevices");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BayId");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TcpPort");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BayId");
+
+                    b.ToTable("Lasers");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
@@ -1282,17 +1301,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<int>("LoadingUnitId");
 
-                    b.Property<int>("LoadingUnitSource");
+                    b.Property<string>("LoadingUnitSource")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("MissionType");
+                    b.Property<string>("MissionType")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
 
-                    b.Property<int>("Status");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
 
-                    b.Property<int>("TargetBay");
+                    b.Property<string>("TargetBay")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("WmsId");
 
@@ -1366,7 +1393,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 4, 8, 54, 32, 857, DateTimeKind.Local).AddTicks(9488),
+                            InstallationDate = new DateTime(2017, 2, 6, 17, 43, 41, 703, DateTimeKind.Local).AddTicks(3947),
                             ServiceStatus = 86
                         });
                 });
@@ -1815,6 +1842,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
                         .WithOne("Statistics")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
+                        .WithMany()
+                        .HasForeignKey("BayId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>

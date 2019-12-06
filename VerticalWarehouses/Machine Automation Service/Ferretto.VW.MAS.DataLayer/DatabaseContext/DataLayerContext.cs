@@ -68,6 +68,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public DbSet<IoDevice> IoDevices { get; set; }
 
+        public DbSet<Laser> Lasers { get; set; }
+
         public DbSet<LoadingUnit> LoadingUnits { get; set; }
 
         public DbSet<LogEntry> LogEntries { get; set; }
@@ -146,6 +148,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new ArgumentNullException(nameof(modelBuilder));
             }
 
+            // TODO: This can be discovered using reflection and looking for generic type(s) IEntityTypeConfiguration
+
             modelBuilder
                 .ApplyConfiguration(new BaysConfiguration())
                 .ApplyConfiguration(new BayPositionsConfiguration())
@@ -159,6 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 .ApplyConfiguration(new ErrorStatisticConfiguration())
                 .ApplyConfiguration(new InvertersConfiguration())
                 .ApplyConfiguration(new IoDevicesConfiguration())
+                .ApplyConfiguration(new LasersConfiguration())
                 .ApplyConfiguration(new LoadingUnitsConfiguration())
                 .ApplyConfiguration(new MachineStatisticsConfiguration())
                 .ApplyConfiguration(new MissionsConfiguration())
