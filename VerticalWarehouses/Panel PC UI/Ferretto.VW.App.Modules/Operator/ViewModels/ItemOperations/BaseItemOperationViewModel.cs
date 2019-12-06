@@ -92,19 +92,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             await base.OnAppearedAsync();
 
-            await this.GetItemImageAsync();
+            await this.RetrieveMissionOperationAsync();
 
             this.IsBackNavigationAllowed = true;
         }
 
-        private async Task GetItemImageAsync()
+        protected async Task RetrieveMissionOperationAsync()
         {
             try
             {
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
-
                 this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
+
+                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
             }
             catch (Exception ex)
             {

@@ -6,14 +6,18 @@ using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     public abstract class BaseItemOperationMainViewModel : BaseItemOperationViewModel
     {
         #region Fields
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMissionsDataService missionDataService;
 
@@ -35,6 +39,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private double loadingUnitWidth;
 
+        private SubscriptionToken missionToken;
+
         private TrayControlCompartment selectedCompartment;
 
         private DelegateCommand showDetailsCommand;
@@ -47,11 +53,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IWmsImagesProvider wmsImagesProvider,
             IMissionsDataService missionsDataService,
             IBayManager bayManager,
+            IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService)
             : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
         {
             this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
-
+            this.eventAggregator = eventAggregator;
             this.CompartmentColoringFunction = (c, selectedCompartment) => "#00FF00";
         }
 
@@ -146,8 +153,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.MissionOperationsService.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
-
-                await this.CheckOtherOperationsOnSameMissionAsync();
             }
             catch (Exception ex)
             {
@@ -155,14 +160,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             finally
             {
-                this.IsBusyConfirmingOperation = false;
-                this.IsWaitingForResponse = true;
+                // Do not enable the interface. Wait for a new notification to arrive.
             }
         }
 
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+
+            this.missionToken = this.missionToken
+                ??
+                this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
+                .Subscribe(
+                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                    ThreadOption.UIThread,
+                    false);
 
             this.GetLoadingUnitDetails();
         }
@@ -219,28 +231,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value >= 0;
         }
 
-        private async Task CheckOtherOperationsOnSameMissionAsync()
-        {
-            try
-            {
-                var mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                if (mission.Operations?.Any(o => o.Status == MissionOperationStatus.New) == true)
-                {
-                    this.IsEnabled = false;
-                    this.InputQuantity = null;
-                    this.ItemImage = null;
-                }
-                else
-                {
-                    this.NavigationService.GoBack();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-        }
-
         private void GetLoadingUnitDetails()
         {
             try
@@ -280,6 +270,26 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     XPosition = c.XPosition.Value,
                     YPosition = c.YPosition.Value,
                 });
+        }
+
+        private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
+        {
+            if (e.MissionId is null || e.MissionOperationId is null)
+            {
+                this.ItemImage = null;
+                this.Compartments = null;
+                this.MissionOperation = null;
+
+                this.NavigationService.GoBack();
+            }
+            else
+            {
+                await this.RetrieveMissionOperationAsync();
+                this.GetLoadingUnitDetails();
+            }
+
+            this.IsBusyConfirmingOperation = false;
+            this.IsWaitingForResponse = false;
         }
 
         private void RaiseCanExecuteChanged()

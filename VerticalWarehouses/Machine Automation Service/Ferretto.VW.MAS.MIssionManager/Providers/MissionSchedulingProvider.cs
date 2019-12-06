@@ -50,7 +50,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {
-            this.logger.LogDebug($"Queuing local mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+            this.logger.LogDebug(
+                "Queuing local mission for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                loadingUnitId,
+                targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
 
@@ -59,7 +62,11 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
-            this.logger.LogDebug($"Queuing WMS mission for loading unit {loadingUnitId} to bay {targetBayNumber}.");
+            this.logger.LogDebug(
+                "Queuing WMS mission {wmsMissionId} for loading unit {loadingUnitId} to bay {targetBayNumber}.",
+                wmsMissionId,
+                loadingUnitId,
+                targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
 
