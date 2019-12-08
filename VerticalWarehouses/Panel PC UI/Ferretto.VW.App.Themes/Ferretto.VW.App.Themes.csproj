@@ -40,5 +40,29 @@
     <None Remove="Images\spinner_white.gif" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Resource Remove="Images\Divieto_Dark.png" />
+    <Resource Remove="Images\Divieto_Light.png" />
+    <Resource Remove="Images\no_image.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\Divieto_Dark.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Divieto_Light.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\no_image.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Update="Images\Punto_Interrogativo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>
 

@@ -75,6 +75,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
             if (this.configuration.IsWmsEnabled())
             {
+                this.dataHubClient.ConnectionStatusChanged += this.DataHubClient_ConnectionStatusChanged;
                 await this.dataHubClient.ConnectAsync();
             }
         }
@@ -100,6 +101,19 @@ namespace Ferretto.VW.MAS.AutomationService
                 ErrorLevel.Error);
 
             this.EventAggregator.GetEvent<NotificationEvent>().Publish(msg);
+        }
+
+        private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
+        {
+            this.Logger.LogInformation("Connection changed connected={isConnected}", e.IsConnected);
+            if (e.IsConnected)
+            {
+                this.OnDataHubClientEntityChanged(this, new EntityChangedEventArgs(
+                    nameof(MissionOperation),
+                    null, WMS.Data.Hubs.Models.HubEntityOperation.Created,
+                    null,
+                    null));
+            }
         }
 
         private void OnDataHubClientEntityChanged(object sender, EntityChangedEventArgs e)

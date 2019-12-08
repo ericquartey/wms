@@ -226,12 +226,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.moveCarouselOpenCommand = new DelegateCommand(async () => await this.OpenCarouselAsync()));
 
         public ICommand MoveElevatorBackwardsCommand =>
-                            this.moveElevatorBackwardsCommand
+            this.moveElevatorBackwardsCommand
             ??
             (this.moveElevatorBackwardsCommand = new DelegateCommand(async () => await this.MoveElevatorBackwardsAsync()));
 
         public ICommand MoveElevatorDownCommand =>
-                    this.moveElevatorDownCommand
+            this.moveElevatorDownCommand
             ??
             (this.moveElevatorDownCommand = new DelegateCommand(async () => await this.MoveElevatorDownAsync()));
 
@@ -253,14 +253,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                this.CanMoveToCellHeight));
 
         public ICommand MoveToHeightCommand =>
-                   this.moveToHeightCommand
-           ??
-           (this.moveToHeightCommand = new DelegateCommand(
+            this.moveToHeightCommand
+            ??
+            (this.moveToHeightCommand = new DelegateCommand(
                async () => await this.MoveToHeightAsync(),
                this.CanMoveToHeight));
 
         public ICommand ShutterMoveDownCommand =>
-                    this.shutterMoveDownCommand
+            this.shutterMoveDownCommand
             ??
             (this.shutterMoveDownCommand = new DelegateCommand(async () => await this.ShutterMoveDownAsync()));
 
@@ -298,7 +298,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.StartVerticalMovementAsync(VerticalMovementDirection.Up);
         }
 
-        public async Task OnManualAppearedAsync()
+        public void OnManualAppearedAsync()
         {
             this.isCompleted = false;
         }
@@ -318,7 +318,124 @@ namespace Ferretto.VW.App.Installation.ViewModels
             await this.ManualShutterStartMovementAsync(ShutterMovementDirection.Up);
         }
 
-        protected void OnManualErrorStatusChanged()
+        private bool CanMoveToCellHeight()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.SelectedCell != null
+                &&
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving
+                &&
+                this.moveToCellPolicy?.IsAllowed == true;
+        }
+
+        private bool CanMoveToHeight()
+        {
+            return
+                !this.IsKeyboardOpened
+                &&
+                this.InputHeight != null
+                &&
+                !this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving;
+        }
+
+        private void CloseOperation()
+        {
+            this.StopMoving();
+            this.isCompleted = true;
+        }
+
+        private async Task ManualShutterStartMovementAsync(ShutterMovementDirection direction)
+        {
+            if (this.IsShutterMovingUp || this.IsShutterMovingDown)
+            {
+                return;
+            }
+
+            try
+            {
+                await this.shuttersWebService.MoveAsync(direction);
+                if (direction == ShutterMovementDirection.Down)
+                {
+                    this.IsShutterMovingDown = true;
+                }
+                else
+                {
+                    this.IsShutterMovingUp = true;
+                }
+
+                this.IsShutterMoving = true;
+            }
+            catch (Exception ex)
+            {
+                this.CloseOperation();
+
+                this.ShowNotification(ex);
+            }
+        }
+
+        private async Task MoveToCellHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                Debug.Assert(
+                    this.SelectedCell != null,
+                    "The selected cell should be specified.");
+
+                await this.machineElevatorWebService.MoveToCellAsync(
+                    this.SelectedCell.Id,
+                    performWeighting: this.isUseWeightControl,
+                    computeElongation: true);
+
+                this.IsElevatorMovingToCell = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task MoveToHeightAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
+                    this.InputHeight.Value,
+                    this.isUseWeightControl,
+                    false);
+
+                this.IsElevatorMovingToHeight = true;
+                this.IsExecutingProcedure = true;
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void OnManualErrorStatusChanged()
         {
             if (!(this.MachineError is null))
             {
@@ -326,7 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected void OnManualMachinePowerChanged()
+        private void OnManualMachinePowerChanged()
         {
             this.RaiseCanExecuteChanged();
 
@@ -336,7 +453,34 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected void OnManualRaiseCanExecuteChanged()
+        private void OnManualPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
+        {
+            if (!this.IsMovementsManual)
+            {
+                return;
+            }
+
+            switch (message.Status)
+            {
+                case MessageStatus.OperationStart:
+                    this.isCompleted = false;
+                    this.IsElevatorMoving = true;
+                    break;
+
+                case MessageStatus.OperationError:
+                    this.CloseOperation();
+
+                    break;
+
+                case MessageStatus.OperationStop:
+                case MessageStatus.OperationEnd:
+                    this.CloseOperation();
+
+                    break;
+            }
+        }
+
+        private void OnManualRaiseCanExecuteChanged()
         {
             this.CanInputCellId =
                 !this.IsKeyboardOpened
@@ -399,149 +543,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveToHeightCommand?.RaiseCanExecuteChanged();
         }
 
-        private bool CanMoveToCellHeight()
-        {
-            return
-                !this.IsKeyboardOpened
-                &&
-                this.SelectedCell != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
-                &&
-                this.moveToCellPolicy?.IsAllowed == true;
-        }
-
-        private bool CanMoveToHeight()
-        {
-            return
-                !this.IsKeyboardOpened
-                &&
-                this.InputHeight != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving;
-        }
-
-        private void CloseOperation()
-        {
-            this.StopMoving();
-            this.isCompleted = true;
-        }
-
-        private async Task ManualShutterStartMovementAsync(ShutterMovementDirection direction)
-        {
-            if (this.IsShutterMovingUp || this.IsShutterMovingDown)
-            {
-                return;
-            }
-
-            try
-            {
-                await this.shuttersWebService.MoveAsync(direction);
-                if (direction == ShutterMovementDirection.Down)
-                {
-                    this.IsShutterMovingDown = true;
-                }
-                else
-                {
-                    this.IsShutterMovingUp = true;
-                }
-                this.IsShutterMoving = true;
-            }
-            catch (System.Exception ex)
-            {
-                this.CloseOperation();
-
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task MoveToCellHeightAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                Debug.Assert(
-                    this.SelectedCell != null,
-                    "The selected cell should be specified.");
-
-                await this.machineElevatorWebService.MoveToCellAsync(
-                    this.SelectedCell.Id,
-                    performWeighting: this.isUseWeightControl,
-                    computeElongation: true);
-
-                this.IsElevatorMovingToCell = true;
-                this.IsExecutingProcedure = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task MoveToHeightAsync()
-        {
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                await this.machineElevatorWebService.MoveToVerticalPositionAsync(
-                    this.InputHeight.Value,
-                    this.isUseWeightControl,
-                    false);
-
-                this.IsElevatorMovingToHeight = true;
-                this.IsExecutingProcedure = true;
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task OnManualPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
-        {
-            if (!this.IsMovementsManual)
-            {
-                return;
-            }
-
-            switch (message.Status)
-            {
-                case MessageStatus.OperationStart:
-                    this.isCompleted = false;
-                    this.IsElevatorMoving = true;
-                    break;
-
-                case MessageStatus.OperationError:
-                    this.CloseOperation();
-
-                    break;
-
-                case MessageStatus.OperationStop:
-                case MessageStatus.OperationEnd:
-                    this.CloseOperation();
-
-                    break;
-            }
-        }
-
         private void OnManualShutterPositionChanged(NotificationMessageUI<ShutterPositioningMessageData> message)
         {
             if (!this.IsMovementsManual)
@@ -585,6 +586,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsMovingElevatorForwards = true;
                 }
+
                 this.IsElevatorMoving = true;
             }
             catch (System.Exception ex)
@@ -637,6 +639,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 {
                     this.IsMovingElevatorUp = true;
                 }
+
                 this.IsElevatorMoving = true;
             }
             catch (System.Exception ex)
@@ -665,7 +668,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorMovingToHeight = false;
             this.IsElevatorMovingToLoadingUnit = false;
         }
-
 
         private void WriteInfo(Axis? axisMovement)
         {

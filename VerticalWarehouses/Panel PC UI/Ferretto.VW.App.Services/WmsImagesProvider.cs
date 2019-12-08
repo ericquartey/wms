@@ -60,7 +60,7 @@ namespace Ferretto.VW.App.Services
 
         private Stream LoadFallbackImage()
         {
-            var stream = new FileStream("./Images/Divieto_Dark.png", FileMode.Open);
+            var stream = new FileStream("./Images/no_image.jpg", FileMode.Open);
 
             return new MemoryStream(this.ReadFully(stream));
         }
