@@ -104,20 +104,19 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void Delete(int? id)
+        public void Delete(int id)
         {
-            if (id != null)
+            lock (this.dataContext)
             {
-                lock (this.dataContext)
+                var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
+                if(mission is null)
                 {
-                    var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
-                    if (mission != null)
-                    {
-                        this.dataContext.Missions.Remove(mission);
-
-                        this.dataContext.SaveChanges();
-                    }
+                    throw new EntityNotFoundException(nameof(mission));
                 }
+
+                this.dataContext.Missions.Remove(mission);
+
+                this.dataContext.SaveChanges();
             }
         }
 

@@ -88,6 +88,15 @@
                                      ContentText="{Binding MissionOperation.ItemDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
 
+            <Image Grid.Row="4"
+                   Grid.RowSpan="3"                   
+                   Width="180"
+                   Height="180"                   
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Source="{Binding ItemImage, Converter={StaticResource ITSC}}"
+                   Stretch="UniformToFill" />
+
 
             <!--<controls:PpcLabeledText Grid.Row="4"
                                      Grid.Column="1"
