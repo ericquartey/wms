@@ -1207,4 +1207,19 @@
     <value>List row</value>
     <comment>Label text</comment>
   </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Loading unit Id</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Width</value>
+  </data>
+  <data name="LoadingUnitDepth" xml:space="preserve">
+    <value>Depth</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Loading unit</value>
+    <comment>Label text</comment>
+  </data>
 </root>

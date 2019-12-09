@@ -22,6 +22,8 @@
 
             public const string INVENTORY_DETAILS = "ItemInventoryDetailsViewModel";
 
+            public const string LOADINGUNITCHECKVIEW = "LoadingUnitCheckViewModel";
+
             public const string PICK = "ItemPickViewModel";
 
             public const string PICK_DETAILS = "ItemPickDetailsViewModel";
