@@ -24,6 +24,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override void ShowOperationDetails()
         {
+            // do nothing
         }
 
         #endregion

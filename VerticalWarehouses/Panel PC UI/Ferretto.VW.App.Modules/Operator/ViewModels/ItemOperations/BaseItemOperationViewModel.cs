@@ -138,6 +138,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                             null,
                             trackCurrentView: true);
                         break;
+
+                    case MissionOperationType.LoadingUnitCheck when !(this is LoadingUnitCheckViewModel):
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.LOADINGUNITCHECKVIEW,
+                            null,
+                            trackCurrentView: true);
+                        break;
                 }
 
                 this.MissionOperation = missionOperation;

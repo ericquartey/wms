@@ -301,11 +301,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-           
             await this.RetrieveMissionOperationAsync();
 
             this.GetLoadingUnitDetails();
-            
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;

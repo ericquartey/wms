@@ -111,6 +111,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         null,
                         trackCurrentView: true);
                     break;
+
+                case MissionOperationType.LoadingUnitCheck:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.LOADINGUNITCHECKVIEW,
+                        null,
+                        trackCurrentView: true);
+                    break;
             }
         }
 
