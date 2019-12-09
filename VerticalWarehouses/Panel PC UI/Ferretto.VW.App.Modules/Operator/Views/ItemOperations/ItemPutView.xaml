@@ -88,8 +88,8 @@
                                 HorizontalAlignment="Right"
                                 VerticalAlignment="Top"
                                 Margin="20 0 0 0"
-                                Command="{Binding AbortOperationCommand}"
-                                Content="{x:Static resources:OperatorApp.Abort}"
+                                Command="{Binding FullOperationCommand}"
+                                Content="{x:Static resources:OperatorApp.Full}"
                                 IsBusy="{Binding IsBusyAbortingOperation}" />
 
                 <controls:PpcButton Grid.Row="4"

@@ -194,6 +194,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.GetLoadingUnitDetails();
         }
 
+        public virtual void RaiseCanExecuteChanged()
+        {
+            this.abortOperationCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCommand?.RaiseCanExecuteChanged();
+            this.showDetailsCommand?.RaiseCanExecuteChanged();
+        }
+
         protected abstract void ShowOperationDetails();
 
         private async Task AbortOperationAsync()
@@ -243,7 +250,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 &&
                 this.InputQuantity.HasValue
                 &&
-                this.InputQuantity.Value >= 0;
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
         }
 
         private void GetLoadingUnitDetails()
@@ -300,13 +309,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.abortOperationCommand?.RaiseCanExecuteChanged();
-            this.confirmOperationCommand?.RaiseCanExecuteChanged();
-            this.showDetailsCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

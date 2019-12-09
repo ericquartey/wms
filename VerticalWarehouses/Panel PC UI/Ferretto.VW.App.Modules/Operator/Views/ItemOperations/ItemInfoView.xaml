@@ -39,6 +39,12 @@
                                      ContentText="{Binding MissionOperation.ItemListDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListDescription}" />
 
+            <controls:PpcLabeledText Grid.Column="2"                                     
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     ContentText="{Binding MissionOperation.ItemListRowCode}"
+                                     LabelText="{x:Static resources:OperatorApp.CommonListRow}" />
+
             <controls:PpcLabeledText Grid.Row="1"                                     
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"

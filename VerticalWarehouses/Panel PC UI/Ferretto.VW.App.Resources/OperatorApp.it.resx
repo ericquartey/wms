@@ -945,4 +945,13 @@
   <data name="WaitingListDataGridHeaderExecutable" xml:space="preserve">
     <value>Eseguibile</value>
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Vuoto</value>
+  </data>
+  <data name="Full" xml:space="preserve">
+    <value>Pieno</value>
+  </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Riga lista</value>
+  </data>
 </root>

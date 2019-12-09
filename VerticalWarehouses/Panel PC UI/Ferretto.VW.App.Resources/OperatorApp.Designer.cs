@@ -250,6 +250,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List row.
+        /// </summary>
+        public static string CommonListRow {
+            get {
+                return ResourceManager.GetString("CommonListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CommonListType.
         /// </summary>
         public static string CommonListType {
@@ -997,6 +1006,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty.
+        /// </summary>
+        public static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsDrawersMovedWithoutError.
         /// </summary>
         public static string ErrorsStatisticsDrawersMovedWithoutError {
@@ -1065,6 +1083,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FIFOPeriod {
             get {
                 return ResourceManager.GetString("FIFOPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        public static string Full {
+            get {
+                return ResourceManager.GetString("Full", resourceCulture);
             }
         }
         

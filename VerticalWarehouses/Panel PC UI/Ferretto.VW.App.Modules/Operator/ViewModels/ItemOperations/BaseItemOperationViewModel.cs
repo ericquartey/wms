@@ -97,6 +97,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
+        public virtual void OnMisionOperationRetieved()
+        {
+        }
+
         protected async Task RetrieveMissionOperationAsync()
         {
             try
