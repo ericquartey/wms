@@ -1107,6 +1107,25 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.ToTable("IoDevices");
                 });
 
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int?>("BayId");
+
+                    b.Property<string>("IpAddress")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TcpPort");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BayId");
+
+                    b.ToTable("Lasers");
+                });
+
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>
                 {
                     b.Property<int>("Id")
@@ -1376,7 +1395,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 5, 15, 21, 46, 599, DateTimeKind.Local).AddTicks(6631),
+                            InstallationDate = new DateTime(2017, 2, 6, 18, 3, 25, 98, DateTimeKind.Local).AddTicks(1453),
                             ServiceStatus = 86
                         });
                 });
@@ -1829,6 +1848,13 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasOne("Ferretto.VW.MAS.DataModels.ErrorDefinition", "Error")
                         .WithOne("Statistics")
                         .HasForeignKey("Ferretto.VW.MAS.DataModels.ErrorStatistic", "Code");
+                });
+
+            modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
+                {
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
+                        .WithMany()
+                        .HasForeignKey("BayId");
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>

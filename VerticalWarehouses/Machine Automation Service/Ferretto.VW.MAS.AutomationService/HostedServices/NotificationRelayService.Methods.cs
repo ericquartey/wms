@@ -24,6 +24,16 @@ namespace Ferretto.VW.MAS.AutomationService
             this.installationHub.Clients.All.CalibrateAxisNotify(message);
         }
 
+        private void ChangeMachineMode(IServiceProvider serviceProvider)
+        {
+            var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+            if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
+            {
+                machineModeDataProvider.Mode = MachineMode.Automatic;
+                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+            }
+        }
+
         private void CurrentPositionMethod(NotificationMessage receivedMessage)
         {
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
@@ -43,12 +53,11 @@ namespace Ferretto.VW.MAS.AutomationService
             if (receivedMessage.Status == MessageStatus.OperationEnd)
             {
                 this.machineProvider.IsHomingExecuted = true;
-                var machineModeDataProvider = serviceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-                if (machineModeDataProvider.Mode == MachineMode.SwitchingToAutomatic)
-                {
-                    machineModeDataProvider.Mode = MachineMode.Automatic;
-                    this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
-                }
+                this.ChangeMachineMode(serviceProvider);
+            }
+            else if (receivedMessage.Status == MessageStatus.OperationError)
+            {
+                this.ChangeMachineMode(serviceProvider);
             }
             var message = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.HomingProcedureStatusChanged(message);

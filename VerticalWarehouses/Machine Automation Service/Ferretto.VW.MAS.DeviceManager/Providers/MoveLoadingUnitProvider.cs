@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -188,13 +189,31 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public bool MoveManualLoadingUnit(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
             if (distance < Math.Abs(axis.ChainOffset / 2))
             {
                 return false;
+            }
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            return true;
+        }
+
+        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, MessageActor sender, BayNumber requestingBay)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+            var compensation = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
+            var distance = profileSteps.Last().Position - compensation;
+            if (distance > profileSteps.Last().Position)
+            {
+                distance = profileSteps.Last().Position;
             }
             this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
             return true;
@@ -271,8 +290,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorProvider.MoveToAbsoluteVerticalPosition(
                 false,
                 targetHeight,
-                measure,
                 true,
+                measure,
                 requestingBay,
                 MessageActor.MachineManager);
         }
@@ -345,6 +364,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return MessageStatus.NotSpecified;
+        }
+
+        public void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard)
+        {
+            var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
+            var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
+            var profileSteps = axis.Profiles
+                .Single(p => p.Name == profileType)
+                .Steps
+                .OrderBy(s => s.Number);
+            var directionMultiplier = (direction == HorizontalMovementDirection.Forwards ? 1 : -1);
+            this.elevatorDataProvider.UpdateLastIdealPosition(axis.LastIdealPosition + (profileSteps.Last().Position * directionMultiplier));
         }
 
         #endregion

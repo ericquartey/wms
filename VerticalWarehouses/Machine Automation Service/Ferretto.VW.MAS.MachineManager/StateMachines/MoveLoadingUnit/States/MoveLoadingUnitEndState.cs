@@ -4,6 +4,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -69,31 +70,63 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, request reason {this.StopRequestReason}, {commandMessage.Description}");
-            this.EndMessage = new NotificationMessage(
-                commandMessage.Data,
-                commandMessage.Description,
-                MessageActor.AutomationService,
-                MessageActor.MachineManager,
-                commandMessage.Type,
-                commandMessage.RequestingBay,
-                commandMessage.TargetBay,
-                StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
+            this.Logger.LogDebug($"MoveLoadingUnitEndState: received command {commandMessage.Type}, request reason {this.StopRequestReason}, {commandMessage.Description}");
 
             if (machineData is Mission moveData)
             {
                 this.mission = moveData;
+                this.mission.FsmStateName = nameof(MoveLoadingUnitEndState);
+                this.missionsDataProvider.Update(this.mission);
+
+                IMessageData newMessageData;
+                if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+                {
+                    bool isEject = this.mission.LoadingUnitDestination != LoadingUnitLocation.Cell
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
+                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
+
+                    newMessageData = new MoveLoadingUnitMessageData(
+                        this.mission.MissionType,
+                        this.mission.LoadingUnitSource,
+                        this.mission.LoadingUnitDestination,
+                        this.mission.LoadingUnitCellSourceId,
+                        this.mission.DestinationCellId,
+                        this.mission.LoadingUnitId,
+                        (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                        isEject,
+                        this.mission.FsmId,
+                        messageData.CommandAction,
+                        messageData.StopReason,
+                        messageData.Verbosity);
+                }
+                else
+                {
+                    newMessageData = commandMessage.Data;
+                }
+                this.EndMessage = new NotificationMessage(
+                    newMessageData,
+                    commandMessage.Description,
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    commandMessage.Type,
+                    commandMessage.RequestingBay,
+                    commandMessage.TargetBay,
+                    StopRequestReasonConverter.GetMessageStatusFromReason(this.StopRequestReason));
             }
+
             if (this.StopRequestReason == StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
-                this.missionsDataProvider.Delete(this.mission?.Id);
+                if(this.mission != null)
+                { 
+                    this.missionsDataProvider.Delete(this.mission.Id);
+                }
             }
             else
             {
                 var newMessageData = new StopMessageData(this.StopRequestReason);
                 this.loadingUnitMovementProvider.StopOperation(newMessageData, BayNumber.All, MessageActor.MachineManager, commandMessage.RequestingBay);
-                this.mission.FsmStateName = this.GetType().Name;
                 this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
@@ -121,7 +154,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                 {
                     this.IsCompleted = true;
-                    this.missionsDataProvider.Delete(this.mission?.Id);
+                    if (this.mission != null)
+                    {
+                        this.missionsDataProvider.Delete(this.mission.Id);
+                    }
                 }
             }
 

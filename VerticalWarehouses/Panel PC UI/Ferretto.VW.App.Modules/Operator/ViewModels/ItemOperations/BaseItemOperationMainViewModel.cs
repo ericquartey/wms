@@ -186,10 +186,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.missionToken = this.missionToken
                 ??
                 this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
             this.GetLoadingUnitDetails();
         }

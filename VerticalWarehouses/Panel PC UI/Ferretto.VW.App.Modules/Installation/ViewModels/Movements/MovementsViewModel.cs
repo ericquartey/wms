@@ -510,12 +510,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (message.Status)
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    {
-                        this.IsTuningChain = true;
-                        break;
-                    }
-
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
                         this.IsTuningChain = false;

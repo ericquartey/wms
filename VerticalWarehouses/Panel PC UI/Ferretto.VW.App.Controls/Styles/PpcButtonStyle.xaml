@@ -8,7 +8,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="controls:PpcButton">
+                <ControlTemplate TargetType="{x:Type controls:PpcButton}">
                     <ControlTemplate.Resources>
                         <BooleanToVisibilityConverter x:Key="BTVC" />
                         <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
@@ -27,27 +27,21 @@
                                 CornerRadius="{DynamicResource PpcCornerRadius}"
                                 Cursor="Hand"
                                 FlowDirection="LeftToRight">
-                            <!--<Border.Effect>
-                                <DropShadowEffect BlurRadius="6"
-                                                  Opacity="0.5"
-                                                  RenderingBias="Quality"
-                                                  ShadowDepth="3"
-                                                  Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-                            </Border.Effect>-->
-                        </Border>
-
-                        <Border Margin="1"
-                                Background="{TemplateBinding Background}"
-                                BorderBrush="{x:Null}"
-                                BorderThickness="{TemplateBinding BorderThickness}"
-                                CornerRadius="{DynamicResource PpcCornerRadius}">
-
-                            <Grid x:Name="PpcButton_Grid"
-                                  Margin="{DynamicResource PpcButtonBorderThicknessActive}">
+                            <Grid x:Name="PpcButton_Grid">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
+
+                                <ProgressBar Grid.ColumnSpan="2"
+                                             HorizontalAlignment="Stretch"
+                                             VerticalAlignment="Stretch"
+                                             Background="{TemplateBinding Background}"
+                                             BorderBrush="{TemplateBinding BorderBrush}"
+                                             Foreground="{DynamicResource PpcButtonForeground}"
+                                             IsIndeterminate="True"
+                                             Opacity="0.2"
+                                             Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
                                 <controls:PpcIcon x:Name="PpcButton_Icon"
                                                   Height="24"
@@ -77,15 +71,6 @@
                                         </Style>
                                     </TextBlock.Style>
                                 </TextBlock>
-
-                                <ProgressBar VerticalAlignment="Bottom"
-                                             Background="{TemplateBinding Background}"
-                                             BorderBrush="{TemplateBinding BorderBrush}"
-                                             Foreground="{DynamicResource PpcButtonForeground}"
-                                             IsIndeterminate="True"
-                                             Opacity="0.2"
-                                             Visibility="{TemplateBinding IsBusy,
-                                                                          Converter={StaticResource BTVC}}" />
 
                             </Grid>
                         </Border>
@@ -139,13 +124,13 @@
     <Style x:Key="PpcHeaderButtonStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="1,1,1,10" />
+        <Setter Property="BorderThickness" Value="0,0,0,10" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderThickness" Value="1,1,1,10" />
+                <Setter Property="BorderThickness" Value="0,0,0,10" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -263,27 +248,13 @@
     <Style x:Key="PpcButtonStopStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="Background">
-            <Setter.Value>
-                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                    <GradientStop Offset="1" Color="#e1323f" />
-                    <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayC}" />
-                    <GradientStop Offset="0" Color="{DynamicResource EDBGrayC}" />
-                </LinearGradientBrush>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+        <Setter Property="Background" Value="#E1323F" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsDarkThemeActive}"
                          Value="False">
-                <Setter Property="Background">
-                    <Setter.Value>
-                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
-                            <GradientStop Offset="1" Color="#e1323f" />
-                            <GradientStop Offset="0.8" Color="{DynamicResource EDBGrayH}" />
-                            <GradientStop Offset="0" Color="{DynamicResource EDBGrayH}" />
-                        </LinearGradientBrush>
-                    </Setter.Value>
-                </Setter>
+                <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+                <Setter Property="Background" Value="#E1323F" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
