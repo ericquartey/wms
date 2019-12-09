@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
-using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
-using Ferretto.VW.MAS.MachineManager.Providers.Interfaces;
 using Ferretto.VW.MAS.Utils.Events;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
@@ -60,6 +53,13 @@ namespace Ferretto.VW.MAS.MissionManager
             this.NotifyNewMachineMissionAvailable(mission);
         }
 
+        public void CancelMission(int missionId)
+        {
+            this.logger.LogDebug("Canceling mission {missionId}.", missionId);
+
+            this.missionsDataProvider.Delete(missionId);
+        }
+
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
         {
             this.logger.LogDebug(
@@ -88,8 +88,8 @@ namespace Ferretto.VW.MAS.MissionManager
             var notificationMessage = new NotificationMessage(
                 null,
                 $"New machine mission available for bay {mission.TargetBay}.",
-                MessageActor.MachineManager,
-                MessageActor.MachineManager,
+                MessageActor.MissionManager,
+                MessageActor.MissionManager,
                 MessageType.NewMachineMissionAvailable,
                 mission.TargetBay);
 

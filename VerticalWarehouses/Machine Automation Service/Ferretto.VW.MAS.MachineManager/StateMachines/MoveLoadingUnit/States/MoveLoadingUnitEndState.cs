@@ -84,10 +84,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission = moveData;
             }
+
             if (this.StopRequestReason == StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
-                this.missionsDataProvider.Delete(this.mission?.Id);
+                if(this.mission != null)
+                { 
+                    this.missionsDataProvider.Delete(this.mission.Id);
+                }
             }
             else
             {
@@ -121,7 +125,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 if (this.stateMachineResponses.Values.Count == this.baysDataProvider.GetAll().Count())
                 {
                     this.IsCompleted = true;
-                    this.missionsDataProvider.Delete(this.mission?.Id);
+                    if (this.mission != null)
+                    {
+                        this.missionsDataProvider.Delete(this.mission.Id);
+                    }
                 }
             }
 
