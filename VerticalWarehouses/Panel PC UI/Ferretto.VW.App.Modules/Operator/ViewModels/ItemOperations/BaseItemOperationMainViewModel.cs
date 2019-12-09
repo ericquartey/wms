@@ -19,11 +19,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMissionsDataService missionDataService;
-
         private DelegateCommand abortOperationCommand;
 
-        private Ferretto.VW.MAS.AutomationService.Contracts.Bay bay;
+        private MAS.AutomationService.Contracts.Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
@@ -59,7 +57,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IMissionOperationsService missionOperationsService)
             : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
         {
-            this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.eventAggregator = eventAggregator;
             this.CompartmentColoringFunction = (c, selectedCompartment) => "#00FF00";
         }
@@ -161,6 +158,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+                this.IsWaitingForResponse = false;
             }
             finally
             {
@@ -171,6 +170,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override void Disappear()
         {
             this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+            this.missionToken = null;
 
             base.Disappear();
         }
@@ -257,12 +257,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void GetLoadingUnitDetails()
         {
+            if (this.MissionOperationsService.CurrentMission is null)
+            {
+                this.Compartments = null;
+                this.SelectedCompartment = null;
+                return;
+            }
+
             try
             {
-                System.Diagnostics.Debug.Assert(
-                    this.MissionOperationsService.CurrentMission != null,
-                    "This view model should not be opened if there is no current mission");
-
                 this.Compartments = this.MapCompartments(this.Mission.LoadingUnit.Compartments);
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
@@ -298,19 +301,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-            if (e.MissionId is null || e.MissionOperationId is null)
-            {
-                this.ItemImage = null;
-                this.Compartments = null;
-                this.MissionOperation = null;
+           
+            await this.RetrieveMissionOperationAsync();
 
-                this.NavigationService.GoBack();
-            }
-            else
-            {
-                await this.RetrieveMissionOperationAsync();
-                this.GetLoadingUnitDetails();
-            }
+            this.GetLoadingUnitDetails();
+            
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
