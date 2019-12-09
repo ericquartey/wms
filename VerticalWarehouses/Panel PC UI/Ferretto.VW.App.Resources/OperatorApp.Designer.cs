@@ -1528,6 +1528,42 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Loading unit.
+        /// </summary>
+        public static string LoadingUnit {
+            get {
+                return ResourceManager.GetString("LoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depth.
+        /// </summary>
+        public static string LoadingUnitDepth {
+            get {
+                return ResourceManager.GetString("LoadingUnitDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit Id.
+        /// </summary>
+        public static string LoadingUnitId {
+            get {
+                return ResourceManager.GetString("LoadingUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string LoadingUnitWidth {
+            get {
+                return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Lot.
         /// </summary>
         public static string Lot {

@@ -954,4 +954,16 @@
   <data name="CommonListRow" xml:space="preserve">
     <value>Riga lista</value>
   </data>
+  <data name="LoadingUnitId" xml:space="preserve">
+    <value>Id cassetto</value>
+  </data>
+  <data name="LoadingUnitWidth" xml:space="preserve">
+    <value>Larghezza</value>
+  </data>
+  <data name="LoadingUnitDepth" xml:space="preserve">
+    <value>Profondità</value>
+  </data>
+  <data name="LoadingUnit" xml:space="preserve">
+    <value>Cassetto</value>
+  </data>
 </root>
