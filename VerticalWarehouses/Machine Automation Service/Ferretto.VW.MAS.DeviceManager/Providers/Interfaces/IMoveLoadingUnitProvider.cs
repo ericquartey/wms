@@ -23,7 +23,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double? GetSourceHeight(Mission moveData);
 
-        bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay);
+        bool IsOnlyUpperPositionOccupied(BayNumber bayNumber);
+
+        bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
 
         void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
@@ -46,6 +48,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void StopOperation(IStopMessageData messageData, BayNumber targetBay, MessageActor sender, BayNumber requestingBay);
 
         MessageStatus StopOperationStatus(NotificationMessage message);
+
+        void UpdateLastBayChainPosition(BayNumber requestingBay);
 
         void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard);
 

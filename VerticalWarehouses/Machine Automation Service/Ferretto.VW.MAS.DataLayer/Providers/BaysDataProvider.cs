@@ -871,6 +871,24 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.Carousel.LastIdealPosition += position;
+
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)
         {
             lock (this.dataContext)

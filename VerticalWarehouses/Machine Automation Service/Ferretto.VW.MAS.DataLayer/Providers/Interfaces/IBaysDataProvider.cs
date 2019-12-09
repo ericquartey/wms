@@ -113,6 +113,8 @@ namespace Ferretto.VW.MAS.DataLayer
         /// <param name="loadingUnitId">The identifier of the loading unit.</param>
         void SetLoadingUnit(int bayPositionId, int? loadingUnitId);
 
+        void UpdateLastIdealPosition(double position, BayNumber bayNumber);
+
         Bay UpdatePosition(BayNumber bayNumber, int position, double height);
 
         #endregion

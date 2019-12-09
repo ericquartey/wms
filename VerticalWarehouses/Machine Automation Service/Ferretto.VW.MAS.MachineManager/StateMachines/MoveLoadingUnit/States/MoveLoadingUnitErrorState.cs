@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -7,13 +9,15 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitErrorState : StateBase, IMoveLoadingUnitErrorState
+    internal class MoveLoadingUnitErrorState : StateBase, IMoveLoadingUnitErrorState, IProgressMessageState
     {
         #region Fields
 
@@ -64,6 +68,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
         }
+
+        #endregion
+
+        #region Properties
+
+        public NotificationMessage Message { get; set; }
 
         #endregion
 
@@ -170,9 +180,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (this.mission.FsmRestoreStateName)
             {
                 case nameof(MoveLoadingUnitBayChainState):
-                    this.mission.RestoreConditions = true;
-                    this.mission.FsmRestoreStateName = null;
-                    returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
+                    returnValue = this.MoveLoadUnitBayChain();
                     break;
 
                 case nameof(MoveLoadingUnitCloseShutterState):
@@ -277,6 +285,62 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 returnValue = this.GetState<IMoveLoadingUnitEndState>();
             }
+            return returnValue;
+        }
+
+        private IState MoveLoadUnitBayChain()
+        {
+            IState returnValue = this;
+
+            if (this.loadingUnitMovementProvider.IsOnlyUpperPositionOccupied(this.mission.TargetBay))
+            {
+                // movement is finished
+                var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
+                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                if (destination is LoadingUnitLocation.NoLocation)
+                {
+                    throw new StateMachineException($"Upper position not defined for bay {bay.Number}", null, MessageActor.MachineManager);
+                }
+                this.mission.LoadingUnitDestination = destination;
+                var newMessageData = new MoveLoadingUnitMessageData(
+                    this.mission.MissionType,
+                    this.mission.LoadingUnitSource,
+                    this.mission.LoadingUnitDestination,
+                    this.mission.LoadingUnitCellSourceId,
+                    this.mission.DestinationCellId,
+                    this.mission.LoadingUnitId,
+                    (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                    false,
+                    this.mission.FsmId);
+
+                this.Message = new NotificationMessage(
+                    newMessageData,
+                    $"Loading Unit {this.mission.LoadingUnitId} placed on bay {bay.Number}",
+                    MessageActor.AutomationService,
+                    MessageActor.MachineManager,
+                    MessageType.MoveLoadingUnit,
+                    this.mission.TargetBay,
+                    bay.Number,
+                    MessageStatus.OperationWaitResume);
+
+                this.mission.FsmRestoreStateName = null;
+                this.mission.RestoreConditions = false;
+                if (this.mission.WmsId.HasValue)
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
+                }
+                else
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
+                }
+            }
+            else
+            {
+                this.mission.RestoreConditions = true;
+                this.mission.FsmRestoreStateName = null;
+                returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
+            }
+
             return returnValue;
         }
 

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>TEST_ERROR_STATE</DefineConstants>
+    <DefineConstants>NO_TEST_ERROR_STATE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

@@ -138,6 +138,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 {
                     this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
                 }
+                else if (this.machineData.AxisToCalibrate == Axis.BayChain)
+                {
+                    this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+                }
             }
 
             if (this.stateData.StopRequestReason == StopRequestReason.NoReason

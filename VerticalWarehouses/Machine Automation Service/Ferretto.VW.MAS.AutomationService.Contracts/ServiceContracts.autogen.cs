@@ -1032,6 +1032,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("elevatorDistance", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorDistance { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
+        public double LastIdealPosition { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("manualMovements", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public CarouselManualParameters ManualMovements { get; set; }
     

@@ -132,16 +132,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         }
                         else if (bay.Number == notification.RequestingBay)
                         {
-                            if (bay.Positions.Count() == 1
-                                || bay.Positions.FirstOrDefault(x => x.Location == this.mission.LoadingUnitDestination).IsUpper
-                                || bay.Carousel is null)
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
-                            }
-                            else
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
-                            }
+                            returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                         }
                         else
                         {

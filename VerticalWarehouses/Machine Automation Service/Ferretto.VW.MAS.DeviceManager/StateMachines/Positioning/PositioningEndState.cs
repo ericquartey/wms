@@ -131,7 +131,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     && this.machineData.MessageData.MovementType == MovementType.TableTarget
                     )
                 {
-                    this.UpdateLastIdealPosition();
+                    this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
+                }
+                else if (this.machineData.MessageData.AxisMovement is Axis.BayChain
+                    && this.machineData.MessageData.MovementMode == MovementMode.BayChain)
+                {
+                    this.UpdateLastIdealPosition(this.machineData.MessageData.AxisMovement);
                 }
 
                 var notificationMessage = new NotificationMessage(
@@ -261,11 +266,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
-        private void UpdateLastIdealPosition()
+        private void UpdateLastIdealPosition(Axis axis)
         {
             var serviceProvider = this.ParentStateMachine.ServiceScopeFactory.CreateScope().ServiceProvider;
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
+            if (axis == Axis.Horizontal)
+            {
+                var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+                elevatorDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition);
+            }
+            else if (axis == Axis.BayChain)
+            {
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                bayDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition, this.machineData.RequestingBay);
+            }
         }
 
         private void UpdateLoadingUnitForManualMovement()

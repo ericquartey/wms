@@ -60,10 +60,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus CarouselStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning
-                && message is IPositioningMessageData messageData
-                && messageData.MovementMode == MovementMode.BayChain
-                )
+            if (message.Type == MessageType.Positioning)
             {
                 return message.Status;
             }
@@ -192,16 +189,38 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay)
+        public bool IsOnlyUpperPositionOccupied(BayNumber bayNumber)
         {
-            try
+            return this.carouselProvider.IsOnlyUpperPositionOccupied(bayNumber);
+        }
+
+        public bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
+        {
+            if (restore)
             {
-                this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, requestingBay, sender);
-                return true;
+                var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                var distance = bay.Carousel.ElevatorDistance - (this.baysDataProvider.GetChainPosition(requestingBay) - bay.Carousel.LastIdealPosition);
+                try
+                {
+                    this.carouselProvider.MoveManual(VerticalMovementDirection.Up, distance, requestingBay, sender);
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    return false;
+                }
             }
-            catch (InvalidOperationException)
+            else
             {
-                return false;
+                try
+                {
+                    this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, requestingBay, sender);
+                    return true;
+                }
+                catch (InvalidOperationException)
+                {
+                    return false;
+                }
             }
         }
 
@@ -401,6 +420,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             return MessageStatus.NotSpecified;
+        }
+
+        public void UpdateLastBayChainPosition(BayNumber requestingBay)
+        {
+            var bay = this.baysDataProvider.GetByNumber(requestingBay);
+            this.baysDataProvider.UpdateLastIdealPosition(bay.Carousel.ElevatorDistance, requestingBay);
         }
 
         public void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard)

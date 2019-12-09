@@ -11,6 +11,8 @@
         /// </summary>
         public double ElevatorDistance { get; set; }
 
+        public double LastIdealPosition { get; set; }
+
         public CarouselManualParameters ManualMovements { get; set; }
 
         #endregion
