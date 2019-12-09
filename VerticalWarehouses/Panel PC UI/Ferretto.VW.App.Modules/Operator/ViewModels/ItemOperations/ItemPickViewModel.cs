@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnAppearedAsync();
         }
 
-        public override void OnMisionOperationRetieved()
+        public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
         }

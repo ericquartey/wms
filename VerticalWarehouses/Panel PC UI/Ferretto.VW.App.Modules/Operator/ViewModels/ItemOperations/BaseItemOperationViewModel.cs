@@ -97,8 +97,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        public virtual void OnMisionOperationRetieved()
+        public virtual void OnMisionOperationRetrieved()
         {
+            // do nothing
         }
 
         protected async Task RetrieveMissionOperationAsync()
@@ -153,6 +154,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
 
                 await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
+
+                this.OnMisionOperationRetrieved();
             }
             catch (Exception ex)
             {
