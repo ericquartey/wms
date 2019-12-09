@@ -6,6 +6,9 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using System;
+using Ferretto.VW.App.Resources;
+using CommonServiceLocator;
+using System.ComponentModel;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -13,11 +16,11 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
-            nameof(ImageSource),
-            typeof(ImageSource),
-            typeof(PpcButton),
-            new PropertyMetadata(null));
+        public static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("Content", typeof(object), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnContentChanged)));
+
+        public static readonly DependencyProperty ImageSourceProperty =
+            DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
             nameof(IsActive),
@@ -37,9 +40,9 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcButton),
             new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
 
-        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+        private IEventAggregator eventAggregator = null;
 
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+        private ISessionService sessionService = null;
 
         private SubscriptionToken userAccessLevelToken;
 
@@ -49,9 +52,19 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Constructors
 
+        static PpcButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PpcButton), new FrameworkPropertyMetadata(typeof(PpcButton)));
+        }
+
         public PpcButton()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
 
             this.Initialization();
         }
@@ -59,6 +72,12 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public object Content
+        {
+            get { return (object)this.GetValue(ContentProperty); }
+            set { this.SetValue(ContentProperty, value); }
+        }
 
         public ImageSource ImageSource
         {
@@ -175,6 +194,17 @@ namespace Ferretto.VW.App.Controls.Controls
             }
         }
 
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcButton button
+                && button.Content is string text
+                && !string.IsNullOrEmpty(text)
+                && text.Equals(InstallationApp.Stop))
+            {
+                button.Style = Application.Current.Resources["PpcButtonStopStyle"] as Style;
+            }
+        }
+
         private static void OnPermitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcButton ppcButton)
@@ -185,6 +215,10 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void Initialization()
         {
+            this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
+            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()
                     .Subscribe(

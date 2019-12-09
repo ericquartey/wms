@@ -407,6 +407,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
+        public bool IsZeroChainSensor()
+        {
+            var sensors = this.sensorsProvider.GetAll();
+
+            var zeroSensor = this.machineProvider.IsOneTonMachine()
+                ? IOMachineSensors.ZeroPawlSensorOneK
+                : IOMachineSensors.ZeroPawlSensor;
+
+            return sensors[(int)zeroSensor];
+        }
+
         public void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
         {
             var policy = this.CanLoadFromBay(bayPositionId, bayNumber);
@@ -511,7 +522,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 measure = false;
             }
 
-            var profileType = SelectProfileType(direction, isLoadingUnitOnBoard);
+            var profileType = this.SelectProfileType(direction, isLoadingUnitOnBoard);
 
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var profileSteps = axis.Profiles
@@ -931,8 +942,34 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
+        public MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit)
+        {
+            // the total length is split in two unequal distances
+            var isLongerDistance =
+                (elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Forwards)
+                ||
+                (!elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Backwards);
+
+            if (isLongerDistance && elevatorHasLoadingUnit)
+            {
+                return MovementProfileType.LongDeposit;
+            }
+            else if (isLongerDistance && !elevatorHasLoadingUnit)
+            {
+                return MovementProfileType.LongPickup;
+            }
+            else if (!isLongerDistance && elevatorHasLoadingUnit)
+            {
+                return MovementProfileType.ShortDeposit;
+            }
+            else
+            {
+                return MovementProfileType.ShortPickup;
+            }
+        }
+
         public void StartBeltBurnishing(
-                    double upperBoundPosition,
+                            double upperBoundPosition,
                     double lowerBoundPosition,
                     int delayStart,
                     BayNumber requestingBay,
@@ -1078,32 +1115,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 bayNumber,
                 sender,
                 targetCellId: cellId);
-        }
-
-        private static MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit)
-        {
-            // the total length is split in two unequal distances
-            var isLongerDistance =
-                (elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Forwards)
-                ||
-                (!elevatorHasLoadingUnit && direction == HorizontalMovementDirection.Backwards);
-
-            if (isLongerDistance && elevatorHasLoadingUnit)
-            {
-                return MovementProfileType.LongDeposit;
-            }
-            else if (isLongerDistance && !elevatorHasLoadingUnit)
-            {
-                return MovementProfileType.LongPickup;
-            }
-            else if (!isLongerDistance && elevatorHasLoadingUnit)
-            {
-                return MovementProfileType.ShortDeposit;
-            }
-            else
-            {
-                return MovementProfileType.ShortPickup;
-            }
         }
 
         private bool IsBayPositionEmpty(BayNumber bayNumber, int bayPositionId)

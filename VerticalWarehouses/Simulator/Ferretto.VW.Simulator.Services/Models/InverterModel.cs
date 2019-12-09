@@ -731,10 +731,14 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
-            var increment = 1d;
+            var increment = 50d;
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
             {
                 increment = 0.1;
+            }
+            else if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 50)
+            {
+                increment = 1;
             }
 
             if (this.AxisPosition < this.TargetPosition[this.currentAxis])
@@ -749,7 +753,9 @@ namespace Ferretto.VW.Simulator.Services.Models
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) <= 0.1)
             {
                 this.StatusWord |= 0x1000;          // Set TargetReached
-                if (this.currentAxis == Axis.Horizontal)
+                if (this.currentAxis == Axis.Horizontal
+                    && !this.ioDevice[(int)IoPorts.DrawerInMachineSide].Value
+                    && !this.ioDevice[(int)IoPorts.DrawerInOperatorSide].Value)
                 {
                     if (this.Id == 0)
                     {

@@ -1222,7 +1222,7 @@
     <value>Movimenti Manuali</value>
   </data>
   <data name="ResetMachine" xml:space="preserve">
-    <value>Reset machina</value>
+    <value>Reset macchina</value>
   </data>
   <data name="ResetMachineSuccessfull" xml:space="preserve">
     <value>Reset macchina avvenuta con successo.</value>

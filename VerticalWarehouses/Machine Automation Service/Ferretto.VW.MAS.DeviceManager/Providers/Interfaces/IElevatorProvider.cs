@@ -1,5 +1,6 @@
 ﻿using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 {
@@ -30,6 +31,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void ContinuePositioning(BayNumber requestingBay, MessageActor sender);
 
         AxisBounds GetVerticalBounds();
+
+        bool IsZeroChainSensor();
 
         void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor automationService);
 
@@ -64,6 +67,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
         void RunTorqueCurrentSampling(double displacement, double netWeight, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
+
+        MovementProfileType SelectProfileType(HorizontalMovementDirection direction, bool elevatorHasLoadingUnit);
 
         void StartBeltBurnishing(
             double upperBoundPosition,

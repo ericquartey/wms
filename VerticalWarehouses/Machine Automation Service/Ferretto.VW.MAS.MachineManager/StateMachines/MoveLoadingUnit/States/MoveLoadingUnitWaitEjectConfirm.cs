@@ -61,22 +61,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"MoveLoadingUnitWaitEjectConfirm: received command {commandMessage.Type}, {commandMessage.Description}");
+
             this.requestingBay = commandMessage.RequestingBay;
 
-            if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
-                && machineData is Mission moveData
-                )
+            if (machineData is Mission moveData)
             {
-                this.ejectBay = messageData.Destination;
+                this.ejectBay = moveData.LoadingUnitDestination;
 
                 this.mission = moveData;
+                this.mission.FsmStateName = nameof(MoveLoadingUnitWaitEjectConfirm);
+                this.missionsDataProvider.Update(this.mission);
+
                 if (moveData.LoadingUnitId > 0)
                 {
                     var machine = this.machineProvider.Get();
                     this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
                 }
-                this.mission.FsmStateName = this.GetType().Name;
                 this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
@@ -113,6 +114,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue;
             if (reason == StopRequestReason.Error
+                && this.mission != null
                 && this.mission.IsRestoringType()
                 )
             {

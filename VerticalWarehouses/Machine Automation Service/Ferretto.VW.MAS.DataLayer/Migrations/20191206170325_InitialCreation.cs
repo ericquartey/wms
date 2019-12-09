@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -652,6 +652,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Lasers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    BayId = table.Column<int>(nullable: true),
+                    IpAddress = table.Column<string>(type: "text", nullable: true),
+                    TcpPort = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Lasers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Bays",
                 columns: table => new
                 {
@@ -1113,7 +1128,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 5, 15, 21, 46, 599, DateTimeKind.Local).AddTicks(6631), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 6, 18, 3, 25, 98, DateTimeKind.Local).AddTicks(1453), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1550,6 +1565,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Lasers_BayId",
+                table: "Lasers",
+                column: "BayId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_LoadingUnits_CellId",
                 table: "LoadingUnits",
                 column: "CellId",
@@ -1685,6 +1705,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_Lasers_Bays_BayId",
+                table: "Lasers",
+                column: "BayId",
+                principalTable: "Bays",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Bays_MovementParameters_EmptyLoadMovementId",
                 table: "Bays",
                 column: "EmptyLoadMovementId",
@@ -1740,6 +1768,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "ErrorStatistics");
+
+            migrationBuilder.DropTable(
+                name: "Lasers");
 
             migrationBuilder.DropTable(
                 name: "LogEntries");

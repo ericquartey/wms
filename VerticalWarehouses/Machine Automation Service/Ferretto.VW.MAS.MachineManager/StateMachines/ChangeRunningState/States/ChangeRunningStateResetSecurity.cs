@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"ChangeRunningStateResetSecurity: received command {commandMessage.Type}, {commandMessage.Description}");
             if (commandMessage.Data is IChangeRunningStateMessageData messageData)
             {
                 if (messageData.Enable)

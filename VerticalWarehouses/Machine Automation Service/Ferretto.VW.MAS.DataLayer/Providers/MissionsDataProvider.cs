@@ -109,6 +109,11 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
+                if(mission is null)
+                {
+                    throw new EntityNotFoundException(nameof(mission));
+                }
+
                 this.dataContext.Missions.Remove(mission);
 
                 this.dataContext.SaveChanges();

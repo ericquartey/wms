@@ -396,6 +396,7 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingShutter = false;
                         }
 
+                        //TODO: Sparare eccezione
                         this.ClearNotifications();
 
                         this.MachineStatus = ms;
@@ -472,7 +473,7 @@ namespace Ferretto.VW.App.Services
                     case var b when view.Equals("MovementsView", StringComparison.InvariantCultureIgnoreCase):
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
                         else if (!this.IsHoming)
                         {
@@ -499,7 +500,7 @@ namespace Ferretto.VW.App.Services
                     default:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
-                            this.ShowNotification("Manca il marcia.", NotificationSeverity.Warning);
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
                         }
                         else if (!this.IsHoming)
                         {

@@ -8,6 +8,8 @@
 
         IoDriver,
 
+        LaserDriver,
+
         DataLayer,
 
         Any,

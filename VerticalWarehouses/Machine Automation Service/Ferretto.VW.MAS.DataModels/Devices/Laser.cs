@@ -1,0 +1,39 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+
+namespace Ferretto.VW.MAS.DataModels
+{
+    public sealed class Laser : DataModel
+    {
+        #region Fields
+
+        private int tcpPort;
+
+        #endregion
+
+        #region Properties
+
+        public Bay Bay { get; set; }
+
+        public IPAddress IpAddress { get; set; }
+
+        public int TcpPort
+        {
+            get => this.tcpPort;
+            set
+            {
+                if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
+                {
+                    throw new ArgumentException("The TCP port is not in the allowed range of values.", nameof(value));
+                }
+
+                this.tcpPort = value;
+            }
+        }
+
+        #endregion
+    }
+}
