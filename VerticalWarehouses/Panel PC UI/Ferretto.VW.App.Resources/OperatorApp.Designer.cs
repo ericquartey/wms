@@ -304,6 +304,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Check.
+        /// </summary>
+        public static string CompleteCheck {
+            get {
+                return ResourceManager.GetString("CompleteCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
@@ -1533,6 +1542,15 @@ namespace Ferretto.VW.App.Resources {
         public static string LoadingUnit {
             get {
                 return ResourceManager.GetString("LoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit check.
+        /// </summary>
+        public static string LoadingUnitCheck {
+            get {
+                return ResourceManager.GetString("LoadingUnitCheck", resourceCulture);
             }
         }
         
