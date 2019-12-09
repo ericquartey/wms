@@ -729,8 +729,7 @@
                                             Margin="0"
                                             HorizontalAlignment="Center"
                                             Command="{Binding StopMovingCommand}"
-                                            Content="{x:Static res:InstallationApp.Stop}"
-                                            Style="{DynamicResource PpcButtonStopStyle}" />
+                                            Content="{x:Static res:InstallationApp.Stop}" />
 
 
                         <controls:PpcButton Grid.Row="6"
