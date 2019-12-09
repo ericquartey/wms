@@ -141,7 +141,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Missions
                     .AsNoTracking()
-                    .Where(m => m.Status == MissionStatus.Executing);
+                    .Where(m => m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting);
             }
         }
 
@@ -163,7 +163,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Missions
                     .AsNoTracking()
                     .SingleOrDefault(m => m.TargetBay == bayNumber
-                        && m.Status == MissionStatus.Executing);
+                        && (m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting));
+            }
+        }
+
+        public void ResetMachine()
+        {
+            lock (this.dataContext)
+            {
+                foreach (var mission in this.dataContext.Missions.Where(m => m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting))
+                {
+                    this.Delete(mission.Id);
+                }
             }
         }
 

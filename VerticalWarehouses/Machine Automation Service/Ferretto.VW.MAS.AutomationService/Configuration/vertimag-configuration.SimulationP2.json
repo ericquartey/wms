@@ -5,14 +5,14 @@
       "Cell": {
         "IsDeactivated": false,
         "IsUnusable": false,
-        "PanelId": 2,
-        "Position": 1839.0,
-        "Priority": 34,
+        "PanelId": 1,
+        "Position": 2113.0,
+        "Priority": 51,
         "Side": "NotSpecified",
         "Status": "Occupied",
-        "Id": 34
+        "Id": 51
       },
-      "CellId": 34,
+      "CellId": 51,
       "Code": "001",
       "GrossWeight": 520.095648,
       "Height": 187.95625,
@@ -103,6 +103,11 @@
             "Location": "InternalBay1Up"
           }
         ],
+        "EmptyLoadMovement": {
+          "Acceleration": 500,
+          "Deceleration": 500,
+          "Speed": 200
+        },
         "FullLoadMovement": {
           "Acceleration": 300,
           "Deceleration": 300,
@@ -114,7 +119,7 @@
             "Type": "Agl",
             "Index": "Slave2"
           },
-          "Type": "TwoSensors",
+          "Type": "ThreeSensors",
           "ManualMovements": {
             "FeedRate": 0.1,
             "MaxSpeed": 40000,

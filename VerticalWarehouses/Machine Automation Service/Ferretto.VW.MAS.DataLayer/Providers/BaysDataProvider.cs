@@ -423,6 +423,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
+                     .Include(b => b.Carousel)
+                     .Include(b => b.Positions)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -485,6 +487,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Carousel)
                         .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
 

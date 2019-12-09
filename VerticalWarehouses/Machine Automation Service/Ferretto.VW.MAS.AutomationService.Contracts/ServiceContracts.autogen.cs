@@ -1218,9 +1218,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Executing = 1,
     
-        Completed = 2,
+        Waiting = 2,
     
-        Aborted = 3,
+        Completed = 3,
+    
+        Aborted = 4,
     
     }
     

@@ -169,6 +169,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             switch (this.mission.FsmRestoreStateName)
             {
+                case nameof(MoveLoadingUnitBayChainState):
+                    this.mission.RestoreConditions = true;
+                    this.mission.FsmRestoreStateName = null;
+                    returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
+                    break;
+
                 case nameof(MoveLoadingUnitCloseShutterState):
                     this.mission.RestoreConditions = true;
                     this.mission.FsmRestoreStateName = null;

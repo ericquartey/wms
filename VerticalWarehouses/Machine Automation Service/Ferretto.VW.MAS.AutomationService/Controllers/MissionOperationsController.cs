@@ -22,12 +22,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMissionOperationsProvider missionOperationsProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         #endregion
 
         #region Constructors
 
         public MissionOperationsController(
             ILogger<MissionOperationsController> logger,
+            IMissionsDataProvider missionsDataProvider,
             IMissionOperationsProvider missionOperationsProvider,
             IBaysDataProvider baysDataProvider,
             IElevatorDataProvider elevatorDataProvider)
@@ -36,6 +39,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
         }
 
         #endregion
@@ -64,6 +68,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.baysDataProvider.ResetMachine();
             this.elevatorDataProvider.ResetMachine();
+            this.missionsDataProvider.ResetMachine();
 
             this.logger.LogInformation($"RESET MACHINE.");
 

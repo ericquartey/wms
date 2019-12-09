@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly ICarouselProvider carouselProvider;
+
         private readonly ICellsProvider cellsProvider;
 
         private readonly IElevatorDataProvider elevatorDataProvider;
@@ -34,6 +36,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public LoadingUnitMovementProvider(
             IBaysDataProvider baysDataProvider,
+            ICarouselProvider carouselProvider,
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
@@ -43,6 +46,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             : base(eventAggregator)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.carouselProvider = carouselProvider ?? throw new ArgumentNullException(nameof(carouselProvider));
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
@@ -53,6 +57,26 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public MessageStatus CarouselStatus(NotificationMessage message)
+        {
+            if (message.Type == MessageType.Positioning
+                && message is IPositioningMessageData messageData
+                && messageData.MovementMode == MovementMode.BayChain
+                )
+            {
+                return message.Status;
+            }
+            if (message.Status == MessageStatus.OperationError
+                || message.Status == MessageStatus.OperationStop
+                || message.Status == MessageStatus.OperationRunningStop
+                )
+            {
+                return message.Status;
+            }
+
+            return MessageStatus.NotSpecified;
+        }
 
         public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
@@ -166,6 +190,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     break;
             }
             return targetPosition;
+        }
+
+        public bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay)
+        {
+            try
+            {
+                this.carouselProvider.Move(VerticalMovementDirection.Up, loadUnitId, requestingBay, sender);
+                return true;
+            }
+            catch (InvalidOperationException)
+            {
+                return false;
+            }
         }
 
         public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)

@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -16,7 +17,7 @@ using Microsoft.Extensions.Logging;
 // ReSharper disable LocalVariableHidesMember
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitCloseShutterState : StateBase, IMoveLoadingUnitCloseShutterState, IProgressMessageState
+    internal class MoveLoadingUnitBayChainState : StateBase, IMoveLoadingUnitBayChainState, IProgressMessageState
     {
         #region Fields
 
@@ -34,7 +35,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         #region Constructors
 
-        public MoveLoadingUnitCloseShutterState(
+        public MoveLoadingUnitBayChainState(
             IBaysDataProvider baysDataProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IMissionsDataProvider missionsDataProvider,
@@ -58,7 +59,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitCloseShutterState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"MoveLoadingUnitBayChainState: received command {commandMessage.Type}, {commandMessage.Description}");
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
                 && machineData is Mission moveData
@@ -66,12 +67,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.messageData = messageData;
                 this.mission = moveData;
-                this.mission.FsmStateName = nameof(MoveLoadingUnitCloseShutterState);
+                this.mission.FsmStateName = nameof(MoveLoadingUnitBayChainState);
                 this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
-                this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, moveData.RestoreConditions);
 
+                if (!this.loadingUnitMovementProvider.MoveCarousel(moveData.LoadingUnitId, MessageActor.MachineManager, bay.Number))
+                {
+                    this.Logger.LogDebug($"MoveLoadingUnitBayChainState: Move Bay chain not possible now. Wait for resume");
+                }
+
+                moveData.Status = MissionStatus.Waiting;
                 moveData.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
@@ -81,76 +87,49 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue = this;
 
-            var notificationStatus = this.loadingUnitMovementProvider.ShutterStatus(notification);
+            var notificationStatus = this.loadingUnitMovementProvider.CarouselStatus(notification);
 
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    bool isEject = this.mission.LoadingUnitDestination != LoadingUnitLocation.Cell
-                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
-                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
-                        && this.mission.LoadingUnitDestination != LoadingUnitLocation.NoLocation;
-                    if (isEject)
+                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
+                    var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                    if (destination is LoadingUnitLocation.NoLocation)
                     {
-                        var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
-                        var messageData = new MoveLoadingUnitMessageData(
-                            this.mission.MissionType,
-                            this.mission.LoadingUnitSource,
-                            this.mission.LoadingUnitDestination,
-                            this.mission.LoadingUnitCellSourceId,
-                            this.mission.DestinationCellId,
-                            this.mission.LoadingUnitId,
-                            (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
-                            isEject,
-                            this.mission.FsmId,
-                            this.messageData.CommandAction,
-                            this.messageData.StopReason,
-                            this.messageData.Verbosity);
+                        throw new StateMachineException($"Upper position not defined for bay {bay.Number}", null, MessageActor.MachineManager);
+                    }
+                    this.mission.LoadingUnitDestination = destination;
+                    var newMessageData = new MoveLoadingUnitMessageData(
+                        this.mission.MissionType,
+                        this.mission.LoadingUnitSource,
+                        this.mission.LoadingUnitDestination,
+                        this.mission.LoadingUnitCellSourceId,
+                        this.mission.DestinationCellId,
+                        this.mission.LoadingUnitId,
+                        (this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell),
+                        false,
+                        this.mission.FsmId,
+                        this.messageData.CommandAction,
+                        this.messageData.StopReason,
+                        this.messageData.Verbosity);
 
-                        this.Message = new NotificationMessage(
-                            messageData,
-                            $"Loading Unit {this.mission.LoadingUnitId} placed on bay {bay.Number}",
-                            MessageActor.AutomationService,
-                            MessageActor.MachineManager,
-                            MessageType.MoveLoadingUnit,
-                            notification.RequestingBay,
-                            bay.Number,
-                            MessageStatus.OperationWaitResume);
+                    this.Message = new NotificationMessage(
+                        newMessageData,
+                        $"Loading Unit {this.mission.LoadingUnitId} placed on bay {bay.Number}",
+                        MessageActor.AutomationService,
+                        MessageActor.MachineManager,
+                        MessageType.MoveLoadingUnit,
+                        notification.RequestingBay,
+                        bay.Number,
+                        MessageStatus.OperationWaitResume);
 
-                        if (this.mission.WmsId.HasValue)
-                        {
-                            if (bay.Positions.Count() == 1
-                                || bay.Positions.FirstOrDefault(x => x.Location == this.mission.LoadingUnitDestination).IsUpper
-                                || bay.Carousel is null)
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
-                            }
-                            else
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
-                            }
-                        }
-                        else if (bay.Number == notification.RequestingBay)
-                        {
-                            if (bay.Positions.Count() == 1
-                                || bay.Positions.FirstOrDefault(x => x.Location == this.mission.LoadingUnitDestination).IsUpper
-                                || bay.Carousel is null)
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
-                            }
-                            else
-                            {
-                                returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
-                            }
-                        }
-                        else
-                        {
-                            returnValue = this.GetState<IMoveLoadingUnitEndState>();
-                        }
+                    if (this.mission.WmsId.HasValue)
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                     }
                     else
                     {
-                        returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                        returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     }
 
                     break;
@@ -166,6 +145,31 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     break;
             }
 
+            return returnValue;
+        }
+
+        protected override IState OnResume(CommandMessage commandMessage)
+        {
+            IState returnValue = this;
+#if CHECK_BAY_SENSOR
+            if (!this.sensorsProvider.IsLoadingUnitInLocation(this.mission.LoadingUnitDestination))
+#endif
+            {
+                if (commandMessage.Data is IMoveLoadingUnitMessageData messageData)
+                {
+                    var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
+                    if (!this.loadingUnitMovementProvider.MoveCarousel(this.mission.LoadingUnitId, MessageActor.MachineManager, bay.Number))
+                    {
+                        this.Logger.LogDebug($"MoveLoadingUnitBayChainState: Move Bay chain not possible now. Wait for another resume");
+                    }
+                }
+            }
+#if CHECK_BAY_SENSOR
+            else
+            {
+                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotRemoved, this.mission.TargetBay);
+            }
+#endif
             return returnValue;
         }
 

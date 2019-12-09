@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
     {
         #region Methods
 
+        MessageStatus CarouselStatus(NotificationMessage message);
+
         void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
@@ -20,6 +22,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
         double? GetDestinationHeight(Mission moveData);
 
         double? GetSourceHeight(Mission moveData);
+
+        bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay);
 
         void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
