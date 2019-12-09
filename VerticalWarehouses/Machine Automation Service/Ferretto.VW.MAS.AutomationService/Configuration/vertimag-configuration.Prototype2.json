@@ -116,10 +116,10 @@
                     "BrakeActivatePercent": 10,
                     "Orientation": "Vertical",
                     "Resolution": 99.177657,
-                    "Offset": 350,
+                    "Offset": 461,
                     "ChainOffset": 0,
                     "UpperBound": 8600,
-                    "LowerBound": 350,
+                    "LowerBound": 305,
                     "EmptyLoadMovement": {
                         "Acceleration": 1000,
                         "Deceleration": 1000,
@@ -144,10 +144,8 @@
                         "TargetDistanceAfterZero": 30
                     },
                     "AssistedMovements": {
-                        "FeedRate": 0.15,
-                        "FeedRateAfterZero": 0.3,
-                        "TargetDistance": 30,
-                        "TargetDistanceAfterZero": 30
+                        "FeedRate": 0.3,
+                        "FeedRateAfterZero": 0.9
                     }
                 },
                 {
