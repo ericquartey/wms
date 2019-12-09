@@ -130,7 +130,7 @@
         <Setter Property="Height" Value="60" />
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderThickness" Value="0,0,0,0" />
+                <Setter Property="BorderThickness" Value="0,0,0,10" />
             </Trigger>
         </Style.Triggers>
     </Style>

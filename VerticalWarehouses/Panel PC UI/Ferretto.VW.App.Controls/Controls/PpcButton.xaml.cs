@@ -7,6 +7,8 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using System;
 using Ferretto.VW.App.Resources;
+using CommonServiceLocator;
+using System.ComponentModel;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -38,9 +40,9 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcButton),
             new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
 
-        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+        private IEventAggregator eventAggregator = null;
 
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+        private ISessionService sessionService = null;
 
         private SubscriptionToken userAccessLevelToken;
 
@@ -58,6 +60,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcButton()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
 
             this.Initialization();
         }
@@ -208,6 +215,10 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void Initialization()
         {
+            this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
+            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()
                     .Subscribe(
