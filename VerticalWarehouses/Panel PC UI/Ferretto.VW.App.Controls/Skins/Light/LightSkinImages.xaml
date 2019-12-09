@@ -19,4 +19,10 @@
     <BitmapImage x:Key="ThemeImageSource"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_light.png" />
 
+    <BitmapImage x:Key="PHCSagoma1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/sagoma.png" />
+
+    <BitmapImage x:Key="PHCCassetto1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+
 </ResourceDictionary>
