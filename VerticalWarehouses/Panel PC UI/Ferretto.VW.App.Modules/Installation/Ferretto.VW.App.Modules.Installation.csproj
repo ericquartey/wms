@@ -64,6 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpMainMenu.xaml.cs">
+      <DependentUpon>HelpMainMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
     </Compile>
