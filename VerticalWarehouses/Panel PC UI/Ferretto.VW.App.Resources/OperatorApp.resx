@@ -1203,4 +1203,8 @@
   <data name="Full" xml:space="preserve">
     <value>Full</value>
   </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>List row</value>
+    <comment>Label text</comment>
+  </data>
 </root>

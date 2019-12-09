@@ -951,4 +951,7 @@
   <data name="Full" xml:space="preserve">
     <value>Pieno</value>
   </data>
+  <data name="CommonListRow" xml:space="preserve">
+    <value>Riga lista</value>
+  </data>
 </root>

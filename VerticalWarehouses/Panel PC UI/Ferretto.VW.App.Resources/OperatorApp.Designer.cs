@@ -250,6 +250,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List row.
+        /// </summary>
+        public static string CommonListRow {
+            get {
+                return ResourceManager.GetString("CommonListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CommonListType.
         /// </summary>
         public static string CommonListType {
