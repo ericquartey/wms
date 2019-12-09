@@ -1,12 +1,21 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
+using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     public class ItemPutViewModel : BaseItemOperationMainViewModel
     {
+        #region Fields
+
+        private DelegateCommand fullOperationCommand;
+
+        #endregion
+
         #region Constructors
 
         public ItemPutViewModel(
@@ -21,13 +30,33 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #endregion
 
+        #region Properties
+
+        public ICommand FullOperationCommand =>
+                this.fullOperationCommand
+                ??
+                (this.fullOperationCommand = new DelegateCommand(
+                async () => await this.FullOperationAsync(),
+                this.CanFullOperation));
+
+        #endregion
+
         #region Methods
 
         public async override Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
+        }
 
+        public override void OnMisionOperationRetieved()
+        {
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
+        }
+
+        public override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+            this.fullOperationCommand.RaiseCanExecuteChanged();
         }
 
         protected override void ShowOperationDetails()
@@ -37,6 +66,27 @@ namespace Ferretto.VW.App.Operator.ViewModels
                Utils.Modules.Operator.ItemOperations.PUT_DETAILS,
                null,
                trackCurrentView: true);
+        }
+
+        private bool CanFullOperation()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
+        }
+
+        private Task FullOperationAsync()
+        {
+            throw new NotImplementedException("Not implemented yet");
         }
 
         #endregion

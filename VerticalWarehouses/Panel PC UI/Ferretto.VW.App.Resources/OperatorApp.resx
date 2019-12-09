@@ -1197,4 +1197,10 @@
     <value>Executable</value>
     <comment>Waiting lists header </comment>
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Empty</value>
+  </data>
+  <data name="Full" xml:space="preserve">
+    <value>Full</value>
+  </data>
 </root>
