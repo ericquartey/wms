@@ -101,8 +101,44 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
+                var missionOperation = this.MissionOperationsService.CurrentMissionOperation;
+
+                if (missionOperation is null)
+                {
+                    this.NavigationService.GoBack();
+                    return;
+                }
+
+                switch (missionOperation.Type)
+                {
+                    case MissionOperationType.Inventory when !(this is ItemInventoryViewModel):
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.INVENTORY,
+                            null,
+                            trackCurrentView: true);
+                        break;
+
+                    case MissionOperationType.Pick when !(this is ItemPickViewModel):
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PICK,
+                            null,
+                            trackCurrentView: true);
+                        break;
+
+                    case MissionOperationType.Put when !(this is ItemPutViewModel):
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.ItemOperations.PUT,
+                            null,
+                            trackCurrentView: true);
+                        break;
+                }
+
+                this.MissionOperation = missionOperation;
+
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
-                this.MissionOperation = this.MissionOperationsService.CurrentMissionOperation;
 
                 await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
             }
