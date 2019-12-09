@@ -112,6 +112,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("ElevatorDistance");
 
+                    b.Property<double>("LastIdealPosition");
+
                     b.Property<int?>("ManualMovementsId");
 
                     b.HasKey("Id");
@@ -1395,7 +1397,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 6, 18, 3, 25, 98, DateTimeKind.Local).AddTicks(1453),
+                            InstallationDate = new DateTime(2017, 2, 9, 18, 14, 28, 436, DateTimeKind.Local).AddTicks(9908),
                             ServiceStatus = 86
                         });
                 });

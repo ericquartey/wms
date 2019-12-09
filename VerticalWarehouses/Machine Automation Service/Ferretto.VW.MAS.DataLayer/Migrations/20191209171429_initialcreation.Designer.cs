@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191206170325_InitialCreation")]
-    partial class InitialCreation
+    [Migration("20191209171429_initialcreation")]
+    partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -113,6 +113,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("AssistedMovementsId");
 
                     b.Property<double>("ElevatorDistance");
+
+                    b.Property<double>("LastIdealPosition");
 
                     b.Property<int?>("ManualMovementsId");
 
@@ -1397,7 +1399,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 6, 18, 3, 25, 98, DateTimeKind.Local).AddTicks(1453),
+                            InstallationDate = new DateTime(2017, 2, 9, 18, 14, 28, 436, DateTimeKind.Local).AddTicks(9908),
                             ServiceStatus = 86
                         });
                 });
