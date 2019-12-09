@@ -14,7 +14,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission CreateBayMission(int loadingUnitId, BayNumber bayNumber, int wmsId, int wmsPriority);
 
-        void Delete(int? id);
+        void Delete(int id);
 
         /// <summary>
         /// Gets the list of new or executing missions, ordered by priority, allocated to the specified bay.

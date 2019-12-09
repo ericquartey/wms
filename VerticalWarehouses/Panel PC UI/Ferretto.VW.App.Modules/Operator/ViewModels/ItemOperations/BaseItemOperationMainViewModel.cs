@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand abortOperationCommand;
 
+        private Ferretto.VW.MAS.AutomationService.Contracts.Bay bay;
+
         private IEnumerable<TrayControlCompartment> compartments;
 
         private DelegateCommand confirmOperationCommand;
@@ -96,6 +98,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.inputQuantity, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsBaySideBack => this.bay?.Side == MAS.AutomationService.Contracts.WarehouseSide.Back;
+
         public bool IsBusyAbortingOperation
         {
             get => this.isBusyAbortingOperation;
@@ -164,17 +168,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        public override void Disappear()
+        {
+            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+
+            base.Disappear();
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
 
+            this.bay = await this.BayManager.GetBayAsync();
+
+            this.RaisePropertyChanged(nameof(this.IsBaySideBack));
+
             this.missionToken = this.missionToken
                 ??
                 this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnAssignedMissionOperationChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                    .Subscribe(
+                        async e => await this.OnAssignedMissionOperationChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
             this.GetLoadingUnitDetails();
         }

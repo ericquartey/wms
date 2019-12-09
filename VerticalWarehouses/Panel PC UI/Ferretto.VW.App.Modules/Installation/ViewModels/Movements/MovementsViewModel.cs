@@ -343,7 +343,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.HasBayExternal = this.bay.IsExternal;
 
-                await this.OnManualAppearedAsync();
+                this.OnManualAppearedAsync();
 
                 this.SubscribeToEvents();
             }
@@ -539,7 +539,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
-            await this.OnManualPositioningOperationChangedAsync(message);
+            this.OnManualPositioningOperationChanged(message);
             await this.OnGuidedPositioningOperationChangedAsync(message);
         }
 
