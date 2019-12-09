@@ -6,6 +6,7 @@ using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 using System;
+using Ferretto.VW.App.Resources;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -13,11 +14,11 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register(
-            nameof(ImageSource),
-            typeof(ImageSource),
-            typeof(PpcButton),
-            new PropertyMetadata(null));
+        public static readonly DependencyProperty ContentProperty =
+            DependencyProperty.Register("Content", typeof(object), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnContentChanged)));
+
+        public static readonly DependencyProperty ImageSourceProperty =
+            DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
             nameof(IsActive),
@@ -49,6 +50,11 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Constructors
 
+        static PpcButton()
+        {
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(PpcButton), new FrameworkPropertyMetadata(typeof(PpcButton)));
+        }
+
         public PpcButton()
         {
             this.InitializeComponent();
@@ -59,6 +65,12 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public object Content
+        {
+            get { return (object)this.GetValue(ContentProperty); }
+            set { this.SetValue(ContentProperty, value); }
+        }
 
         public ImageSource ImageSource
         {
@@ -172,6 +184,17 @@ namespace Ferretto.VW.App.Controls.Controls
             {
                 this.Visibility = this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
                 this.visibleOldStatus = null;
+            }
+        }
+
+        private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcButton button
+                && button.Content is string text
+                && !string.IsNullOrEmpty(text)
+                && text.Equals(InstallationApp.Stop))
+            {
+                button.Style = Application.Current.Resources["PpcButtonStopStyle"] as Style;
             }
         }
 
