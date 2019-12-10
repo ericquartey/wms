@@ -146,7 +146,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 data.VerticalPosition,
                 data.HorizontalPosition,
                 data.CellId,
-                data.BayPositionId);
+                data.BayPositionId,
+                data.BayPositionUpper);
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)

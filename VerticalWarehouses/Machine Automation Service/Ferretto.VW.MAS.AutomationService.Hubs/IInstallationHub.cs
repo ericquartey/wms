@@ -13,7 +13,7 @@ namespace Ferretto.VW.MAS.AutomationService.Hubs
 
         Task CurrentPositionChanged(IBaseNotificationMessageUI message);
 
-        Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId);
+        Task ElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper);
 
         Task ElevatorWeightCheck(IBaseNotificationMessageUI message);
 
