@@ -972,4 +972,7 @@
   <data name="LoadingUnitCheck" xml:space="preserve">
     <value>Controllo cassetto</value>
   </data>
+  <data name="ItemMachinesAvailability" xml:space="preserve">
+    <value>Disponibilità su macchine</value>
+  </data>
 </root>
