@@ -84,7 +84,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     var description = $"MoveLoadingUnitBayChainState: Move Bay chain not possible in bay {bay.Number}. Wait for resume";
                     // we don't want an exception here because this is the normal procedure:
                     // send a second LU in lower position while operator is working on upper position
-                    //throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     this.Logger.LogDebug(description);
                 }
 

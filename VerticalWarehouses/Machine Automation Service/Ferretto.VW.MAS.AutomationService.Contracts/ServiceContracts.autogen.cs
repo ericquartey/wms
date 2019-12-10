@@ -1058,6 +1058,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("elevatorDistance", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorDistance { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("isHomingExecuted", Required = Newtonsoft.Json.Required.Always)]
+        public bool IsHomingExecuted { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("lastIdealPosition", Required = Newtonsoft.Json.Required.Always)]
         public double LastIdealPosition { get; set; }
     

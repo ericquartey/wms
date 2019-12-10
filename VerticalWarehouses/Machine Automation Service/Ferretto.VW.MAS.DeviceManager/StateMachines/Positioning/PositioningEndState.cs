@@ -280,8 +280,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
             else if (axis == Axis.BayChain)
             {
-                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-                bayDataProvider.UpdateLastIdealPosition(this.machineData.MessageData.TargetPosition, this.machineData.RequestingBay);
+                var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var position = baysDataProvider.GetChainPosition(this.machineData.RequestingBay);
+                baysDataProvider.UpdateLastIdealPosition(position, this.machineData.RequestingBay);
             }
         }
 

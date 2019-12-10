@@ -45,6 +45,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private Mission mission;
 
+        private ShutterPosition openShutter;
+
         #endregion
 
         #region Constructors
@@ -116,8 +118,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         {
                             this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Shutter positioning end");
                             var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
-                            if (shutterPosition == ShutterPosition.Opened
-                                || shutterPosition == ShutterPosition.NotSpecified)
+                            if (shutterPosition == this.openShutter)
                             {
                                 if (this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay))
                                 {
@@ -386,7 +387,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             this.direction = HorizontalMovementDirection.Backwards;
             var toBay = false;
-            var openShutter = false;
+            this.openShutter = ShutterPosition.NotSpecified;
             switch (this.mission.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.Cell:
@@ -403,7 +404,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
                     // original direction
                     this.direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
-                    openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                    this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitDestination);
                     toBay = true;
                     break;
             }
@@ -422,13 +423,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             else
             {
                 var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
-                if (openShutter
-                    && shutterPosition != ShutterPosition.Opened
-                    && shutterPosition != ShutterPosition.NotSpecified
-                    )
+                if (shutterPosition != this.openShutter)
                 {
                     this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Shutter positioning start");
-                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.mission.TargetBay, true);
+                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.openShutter, this.mission.TargetBay, true);
                     this.isMovingShutter = true;
                     // invert direction
                     this.direction = (this.direction == HorizontalMovementDirection.Backwards) ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
@@ -482,7 +480,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             this.direction = HorizontalMovementDirection.Backwards;
             var measure = false;
-            var openShutter = false;
+            this.openShutter = ShutterPosition.NotSpecified;
             switch (this.mission.LoadingUnitSource)
             {
                 case LoadingUnitLocation.Cell:
@@ -500,7 +498,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitSource);
                     // invert direction
                     this.direction = bay.Side != WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
-                    openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
+                    this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitSource);
                     measure = true;
                     break;
             }
@@ -519,13 +517,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             else
             {
                 var shutterPosition = this.sensorsProvider.GetShutterPosition(this.mission.TargetBay);
-                if (openShutter
-                    && shutterPosition != ShutterPosition.Opened
-                    && shutterPosition != ShutterPosition.NotSpecified
-                    )
+                if (shutterPosition != this.openShutter)
                 {
                     this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Shutter positioning start");
-                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.mission.TargetBay, true);
+                    this.loadingUnitMovementProvider.OpenShutter(MessageActor.MachineManager, this.openShutter, this.mission.TargetBay, true);
                     this.isMovingShutter = true;
                 }
                 else

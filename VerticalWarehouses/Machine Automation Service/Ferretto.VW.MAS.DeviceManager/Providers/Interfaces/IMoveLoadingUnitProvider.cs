@@ -41,7 +41,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId);
 
-        void OpenShutter(MessageActor sender, BayNumber requestingBay, bool restore);
+        void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore);
 
         void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore);
 

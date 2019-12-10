@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
-    public partial class InitialCreation : Migration
+    public partial class initialcreation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -313,6 +313,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     AssistedMovementsId = table.Column<int>(nullable: true),
                     ElevatorDistance = table.Column<double>(nullable: false),
+                    IsHomingExecuted = table.Column<bool>(nullable: false),
                     LastIdealPosition = table.Column<double>(nullable: false),
                     ManualMovementsId = table.Column<int>(nullable: true)
                 },
@@ -1129,7 +1130,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 10, 12, 1, 45, 606, DateTimeKind.Local).AddTicks(235), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 10, 17, 52, 19, 567, DateTimeKind.Local).AddTicks(7619), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

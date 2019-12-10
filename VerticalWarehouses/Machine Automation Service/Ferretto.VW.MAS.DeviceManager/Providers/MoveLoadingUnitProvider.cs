@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #endregion
 
+        #region Properties
+
+        private bool IsHomingExecuted { get; set; }
+
+        #endregion
+
         #region Methods
 
         public MessageStatus CarouselStatus(NotificationMessage message)
@@ -340,13 +346,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 ErrorLevel.None);
         }
 
-        public void OpenShutter(MessageActor sender, BayNumber requestingBay, bool restore)
+        public void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore)
         {
             try
             {
-                this.shutterProvider.MoveTo(ShutterPosition.Opened, requestingBay, sender);
+                this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
                 if (restore)
                 {
@@ -469,8 +475,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void UpdateLastBayChainPosition(BayNumber requestingBay)
         {
-            var bay = this.baysDataProvider.GetByNumber(requestingBay);
-            this.baysDataProvider.UpdateLastIdealPosition(bay.Carousel.ElevatorDistance, requestingBay);
+            var position = this.baysDataProvider.GetChainPosition(requestingBay);
+            this.baysDataProvider.UpdateLastIdealPosition(position, requestingBay);
         }
 
         public void UpdateLastIdealPosition(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard)

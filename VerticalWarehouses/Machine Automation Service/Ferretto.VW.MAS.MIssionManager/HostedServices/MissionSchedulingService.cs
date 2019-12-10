@@ -227,18 +227,39 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                        var bays = bayProvider.GetAll();
+                        if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
+                        {
+                            var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
+                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
 
-                        this.EventAggregator
-                            .GetEvent<CommandEvent>()
-                            .Publish(
-                                new CommandMessage(
-                                    homingData,
-                                    "Execute Homing Command",
-                                    MessageActor.DeviceManager,
-                                    MessageActor.MissionManager,
-                                    MessageType.Homing,
-                                    BayNumber.BayOne));
+                            this.EventAggregator
+                                .GetEvent<CommandEvent>()
+                                .Publish(
+                                    new CommandMessage(
+                                        homingData,
+                                        "Execute Homing Command",
+                                        MessageActor.DeviceManager,
+                                        MessageActor.MissionManager,
+                                        MessageType.Homing,
+                                        bayNumber));
+                        }
+                        else
+                        {
+                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+
+                            this.EventAggregator
+                                .GetEvent<CommandEvent>()
+                                .Publish(
+                                    new CommandMessage(
+                                        homingData,
+                                        "Execute Homing Command",
+                                        MessageActor.DeviceManager,
+                                        MessageActor.MissionManager,
+                                        MessageType.Homing,
+                                        BayNumber.BayOne));
+                        }
                     }
                 }
                 else if (modeProvider.GetCurrent() is MachineMode.Automatic)
