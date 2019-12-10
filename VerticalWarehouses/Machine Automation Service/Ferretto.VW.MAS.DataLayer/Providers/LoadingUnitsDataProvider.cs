@@ -60,6 +60,36 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public LoadingUnit GetByBayId(int bayId)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext.BayPositions.Include(i => i.LoadingUnit).AsNoTracking()
+                    .FirstOrDefault().LoadingUnit;
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(bayId);
+                }
+
+                return loadingUnit;
+            }
+        }
+
+        public LoadingUnit GetByCellId(int cellId)
+        {
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext.LoadingUnits.AsNoTracking()
+                    .FirstOrDefault(l => l.CellId == cellId);
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(cellId);
+                }
+
+                return loadingUnit;
+            }
+        }
+
         public LoadingUnit GetById(int id)
         {
             lock (this.dataContext)

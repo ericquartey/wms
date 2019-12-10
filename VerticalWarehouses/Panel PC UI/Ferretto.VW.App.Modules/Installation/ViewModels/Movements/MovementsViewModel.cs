@@ -539,6 +539,43 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                    {
+                        this.VerticalTargetPosition = message.Data?.TargetPosition;
+                    }
+                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                    {
+                        this.HorizontalTargetPosition = message.Data?.TargetPosition;
+                    }
+                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                    {
+                        this.BayChainTargetPosition = message.Data?.TargetPosition;
+                    }
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+
+                        this.VerticalTargetPosition = null;
+                        this.HorizontalTargetPosition = null;
+                        this.BayChainTargetPosition = null;
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.VerticalTargetPosition = null;
+                        this.HorizontalTargetPosition = null;
+                        this.BayChainTargetPosition = null;
+
+                        break;
+                    }
+            }
+
             this.OnManualPositioningOperationChanged(message);
             await this.OnGuidedPositioningOperationChangedAsync(message);
         }
