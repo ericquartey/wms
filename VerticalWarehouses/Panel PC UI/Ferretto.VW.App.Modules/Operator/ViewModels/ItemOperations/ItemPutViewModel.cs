@@ -33,11 +33,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public ICommand FullOperationCommand =>
-                this.fullOperationCommand
-                ??
-                (this.fullOperationCommand = new DelegateCommand(
-                async () => await this.FullOperationAsync(),
-                this.CanFullOperation));
+            this.fullOperationCommand
+            ??
+            (this.fullOperationCommand = new DelegateCommand(
+                async () => await this.PartiallyCompleteOnFullCompartmentAsync(),
+                this.CanPartiallyCompleteOnFullCompartmen));
 
         #endregion
 
@@ -68,7 +68,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                trackCurrentView: true);
         }
 
-        private bool CanFullOperation()
+        private bool CanPartiallyCompleteOnFullCompartmen()
         {
             return
                 !this.IsWaitingForResponse
@@ -84,9 +84,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
         }
 
-        private Task FullOperationAsync()
+        private async Task PartiallyCompleteOnFullCompartmentAsync()
         {
-            throw new NotImplementedException("Not implemented yet");
+            await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
         }
 
         #endregion

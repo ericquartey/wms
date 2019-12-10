@@ -1228,4 +1228,10 @@
   <data name="LoadingUnitCheck" xml:space="preserve">
     <value>Loading unit check</value>
   </data>
+  <data name="ConfirmOnEmpty" xml:space="preserve">
+    <value>Confirm on empty</value>
+  </data>
+  <data name="ConfirmOnFull" xml:space="preserve">
+    <value>Confirm on full</value>
+  </data>
 </root>

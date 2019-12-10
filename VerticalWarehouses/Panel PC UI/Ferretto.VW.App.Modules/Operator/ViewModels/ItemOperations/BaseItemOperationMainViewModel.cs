@@ -19,8 +19,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private DelegateCommand abortOperationCommand;
-
         private MAS.AutomationService.Contracts.Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
@@ -58,19 +56,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
         {
             this.eventAggregator = eventAggregator;
-            this.CompartmentColoringFunction = (c, selectedCompartment) => "#00FF00";
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#444444" : "#444444";
         }
 
         #endregion
 
         #region Properties
-
-        public ICommand AbortOperationCommand =>
-            this.abortOperationCommand
-            ??
-            (this.abortOperationCommand = new DelegateCommand(
-                async () => await this.AbortOperationAsync(),
-                this.CanAbortOperation));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -153,7 +144,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsBusyConfirmingOperation = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MissionOperationsService.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
+                await this.MissionOperationsService.CompleteCurrentAsync();
             }
             catch (Exception ex)
             {
@@ -196,48 +187,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public virtual void RaiseCanExecuteChanged()
         {
-            this.abortOperationCommand?.RaiseCanExecuteChanged();
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
         }
 
         protected abstract void ShowOperationDetails();
-
-        private async Task AbortOperationAsync()
-        {
-            try
-            {
-                this.IsBusyAbortingOperation = true;
-                this.IsWaitingForResponse = true;
-
-                // TODO show prompt dialog "are you sure?"
-                var success = await this.MissionOperationsService.AbortCurrentMissionOperationAsync();
-                if (success)
-                {
-                    this.NavigationService.GoBack();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.InputQuantity = null;
-                this.IsBusyAbortingOperation = false;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private bool CanAbortOperation()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation;
-        }
 
         private bool CanConfirmOperation()
         {

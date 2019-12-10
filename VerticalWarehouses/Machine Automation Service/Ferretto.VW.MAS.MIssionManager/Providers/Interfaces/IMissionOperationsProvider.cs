@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task CompleteAsync(int wmsId, double quantity);
 
+        Task PartiallyCompleteAsync(int wmsId, double quantity);
+
         Task<MissionOperation> GetByIdAsync(int wmsId);
 
         #endregion

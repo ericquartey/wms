@@ -58,8 +58,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("{id}/partially-complete")]
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity)
+        {
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity);
+
+            return this.Ok();
+        }
+
         [HttpPost("reset-machine")]
-        [Obsolete("Vorrei capire se e' il punto giusto dove mettere il metodo, per oggi la lascio qui")]
+        [Obsolete("Vorrei capire se è il punto giusto dove mettere il metodo, per oggi la lascio qui")]
         public ActionResult ResetMachine()
         {
             this.baysDataProvider.ResetMachine();

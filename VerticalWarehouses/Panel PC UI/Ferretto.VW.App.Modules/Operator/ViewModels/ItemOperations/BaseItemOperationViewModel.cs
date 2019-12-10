@@ -104,52 +104,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected async Task RetrieveMissionOperationAsync()
         {
+            var newMissionOperation = this.MissionOperationsService.CurrentMissionOperation;
+
+            if (newMissionOperation is null || (this.MissionOperation != null && this.MissionOperation.Type != newMissionOperation.Type))
+            {
+                this.NavigationService.GoBack();
+                return;
+            }
+
             try
             {
-                var missionOperation = this.MissionOperationsService.CurrentMissionOperation;
-
-                if (missionOperation is null)
-                {
-                    this.NavigationService.GoBack();
-                    return;
-                }
-
-                switch (missionOperation.Type)
-                {
-                    case MissionOperationType.Inventory when !(this is ItemInventoryViewModel):
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.INVENTORY,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Pick when !(this is ItemPickViewModel):
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.PICK,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.Put when !(this is ItemPutViewModel):
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.PUT,
-                            null,
-                            trackCurrentView: true);
-                        break;
-
-                    case MissionOperationType.LoadingUnitCheck when !(this is LoadingUnitCheckViewModel):
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.ItemOperations.LOADINGUNITCHECKVIEW,
-                            null,
-                            trackCurrentView: true);
-                        break;
-                }
-
-                this.MissionOperation = missionOperation;
+                this.MissionOperation = newMissionOperation;
 
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
 
@@ -159,14 +124,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             catch (Exception ex)
             {
+                this.NavigationService.GoBack();
                 this.ShowNotification(ex);
             }
         }
 
         private async Task LoadImageAsync(string imageKey)
         {
-            var stream = await this.WmsImagesProvider.GetImageAsync(imageKey);
-            this.ItemImage = Image.FromStream(stream);
+            try
+            {
+                var stream = await this.WmsImagesProvider.GetImageAsync(imageKey);
+                this.ItemImage = Image.FromStream(stream);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion

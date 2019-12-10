@@ -322,6 +322,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Confirm on empty.
+        /// </summary>
+        public static string ConfirmOnEmpty {
+            get {
+                return ResourceManager.GetString("ConfirmOnEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm on full.
+        /// </summary>
+        public static string ConfirmOnFull {
+            get {
+                return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {

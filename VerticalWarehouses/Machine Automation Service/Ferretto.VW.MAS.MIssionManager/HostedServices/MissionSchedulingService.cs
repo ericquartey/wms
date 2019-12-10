@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else
                 {
-                    this.Logger.LogInformation("Cannot perform mission scheduling, because machine is not in automatic mode.");
+                    this.Logger.LogDebug("Cannot perform mission scheduling, because machine is not in automatic mode.");
                 }
             }
         }
@@ -300,9 +300,11 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private void GetPersistedMissions(IServiceProvider serviceProvider)
+        private static void GetPersistedMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+
             var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
             foreach (var mission in missions)
             {
@@ -312,13 +314,14 @@ namespace Ferretto.VW.MAS.MissionManager
                     mission.FsmStateName = "MoveLoadingUnitErrorState";
                     missionsDataProvider.Update(mission);
                 }
-                serviceProvider.GetRequiredService<IMachineMissionsProvider>().AddMission(mission, mission.FsmId);
+
+                machineMissionsProvider.AddMission(mission, mission.FsmId);
             }
         }
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
-            this.GetPersistedMissions(serviceProvider);
+            GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }

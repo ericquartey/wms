@@ -34,11 +34,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public ICommand EmptyOperationCommand =>
-                        this.emptyOperationCommand
-                        ??
-                        (this.emptyOperationCommand = new DelegateCommand(
-                            async () => await this.EmptyOperationAsync(),
-                            this.CanEmptyOperation));
+            this.emptyOperationCommand
+            ??
+            (this.emptyOperationCommand = new DelegateCommand(
+                async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
+                this.CanPartiallyCompleteOnEmptyCompartment));
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -71,7 +71,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                trackCurrentView: true);
         }
 
-        private bool CanEmptyOperation()
+        private bool CanPartiallyCompleteOnEmptyCompartment()
         {
             return
                 !this.IsWaitingForResponse
@@ -87,9 +87,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value < this.MissionOperation.RequestedQuantity;
         }
 
-        private Task EmptyOperationAsync()
+        private async Task PartiallyCompleteOnEmptyCompartmentAsync()
         {
-            throw new NotImplementedException();
+            await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
         }
 
         #endregion
