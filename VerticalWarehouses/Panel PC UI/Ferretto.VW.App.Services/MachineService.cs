@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Services
                        false);
 
             this.navigationService.SubscribeToNavigationCompleted(
-               e => this.WarningManagement(e.ViewModelName));
+               e => this.WarningManagement(e.ViewModelName.Replace("Model", "")));
 
             this.moveLoadingUnitToken = this.moveLoadingUnitToken
                 ??
@@ -515,31 +515,8 @@ namespace Ferretto.VW.App.Services
             {
                 switch (true)
                 {
-                    case var b when view.Equals("MovementsView", StringComparison.InvariantCultureIgnoreCase):
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
-                        {
-                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
-                        }
-                        else if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        else if (this.MachineStatus.BayChainPosition is null)
-                        {
-                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
-                        }
-                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
-                        {
-                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
-                        }
-                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
-                        {
-                            this.ShowNotification("Mettere la macchina in automatico.", NotificationSeverity.Warning);
-                        }
-                        else
-                        {
-                            this.ClearNotifications();
-                        }
+                    case var b1 when view.Equals("LoginView", StringComparison.InvariantCultureIgnoreCase):
+                    case var b2 when view.Equals("LoaderView", StringComparison.InvariantCultureIgnoreCase):
                         break;
 
                     default:

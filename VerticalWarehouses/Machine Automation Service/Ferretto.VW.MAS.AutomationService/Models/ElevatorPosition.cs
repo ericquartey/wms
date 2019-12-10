@@ -6,6 +6,8 @@
 
         public int? BayPositionId { get; set; }
 
+        public bool? BayPositionUpper { get; set; }
+
         public int? CellId { get; set; }
 
         public double Horizontal { get; set; }

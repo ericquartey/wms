@@ -133,12 +133,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [HttpGet("position")]
         public ActionResult<ElevatorPosition> GetPosition()
         {
+            var pos = this.elevatorDataProvider.GetCurrentBayPosition();
             var elevatorPosition = new ElevatorPosition
             {
                 Vertical = this.elevatorProvider.VerticalPosition,
                 Horizontal = this.elevatorProvider.HorizontalPosition,
                 CellId = this.elevatorDataProvider.GetCurrentCell()?.Id,
-                BayPositionId = this.elevatorDataProvider.GetCurrentBayPosition()?.Id
+                BayPositionId = pos?.Id,
+                BayPositionUpper = pos?.IsUpper
             };
 
             return this.Ok(elevatorPosition);

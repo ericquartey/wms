@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
+
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
         private readonly Sensors sensors = new Sensors();
@@ -73,6 +75,8 @@ namespace Ferretto.VW.App.Services
 
         private string loadingUnitPositionUpInBayCode;
 
+        private IEnumerable<LoadingUnit> loadingUnits;
+
         private string logicalPosition;
 
         private string logicalPositionId;
@@ -95,6 +99,7 @@ namespace Ferretto.VW.App.Services
             IHealthProbeService healthProbeService,
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IBayManager bayManagerService)
         {
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
@@ -105,6 +110,7 @@ namespace Ferretto.VW.App.Services
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
 
             this.SubscribeToEvents();
         }
@@ -322,6 +328,8 @@ namespace Ferretto.VW.App.Services
             {
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+
                 this.RetrieveElevatorPosition(this.machineElevatorService.Position);
 
                 await this.GetBayAsync()
@@ -351,8 +359,8 @@ namespace Ferretto.VW.App.Services
             {
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
                 this.LogicalPosition = Resources.InstallationApp.Cell;
-                this.LogicalPositionId = position.CellId?.ToString();
-                //this.ElevatorPositionLoadingUnit =
+                this.LogicalPositionId = position.CellId.ToString();
+                this.ElevatorPositionLoadingUnit = this.loadingUnits.Single(l => l.CellId.Equals(position.CellId));
             }
             else if (position.BayPositionId != null)
             {
@@ -363,16 +371,19 @@ namespace Ferretto.VW.App.Services
                     this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
                     this.LogicalPosition = Resources.InstallationApp.InBay;
                     this.LogicalPositionId = ((int)bay.Number).ToString();
+                    this.ElevatorPositionLoadingUnit = this.EmbarkedLoadingUnit;
                 }
                 else
                 {
                     this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
                     this.LogicalPosition = Resources.InstallationApp.InBay;
                     this.LogicalPositionId = null;
+                    this.ElevatorPositionLoadingUnit = null;
                 }
             }
             else
             {
+                this.ElevatorPositionLoadingUnit = null;
                 this.ElevatorLogicalPosition = null;
                 this.LogicalPosition = null;
                 this.LogicalPositionId = null;

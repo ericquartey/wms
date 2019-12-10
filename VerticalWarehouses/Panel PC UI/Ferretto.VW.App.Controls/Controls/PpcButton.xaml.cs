@@ -9,6 +9,7 @@ using System;
 using Ferretto.VW.App.Resources;
 using CommonServiceLocator;
 using System.ComponentModel;
+using MahApps.Metro.IconPacks;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -33,6 +34,9 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(bool),
             typeof(PpcButton),
             new PropertyMetadata(false));
+
+        public static readonly DependencyProperty KindProperty =
+            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermitionProperty = DependencyProperty.Register(
             nameof(Permition),
@@ -79,6 +83,8 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(ContentProperty, value); }
         }
 
+        public bool HasKind => !(this.Kind is null);
+
         public ImageSource ImageSource
         {
             get => (ImageSource)this.GetValue(ImageSourceProperty);
@@ -95,6 +101,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (bool)this.GetValue(IsBusyProperty);
             set => this.SetValue(IsBusyProperty, value);
+        }
+
+        public PackIconMaterialLightKind? Kind
+        {
+            get => (PackIconMaterialLightKind?)this.GetValue(KindProperty);
+            set => this.SetValue(KindProperty, value);
         }
 
         protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;

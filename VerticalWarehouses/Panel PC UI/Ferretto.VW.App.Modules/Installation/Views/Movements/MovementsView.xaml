@@ -734,13 +734,14 @@
                                             Command="{Binding StopMovingCommand}"
                                             Content="{x:Static res:InstallationApp.Stop}" />
 
-
                         <controls:PpcButton Grid.Row="6"
                                             Grid.Column="3"
+                                            Width="60"
                                             Margin="0"
                                             HorizontalAlignment="Right"
                                             Command="{Binding GoToStatusSensorsCommand}"
-                                            Content="{x:Static res:InstallationApp.SensorsState}" />
+                                            Foreground="{StaticResource FerrettoPureWhite}"
+                                            Kind="LightbulbOn"/>
                     </Grid>
                 </Grid>
             </Border>

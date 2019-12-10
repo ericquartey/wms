@@ -68,4 +68,6 @@
     <SolidColorBrush x:Key="FerrettoPureWhite"
                      Color="{StaticResource ColorFerrettoPureWhite}" />
 
+    <SolidColorBrush x:Key="FerrettoYellow"
+                     Color="{StaticResource ColorFerrettoYellow}" />
 </ResourceDictionary>
