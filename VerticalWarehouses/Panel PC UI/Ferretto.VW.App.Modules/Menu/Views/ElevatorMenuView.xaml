@@ -40,27 +40,27 @@
               Margin="15">
             <WrapPanel>
 
-                <controls:PpcButton Grid.Row="0"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding VerticalOriginCalibrationCommand}"
                                     Content="Calibrazione origine asse verticale" />
 
-                <controls:PpcButton Grid.Row="3"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding VerticalResolutionCalibrationCommand}"
                                     Content="Calibrazione risoluzione asse verticale" />
 
-                <controls:PpcButton Grid.Row="4"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding VerticalOffsetCalibrationCommand}"
                                     Content="Calibrazione offset asse verticale" />
 
-                <controls:PpcButton Grid.Row="4"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding WeightMeasurementCommand}"
                                     Content="Controllo Peso" />
 
-                <controls:PpcButton Grid.Row="4"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding WeightAnalysisCommand}"
                                     Content="Analisi profilo peso" />
@@ -79,7 +79,7 @@
               Margin="15">
             <WrapPanel>
 
-                <controls:PpcButton Grid.Row="2"
+                <controls:PpcButton Width="175"
                                     Margin="15"
                                     Command="{Binding BeltBurnishingCommand}"
                                     Content="Rodaggio cinghia" />
