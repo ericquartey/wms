@@ -13,7 +13,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender);
 
-        bool IsOnlyUpperPositionOccupied(BayNumber bayNumber);
+        bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
+
+        bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
         void Move(VerticalMovementDirection direction, int? loadingUnitId, BayNumber bayNumber, MessageActor sender);
 

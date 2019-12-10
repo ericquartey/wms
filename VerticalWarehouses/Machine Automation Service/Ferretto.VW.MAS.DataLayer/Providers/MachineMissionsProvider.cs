@@ -223,7 +223,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                             returnValue = !this.machineMissions.Any(m =>
                                 m.Type == moveRequestedMission
                                 && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId);
+                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
+                                && (((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
+                                    || ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
+                                    )
+                                );
 
                             if (returnValue)
                             {
@@ -231,7 +235,9 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 returnValue = !this.machineMissions.Any(m =>
                                     m.Type == moveRequestedMission
                                     && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
-                                    && ((DataModels.Mission)m.MachineData).TargetBay == messageData.TargetBay);
+                                    && ((DataModels.Mission)m.MachineData).TargetBay == messageData.TargetBay
+                                    && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
+                                    );
                             }
                             break;
                     }

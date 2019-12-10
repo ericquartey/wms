@@ -883,8 +883,14 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
 
-                bay.Carousel.LastIdealPosition += position;
-
+                if (position == 0)
+                {
+                    bay.Carousel.LastIdealPosition = 0;
+                }
+                else
+                {
+                    bay.Carousel.LastIdealPosition += position;
+                }
                 this.dataContext.SaveChanges();
             }
         }

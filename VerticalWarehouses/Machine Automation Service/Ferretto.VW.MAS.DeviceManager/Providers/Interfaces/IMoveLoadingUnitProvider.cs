@@ -21,13 +21,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double? GetDestinationHeight(Mission moveData);
 
+        ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location);
+
         double? GetSourceHeight(Mission moveData);
 
-        bool IsOnlyUpperPositionOccupied(BayNumber bayNumber);
+        bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
+
+        bool IsOnlyTopPositionOccupied(BayNumber bayNumber);
 
         bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
