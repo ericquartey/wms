@@ -1391,4 +1391,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ShutterUp" xml:space="preserve">
     <value>Shutter up</value>
   </data>
+  <data name="BayPositionOnBotton" xml:space="preserve">
+    <value>On Bay botton</value>
+  </data>
+  <data name="BayPositionOnTop" xml:space="preserve">
+    <value>On Bay top</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Down</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Up</value>
+  </data>
 </root>

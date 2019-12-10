@@ -34,7 +34,9 @@
             <controls:CardSensor Grid.Row="0"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Id}"
+                                 CardBadge1="{Binding SensorsService.ElevatorPositionLoadingUnit.Id}"
+                                 CardBadgeLabel1="Cassetto"
+                                 CardDescription="{Binding SensorsService.LogicalPosition}"
                                  CardText="Posizione"
                                  CardValue="{Binding SensorsService.ElevatorLogicalPosition}"
                                  Type="Position" />
@@ -75,7 +77,7 @@
                                  Width="250"
                                  Margin="0,0,15,5"
                                  CardBadge1="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
-                                 CardBadge2="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge2="{Binding SensorsService.LoadingUnitPositionDownInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardDescription="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}"
                                  CardSensorLabel1="Zero"
                                  CardSensorLabel2="Alta"
@@ -741,7 +743,7 @@
                                             HorizontalAlignment="Right"
                                             Command="{Binding GoToStatusSensorsCommand}"
                                             Foreground="{StaticResource FerrettoPureWhite}"
-                                            Kind="LightbulbOn"/>
+                                            Kind="LightbulbOn" />
                     </Grid>
                 </Grid>
             </Border>

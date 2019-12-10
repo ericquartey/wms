@@ -304,6 +304,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to On Bay botton.
+        /// </summary>
+        public static string BayPositionOnBotton {
+            get {
+                return ResourceManager.GetString("BayPositionOnBotton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to On Bay top.
+        /// </summary>
+        public static string BayPositionOnTop {
+            get {
+                return ResourceManager.GetString("BayPositionOnTop", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Position up.
         /// </summary>
         public static string BayPositionUp {
@@ -2543,6 +2561,24 @@ namespace Ferretto.VW.App.Resources {
         public static string Position {
             get {
                 return ResourceManager.GetString("Position", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Down.
+        /// </summary>
+        public static string PositionOnBotton {
+            get {
+                return ResourceManager.GetString("PositionOnBotton", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Up.
+        /// </summary>
+        public static string PositionOnTop {
+            get {
+                return ResourceManager.GetString("PositionOnTop", resourceCulture);
             }
         }
         

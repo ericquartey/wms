@@ -1325,4 +1325,16 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="ShutterUp" xml:space="preserve">
     <value>Serranda su</value>
   </data>
+  <data name="BayPositionOnBotton" xml:space="preserve">
+    <value>In Baia bassa</value>
+  </data>
+  <data name="BayPositionOnTop" xml:space="preserve">
+    <value>In Baia alta</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Bassa</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Alta</value>
+  </data>
 </root>

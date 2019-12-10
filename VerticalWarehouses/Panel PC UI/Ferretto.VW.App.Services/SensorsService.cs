@@ -358,9 +358,9 @@ namespace Ferretto.VW.App.Services
             if (position.CellId != null)
             {
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
-                this.LogicalPosition = Resources.InstallationApp.Cell;
+                this.LogicalPosition = null;
                 this.LogicalPositionId = position.CellId.ToString();
-                this.ElevatorPositionLoadingUnit = this.loadingUnits.Single(l => l.CellId.Equals(position.CellId));
+                this.ElevatorPositionLoadingUnit = this.loadingUnits?.FirstOrDefault(l => l.CellId.Equals(position.CellId));
             }
             else if (position.BayPositionId != null)
             {
@@ -369,14 +369,20 @@ namespace Ferretto.VW.App.Services
                     var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
                     System.Diagnostics.Debug.Assert(bay != null);
                     this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
-                    this.LogicalPosition = Resources.InstallationApp.InBay;
+                    if (position?.BayPositionUpper ?? false)
+                    {
+                        this.LogicalPosition = Resources.InstallationApp.PositionOnTop;
+                    }
+                    else
+                    {
+                        this.LogicalPosition = Resources.InstallationApp.PositionOnBotton;
+                    }
                     this.LogicalPositionId = ((int)bay.Number).ToString();
-                    this.ElevatorPositionLoadingUnit = this.EmbarkedLoadingUnit;
                 }
                 else
                 {
                     this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
-                    this.LogicalPosition = Resources.InstallationApp.InBay;
+                    this.LogicalPosition = null;
                     this.LogicalPositionId = null;
                     this.ElevatorPositionLoadingUnit = null;
                 }
@@ -403,12 +409,14 @@ namespace Ferretto.VW.App.Services
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
                         this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
+                        this.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
+                        this.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
                     }
 
                     this.BayIsMultiPosition = this.Bay.IsDouble;
@@ -520,22 +528,16 @@ namespace Ferretto.VW.App.Services
             if (message?.Data?.SensorsStates != null)
             {
                 this.sensors.Update(message.Data.SensorsStates);
-                if (this.shutterSensors is null)
-                {
-                    await this.GetBayAsync()
-                        .ContinueWith(m =>
+
+                await this.GetBayAsync()
+                    .ContinueWith(m =>
+                    {
+                        if (this.Bay != null)
                         {
-                            if (this.Bay != null)
-                            {
-                                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
-                                this.shutterSensors.Update(message.Data.SensorsStates);
-                            }
-                        });
-                }
-                else
-                {
-                    this.shutterSensors.Update(message.Data.SensorsStates);
-                }
+                            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                            this.shutterSensors.Update(message.Data.SensorsStates);
+                        }
+                    });
             }
 
             await this.GetElevatorAsync(false);
