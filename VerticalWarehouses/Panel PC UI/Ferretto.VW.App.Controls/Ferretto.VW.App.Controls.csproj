@@ -81,6 +81,7 @@
     <None Remove="Styles\PpcButtonKeyStyle.xaml" />
     <None Remove="Styles\PpcButtonStyle.xaml" />
     <None Remove="Styles\PpcPressAndReleaseButtonStyle.xaml" />
+    <None Remove="Styles\ProgressBarStyle.xaml" />
   </ItemGroup>
 
   <ItemGroup>

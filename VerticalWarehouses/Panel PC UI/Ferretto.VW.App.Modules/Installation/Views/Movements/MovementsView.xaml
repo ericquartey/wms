@@ -43,8 +43,11 @@
             <controls:CardSensor Grid.Row="1"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.LoadingUnitPositionUpInBayCode}"
-                                 CardBadgeLabel1="Posizione"
+                                 CardBadge1="1000 kg"
+                                 CardBadge2="222 mm"
+                                 CardBadgeLabel1="Peso"
+                                 CardBadgeLabel2="Altezza"
+                                 CardDescription="Elevatore"
                                  CardText="Cassetto"
                                  Type="Drawer" />
             <controls:CardSensor Grid.Row="2"

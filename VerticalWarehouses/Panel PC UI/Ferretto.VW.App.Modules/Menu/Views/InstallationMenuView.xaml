@@ -117,12 +117,17 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <ProgressBar Height="8"
-                                     HorizontalAlignment="Stretch"
-                                     VerticalAlignment="Center"
-                                     Maximum="100"
-                                     Minimum="0"
-                                     Value="{Binding Completion, FallbackValue=40}" />
+                        <controls:PpcProgressBar Height="8"
+                                                 HorizontalAlignment="Stretch"
+                                                 VerticalAlignment="Center"
+                                                 Background="Gray"
+                                                 BorderBrush="Orange"
+                                                 BorderThickness="1"
+                                                 Color1="Blue"
+                                                 Color2="Cornsilk"
+                                                 Maximum="100"
+                                                 Minimum="0"
+                                                 Value="{Binding Completion, FallbackValue=60}" />
 
                         <TextBlock Grid.Column="1"
                                    Margin="15"
