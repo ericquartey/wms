@@ -565,7 +565,7 @@
     <value>Shape gate 3</value>
   </data>
   <data name="VerticalAxisHomedDone" xml:space="preserve">
-    <value>Vertical axis homed</value>
+    <value>Vertical Origin Calibration</value>
   </data>
   <data name="VerticalResolutionDone" xml:space="preserve">
     <value>Vertical resolution</value>

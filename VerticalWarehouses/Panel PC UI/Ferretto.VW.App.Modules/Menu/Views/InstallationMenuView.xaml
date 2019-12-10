@@ -4,6 +4,7 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
@@ -89,7 +90,7 @@
             <Grid Grid.Row="1">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="120" />
+                    <RowDefinition Height="105" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
@@ -106,7 +107,30 @@
                     <TextBlock HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                               Text="Stato installazione incompleto, eseguite 4/10 procedure" />
+                               Text="Stato installazione incompleto. Eseguite 4/10 procedure" />
+
+                    <Grid HorizontalAlignment="Stretch"
+                          VerticalAlignment="Top">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <ProgressBar Height="8"
+                                     HorizontalAlignment="Stretch"
+                                     VerticalAlignment="Center"
+                                     Maximum="100"
+                                     Minimum="0"
+                                     Value="{Binding Completion, FallbackValue=40}" />
+
+                        <TextBlock Grid.Column="1"
+                                   Margin="15"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Top"
+                                   Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="40%" />
+                    </Grid>
 
                 </StackPanel>
                 <Grid Grid.Column="1">
@@ -732,24 +756,108 @@
                 </Grid>
 
                 <Grid Grid.Row="1"
-                      Grid.ColumnSpan="2">
-                    <ItemsControl>
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid Margin="0,0,0,5">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*" />
-                                        <ColumnDefinition Width="100" />
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding Title}" />
-                                    <ProgressBar Grid.Column="1"
-                                                 Maximum="100"
-                                                 Minimum="0"
-                                                 Value="{Binding Completion}" />
-                                </Grid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
+                      Grid.ColumnSpan="2"
+                      Margin="10">
+
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="25" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <StackPanel Grid.Row="1"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Kind="CheckCircle" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.VerticalAxisHomedDone}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Kind="CheckCircle" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.VerticalResolutionDone}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="3"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Kind="CheckCircle" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.VerticalOffsetVerify}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="4"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoYellow}"
+                                                   Kind="ProgressCheck" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.BeltBurnishingDone}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="5"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoOrange}"
+                                                   Kind="CloseCircleOutline" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.CellPositionDone}" />
+                        </StackPanel>
+
+
+                    </Grid>
+
                 </Grid>
 
             </Grid>

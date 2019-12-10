@@ -360,7 +360,7 @@ namespace Ferretto.VW.App.Services
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
                 this.LogicalPosition = Resources.InstallationApp.Cell;
                 this.LogicalPositionId = position.CellId.ToString();
-                this.ElevatorPositionLoadingUnit = this.loadingUnits.Single(l => l.CellId.Equals(position.CellId));
+                this.ElevatorPositionLoadingUnit = this.loadingUnits?.FirstOrDefault(l => l.CellId.Equals(position.CellId));
             }
             else if (position.BayPositionId != null)
             {
