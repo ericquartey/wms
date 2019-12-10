@@ -1366,6 +1366,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machines availabiility.
+        /// </summary>
+        public static string ItemMachinesAvailability {
+            get {
+                return ResourceManager.GetString("ItemMachinesAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO.
         /// </summary>
         public static string ItemManagementType_FIFO {

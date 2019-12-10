@@ -5,7 +5,8 @@
              xmlns:Behaviors1="clr-namespace:Ferretto.VW.App.Controls.Behaviours;assembly=Ferretto.VW.App.Controls"
              xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:conv="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
-             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity">
+             xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+             xmlns:dxga="http://schemas.devexpress.com/winfx/2008/xaml/gauges">
 
 
     <UserControl.Resources>
@@ -144,32 +145,34 @@
                         </Style>
                     </DataGridTextColumn.ElementStyle>
                 </DataGridTextColumn>
-                <DataGridTextColumn x:Name="Column3"
-                                    Width="*"
-                                    Binding="{Binding Path=Machines, Converter={StaticResource MTSC}}"
-                                    Header="{x:Static Resources:OperatorApp.ItemSearchGridMachine}">
-                    <DataGridTextColumn.HeaderStyle>
+                <DataGridTemplateColumn x:Name="Column3"
+                                            Width="100"
+                                            Header="{x:Static Resources:OperatorApp.WaitingListDataGridHeaderExecutable}">
+                    <DataGridTemplateColumn.HeaderStyle>
                         <Style TargetType="DataGridColumnHeader">
-                            <Setter Property="BorderThickness" Value="0,0,0,1" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="Background" Value="{DynamicResource VWAPP_BACKGROUND}" />
                             <Setter Property="Foreground" Value="{DynamicResource VWAPP_ViewBodyTextBlock_Foreground_Normal}" />
+                            <Setter Property="BorderThickness" Value="0,0,0,1" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
-                    </DataGridTextColumn.HeaderStyle>
-                    <DataGridTextColumn.CellStyle>
+                    </DataGridTemplateColumn.HeaderStyle>
+                    <DataGridTemplateColumn.CellStyle>
                         <Style TargetType="DataGridCell">
                             <Setter Property="BorderThickness" Value="0" />
                             <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
                         </Style>
-                    </DataGridTextColumn.CellStyle>
-                    <DataGridTextColumn.ElementStyle>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Center" />
-                        </Style>
-                    </DataGridTextColumn.ElementStyle>
-                </DataGridTextColumn>
+                    </DataGridTemplateColumn.CellStyle>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Rectangle Fill="{DynamicResource FerrettoGreen}"
+                                       Width="20"
+                                       Height="20"
+                                       Visibility="{Binding IsQtyOnMachine, Converter={StaticResource BTVC}}">
+                            </Rectangle>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
