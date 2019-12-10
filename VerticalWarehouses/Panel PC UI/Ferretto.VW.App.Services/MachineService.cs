@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
@@ -46,6 +48,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken elevatorPositionChangedToken;
 
+        private SubscriptionToken fsmExceptionToken;
+
         private bool isDisposed;
 
         private bool isHoming;
@@ -55,6 +59,8 @@ namespace Ferretto.VW.App.Services
         private SubscriptionToken machinePowerChangedToken;
 
         private MachineStatus machineStatus;
+
+        private SubscriptionToken moveLoadingUnitToken;
 
         private string notification;
 
@@ -158,6 +164,24 @@ namespace Ferretto.VW.App.Services
 
             this.navigationService.SubscribeToNavigationCompleted(
                e => this.WarningManagement(e.ViewModelName));
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.fsmExceptionToken = this.fsmExceptionToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<FsmExceptionMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion
@@ -169,6 +193,8 @@ namespace Ferretto.VW.App.Services
             get => this.isHoming;
             set => this.SetProperty(ref this.isHoming, value);
         }
+
+        protected NLog.Logger Logger => this.logger;
 
         public MachineStatus MachineStatus
         {
@@ -197,6 +223,20 @@ namespace Ferretto.VW.App.Services
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing).
             this.Dispose(true);
+        }
+
+        public void ShowNotification(Exception exception)
+        {
+            if (exception is null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            this.Logger.Error(exception);
+
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
         public async Task StopMovingByAllAsync()
@@ -237,6 +277,12 @@ namespace Ferretto.VW.App.Services
 
                 this.machinePowerChangedToken?.Dispose();
                 this.machinePowerChangedToken = null;
+
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+
+                this.fsmExceptionToken?.Dispose();
+                this.fsmExceptionToken = null;
             }
 
             this.isDisposed = true;
@@ -396,8 +442,7 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingShutter = false;
                         }
 
-                        //TODO: Sparare eccezione
-                        this.ClearNotifications();
+                        this.ShowNotification(message.Description, NotificationSeverity.Error);
 
                         this.MachineStatus = ms;
                         break;

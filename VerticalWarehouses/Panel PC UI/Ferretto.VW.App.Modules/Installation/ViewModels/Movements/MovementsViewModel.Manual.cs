@@ -669,6 +669,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorMovingToLoadingUnit = false;
             this.IsTuningBay = false;
             this.IsTuningChain = false;
+
+            this.VerticalTargetPosition = null;
+            this.HorizontalTargetPosition = null;
+            this.BayChainTargetPosition = null;
         }
 
         private void WriteInfo(Axis? axisMovement)

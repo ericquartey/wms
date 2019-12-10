@@ -64,8 +64,15 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(CardSensor),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty CardSensorLabel1Property =
+        public static readonly DependencyProperty CardDescriptionProperty =
             DependencyProperty.Register(
+                nameof(CardDescription),
+                typeof(string),
+                typeof(CardSensor),
+                new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty CardSensorLabel1Property =
+                    DependencyProperty.Register(
                 nameof(CardSensorLabel1),
                 typeof(string),
                 typeof(CardSensor),
@@ -191,6 +198,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(CardBadge3LabelProperty);
             set => this.SetValue(CardBadge3LabelProperty, value);
+        }
+
+        public string CardDescription
+        {
+            get => (string)this.GetValue(CardDescriptionProperty);
+            set => this.SetValue(CardDescriptionProperty, value);
         }
 
         public string CardSensorLabel1

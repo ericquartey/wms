@@ -81,8 +81,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
-        public override bool KeepAlive => false;
-
         public MachineIdentity MachineIdentity
         {
             get => this.machineIdentity;

@@ -432,6 +432,7 @@ namespace Ferretto.VW.MAS.DataLayer
                             this.elevatorVolatileDataProvider.VerticalPosition,
                             this.elevatorVolatileDataProvider.HorizontalPosition,
                             this.GetCurrentCell()?.Id,
+                            this.GetCurrentBayPosition()?.Id,
                             this.GetCurrentBayPosition()?.Id),
                         Destination = MessageActor.Any,
                         Source = MessageActor.DataLayer,

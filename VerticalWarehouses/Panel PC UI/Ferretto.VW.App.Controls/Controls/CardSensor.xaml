@@ -31,24 +31,46 @@
                            Foreground="{DynamicResource PpcForeground}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
-                <TextBlock Grid.Row="1"
-                           Grid.RowSpan="2"
-                           Margin="4"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Very_High}"
-                           Foreground="{DynamicResource PpcForeground}"
-                           Text="{Binding ElementName=Card, Path=CardValue}">
-                    <TextBlock.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <Trigger Property="TextBlock.Text" Value="">
-                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <StackPanel Grid.Row="1"
+                            Grid.RowSpan="2"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding ElementName=Card, Path=CardValue}">
+                        <TextBlock.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <Trigger Property="TextBlock.Text" Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_Small}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Target: {0}'}">
+                        <TextBlock.Style>
+                            <Style>
+                                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
 
                 <StackPanel Grid.RowSpan="3"
                             Grid.Column="1"
@@ -159,24 +181,47 @@
                            Foreground="{DynamicResource PpcForeground}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
-                <TextBlock Grid.Row="1"
-                           Grid.RowSpan="2"
-                           Margin="4"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center"
-                           FontSize="{StaticResource FontSize_Very_High}"
-                           Foreground="{DynamicResource PpcForeground}"
-                           Text="{Binding ElementName=Card, Path=CardValue}">
-                    <TextBlock.Style>
-                        <Style>
-                            <Style.Triggers>
-                                <Trigger Property="TextBlock.Text" Value="">
-                                    <Setter Property="TextBlock.Visibility" Value="Collapsed" />
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                <StackPanel Grid.Row="1"
+                            Grid.RowSpan="2"
+                            Grid.ColumnSpan="2"
+                            VerticalAlignment="Center"
+                            Orientation="Vertical">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Target: {0}'}">
+                        <TextBlock.Style>
+                            <Style>
+                                <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardDescription}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock HorizontalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_Small}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding ElementName=Card, Path=CardDescription}">
+                        <TextBlock.Style>
+                            <Style>
+                                <Style.Triggers>
+                                    <Trigger Property="TextBlock.Text" Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </StackPanel>
 
                 <Grid Grid.Row="0"
                       Grid.RowSpan="3"
