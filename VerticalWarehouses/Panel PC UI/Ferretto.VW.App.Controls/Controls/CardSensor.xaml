@@ -74,8 +74,7 @@
 
                 <StackPanel Grid.RowSpan="3"
                             Grid.Column="1"
-                            Width="45"
-                            Margin="4,0,0,0"
+                            MinWidth="45"
                             VerticalAlignment="Center">
                     <Border Margin="4"
                             CornerRadius="4">
@@ -157,6 +156,55 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
                     </Border>
+
+                    <StackPanel Margin="4,0"
+                                VerticalAlignment="Center">
+                        <Border Width="35"
+                                Height="35"
+                                Margin="4"
+                                HorizontalAlignment="Center"
+                                BorderBrush="{DynamicResource PpcBorderBrush}"
+                                BorderThickness="{DynamicResource PpcBorderThickness}"
+                                CornerRadius="4">
+                            <TextBlock Margin="4"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="{StaticResource FontSize_High}"
+                                       Foreground="{DynamicResource PpcForeground}"
+                                       Text="{Binding ElementName=Card, Path=CardBadge1}" />
+                            <Border.Style>
+                                <Style>
+                                    <Setter Property="Grid.RowSpan" Value="1" />
+                                    <Setter Property="Border.Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                     Value="">
+                                            <Setter Property="Border.Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Border.Style>
+                        </Border>
+                        <TextBlock Margin="1"
+                                   HorizontalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_Small}"
+                                   FontStyle="Italic"
+                                   Foreground="{DynamicResource PpcForeground}"
+                                   Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
+                            <TextBlock.Style>
+                                <Style>
+                                    <Setter Property="TextBlock.Visibility" Value="Visible" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                     Value="">
+                                            <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </StackPanel>
+
                 </StackPanel>
             </Grid>
         </DataTemplate>
