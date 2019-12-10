@@ -292,16 +292,25 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue = this;
 
-            if (this.loadingUnitMovementProvider.IsOnlyUpperPositionOccupied(this.mission.TargetBay))
+            if (this.loadingUnitMovementProvider.IsOnlyTopPositionOccupied(this.mission.TargetBay))
             {
                 // movement is finished
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
-                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
-                if (destination is LoadingUnitLocation.NoLocation)
+                var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+                if (destination is null)
                 {
                     throw new StateMachineException($"Upper position not defined for bay {bay.Number}", null, MessageActor.MachineManager);
                 }
-                this.mission.LoadingUnitDestination = destination;
+                this.mission.LoadingUnitDestination = destination.Location;
+
+                var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                using (var transaction = this.elevatorDataProvider.GetContextTransaction())
+                {
+                    this.baysDataProvider.SetLoadingUnit(destination.Id, this.mission.LoadingUnitId);
+                    this.baysDataProvider.SetLoadingUnit(origin.Id, null);
+                    transaction.Commit();
+                }
+
                 var newMessageData = new MoveLoadingUnitMessageData(
                     this.mission.MissionType,
                     this.mission.LoadingUnitSource,

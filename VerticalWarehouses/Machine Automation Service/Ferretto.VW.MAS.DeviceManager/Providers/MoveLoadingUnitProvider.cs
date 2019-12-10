@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IElevatorProvider elevatorProvider;
 
+        private readonly ISensorsProvider sensorsProvider;
+
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
 
         private readonly IShutterProvider shutterProvider;
@@ -40,6 +42,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ICellsProvider cellsProvider,
             IElevatorProvider elevatorProvider,
             IElevatorDataProvider elevatorDataProvider,
+            ISensorsProvider sensorsProvider,
             ISetupProceduresDataProvider setupProceduresDataProvider,
             IShutterProvider shutterProvider,
             IEventAggregator eventAggregator)
@@ -51,6 +54,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.elevatorProvider = elevatorProvider ?? throw new ArgumentNullException(nameof(elevatorProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.shutterProvider = shutterProvider ?? throw new ArgumentNullException(nameof(shutterProvider));
+            this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.setupProceduresDataProvider = setupProceduresDataProvider ?? throw new ArgumentNullException(nameof(setupProceduresDataProvider));
         }
 
@@ -153,6 +157,42 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
+        public ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location)
+        {
+            var openShutter = ShutterPosition.NotSpecified;
+            if (bay.Shutter.Type != ShutterType.NotSpecified)
+            {
+                var shutterPosition = this.sensorsProvider.GetShutterPosition(bay.Number);
+                if (bay.Shutter.Type == ShutterType.TwoSensors)
+                {
+                    if (shutterPosition != ShutterPosition.Opened)
+                    {
+                        openShutter = ShutterPosition.Opened;
+                    }
+                }
+                else
+                {
+                    var bayPosition = bay.Positions.FirstOrDefault(x => x.Location == location);
+                    if (bayPosition is null)
+                    {
+                        // TODO: throw an exception?
+                        openShutter = ShutterPosition.Opened;
+                    }
+                    else if (bayPosition.IsUpper
+                        && shutterPosition != ShutterPosition.Opened)
+                    {
+                        openShutter = ShutterPosition.Opened;
+                    }
+                    else if (!bayPosition.IsUpper
+                        && shutterPosition == ShutterPosition.Closed)
+                    {
+                        openShutter = ShutterPosition.Half;
+                    }
+                }
+            }
+            return openShutter;
+        }
+
         public double? GetSourceHeight(Mission moveData)
         {
             double? targetPosition = null;
@@ -189,9 +229,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return targetPosition;
         }
 
-        public bool IsOnlyUpperPositionOccupied(BayNumber bayNumber)
+        public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
         {
-            return this.carouselProvider.IsOnlyUpperPositionOccupied(bayNumber);
+            return this.carouselProvider.IsOnlyBottomPositionOccupied(bayNumber);
+        }
+
+        public bool IsOnlyTopPositionOccupied(BayNumber bayNumber)
+        {
+            return this.carouselProvider.IsOnlyTopPositionOccupied(bayNumber);
         }
 
         public bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore)
@@ -224,14 +269,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, bool openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
             //TODO***********REFACTOR THIS
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, openShutter, measure, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (openShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
 
-            if (openShutter)
+            if (openShutter != ShutterPosition.NotSpecified)
             {
-                this.shutterProvider.MoveTo(ShutterPosition.Opened, requestingBay, sender);
+                this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
             }
         }
 

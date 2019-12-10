@@ -8,12 +8,13 @@ namespace Ferretto.VW.MAS.DataLayer
     {
         #region Constructors
 
-        public ElevatorPositionMessageData(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId)
+        public ElevatorPositionMessageData(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper)
         {
             this.VerticalPosition = verticalPosition;
             this.HorizontalPosition = horizontalPosition;
             this.CellId = cellId;
             this.BayPositionId = bayPositionId;
+            this.BayPositionUpper = bayPositionUpper;
         }
 
         #endregion
@@ -21,6 +22,8 @@ namespace Ferretto.VW.MAS.DataLayer
         #region Properties
 
         public int? BayPositionId { get; }
+
+        public bool? BayPositionUpper { get; }
 
         public int? CellId { get; }
 

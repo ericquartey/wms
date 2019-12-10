@@ -2,6 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls"
                     xmlns:converters="clr-namespace:Ferretto.VW.App.Controls.Converters"
+                    xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
                     xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources">
 
     <Style x:Key="{x:Type controls:PpcButton}"
@@ -43,6 +44,27 @@
                                              Opacity="0.2"
                                              Visibility="{Binding IsBusy, Converter={StaticResource BTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
+                                <icon:PackIconMaterialLight Grid.ColumnSpan="2"
+                                                            Width="32"
+                                                            Height="32"
+                                                            Margin="5"
+                                                            HorizontalAlignment="Center"
+                                                            VerticalAlignment="Center"
+                                                            Foreground="{TemplateBinding Foreground}"
+                                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <icon:PackIconMaterialLight.Style>
+                                        <Style TargetType="{x:Type icon:PackIconMaterialLight}">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                            <Style.Triggers>
+                                                <Trigger Property="Tag" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </icon:PackIconMaterialLight.Style>
+                                </icon:PackIconMaterialLight>
+
                                 <controls:PpcIcon x:Name="PpcButton_Icon"
                                                   Height="24"
                                                   Margin="15,5"
@@ -53,7 +75,7 @@
 
                                 <TextBlock x:Name="PpcButton_Text"
                                            Grid.Column="1"
-                                           Margin="10,5"
+                                           Margin="10,0"
                                            HorizontalAlignment="Stretch"
                                            VerticalAlignment="Center"
                                            FontSize="{TemplateBinding FontSize}"
@@ -62,11 +84,18 @@
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Setter Property="TextAlignment" Value="Center" />
+                                            <Setter Property="Visibility" Value="Visible" />
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
                                                              Value="Visible">
                                                     <Setter Property="TextAlignment" Value="Left" />
                                                 </DataTrigger>
+                                                <Trigger Property="Text" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
@@ -129,6 +158,9 @@
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
         <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Control.BorderThickness" Value="0,0,0,10" />
+            </Trigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="BorderThickness" Value="0,0,0,10" />
             </Trigger>
@@ -248,14 +280,16 @@
     <Style x:Key="PpcButtonStopStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Background" Value="#E1323F" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsDarkThemeActive}"
                          Value="False">
-                <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
                 <Setter Property="Background" Value="#E1323F" />
             </DataTrigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            </Trigger>
         </Style.Triggers>
     </Style>
 </ResourceDictionary>

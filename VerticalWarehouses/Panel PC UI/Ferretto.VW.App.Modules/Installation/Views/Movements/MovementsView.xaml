@@ -34,14 +34,14 @@
             <controls:CardSensor Grid.Row="0"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Id}"
                                  CardText="Posizione"
-                                 CardValue="{Binding SensorsService.ElevatorLogicalPosition, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardValue="{Binding SensorsService.ElevatorLogicalPosition}"
                                  Type="Position" />
             <controls:CardSensor Grid.Row="1"
                                  Width="250"
                                  Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Code, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardBadge2="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardBadgeLabel1="Elevatore"
                                  CardBadgeLabel2="Posizione"
@@ -50,6 +50,7 @@
             <controls:CardSensor Grid.Row="2"
                                  Width="250"
                                  Margin="0,0,15,5"
+                                 CardDescription="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}"
                                  CardSensorLabel1="Zero"
                                  CardSensorLabel2=""
                                  CardSensorLabel3=""
@@ -61,6 +62,7 @@
             <controls:CardSensor Grid.Row="3"
                                  Width="250"
                                  Margin="0,0,15,5"
+                                 CardDescription="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}"
                                  CardSensorLabel1="Zero"
                                  CardSensorLabel2="Front"
                                  CardSensorLabel3="Back"
@@ -74,9 +76,10 @@
                                  Margin="0,0,15,5"
                                  CardBadge1="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  CardBadge2="{Binding SensorsService.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
+                                 CardDescription="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}"
                                  CardSensorLabel1="Zero"
-                                 CardSensorLabel2="Sopra"
-                                 CardSensorLabel3="Sotto"
+                                 CardSensorLabel2="Alta"
+                                 CardSensorLabel3="Bassa"
                                  CardText="Baia"
                                  CardValue="{Binding SensorsService.BayChainPosition, StringFormat={}{0:F2}, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}"
                                  Sensor1="{Binding SensorsService.BayZeroChain}"
@@ -731,13 +734,14 @@
                                             Command="{Binding StopMovingCommand}"
                                             Content="{x:Static res:InstallationApp.Stop}" />
 
-
                         <controls:PpcButton Grid.Row="6"
                                             Grid.Column="3"
+                                            Width="60"
                                             Margin="0"
                                             HorizontalAlignment="Right"
                                             Command="{Binding GoToStatusSensorsCommand}"
-                                            Content="{x:Static res:InstallationApp.SensorsState}" />
+                                            Foreground="{StaticResource FerrettoPureWhite}"
+                                            Kind="LightbulbOn"/>
                     </Grid>
                 </Grid>
             </Border>

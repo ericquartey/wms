@@ -112,7 +112,15 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        public bool IsOnlyUpperPositionOccupied(BayNumber bayNumber)
+        public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
+        {
+            return (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber)
+                && !this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                && this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                );
+        }
+
+        public bool IsOnlyTopPositionOccupied(BayNumber bayNumber)
         {
             return (this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber)
                 && this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
@@ -195,9 +203,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
 
             var bay = this.baysDataProvider.GetByNumber(bayNumber);
+
+            // we use compensation for small errors only (large errors come from new database)
+            var compensation = this.baysDataProvider.GetChainPosition(bayNumber) - bay.Carousel.LastIdealPosition;
+            if (Math.Abs(compensation) > Math.Abs(bay.ChainOffset))
+            {
+                this.logger.LogWarning($"Do not use compensation for large errors {compensation} > offset {bay.ChainOffset}");
+                compensation = 0;
+            }
             var targetPosition = bay.Carousel.ElevatorDistance;
 
-            targetPosition *= direction is VerticalMovementDirection.Up ? 1 : -1;
+            targetPosition = -compensation + (targetPosition * (direction is VerticalMovementDirection.Up ? 1 : -1));
 
             var procedureParameters = this.baysDataProvider.GetAssistedMovementsCarousel(bayNumber);
 
