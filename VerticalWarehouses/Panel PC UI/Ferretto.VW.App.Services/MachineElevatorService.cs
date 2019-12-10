@@ -77,7 +77,8 @@ namespace Ferretto.VW.App.Services
                     this.Position.Vertical,
                     this.Position.Horizontal,
                     this.Position.CellId,
-                    this.Position.BayPositionId);
+                    this.Position.BayPositionId,
+                    this.Position.BayPositionUpper);
 
                 this.eventAggregator
                     .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
@@ -107,7 +108,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
         {
-            this.logger.Trace($"Elevator X={e.HorizontalPosition:0.0}; Y={e.VerticalPosition:0.0}; Cell={e.CellId}; BayPosition={e.BayPositionId};");
+            this.logger.Trace($"Elevator X={e.HorizontalPosition:0.0}; Y={e.VerticalPosition:0.0}; Cell={e.CellId}; BayPosition={e.BayPositionId}; BayPositionUpper={e.BayPositionUpper};");
 
             this.Position = new ElevatorPosition
             {
@@ -115,6 +116,7 @@ namespace Ferretto.VW.App.Services
                 Horizontal = e.HorizontalPosition,
                 CellId = e.CellId,
                 BayPositionId = e.BayPositionId,
+                BayPositionUpper = e.BayPositionUpper,
             };
         }
 

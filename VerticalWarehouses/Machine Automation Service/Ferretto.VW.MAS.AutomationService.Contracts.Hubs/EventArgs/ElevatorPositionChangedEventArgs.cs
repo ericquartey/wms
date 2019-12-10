@@ -4,12 +4,13 @@
     {
         #region Constructors
 
-        public ElevatorPositionChangedEventArgs(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId)
+        public ElevatorPositionChangedEventArgs(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper)
         {
             this.VerticalPosition = verticalPosition;
             this.HorizontalPosition = horizontalPosition;
             this.CellId = cellId;
             this.BayPositionId = bayPositionId;
+            this.BayPositionUpper = bayPositionUpper;
         }
 
         #endregion
@@ -17,6 +18,8 @@
         #region Properties
 
         public int? BayPositionId { get; }
+
+        public bool? BayPositionUpper { get; }
 
         public int? CellId { get; }
 

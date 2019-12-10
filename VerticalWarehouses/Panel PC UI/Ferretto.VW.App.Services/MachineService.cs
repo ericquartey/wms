@@ -487,7 +487,8 @@ namespace Ferretto.VW.App.Services
                            Horizontal = dataElevatorPosition.HorizontalPosition,
                            Vertical = dataElevatorPosition.VerticalPosition,
                            BayPositionId = dataElevatorPosition.BayPositionId,
-                           CellId = dataElevatorPosition.CellId
+                           CellId = dataElevatorPosition.CellId,
+                           BayPositionUpper = dataElevatorPosition.BayPositionUpper
                        });
                 if (this.MachineStatus.ElevatorLogicalPosition == this.sensorsService?.ElevatorLogicalPosition)
                 {

@@ -488,7 +488,8 @@ namespace Ferretto.VW.App.Services
                     Horizontal = e.HorizontalPosition,
                     Vertical = e.VerticalPosition,
                     BayPositionId = e.BayPositionId,
-                    CellId = e.CellId
+                    CellId = e.CellId,
+                    BayPositionUpper = e.BayPositionUpper
                 });
         }
 
