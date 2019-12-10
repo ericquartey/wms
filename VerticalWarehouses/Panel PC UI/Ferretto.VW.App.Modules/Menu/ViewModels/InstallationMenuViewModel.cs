@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private bool isWaitingForResponse;
 
         private DelegateCommand menuAccessoriesCommand;
@@ -38,9 +40,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public InstallationMenuViewModel()
+        public InstallationMenuViewModel(IMachineSetupStatusWebService machineSetupStatusWebService)
             : base(PresentationMode.Menu)
         {
+            this.machineSetupStatusWebService = machineSetupStatusWebService;
         }
 
         #endregion

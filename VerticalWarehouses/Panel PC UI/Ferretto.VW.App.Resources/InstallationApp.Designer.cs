@@ -3519,7 +3519,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Vertical axis homed.
+        ///   Looks up a localized string similar to Vertical Origin Calibration.
         /// </summary>
         public static string VerticalAxisHomedDone {
             get {
