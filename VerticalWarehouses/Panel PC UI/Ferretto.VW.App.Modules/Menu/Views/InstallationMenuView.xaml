@@ -767,6 +767,10 @@
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
@@ -852,9 +856,56 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                       Text="{x:Static res:InstallationApp.CellPositionDone}" />
+                                       Text="{x:Static res:InstallationApp.CellsControl}" />
                         </StackPanel>
 
+                        <StackPanel Grid.Row="6"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoOrange}"
+                                                   Kind="CloseCircleOutline" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.BayHeightCheck}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="7"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoOrange}"
+                                                   Kind="CloseCircleOutline" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="8"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal">
+                            <icon:PackIconMaterial Width="24"
+                                                   Height="24"
+                                                   VerticalAlignment="Center"
+                                                   BorderThickness="1"
+                                                   Foreground="{DynamicResource FerrettoOrange}"
+                                                   Kind="CloseCircleOutline" />
+                            <TextBlock Margin="15,8"
+                                       HorizontalAlignment="Left"
+                                       VerticalAlignment="Top"
+                                       Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                       Text="{x:Static res:InstallationApp.WeightControl}" />
+                        </StackPanel>
 
                     </Grid>
 
