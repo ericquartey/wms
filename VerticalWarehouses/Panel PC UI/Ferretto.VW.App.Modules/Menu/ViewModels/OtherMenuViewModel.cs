@@ -19,6 +19,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuComunicationWMSCommand;
 
+        private DelegateCommand menuOldCommand;
+
+        private DelegateCommand menuParameterInverterCommand;
+
         private DelegateCommand menuParametersCommand;
 
         private DelegateCommand menuUsersCommand;
@@ -42,6 +46,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             Parameters,
 
+            ParameterInverter,
+
+            Old,
+
             ComunicationWms,
         }
 
@@ -64,8 +72,22 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.ComunicationWms),
                 this.CanExecuteCommand));
 
+        public ICommand MenuOldCommand =>
+                    this.menuOldCommand
+            ??
+            (this.menuOldCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Old),
+                this.CanExecuteCommand));
+
+        public ICommand MenuParameterInverterCommand =>
+            this.menuParameterInverterCommand
+            ??
+            (this.menuParameterInverterCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.ParameterInverter),
+                this.CanExecuteCommand));
+
         public ICommand MenuParametersCommand =>
-                    this.menuParametersCommand
+                            this.menuParametersCommand
             ??
             (this.menuParametersCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Parameters),
@@ -123,20 +145,36 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
+                    case Menu.Old:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.INSTALLATORMENU,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
                     case Menu.Users:
-                        //this.NavigationService.Appear(
-                        //    nameof(Utils.Modules.Installation),
-                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                        //    data: null,
-                        //    trackCurrentView: true);
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.USERS,
+                            data: null,
+                            trackCurrentView: true);
                         break;
 
                     case Menu.ComunicationWms:
-                        //this.NavigationService.Appear(
-                        //    nameof(Utils.Modules.Installation),
-                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                        //    data: null,
-                        //    trackCurrentView: true);
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.COMUNICATIONWMS,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.ParameterInverter:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.PARAMETERINVERTER,
+                            data: null,
+                            trackCurrentView: true);
                         break;
 
                     default:
@@ -158,6 +196,9 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
             this.menuUsersCommand?.RaiseCanExecuteChanged();
+            this.menuOldCommand?.RaiseCanExecuteChanged();
+            this.menuParametersCommand?.RaiseCanExecuteChanged();
+            this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

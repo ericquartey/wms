@@ -10,11 +10,15 @@
 
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
+        public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
+
+        public const string PARAMETERINVERTER = "ParameterInverterViewModel";
 
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
@@ -25,6 +29,8 @@
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
 
         public const string UPDATE = "UpdateViewModel";
+
+        public const string USERS = "UsersViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 

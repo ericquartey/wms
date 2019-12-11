@@ -30,7 +30,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuMovementsCommand;
 
-        private DelegateCommand menuOldCommand;
 
         private DelegateCommand menuOtherCommand;
 
@@ -64,7 +63,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             Other,
 
-            Old,
         }
 
         #endregion
@@ -120,13 +118,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
                 this.CanExecuteMovementsCommand));
-
-        public ICommand MenuOldCommand =>
-            this.menuOldCommand
-            ??
-            (this.menuOldCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Old),
-                this.CanExecuteCommand));
 
         public ICommand MenuOtherCommand =>
             this.menuOtherCommand
@@ -240,14 +231,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.Old:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.INSTALLATORMENU,
-                            data: null,
-                            trackCurrentView: true);
-                        break;
-
                     case Menu.Other:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Menu),
@@ -322,7 +305,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuCellsCommand?.RaiseCanExecuteChanged();
             this.menuElevatorCommand?.RaiseCanExecuteChanged();
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.menuOldCommand?.RaiseCanExecuteChanged();
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
             this.menuOtherCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
