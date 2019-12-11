@@ -51,10 +51,27 @@
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="0,0,15,15"
-                                Command="{Binding MenuCompactionCommand}"
                                 HorizontalAlignment="Left"
+                                Command="{Binding MenuCompactionCommand}"
                                 Content="Compattazione" />
 
+            <controls:PpcButton Grid.Row="2"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command=""
+                                Content="Parametri" />
+
+            <controls:PpcButton Grid.Row="3"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command=""
+                                Content="Backup/Restore" />
+
+            <controls:PpcButton Grid.Row="4"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command=""
+                                Content="Aggiornamento" />
 
 
         </Grid>

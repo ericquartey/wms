@@ -31,7 +31,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Allarm" />
+                   Text="Allarmi" />
 
         <views:AboutMenuNavigationView Grid.RowSpan="2" />
 

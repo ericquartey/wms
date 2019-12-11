@@ -17,9 +17,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand menuBackupRestoreCommand;
+
         private DelegateCommand menuCompactionCommand;
 
         private DelegateCommand menuMaintenanceCommand;
+
+        private DelegateCommand menuParametersCommand;
+
+        private DelegateCommand menuUpdateCommand;
 
         #endregion
 

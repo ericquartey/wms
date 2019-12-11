@@ -99,15 +99,21 @@
                 <StackPanel Margin="5,0,5,0">
                     <TextBlock HorizontalAlignment="Left"
                                VerticalAlignment="Top"
-                               Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                               FontFamily="{DynamicResource VWAPP_TitleFont}"
+                               FontSize="{DynamicResource FontSize_Very_High}"
+                               FontWeight="Light"
+                               Foreground="{DynamicResource FerrettoPureWhite}"
                                Text="{x:Static res:Menu.InstallationStatus}" />
 
-                    <TextBlock HorizontalAlignment="Left"
+                    <TextBlock Margin="0,20,0,0"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Top"
+                               FontFamily="{DynamicResource VWAPP_TitleFont}"
                                Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
                                Text="Stato installazione incompleto. Eseguite 4/10 procedure" />
 
-                    <Grid HorizontalAlignment="Stretch"
+                    <Grid Margin="0,5,0,0"
+                          HorizontalAlignment="Stretch"
                           VerticalAlignment="Top">
 
                         <Grid.ColumnDefinitions>
@@ -125,9 +131,10 @@
                                                  Value="{Binding Completion, FallbackValue=60}" />
 
                         <TextBlock Grid.Column="1"
-                                   Margin="15"
+                                   Margin="15,0,0,0"
                                    HorizontalAlignment="Left"
                                    VerticalAlignment="Top"
+                                   FontFamily="{DynamicResource VWAPP_TitleFont}"
                                    Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
                                    Text="40%" />
                     </Grid>

@@ -27,8 +27,8 @@
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -225,8 +225,8 @@
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -417,16 +417,16 @@
                 <TextBlock Margin="4,0"
                            VerticalAlignment="Center"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <TextBlock Grid.Column="2"
                            Margin="0"
                            VerticalAlignment="Center"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardDescription}" />
 
                 <Grid Grid.Row="1"
@@ -500,8 +500,8 @@
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <StackPanel Grid.Row="1"
@@ -600,8 +600,8 @@
                 <TextBlock Grid.ColumnSpan="2"
                            Margin="4,0"
                            FontSize="{StaticResource FontSize_Normal}"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource PpcForeground}"
+                           FontWeight="Normal"
+                           Foreground="{DynamicResource FerrettoLightGray}"
                            Text="{Binding ElementName=Card, Path=CardText}" />
 
                 <TextBlock Grid.Row="1"

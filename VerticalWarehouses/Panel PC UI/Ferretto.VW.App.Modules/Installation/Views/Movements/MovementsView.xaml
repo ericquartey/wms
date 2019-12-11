@@ -108,36 +108,39 @@
 
             <Grid x:Name="GridTitle">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Margin="5,0,0,5"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Bottom"
-                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="{Binding Title}" />
-
-                <controls:PpcButton Grid.Column="1"
-                                    Margin="0,0,1,0"
+                <controls:PpcButton Grid.Column="0"
+                                    Width="250"
+                                    Height="45"
+                                    Margin="5,-5,5,0"
+                                    HorizontalContentAlignment="Left"
                                     Command="{Binding GoToMovementsGuidedCommand}"
-                                    Content="Guidati"
+                                    Content="{x:Static res:InstallationApp.MovementsGuided}"
+                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                    FontSize="{DynamicResource FontSize_Very_High}"
+                                    FontWeight="Light"
                                     IsActive="{Binding IsMovementsGuided}"
                                     Style="{DynamicResource PpcButtonMovementsGuidedTabStyle}" />
 
-                <controls:PpcButton Grid.Column="2"
-                                    Margin="1,0,0,0"
+                <controls:PpcButton Grid.Column="1"
+                                    Width="260"
+                                    Height="45"
+                                    Margin="5,-5,0,0"
                                     Command="{Binding GoToMovementsManualCommand}"
-                                    Content="Manuali"
+                                    Content="{x:Static res:InstallationApp.MovementsManual}"
+                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
+                                    FontSize="{DynamicResource FontSize_Very_High}"
+                                    FontWeight="Light"
                                     IsActive="{Binding IsMovementsManual}"
                                     Style="{DynamicResource PpcButtonMovementsManualTabStyle}" />
             </Grid>
 
             <Border Grid.Row="1"
-                    Margin="0,5,0,0"
-                    BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="0,1,0,0">
+                    Margin="0,5,0,0">
                 <!--<Border.Style>
                     <Style TargetType="{x:Type Border}">
                         <Setter Property="BorderThickness" Value="0,3,0,0" />
@@ -748,7 +751,8 @@
                                                 HorizontalAlignment="Right"
                                                 BorderBrush="{DynamicResource FerrettoRed}"
                                                 Foreground="{StaticResource FerrettoPureWhite}"
-                                                KindFontAwesome="LockOpenSolid" />
+                                                Kind="Shield"
+                                                Visibility="{Binding IsMovementsManual, Converter={StaticResource BTVC}}" />
                             <controls:PpcButton Width="60"
                                                 Margin="15,0,0,0"
                                                 HorizontalAlignment="Right"
