@@ -325,13 +325,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.maxKnownIndexSelection--;
             }
 
-            if (this.currentItemIndex > (DefaultPageSize - ItemsToCheckBeforeLoad))
-            {
-                this.IsSearching = true;
-                this.tokenSource = new CancellationTokenSource();
-                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
-            }
-
             this.SetSelectedItem();
         }
 
