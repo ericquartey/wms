@@ -232,8 +232,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                     case Menu.About:
                         this.NavigationService.Appear(
-                            nameof(Utils.Modules.Menu),
-                            Utils.Modules.Menu.ABOUT_MENU,
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.About.GENERAL,
                             data: null,
                             trackCurrentView: true);
                         break;

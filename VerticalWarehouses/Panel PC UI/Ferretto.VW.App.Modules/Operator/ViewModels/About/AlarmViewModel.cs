@@ -7,9 +7,9 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Prism.Commands;
 
-namespace Ferretto.VW.App.Menu.ViewModels
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    internal sealed class AboutMenuViewModel : BaseMainViewModel
+    internal sealed class AlarmViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -19,8 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public AboutMenuViewModel()
-            : base(PresentationMode.Menu)
+        public AlarmViewModel()
+            : base(PresentationMode.Operator)
         {
         }
 

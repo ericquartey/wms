@@ -5,10 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Prism.Commands;
 
-namespace Ferretto.VW.App.Menu.ViewModels
+namespace Ferretto.VW.App.Operator.ViewModels
 {
-    internal sealed class OperationsMenuViewModel : BaseMainViewModel
+    internal sealed class StatisticsViewModel : BaseMainViewModel
     {
         #region Fields
 
@@ -18,8 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public OperationsMenuViewModel()
-            : base(PresentationMode.Menu)
+        public StatisticsViewModel()
+            : base(PresentationMode.Operator)
         {
         }
 
@@ -51,8 +52,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             await base.OnAppearedAsync();
 
             this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
         }
 
         private void RaiseCanExecuteChanged()

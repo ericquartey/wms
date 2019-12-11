@@ -4,15 +4,11 @@
     {
         #region Fields
 
-        public const string ABOUT_MENU = "AboutMenuViewModel";
-
         public const string INSTALLATION_MENU = "InstallationMenuViewModel";
 
         public const string MAIN_MENU = "MainMenuViewModel";
 
         public const string MAINTENANCE_MENU = "MaintenanceMenuViewModel";
-
-        public const string OPERATIONS_MENU = "OperationsMenuViewModel";
 
         #endregion
 

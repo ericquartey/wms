@@ -45,11 +45,6 @@
                                     Command="{Binding LoadingUnitsCommand}"
                                     Content="Gestione cassetto" />
 
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="15"
-                                    Command="{Binding BayFirstLoadingUnitCommand}"
-                                    Content="Inserimento primo cassetto" />
-
                 <controls:PpcButton Grid.Row="2"
                                     Margin="15"
                                     Command="{Binding InsertionLoadingUnitsCommand}"

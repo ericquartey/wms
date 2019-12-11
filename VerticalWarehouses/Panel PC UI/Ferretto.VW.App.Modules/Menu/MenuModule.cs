@@ -46,11 +46,9 @@ namespace Ferretto.VW.App.Modules.Menu
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<AboutMenuView>();
             containerRegistry.RegisterForNavigation<InstallationMenuView>();
             containerRegistry.RegisterForNavigation<MainMenuView>();
             containerRegistry.RegisterForNavigation<MaintenanceMenuView>();
-            containerRegistry.RegisterForNavigation<OperationsMenuView>();
 
             containerRegistry.RegisterForNavigation<AccessoriesMenuView>();
             containerRegistry.RegisterForNavigation<BaysMenuView>();

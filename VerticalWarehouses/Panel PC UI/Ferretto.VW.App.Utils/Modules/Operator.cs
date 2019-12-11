@@ -14,6 +14,23 @@
 
         #region Classes
 
+        public static class About
+        {
+            #region Fields
+
+            public const string ALLARM = "AlarmViewModel";
+
+            public const string COUNTERS = "CountersViewModel";
+
+            public const string GENERAL = "GeneralViewModel";
+
+            public const string NAVIGATION = "AboutMenuNavigationViewModel";
+
+            public const string STATISTICS = "StatisticsViewModel";
+
+            #endregion
+        }
+
         public static class ItemOperations
         {
             #region Fields

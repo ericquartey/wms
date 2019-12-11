@@ -1,10 +1,10 @@
-﻿namespace Ferretto.VW.App.Menu.Views
+﻿namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class AboutMenuView
+    public partial class CountersView
     {
         #region Constructors
 
-        public AboutMenuView()
+        public CountersView()
         {
             this.InitializeComponent();
         }

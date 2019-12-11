@@ -41,11 +41,34 @@
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\AboutMenuView.xaml" />
+    <None Remove="Views\About\AlarmView.xaml" />
+    <None Remove="Views\About\CountersView.xaml" />
+    <None Remove="Views\About\GeneralView.xaml" />
+    <None Remove="Views\About\StatisticsView.xaml" />
+  </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts\Ferretto.VW.MAS.AutomationService.Contracts.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Controls\Ferretto.VW.App.Controls.csproj" />
     <ProjectReference Include="..\..\Ferretto.VW.App.Utils\Ferretto.VW.Utils.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Update="Views\About\CountersView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\About\StatisticsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\About\AlarmView.xaml.cs">
+      <DependentUpon>AlarmView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\About\GeneralView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
   </ItemGroup>
  
   <ItemGroup>
