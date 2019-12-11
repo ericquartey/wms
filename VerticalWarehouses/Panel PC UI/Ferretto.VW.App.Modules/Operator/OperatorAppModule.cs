@@ -89,6 +89,7 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.RegisterForNavigation<CountersView>();
             containerRegistry.RegisterForNavigation<GeneralView>();
             containerRegistry.RegisterForNavigation<StatisticsView>();
+            containerRegistry.RegisterForNavigation<DiagnosticsView>();
 
             containerRegistry.Register<ICustomControlMaintenanceDataGridViewModel, CustomControlMaintenanceDataGridViewModel>();
             containerRegistry.Register<ICustomControlMaintenanceDetailDataGridViewModel, CustomControlMaintenanceDetailDataGridViewModel>();

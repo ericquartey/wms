@@ -18,6 +18,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand countersCommand;
 
+        private DelegateCommand diagnosticsCommand;
+
         private DelegateCommand generalCommand;
 
         private bool isWaitingForResponse;
@@ -46,6 +48,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             General,
 
             Statistics,
+
+            Diagnostincs,
         }
 
         #endregion
@@ -64,6 +68,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             ??
             (this.countersCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.Counters),
+                this.CanExecuteCommand));
+
+        public ICommand DiagnosticsCommand =>
+            this.diagnosticsCommand
+            ??
+            (this.diagnosticsCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.Diagnostincs),
                 this.CanExecuteCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -145,6 +156,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Operator),
                         Utils.Modules.Operator.About.STATISTICS,
+                        data: null,
+                        trackCurrentView: false);
+                    break;
+
+                case Menu.Diagnostincs:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.About.DIAGNOSTICS,
                         data: null,
                         trackCurrentView: false);
                     break;
