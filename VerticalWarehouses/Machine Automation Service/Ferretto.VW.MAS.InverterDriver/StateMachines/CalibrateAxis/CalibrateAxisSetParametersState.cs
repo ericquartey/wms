@@ -20,9 +20,13 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         // TODO move following parameters into configuration? si
         private const int HIGH_SPEED = 2000;
 
+        private const int HIGH_SPEED_BAY = 8000;
+
         private const short HORIZONTAL_SENSOR = 548;    // MF2ID
 
         private const int LOW_SPEED = 500;
+
+        private const int LOW_SPEED_BAY = 2000;
 
         private const short VERTICAL_SENSOR = 527;      // S3IND
 
@@ -114,6 +118,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
                 var isOneTonMachine = this.ParentStateMachine.GetRequiredService<IMachineProvider>().IsOneTonMachine();
 
                 this.Logger.LogTrace($"2:message={message}:ID Parameter={message.ParameterId}");
+
+                int speedValueToLog;
                 switch (message.ParameterId)
                 {
                     case InverterParameterId.HomingCalibration:
@@ -133,12 +139,31 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                     case InverterParameterId.HomingSensor:
                         {
+                            int fastSpeed;
+                            if (this.axisToCalibrate == Axis.Horizontal)
+                            {
+                                speedValueToLog = HIGH_SPEED;
+                                fastSpeed = HIGH_SPEED;
+                                //fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(HIGH_SPEED, Orientation.Horizontal);
+                            }
+                            else if (this.axisToCalibrate == Axis.BayChain)
+                            {
+                                speedValueToLog = HIGH_SPEED_BAY;
+                                fastSpeed = (int)(HIGH_SPEED_BAY * this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                            }
+                            else
+                            {
+                                speedValueToLog = HIGH_SPEED;
+                                fastSpeed = HIGH_SPEED;
+                                //fastSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(HIGH_SPEED, Orientation.Vertical);
+                            }
+
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingFastSpeed,
-                                HIGH_SPEED);
+                                fastSpeed);
 
-                            this.Logger.LogDebug($"Set Homing Fast Speed={HIGH_SPEED}, Axis={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Fast Speed={speedValueToLog} mm/s [{fastSpeed} impulses], Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                             break;
@@ -183,12 +208,31 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
 
                     case InverterParameterId.HomingOffset:
                         {
+                            int creepSpeed;
+                            if (this.axisToCalibrate == Axis.Horizontal)
+                            {
+                                speedValueToLog = LOW_SPEED;
+                                creepSpeed = LOW_SPEED;
+                                //creepSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(LOW_SPEED, Orientation.Horizontal);
+                            }
+                            else if (this.axisToCalibrate == Axis.BayChain)
+                            {
+                                speedValueToLog = LOW_SPEED_BAY;
+                                creepSpeed = (int)(LOW_SPEED_BAY * this.ParentStateMachine.GetRequiredService<IBaysDataProvider>().GetResolution(this.InverterStatus.SystemIndex));
+                            }
+                            else
+                            {
+                                speedValueToLog = LOW_SPEED;
+                                creepSpeed = LOW_SPEED;
+                                //creepSpeed = this.ParentStateMachine.GetRequiredService<IInvertersProvider>().ConvertMillimetersToPulses(LOW_SPEED, Orientation.Vertical);
+                            }
+
                             var inverterMessage = new InverterMessage(
                                 this.InverterStatus.SystemIndex,
                                 (short)InverterParameterId.HomingCreepSpeed,
-                                LOW_SPEED);
+                                creepSpeed);
 
-                            this.Logger.LogDebug($"Set Homing Low Speed={LOW_SPEED}, Axis={this.axisToCalibrate}");
+                            this.Logger.LogDebug($"Set Homing Creep Speed={speedValueToLog} mm/s [{creepSpeed} impulses], Axis={this.axisToCalibrate}");
 
                             this.ParentStateMachine.EnqueueCommandMessage(inverterMessage);
                             break;

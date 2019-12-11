@@ -147,29 +147,47 @@ namespace Ferretto.VW.MAS.InverterDriver
                 targetPosition = this.ConvertMillimetersToPulses(position, axisOrientation);
             }
 
-            var targetAcceleration = positioningData.TargetAcceleration
-                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
-                .ToArray();
+            int[] targetAcceleration; int[] targetDeceleration;
+            int[] targetSpeed; int[] switchPosition;
 
-            var targetDeceleration = positioningData.TargetDeceleration
-                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
-                .ToArray();
-
-            var targetSpeed = positioningData.TargetSpeed
-                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
-                .ToArray();
-
-            var switchPosition = positioningData.SwitchPosition
-                .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
-                .ToArray();
+            if (positioningData.AxisMovement == Axis.BayChain)
+            {
+                targetAcceleration = positioningData.TargetAcceleration
+                    .Select(value => this.ConvertMillimetersToPulses(value, inverter))
+                    .ToArray();
+                targetDeceleration = positioningData.TargetDeceleration
+                    .Select(value => this.ConvertMillimetersToPulses(value, inverter))
+                    .ToArray();
+                targetSpeed = positioningData.TargetSpeed
+                    .Select(value => this.ConvertMillimetersToPulses(value, inverter))
+                    .ToArray();
+                switchPosition = positioningData.SwitchPosition
+                    .Select(value => this.ConvertMillimetersToPulses(value, inverter))
+                    .ToArray();
+            }
+            else
+            {
+                targetAcceleration = positioningData.TargetAcceleration
+                    .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                    .ToArray();
+                targetDeceleration = positioningData.TargetDeceleration
+                    .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                    .ToArray();
+                targetSpeed = positioningData.TargetSpeed
+                    .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                    .ToArray();
+                switchPosition = positioningData.SwitchPosition
+                    .Select(value => this.ConvertMillimetersToPulses(value, axisOrientation))
+                    .ToArray();
+            }
 
             var direction = (int)((positioningData.Direction == HorizontalMovementDirection.Forwards) ? InverterMovementDirection.Forwards : InverterMovementDirection.Backwards);
 
             this.logger.LogDebug($"Direction: {positioningData.Direction}");
-            this.logger.LogDebug($"Position:\t    Speed\t    Acceleration");
+            this.logger.LogDebug($"Position:\t    Speed\t    Acceleration\t    Deceleration");
             for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
             {
-                this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2");
+                this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2,\t {positioningData.TargetDeceleration[i]} mm/s2");
             }
 
             positioningFieldData = new InverterPositioningFieldMessageData(
@@ -292,6 +310,29 @@ namespace Ferretto.VW.MAS.InverterDriver
                 64 * (m + 1) * (grossWeight * Math.Pow(properties.PulleyDiameter, 2) * properties.HalfShaftLength)
                 /
                 (Math.PI * Math.Pow(properties.ShaftDiameter, 4) * m * properties.ShaftElasticity);
+        }
+
+        private int ConvertMillimetersToPulses(double millimeters, IInverterStatusBase inverter)
+        {
+            return (int)Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex) * millimeters);
+        }
+
+        private double ConvertPulsesToMillimeters(int pulses, IInverterStatusBase inverter)
+        {
+            if (pulses == 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(pulses), "Pulses must be different from zero.");
+            }
+
+            var resolution = Math.Round(this.baysDataProvider.GetResolution(inverter.SystemIndex));
+
+            if (resolution == 0)
+            {
+                throw new InvalidOperationException(
+                    $"Configured inverter {inverter.SystemIndex} encoder resolution is zero, therefore it is not possible to convert pulses to millimeters.");
+            }
+
+            return pulses / resolution;
         }
 
         private void OnDataLayerReady()

@@ -471,9 +471,13 @@
                     }
                 },
                 "EmptyLoadMovement": {
+                    "Acceleration": 1,
+                    "Deceleration": 1,
+                    "Speed": 1
                 },
                 "FullLoadMovement": {
                     "Acceleration": 200,
+                    "Deceleration": 500,
                     "Speed": 110
                 },
                 "Carousel": {
