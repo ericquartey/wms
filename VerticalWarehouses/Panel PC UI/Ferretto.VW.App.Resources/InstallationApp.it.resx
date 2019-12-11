@@ -1337,4 +1337,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="PositionOnTop" xml:space="preserve">
     <value>Alta</value>
   </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Taratura barriera</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Sicurezza</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Sensori di sicurezza</value>
+  </data>
 </root>

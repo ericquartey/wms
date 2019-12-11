@@ -50,7 +50,7 @@
                                            Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay1}"
-                                           Text="{x:Static res:InstallationApp.BayCalibration}" />
+                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay1}"
                                            Text="{x:Static res:InstallationApp.ShutterSensorA}"
@@ -80,7 +80,7 @@
                                            Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay2}"
-                                           Text="{x:Static res:InstallationApp.BayCalibration}" />
+                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay2}"
                                            Text="{x:Static res:InstallationApp.ShutterSensorA}"
@@ -109,7 +109,7 @@
                                            Text="{x:Static res:InstallationApp.LUPresentMiddleBottomBay}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.ProfileCalibrationBay3}"
-                                           Text="{x:Static res:InstallationApp.BayCalibration}" />
+                                           Text="{x:Static res:InstallationApp.BarrierCalibration}" />
 
                 <controls:PpcSensorControl SensorState="{Binding Sensors.AGLSensorAShutterBay3}"
                                            Text="{x:Static res:InstallationApp.ShutterSensorA}"

@@ -1403,4 +1403,13 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="PositionOnTop" xml:space="preserve">
     <value>Up</value>
   </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Barrier calibration</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Security</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Security sensors</value>
+  </data>
 </root>

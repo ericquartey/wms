@@ -326,7 +326,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    Utils.Modules.Installation.Sensors.SECURITY,
                     data: null,
                     trackCurrentView: true);
             }

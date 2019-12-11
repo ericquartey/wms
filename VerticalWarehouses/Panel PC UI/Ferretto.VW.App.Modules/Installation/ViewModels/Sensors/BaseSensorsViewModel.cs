@@ -180,6 +180,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.menuItems.Add(
                 new NavigationMenuItem(
+                    Utils.Modules.Installation.Sensors.SECURITY,
+                    nameof(Utils.Modules.Installation),
+                    VW.App.Resources.InstallationApp.Security,
+                    trackCurrentView: false));
+
+            this.menuItems.Add(
+                new NavigationMenuItem(
                     Utils.Modules.Installation.Sensors.VERTICALAXIS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.VerticalAxisButton,
@@ -190,13 +197,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     Utils.Modules.Installation.Sensors.BAYS,
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Bays,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.Sensors.OTHERS,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Others,
                     trackCurrentView: false));
         }
 

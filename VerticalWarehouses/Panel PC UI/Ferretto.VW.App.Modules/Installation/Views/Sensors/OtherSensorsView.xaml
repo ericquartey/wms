@@ -10,7 +10,6 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewModels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
-            d:DataContext="{d:DesignInstance viewModels:IBaseSensorsViewModel}"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
     <Grid Margin="0,30,0,0">
@@ -40,7 +39,7 @@
             <TextBlock Grid.ColumnSpan="2"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{x:Static res:InstallationApp.OtherSensors}" />
+                       Text="{x:Static res:InstallationApp.SecuritySensors}" />
 
             <StackPanel Grid.Row="1"
                         Orientation="Vertical">

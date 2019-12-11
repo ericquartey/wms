@@ -741,6 +741,7 @@
 
                         <StackPanel Grid.Row="6"
                                     Grid.Column="3"
+                                    HorizontalAlignment="Right"
                                     Orientation="Horizontal">
                             <controls:PpcButton Width="60"
                                                 Margin="15,0,0,0"

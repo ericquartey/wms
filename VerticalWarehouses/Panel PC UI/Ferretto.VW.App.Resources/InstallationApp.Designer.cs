@@ -169,6 +169,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Barrier calibration.
+        /// </summary>
+        public static string BarrierCalibration {
+            get {
+                return ResourceManager.GetString("BarrierCalibration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Bay.
         /// </summary>
         public static string Bay {
@@ -2880,11 +2889,29 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Security.
+        /// </summary>
+        public static string Security {
+            get {
+                return ResourceManager.GetString("Security", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Security Function Active.
         /// </summary>
         public static string SecurityFunctionActive {
             get {
                 return ResourceManager.GetString("SecurityFunctionActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Security sensors.
+        /// </summary>
+        public static string SecuritySensors {
+            get {
+                return ResourceManager.GetString("SecuritySensors", resourceCulture);
             }
         }
         

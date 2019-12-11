@@ -558,7 +558,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-
                         this.VerticalTargetPosition = null;
                         this.HorizontalTargetPosition = null;
                         this.BayChainTargetPosition = null;
@@ -772,7 +771,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    Utils.Modules.Installation.Sensors.SECURITY,
                     data: null,
                     trackCurrentView: true);
             }

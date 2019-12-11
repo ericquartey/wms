@@ -172,7 +172,7 @@
 
             public const string NAVIGATION = "SensorsNavigationViewModel";
 
-            public const string OTHERS = "OtherSensorsViewModel";
+            public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
 
