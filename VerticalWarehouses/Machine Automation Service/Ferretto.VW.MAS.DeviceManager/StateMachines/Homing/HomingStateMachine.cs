@@ -163,11 +163,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     break;
 
                 case Axis.Horizontal:
-                case Axis.BayChain:
                     this.machineData.AxisToCalibrate = this.axisToCalibrate;
                     this.machineData.CalibrationType = this.calibration;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = (this.calibration == Calibration.FindSensor) ? 2 : 1;
+                    break;
+
+                case Axis.BayChain:
+                    this.machineData.AxisToCalibrate = this.axisToCalibrate;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:

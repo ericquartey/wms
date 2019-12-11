@@ -52,15 +52,15 @@
                     "TcpPort": 19550
                 },
                 "IsExternal": false,
-                "ChainOffset": -5,
+                "ChainOffset": -6.5,
                 "Number": "BayOne",
                 "Positions": [
                     {
-                        "Height": 350,
+                        "Height": 315,
                         "Location": "InternalBay1Down"
                     },
                     {
-                        "Height": 768,
+                        "Height": 761,
                         "Location": "InternalBay1Up"
                     }
                 ],
@@ -87,18 +87,22 @@
                     }
                 },
                 "EmptyLoadMovement": {
+                    "Acceleration": 1,
+                    "Deceleration": 1,
+                    "Speed": 1
                 },
                 "FullLoadMovement": {
                     "Acceleration": 200,
+                    "Deceleration": 500,
                     "Speed": 110
                 },
                 "Carousel": {
-                    "ElevatorDistance": 460,
+                    "ElevatorDistance": 450.5,
                     "ManualMovements": {
                         "FeedRate": 0.1
                     },
                     "AssistedMovements": {
-                        "FeedRate": 0.2
+                        "FeedRate": 0.7
                     }
                 }
             }
@@ -177,8 +181,8 @@
                         "TargetDistanceAfterZero": 1252
                     },
                     "AssistedMovements": {
-                        "FeedRate": 0.3,
-                        "FeedRateAfterZero": 0.9
+                        "FeedRate": 0.1,
+                        "FeedRateAfterZero": 0.3
                     },
                     "Profiles": [
                         {
