@@ -45,6 +45,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Compaction,
 
             Maintenance,
+
+            BackupRestore,
+
+            Parameters,
+
+            Update,
         }
 
         #endregion
@@ -120,8 +126,24 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                     case Menu.Maintenance:
                         this.NavigationService.Appear(
-                            nameof(Utils.Modules.Menu),
+                            nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.Others.Maintenance.MAIN,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.Parameters:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Parameters.PARAMETERS,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.BackupRestore:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
                             data: null,
                             trackCurrentView: true);
                         break;
