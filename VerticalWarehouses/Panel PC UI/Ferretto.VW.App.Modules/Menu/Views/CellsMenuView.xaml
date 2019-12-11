@@ -78,7 +78,6 @@
                 <controls:PpcButton Margin="15"
                                     Command="{Binding BayFirstLoadingUnitCommand}"
                                     Content="Test celle" />
-                <!--  FROM LODINGUNIT  -->
                 
             </WrapPanel>
         </Grid>

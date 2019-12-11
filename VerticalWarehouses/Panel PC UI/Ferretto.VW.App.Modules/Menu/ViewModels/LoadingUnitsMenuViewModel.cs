@@ -14,8 +14,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
-        private DelegateCommand bayFirstLoadingUnitCommand;
-
         private DelegateCommand extractionLoadingUnitsCommand;
 
         private DelegateCommand insertionLoadingUnitsCommand;
@@ -49,8 +47,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             LoadingUnits,
 
-            BayFirstLoadingUnit,
-
             InsertionLoadingUnits,
 
             MoveLoadingUnits,
@@ -67,13 +63,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Properties
-
-        public ICommand BayFirstLoadingUnitCommand =>
-            this.bayFirstLoadingUnitCommand
-            ??
-            (this.bayFirstLoadingUnitCommand = new DelegateCommand(
-                () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
-                this.CanExecuteCommand));
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
@@ -169,14 +158,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                        trackCurrentView: true);
                     break;
 
-                case Menu.BayFirstLoadingUnit:
-                    this.NavigationService.Appear(
-                       nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.LOADFIRSTDRAWER,
-                       data: null,
-                       trackCurrentView: true);
-                    break;
-
                 case Menu.InsertionLoadingUnits:
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
@@ -224,7 +205,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
-            this.bayFirstLoadingUnitCommand?.RaiseCanExecuteChanged();
             this.extractionLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.insertionLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.loadingUnitsCommand?.RaiseCanExecuteChanged();
