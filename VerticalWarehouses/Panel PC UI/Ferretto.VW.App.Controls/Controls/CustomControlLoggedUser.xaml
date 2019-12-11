@@ -27,7 +27,6 @@
                IsOpen="{Binding IsPopupOpen}"
                PlacementTarget="{Binding ElementName=ButtonRoot}">
             <StackPanel>
-
                 <controls:PpcButton Width="{Binding ElementName=ButtonRoot, Path=ActualWidth}"
                                     Command="{Binding ToggleThemeCommand}"
                                     Content="Cambia Tema" />

@@ -126,7 +126,7 @@
                         </Border>
                     </Grid>
 
-                    <ControlTemplate.Triggers>
+                    <!--<ControlTemplate.Triggers>
                         <Trigger Property="IsActive" Value="True">
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                             <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
@@ -135,7 +135,7 @@
                             <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
                             <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
                         </Trigger>
-                    </ControlTemplate.Triggers>
+                    </ControlTemplate.Triggers>-->
                 </ControlTemplate>
 
             </Setter.Value>
@@ -157,7 +157,7 @@
             </DataTrigger>
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
+                <!--<Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />-->
                 <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
                 <!--<Setter Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />-->
                 <Setter Property="Cursor" Value="Hand" />
@@ -178,14 +178,6 @@
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Control.BorderThickness" Value="0,0,0,10" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderThickness" Value="0,0,0,10" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonMachinePowerHeaderStyle"
@@ -230,22 +222,12 @@
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-        <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonMachineErrorHeaderStyle"
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
-        <Style.Triggers>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
-            </Trigger>
-        </Style.Triggers>
     </Style>
 
     <Style x:Key="PpcButtonHelpHeaderStyle"
