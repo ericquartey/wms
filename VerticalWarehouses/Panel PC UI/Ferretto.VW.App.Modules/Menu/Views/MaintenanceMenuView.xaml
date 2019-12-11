@@ -42,6 +42,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
@@ -80,6 +82,16 @@
                                 HorizontalAlignment="Left"
                                 Command="{Binding MenuUpdateCommand}"
                                 Content="Aggiornamento" />
+
+            <controls:PpcButton Grid.Row="7"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Content="Gestione Utenti" />
+
+            <controls:PpcButton Grid.Row="8"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Content="Comunicazione WMS" />
         </Grid>
 
         <Grid Grid.Row="1"

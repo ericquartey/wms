@@ -42,7 +42,7 @@
                 </Grid.RowDefinitions>
 
                 <controls:PpcButton Grid.Row="0"
-                                    Margin="0,15,0,0"
+                                    Margin="0"
                                     Command="{Binding MenuElevatorCommand}"
                                     Content="{x:Static res:Menu.MenuElevator}" />
 
