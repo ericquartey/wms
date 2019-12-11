@@ -46,14 +46,14 @@
                        Margin="0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{Binding MachineIdentity.ModelName, FallbackValue='ModelName'}" />
 
             <TextBlock Grid.Row="2"
                        Margin="0,25"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
 
         </StackPanel>

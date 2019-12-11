@@ -58,20 +58,14 @@
             <TextBlock Grid.Row="0"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{Binding MachineIdentity.ModelName}" />
 
             <TextBlock Grid.Row="1"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
-
-            <TextBlock Grid.Row="2"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                       Text="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
             <StackPanel Name="LoginForm"
                         Grid.Row="3"

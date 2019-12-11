@@ -115,28 +115,20 @@
 
                 <controls:PpcButton Grid.Column="0"
                                     Width="250"
-                                    Height="45"
-                                    Margin="5,-5,5,0"
+                                    Margin="5,0"
                                     HorizontalContentAlignment="Left"
                                     Command="{Binding GoToMovementsGuidedCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsGuided}"
-                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                    FontSize="{DynamicResource FontSize_Very_High}"
-                                    FontWeight="Light"
                                     IsActive="{Binding IsMovementsGuided}"
-                                    Style="{DynamicResource PpcButtonMovementsGuidedTabStyle}" />
+                                    Style="{DynamicResource PpcButtonTabStyle}" />
 
                 <controls:PpcButton Grid.Column="1"
                                     Width="260"
-                                    Height="45"
-                                    Margin="5,-5,0,0"
+                                    Margin="5,0"
                                     Command="{Binding GoToMovementsManualCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsManual}"
-                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
-                                    FontSize="{DynamicResource FontSize_Very_High}"
-                                    FontWeight="Light"
                                     IsActive="{Binding IsMovementsManual}"
-                                    Style="{DynamicResource PpcButtonMovementsManualTabStyle}" />
+                                    Style="{DynamicResource PpcButtonTabStyle}" />
             </Grid>
 
             <Border Grid.Row="1"
