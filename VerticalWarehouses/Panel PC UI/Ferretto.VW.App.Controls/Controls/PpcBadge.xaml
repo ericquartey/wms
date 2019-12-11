@@ -9,6 +9,7 @@
              d:DataContext="{d:DesignInstance Type=local:PpcBadge,
                                               IsDesignTimeCreatable=False}"
              mc:Ignorable="d">
+
     <UserControl.Resources>
         <Style x:Key="PpcBadge_TextBlock_Style"
                TargetType="{x:Type TextBlock}">
@@ -26,6 +27,7 @@
             <Setter Property="Fill" Value="{DynamicResource PpcBadge_Ellipse_Fill}" />
             <Setter Property="StrokeThickness" Value="5" />
         </Style>
+
     </UserControl.Resources>
 
     <Viewbox Stretch="Uniform"
@@ -34,8 +36,7 @@
               Height="100">
             <Ellipse Style="{DynamicResource PpcBadge_Ellipse_Style}" />
             <TextBlock x:Name="PpcBadge_TextBlock"
-                       Style="{DynamicResource PpcBadge_TextBlock_Style}"
-                       />
+                       Style="{DynamicResource PpcBadge_TextBlock_Style}" />
         </Grid>
     </Viewbox>
 

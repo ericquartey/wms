@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -68,9 +69,9 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(PpcMenuButton),
                 new PropertyMetadata(string.Empty));
 
-        private readonly IEventAggregator eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+        private readonly IEventAggregator eventAggregator = null;
 
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+        private readonly ISessionService sessionService = null;
 
         private SubscriptionToken userAccessLevelToken;
 
@@ -83,6 +84,15 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcMenuButton()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
+
+            this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+
+            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
         }
 
         #endregion

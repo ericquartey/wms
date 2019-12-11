@@ -29,9 +29,7 @@
               Grid.RowSpan="2"
               Grid.Column="1"
               Margin="0,0,70,20">
-            <Image Grid.Row="1"
-                   Grid.Column="2"
-                   Margin="0"
+            <Image Margin="0"
                    HorizontalAlignment="Right"
                    VerticalAlignment="Bottom"
                    RenderOptions.BitmapScalingMode="HighQuality"

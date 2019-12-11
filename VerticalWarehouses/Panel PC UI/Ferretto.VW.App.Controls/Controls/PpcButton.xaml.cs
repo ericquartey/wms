@@ -227,9 +227,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private void Initialization()
         {
-            this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
 
-            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
 
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()

@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #endregion
 
+        public override bool KeepAlive => true;
+
         #region Constructors
 
         public OperatorMenuViewModel(

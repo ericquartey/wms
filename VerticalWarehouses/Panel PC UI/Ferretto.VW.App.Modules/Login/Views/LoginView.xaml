@@ -17,11 +17,11 @@
                     Command="{Binding LoginCommand}" />
     </view:View.InputBindings>
 
-    <Grid Margin="100,30,100,0">
+    <Grid>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2.5*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -32,56 +32,79 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Image Grid.Row="1"
-               Grid.RowSpan="4"
-               Grid.Column="1"
-               HorizontalAlignment="Right"
-               VerticalAlignment="Center"
-               RenderOptions.BitmapScalingMode="HighQuality"
-               Source="/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
-               Stretch="Uniform" />
+        <Grid Grid.Row="1"
+              Grid.RowSpan="4"
+              Grid.Column="1"
+              Margin="0,0,70,20">
+            <Image Margin="0"
+                   HorizontalAlignment="Right"
+                   VerticalAlignment="Bottom"
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
+                   Stretch="Uniform" />
+        </Grid>
 
-        <TextBlock Grid.Row="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding MachineIdentity.ModelName}" />
+        <Grid Grid.Row="1"
+              Grid.RowSpan="4"
+              Margin="100,30,100,0">
 
-        <TextBlock Grid.Row="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
-                   Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50" />
+                <RowDefinition Height="50" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="3"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
-                   Text="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Text="{Binding MachineIdentity.ModelName}" />
 
-        <StackPanel Name="LoginForm"
-                    Grid.Row="4"
-                    Margin="0"
-                    IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
+            <TextBlock Grid.Row="1"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenSubTitleTextBlockStyle}"
+                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
 
-            <ctrls:PpcTextBox Width="200"
-                              Margin="0,10"
-                              HorizontalAlignment="Left"
-                              InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              LabelText="{x:Static res:VWApp.UserLogin_UserName}" />
+            <TextBlock Grid.Row="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_SplashScreenTitleTextBlockStyle}"
+                       Text="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
-            <ctrls:PpcTextBox Width="200"
-                              Margin="0,10"
-                              HorizontalAlignment="Left"
-                              InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
-                              LabelText="{x:Static res:VWApp.UserLogin_Password}" />
+            <StackPanel Name="LoginForm"
+                        Grid.Row="3"
+                        Margin="0"
+                        IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
 
-            <ctrls:PpcButton Margin="0,20,0,0"
-                             HorizontalAlignment="Left"
-                             Command="{Binding LoginCommand}"
-                             Content="{x:Static res:General.Login}"
-                             IsBusy="{Binding IsWaitingForResponse}" />
-        </StackPanel>
+                <ctrls:PpcTextBox Width="200"
+                                  Margin="0,10"
+                                  HorizontalAlignment="Left"
+                                  InputText="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                  LabelText="{x:Static res:VWApp.UserLogin_UserName}" />
+
+                <ctrls:PpcTextBox Width="200"
+                                  Margin="0,10"
+                                  HorizontalAlignment="Left"
+                                  InputText="{Binding UserLogin.Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                  LabelText="{x:Static res:VWApp.UserLogin_Password}" />
+
+                <ctrls:PpcButton Margin="0,20,0,0"
+                                 HorizontalAlignment="Left"
+                                 Command="{Binding LoginCommand}"
+                                 Content="{x:Static res:General.Login}"
+                                 IsBusy="{Binding IsWaitingForResponse}" />
+            </StackPanel>
+
+        </Grid>
+
+        <ctrls:PpcBadge Grid.RowSpan="4"
+                        Grid.ColumnSpan="2"
+                        Margin="30,30"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom"
+                        TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}" />
 
     </Grid>
 

@@ -6,33 +6,79 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            d:DataContext="{d:DesignInstance Type=viewmodels:OperationsMenuViewModel,
-                                             IsDesignTimeCreatable=False}"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
-    <Grid Margin="80,15">
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2.5*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
+        <Grid Grid.RowSpan="2"
+              Grid.Column="1"
+              Margin="0,0,70,20">
+            <Image Margin="0"
+                   HorizontalAlignment="Right"
                    VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="menu" />
+                   RenderOptions.BitmapScalingMode="HighQuality"
+                   Source="pack://application:,,,/Ferretto.VW.App.Controls;Component/Assets/background_machine.png"
+                   Stretch="Uniform" />
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <controls:PpcButton Grid.Row="0"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
+                                Command="{Binding DrawerActivityButtonCommand}"
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
+                                Command="{Binding ShowItemSearchCommand}"
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuItems}" />
+
+            <controls:PpcButton Grid.Row="2"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="15,0,15,15"
+                                Command="{Binding ShowItemListsCommand}"
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuLists}" />
+
+            <controls:PpcButton Grid.Row="4"
+                                Width="{DynamicResource PpcButtonWidth}"
+                                Height="{DynamicResource PpcButtonHeight}"
+                                Margin="0,15,15,0"
+                                Command="{Binding ShowOtherMenuCommand}"
+                                Content="{x:Static res:OperatorApp.NavigationMainMenuOther}" />
+
+        </Grid>
+
+        <controls:PpcBadge Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           Margin="30,30"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}, FallbackValue=1}" />
 
     </Grid>
 </ctrls:View>
