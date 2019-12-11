@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.InverterDriver.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.InverterDriver.InverterStatus.Interfaces;
 using Microsoft.Extensions.Logging;
 
@@ -8,6 +9,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
     internal class PositioningDisableOperationState : InverterStateBase
     {
         #region Fields
+
+        private readonly DateTime startTime;
 
         private bool stopRequested;
 
@@ -24,6 +27,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
         {
             this.Inverter = inverterStatus;
             this.stopRequested = stopRequested;
+            this.startTime = DateTime.UtcNow;
         }
 
         #endregion
@@ -81,12 +85,20 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.Logger.LogTrace($"2:message={message}:Parameter Id={message.ParameterId}");
                 if (this.InverterStatus.CommonStatusWord.IsOperationEnabled)
                 {
-                    this.Inverter.PositionControlWord.EnableOperation = false;
-                    this.ParentStateMachine.EnqueueCommandMessage(
-                        new InverterMessage(
-                            this.InverterStatus.SystemIndex,
-                            (short)InverterParameterId.ControlWord,
-                            this.InverterStatus.CommonControlWord.Value));
+                    if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                    {
+                        this.Logger.LogError($"PositioningDisableOperationState timeout, inverter {this.InverterStatus.SystemIndex}");
+                        this.ParentStateMachine.ChangeState(new PositioningErrorState(this.ParentStateMachine, this.InverterStatus, this.Logger));
+                    }
+                    else
+                    {
+                        this.Inverter.PositionControlWord.EnableOperation = false;
+                        this.ParentStateMachine.EnqueueCommandMessage(
+                            new InverterMessage(
+                                this.InverterStatus.SystemIndex,
+                                (short)InverterParameterId.ControlWord,
+                                this.InverterStatus.CommonControlWord.Value));
+                    }
                 }
                 else
                 {
