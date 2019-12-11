@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
@@ -14,6 +17,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool isWaitingForResponse;
 
+        private DelegateCommand menuCompactionCommand;
+
+        private DelegateCommand menuMaintenanceCommand;
+
         #endregion
 
         #region Constructors
@@ -21,6 +28,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
         public MaintenanceMenuViewModel()
             : base(PresentationMode.Menu)
         {
+        }
+
+        #endregion
+
+        #region Enums
+
+        private enum Menu
+        {
+            Compaction,
+
+            Maintenance,
         }
 
         #endregion
@@ -34,6 +52,20 @@ namespace Ferretto.VW.App.Menu.ViewModels
             get => this.isWaitingForResponse;
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
+
+        public ICommand MenuCompactionCommand =>
+            this.menuCompactionCommand
+            ??
+            (this.menuCompactionCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Compaction),
+                this.CanExecuteCommand));
+
+        public ICommand MenuMaintenanceCommand =>
+            this.menuMaintenanceCommand
+            ??
+            (this.menuMaintenanceCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Maintenance),
+                this.CanExecuteCommand));
 
         #endregion
 
@@ -53,6 +85,54 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.IsWaitingForResponse = false;
+        }
+
+        private bool CanExecuteCommand()
+        {
+            return !this.IsWaitingForResponse;
+        }
+
+        private void MenuCommand(Menu menu)
+        {
+            this.ClearNotifications();
+
+            this.Logger.Trace($"MenuCommand({menu})");
+
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                switch (menu)
+                {
+                    case Menu.Compaction:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Operator),
+                            Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    case Menu.Maintenance:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Menu),
+                            Utils.Modules.Operator.Others.Maintenance.MAIN,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
+                    default:
+                        Debugger.Break();
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void RaiseCanExecuteChanged()

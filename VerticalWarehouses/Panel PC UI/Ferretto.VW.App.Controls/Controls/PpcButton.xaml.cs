@@ -35,8 +35,11 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcButton),
             new PropertyMetadata(false));
 
+        public static readonly DependencyProperty KindFontAwesomeProperty =
+            DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
+
         public static readonly DependencyProperty KindProperty =
-            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+                    DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermitionProperty = DependencyProperty.Register(
             nameof(Permition),
@@ -107,6 +110,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (PackIconMaterialLightKind?)this.GetValue(KindProperty);
             set => this.SetValue(KindProperty, value);
+        }
+
+        public PackIconFontAwesomeKind? KindFontAwesome
+        {
+            get => (PackIconFontAwesomeKind?)this.GetValue(KindFontAwesomeProperty);
+            set => this.SetValue(KindFontAwesomeProperty, value);
         }
 
         protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;

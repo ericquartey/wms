@@ -739,14 +739,23 @@
                                             Command="{Binding StopMovingCommand}"
                                             Content="{x:Static res:InstallationApp.Stop}" />
 
-                        <controls:PpcButton Grid.Row="6"
-                                            Grid.Column="3"
-                                            Width="60"
-                                            Margin="0"
-                                            HorizontalAlignment="Right"
-                                            Command="{Binding GoToStatusSensorsCommand}"
-                                            Foreground="{StaticResource FerrettoPureWhite}"
-                                            Kind="LightbulbOn" />
+                        <StackPanel Grid.Row="6"
+                                    Grid.Column="3"
+                                    Orientation="Horizontal">
+                            <controls:PpcButton Width="60"
+                                                Margin="15,0,0,0"
+                                                HorizontalAlignment="Right"
+                                                BorderBrush="{DynamicResource FerrettoRed}"
+                                                Command="{Binding GoToStatusSensorsCommand}"
+                                                Foreground="{StaticResource FerrettoPureWhite}"
+                                                KindFontAwesome="LockOpenSolid" />
+                            <controls:PpcButton Width="60"
+                                                Margin="15,0,0,0"
+                                                HorizontalAlignment="Right"
+                                                Command="{Binding GoToStatusSensorsCommand}"
+                                                Foreground="{StaticResource FerrettoPureWhite}"
+                                                Kind="LightbulbOn" />
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </Border>
