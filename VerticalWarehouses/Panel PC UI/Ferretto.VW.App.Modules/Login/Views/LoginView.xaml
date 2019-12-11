@@ -25,11 +25,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-            <RowDefinition Height="50" />
-            <RowDefinition />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="1"
@@ -46,30 +43,39 @@
 
         <Grid Grid.Row="1"
               Grid.RowSpan="4"
-              Margin="100,30,100,0">
+              Margin="0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="50" />
-                <RowDefinition Height="50" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <TextBlock Grid.Row="0"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.ModelName}" />
+            <StackPanel Grid.Row="0"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="2"
+                        Margin="50,25">
 
-            <TextBlock Grid.Row="1"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Top"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
+                <TextBlock Grid.Row="1"
+                           Margin="0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding MachineIdentity.ModelName, FallbackValue='ModelName'}" />
+
+                <TextBlock Grid.Row="2"
+                           Margin="0,25"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="{DynamicResource FontSize_High}"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
+
+            </StackPanel>
 
             <StackPanel Name="LoginForm"
-                        Grid.Row="3"
-                        Margin="0"
+                        Grid.Row="2"
+                        Margin="50,25"
                         IsEnabled="{Binding IsWaitingForResponse, Converter={StaticResource BNC}}">
 
                 <ctrls:PpcTextBox Width="200"
@@ -93,7 +99,7 @@
 
         </Grid>
 
-        <ctrls:PpcBadge Grid.RowSpan="4"
+        <ctrls:PpcBadge Grid.RowSpan="2"
                         Grid.ColumnSpan="2"
                         Margin="30,30"
                         HorizontalAlignment="Right"

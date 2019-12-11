@@ -120,7 +120,7 @@
                                     Command="{Binding GoToMovementsGuidedCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsGuided}"
                                     IsActive="{Binding IsMovementsGuided}"
-                                    Style="{DynamicResource PpcButtonTabStyle}" />
+                                    Style="{DynamicResource PpcButtonMovementsGuidedTabStyle}" />
 
                 <controls:PpcButton Grid.Column="1"
                                     Width="260"
@@ -128,7 +128,7 @@
                                     Command="{Binding GoToMovementsManualCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsManual}"
                                     IsActive="{Binding IsMovementsManual}"
-                                    Style="{DynamicResource PpcButtonTabStyle}" />
+                                    Style="{DynamicResource PpcButtonMovementsManualTabStyle}" />
             </Grid>
 
             <Border Grid.Row="1"

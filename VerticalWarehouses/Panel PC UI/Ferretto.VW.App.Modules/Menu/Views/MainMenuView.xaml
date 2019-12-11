@@ -54,6 +54,7 @@
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       FontSize="{DynamicResource FontSize_High}"
                        Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
 
         </StackPanel>

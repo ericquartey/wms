@@ -303,21 +303,23 @@
         </Style.Triggers>
     </Style>
 
-    <Style x:Key="PpcButtonMovementsManualTabStyle"
-           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+    <Style x:Key="PpcButtonMovementsGuidedTabStyle"
+           BasedOn="{StaticResource PpcButtonTabStyle}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0,0,0,3" />
-        <Setter Property="Background" Value="Transparent" />
-        <Setter Property="BorderBrush" Value="{x:Null}" />
-        <Setter Property="Height" Value="45" />
+        <Style.Triggers>
+            <Trigger Property="IsActive" Value="true">
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+
+    <Style x:Key="PpcButtonMovementsManualTabStyle"
+           BasedOn="{StaticResource PpcButtonTabStyle}"
+           TargetType="{x:Type controls:PpcButton}">
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
-            </Trigger>
-            <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForeground}" />
-                <Setter Property="Cursor" Value="Hand" />
             </Trigger>
         </Style.Triggers>
     </Style>
