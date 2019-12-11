@@ -347,7 +347,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
-        private void GetPersistedMissions(IServiceProvider serviceProvider)
+        private static void GetPersistedMissions(IServiceProvider serviceProvider)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
             var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)
         {
-            this.GetPersistedMissions(serviceProvider);
+            GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
         }
