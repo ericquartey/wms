@@ -12,7 +12,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="0,30,0,0">
+    <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -21,14 +21,12 @@
         <views:SensorsNavigationView />
 
         <Grid Grid.Column="1"
-              Margin="130,0,130,10">
+              Margin="5,0,15,0">
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="60" />
-                <RowDefinition Height="160" />
-                <RowDefinition />
-                <RowDefinition />
-
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
@@ -54,6 +52,7 @@
             </StackPanel>
 
             <StackPanel Grid.Row="2"
+                        Margin="0,15,0,0"
                         Orientation="Vertical">
                 <TextBlock VerticalAlignment="Top"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
@@ -68,6 +67,7 @@
 
             <StackPanel Grid.Row="2"
                         Grid.Column="1"
+                        Margin="0,15,0,0"
                         Orientation="Vertical"
                         Visibility="{Binding IsBay2Present, Converter={StaticResource BTVC}}">
                 <TextBlock VerticalAlignment="Top"

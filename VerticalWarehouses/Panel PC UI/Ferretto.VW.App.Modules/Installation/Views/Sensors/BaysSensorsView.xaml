@@ -11,7 +11,7 @@
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="0,30,0,0">
+    <Grid Margin="0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -20,7 +20,7 @@
         <views:SensorsNavigationView />
 
         <Grid Grid.Column="1"
-              Margin="130,0,90,10">
+              Margin="5,0,15,0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
@@ -28,9 +28,9 @@
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
-                <RowDefinition Height="40" />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <TextBlock Grid.ColumnSpan="2"
