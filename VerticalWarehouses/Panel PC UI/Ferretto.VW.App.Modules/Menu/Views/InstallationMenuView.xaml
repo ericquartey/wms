@@ -120,11 +120,8 @@
                         <controls:PpcProgressBar Height="8"
                                                  HorizontalAlignment="Stretch"
                                                  VerticalAlignment="Center"
-                                                 Background="Gray"
-                                                 BorderBrush="Orange"
-                                                 BorderThickness="1"
-                                                 Color1="Blue"
-                                                 Color2="Cornsilk"
+                                                 Color1="#F6AB3C"
+                                                 Color2="#F59C1A"
                                                  Maximum="100"
                                                  Minimum="0"
                                                  Value="{Binding Completion, FallbackValue=60}" />
@@ -254,10 +251,10 @@
                                   Data="F1 M 0,0 L 0.48,0.64 0.96,0.8 2.08,-119.52 C -7.36,-120 -8.32,-83.52 -7.2,-50.72    -12,-78.4 -19.2,-107.52 -27.68,-107.52 L -0.96,0 z"
                                   Fill="#ffbba4ff"
                                   RenderTransform="1,0,0,1,115.04,237.12" />-->
-                            <Path Clip="M -0.8,-120.64 L 23.36,-120.64 23.36,-44 -0.8,-44 z"
+                            <!--<Path Clip="M -0.8,-120.64 L 23.36,-120.64 23.36,-44 -0.8,-44 z"
                                   Data="F1 M 0,0 L 23.2,-106.4 23.04,-106.56 C 15.2,-108.32 9.44,-85.28 5.28,-60.16 8,-89.92 8.48,-119.68 0.16,-120.64   L -0.8,-0.16 z"
                                   Fill="#ffbba4ff"
-                                  RenderTransform="1,0,0,1,117.12,238.24" />
+                                  RenderTransform="1,0,0,1,117.12,238.24" />-->
                             <Path Clip="M 117.44,131.84 L 156.32,131.84 156.32,194.24 117.44,194.24 z"
                                   Data="F1 M 140.64,131.84 L 117.44,238.24 119.52,238.72 C 119.52,238.72 156.16,137.44 140.64,131.84 z"
                                   Fill="#ffbba4ff" />

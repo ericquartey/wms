@@ -26,6 +26,12 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(SolidColorBrush),
             typeof(PpcProgressBar));
 
+        public static readonly DependencyProperty RadiusProperty = DependencyProperty.Register(
+            nameof(Radius),
+            typeof(double),
+            typeof(PpcProgressBar),
+            new PropertyMetadata(2D));
+
         #endregion
 
         #region Constructors
@@ -48,6 +54,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (SolidColorBrush)this.GetValue(Color2Property);
             set => this.SetValue(Color2Property, value);
+        }
+
+        public double Radius
+        {
+            get => (double)this.GetValue(RadiusProperty);
+            set => this.SetValue(RadiusProperty, value);
         }
 
         #endregion

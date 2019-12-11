@@ -5,23 +5,34 @@
 
     <Style x:Key="{x:Type controls:PpcProgressBar}"
            TargetType="{x:Type ProgressBar}">
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Background" Value="#424A50" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:PpcProgressBar}">
                     <Grid Name="TemplateRoot"
-                          SnapsToDevicePixels="True">
+                          SnapsToDevicePixels="True"
+                          UseLayoutRounding="True">
                         <Rectangle Fill="{TemplateBinding Background}"
-                                   RadiusX="2"
-                                   RadiusY="2" />
+                                   RadiusX="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                   RadiusY="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                   StrokeThickness="0" />
 
                         <Rectangle Name="PART_Track"
-                                   Margin="1,1,1,1" />
+                                   Margin="1,1,1,1"
+                                   StrokeThickness="0" />
 
                         <Decorator Name="PART_Indicator"
                                    Margin="1,1,1,1"
-                                   HorizontalAlignment="Left">
+                                   HorizontalAlignment="Left"
+                                   SnapsToDevicePixels="True">
+
                             <Grid Name="Foreground">
-                                <Rectangle Name="Indicator">
+                                <Rectangle Name="Indicator"
+                                           RadiusX="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                           RadiusY="{Binding Radius, RelativeSource={RelativeSource TemplatedParent}}"
+                                           SnapsToDevicePixels="True"
+                                           StrokeThickness="0">
                                     <Rectangle.Fill>
                                         <LinearGradientBrush MappingMode="Absolute" SpreadMethod="Repeat" StartPoint="0,0" EndPoint="10,10">
                                             <GradientStop Offset="0" Color="{Binding Color1.Color, RelativeSource={RelativeSource TemplatedParent}}" />
@@ -31,14 +42,6 @@
                                         </LinearGradientBrush>
                                     </Rectangle.Fill>
                                 </Rectangle>
-                                <Grid Name="Animation"
-                                      ClipToBounds="True">
-                                    <Border Name="PART_GlowRect"
-                                            Width="100"
-                                            Margin="0,0,0,0"
-                                            HorizontalAlignment="Left" />
-                                </Grid>
-                                <Grid Name="Overlay" />
                             </Grid>
                         </Decorator>
 
