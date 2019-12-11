@@ -44,36 +44,28 @@
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
-                                Width="{DynamicResource PpcButtonWidth}"
-                                Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,15,15,15"
                                 HorizontalAlignment="Left"
                                 Command="{Binding DrawerActivityButtonCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuDrawerOperation}" />
 
             <controls:PpcButton Grid.Row="1"
-                                Width="{DynamicResource PpcButtonWidth}"
-                                Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
                                 Command="{Binding ShowItemSearchCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuItems}" />
 
             <controls:PpcButton Grid.Row="2"
-                                Width="{DynamicResource PpcButtonWidth}"
-                                Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
                                 Command="{Binding ShowItemListsCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuLists}" />
 
             <controls:PpcButton Grid.Row="3"
-                                Width="{DynamicResource PpcButtonWidth}"
-                                Height="{DynamicResource PpcButtonHeight}"
-                                Margin="0,15,15,0"
+                                Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command="{Binding ShowOtherMenuCommand}"
-                                Content="{x:Static res:OperatorApp.NavigationMainMenuOther}" />
+                                Command="{Binding ImmediateLoadingUnitCallMenuCommand}"
+                                Content="{x:Static res:OperatorApp.OtherNavigationImmediateDrawerCall}" />
 
         </Grid>
 

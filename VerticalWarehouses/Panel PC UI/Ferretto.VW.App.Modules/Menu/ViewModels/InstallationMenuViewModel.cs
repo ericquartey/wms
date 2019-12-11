@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuOldCommand;
 
-        private DelegateCommand viewParametersCommand;
+        private DelegateCommand menuOtherCommand;
 
         private DelegateCommand viewStatusSensorsCommand;
 
@@ -61,6 +61,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Cells,
 
             LoadingUnits,
+
+            Other,
 
             Old,
         }
@@ -126,11 +128,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.Old),
                 this.CanExecuteCommand));
 
-        public ICommand ViewParametersCommand =>
-            this.viewParametersCommand
+        public ICommand MenuOtherCommand =>
+            this.menuOtherCommand
             ??
-            (this.viewParametersCommand = new DelegateCommand(
-                () => this.ParametersCommand(),
+            (this.menuOtherCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Other),
                 this.CanExecuteCommand));
 
         public ICommand ViewStatusSensorsCommand =>
@@ -246,6 +248,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
+                    case Menu.Other:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Menu),
+                            Utils.Modules.Menu.Installation.OTHER_MENU,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
                     default:
                         Debugger.Break();
                         break;
@@ -314,7 +324,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
             this.menuOldCommand?.RaiseCanExecuteChanged();
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
-            this.viewParametersCommand?.RaiseCanExecuteChanged();
+            this.menuOtherCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 

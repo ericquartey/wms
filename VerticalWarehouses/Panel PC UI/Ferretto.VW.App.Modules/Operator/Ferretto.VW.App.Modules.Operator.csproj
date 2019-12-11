@@ -46,6 +46,7 @@
     <None Remove="Views\AboutMenuView.xaml" />
     <None Remove="Views\About\AlarmView.xaml" />
     <None Remove="Views\About\CountersView.xaml" />
+    <None Remove="Views\About\DiagnosticsView.xaml" />
     <None Remove="Views\About\GeneralView.xaml" />
     <None Remove="Views\About\StatisticsView.xaml" />
   </ItemGroup>
@@ -58,6 +59,9 @@
   
   <ItemGroup>
     <Compile Update="Views\About\CountersView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\About\DiagnosticsView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\About\StatisticsView.xaml.cs">

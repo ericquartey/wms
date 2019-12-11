@@ -22,6 +22,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -49,6 +50,11 @@
                             Command="{Binding AllarmCommand}"
                             Content="Allarmi" />
 
+        <controls:PpcButton Grid.Row="4"
+                            Margin="0,0,15,15"
+		            Command="{Binding DiagnosticsCommand}"
+                            HorizontalAlignment="Left"
+                            Content="Diagnostica" />
 
     </Grid>
 

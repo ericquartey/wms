@@ -23,17 +23,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand drawerActivityButtonCommand;
 
+        private DelegateCommand immediateLoadingUnitCallMenuCommand;
+
         private bool isWaitingForResponse;
 
         private DelegateCommand showItemListsCommand;
 
         private DelegateCommand showItemSearchCommand;
 
-        private DelegateCommand showOtherMenuCommand;
-
         #endregion
-
-        public override bool KeepAlive => true;
 
         #region Constructors
 
@@ -64,11 +62,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public ICommand ImmediateLoadingUnitCallMenuCommand =>
+            this.immediateLoadingUnitCallMenuCommand
+            ??
+            (this.immediateLoadingUnitCallMenuCommand = new DelegateCommand(
+                this.ImmediateLoadingUnitCallMenu,
+                this.CanShowOtherMenu));
+
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
             protected set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
+
+        public override bool KeepAlive => true;
 
         public ICommand ShowItemListsCommand =>
             this.showItemListsCommand
@@ -83,13 +90,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             (this.showItemSearchCommand = new DelegateCommand(
                 this.ShowItemSearch,
                 this.CanShowItemSearch));
-
-        public ICommand ShowOtherMenuCommand =>
-            this.showOtherMenuCommand
-            ??
-            (this.showOtherMenuCommand = new DelegateCommand(
-                this.ShowOtherMenu,
-                this.CanShowOtherMenu));
 
         #endregion
 
@@ -129,6 +129,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanShowOtherMenu()
         {
             return !this.IsWaitingForResponse;
+        }
+
+        private void ImmediateLoadingUnitCallMenu()
+        {
+            this.NavigationService.Appear(
+                nameof(Utils.Modules.Operator),
+                Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
+                null,
+                trackCurrentView: true);
         }
 
         private void ShowItemLists()
@@ -189,16 +198,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 Utils.Modules.Operator.ItemSearch.MAIN,
                 null,
                 trackCurrentView: true);
-        }
-
-        private void ShowOtherMenu()
-        {
-            this.NavigationService.Appear(
-                nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
-                null,
-                trackCurrentView: true);
-            
         }
 
         #endregion

@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Services
                        false);
 
             this.navigationService.SubscribeToNavigationCompleted(
-               e => this.WarningManagement(e.ViewModelName.Replace("Model", "")));
+               e => this.WarningsManagement(e.ViewModelName.Replace("Model", "")));
 
             this.moveLoadingUnitToken = this.moveLoadingUnitToken
                 ??
@@ -324,7 +324,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnChangedEventArgs(EventArgs e)
         {
-            this.WarningManagement(this.GetActiveView());
+            this.WarningsManagement(this.GetActiveView());
 
             if (e is MachinePowerChangedEventArgs eventPower)
             {
@@ -449,7 +449,7 @@ namespace Ferretto.VW.App.Services
                     }
             }
 
-            this.WarningManagement(this.GetActiveView());
+            this.WarningsManagement(this.GetActiveView());
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -510,7 +510,7 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void WarningManagement(string view)
+        private void WarningsManagement(string view)
         {
             if (!(view is null) && !this.MachineStatus.IsMoving)
             {

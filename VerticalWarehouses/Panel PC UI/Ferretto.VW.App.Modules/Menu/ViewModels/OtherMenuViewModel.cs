@@ -11,31 +11,23 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
-    internal sealed class MaintenanceMenuViewModel : BaseMainViewModel
+    internal sealed class OtherMenuViewModel : BaseMainViewModel
     {
         #region Fields
 
         private bool isWaitingForResponse;
 
-        //private DelegateCommand menuBackupCommand;
+        private DelegateCommand menuComunicationWMSCommand;
 
-        private DelegateCommand menuCompactionCommand;
+        private DelegateCommand menuParametersCommand;
 
-        //private DelegateCommand menuComunicationWMSCommand;
-
-        private DelegateCommand menuMaintenanceCommand;
-
-        //private DelegateCommand menuRestoreCommand;
-
-        private DelegateCommand menuUpdateCommand;
+        private DelegateCommand menuUsersCommand;
 
         #endregion
 
-        //private DelegateCommand menuUsersCommand;
-
         #region Constructors
 
-        public MaintenanceMenuViewModel()
+        public OtherMenuViewModel()
             : base(PresentationMode.Menu)
         {
         }
@@ -46,11 +38,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private enum Menu
         {
-            Compaction,
+            Users,
 
-            Maintenance,
+            Parameters,
 
-            Update,
+            ComunicationWms,
         }
 
         #endregion
@@ -65,25 +57,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand MenuCompactionCommand =>
-            this.menuCompactionCommand
+        public ICommand MenuComunicationWmsCommand =>
+            this.menuComunicationWMSCommand
             ??
-            (this.menuCompactionCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Compaction),
+            (this.menuComunicationWMSCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.ComunicationWms),
                 this.CanExecuteCommand));
 
-        public ICommand MenuMaintenanceCommand =>
-                    this.menuMaintenanceCommand
+        public ICommand MenuParametersCommand =>
+                    this.menuParametersCommand
             ??
-            (this.menuMaintenanceCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Maintenance),
+            (this.menuParametersCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Parameters),
                 this.CanExecuteCommand));
 
-        public ICommand MenuUpdateCommand =>
-            this.menuUpdateCommand
+        public ICommand MenuUsersCommand =>
+            this.menuUsersCommand
             ??
-            (this.menuUpdateCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Update),
+            (this.menuUsersCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Users),
                 this.CanExecuteCommand));
 
         #endregion
@@ -123,28 +115,28 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 switch (menu)
                 {
-                    case Menu.Compaction:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.Others.DrawerCompacting.MAIN,
-                            data: null,
-                            trackCurrentView: true);
-                        break;
-
-                    case Menu.Maintenance:
-                        this.NavigationService.Appear(
-                            nameof(Utils.Modules.Operator),
-                            Utils.Modules.Operator.Others.Maintenance.MAIN,
-                            data: null,
-                            trackCurrentView: true);
-                        break;
-
-                    case Menu.Update:
+                    case Menu.Parameters:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.UPDATE,
+                            Utils.Modules.Installation.Parameters.PARAMETERS,
                             data: null,
                             trackCurrentView: true);
+                        break;
+
+                    case Menu.Users:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
+                        break;
+
+                    case Menu.ComunicationWms:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
                         break;
 
                     default:
@@ -164,6 +156,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private void RaiseCanExecuteChanged()
         {
+            this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
+            this.menuUsersCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
