@@ -19,6 +19,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuComunicationWMSCommand;
 
+        private DelegateCommand menuParametersCommand;
+
         private DelegateCommand menuUsersCommand;
 
         #endregion
@@ -37,6 +39,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private enum Menu
         {
             Users,
+
+            Parameters,
 
             ComunicationWms,
         }
@@ -58,6 +62,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.ComunicationWms),
+                this.CanExecuteCommand));
+
+        public ICommand MenuParametersCommand =>
+                    this.menuParametersCommand
+            ??
+            (this.menuParametersCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Parameters),
                 this.CanExecuteCommand));
 
         public ICommand MenuUsersCommand =>
@@ -104,6 +115,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 switch (menu)
                 {
+                    case Menu.Parameters:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Parameters.PARAMETERS,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
+
                     case Menu.Users:
                         //this.NavigationService.Appear(
                         //    nameof(Utils.Modules.Installation),

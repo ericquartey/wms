@@ -57,6 +57,22 @@
                                 HorizontalAlignment="Left"
                                 Command="{Binding MenuComunicationWmsCommand}"
                                 Content="Comunicazione WMS" />
+
+            <controls:PpcButton Grid.Row="2"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command="{Binding MenuParametersCommand}"
+                                Content="Parametri" />
+
+            <controls:PpcButton Grid.Row="3"
+                                Margin="0,0,15,15"
+                                Command=""
+                                Content="Parametrizzazione Inverter" />
+
+            <controls:PpcButton Grid.Row="4"
+                                Margin="0,0,15,15"
+                                Command="{Binding MenuOldCommand}"
+                                Content="Menu OLD" />
         </Grid>
 
         <Grid Grid.Row="1"

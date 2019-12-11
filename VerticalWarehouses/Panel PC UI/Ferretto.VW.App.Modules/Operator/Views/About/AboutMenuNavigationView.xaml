@@ -50,12 +50,10 @@
                             Command="{Binding AllarmCommand}"
                             Content="Allarmi" />
 
-
         <controls:PpcButton Grid.Row="4"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuBackupCommand}"
-                                Content="Log eventi" />
+                            Margin="0,0,15,15"
+                            HorizontalAlignment="Left"
+                            Content="Diagnostica" />
 
     </Grid>
 

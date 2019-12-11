@@ -66,20 +66,11 @@
                                     Command="{Binding MenuAccessoriesCommand}"
                                     Content="{x:Static res:Menu.MenuAccessories}" />
 
-                <controls:PpcButton Grid.Row="5"
-                                    Margin="0,15,0,0"
-                                    Command=""
-                                    Content="Parametrizzazione Inverter" />
-
                 <controls:PpcButton Grid.Row="6"
                                     Margin="0,15,0,0"
                                     Command="{Binding MenuOtherCommand}"
                                     Content="Altro" />
 
-                <controls:PpcButton Grid.Row="7"
-                                    Margin="0,15,0,0"
-                                    Command="{Binding MenuOldCommand}"
-                                    Content="Menu OLD" />
             </Grid>
         </Grid>
 
