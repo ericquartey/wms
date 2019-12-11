@@ -329,6 +329,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 this.ParentStateMachine.PublishFieldCommandMessage(ioCommandMessage);
             }
+
             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
         }
 

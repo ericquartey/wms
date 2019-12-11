@@ -1224,7 +1224,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"speed: {speed[0]}; " +
                 $"acceleration: {acceleration[0]}; " +
                 $"deceleration: {deceleration[0]}; " +
-                $"speed w/o feedrate: {movementParameters.Speed}; " +
+                $"speed w/o feedRate: {movementParameters.Speed}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(
