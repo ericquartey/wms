@@ -73,7 +73,7 @@
 
                 <controls:PpcButton Grid.Row="6"
                                     Margin="0,15,0,0"
-                                    Command=""
+                                    Command="{Binding MenuOtherCommand}"
                                     Content="Altro" />
 
                 <controls:PpcButton Grid.Row="7"

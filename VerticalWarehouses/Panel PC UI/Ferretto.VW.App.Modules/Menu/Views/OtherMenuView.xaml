@@ -1,4 +1,4 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Menu.Views.MaintenanceMenuView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Menu.Views.OtherMenuView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
@@ -49,33 +49,14 @@
             <controls:PpcButton Grid.Row="0"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command="{Binding MenuMaintenanceCommand}"
-                                Content="Manutenzione" />
+                                Command="{Binding MenuUsersCommand}"
+                                Content="Gestione Utenti" />
 
             <controls:PpcButton Grid.Row="1"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command="{Binding MenuCompactionCommand}"
-                                Content="Compattazione" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuParametersCommand}"
-                                Content="Parametri" />
-
-            <!--<controls:PpcButton Grid.Row="4"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuRestoreCommand}"
-                                Content="Restore" />-->
-
-            <controls:PpcButton Grid.Row="5"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuUpdateCommand}"
-                                Content="Aggiornamento" />
-
+                                Command="{Binding MenuComunicationWmsCommand}"
+                                Content="Comunicazione WMS" />
         </Grid>
 
         <Grid Grid.Row="1"

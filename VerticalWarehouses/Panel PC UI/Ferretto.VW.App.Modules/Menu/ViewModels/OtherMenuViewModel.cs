@@ -11,33 +11,33 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
-    internal sealed class MaintenanceMenuViewModel : BaseMainViewModel
+    internal sealed class OtherMenuViewModel : BaseMainViewModel
     {
         #region Fields
 
         private bool isWaitingForResponse;
 
-        //private DelegateCommand menuBackupCommand;
+        private DelegateCommand menuBackupCommand;
 
         private DelegateCommand menuCompactionCommand;
 
-        //private DelegateCommand menuComunicationWMSCommand;
+        private DelegateCommand menuComunicationWMSCommand;
 
         private DelegateCommand menuMaintenanceCommand;
 
         private DelegateCommand menuParametersCommand;
 
-        //private DelegateCommand menuRestoreCommand;
+        private DelegateCommand menuRestoreCommand;
 
         private DelegateCommand menuUpdateCommand;
 
-        //private DelegateCommand menuUsersCommand;
+        private DelegateCommand menuUsersCommand;
 
         #endregion
 
         #region Constructors
 
-        public MaintenanceMenuViewModel()
+        public OtherMenuViewModel()
             : base(PresentationMode.Menu)
         {
         }
@@ -52,10 +52,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             Maintenance,
 
+            Backup,
+
+            Restore,
+
             Parameters,
 
             Update,
 
+            Users,
+
+            ComunicationWms,
         }
 
         #endregion
@@ -70,12 +77,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
-        //public ICommand MenuBackupCommand =>
-        //    this.menuBackupCommand
-        //    ??
-        //    (this.menuBackupCommand = new DelegateCommand(
-        //        () => this.MenuCommand(Menu.Backup),
-        //        this.CanExecuteCommand));
+        public ICommand MenuBackupCommand =>
+            this.menuBackupCommand
+            ??
+            (this.menuBackupCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Backup),
+                this.CanExecuteCommand));
 
         public ICommand MenuCompactionCommand =>
             this.menuCompactionCommand
@@ -84,12 +91,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.Compaction),
                 this.CanExecuteCommand));
 
-        //public ICommand MenuComunicationWmsCommand =>
-        //    this.menuComunicationWMSCommand
-        //    ??
-        //    (this.menuComunicationWMSCommand = new DelegateCommand(
-        //        () => this.MenuCommand(Menu.ComunicationWms),
-        //        this.CanExecuteCommand));
+        public ICommand MenuComunicationWmsCommand =>
+            this.menuComunicationWMSCommand
+            ??
+            (this.menuComunicationWMSCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.ComunicationWms),
+                this.CanExecuteCommand));
 
         public ICommand MenuMaintenanceCommand =>
                     this.menuMaintenanceCommand
@@ -105,12 +112,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.Parameters),
                 this.CanExecuteCommand));
 
-        //public ICommand MenuRestoreCommand =>
-        //    this.menuRestoreCommand
-        //    ??
-        //    (this.menuRestoreCommand = new DelegateCommand(
-        //        () => this.MenuCommand(Menu.Restore),
-        //        this.CanExecuteCommand));
+        public ICommand MenuRestoreCommand =>
+            this.menuRestoreCommand
+            ??
+            (this.menuRestoreCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Restore),
+                this.CanExecuteCommand));
 
         public ICommand MenuUpdateCommand =>
             this.menuUpdateCommand
@@ -119,12 +126,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.Update),
                 this.CanExecuteCommand));
 
-        //public ICommand MenuUsersCommand =>
-        //    this.menuUsersCommand
-        //    ??
-        //    (this.menuUsersCommand = new DelegateCommand(
-        //        () => this.MenuCommand(Menu.Users),
-        //        this.CanExecuteCommand));
+        public ICommand MenuUsersCommand =>
+            this.menuUsersCommand
+            ??
+            (this.menuUsersCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Users),
+                this.CanExecuteCommand));
 
         #endregion
 
@@ -187,21 +194,21 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    //case Menu.Restore:
-                    //    this.NavigationService.Appear(
-                    //        nameof(Utils.Modules.Installation),
-                    //        Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
-                    //        data: null,
-                    //        trackCurrentView: true);
-                    //    break;
+                    case Menu.Restore:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Parameters.PARAMETERSIMPORTSTEP1,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
 
-                    //case Menu.Backup:
-                    //    this.NavigationService.Appear(
-                    //        nameof(Utils.Modules.Installation),
-                    //        Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                    //        data: null,
-                    //        trackCurrentView: true);
-                    //    break;
+                    case Menu.Backup:
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                            data: null,
+                            trackCurrentView: true);
+                        break;
 
                     case Menu.Update:
                         //this.NavigationService.Appear(
@@ -211,20 +218,22 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         //    trackCurrentView: true);
                         break;
 
-                    //case Menu.Users:
-                    //    //this.NavigationService.Appear(
-                    //    //    nameof(Utils.Modules.Installation),
-                    //    //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                    //    //    data: null,
-                    //    //    trackCurrentView: true);
-                    //    break;
-                    //case Menu.ComunicationWms:
-                    //    //this.NavigationService.Appear(
-                    //    //    nameof(Utils.Modules.Installation),
-                    //    //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                    //    //    data: null,
-                    //    //    trackCurrentView: true);
-                    //    break;
+                    case Menu.Users:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
+                        break;
+
+                    case Menu.ComunicationWms:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
+                        break;
+
                     default:
                         Debugger.Break();
                         break;

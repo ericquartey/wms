@@ -28,6 +28,8 @@
 
             public const string LOADINGUNITS_MENU = "LoadingUnitsMenuViewModel";
 
+            public const string OTHER_MENU = "OtherMenuViewModel";
+
             #endregion
         }
 
