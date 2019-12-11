@@ -490,7 +490,7 @@ namespace Ferretto.VW.App.Services
                            CellId = dataElevatorPosition.CellId,
                            BayPositionUpper = dataElevatorPosition.BayPositionUpper
                        });
-                if (this.MachineStatus.ElevatorLogicalPosition == this.sensorsService?.ElevatorLogicalPosition)
+                if (this.MachineStatus.ElevatorLogicalPosition != this.sensorsService?.ElevatorLogicalPosition)
                 {
                     var ms = (MachineStatus)this.MachineStatus.Clone();
 
