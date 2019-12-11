@@ -161,7 +161,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override void Disappear()
         {
             this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
-            this.missionToken = null;
+            this.missionToken?.Dispose();
 
             base.Disappear();
         }
