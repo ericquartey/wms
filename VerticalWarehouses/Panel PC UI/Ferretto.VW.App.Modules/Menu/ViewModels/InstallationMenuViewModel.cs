@@ -250,7 +250,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                     case Menu.Other:
                         this.NavigationService.Appear(
-                            nameof(Utils.Modules.Menu),partial
+                            nameof(Utils.Modules.Menu),
                             Utils.Modules.Menu.Installation.OTHER_MENU,
                             data: null,
                             trackCurrentView: true);
