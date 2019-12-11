@@ -15,7 +15,7 @@
     <Color x:Key="ColorFerrettoWhiteGray">#E6E6E6</Color>
     <Color x:Key="ColorFerrettoLightGray">#C5C7C4</Color>
     <Color x:Key="ColorFerrettoMediumGray">#707173</Color>
-    <Color x:Key="ColorFerrettoDarkGray">#293133</Color>
+    <Color x:Key="ColorFerrettoDarkGray">#3A3A3A</Color>
     <Color x:Key="ColorFerrettoRed">#DA0010</Color>
     <Color x:Key="ColorFerrettoBlue">#007ACC</Color>
     <Color x:Key="ColorFerrettoOrange">#FF8800</Color>

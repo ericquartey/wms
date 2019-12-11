@@ -257,11 +257,11 @@
     <Style x:Key="PpcButtonMovementsGuidedTabStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderThickness" Value="0,1,0,0" />
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
             </Trigger>
         </Style.Triggers>
@@ -270,11 +270,11 @@
     <Style x:Key="PpcButtonMovementsManualTabStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0" />
-        <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrush}" />
+        <Setter Property="BorderThickness" Value="0,0,0,2" />
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="BorderBrush" Value="{x:Null}" />
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderThickness" Value="0,1,0,0" />
                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
             </Trigger>
         </Style.Triggers>

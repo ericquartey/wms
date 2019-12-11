@@ -747,7 +747,6 @@
                                                 Margin="15,0,0,0"
                                                 HorizontalAlignment="Right"
                                                 BorderBrush="{DynamicResource FerrettoRed}"
-                                                Command="{Binding GoToStatusSensorsCommand}"
                                                 Foreground="{StaticResource FerrettoPureWhite}"
                                                 KindFontAwesome="LockOpenSolid" />
                             <controls:PpcButton Width="60"

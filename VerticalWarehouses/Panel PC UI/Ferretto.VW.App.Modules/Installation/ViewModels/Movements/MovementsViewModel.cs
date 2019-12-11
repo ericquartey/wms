@@ -512,24 +512,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        this.IsTuningChain = false;
-                        this.IsTuningBay = false;
+                        this.StopMoving();
+
                         await this.RefreshMachineInfoAsync();
-                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
-                        {
-                            this.IsCarouselMoving = false;
-                        }
-                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
-                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                        {
-                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
-                        }*/
                         break;
                     }
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
+                        this.StopMoving();
+
                         await this.RefreshMachineInfoAsync();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
@@ -561,6 +554,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.VerticalTargetPosition = null;
                         this.HorizontalTargetPosition = null;
                         this.BayChainTargetPosition = null;
+                        this.StopMoving();
+
                         break;
                     }
 
@@ -570,6 +565,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.VerticalTargetPosition = null;
                         this.HorizontalTargetPosition = null;
                         this.BayChainTargetPosition = null;
+                        this.StopMoving();
 
                         break;
                     }
