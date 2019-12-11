@@ -24,6 +24,8 @@
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
 
+        public const string UPDATE = "UpdateViewModel";
+
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
         public const string WEIGHTANALYSIS = "ElevatorWeightAnalysisViewModel";

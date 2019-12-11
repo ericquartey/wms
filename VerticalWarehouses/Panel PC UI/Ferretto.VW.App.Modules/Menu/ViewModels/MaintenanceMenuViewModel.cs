@@ -140,11 +140,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         break;
 
                     case Menu.Update:
-                        //this.NavigationService.Appear(
-                        //    nameof(Utils.Modules.Installation),
-                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
-                        //    data: null,
-                        //    trackCurrentView: true);
+                        this.NavigationService.Appear(
+                            nameof(Utils.Modules.Installation),
+                            Utils.Modules.Installation.UPDATE,
+                            data: null,
+                            trackCurrentView: true);
                         break;
 
                     default:
