@@ -60,28 +60,26 @@
             <controls:PpcButton Grid.Row="2"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command=""
+                                Command="{Binding MenuParametersCommand}"
                                 Content="Parametri" />
 
             <controls:PpcButton Grid.Row="3"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command=""
+                                Command="{Binding MenuBackupCommand}"
                                 Content="Backup" />
 
             <controls:PpcButton Grid.Row="5"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command=""
+                                Command="{Binding MenuRestoreCommand}"
                                 Content="Restore" />
 
-            <controls:PpcButton Grid.Row="5"
+            <controls:PpcButton Grid.Row="6"
                                 Margin="0,0,15,15"
                                 HorizontalAlignment="Left"
-                                Command=""
+                                Command="{Binding MenuUpdateCommand}"
                                 Content="Aggiornamento" />
-
-
         </Grid>
 
         <Grid Grid.Row="1"
