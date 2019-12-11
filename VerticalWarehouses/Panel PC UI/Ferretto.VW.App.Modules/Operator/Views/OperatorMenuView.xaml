@@ -39,8 +39,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
             <controls:PpcButton Grid.Row="0"
@@ -67,7 +67,7 @@
                                 Command="{Binding ShowItemListsCommand}"
                                 Content="{x:Static res:OperatorApp.NavigationMainMenuLists}" />
 
-            <controls:PpcButton Grid.Row="4"
+            <controls:PpcButton Grid.Row="3"
                                 Width="{DynamicResource PpcButtonWidth}"
                                 Height="{DynamicResource PpcButtonHeight}"
                                 Margin="0,15,15,0"

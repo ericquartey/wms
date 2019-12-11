@@ -21,6 +21,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuCompactionCommand;
 
+        private DelegateCommand menuComunicationWMSCommand;
+
         private DelegateCommand menuMaintenanceCommand;
 
         private DelegateCommand menuParametersCommand;
@@ -28,6 +30,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand menuRestoreCommand;
 
         private DelegateCommand menuUpdateCommand;
+
+        private DelegateCommand menuUsersCommand;
 
         #endregion
 
@@ -55,6 +59,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
             Parameters,
 
             Update,
+
+            Users,
+
+            ComunicationWms,
         }
 
         #endregion
@@ -70,7 +78,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         }
 
         public ICommand MenuBackupCommand =>
-                                            this.menuBackupCommand
+            this.menuBackupCommand
             ??
             (this.menuBackupCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Backup),
@@ -83,8 +91,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.Compaction),
                 this.CanExecuteCommand));
 
+        public ICommand MenuComunicationWmsCommand =>
+            this.menuComunicationWMSCommand
+            ??
+            (this.menuComunicationWMSCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.ComunicationWms),
+                this.CanExecuteCommand));
+
         public ICommand MenuMaintenanceCommand =>
-            this.menuMaintenanceCommand
+                    this.menuMaintenanceCommand
             ??
             (this.menuMaintenanceCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Maintenance),
@@ -98,7 +113,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.CanExecuteCommand));
 
         public ICommand MenuRestoreCommand =>
-                                    this.menuRestoreCommand
+            this.menuRestoreCommand
             ??
             (this.menuRestoreCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Restore),
@@ -109,6 +124,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.menuUpdateCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Update),
+                this.CanExecuteCommand));
+
+        public ICommand MenuUsersCommand =>
+            this.menuUsersCommand
+            ??
+            (this.menuUsersCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Users),
                 this.CanExecuteCommand));
 
         #endregion
@@ -196,6 +218,20 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         //    trackCurrentView: true);
                         break;
 
+                    case Menu.Users:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
+                        break;
+                    case Menu.ComunicationWms:
+                        //this.NavigationService.Appear(
+                        //    nameof(Utils.Modules.Installation),
+                        //    Utils.Modules.Installation.Parameters.PARAMETERSEXPORT,
+                        //    data: null,
+                        //    trackCurrentView: true);
+                        break;
                     default:
                         Debugger.Break();
                         break;

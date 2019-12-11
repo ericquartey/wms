@@ -195,9 +195,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
-                Utils.Modules.Operator.Others.NAVIGATION,
+                Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
                 null,
                 trackCurrentView: true);
+            
         }
 
         #endregion
