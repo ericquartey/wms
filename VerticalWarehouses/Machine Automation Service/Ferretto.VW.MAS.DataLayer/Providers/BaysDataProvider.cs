@@ -278,8 +278,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.ManualMovements)

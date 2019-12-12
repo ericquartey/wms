@@ -182,6 +182,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 //    {
                 var currentCell = this.dataContext.Elevators
                     .Select(e => e.Cell)
+                    .Include(c => c.Panel)
                     .Include(c => c.LoadingUnit)
                     .SingleOrDefault();
 
@@ -199,6 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var elevator = this.dataContext.Elevators.AsNoTracking()
                     .Include(e => e.LoadingUnit)
                     .ThenInclude(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
                     .Single();
 
                 return elevator.LoadingUnit;
@@ -319,13 +321,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var elevator = this.dataContext.Elevators
                     .Include(e => e.Cell)
+                    .ThenInclude(c => c.Panel)
                     .Single();
 
                 if (currentCell?.Id != cellId)
                 {
                     if (cellId.HasValue)
                     {
-                        var newCell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+                        var newCell = this.dataContext.Cells.Include(c => c.Panel).SingleOrDefault(c => c.Id == cellId);
                         if (newCell is null)
                         {
                             throw new EntityNotFoundException(cellId.Value);
