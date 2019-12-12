@@ -14,8 +14,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private string batch;
 
-        private Image image;
-
         private string itemCode;
 
         private string itemDescription;
@@ -56,8 +54,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public string Batch { get => this.batch; set => this.SetProperty(ref this.batch, value); }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public Image Image { get => this.image; set => this.SetProperty(ref this.image, value); }
 
         public string ItemCode { get => this.itemCode; set => this.SetProperty(ref this.itemCode, value); }
 
@@ -102,16 +98,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.Position = this.ItemDetail.Position;
             this.ProductionDate = this.ItemDetail.ProductionDate;
             this.RequestedQuantity = this.ItemDetail.RequestedQuantity;
-
-            try
-            {
-                var imageStream = await this.WmsImagesProvider.GetImageAsync(this.ItemDetail.Image);
-                this.Image = Image.FromStream(imageStream);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
         }
 
         #endregion

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using System.Windows;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Services
@@ -8,6 +9,8 @@ namespace Ferretto.VW.App.Services
     internal sealed class WmsImagesProvider : IWmsImagesProvider
     {
         #region Fields
+
+        private const string BLANKIMAGE = "no_image.jpg";
 
         private readonly IImagesDataService imagesDataService;
 
@@ -60,9 +63,8 @@ namespace Ferretto.VW.App.Services
 
         private Stream LoadFallbackImage()
         {
-            var stream = new FileStream("./Images/no_image.jpg", FileMode.Open);
-
-            return new MemoryStream(this.ReadFully(stream));
+            var sri = Application.GetResourceStream(new Uri($"pack://application:,,,/{VW.Utils.Common.ASSEMBLY_MAINTHEMENAME};Component/Images/{BLANKIMAGE}"));
+            return new MemoryStream(this.ReadFully(sri.Stream));
         }
 
         #endregion

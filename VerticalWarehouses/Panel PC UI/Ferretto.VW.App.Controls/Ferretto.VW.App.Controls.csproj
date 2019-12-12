@@ -44,124 +44,13 @@
   <ItemGroup>
     <Resource Include="Assets\*.*" />
     <Resource Include="Fonts\*.*" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="Assets\help.png" />
-    <None Remove="Assets\spinner_black.gif" />
-    <None Remove="Assets\spinner_pure_white.gif" />
-    <None Remove="Assets\spinner_white.gif" />
-    <None Remove="Assets\theme_dark.png" />
-    <None Remove="Assets\theme_light.png" />
-    <None Remove="Controls\CardSensor.xaml" />
-    <None Remove="Controls\PpcBadge.xaml" />
-    <None Remove="Controls\PpcButtonMenu.xaml" />
-    <None Remove="Controls\PpcCheckBox.xaml" />
-    <None Remove="Controls\PpcMenuButton.xaml" />
-    <None Remove="Controls\DataGrids\CustomControlCellsDataGrid.xaml" />
-    <None Remove="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml" />
-    <None Remove="Controls\PpcTextBoxNew.xaml" />
-    <None Remove="Controls\Keyboards\Keyboards.xaml" />
-    <None Remove="Controls\Keyboards\PpcKeyboard.xaml" />
-    <None Remove="Controls\Sensors\SensorsPanel.xaml" />
-    <None Remove="Controls\Views\MessagePopup\PpcMessagePopup.xaml" />
-    <None Remove="Resources\de.json" />
-    <None Remove="Resources\en.json" />
-    <None Remove="Resources\es.json" />
-    <None Remove="Resources\it.json" />
-    <None Remove="Resources\ru.json" />
-    <None Remove="Resources\tr.json" />
-    <None Remove="Skins\Dark\DarkDialogPopup.xaml" />
-    <None Remove="Skins\Dark\DarkPpcBadge.xaml" />
-    <None Remove="Skins\DXStyle.xaml" />
-    <None Remove="Skins\Light\LightDialogPopup.xaml" />
-    <None Remove="Skins\Light\LightPpcBadge.xaml" />
-    <None Remove="Styles\DevExpress\WinUIMessageBox.xaml" />
-    <None Remove="Styles\General.xaml" />
-    <None Remove="Styles\PpcButtonKeyStyle.xaml" />
-    <None Remove="Styles\PpcButtonStyle.xaml" />
-    <None Remove="Styles\PpcPressAndReleaseButtonStyle.xaml" />
+    <EmbeddedResource Include="Resources\*.json" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Machine Automation Service\Ferretto.VW.MAS.AutomationService.Contracts.Hubs\Ferretto.VW.MAS.AutomationService.Contracts.Hubs.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Resources\Ferretto.VW.App.Resources.csproj" />
     <ProjectReference Include="..\Ferretto.VW.App.Services\Ferretto.VW.App.Services.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\de.json" />
-    <EmbeddedResource Include="Resources\en.json" />
-    <EmbeddedResource Include="Resources\es.json" />
-    <EmbeddedResource Include="Resources\it.json" />
-    <EmbeddedResource Include="Resources\ru.json" />
-    <EmbeddedResource Include="Resources\tr.json" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Controls\CustomMachinePowerToggleButton.xaml.cs">
-      <DependentUpon>CustomMachinePowerToggleButton.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\DataGrids\CustomControlCellsDataGrid.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\DataGrids\CustomControlLoadingUnitsDataGrid.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\PpcTextBoxNew.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Keyboards\Keyboards.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Keyboards\PpcKeyboard.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Controls\Views\MessagePopup\PpcMessagePopup.xaml.cs">
-      <DependentUpon>PpcMessagePopup.xaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Controls\CustomMainWindowDebugButton.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Menu\PpcStepsMenu.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\PpcSpinEdit\PpcSpinEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Sensor\Sensor.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Controls\Sensor\SensorSquare.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Skins\Palette.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\DevExpress\MessageBox\WinUIMessageBox.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\DevExpress\SpinEdit\SpinEdit.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Sensor\SensorSquareStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Sensor\SensorStyle.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Styles\Styles.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\PpcSensorControlTemplate.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
-    <None Update="Templates\Templates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </None>
   </ItemGroup>
 
 </Project>

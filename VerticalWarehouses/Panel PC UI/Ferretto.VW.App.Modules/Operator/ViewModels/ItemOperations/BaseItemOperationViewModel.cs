@@ -13,8 +13,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMissionsDataService missionDataService;
 
-        private System.Drawing.Image itemImage;
-
         private MissionWithLoadingUnitDetails mission;
 
         private MissionOperation missionOperation;
@@ -42,18 +40,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public Image ItemImage
-        {
-            get => this.itemImage;
-            set
-            {
-                var oldImage = this.itemImage;
-                if (this.SetProperty(ref this.itemImage, value))
-                {
-                    oldImage?.Dispose();
-                }
-            }
-        }
+        public string ItemId => this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString();
 
         public MissionWithLoadingUnitDetails Mission
         {
@@ -80,13 +67,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
-
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            this.ItemImage?.Dispose();
-        }
 
         public override async Task OnAppearedAsync()
         {
@@ -118,26 +98,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
 
-                await this.LoadImageAsync(this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString());
+                this.RaisePropertyChanged(nameof(this.ItemId));
 
                 this.OnMisionOperationRetrieved();
             }
             catch (Exception ex)
             {
                 this.NavigationService.GoBack();
-                this.ShowNotification(ex);
-            }
-        }
-
-        private async Task LoadImageAsync(string imageKey)
-        {
-            try
-            {
-                var stream = await this.WmsImagesProvider.GetImageAsync(imageKey);
-                this.ItemImage = Image.FromStream(stream);
-            }
-            catch (Exception ex)
-            {
                 this.ShowNotification(ex);
             }
         }
