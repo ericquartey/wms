@@ -86,7 +86,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task PartiallyCompleteOnFullCompartmentAsync()
         {
-            await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+            try
+            {
+                await this.MissionOperationsService.PartiallyCompleteCurrentAsync(this.InputQuantity.Value);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         #endregion
