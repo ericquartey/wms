@@ -28,4 +28,7 @@
     <BitmapImage x:Key="LoginBacackgroud"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/LoginBackground.jpg" />
 
+    <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
+
 </ResourceDictionary>
