@@ -62,6 +62,14 @@
                         "HighSpeedDurationOpen": 16,
                         "HighSpeedDurationClose": 16
                     }
+                },
+                "EmptyLoadMovement": {
+                    "Acceleration": 1500,
+                    "Speed": 770
+                },
+                "FullLoadMovement": {
+                    "Acceleration": 350,
+                    "Speed": 730
                 }
             },
             {
@@ -178,6 +186,8 @@
                         "TargetDistanceAfterZero": 200
                     },
                     "AssistedMovements": {
+                        "FeedRate": 0.3,
+                        "FeedRateAfterZero": 0.9
                     },
                     "Profiles": [
                         {

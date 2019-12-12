@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -118,7 +119,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                         if (this.mission.WmsId.HasValue)
                         {
-                            returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
+                            if (bay.Positions.Count() == 1
+                                || bay.Positions.FirstOrDefault(x => x.Location == this.mission.LoadingUnitDestination).IsUpper
+                                || bay.Carousel is null)
+                            {
+                                returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
+                            }
+                            else
+                            {
+                                returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
+                            }
                         }
                         else if (bay.Number == notification.RequestingBay)
                         {

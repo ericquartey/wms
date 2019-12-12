@@ -51,7 +51,7 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Parametri")]
         Parameters,
 
-        [View(Utils.Modules.Installation.Sensors.VERTICALAXIS, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
+        [View(Utils.Modules.Installation.Sensors.SECURITY, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Stato sensori")]
         SensorsState,
 

@@ -1,38 +1,42 @@
-﻿<ctrls:View x:Class="Ferretto.VW.App.Menu.Views.AboutMenuView"
+﻿<ctrls:View x:Class="Ferretto.VW.App.Operator.Views.DiagnosticsView"
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:Resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
-            d:DataContext="{d:DesignInstance Type=viewmodels:AccessoriesMenuViewModel,
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Operator.Views"
+            d:DataContext="{d:DesignInstance Type=viewmodels:StatisticsViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-
-    <Grid Margin="80,15">
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu About" />
+                   Text="Diagnostica" />
+
+        <views:AboutMenuNavigationView Grid.RowSpan="2" />
+
+        <Grid Grid.Row="1"
+              Grid.Column="1" />
 
     </Grid>
 </ctrls:View>

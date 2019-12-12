@@ -4,11 +4,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             Width="75"
-             Height="75"
+             Width="100"
+             Height="100"
              d:DataContext="{d:DesignInstance Type=local:PpcBadge,
                                               IsDesignTimeCreatable=False}"
              mc:Ignorable="d">
+
     <UserControl.Resources>
         <Style x:Key="PpcBadge_TextBlock_Style"
                TargetType="{x:Type TextBlock}">
@@ -22,10 +23,11 @@
                TargetType="{x:Type Ellipse}">
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Stroke" Value="{DynamicResource PpcBadge_Ellipse_Stroke}" />
-            <Setter Property="Fill" Value="{DynamicResource PpcBadge_Ellipse_Fill}" />
-            <Setter Property="StrokeThickness" Value="5" />
+            <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+            <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="StrokeThickness" Value="3" />
         </Style>
+
     </UserControl.Resources>
 
     <Viewbox Stretch="Uniform"
@@ -34,8 +36,7 @@
               Height="100">
             <Ellipse Style="{DynamicResource PpcBadge_Ellipse_Style}" />
             <TextBlock x:Name="PpcBadge_TextBlock"
-                       Style="{DynamicResource PpcBadge_TextBlock_Style}"
-                       />
+                       Style="{DynamicResource PpcBadge_TextBlock_Style}" />
         </Grid>
     </Viewbox>
 

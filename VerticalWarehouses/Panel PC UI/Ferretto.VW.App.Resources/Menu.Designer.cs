@@ -142,7 +142,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Operation.
+        ///   Looks up a localized string similar to Picking.
         /// </summary>
         public static string MenuOperation {
             get {

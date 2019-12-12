@@ -52,23 +52,19 @@
                     "TcpPort": 19550
                 },
                 "IsExternal": false,
-                "ChainOffset": -5,
+                "ChainOffset": -6.5,
                 "Number": "BayOne",
                 "Positions": [
                     {
-                        "Height": 350,
+                        "Height": 315,
                         "Location": "InternalBay1Down"
                     },
                     {
-                        "Height": 768,
+                        "Height": 761,
                         "Location": "InternalBay1Up"
                     }
                 ],
-                "FullLoadMovement": {
-                    "Acceleration": 300,
-                    "Deceleration": 300,
-                    "Speed": 140
-                },
+
                 "Resolution": 369.8453,
                 "Shutter": {
                     "Inverter": {
@@ -91,13 +87,23 @@
                         "HighSpeedDurationClose": 13
                     }
                 },
+                "EmptyLoadMovement": {
+                    "Acceleration": 1,
+                    "Deceleration": 1,
+                    "Speed": 1
+                },
+                "FullLoadMovement": {
+                    "Acceleration": 200,
+                    "Deceleration": 500,
+                    "Speed": 110
+                },
                 "Carousel": {
-                    "ElevatorDistance": 460,
+                    "ElevatorDistance": 450.5,
                     "ManualMovements": {
-                        "FeedRate": 0.7
+                        "FeedRate": 0.1
                     },
                     "AssistedMovements": {
-                        "FeedRate": 1
+                        "FeedRate": 0.7
                     }
                 }
             }
@@ -115,10 +121,10 @@
                     "BrakeActivatePercent": 10,
                     "Orientation": "Vertical",
                     "Resolution": 99.177657,
-                    "Offset": 350,
+                    "Offset": 461,
                     "ChainOffset": 0,
                     "UpperBound": 8600,
-                    "LowerBound": 350,
+                    "LowerBound": 305,
                     "EmptyLoadMovement": {
                         "Acceleration": 1000,
                         "Deceleration": 1000,
@@ -144,7 +150,7 @@
                     },
                     "AssistedMovements": {
                         "FeedRate": 0.3,
-                        "FeedRateAfterZero": 0.9,
+                        "FeedRateAfterZero": 0.9
                     }
                 },
                 {
@@ -170,12 +176,14 @@
                         "Speed": 650
                     },
                     "ManualMovements": {
-                        "FeedRate": 0.04,
-                        "FeedRateAfterZero": 0.3,
+                        "FeedRate": 0.1,
+                        "FeedRateAfterZero": 0.2,
                         "TargetDistance": 30,
                         "TargetDistanceAfterZero": 1252
                     },
                     "AssistedMovements": {
+                        "FeedRate": 0.1,
+                        "FeedRateAfterZero": 0.3
                     },
                     "Profiles": [
                         {

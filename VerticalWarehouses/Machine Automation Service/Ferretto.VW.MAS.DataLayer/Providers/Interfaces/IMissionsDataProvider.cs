@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission GetExecutingMissionInBay(BayNumber bayNumber);
 
+        void ResetMachine();
+
         void Update(Mission mission);
 
         #endregion

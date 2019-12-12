@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -136,7 +137,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             return returnValue;
         }
 
-        // it not only checks, but also updates some values
+        // it not only checks, but also updates machine data
         private bool CheckStartConditions(CommandMessage commandMessage)
         {
             bool returnValue;
@@ -204,50 +205,108 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     throw new StateMachineException(description, null, MessageActor.MachineManager);
 
-                default:
-#if CHECK_BAY_SENSOR
-                    if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Destination))
-#endif
+                case LoadingUnitLocation.NoLocation:
+                    // destination is bay, but first we must decide which position to use
+                    var bay = this.baysDataProvider.GetByNumber(requestingBay);
+                    if (bay.Positions.Count() == 1)
                     {
-                        returnValue = (messageData.Source == messageData.Destination)
-                            || (this.baysDataProvider.GetLoadingUnitByDestination(messageData.Destination) == null);
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, bay.Positions.First().Location, machineData);
                     }
-                    if (!returnValue)
+                    else
                     {
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay);
-                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
-                    }
-                    else if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
-                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
-                        )
-                    {
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
-                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
-                        returnValue = false;
-                    }
-                    if (returnValue
-                        && messageData.Destination != LoadingUnitLocation.NoLocation)
-                    {
-                        var destinationBay = this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination);
-                        if (destinationBay != null)
+                        var destination = bay.Positions.FirstOrDefault(p => p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                        if (destination is LoadingUnitLocation.NoLocation)
                         {
-                            // move from bay to bay
-                            if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Destination).Shutter.Type != ShutterType.NotSpecified
-                                && this.sensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
+                            throw new StateMachineException($"Upper position not defined for bay {requestingBay}", null, MessageActor.MachineManager);
+                        }
+                        returnValue = this.CheckBayDestination(messageData, requestingBay, destination, machineData, false);
+                        if (!returnValue)
+                        {
+                            // if upper position is not empty we can try lower position
+                            destination = bay.Positions.FirstOrDefault(p => !p.IsUpper)?.Location ?? LoadingUnitLocation.NoLocation;
+                            if (destination is LoadingUnitLocation.NoLocation)
+                            {
+                                throw new StateMachineException($"Lower position not defined for bay {requestingBay}", null, MessageActor.MachineManager);
+                            }
+                            // the other mission must be in waiting state
+                            var activeMission = this.missionsDataProvider.GetAllActiveMissionsByBay(requestingBay)
+                                .FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
+
+                            if (activeMission != null
+                                && activeMission.Status != MissionStatus.Waiting
                                 )
                             {
-                                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
-                                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
-                                returnValue = false;
+                                this.Logger.LogTrace($"IsDestinationOk: waiting for mission in upper position {activeMission.Id}, LoadUnit {activeMission.LoadingUnitId}; bay {requestingBay}");
+                            }
+                            else
+                            {
+                                returnValue = this.CheckBayDestination(messageData, requestingBay, destination, machineData);
                             }
                         }
                     }
-                    if (returnValue)
-                    {
-                        machineData.LoadingUnitDestination = messageData.Destination;
-                    }
+                    break;
+
+                default:
+                    returnValue = this.CheckBayDestination(messageData, requestingBay, messageData.Destination, machineData);
 
                     break;
+            }
+
+            return returnValue;
+        }
+
+        private bool CheckBayDestination(IMoveLoadingUnitMessageData messageData, BayNumber requestingBay, LoadingUnitLocation destination, IMoveLoadingUnitMachineData machineData, bool showErrors = true)
+        {
+            bool returnValue;
+#if CHECK_BAY_SENSOR
+            if (!this.sensorsProvider.IsLoadingUnitInLocation(destination))
+#endif
+            {
+                returnValue = (messageData.Source == destination)
+                    || (this.baysDataProvider.GetLoadingUnitByDestination(destination) == null);
+            }
+            if (!returnValue)
+            {
+                if (showErrors)
+                {
+                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
+                }
+            }
+            else if (this.baysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
+                && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
+                )
+            {
+                if (showErrors)
+                {
+                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                }
+                returnValue = false;
+            }
+            if (returnValue
+                && destination != LoadingUnitLocation.NoLocation)
+            {
+                var destinationBay = this.baysDataProvider.GetByLoadingUnitLocation(destination);
+                if (destinationBay != null)
+                {
+                    // move from bay to bay
+                    if (this.baysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
+                        && this.sensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
+                        )
+                    {
+                        if (showErrors)
+                        {
+                            this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
+                            this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
+                        }
+                        returnValue = false;
+                    }
+                }
+            }
+            if (returnValue)
+            {
+                machineData.LoadingUnitDestination = destination;
             }
 
             return returnValue;

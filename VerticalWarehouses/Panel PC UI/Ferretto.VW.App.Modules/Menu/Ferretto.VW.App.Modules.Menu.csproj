@@ -49,12 +49,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Views\AboutMenuView.xaml" />
     <None Remove="Views\AccessoriesMenuView.xaml" />
     <None Remove="Views\BaysMenuView.xaml" />
     <None Remove="Views\CellsMenuView.xaml" />
     <None Remove="Views\ElevatorMenuView.xaml" />
     <None Remove="Views\LoadingUnitsMenuView.xaml" />
+    <None Remove="Views\OtherMenuView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -70,8 +70,8 @@
     <Compile Update="App.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Views\AboutMenuView.xaml.cs">
-      <DependentUpon>AboutMenuView.xaml</DependentUpon>
+    <Compile Update="Views\OtherMenuView.xaml.cs">
+      <DependentUpon>OtherMenuView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 

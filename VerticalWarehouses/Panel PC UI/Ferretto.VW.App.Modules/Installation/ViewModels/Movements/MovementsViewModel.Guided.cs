@@ -22,9 +22,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private double? bayChainTargetPosition;
+
         private bool bayIsShutterThreeSensors;
 
         private DelegateCommand closedShutterCommand;
+
+        private double? horizontalTargetPosition;
 
         private int? inputCellId;
 
@@ -114,9 +118,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy unloadToCellPolicy;
 
+        private double? verticalTargetPosition;
+
         #endregion
 
         #region Properties
+
+        public double? BayChainTargetPosition
+        {
+            get => this.bayChainTargetPosition;
+            private set => this.SetProperty(ref this.bayChainTargetPosition, value);
+        }
 
         public bool BayIsShutterThreeSensors
         {
@@ -144,6 +156,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.closedShutterCommand = new DelegateCommand(
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
+
+        public double? HorizontalTargetPosition
+        {
+            get => this.horizontalTargetPosition;
+            private set => this.SetProperty(ref this.horizontalTargetPosition, value);
+        }
 
         public int? InputCellId
         {
@@ -311,6 +329,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningBay, value))
                 {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -323,6 +342,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 if (this.SetProperty(ref this.isTuningChain, value))
                 {
+                    this.RaisePropertyChanged(nameof(this.IsMoving));
                     this.RaiseCanExecuteChanged();
                 }
             }
@@ -451,9 +471,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanTuningChain));
 
         public ICommand UnloadToBayCommand =>
-                                                                                                            this.unloadToBayCommand
-            ??
-            (this.unloadToBayCommand = new DelegateCommand(
+            this.unloadToBayCommand ?? (this.unloadToBayCommand =
+            new DelegateCommand(
                 async () => await this.UnloadToBayAsync(),
                 this.CanUnloadToBay));
 
@@ -463,6 +482,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.unloadToCellCommand = new DelegateCommand(
                 async () => await this.UnloadToCellAsync(),
                 this.CanUnloadToCell));
+
+        public double? VerticalTargetPosition
+        {
+            get => this.verticalTargetPosition;
+            private set => this.SetProperty(ref this.verticalTargetPosition, value);
+        }
 
         #endregion
 

@@ -29,6 +29,10 @@ namespace Ferretto.VW.App.Services
 
         string LoadingUnitPositionUpInBayCode { get; }
 
+        string LogicalPosition { get; }
+
+        string LogicalPositionId { get; }
+
         Sensors Sensors { get; }
 
         ShutterSensors ShutterSensors { get; }

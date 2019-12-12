@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private readonly IMachineSetupStatusWebService machineSetupStatusWebService;
+
         private bool isWaitingForResponse;
 
         private DelegateCommand menuAccessoriesCommand;
@@ -28,9 +30,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuMovementsCommand;
 
-        private DelegateCommand menuOldCommand;
 
-        private DelegateCommand viewParametersCommand;
+        private DelegateCommand menuOtherCommand;
 
         private DelegateCommand viewStatusSensorsCommand;
 
@@ -38,9 +39,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Constructors
 
-        public InstallationMenuViewModel()
+        public InstallationMenuViewModel(IMachineSetupStatusWebService machineSetupStatusWebService)
             : base(PresentationMode.Menu)
         {
+            this.machineSetupStatusWebService = machineSetupStatusWebService;
         }
 
         #endregion
@@ -59,7 +61,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
             LoadingUnits,
 
-            Old,
+            Other,
+
         }
 
         #endregion
@@ -116,18 +119,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MovementsCommand(),
                 this.CanExecuteMovementsCommand));
 
-        public ICommand MenuOldCommand =>
-            this.menuOldCommand
+        public ICommand MenuOtherCommand =>
+            this.menuOtherCommand
             ??
-            (this.menuOldCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Old),
-                this.CanExecuteCommand));
-
-        public ICommand ViewParametersCommand =>
-            this.viewParametersCommand
-            ??
-            (this.viewParametersCommand = new DelegateCommand(
-                () => this.ParametersCommand(),
+            (this.menuOtherCommand = new DelegateCommand(
+                () => this.MenuCommand(Menu.Other),
                 this.CanExecuteCommand));
 
         public ICommand ViewStatusSensorsCommand =>
@@ -235,10 +231,10 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.Old:
+                    case Menu.Other:
                         this.NavigationService.Appear(
-                            nameof(Utils.Modules.Installation),
-                            Utils.Modules.Installation.INSTALLATORMENU,
+                            nameof(Utils.Modules.Menu),
+                            Utils.Modules.Menu.Installation.OTHER_MENU,
                             data: null,
                             trackCurrentView: true);
                         break;
@@ -309,9 +305,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.menuCellsCommand?.RaiseCanExecuteChanged();
             this.menuElevatorCommand?.RaiseCanExecuteChanged();
             this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.menuOldCommand?.RaiseCanExecuteChanged();
             this.menuMovementsCommand?.RaiseCanExecuteChanged();
-            this.viewParametersCommand?.RaiseCanExecuteChanged();
+            this.menuOtherCommand?.RaiseCanExecuteChanged();
             this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 
@@ -323,7 +318,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    Utils.Modules.Installation.Sensors.SECURITY,
                     data: null,
                     trackCurrentView: true);
             }

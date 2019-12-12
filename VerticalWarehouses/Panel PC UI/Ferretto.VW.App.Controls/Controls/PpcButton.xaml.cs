@@ -9,6 +9,7 @@ using System;
 using Ferretto.VW.App.Resources;
 using CommonServiceLocator;
 using System.ComponentModel;
+using MahApps.Metro.IconPacks;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -34,11 +35,17 @@ namespace Ferretto.VW.App.Controls.Controls
             typeof(PpcButton),
             new PropertyMetadata(false));
 
-        public static readonly DependencyProperty PermitionProperty = DependencyProperty.Register(
-            nameof(Permition),
+        public static readonly DependencyProperty KindFontAwesomeProperty =
+            DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty KindProperty =
+            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+
+        public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
+            nameof(Permission),
             typeof(UserAccessLevel),
             typeof(PpcButton),
-            new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
+            new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
 
         private IEventAggregator eventAggregator = null;
 
@@ -79,6 +86,8 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(ContentProperty, value); }
         }
 
+        public bool HasKind => !(this.Kind is null);
+
         public ImageSource ImageSource
         {
             get => (ImageSource)this.GetValue(ImageSourceProperty);
@@ -97,12 +106,24 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(IsBusyProperty, value);
         }
 
+        public PackIconMaterialLightKind? Kind
+        {
+            get => (PackIconMaterialLightKind?)this.GetValue(KindProperty);
+            set => this.SetValue(KindProperty, value);
+        }
+
+        public PackIconFontAwesomeKind? KindFontAwesome
+        {
+            get => (PackIconFontAwesomeKind?)this.GetValue(KindFontAwesomeProperty);
+            set => this.SetValue(KindFontAwesomeProperty, value);
+        }
+
         protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;
 
-        public UserAccessLevel Permition
+        public UserAccessLevel Permission
         {
-            get => (UserAccessLevel)this.GetValue(PermitionProperty);
-            set => this.SetValue(PermitionProperty, value);
+            get => (UserAccessLevel)this.GetValue(PermissionProperty);
+            set => this.SetValue(PermissionProperty, value);
         }
 
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
@@ -118,12 +139,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        public void PermitionChanged()
+        public void PermissionChanged()
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
                 bool condition = false;
-                switch (this.Permition)
+                switch (this.Permission)
                 {
                     case UserAccessLevel.Operator:
                         condition = this.IsOperator;
@@ -138,7 +159,8 @@ namespace Ferretto.VW.App.Controls.Controls
                         break;
 
                     case UserAccessLevel.NoAccess:
-                        throw new ArgumentException(nameof(this.Permition));
+                        condition = true;
+                        break;
 
                     default:
                         System.Diagnostics.Debugger.Break();
@@ -187,7 +209,7 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (this.Visibility != Visibility.Visible &&
                 this.visibleOldStatus.HasValue &&
-                this.Permition != UserAccessLevel.NoAccess)
+                this.Permission != UserAccessLevel.NoAccess)
             {
                 this.Visibility = this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
                 this.visibleOldStatus = null;
@@ -205,26 +227,31 @@ namespace Ferretto.VW.App.Controls.Controls
             }
         }
 
-        private static void OnPermitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void PermissionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcButton ppcButton)
             {
-                ppcButton.PermitionChanged();
+                ppcButton.PermissionChanged();
             }
         }
 
         private void Initialization()
         {
-            this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
 
-            this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
 
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()
                     .Subscribe(
-                        ((m) => this.PermitionChanged()),
+                        (m) => this.PermissionChanged(),
                         ThreadOption.UIThread,
                         false);
+
+            this.Loaded += (s, e) =>
+            {
+                this.PermissionChanged();
+            };
 
             this.Unloaded += (s, e) =>
             {

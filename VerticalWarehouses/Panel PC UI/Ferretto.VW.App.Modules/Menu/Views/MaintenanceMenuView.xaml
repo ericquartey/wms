@@ -6,33 +6,74 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:MaintenanceMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    
-    <Grid Margin="80,15">
 
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
+        <TextBlock Grid.Row="0"
+                   Grid.Column="1"
                    HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
+                   VerticalAlignment="Top"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Maintenance" />
+                   Text="Menu Manutenzione" />
+
+        <Grid Grid.Row="0"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <controls:PpcButton Grid.Row="0"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command="{Binding MenuMaintenanceCommand}"
+                                Content="Manutenzione" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command="{Binding MenuCompactionCommand}"
+                                Content="Compattazione" />
+
+            <!--<controls:PpcButton Grid.Row="4"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command="{Binding MenuRestoreCommand}"
+                                Content="Restore" />-->
+
+            <controls:PpcButton Grid.Row="5"
+                                Margin="0,0,15,15"
+                                HorizontalAlignment="Left"
+                                Command="{Binding MenuUpdateCommand}"
+                                Content="Aggiornamento" />
+
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Grid.Column="1" />
 
     </Grid>
 </ctrls:View>

@@ -37,7 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private Mission mission;
 
-        private bool openShutter;
+        private ShutterPosition openShutter;
 
         #endregion
 
@@ -63,7 +63,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
 
             this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
-            this.openShutter = false;
+            this.openShutter = ShutterPosition.NotSpecified;
         }
 
         #endregion
@@ -97,16 +97,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     default:
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
-                        this.openShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
-                        if (this.openShutter)
-                        {
-                            var shutterPosition = this.sensorsProvider.GetShutterPosition(bay.Number);
-                            if (shutterPosition == ShutterPosition.Opened)
-                            {
-                                this.openShutter = false;
-                            }
-                        }
                         bayNumber = bay.Number;
+                        this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, moveData.LoadingUnitDestination);
                         break;
                 }
 
@@ -116,7 +108,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             else
             {
-                var description = $"Move Loading Unit Deposit Unit Sate received wrong initialization data ({commandMessage.Data.GetType().Name})";
+                var description = $"Move Loading Unit Deposit Unit State received wrong initialization data ({commandMessage.Data.GetType().Name})";
 
                 throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
             }
@@ -136,8 +128,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     if (notification.Type == MessageType.ShutterPositioning)
                     {
                         var shutterPosition = this.sensorsProvider.GetShutterPosition(notification.RequestingBay);
-                        if (shutterPosition == ShutterPosition.Opened
-                            || shutterPosition == ShutterPosition.NotSpecified)
+                        if (shutterPosition == this.openShutter)
                         {
                             this.loadingUnitMovementProvider.ContinuePositioning(MessageActor.MachineManager, notification.RequestingBay);
                         }
@@ -169,7 +160,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     break;
             }
 
-            if ((this.openShutter && this.stateMachineResponses.Count == 2) || (!this.openShutter && this.stateMachineResponses.Count == 1))
+            if ((this.openShutter != ShutterPosition.NotSpecified && this.stateMachineResponses.Count == 2)
+                || (this.openShutter == ShutterPosition.NotSpecified && this.stateMachineResponses.Count == 1)
+                )
             {
                 bool bayShutter = false;
                 using (var transaction = this.elevatorDataProvider.GetContextTransaction())

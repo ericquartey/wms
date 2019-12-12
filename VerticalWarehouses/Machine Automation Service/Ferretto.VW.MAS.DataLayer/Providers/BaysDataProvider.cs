@@ -278,8 +278,6 @@ namespace Ferretto.VW.MAS.DataLayer
                     .Include(b => b.Positions)
                         .ThenInclude(s => s.LoadingUnit)
                     .Include(b => b.Shutter)
-                        .ThenInclude(s => s.Inverter)
-                    .Include(b => b.Shutter)
                         .ThenInclude(s => s.AssistedMovements)
                     .Include(b => b.Shutter)
                         .ThenInclude(s => s.ManualMovements)
@@ -423,6 +421,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 return this.dataContext.Bays
                     .AsNoTracking()
                      .Include(b => b.Shutter)
+                     .Include(b => b.Carousel)
+                     .Include(b => b.Positions)
                     .FirstOrDefault(b => b.Positions.Any(p => p.Location == location));
             }
         }
@@ -485,6 +485,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         .ThenInclude(s => s.ManualMovements)
                     .Include(b => b.Carousel)
                         .ThenInclude(s => s.AssistedMovements)
+                    .Include(b => b.EmptyLoadMovement)
                     .Include(b => b.FullLoadMovement)
                     .SingleOrDefault(b => b.Number == bayNumber);
 
@@ -868,6 +869,54 @@ namespace Ferretto.VW.MAS.DataLayer
             this.dataContext.SaveChanges();
         }
 
+        public void UpdateHoming(BayNumber bayNumber, bool isExecuted)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+                bay.Carousel.IsHomingExecuted = isExecuted;
+                this.dataContext.SaveChanges();
+
+                if (isExecuted)
+                {
+                    this.notificationEvent.Publish(
+                        new NotificationMessage(
+                            new BayOperationalStatusChangedMessageData
+                            {
+                                BayStatus = bay.Status,
+                            },
+                            $"Bay #{bay.Number} status changed to {bay.Status}",
+                            MessageActor.MissionManager,
+                            MessageActor.WebApi,
+                            MessageType.BayOperationalStatusChanged,
+                            bay.Number));
+                }
+            }
+        }
+
+        public void UpdateLastIdealPosition(double position, BayNumber bayNumber)
+        {
+            lock (this.dataContext)
+            {
+                var bay = this.dataContext.Bays
+                    .Include(b => b.Carousel)
+                    .SingleOrDefault(b => b.Number == bayNumber);
+                if (bay is null)
+                {
+                    throw new EntityNotFoundException(bayNumber.ToString());
+                }
+
+                bay.Carousel.LastIdealPosition = position;
+                this.dataContext.SaveChanges();
+            }
+        }
+
         public Bay UpdatePosition(BayNumber bayNumber, int positionIndex, double height)
         {
             lock (this.dataContext)
@@ -928,7 +977,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         BayStatus = bay.Status,
                     },
                     $"Bay #{bay.Number} status changed to {bay.Status}",
-                    MessageActor.MachineManager,
+                    MessageActor.MissionManager,
                     MessageActor.WebApi,
                     MessageType.BayOperationalStatusChanged,
                     bay.Number));

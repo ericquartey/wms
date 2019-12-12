@@ -163,11 +163,17 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     break;
 
                 case Axis.Horizontal:
-                case Axis.BayChain:
                     this.machineData.AxisToCalibrate = this.axisToCalibrate;
                     this.machineData.CalibrationType = this.calibration;
                     this.machineData.NumberOfExecutedSteps = 0;
                     this.machineData.MaximumSteps = (this.calibration == Calibration.FindSensor) ? 2 : 1;
+                    break;
+
+                case Axis.BayChain:
+                    this.machineData.AxisToCalibrate = this.axisToCalibrate;
+                    this.machineData.CalibrationType = Calibration.FindSensor;
+                    this.machineData.NumberOfExecutedSteps = 0;
+                    this.machineData.MaximumSteps = 1;
                     break;
 
                 case Axis.Vertical:
@@ -234,41 +240,48 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             errorText = string.Empty;
             if (this.machineData.TargetBay == BayNumber.ElevatorBay)
             {
-                if (this.machineData.MaximumSteps > 1 &&
-                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle) &&
-                    !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                if (this.machineData.MaximumSteps > 1
+                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                    && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                     )
                 {
                     ok = false;
                     errorText = "Invalid presence sensors";
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
+                else if (this.machineData.CalibrationType == Calibration.FindSensor
+                    && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible with full elevator";
                 }
             }
-#if CHECK_BAY_SENSOR
             else
             {
-                if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                if (this.machineData.CalibrationType == Calibration.FindSensor
+                    && !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay))
+                {
+                    ok = false;
+                    errorText = "Find Zero not possible: Invalid Zero sensor";
+                }
+#if CHECK_BAY_SENSOR
+                if (ok
+                    && this.machineData.CalibrationType == Calibration.FindSensor
+                    && this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible: Top position occupied";
                 }
-                else if (this.machineData.CalibrationType == Calibration.FindSensor &&
-                    this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                else if (this.machineData.CalibrationType == Calibration.FindSensor
+                    && this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                     )
                 {
                     ok = false;
                     errorText = "Find Zero not possible: Bottom position occupied";
                 }
-            }
 #endif
+            }
             return ok;
         }
 

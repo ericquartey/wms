@@ -7,6 +7,9 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
+        [JsonIgnore]
+        public Bay Bay { get; set; }
+
         public double Height { get; set; }
 
         public bool IsUpper =>

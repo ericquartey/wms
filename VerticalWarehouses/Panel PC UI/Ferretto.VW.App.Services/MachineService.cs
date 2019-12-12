@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
@@ -46,6 +48,8 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken elevatorPositionChangedToken;
 
+        private SubscriptionToken fsmExceptionToken;
+
         private bool isDisposed;
 
         private bool isHoming;
@@ -55,6 +59,8 @@ namespace Ferretto.VW.App.Services
         private SubscriptionToken machinePowerChangedToken;
 
         private MachineStatus machineStatus;
+
+        private SubscriptionToken moveLoadingUnitToken;
 
         private string notification;
 
@@ -157,7 +163,25 @@ namespace Ferretto.VW.App.Services
                        false);
 
             this.navigationService.SubscribeToNavigationCompleted(
-               e => this.WarningManagement(e.ViewModelName));
+               e => this.WarningsManagement(e.ViewModelName.Replace("Model", "")));
+
+            this.moveLoadingUnitToken = this.moveLoadingUnitToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<MoveLoadingUnitMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.fsmExceptionToken = this.fsmExceptionToken
+                ??
+                this.eventAggregator
+                    .GetEvent<NotificationEventUI<FsmExceptionMessageData>>()
+                    .Subscribe(
+                        this.OnDataChanged,
+                        ThreadOption.UIThread,
+                        false);
         }
 
         #endregion
@@ -169,6 +193,8 @@ namespace Ferretto.VW.App.Services
             get => this.isHoming;
             set => this.SetProperty(ref this.isHoming, value);
         }
+
+        protected NLog.Logger Logger => this.logger;
 
         public MachineStatus MachineStatus
         {
@@ -197,6 +223,20 @@ namespace Ferretto.VW.App.Services
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing).
             this.Dispose(true);
+        }
+
+        public void ShowNotification(Exception exception)
+        {
+            if (exception is null)
+            {
+                throw new ArgumentNullException(nameof(exception));
+            }
+
+            this.Logger.Error(exception);
+
+            this.eventAggregator
+                .GetEvent<PresentationNotificationPubSubEvent>()
+                .Publish(new PresentationNotificationMessage(exception));
         }
 
         public async Task StopMovingByAllAsync()
@@ -237,6 +277,12 @@ namespace Ferretto.VW.App.Services
 
                 this.machinePowerChangedToken?.Dispose();
                 this.machinePowerChangedToken = null;
+
+                this.moveLoadingUnitToken?.Dispose();
+                this.moveLoadingUnitToken = null;
+
+                this.fsmExceptionToken?.Dispose();
+                this.fsmExceptionToken = null;
             }
 
             this.isDisposed = true;
@@ -278,7 +324,7 @@ namespace Ferretto.VW.App.Services
 
         private void OnChangedEventArgs(EventArgs e)
         {
-            this.WarningManagement(this.GetActiveView());
+            this.WarningsManagement(this.GetActiveView());
 
             if (e is MachinePowerChangedEventArgs eventPower)
             {
@@ -396,15 +442,14 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingShutter = false;
                         }
 
-                        //TODO: Sparare eccezione
-                        this.ClearNotifications();
+                        this.ShowNotification(message.Description, NotificationSeverity.Error);
 
                         this.MachineStatus = ms;
                         break;
                     }
             }
 
-            this.WarningManagement(this.GetActiveView());
+            this.WarningsManagement(this.GetActiveView());
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -442,9 +487,10 @@ namespace Ferretto.VW.App.Services
                            Horizontal = dataElevatorPosition.HorizontalPosition,
                            Vertical = dataElevatorPosition.VerticalPosition,
                            BayPositionId = dataElevatorPosition.BayPositionId,
-                           CellId = dataElevatorPosition.CellId
+                           CellId = dataElevatorPosition.CellId,
+                           BayPositionUpper = dataElevatorPosition.BayPositionUpper
                        });
-                if (this.MachineStatus.ElevatorLogicalPosition == this.sensorsService?.ElevatorLogicalPosition)
+                if (this.MachineStatus.ElevatorLogicalPosition != this.sensorsService?.ElevatorLogicalPosition)
                 {
                     var ms = (MachineStatus)this.MachineStatus.Clone();
 
@@ -464,37 +510,16 @@ namespace Ferretto.VW.App.Services
             }
         }
 
-        private void WarningManagement(string view)
+        private void WarningsManagement(string view)
         {
             if (!(view is null) && !this.MachineStatus.IsMoving)
             {
                 switch (true)
                 {
-                    case var b when view.Equals("MovementsView", StringComparison.InvariantCultureIgnoreCase):
-                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
-                        {
-                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
-                        }
-                        else if (!this.IsHoming)
-                        {
-                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
-                        }
-                        else if (this.MachineStatus.BayChainPosition is null)
-                        {
-                            this.ShowNotification("Posizione catena sconosciuta.", NotificationSeverity.Error);
-                        }
-                        else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
-                        {
-                            this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
-                        }
-                        else if (this.machineModeService.MachineMode != MachineMode.Automatic)
-                        {
-                            this.ShowNotification("Mettere la macchina in automatico.", NotificationSeverity.Warning);
-                        }
-                        else
-                        {
-                            this.ClearNotifications();
-                        }
+                    case var b1 when view.Equals("LoginView", StringComparison.InvariantCultureIgnoreCase):
+                    case var b2 when view.Equals("LoaderView", StringComparison.InvariantCultureIgnoreCase):
+                    case var b3 when view.Equals("MainMenuView", StringComparison.InvariantCultureIgnoreCase):
+                        this.ClearNotifications();
                         break;
 
                     default:
@@ -520,6 +545,10 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
                 }
+            }
+            else
+            {
+                this.ClearNotifications();
             }
         }
 

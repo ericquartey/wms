@@ -511,24 +511,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        this.IsTuningChain = false;
-                        this.IsTuningBay = false;
+                        this.StopMoving();
+
                         await this.RefreshMachineInfoAsync();
-                        /*if (message.Data?.MovementMode is CommonUtils.Messages.Enumerations.MovementMode.BayChain)
-                        {
-                            this.IsCarouselMoving = false;
-                        }
-                        else if (message.Data?.MovementMode != CommonUtils.Messages.Enumerations.MovementMode.BayChain &&
-                                 message.Data?.AxisMovement is CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                        {
-                            this.RefreshMachineInfoAsync().ConfigureAwait(false);
-                        }*/
                         break;
                     }
 
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
+                        this.StopMoving();
+
                         await this.RefreshMachineInfoAsync();
                         this.OperationWarningOrError(message.Status, message.Description);
                         break;
@@ -538,6 +531,45 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnPositioningOperationChangedAsync(NotificationMessageUI<PositioningMessageData> message)
         {
+            switch (message.Status)
+            {
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
+                    if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
+                    {
+                        this.VerticalTargetPosition = message.Data?.TargetPosition;
+                    }
+                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
+                    {
+                        this.HorizontalTargetPosition = message.Data?.TargetPosition;
+                    }
+                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
+                    {
+                        this.BayChainTargetPosition = message.Data?.TargetPosition;
+                    }
+                    break;
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
+                    {
+                        this.VerticalTargetPosition = null;
+                        this.HorizontalTargetPosition = null;
+                        this.BayChainTargetPosition = null;
+                        this.StopMoving();
+
+                        break;
+                    }
+
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
+                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
+                    {
+                        this.VerticalTargetPosition = null;
+                        this.HorizontalTargetPosition = null;
+                        this.BayChainTargetPosition = null;
+                        this.StopMoving();
+
+                        break;
+                    }
+            }
+
             this.OnManualPositioningOperationChanged(message);
             await this.OnGuidedPositioningOperationChangedAsync(message);
         }
@@ -734,7 +766,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.Sensors.VERTICALAXIS,
+                    Utils.Modules.Installation.Sensors.SECURITY,
                     data: null,
                     trackCurrentView: true);
             }

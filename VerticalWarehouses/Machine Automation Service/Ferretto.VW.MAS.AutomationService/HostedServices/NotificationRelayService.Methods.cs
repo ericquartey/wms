@@ -50,10 +50,20 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
-            if (receivedMessage.Status == MessageStatus.OperationEnd)
+            if (receivedMessage.Status == MessageStatus.OperationEnd
+                && receivedMessage.Data is IHomingMessageData data
+                )
             {
-                this.machineProvider.IsHomingExecuted = true;
-                this.ChangeMachineMode(serviceProvider);
+                if (data.AxisToCalibrate == Axis.BayChain)
+                {
+                    var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
+                    this.baysDataProvider.UpdateHoming(bay.Number, true);
+                }
+                else
+                {
+                    this.machineProvider.IsHomingExecuted = true;
+                    this.ChangeMachineMode(serviceProvider);
+                }
             }
             else if (receivedMessage.Status == MessageStatus.OperationError)
             {
@@ -133,9 +143,15 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnDataLayerReady()
         {
+            var bays = this.baysDataProvider.GetAll().ToList();
+            foreach (var bay in bays)
+            {
+                if (bay.Carousel != null)
+                {
+                    this.baysDataProvider.UpdateHoming(bay.Number, false);
+                }
+            }
             this.baysDataProvider.AddElevatorPseudoBay();
-
-            this.baysDataProvider.GetAll().ToList(); // HACK why is this call needed?
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionMessageData data)
@@ -146,7 +162,8 @@ namespace Ferretto.VW.MAS.AutomationService
                 data.VerticalPosition,
                 data.HorizontalPosition,
                 data.CellId,
-                data.BayPositionId);
+                data.BayPositionId,
+                data.BayPositionUpper);
         }
 
         private void OnErrorStatusChanged(IErrorStatusMessageData machineErrorMessageData)

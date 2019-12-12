@@ -148,6 +148,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             try
             {
+                this.ClearNotifications();
+
                 this.subscriptionToken = this.healthProbeService.HealthStatusChanged
                     .Subscribe(
                         this.OnHealthStatusChanged,

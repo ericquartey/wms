@@ -110,11 +110,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // check #4: the shutter must be completely open
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
-            if (shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.NotSpecified
-                )
+            if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                if ((bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened)
+                    || (!bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened && shutterPosition != ShutterPosition.Half)
+                    )
+                {
+                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                }
             }
 
             // check #5: elevator's pawl must be in zero position
@@ -165,8 +168,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
                     if (shutterPosition != ShutterPosition.Closed
-                        && shutterPosition != ShutterPosition.NotSpecified
-                        )
+                        && shutterPosition != ShutterPosition.NotSpecified)
                     {
                         return new ActionPolicy
                         {
@@ -307,14 +309,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             // check #4: the shutter must be completely open
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
-            if (shutterPosition != ShutterPosition.Opened
-                && shutterPosition != ShutterPosition.NotSpecified
-                )
+            if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                return new ActionPolicy
+                if ((bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened)
+                    || (!bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened && shutterPosition != ShutterPosition.Half)
+                    )
                 {
-                    Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen
-                };
+                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                }
             }
 
             // check #5: elevator's pawl cannot be be in zero position
@@ -1221,7 +1223,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 $"speed: {speed[0]}; " +
                 $"acceleration: {acceleration[0]}; " +
                 $"deceleration: {deceleration[0]}; " +
-                $"speed w/o feedrate: {movementParameters.Speed}; " +
+                $"speed w/o feedRate: {movementParameters.Speed}; " +
                 $"LU id: {messageData.LoadingUnitId.GetValueOrDefault()}");
 
             this.PublishCommand(

@@ -29,9 +29,13 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
+        private readonly IMachineCellsWebService machineCellsWebService;
+
         private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
+
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
@@ -53,11 +57,15 @@ namespace Ferretto.VW.App.Services
 
         private bool bayZeroChainIsVisible;
 
+        private IEnumerable<Cell> cells;
+
         private double? elevatorHorizontalPosition;
 
         private string elevatorLogicalPosition;
 
         private SubscriptionToken elevatorPositionChangedToken;
+
+        private LoadingUnit elevatorPositionLoadingUnit;
 
         private double? elevatorVerticalPosition;
 
@@ -70,6 +78,12 @@ namespace Ferretto.VW.App.Services
         private string loadingUnitPositionDownInBayCode;
 
         private string loadingUnitPositionUpInBayCode;
+
+        private IEnumerable<LoadingUnit> loadingUnits;
+
+        private string logicalPosition;
+
+        private string logicalPositionId;
 
         private SubscriptionToken positioningOperationChangedToken;
 
@@ -89,8 +103,11 @@ namespace Ferretto.VW.App.Services
             IHealthProbeService healthProbeService,
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
             IBayManager bayManagerService)
         {
+            this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
@@ -99,6 +116,7 @@ namespace Ferretto.VW.App.Services
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
 
             this.SubscribeToEvents();
         }
@@ -181,6 +199,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.elevatorLogicalPosition;
             private set => this.SetProperty(ref this.elevatorLogicalPosition, value);
+        }
+
+        public LoadingUnit ElevatorPositionLoadingUnit
+        {
+            get => this.elevatorPositionLoadingUnit;
+            private set => this.SetProperty(ref this.elevatorPositionLoadingUnit, value);
         }
 
         public double? ElevatorVerticalPosition
@@ -277,6 +301,18 @@ namespace Ferretto.VW.App.Services
             private set => this.SetProperty(ref this.loadingUnitPositionUpInBayCode, value);
         }
 
+        public string LogicalPosition
+        {
+            get => this.logicalPosition;
+            private set => this.SetProperty(ref this.logicalPosition, value);
+        }
+
+        public string LogicalPositionId
+        {
+            get => this.logicalPositionId;
+            private set => this.SetProperty(ref this.logicalPositionId, value);
+        }
+
         public Sensors Sensors => this.sensors;
 
         public ShutterSensors ShutterSensors => this.shutterSensors;
@@ -297,6 +333,10 @@ namespace Ferretto.VW.App.Services
             try
             {
                 this.bays = await this.machineBaysWebService.GetAllAsync();
+
+                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+
+                this.cells = await this.machineCellsWebService.GetAllAsync();
 
                 this.RetrieveElevatorPosition(this.machineElevatorService.Position);
 
@@ -326,6 +366,10 @@ namespace Ferretto.VW.App.Services
             if (position.CellId != null)
             {
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
+                var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(position.CellId));
+                this.LogicalPosition = cell?.Status.ToString();
+                this.LogicalPositionId = position.CellId.ToString();
+                this.ElevatorPositionLoadingUnit = this.loadingUnits?.FirstOrDefault(l => l.CellId.Equals(position.CellId));
             }
             else if (position.BayPositionId != null)
             {
@@ -334,15 +378,30 @@ namespace Ferretto.VW.App.Services
                     var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
                     System.Diagnostics.Debug.Assert(bay != null);
                     this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
+                    if (position?.BayPositionUpper ?? false)
+                    {
+                        this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
+                    }
+                    else
+                    {
+                        this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
+                    }
+                    this.LogicalPositionId = ((int)bay.Number).ToString();
                 }
                 else
                 {
                     this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
+                    this.LogicalPosition = null;
+                    this.LogicalPositionId = null;
+                    this.ElevatorPositionLoadingUnit = null;
                 }
             }
             else
             {
+                this.ElevatorPositionLoadingUnit = null;
                 this.ElevatorLogicalPosition = null;
+                this.LogicalPosition = null;
+                this.LogicalPositionId = null;
             }
         }
 
@@ -359,12 +418,14 @@ namespace Ferretto.VW.App.Services
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
                         this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
+                        this.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
+                        this.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
                     }
 
                     this.BayIsMultiPosition = this.Bay.IsDouble;
@@ -444,7 +505,8 @@ namespace Ferretto.VW.App.Services
                     Horizontal = e.HorizontalPosition,
                     Vertical = e.VerticalPosition,
                     BayPositionId = e.BayPositionId,
-                    CellId = e.CellId
+                    CellId = e.CellId,
+                    BayPositionUpper = e.BayPositionUpper
                 });
         }
 
@@ -475,22 +537,16 @@ namespace Ferretto.VW.App.Services
             if (message?.Data?.SensorsStates != null)
             {
                 this.sensors.Update(message.Data.SensorsStates);
-                if (this.shutterSensors is null)
-                {
-                    await this.GetBayAsync()
-                        .ContinueWith(m =>
+
+                await this.GetBayAsync()
+                    .ContinueWith(m =>
+                    {
+                        if (this.Bay != null)
                         {
-                            if (this.Bay != null)
-                            {
-                                this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
-                                this.shutterSensors.Update(message.Data.SensorsStates);
-                            }
-                        });
-                }
-                else
-                {
-                    this.shutterSensors.Update(message.Data.SensorsStates);
-                }
+                            this.shutterSensors = new ShutterSensors((int)this.Bay.Number);
+                            this.shutterSensors.Update(message.Data.SensorsStates);
+                        }
+                    });
             }
 
             await this.GetElevatorAsync(false);

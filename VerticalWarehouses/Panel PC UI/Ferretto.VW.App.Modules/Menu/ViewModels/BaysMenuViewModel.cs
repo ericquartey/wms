@@ -117,7 +117,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.BayHeight:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
-                        Utils.Modules.Installation.SHUTTTERHEIGHTCONTROL,
+                        Utils.Modules.Installation.ProfileHeightCheck.STEP1,
                         data: null,
                         trackCurrentView: true);
                     break;

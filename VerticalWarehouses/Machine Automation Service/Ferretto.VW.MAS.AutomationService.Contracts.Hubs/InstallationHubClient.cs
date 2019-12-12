@@ -43,7 +43,7 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             connection.On<MachinePowerState>(
                 nameof(IInstallationHub.MachinePowerChanged), this.OnMachinePowerChanged);
 
-            connection.On<double, double, int?, int?>(
+            connection.On<double, double, int?, int?, bool?>(
                 nameof(IInstallationHub.ElevatorPositionChanged), this.OnElevatorPositionChanged);
 
             connection.On<NotificationMessageUI<SensorsChangedMessageData>>(
@@ -106,11 +106,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts.Hubs
             this.MessageReceived?.Invoke(this, new MessageNotifiedEventArgs(message));
         }
 
-        private void OnElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId)
+        private void OnElevatorPositionChanged(double verticalPosition, double horizontalPosition, int? cellId, int? bayPositionId, bool? bayPositionUpper)
         {
             this.ElevatorPositionChanged?.Invoke(
                 this,
-                new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId));
+                new ElevatorPositionChangedEventArgs(verticalPosition, horizontalPosition, cellId, bayPositionId, bayPositionUpper));
         }
 
         private void OnFsmException(NotificationMessageUI<FsmExceptionMessageData> message)

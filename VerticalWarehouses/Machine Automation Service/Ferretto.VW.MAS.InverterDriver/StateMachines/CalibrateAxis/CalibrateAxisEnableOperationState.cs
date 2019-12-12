@@ -42,7 +42,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.CalibrateAxis
         {
             this.Logger.LogDebug($"1:Axis to calibrate={this.axisToCalibrate}");
 
-            this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal || this.axisToCalibrate == Axis.BayChain);
+            this.InverterStatus.CommonControlWord.HorizontalAxis = (this.axisToCalibrate == Axis.Horizontal);
 
             this.InverterStatus.CommonControlWord.EnableOperation = true;
 

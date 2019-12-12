@@ -112,6 +112,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("ElevatorDistance");
 
+                    b.Property<bool>("IsHomingExecuted");
+
+                    b.Property<double>("LastIdealPosition");
+
                     b.Property<int?>("ManualMovementsId");
 
                     b.HasKey("Id");
@@ -1395,7 +1399,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 6, 18, 3, 25, 98, DateTimeKind.Local).AddTicks(1453),
+                            InstallationDate = new DateTime(2017, 2, 10, 17, 52, 19, 567, DateTimeKind.Local).AddTicks(7619),
                             ServiceStatus = 86
                         });
                 });
@@ -1758,7 +1762,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.BayPosition", b =>
                 {
-                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay")
+                    b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
                         .WithMany("Positions")
                         .HasForeignKey("BayId");
 

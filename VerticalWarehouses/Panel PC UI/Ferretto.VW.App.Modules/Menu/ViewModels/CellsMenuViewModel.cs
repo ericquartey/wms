@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
     {
         #region Fields
 
+        private DelegateCommand bayFirstLoadingUnitCommand;
+
         private DelegateCommand cellPanelsCheckCommand;
 
         private DelegateCommand cellsBlockTuningCommand;
@@ -46,11 +48,20 @@ namespace Ferretto.VW.App.Menu.ViewModels
             CellsHeightCheck,
 
             CellsBlockTuning,
+
+            BayFirstLoadingUnit,
         }
 
         #endregion
 
         #region Properties
+
+        public ICommand BayFirstLoadingUnitCommand =>
+            this.bayFirstLoadingUnitCommand
+            ??
+            (this.bayFirstLoadingUnitCommand = new DelegateCommand(
+                () => this.ExecuteCommand(Menu.BayFirstLoadingUnit),
+                this.CanExecuteCommand));
 
         public ICommand CellPanelsCheckCommand =>
             this.cellPanelsCheckCommand
@@ -117,6 +128,14 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             switch (menu)
             {
+                case Menu.BayFirstLoadingUnit:
+                    this.NavigationService.Appear(
+                       nameof(Utils.Modules.Installation),
+                       Utils.Modules.Installation.LOADFIRSTDRAWER,
+                       data: null,
+                       trackCurrentView: true);
+                    break;
+
                 case Menu.Cells:
                     this.NavigationService.Appear(
                         nameof(Utils.Modules.Installation),
@@ -157,6 +176,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             this.cellPanelsCheckCommand?.RaiseCanExecuteChanged();
             this.cellsHeightCheckCommand?.RaiseCanExecuteChanged();
             this.cellsBlockTuningCommand?.RaiseCanExecuteChanged();
+            this.bayFirstLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

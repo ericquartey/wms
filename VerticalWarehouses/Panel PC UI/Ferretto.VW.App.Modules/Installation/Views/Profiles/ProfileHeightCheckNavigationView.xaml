@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Installation.Views.ProfileHeightCheckNavigationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0"
+                   Margin="0,0,0,10"
+                   VerticalAlignment="Top"
+                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                   Text="{Binding Title}" />
+
+        <ctrls:PpcStepsMenu Grid.Row="1"
+                            Padding="5,5"
+                            Background="{DynamicResource PpcButtonBackground}"
+                            ItemsSource="{Binding MenuItems}" />
+    </Grid>
+</UserControl>

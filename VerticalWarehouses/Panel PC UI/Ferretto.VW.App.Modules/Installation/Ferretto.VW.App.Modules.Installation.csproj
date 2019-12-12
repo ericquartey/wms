@@ -56,6 +56,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ViewsAndViewModels\SingleViews\ComunicationWmsView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\UpdateView.xaml" />
+    <None Remove="ViewsAndViewModels\SingleViews\UsersView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
     <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
@@ -64,8 +68,23 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="HelpWindows\HelpMainMenu.xaml.cs">
+      <DependentUpon>HelpMainMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\ShutterHeightControlView.xaml.cs">
       <DependentUpon>ShutterHeightControlView.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\ParameterInverterView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\ComunicationWmsView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\UsersView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="ViewsAndViewModels\SingleViews\UpdateView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">
       <DependentUpon>LoadingUnitFromBayToBayView.xaml</DependentUpon>

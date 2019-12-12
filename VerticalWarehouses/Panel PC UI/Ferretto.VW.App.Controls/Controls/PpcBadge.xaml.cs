@@ -56,6 +56,14 @@ namespace Ferretto.VW.App.Controls.Controls
             if (d is PpcBadge control)
             {
                 control.PpcBadge_TextBlock.Text = e.NewValue as string;
+                if (e.NewValue == string.Format(App.Resources.VWApp.BayNumber, 0))
+                {
+                    control.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    control.Visibility = Visibility.Visible;
+                }
             }
         }
 

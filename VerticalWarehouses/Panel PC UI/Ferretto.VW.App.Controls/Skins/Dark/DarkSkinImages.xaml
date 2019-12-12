@@ -19,4 +19,16 @@
     <BitmapImage x:Key="ThemeImageSource"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/theme_dark.png" />
 
+    <BitmapImage x:Key="PHCSagoma1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/sagoma.png" />
+
+    <BitmapImage x:Key="PHCCassetto1"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/cassetto.jpg" />
+
+    <BitmapImage x:Key="LoginBacackgroud"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/LoginBackground.jpg" />
+
+    <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
+
 </ResourceDictionary>

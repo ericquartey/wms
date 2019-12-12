@@ -361,6 +361,9 @@
   <data name="Closed" xml:space="preserve">
     <value>Chiuso</value>
   </data>
+  <data name="CompletedCycles" xml:space="preserve">
+    <value>Cicli completati</value>
+  </data>
   <data name="PerformedCyclesThisSession" xml:space="preserve">
     <value>Cicli completati (sessione)</value>
   </data>
@@ -808,6 +811,10 @@
   <data name="ValueNotValid" xml:space="preserve">
     <value>Valore inserito non valido</value>
   </data>
+  <data name="UpdateResolution" xml:space="preserve">
+    <value>Aggiorna Risoluzione</value>
+    <comment>Aggiorna Risoluzione</comment>
+  </data>
   <data name="LUPresentMiddleBottomBay" xml:space="preserve">
     <value>Secondo Cassetto Presente in Baia</value>
   </data>
@@ -949,6 +956,9 @@
   <data name="ProcedureWasStopped" xml:space="preserve">
     <value>La procedura è stata interrotta.</value>
   </data>
+  <data name="VerticalAxisResolutionUpdated" xml:space="preserve">
+    <value>Risoluzione dell'asse verticale aggiornata.</value>
+  </data>
   <data name="SelectLowerBound" xml:space="preserve">
     <value>Seleziona limite inferiore [mm]</value>
     <comment>Label text</comment>
@@ -959,6 +969,24 @@
   </data>
   <data name="TimeDelay" xml:space="preserve">
     <value>Seleziona tempo di attesa</value>
+  </data>
+  <data name="SaveConfig" xml:space="preserve">
+    <value>Salva configurazione</value>
+  </data>
+  <data name="MachineNotManualModeWarning" xml:space="preserve">
+    <value>Attenzione!!! La macchina deve essere con stato manuale</value>
+  </data>
+  <data name="MachineNotRunWarning" xml:space="preserve">
+    <value>Attenzione!!! La macchina deve essere avviata</value>
+  </data>
+  <data name="PHC4ComandNote" xml:space="preserve">
+    <value>Posizionare la sagoma sul lato corto del cassetto e posizionata in modo tale che la sua base sia allineata con il piano di riferimento verticale (vedi immagine), successivamente quando si è pronti premere il tasto avanti
+</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC4NoteHeader" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>Label text</comment>
   </data>
   <data name="ElevatorIsCellPosition" xml:space="preserve">
     <value>L'elevatore è a quota cella.</value>
@@ -975,11 +1003,75 @@
   <data name="Next" xml:space="preserve">
     <value>Succ</value>
   </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Precedente</value>
+  </data>
+  <data name="PHC2ComandNote" xml:space="preserve">
+    <value>Verificare il posizionamento dell'elevatore che sia in una posizione in cui è possibile effettuare il giro catena senza effettuare danni, se necessario chiudere o aprire la serranda.
+Una volta verificato proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC2NoteHeader" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PHC1NoteHeader" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="PHC1ComandNote" xml:space="preserve">
+    <value>Caricare un cassetto in Baia.</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="ShutterState" xml:space="preserve">
+    <value>Stato Serranda</value>
+  </data>
+  <data name="Drawer" xml:space="preserve">
+    <value>Cassetto</value>
+  </data>
+  <data name="PHC3ComandNote" xml:space="preserve">
+    <value>Posizionare una cassetto in baia per la regolazione dell'altezza.
+Una volta fatto proseguire premendo il tasto "Successivo"</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC3NoteHeader" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="Shape" xml:space="preserve">
+    <value>Sagoma</value>
+  </data>
+  <data name="PHC6ComandNote" xml:space="preserve">
+    <value>Operazione terminata, rimuovere la sagoma dal cassetto</value>
+    <comment>Note text</comment>
+  </data>
+  <data name="PHC6NoteHeader" xml:space="preserve">
+    <value>Attenzione</value>
+    <comment>Label text</comment>
+  </data>
+  <data name="TotalCompletedCycles" xml:space="preserve">
+    <value>Totale cicli completati</value>
+  </data>
   <data name="Prev" xml:space="preserve">
     <value>Prec</value>
   </data>
   <data name="Abort" xml:space="preserve">
-    <value>Abortisci</value>
+    <value>Annulla</value>
+  </data>
+  <data name="NextLarge" xml:space="preserve">
+    <value>Successivo</value>
+  </data>
+  <data name="Calibration" xml:space="preserve">
+    <value>Taratura</value>
+  </data>
+  <data name="HeightReaced" xml:space="preserve">
+    <value>Altezza raggiunta</value>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+  </data>
+  <data name="Bay4" xml:space="preserve">
+    <value>Baia</value>
   </data>
   <data name="WeightAnalysis" xml:space="preserve">
     <value>Analisi Peso</value>
@@ -1180,7 +1272,7 @@
     <value>Posteriore</value>
   </data>
   <data name="UseWeightControl" xml:space="preserve">
-    <value>Usa controllo peso</value>
+    <value>Esegue movimenti con calcolo peso</value>
   </data>
   <data name="LowerBayPosition" xml:space="preserve">
     <value>Posizione Inferiore</value>
@@ -1232,5 +1324,26 @@
   </data>
   <data name="ShutterUp" xml:space="preserve">
     <value>Serranda su</value>
+  </data>
+  <data name="BayPositionOnBotton" xml:space="preserve">
+    <value>In Baia bassa</value>
+  </data>
+  <data name="BayPositionOnTop" xml:space="preserve">
+    <value>In Baia alta</value>
+  </data>
+  <data name="PositionOnBotton" xml:space="preserve">
+    <value>Bassa</value>
+  </data>
+  <data name="PositionOnTop" xml:space="preserve">
+    <value>Alta</value>
+  </data>
+  <data name="BarrierCalibration" xml:space="preserve">
+    <value>Taratura barriera</value>
+  </data>
+  <data name="Security" xml:space="preserve">
+    <value>Sicurezza</value>
+  </data>
+  <data name="SecuritySensors" xml:space="preserve">
+    <value>Sensori di sicurezza</value>
   </data>
 </root>

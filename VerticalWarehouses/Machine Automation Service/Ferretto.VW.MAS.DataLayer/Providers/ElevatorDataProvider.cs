@@ -163,7 +163,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 //{
                 var currentBayPosition = this.dataContext.Elevators
                     .Select(e => e.BayPosition)
-                    .Include(p => p.LoadingUnit)
+                        .Include(p => p.LoadingUnit)
+                        .Include(p => p.Bay)
                     .SingleOrDefault();
 
                 this.cache.Set(ElevatorCurrentBayPositionCacheKey, currentBayPosition, this.cacheOptions);
@@ -181,6 +182,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 //    {
                 var currentCell = this.dataContext.Elevators
                     .Select(e => e.Cell)
+                    .Include(c => c.Panel)
                     .Include(c => c.LoadingUnit)
                     .SingleOrDefault();
 
@@ -198,6 +200,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var elevator = this.dataContext.Elevators.AsNoTracking()
                     .Include(e => e.LoadingUnit)
                     .ThenInclude(l => l.Cell)
+                    .ThenInclude(c => c.Panel)
                     .Single();
 
                 return elevator.LoadingUnit;
@@ -318,13 +321,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var elevator = this.dataContext.Elevators
                     .Include(e => e.Cell)
+                    .ThenInclude(c => c.Panel)
                     .Single();
 
                 if (currentCell?.Id != cellId)
                 {
                     if (cellId.HasValue)
                     {
-                        var newCell = this.dataContext.Cells.SingleOrDefault(c => c.Id == cellId);
+                        var newCell = this.dataContext.Cells.Include(c => c.Panel).SingleOrDefault(c => c.Id == cellId);
                         if (newCell is null)
                         {
                             throw new EntityNotFoundException(cellId.Value);
@@ -423,6 +427,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private void NotifyElevatorPositionChanged()
         {
+            var pos = this.GetCurrentBayPosition();
+
             this.eventAggregator
                 .GetEvent<NotificationEvent>()
                 .Publish(
@@ -432,7 +438,8 @@ namespace Ferretto.VW.MAS.DataLayer
                             this.elevatorVolatileDataProvider.VerticalPosition,
                             this.elevatorVolatileDataProvider.HorizontalPosition,
                             this.GetCurrentCell()?.Id,
-                            this.GetCurrentBayPosition()?.Id),
+                            pos?.Id,
+                            pos?.IsUpper),
                         Destination = MessageActor.Any,
                         Source = MessageActor.DataLayer,
                         Type = MessageType.ElevatorPosition,

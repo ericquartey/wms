@@ -10,11 +10,15 @@
 
         public const string CELLSSIDECONTROL = "CellsSideControlViewModel";
 
+        public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";
 
         public const string MOVEMENTS = "MovementsViewModel";
+
+        public const string PARAMETERINVERTER = "ParameterInverterViewModel";
 
         public const string SAVERESTORECONFIG = "SaveRestoreConfigViewModel";
 
@@ -23,6 +27,10 @@
         public const string SHUTTERENDURANCETEST = "ShutterEnduranceTestViewModel";
 
         public const string SHUTTTERHEIGHTCONTROL = "ShutterHeightControlViewModel";
+
+        public const string UPDATE = "UpdateViewModel";
+
+        public const string USERS = "UsersViewModel";
 
         public const string VERTICALORIGINCALIBRATION = "VerticalOriginCalibrationViewModel";
 
@@ -145,6 +153,25 @@
             #endregion
         }
 
+        public static class ProfileHeightCheck
+        {
+            #region Fields
+
+            public const string STEP1 = "ProfileHeightCheckStep1ViewModel";
+
+            public const string STEP2 = "ProfileHeightCheckStep2ViewModel";
+
+            public const string STEP3 = "ProfileHeightCheckStep3ViewModel";
+
+            public const string STEP4 = "ProfileHeightCheckStep4ViewModel";
+
+            public const string STEP5 = "ProfileHeightCheckStep5ViewModel";
+
+            public const string STEP6 = "ProfileHeightCheckStep6ViewModel";
+
+            #endregion
+        }
+
         public static class Sensors
         {
             #region Fields
@@ -153,7 +180,7 @@
 
             public const string NAVIGATION = "SensorsNavigationViewModel";
 
-            public const string OTHERS = "OtherSensorsViewModel";
+            public const string SECURITY = "OtherSensorsViewModel";
 
             public const string VERTICALAXIS = "VerticalAxisSensorsViewModel";
 

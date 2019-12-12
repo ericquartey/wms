@@ -1,10 +1,10 @@
-﻿namespace Ferretto.VW.App.Menu.Views
+﻿namespace Ferretto.VW.App.Operator.Views
 {
-    public partial class OperationsMenuView
+    public partial class AlarmView
     {
         #region Constructors
 
-        public OperationsMenuView()
+        public AlarmView()
         {
             this.InitializeComponent();
         }
