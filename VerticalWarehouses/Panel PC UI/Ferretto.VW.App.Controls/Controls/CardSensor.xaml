@@ -98,7 +98,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
                     </Border>
@@ -125,7 +124,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
                     </Border>
@@ -152,7 +150,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
                     </Border>
@@ -188,7 +185,6 @@
                         <TextBlock Margin="1"
                                    HorizontalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
                             <TextBlock.Style>
@@ -340,7 +336,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel1}" />
                     </Border>
@@ -367,7 +362,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel2}" />
                     </Border>
@@ -394,7 +388,6 @@
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
-                                   FontStyle="Italic"
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardSensorLabel3}" />
                     </Border>
@@ -566,7 +559,6 @@
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
-                               FontStyle="Italic"
                                Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
                         <!--<TextBlock.Style>
