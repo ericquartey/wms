@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DeviceManager
 {
@@ -18,7 +19,7 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public string Reason { get; set; }
 
-        public string ReasonType { get; set; }
+        public ReasonType ReasonType { get; set; }
 
         #endregion
     }
