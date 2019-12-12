@@ -1272,7 +1272,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Posteriore</value>
   </data>
   <data name="UseWeightControl" xml:space="preserve">
-    <value>Usa controllo peso</value>
+    <value>Esegue movimenti con calcolo peso</value>
   </data>
   <data name="LowerBayPosition" xml:space="preserve">
     <value>Posizione Inferiore</value>

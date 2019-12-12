@@ -519,7 +519,7 @@
                     <TextBlock HorizontalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Posizione {0}'}">
+                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat={}{0}}">
                         <TextBlock.Style>
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
@@ -625,25 +625,10 @@
                                     EnumShutter="{StaticResource DataTemplateShutter}" />
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot">
-        <Border Margin="1"
-                Background="{x:Null}"
+        <Border Background="{DynamicResource PpcBackground}"
                 BorderBrush="{DynamicResource PpcBorderBrush}"
                 BorderThickness="{DynamicResource PpcBorderThickness}"
                 CornerRadius="{DynamicResource PpcCornerRadius}">
-            <!--<Border.Effect>
-                <DropShadowEffect BlurRadius="6"
-                                  Opacity="0.5"
-                                  RenderingBias="Quality"
-                                  ShadowDepth="3"
-                                  Color="{DynamicResource VWAPP_ShadowEffect_Color}" />
-            </Border.Effect>-->
-        </Border>
-        <Border Margin="1"
-                Background="{DynamicResource PpcBackground}"
-                BorderBrush="{x:Null}"
-                BorderThickness="{DynamicResource PpcBorderThickness}"
-                CornerRadius="{DynamicResource PpcCornerRadius}">
-
             <ContentControl Content="{Binding ElementName=Card, Path=Type}"
                             ContentTemplateSelector="{StaticResource selector}" />
 
