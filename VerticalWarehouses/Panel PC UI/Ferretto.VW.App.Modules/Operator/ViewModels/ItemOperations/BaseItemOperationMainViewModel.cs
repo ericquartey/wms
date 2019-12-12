@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -19,11 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMissionsDataService missionDataService;
-
-        private DelegateCommand abortOperationCommand;
-
-        private Ferretto.VW.MAS.AutomationService.Contracts.Bay bay;
+        private MAS.AutomationService.Contracts.Bay bay;
 
         private IEnumerable<TrayControlCompartment> compartments;
 
@@ -34,8 +31,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool isBusyAbortingOperation;
 
         private bool isBusyConfirmingOperation;
-
-        private bool isWaitingForResponse;
 
         private double loadingUnitDepth;
 
@@ -56,24 +51,17 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IMissionsDataService missionsDataService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
-            IMissionOperationsService missionOperationsService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
         {
-            this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
             this.eventAggregator = eventAggregator;
-            this.CompartmentColoringFunction = (c, selectedCompartment) => "#00FF00";
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#444444" : "#444444";
         }
 
         #endregion
 
         #region Properties
-
-        public ICommand AbortOperationCommand =>
-            this.abortOperationCommand
-            ??
-            (this.abortOperationCommand = new DelegateCommand(
-                async () => await this.AbortOperationAsync(),
-                this.CanAbortOperation));
 
         public Func<IDrawableCompartment, IDrawableCompartment, string> CompartmentColoringFunction { get; }
 
@@ -110,12 +98,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             get => this.isBusyConfirmingOperation;
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
         public double LoadingUnitDepth
@@ -156,14 +138,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsBusyConfirmingOperation = true;
                 this.IsWaitingForResponse = true;
 
-                await this.MissionOperationsService.CompleteCurrentMissionOperationAsync(this.InputQuantity.Value);
+                await this.MissionOperationsService.CompleteCurrentAsync();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 // Do not enable the interface. Wait for a new notification to arrive.
             }
         }
@@ -171,12 +155,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override void Disappear()
         {
             this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+            this.missionToken?.Dispose();
 
             base.Disappear();
         }
 
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = false;
+
+            this.isBusyAbortingOperation = false;
+
+            this.IsBusyConfirmingOperation = false;
+
+            this.InputQuantity = null;
+
+            this.SelectedCompartment = null;
+
             await base.OnAppearedAsync();
 
             this.bay = await this.BayManager.GetBayAsync();
@@ -194,43 +189,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.GetLoadingUnitDetails();
         }
 
+        public override void RaiseCanExecuteChanged()
+        {
+            this.confirmOperationCommand?.RaiseCanExecuteChanged();
+            this.showDetailsCommand?.RaiseCanExecuteChanged();
+        }
+
         protected abstract void ShowOperationDetails();
-
-        private async Task AbortOperationAsync()
-        {
-            try
-            {
-                this.IsBusyAbortingOperation = true;
-                this.IsWaitingForResponse = true;
-
-                // TODO show prompt dialog "are you sure?"
-                var success = await this.MissionOperationsService.AbortCurrentMissionOperationAsync();
-                if (success)
-                {
-                    this.NavigationService.GoBack();
-                }
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.InputQuantity = null;
-                this.IsBusyAbortingOperation = false;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private bool CanAbortOperation()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation;
-        }
 
         private bool CanConfirmOperation()
         {
@@ -243,17 +208,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 &&
                 this.InputQuantity.HasValue
                 &&
-                this.InputQuantity.Value >= 0;
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
         }
 
         private void GetLoadingUnitDetails()
         {
+            if (this.MissionOperationsService.CurrentMission is null)
+            {
+                this.Compartments = null;
+                this.SelectedCompartment = null;
+                return;
+            }
+
             try
             {
-                System.Diagnostics.Debug.Assert(
-                    this.MissionOperationsService.CurrentMission != null,
-                    "This view model should not be opened if there is no current mission");
-
                 this.Compartments = this.MapCompartments(this.Mission.LoadingUnit.Compartments);
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
@@ -289,29 +259,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-            if (e.MissionId is null || e.MissionOperationId is null)
-            {
-                this.ItemImage = null;
-                this.Compartments = null;
-                this.MissionOperation = null;
+            await this.RetrieveMissionOperationAsync();
 
-                this.NavigationService.GoBack();
-            }
-            else
-            {
-                await this.RetrieveMissionOperationAsync();
-                this.GetLoadingUnitDetails();
-            }
+            this.GetLoadingUnitDetails();
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.abortOperationCommand?.RaiseCanExecuteChanged();
-            this.confirmOperationCommand?.RaiseCanExecuteChanged();
-            this.showDetailsCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

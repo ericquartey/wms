@@ -250,6 +250,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to List row.
+        /// </summary>
+        public static string CommonListRow {
+            get {
+                return ResourceManager.GetString("CommonListRow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CommonListType.
         /// </summary>
         public static string CommonListType {
@@ -295,11 +304,47 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Complete Check.
+        /// </summary>
+        public static string CompleteCheck {
+            get {
+                return ResourceManager.GetString("CompleteCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Confirm.
         /// </summary>
         public static string Confirm {
             get {
                 return ResourceManager.GetString("Confirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm on empty.
+        /// </summary>
+        public static string ConfirmOnEmpty {
+            get {
+                return ResourceManager.GetString("ConfirmOnEmpty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Confirm on full.
+        /// </summary>
+        public static string ConfirmOnFull {
+            get {
+                return ResourceManager.GetString("ConfirmOnFull", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Current operation is no longer available..
+        /// </summary>
+        public static string CurrentOperationIsNoLongerAvailable {
+            get {
+                return ResourceManager.GetString("CurrentOperationIsNoLongerAvailable", resourceCulture);
             }
         }
         
@@ -997,6 +1042,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Empty.
+        /// </summary>
+        public static string Empty {
+            get {
+                return ResourceManager.GetString("Empty", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ErrorsStatisticsDrawersMovedWithoutError.
         /// </summary>
         public static string ErrorsStatisticsDrawersMovedWithoutError {
@@ -1065,6 +1119,15 @@ namespace Ferretto.VW.App.Resources {
         public static string FIFOPeriod {
             get {
                 return ResourceManager.GetString("FIFOPeriod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Full.
+        /// </summary>
+        public static string Full {
+            get {
+                return ResourceManager.GetString("Full", resourceCulture);
             }
         }
         
@@ -1312,6 +1375,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Machines availabiility.
+        /// </summary>
+        public static string ItemMachinesAvailability {
+            get {
+                return ResourceManager.GetString("ItemMachinesAvailability", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to FIFO.
         /// </summary>
         public static string ItemManagementType_FIFO {
@@ -1497,6 +1569,51 @@ namespace Ferretto.VW.App.Resources {
         public static string ListsInWaitNote {
             get {
                 return ResourceManager.GetString("ListsInWaitNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit.
+        /// </summary>
+        public static string LoadingUnit {
+            get {
+                return ResourceManager.GetString("LoadingUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit check.
+        /// </summary>
+        public static string LoadingUnitCheck {
+            get {
+                return ResourceManager.GetString("LoadingUnitCheck", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Depth.
+        /// </summary>
+        public static string LoadingUnitDepth {
+            get {
+                return ResourceManager.GetString("LoadingUnitDepth", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading unit Id.
+        /// </summary>
+        public static string LoadingUnitId {
+            get {
+                return ResourceManager.GetString("LoadingUnitId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Width.
+        /// </summary>
+        public static string LoadingUnitWidth {
+            get {
+                return ResourceManager.GetString("LoadingUnitWidth", resourceCulture);
             }
         }
         
@@ -1956,6 +2073,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation cancelled.
+        /// </summary>
+        public static string OperationCancelled {
+            get {
+                return ResourceManager.GetString("OperationCancelled", resourceCulture);
             }
         }
         

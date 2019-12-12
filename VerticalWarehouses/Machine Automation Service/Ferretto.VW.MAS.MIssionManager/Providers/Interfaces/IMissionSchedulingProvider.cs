@@ -1,11 +1,14 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataModels;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
     public interface IMissionSchedulingProvider
     {
         #region Methods
+
+        void AbortMission(Mission localMissionToAbort);
 
         void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber);
 

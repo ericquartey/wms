@@ -474,7 +474,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             //        return;
             //    }
             //}
-
             if (isGuided)
             {
                 this.Title = InstallationApp.MovementsGuided;

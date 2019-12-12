@@ -1,17 +1,15 @@
-﻿using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
+﻿using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
+    public class LoadingUnitCheckViewModel : BaseItemOperationMainViewModel
     {
         #region Constructors
 
-        public ItemInventoryViewModel(
+        public LoadingUnitCheckViewModel(
             IWmsImagesProvider wmsImagesProvider,
             IMissionsDataService missionsDataService,
             IMissionOperationsService missionOperationsService,
@@ -28,11 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected override void ShowOperationDetails()
         {
-            this.NavigationService.Appear(
-              nameof(Utils.Modules.Operator),
-              Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS,
-              null,
-              trackCurrentView: true);
+            // do nothing
         }
 
         #endregion
