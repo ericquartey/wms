@@ -109,7 +109,7 @@
                                     Abbreviation="INFO"
                                     Command="{Binding MenuAboutCommand}"
                                     Description="Statistiche, allarmi, diagnostica"
-                                    Kind="AlertCircleOutline"
+                                    Kind="Blur"
                                     MenuBrush="{StaticResource FerrettoGreen}"
                                     Number="03" />
 
@@ -140,7 +140,7 @@
                                     Abbreviation="INST"
                                     Command="{Binding MenuInstalationCommand}"
                                     Description="Procedure di installazione, movimenti manuali, altro"
-                                    Kind="AutoFix"
+                                    Kind="Creation"
                                     MenuBrush="{StaticResource FerrettoRed}"
                                     Number="04"
                                     Permition="Installer" />

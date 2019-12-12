@@ -518,6 +518,7 @@ namespace Ferretto.VW.App.Services
                 {
                     case var b1 when view.Equals("LoginView", StringComparison.InvariantCultureIgnoreCase):
                     case var b2 when view.Equals("LoaderView", StringComparison.InvariantCultureIgnoreCase):
+                    case var b3 when view.Equals("MainMenuView", StringComparison.InvariantCultureIgnoreCase):
                         break;
 
                     default:
@@ -543,6 +544,10 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
                 }
+            }
+            else
+            {
+                this.ClearNotifications();
             }
         }
 

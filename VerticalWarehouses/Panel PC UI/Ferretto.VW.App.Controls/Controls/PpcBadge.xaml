@@ -23,9 +23,9 @@
                TargetType="{x:Type Ellipse}">
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
-            <Setter Property="Stroke" Value="{DynamicResource PpcBadge_Ellipse_Stroke}" />
-            <Setter Property="Fill" Value="{DynamicResource PpcBadge_Ellipse_Fill}" />
-            <Setter Property="StrokeThickness" Value="5" />
+            <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+            <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="StrokeThickness" Value="3" />
         </Style>
 
     </UserControl.Resources>
