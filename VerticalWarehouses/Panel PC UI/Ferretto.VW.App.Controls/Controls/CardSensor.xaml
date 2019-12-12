@@ -519,7 +519,7 @@
                     <TextBlock HorizontalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
                                Foreground="{DynamicResource PpcForeground}"
-                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat='Posizione {0}'}">
+                               Text="{Binding ElementName=Card, Path=CardDescription, StringFormat={}{0}}">
                         <TextBlock.Style>
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />

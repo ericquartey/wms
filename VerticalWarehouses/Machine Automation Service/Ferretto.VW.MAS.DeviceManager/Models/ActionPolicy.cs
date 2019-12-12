@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager
 
         public string Reason { get; set; }
 
+        public string ReasonType { get; set; }
+
         #endregion
     }
 }
