@@ -164,7 +164,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (nextMission is null)
                 {
                     // send back the LU
-#if !MOCK
+#if MOCK
                     this.Logger.LogWarning("*** SIMULATION: moving LU back to the warehouse***");
                     await Task.Delay(1000);
                     this.Logger.LogWarning("*** SIMULATION: loading unit is in cell now ***");
@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 //}
                 else
                 {
-#if !MOCK
+#if MOCK
                     this.Logger.LogWarning("*** SIMULATION: moving LU to bay ***");
                     await Task.Delay(1000);
                     this.Logger.LogWarning("*** SIMULATION: loading unit is bay ***");
