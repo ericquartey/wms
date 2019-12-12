@@ -194,25 +194,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public bool IsShutterMovingDown
         {
             get => this.isShutterMovingDown;
-            private set
-            {
-                if (this.SetProperty(ref this.isShutterMovingDown, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isShutterMovingDown, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsShutterMovingUp
         {
             get => this.isShutterMovingUp;
-            private set
-            {
-                if (this.SetProperty(ref this.isShutterMovingUp, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            private set => this.SetProperty(ref this.isShutterMovingUp, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand MoveCarouselCloseCommand =>
@@ -669,6 +657,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsElevatorMovingToLoadingUnit = false;
             this.IsTuningBay = false;
             this.IsTuningChain = false;
+            this.IsBusyLoadingFromBay = false;
+            this.IsBusyLoadingFromCell = false;
+            this.IsBusyUnloadingToBay = false;
+            this.IsBusyUnloadingToCell = false;
 
             this.VerticalTargetPosition = null;
             this.HorizontalTargetPosition = null;

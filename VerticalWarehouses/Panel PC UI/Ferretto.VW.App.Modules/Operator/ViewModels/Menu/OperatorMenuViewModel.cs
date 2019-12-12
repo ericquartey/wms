@@ -15,17 +15,25 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMissionOperationsService missionOperationsService;
 
+        private readonly ISessionService sessionService;
+
         private bool areItemsEnabled;
+
+        private int bayNumber;
 
         private DelegateCommand drawerActivityButtonCommand;
 
         private DelegateCommand immediateLoadingUnitCallMenuCommand;
 
         private bool isWaitingForResponse;
+
+        private MachineIdentity machineIdentity;
 
         private DelegateCommand showItemListsCommand;
 
@@ -36,10 +44,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public OperatorMenuViewModel(
-        IMachineBaysWebService machineBaysWebService,
-        IMissionOperationsService missionOperationsService)
+            IBayManager bayManager,
+            ISessionService sessionService,
+            IMachineBaysWebService machineBaysWebService,
+            IMissionOperationsService missionOperationsService)
         : base(PresentationMode.Operator)
         {
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
         }
@@ -52,6 +64,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             get => this.areItemsEnabled;
             private set => this.SetProperty(ref this.areItemsEnabled, value);
+        }
+
+        public int BayNumber
+        {
+            get => this.bayNumber;
+            set => this.SetProperty(ref this.bayNumber, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
@@ -77,6 +95,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override bool KeepAlive => true;
 
+        public MachineIdentity MachineIdentity
+        {
+            get => this.machineIdentity;
+            set => this.SetProperty(ref this.machineIdentity, value, this.RaiseCanExecuteChanged);
+        }
+
         public ICommand ShowItemListsCommand =>
             this.showItemListsCommand
             ??
@@ -97,11 +121,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            try
+            {
+                await base.OnAppearedAsync();
 
-            this.IsBackNavigationAllowed = true;
+                this.IsBackNavigationAllowed = true;
 
-            await this.machineBaysWebService.ActivateAsync();
+                await this.machineBaysWebService.ActivateAsync();
+
+                await this.GetBayNumber();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
@@ -131,6 +168,34 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return !this.IsWaitingForResponse;
         }
 
+        private async Task GetBayNumber()
+        {
+            try
+            {
+                if (this.IsConnectedByMAS)
+                {
+                    var bay = await this.bayManager.GetBayAsync();
+                    if (!(bay is null))
+                    {
+                        this.bayNumber = (int)bay.Number;
+                    }
+
+                    if (this.Data is MachineIdentity machineIdentity)
+                    {
+                        this.MachineIdentity = machineIdentity;
+                    }
+                    else
+                    {
+                        this.MachineIdentity = this.sessionService.MachineIdentity;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+        }
+
         private void ImmediateLoadingUnitCallMenu()
         {
             this.NavigationService.Appear(
@@ -138,6 +203,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
                 null,
                 trackCurrentView: true);
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.RaisePropertyChanged(nameof(this.MachineIdentity));
+            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private void ShowItemLists()

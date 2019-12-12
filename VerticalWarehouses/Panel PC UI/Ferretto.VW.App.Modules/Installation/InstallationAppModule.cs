@@ -105,6 +105,9 @@ namespace Ferretto.VW.App.Modules.Installation
             containerRegistry.RegisterForNavigation<CellsView>();
             containerRegistry.RegisterForNavigation<LoadingUnitsView>();
             containerRegistry.RegisterForNavigation<UpdateView>();
+            containerRegistry.RegisterForNavigation<UsersView>();
+            containerRegistry.RegisterForNavigation<ParameterInverterView>();
+            containerRegistry.RegisterForNavigation<ComunicationWmsView>();
 
             containerRegistry.Register<INavigableView, DevicesView>(nameof(DevicesView));
         }
