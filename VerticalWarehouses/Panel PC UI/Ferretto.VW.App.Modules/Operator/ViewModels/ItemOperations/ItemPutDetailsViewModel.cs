@@ -1,9 +1,7 @@
-﻿using System;
-using System.Drawing;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -42,8 +40,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IWmsImagesProvider wmsImagesProvider,
             IMissionsDataService missionsDataService,
             IMissionOperationsService missionOperationsService,
-            IBayManager bayManager)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IBayManager bayManager,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
         {
         }
 

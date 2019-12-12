@@ -981,4 +981,10 @@
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Disponibilità su macchine</value>
   </data>
+  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
+    <value>L'operazione corrente non è più disponibile.</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Operazione annullata</value>
+  </data>
 </root>

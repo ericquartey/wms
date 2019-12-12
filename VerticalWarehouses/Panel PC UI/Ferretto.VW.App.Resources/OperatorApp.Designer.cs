@@ -340,6 +340,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Current operation is no longer available..
+        /// </summary>
+        public static string CurrentOperationIsNoLongerAvailable {
+            get {
+                return ResourceManager.GetString("CurrentOperationIsNoLongerAvailable", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Description.
         /// </summary>
         public static string Description {
@@ -2064,6 +2073,15 @@ namespace Ferretto.VW.App.Resources {
         public static string Notes {
             get {
                 return ResourceManager.GetString("Notes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation cancelled.
+        /// </summary>
+        public static string OperationCancelled {
+            get {
+                return ResourceManager.GetString("OperationCancelled", resourceCulture);
             }
         }
         

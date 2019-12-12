@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
@@ -11,7 +12,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IMissionsDataService missionDataService;
+
+        private bool isWaitingForResponse;
 
         private MissionWithLoadingUnitDetails mission;
 
@@ -25,13 +30,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IWmsImagesProvider wmsImagesProvider,
             IMissionsDataService missionsDataService,
             IBayManager bayManager,
-            IMissionOperationsService missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IDialogService dialogService)
             : base(PresentationMode.Operator)
         {
             this.WmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
@@ -39,6 +46,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Properties
 
         public override EnableMask EnableMask => EnableMask.Any;
+
+        public bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
+        }
 
         public string ItemId => this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString();
 
@@ -82,12 +95,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
             // do nothing
         }
 
+        public virtual void RaiseCanExecuteChanged()
+        {
+        }
+
         protected async Task RetrieveMissionOperationAsync()
         {
             var newMissionOperation = this.MissionOperationsService.CurrentMissionOperation;
 
             if (newMissionOperation is null || (this.MissionOperation != null && this.MissionOperation.Type != newMissionOperation.Type))
             {
+                if (this.IsWaitingForResponse)
+                {
+                    this.dialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
+                }
+
                 this.NavigationService.GoBack();
                 return;
             }

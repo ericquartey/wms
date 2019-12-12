@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -31,8 +32,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isBusyConfirmingOperation;
 
-        private bool isWaitingForResponse;
-
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
@@ -52,8 +51,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IMissionsDataService missionsDataService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
-            IMissionOperationsService missionOperationsService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService)
+            IMissionOperationsService missionOperationsService,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
             this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#444444" : "#444444";
@@ -100,12 +100,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public double LoadingUnitDepth
         {
             get => this.loadingUnitDepth;
@@ -150,10 +144,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.ShowNotification(ex);
                 this.IsBusyConfirmingOperation = false;
-                this.IsWaitingForResponse = false;
             }
             finally
             {
+                this.IsWaitingForResponse = false;
                 // Do not enable the interface. Wait for a new notification to arrive.
             }
         }
@@ -168,6 +162,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = false;
+
+            this.isBusyAbortingOperation = false;
+
+            this.IsBusyConfirmingOperation = false;
+
+            this.InputQuantity = null;
+
+            this.SelectedCompartment = null;
+
             await base.OnAppearedAsync();
 
             this.bay = await this.BayManager.GetBayAsync();
@@ -185,7 +189,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.GetLoadingUnitDetails();
         }
 
-        public virtual void RaiseCanExecuteChanged()
+        public override void RaiseCanExecuteChanged()
         {
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
