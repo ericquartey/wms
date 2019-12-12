@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
 
+        private readonly IMachineCellsWebService machineCellsWebService;
+
         private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
@@ -54,6 +56,8 @@ namespace Ferretto.VW.App.Services
         private IEnumerable<Bay> bays;
 
         private bool bayZeroChainIsVisible;
+
+        private IEnumerable<Cell> cells;
 
         private double? elevatorHorizontalPosition;
 
@@ -100,8 +104,10 @@ namespace Ferretto.VW.App.Services
             IEventAggregator eventAggregator,
             IMachineElevatorService machineElevatorService,
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
+            IMachineCellsWebService machineCellsWebService,
             IBayManager bayManagerService)
         {
+            this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
@@ -330,6 +336,8 @@ namespace Ferretto.VW.App.Services
 
                 this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
 
+                this.cells = await this.machineCellsWebService.GetAllAsync();
+
                 this.RetrieveElevatorPosition(this.machineElevatorService.Position);
 
                 await this.GetBayAsync()
@@ -358,7 +366,8 @@ namespace Ferretto.VW.App.Services
             if (position.CellId != null)
             {
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
-                this.LogicalPosition = null;
+                var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(position.CellId));
+                this.LogicalPosition = cell?.Status.ToString();
                 this.LogicalPositionId = position.CellId.ToString();
                 this.ElevatorPositionLoadingUnit = this.loadingUnits?.FirstOrDefault(l => l.CellId.Equals(position.CellId));
             }
@@ -371,11 +380,11 @@ namespace Ferretto.VW.App.Services
                     this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
                     if (position?.BayPositionUpper ?? false)
                     {
-                        this.LogicalPosition = Resources.InstallationApp.PositionOnTop;
+                        this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
                     }
                     else
                     {
-                        this.LogicalPosition = Resources.InstallationApp.PositionOnBotton;
+                        this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
                     }
                     this.LogicalPositionId = ((int)bay.Number).ToString();
                 }

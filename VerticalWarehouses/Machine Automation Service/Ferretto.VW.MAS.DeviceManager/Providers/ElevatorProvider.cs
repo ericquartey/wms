@@ -168,8 +168,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 {
                     var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayOnSameSide.Number);
                     if (shutterPosition != ShutterPosition.Closed
-                        && shutterPosition != ShutterPosition.NotSpecified
-                        )
+                        && shutterPosition != ShutterPosition.NotSpecified)
                     {
                         return new ActionPolicy
                         {
