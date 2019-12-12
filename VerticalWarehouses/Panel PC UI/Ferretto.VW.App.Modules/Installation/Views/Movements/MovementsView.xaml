@@ -352,6 +352,7 @@
                                             HorizontalAlignment="Left"
                                             Command="{Binding TuningBayCommand}"
                                             Content="{x:Static res:InstallationApp.BayCalibration}"
+                                            Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}"
                                             IsBusy="{Binding IsTuningBay}" />
                     </Grid>
 
