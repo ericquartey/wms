@@ -145,7 +145,7 @@
     <value>Manutenzione</value>
   </data>
   <data name="MenuOperation" xml:space="preserve">
-    <value>Operazioni</value>
+    <value>Picking</value>
   </data>
   <data name="Movements" xml:space="preserve">
     <value>Movimenti</value>

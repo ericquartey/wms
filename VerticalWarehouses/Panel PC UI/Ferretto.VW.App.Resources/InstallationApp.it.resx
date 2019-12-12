@@ -1056,7 +1056,7 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
     <value>Prec</value>
   </data>
   <data name="Abort" xml:space="preserve">
-    <value>Abortisci</value>
+    <value>Annulla</value>
   </data>
   <data name="NextLarge" xml:space="preserve">
     <value>Successivo</value>

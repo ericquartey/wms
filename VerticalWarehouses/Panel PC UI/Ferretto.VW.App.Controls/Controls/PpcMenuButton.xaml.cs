@@ -41,8 +41,15 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(PpcMenuButton),
                 new PropertyMetadata(null));
 
-        public static readonly DependencyProperty KindProperty =
+        public static readonly DependencyProperty DescriptionProperty =
             DependencyProperty.Register(
+                nameof(Description),
+                typeof(string),
+                typeof(PpcMenuButton),
+                new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty KindProperty =
+                            DependencyProperty.Register(
                 nameof(Kind),
                 typeof(PackIconMaterialKind),
                 typeof(PpcMenuButton),
@@ -55,8 +62,15 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(PpcMenuButton),
                 new PropertyMetadata(Brushes.Green));
 
-        public static readonly DependencyProperty PermitionProperty =
+        public static readonly DependencyProperty NumberProperty =
             DependencyProperty.Register(
+                nameof(Number),
+                typeof(string),
+                typeof(PpcMenuButton),
+                new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty PermitionProperty =
+                    DependencyProperty.Register(
                 nameof(Permition),
                 typeof(UserAccessLevel),
                 typeof(PpcMenuButton),
@@ -65,6 +79,13 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
                 nameof(Text),
+                typeof(string),
+                typeof(PpcMenuButton),
+                new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register(
+                nameof(Title),
                 typeof(string),
                 typeof(PpcMenuButton),
                 new PropertyMetadata(string.Empty));
@@ -111,6 +132,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(CommandProperty, value);
         }
 
+        public string Description
+        {
+            get { return (string)this.GetValue(DescriptionProperty); }
+            set { this.SetValue(DescriptionProperty, value); }
+        }
+
         public PackIconMaterialKind Kind
         {
             get => (PackIconMaterialKind)this.GetValue(KindProperty);
@@ -123,6 +150,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(MenuBrushProperty, value); }
         }
 
+        public string Number
+        {
+            get { return (string)this.GetValue(NumberProperty); }
+            set { this.SetValue(NumberProperty, value); }
+        }
+
         public UserAccessLevel Permition
         {
             get => (UserAccessLevel)this.GetValue(PermitionProperty);
@@ -133,6 +166,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get { return (string)this.GetValue(TextProperty); }
             set { this.SetValue(TextProperty, value); }
+        }
+
+        public string Title
+        {
+            get { return (string)this.GetValue(TitleProperty); }
+            set { this.SetValue(TitleProperty, value); }
         }
 
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
