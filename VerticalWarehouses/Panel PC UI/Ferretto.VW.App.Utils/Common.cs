@@ -4,6 +4,8 @@
     {
         #region Fields
 
+        public const string ASSEMBLY_MAINTHEMENAME = "Ferretto.VW.App.Themes";
+
         public const string ASSEMBLY_QUALIFIEDNAME_PREFIX = "Ferretto.VW.App";
 
         public const string ASSEMBLY_THEMENAME = "Ferretto.VW.App.Controls";

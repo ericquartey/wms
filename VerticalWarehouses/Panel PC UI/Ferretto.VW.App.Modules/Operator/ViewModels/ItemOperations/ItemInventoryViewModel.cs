@@ -1,4 +1,5 @@
 ﻿using System.Windows.Input;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -15,8 +16,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IMissionsDataService missionsDataService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
-            IBayManager bayManager)
-            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService)
+            IBayManager bayManager,
+            IDialogService dialogService)
+            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 

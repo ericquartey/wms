@@ -1237,4 +1237,10 @@
   <data name="ItemMachinesAvailability" xml:space="preserve">
     <value>Machines availabiility</value>
   </data>
+  <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
+    <value>Current operation is no longer available.</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>Operation cancelled</value>
+  </data>
 </root>

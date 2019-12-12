@@ -6,6 +6,7 @@
              xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
              xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
              xmlns:converter="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
+             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
@@ -45,19 +46,20 @@
                                      ContentText="{Binding MissionOperation.ItemListRowCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonListRow}" />
 
-            <controls:PpcLabeledText Grid.Row="1"                                     
+        <controls:PpcLabeledText Grid.Row="1"                                     
                                      HorizontalAlignment="Left"
                                      VerticalAlignment="Top"
                                      ContentText="{Binding MissionOperation.ItemCode}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemCode}" />
-            <Image Grid.Row="2"
+
+        <ctrls:PpcImage Grid.Row="2"
                    Grid.RowSpan="4"
                    Grid.Column="0"
                    Width="180"
                    Height="180"                   
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Source="{Binding ItemImage, Converter={StaticResource ITSC}}"
+                   Path="{Binding ItemId}"                   
                    Stretch="UniformToFill" />
 
             <controls:PpcLabeledText Grid.Row="1"
@@ -67,12 +69,6 @@
                                      ContentText="{Binding MissionOperation.ItemDescription}"
                                      LabelText="{x:Static resources:OperatorApp.CommonItemDescription}" />
 
-            <!--<controls:PpcLabeledText Grid.Row="2"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding CompartmentPosition, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static resources:OperatorApp.CommonCompartmentPosition}" />-->
 
 
             <controls:PpcLabeledText Grid.Row="2"
