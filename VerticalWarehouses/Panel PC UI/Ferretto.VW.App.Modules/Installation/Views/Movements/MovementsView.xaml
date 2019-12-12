@@ -621,7 +621,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="0"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="{x:Static res:InstallationApp.ShutterUp}"
                                                            IsEnabled="{Binding CanShutterMoveUpCommand}"
@@ -632,7 +632,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="1"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Giostra su"
                                                            IsEnabled="{Binding CanMoveCarouselOpenCommand}"
@@ -643,7 +643,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="2"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Baia su"
                                                            IsEnabled="False"
@@ -654,7 +654,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="0"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="{x:Static res:InstallationApp.ShutterDown}"
                                                            IsEnabled="{Binding CanShutterMoveDownCommand}"
@@ -665,7 +665,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="1"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Giostra giù"
                                                            IsEnabled="{Binding CanMoveCarouselCloseCommand}"
@@ -676,7 +676,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="2"
-                                                           Margin="5"
+                                                           Margin="10,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Baia giù"
                                                            IsEnabled="False"
@@ -711,7 +711,10 @@
                                         Margin="0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding StopMovingCommand}"
-                                        Content="{x:Static res:InstallationApp.Stop}" />
+                                        Content="{x:Static res:InstallationApp.Stop}"
+                                        ToolTip="{Binding Path=Description}"
+                                        ToolTipService.ShowDuration="500"
+                                        ToolTipService.ShowOnDisabled="true" />
 
                     <StackPanel Grid.Row="6"
                                 Grid.Column="3"
