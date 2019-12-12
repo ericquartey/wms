@@ -114,17 +114,12 @@
                 </Grid.ColumnDefinitions>
 
                 <controls:PpcButton Grid.Column="0"
-                                    Width="250"
-                                    Margin="5,0"
-                                    HorizontalContentAlignment="Left"
                                     Command="{Binding GoToMovementsGuidedCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsGuided}"
                                     IsActive="{Binding IsMovementsGuided}"
                                     Style="{DynamicResource PpcButtonMovementsGuidedTabStyle}" />
 
                 <controls:PpcButton Grid.Column="1"
-                                    Width="260"
-                                    Margin="5,0"
                                     Command="{Binding GoToMovementsManualCommand}"
                                     Content="{x:Static res:InstallationApp.MovementsManual}"
                                     IsActive="{Binding IsMovementsManual}"
