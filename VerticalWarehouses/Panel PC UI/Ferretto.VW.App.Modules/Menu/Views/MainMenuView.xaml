@@ -126,8 +126,7 @@
                                     Description="Manutenzione, compattazione cassetti, aggiornamento"
                                     Kind="Settings"
                                     MenuBrush="{StaticResource FerrettoOrange}"
-                                    Number="02"
-                                    Permition="Installer" />
+                                    Number="02" />
 
             <controls:PpcMenuButton Title="{x:Static res:Menu.MenuInstalation}"
                                     Grid.Row="1"
@@ -143,7 +142,7 @@
                                     Kind="Creation"
                                     MenuBrush="{StaticResource FerrettoRed}"
                                     Number="04"
-                                    Permition="Installer" />
+                                    Permission="Installer" />
 
 
 

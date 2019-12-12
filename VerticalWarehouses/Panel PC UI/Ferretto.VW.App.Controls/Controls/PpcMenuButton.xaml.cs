@@ -69,12 +69,12 @@ namespace Ferretto.VW.App.Controls.Controls
                 typeof(PpcMenuButton),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty PermitionProperty =
-                    DependencyProperty.Register(
-                nameof(Permition),
+        public static readonly DependencyProperty PermissionProperty =
+            DependencyProperty.Register(
+                nameof(Permission),
                 typeof(UserAccessLevel),
                 typeof(PpcMenuButton),
-                new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermitionChanged)));
+                new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermissionChanged)));
 
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(
@@ -114,6 +114,8 @@ namespace Ferretto.VW.App.Controls.Controls
             this.eventAggregator = CommonServiceLocator.ServiceLocator.Current.GetInstance<IEventAggregator>();
 
             this.sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+            this.Initialization();
         }
 
         #endregion
@@ -156,10 +158,10 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(NumberProperty, value); }
         }
 
-        public UserAccessLevel Permition
+        public UserAccessLevel Permission
         {
-            get => (UserAccessLevel)this.GetValue(PermitionProperty);
-            set => this.SetValue(PermitionProperty, value);
+            get => (UserAccessLevel)this.GetValue(PermissionProperty);
+            set => this.SetValue(PermissionProperty, value);
         }
 
         public string Text
@@ -187,12 +189,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        public void PermitionChanged()
+        public void PermissionChanged()
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
                 bool condition = false;
-                switch (this.Permition)
+                switch (this.Permission)
                 {
                     case UserAccessLevel.Operator:
                         condition = this.IsOperator;
@@ -207,7 +209,8 @@ namespace Ferretto.VW.App.Controls.Controls
                         break;
 
                     case UserAccessLevel.NoAccess:
-                        throw new ArgumentException(nameof(this.Permition));
+                        condition = true;
+                        break;
 
                     default:
                         System.Diagnostics.Debugger.Break();
@@ -242,11 +245,11 @@ namespace Ferretto.VW.App.Controls.Controls
             }
         }
 
-        private static void OnPermitionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnPermissionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcMenuButton button)
             {
-                button.PermitionChanged();
+                button.PermissionChanged();
             }
         }
 
@@ -255,9 +258,14 @@ namespace Ferretto.VW.App.Controls.Controls
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()
                     .Subscribe(
-                        ((m) => this.PermitionChanged()),
+                        ((m) => this.PermissionChanged()),
                         ThreadOption.UIThread,
                         false);
+
+            this.Loaded += (s, e) =>
+            {
+                this.PermissionChanged();
+            };
 
             this.Unloaded += (s, e) =>
             {
