@@ -61,11 +61,47 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to AnotherMissionIsActiveForThisBay.
+        /// </summary>
+        public static string AnotherMissionIsActiveForThisBay {
+            get {
+                return ResourceManager.GetString("AnotherMissionIsActiveForThisBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AnotherMissionIsActiveForThisLoadUnit.
+        /// </summary>
+        public static string AnotherMissionIsActiveForThisLoadUnit {
+            get {
+                return ResourceManager.GetString("AnotherMissionIsActiveForThisLoadUnit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AnotherMissionOfThisTypeIsActive.
+        /// </summary>
+        public static string AnotherMissionOfThisTypeIsActive {
+            get {
+                return ResourceManager.GetString("AnotherMissionOfThisTypeIsActive", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BayInvertersBusy.
         /// </summary>
         public static string BayInvertersBusy {
             get {
                 return ResourceManager.GetString("BayInvertersBusy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BottomLevelBayEmpty.
+        /// </summary>
+        public static string BottomLevelBayEmpty {
+            get {
+                return ResourceManager.GetString("BottomLevelBayEmpty", resourceCulture);
             }
         }
         
@@ -475,6 +511,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to NoError.
+        /// </summary>
+        public static string NoError {
+            get {
+                return ResourceManager.GetString("NoError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to SecurityBarrierWasTriggered.
         /// </summary>
         public static string SecurityBarrierWasTriggered {
@@ -511,11 +556,20 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SensoZeroBayNotActiveAtStart.
+        ///   Looks up a localized string similar to SensorZeroBayNotActiveAtStart.
         /// </summary>
-        public static string SensoZeroBayNotActiveAtStart {
+        public static string SensorZeroBayNotActiveAtStart {
             get {
-                return ResourceManager.GetString("SensoZeroBayNotActiveAtStart", resourceCulture);
+                return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TopLevelBayEmpty.
+        /// </summary>
+        public static string TopLevelBayEmpty {
+            get {
+                return ResourceManager.GetString("TopLevelBayEmpty", resourceCulture);
             }
         }
         

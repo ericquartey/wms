@@ -73,9 +73,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             this.Logger.LogDebug($"MoveLoadingUnitLoadElevatorState: received command {commandMessage.Type}, {commandMessage.Description}");
 
-            if (machineData is Mission machineMoveData)
+            if (machineData is Mission moveData)
             {
-                this.mission = machineMoveData;
+                this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitLoadElevatorState);
                 this.missionsDataProvider.Update(this.mission);
 
@@ -98,10 +98,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitSource);
                         measure = true;
+                        if (bay.Carousel != null)
+                        {
+                            var result = this.loadingUnitMovementProvider.CheckBaySensors(bay, moveData.LoadingUnitSource, deposit: false);
+                            if (result != MachineErrorCode.NoError)
+                            {
+                                var error = this.errorsProvider.RecordNew(result);
+                                throw new StateMachineException(error.Definition.Description, commandMessage, MessageActor.MachineManager);
+                            }
+                        }
                         break;
                 }
 
-                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, machineMoveData.LoadingUnitId);
+                this.loadingUnitMovementProvider.MoveLoadingUnit(direction, true, this.openShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.LoadingUnitId);
                 this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }

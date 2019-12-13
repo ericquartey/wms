@@ -199,17 +199,24 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
         /// <returns>True if the mission type can be created, false otherwise</returns>
         private bool CanCreateStateMachine(FsmType requestedMission, CommandMessage command)
         {
+            var serviceScope = this.serviceScopeFactory.CreateScope();
+
             var returnValue = this.machineMissions.All(m => m.Type != requestedMission || m.AllowMultipleInstances(command));
 
             if (returnValue)
             {
-                returnValue = this.EvaluateMissionPolicies(requestedMission, command);
+                returnValue = this.EvaluateMissionPolicies(requestedMission, command, serviceScope.ServiceProvider);
+            }
+            else
+            {
+                var errorProvider = serviceScope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+                errorProvider.RecordNew(MachineErrorCode.AnotherMissionOfThisTypeIsActive);
             }
 
             return returnValue;
         }
 
-        private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command)
+        private bool EvaluateMissionPolicies(FsmType moveRequestedMission, CommandMessage command, IServiceProvider serviceProvider)
         {
             var returnValue = true;
             if (command.Type == MessageType.MoveLoadingUnit)
@@ -219,6 +226,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     switch (messageData.MissionType)
                     {
                         case MissionType.Manual:
+                            var errorProvider = serviceProvider.GetRequiredService<IErrorsProvider>();
                             // no duplicate of LU
                             returnValue = !this.machineMissions.Any(m =>
                                 m.Type == moveRequestedMission
@@ -228,8 +236,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                     || ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
                                     )
                                 );
-
-                            if (returnValue)
+                            if (!returnValue)
+                            {
+                                errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisLoadUnit);
+                            }
+                            else
                             {
                                 // no duplicate of targetBay
                                 returnValue = !this.machineMissions.Any(m =>
@@ -238,6 +249,10 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                     && ((DataModels.Mission)m.MachineData).TargetBay == messageData.TargetBay
                                     && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
                                     );
+                                if (!returnValue)
+                                {
+                                    errorProvider.RecordNew(MachineErrorCode.AnotherMissionIsActiveForThisBay);
+                                }
                             }
                             break;
                     }

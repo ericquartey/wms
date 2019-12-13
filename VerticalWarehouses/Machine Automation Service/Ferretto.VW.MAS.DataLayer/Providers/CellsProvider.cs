@@ -95,29 +95,41 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
-                // load all cells, since we have to browse all cells we don't use order by to maximize speed
+                // load all cells
                 var cells = this.GetAll()
                     .Where(x => x.Position >= verticalAxis.LowerBound
                              && x.Position < verticalAxis.UpperBound)
+                    .OrderBy(o => o.Position)
                     .ToList();
                 // for each available cell we check if there is space for the requested height
                 Parallel.ForEach(cells.Where(c => c.Status != CellStatus.Occupied && !c.IsUnusable), (cell) =>
                 {
                     // load all cells following the selected cell
-                    var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
-                        && c.Position >= cell.Position
-                        && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
-                        .OrderBy(o => o.Position);
+                    var cellsFollowing = cells.Where(c => c.Panel.Side == cell.Side
+                        && c.Position >= cell.Position);
 
-                    // all cells must be available and the total space must be sufficient
-                    if (cellsInRange.Any()
-                        && !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable)
-                        && (cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight >= loadingUnit.Height + VerticalPositionTolerance)
-                        )
+                    if (cellsFollowing.Any())
                     {
-                        availableCell.Add(new AvailableCell(cell, cellsInRange.Last().Position - cellsInRange.First().Position + CellHeight));
+                        // measure available space
+                        var lastCellPosition = cellsFollowing.Last().Position;
+                        if (cellsFollowing.Count() > 1)
+                        {
+                            var firstUnavailable = cellsFollowing.FirstOrDefault(c => c.Status == CellStatus.Occupied || c.IsUnusable);
+                            if (firstUnavailable != null)
+                            {
+                                lastCellPosition = cellsFollowing.LastOrDefault(c => c.Position < firstUnavailable.Position)?.Position ?? lastCellPosition;
+                            }
+                        }
+                        var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
+
+                        // check if load unit fits in available space
+                        if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance)
+                        {
+                            availableCell.Add(new AvailableCell(cell, availableSpace));
+                        }
                     }
                 });
+
                 if (!availableCell.Any())
                 {
                     this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; ");

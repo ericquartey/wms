@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -76,7 +77,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.baysDataProvider.ResetMachine();
             this.elevatorDataProvider.ResetMachine();
-            this.missionsDataProvider.ResetMachine();
+            this.missionsDataProvider.ResetMachine(MessageActor.AutomationService);
 
             this.logger.LogInformation($"RESET MACHINE.");
 

@@ -880,14 +880,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedBayPosition != null,
                     "A bay position should be selected");
 
-                //if (this.SelectedBayPosition.LoadingUnit is null)
-                //{
-                await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
-                //}
-                //else
-                //{
-                //    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.SelectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
-                //}
+                if (this.SelectedBayPosition.LoadingUnit is null)
+                {
+                    await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.SelectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
+                }
 
                 this.IsBusyLoadingFromBay = true;
                 this.IsExecutingProcedure = true;
@@ -912,14 +912,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell != null,
                     "A cell should be selected");
 
-                //if (this.LoadingUnitInCell is null)
-                //{
-                await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
-                //}
-                //else
-                //{
-                //    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitInCell.Id, LoadingUnitLocation.Elevator);
-                //}
+                if (this.LoadingUnitInCell is null)
+                {
+                    await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitInCell.Id, LoadingUnitLocation.Elevator);
+                }
 
                 this.IsBusyLoadingFromCell = true;
                 this.IsExecutingProcedure = true;

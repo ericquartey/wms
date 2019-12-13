@@ -43,6 +43,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         #region Methods
 
+        /// <summary>
+        /// Moves shutter in slow speed. Used for manual movements.
+        /// It stops when top or bottom sensors are detected or when operator sends a stop command.
+        /// </summary>
+        /// <param name="direction"></param>
+        /// <param name="bayNumber"></param>
+        /// <param name="sender"></param>
         public void Move(ShutterMovementDirection direction, BayNumber bayNumber, MessageActor sender)
         {
             var parameters = this.baysDataProvider.GetManualMovementsShutter(bayNumber);
@@ -91,7 +98,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.None);
         }
 
-        // return true if movement is started
+        /// <summary>
+        /// Moves shutter to one of the defined positions
+        /// </summary>
+        /// <param name="targetPosition"></param>
+        /// <param name="bayNumber"></param>
+        /// <param name="sender"></param>
+        /// <returns>true if movement is started</returns>
         public bool MoveTo(ShutterPosition targetPosition, BayNumber bayNumber, MessageActor sender)
         {
             var direction = ShutterMovementDirection.NotSpecified;

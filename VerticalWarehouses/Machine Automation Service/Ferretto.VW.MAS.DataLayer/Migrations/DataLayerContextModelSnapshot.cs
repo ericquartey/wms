@@ -339,6 +339,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.HasData(
                         new
                         {
+                            Id = -1,
+                            Code = -1,
+                            Description = "NoError",
+                            Reason = "NoError",
+                            Severity = 0
+                        },
+                        new
+                        {
                             Id = 1,
                             Code = 1,
                             Description = "Cassetto non caricato completamente.",
@@ -485,56 +493,96 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 19,
                             Code = 19,
-                            Description = "SensoZeroBayNotActiveAtStart",
-                            Reason = "SensoZeroBayNotActiveAtStart",
+                            Description = "TopLevelBayEmpty",
+                            Reason = "TopLevelBayEmpty",
                             Severity = 0
                         },
                         new
                         {
                             Id = 20,
                             Code = 20,
+                            Description = "BottomLevelBayEmpty",
+                            Reason = "BottomLevelBayEmpty",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Code = 21,
+                            Description = "SensorZeroBayNotActiveAtStart",
+                            Reason = "SensorZeroBayNotActiveAtStart",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Code = 22,
                             Description = "Il peso massimo caricato sul cassetto è eccessivo.",
                             Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 21,
-                            Code = 21,
+                            Id = 23,
+                            Code = 23,
                             Description = "DestinationBelowLowerBound",
                             Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 22,
-                            Code = 22,
+                            Id = 24,
+                            Code = 24,
                             Description = "DestinationOverUpperBound",
                             Reason = "DestinationOverUpperBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 23,
-                            Code = 23,
+                            Id = 25,
+                            Code = 25,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 24,
-                            Code = 24,
+                            Id = 26,
+                            Code = 26,
                             Description = "IoDeviceError",
                             Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 25,
-                            Code = 25,
+                            Id = 27,
+                            Code = 27,
                             Description = "MachineModeNotValid",
                             Reason = "MachineModeNotValid",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Code = 28,
+                            Description = "AnotherMissionIsActiveForThisLoadUnit",
+                            Reason = "AnotherMissionIsActiveForThisLoadUnit",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Code = 29,
+                            Description = "AnotherMissionIsActiveForThisBay",
+                            Reason = "AnotherMissionIsActiveForThisBay",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Code = 30,
+                            Description = "AnotherMissionOfThisTypeIsActive",
+                            Reason = "AnotherMissionOfThisTypeIsActive",
                             Severity = 1
                         },
                         new
@@ -925,6 +973,31 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 26,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 27,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 28,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 29,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 30,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 200000,
                             TotalErrors = 0
                         },
@@ -1076,6 +1149,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300015,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = -1,
                             TotalErrors = 0
                         });
                 });
@@ -1412,7 +1490,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 13, 11, 17, 31, 990, DateTimeKind.Local).AddTicks(4100),
+                            InstallationDate = new DateTime(2017, 2, 13, 16, 0, 31, 225, DateTimeKind.Local).AddTicks(1161),
                             ServiceStatus = 86
                         });
                 });

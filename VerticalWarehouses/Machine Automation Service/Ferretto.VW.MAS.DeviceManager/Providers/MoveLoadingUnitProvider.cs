@@ -85,6 +85,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
+        public MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit)
+        {
+            var bayPosition = this.baysDataProvider.GetPositionByLocation(loadingUnitPosition);
+            if (deposit)
+            {
+                return this.carouselProvider.CanElevatorDeposit(bayPosition);
+            }
+            else
+            {
+                return this.carouselProvider.CanElevatorPickup(bayPosition);
+            }
+        }
+
         public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
             try

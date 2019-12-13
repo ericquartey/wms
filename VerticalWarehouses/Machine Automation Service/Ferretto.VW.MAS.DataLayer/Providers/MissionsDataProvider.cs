@@ -1,8 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ferretto.VW.CommonUtils;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Events;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -16,6 +20,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         private readonly DataLayerContext dataContext;
 
+        private readonly IEventAggregator eventAggregator;
+
         private readonly ILogger<DataLayerService> logger;
 
         #endregion
@@ -27,10 +33,7 @@ namespace Ferretto.VW.MAS.DataLayer
             IEventAggregator eventAggregator,
             ILogger<DataLayerService> logger)
         {
-            if (eventAggregator is null)
-            {
-                throw new ArgumentNullException(nameof(eventAggregator));
-            }
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
 
             this.dataContext = dataContext ?? throw new ArgumentNullException(nameof(dataContext));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -109,7 +112,7 @@ namespace Ferretto.VW.MAS.DataLayer
             lock (this.dataContext)
             {
                 var mission = this.dataContext.Missions.SingleOrDefault(m => m.Id == id);
-                if(mission is null)
+                if (mission is null)
                 {
                     throw new EntityNotFoundException(nameof(mission));
                 }
@@ -166,8 +169,32 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public void ResetMachine()
+        public void ResetMachine(MessageActor sender)
         {
+            var messageData = new MoveLoadingUnitMessageData(
+                        MissionType.NoType,
+                        LoadingUnitLocation.NoLocation,
+                        LoadingUnitLocation.NoLocation,
+                        null,
+                        null,
+                        null,
+                        false,
+                        false,
+                        null,
+                        CommandAction.Stop);
+
+            this.eventAggregator
+                .GetEvent<CommandEvent>()
+                .Publish(
+                    new CommandMessage(
+                        messageData,
+                        $"Reset mission by ResetMachine",
+                        MessageActor.MachineManager,
+                        sender,
+                        MessageType.MoveLoadingUnit,
+                        BayNumber.BayOne,
+                        BayNumber.BayOne));
+
             lock (this.dataContext)
             {
                 foreach (var mission in this.dataContext.Missions.Where(m => m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting))

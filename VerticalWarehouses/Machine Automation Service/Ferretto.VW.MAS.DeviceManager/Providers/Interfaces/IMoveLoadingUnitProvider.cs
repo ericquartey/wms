@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus CarouselStatus(NotificationMessage message);
 
+        MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit);
+
         void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);

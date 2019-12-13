@@ -748,7 +748,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public BayPosition GetPositionByLocation(LoadingUnitLocation location)
         {
-            var bayPosition = this.dataContext.BayPositions.SingleOrDefault(p => p.Location == location);
+            var bayPosition = this.dataContext.BayPositions
+                .Include(b => b.Bay)
+                .SingleOrDefault(p => p.Location == location);
             if (bayPosition is null)
             {
                 throw new EntityNotFoundException(location.ToString());

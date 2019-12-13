@@ -29,7 +29,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Mission GetExecutingMissionInBay(BayNumber bayNumber);
 
-        void ResetMachine();
+        void ResetMachine(MessageActor sender);
 
         void Update(Mission mission);
 
