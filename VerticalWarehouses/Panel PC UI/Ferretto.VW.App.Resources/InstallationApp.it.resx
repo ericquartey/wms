@@ -1145,9 +1145,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="GoToDrawer" xml:space="preserve">
     <value>Vai a cassetto</value>
   </data>
-  <data name="IntermediatePosition" xml:space="preserve">
-    <value>Posizione intermedia</value>
-  </data>
   <data name="LuPresenceOnMachineCradle" xml:space="preserve">
     <value>Presenza UDC lato macchina</value>
   </data>

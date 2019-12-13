@@ -397,14 +397,15 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding IntermediateShutterCommand}"
-                                            Content="{x:Static res:InstallationApp.IntermediatePosition}"
+                                            Content="{x:Static res:InstallationApp.ShutterMidWay}"
                                             Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
-                        <controls:PpcButton Margin="5"
+                        <controls:PpcButton Grid.Column="3"
+                                            Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding ClosedShutterCommand}"
                                             Content="{x:Static res:InstallationApp.GateClose}">
-                            <controls:PpcButton.Style>
+                            <!--<controls:PpcButton.Style>
                                 <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
                                        TargetType="{x:Type controls:PpcButton}">
                                     <Setter Property="Grid.Column" Value="3" />
@@ -415,7 +416,7 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </controls:PpcButton.Style>
+                            </controls:PpcButton.Style>-->
                         </controls:PpcButton>
                     </Grid>
 

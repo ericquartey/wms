@@ -1663,15 +1663,6 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Intermediate position.
-        /// </summary>
-        public static string IntermediatePosition {
-            get {
-                return ResourceManager.GetString("IntermediatePosition", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Laser gate 1.
         /// </summary>
         public static string Laser1Done {

@@ -321,7 +321,7 @@
                                 Margin="5"
                                 HorizontalAlignment="Center"
                                 Command="{Binding IntermediateShutterCommand}"
-                                Content="{x:Static res:InstallationApp.IntermediatePosition}"
+                                Content="{x:Static res:InstallationApp.ShutterMidWay}"
                                 Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
             <controls:PpcButton Grid.Row="5"
