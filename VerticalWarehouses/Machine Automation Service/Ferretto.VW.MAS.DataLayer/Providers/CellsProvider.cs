@@ -105,8 +105,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     // load all cells following the selected cell
                     var cellsInRange = cells.Where(c => c.Panel.Side == cell.Side
-                        && c.Position >= cell.Position
-                        && c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
+                        && c.Position >= cell.Position)
                         .OrderBy(o => o.Position);
 
                     // all cells must be available and the total space must be sufficient
