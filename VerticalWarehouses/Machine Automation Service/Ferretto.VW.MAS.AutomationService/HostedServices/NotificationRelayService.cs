@@ -105,7 +105,7 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void DataHubClient_ConnectionStatusChanged(object sender, ConnectionStatusChangedEventArgs e)
         {
-            this.Logger.LogInformation("Connection changed connected={isConnected}", e.IsConnected);
+            this.Logger.LogTrace("Connection to WMS hub changed (connected={isConnected})", e.IsConnected);
             if (e.IsConnected)
             {
                 this.OnDataHubClientEntityChanged(this, new EntityChangedEventArgs(

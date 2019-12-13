@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -20,7 +21,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int ItemsToCheckBeforeLoad = 2;
 
-        private const int ItemsVisiblePageSize = 12;
+        private const int ItemsVisiblePageSize = 10;
 
         private readonly IAreasDataService areasDataService;
 
@@ -28,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly List<Item> items = new List<Item>();
+        private readonly List<ItemInfo> items = new List<ItemInfo>();
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -54,7 +55,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private string searchItem;
 
-        private Item selectedItem;
+        private ItemInfo selectedItem;
 
         private DelegateCommand selectNextItemCommand;
 
@@ -146,7 +147,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ShowItemDetails,
                 this.CanShowItemDetails));
 
-        public IList<Item> Items => new List<Item>(this.items);
+        public IList<ItemInfo> Items => new List<ItemInfo>(this.items);
 
         public override bool KeepAlive => true;
 
@@ -170,7 +171,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
-        public Item SelectedItem
+        public ItemInfo SelectedItem
         {
             get => this.selectedItem;
             set
@@ -271,7 +272,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 foreach (var item in newItems)
                 {
-                    this.items.Add(item);
+                    var itemInfo = new ItemInfo(item, this.bayManager.Identity.Id);
+                    this.items.Add(itemInfo);
                 }
             }
             catch (Exception ex)
@@ -321,13 +323,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             if ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > this.currentItemIndex)
             {
                 this.maxKnownIndexSelection--;
-            }
-
-            if (this.currentItemIndex > (DefaultPageSize - ItemsToCheckBeforeLoad))
-            {
-                this.IsSearching = true;
-                this.tokenSource = new CancellationTokenSource();
-                await this.SearchItemAsync(this.currentItemIndex, this.tokenSource.Token);
             }
 
             this.SetSelectedItem();
@@ -406,7 +401,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             if (itemId.HasValue
                 &&
-                this.items.FirstOrDefault(l => l.Id == itemId.Value) is Item itemFound)
+                this.items.FirstOrDefault(l => l.Id == itemId.Value) is ItemInfo itemFound)
             {
                 this.currentItemIndex = this.items.IndexOf(itemFound);
             }

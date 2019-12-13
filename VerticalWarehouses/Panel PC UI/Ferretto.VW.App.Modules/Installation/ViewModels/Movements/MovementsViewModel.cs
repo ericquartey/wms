@@ -361,7 +361,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnErrorStatusChangedAsync(e);
 
-            this.OnManualErrorStatusChanged();
+            if (!(this.MachineError is null))
+            {
+                this.StopMoving();
+            }
         }
 
         protected override async Task OnMachineModeChangedAsync(MachineModeChangedEventArgs e)
@@ -474,7 +477,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             //        return;
             //    }
             //}
-
             if (isGuided)
             {
                 this.Title = InstallationApp.MovementsGuided;

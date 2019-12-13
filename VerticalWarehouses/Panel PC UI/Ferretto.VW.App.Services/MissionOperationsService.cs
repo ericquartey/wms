@@ -16,9 +16,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMachineMissionOperationsWebService missionOperationsAutomationService;
-
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
+
+        private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
 
@@ -37,7 +37,7 @@ namespace Ferretto.VW.App.Services
         {
             this.eventAggregator = eventAggregator;
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
-            this.missionOperationsAutomationService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
+            this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
 
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
@@ -58,25 +58,16 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public async Task<bool> AbortCurrentMissionOperationAsync()
+        public async Task CompleteCurrentAsync()
         {
-            try
-            {
-                await this.missionOperationsAutomationService.AbortAsync(this.CurrentMissionOperation.Id);
-            }
-            catch
-            {
-                this.CurrentMissionOperation = null;
-                return false;
-            }
-            return true;
+            await this.missionOperationsWebService.CompleteAsync(
+                this.CurrentMissionOperation.Id,
+                this.CurrentMissionOperation.RequestedQuantity);
         }
 
-        public async Task CompleteCurrentMissionOperationAsync(double quantity)
+        public async Task PartiallyCompleteCurrentAsync(double quantity)
         {
-            await this.missionOperationsAutomationService.CompleteAsync(this.CurrentMissionOperation.Id, quantity);
-
-            this.CurrentMissionOperation = null;
+            await this.missionOperationsWebService.PartiallyCompleteAsync(this.CurrentMissionOperation.Id, quantity);
         }
 
         private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
@@ -99,7 +90,7 @@ namespace Ferretto.VW.App.Services
 
         private async Task RetrieveMissionOperation(int missionOperationId, int missionId, AssignedMissionOperationChangedEventArgs e)
         {
-            if (missionOperationId != this.CurrentMissionOperation?.Id)
+            // if (missionOperationId != this.CurrentMissionOperation?.Id)
             {
                 try
                 {

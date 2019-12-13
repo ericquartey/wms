@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net471</TargetFramework>   
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,53 +15,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Icons\device.png" />
-    <None Remove="Icons\inverter.png" />
-    <None Remove="Images\baseline_account_circle_black_18dp.png" />
-    <None Remove="Images\baseline_account_circle_white_18dp.png" />
-    <None Remove="Images\baseline_check_circle_black_18dp.png" />
-    <None Remove="Images\baseline_check_circle_white_18dp.png" />
-    <None Remove="Images\baseline_error_black_18dp.png" />
-    <None Remove="Images\baseline_error_white_18dp.png" />
-    <None Remove="Images\baseline_help_outline_black_18dp.png" />
-    <None Remove="Images\baseline_help_outline_white_18dp.png" />
-    <None Remove="Images\baseline_power_settings_new_black_18dp.png" />
-    <None Remove="Images\baseline_power_settings_new_white_18dp.png" />
-    <None Remove="Images\baseline_warning_black_18dp.png" />
-    <None Remove="Images\baseline_warning_white_18dp.png" />
-    <None Remove="Images\Divieto_Dark.png" />
-    <None Remove="Images\Divieto_Light.png" />
-    <None Remove="Images\loading_ring.gif" />
-    <None Remove="Images\Punto_Interrogativo.png" />
-    <None Remove="Images\Punto_Interrogativo_2.png" />
-    <None Remove="Images\Punto_Interrogativo_3.png" />
-    <None Remove="Images\spinner_black.gif" />
-    <None Remove="Images\spinner_pure_white.gif" />
-    <None Remove="Images\spinner_white.gif" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Remove="Images\Divieto_Dark.png" />
-    <Resource Remove="Images\Divieto_Light.png" />
-    <Resource Remove="Images\no_image.jpg" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="Images\Divieto_Dark.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\Divieto_Light.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Images\no_image.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Update="Images\Punto_Interrogativo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
 
 </Project>

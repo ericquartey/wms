@@ -20,6 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private SubscriptionToken missionToken;
 
         private int pendingMissionOperationsCount;
+        private bool isPerformingOperation;
 
         #endregion
 
@@ -54,6 +55,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             base.Disappear();
 
+            this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
+
             this.missionToken?.Dispose();
             this.missionToken = null;
         }
@@ -72,7 +75,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     ThreadOption.UIThread,
                     false);
 
+            if (this.isPerformingOperation)
+            {
+                this.NavigationService.GoBack();
+                this.isPerformingOperation = false;
+                return;
+            }
+
             this.CheckForNewOperation();
+        }
+
+        public override void OnNavigatedFrom(NavigationContext navigationContext)
+        {
+            base.OnNavigatedFrom(navigationContext);
+        }
+
+        public override void OnNavigatedTo(NavigationContext navigationContext)
+        {
+            base.OnNavigatedTo(navigationContext);
         }
 
         private void CheckForNewOperation()
@@ -94,6 +114,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         Utils.Modules.Operator.ItemOperations.INVENTORY,
                         null,
                         trackCurrentView: true);
+                    this.isPerformingOperation = true;
                     break;
 
                 case MissionOperationType.Pick:
@@ -102,6 +123,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         Utils.Modules.Operator.ItemOperations.PICK,
                         null,
                         trackCurrentView: true);
+                    this.isPerformingOperation = true;
                     break;
 
                 case MissionOperationType.Put:
@@ -110,6 +132,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         Utils.Modules.Operator.ItemOperations.PUT,
                         null,
                         trackCurrentView: true);
+                    this.isPerformingOperation = true;
+                    break;
+
+                case MissionOperationType.LoadingUnitCheck:
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.LOADINGUNITCHECKVIEW,
+                        null,
+                        trackCurrentView: true);
+                    this.isPerformingOperation = true;
                     break;
             }
         }

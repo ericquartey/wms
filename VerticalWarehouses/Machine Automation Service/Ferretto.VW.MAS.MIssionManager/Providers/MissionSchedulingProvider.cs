@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -41,6 +42,18 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
+        public void AbortMission(Mission mission)
+        {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
+            this.missionsDataProvider.Complete(mission.Id);
+
+            this.NotifyNewMachineMissionAvailable(mission);
+        }
+
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber)
         {
             this.logger.LogDebug(
@@ -51,13 +64,6 @@ namespace Ferretto.VW.MAS.MissionManager
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
 
             this.NotifyNewMachineMissionAvailable(mission);
-        }
-
-        public void CancelMission(int missionId)
-        {
-            this.logger.LogDebug("Canceling mission {missionId}.", missionId);
-
-            this.missionsDataProvider.Delete(missionId);
         }
 
         public void QueueBayMission(int loadingUnitId, BayNumber targetBayNumber, int wmsMissionId, int wmsMissionPriority)
@@ -83,8 +89,13 @@ namespace Ferretto.VW.MAS.MissionManager
             throw new NotImplementedException();
         }
 
-        private void NotifyNewMachineMissionAvailable(DataModels.Mission mission)
+        private void NotifyNewMachineMissionAvailable(Mission mission)
         {
+            if (mission is null)
+            {
+                throw new ArgumentNullException(nameof(mission));
+            }
+
             var notificationMessage = new NotificationMessage(
                 null,
                 $"New machine mission available for bay {mission.TargetBay}.",

@@ -97,6 +97,46 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        /// <summary>
+        /// the UI informs mission manager that the operation is completed
+        /// </summary>
+        /// <param name="id">operation id</param>
+        /// <param name="quantity"></param>
+        /// <returns></returns>
+        public async Task PartiallyCompleteAsync(int wmsId, double quantity)
+        {
+            if (!this.configuration.IsWmsEnabled())
+            {
+                throw new InvalidOperationException("The machine is not configured to communicate with WMS.");
+            }
+
+            try
+            {
+                await this.missionOperationsDataService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity);
+
+                var messageData = new MissionOperationCompletedMessageData
+                {
+                    MissionOperationId = wmsId,
+                };
+
+                var notificationMessage = new NotificationMessage(
+                    messageData,
+                    "Mission Operation Partially Completed",
+                    MessageActor.MissionManager,
+                    MessageActor.WebApi,
+                    MessageType.MissionOperationCompleted,
+                    BayNumber.None);
+
+                this.eventAggregator
+                    .GetEvent<NotificationEvent>()
+                    .Publish(notificationMessage);
+            }
+            catch (SwaggerException ex)
+            {
+                this.NegativeResult(ex);
+            }
+        }
+
         public async Task<MissionOperation> GetByIdAsync(int wmsId)
         {
             return await this.missionOperationsDataService.GetByIdAsync(wmsId);
