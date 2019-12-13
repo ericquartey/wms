@@ -261,5 +261,13 @@ namespace Ferretto.VW.App.Controls.Controls
         }
 
         #endregion
+
+        #region Methods
+
+        private void Border_MouseEnter(object sender, MouseEventArgs e)
+        {
+        }
+
+        #endregion
     }
 }
