@@ -554,6 +554,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.VerticalTargetPosition = null;
                         this.HorizontalTargetPosition = null;
                         this.BayChainTargetPosition = null;
+
                         this.StopMoving();
 
                         break;

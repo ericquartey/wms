@@ -279,4 +279,7 @@
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitOtherBay</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+    <value>Cassetto non presente sull'Elevatore</value>
+  </data>
 </root>

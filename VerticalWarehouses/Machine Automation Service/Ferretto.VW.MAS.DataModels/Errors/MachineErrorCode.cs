@@ -171,5 +171,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitOtherBay), 1)]
         MachineManagerErrorLoadingUnitOtherBay = MachineManagerErrorBaseCode + 14,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceElevator), 1)]
+        MachineManagerErrorLoadingUnitSourceElevator = MachineManagerErrorBaseCode + 15,
     }
 }

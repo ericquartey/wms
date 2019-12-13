@@ -63,17 +63,31 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.mission.FsmStateName = nameof(MoveLoadingUnitStartState);
                 this.missionsDataProvider.Update(this.mission);
 
-                var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData);
-
-                if (sourceHeight is null)
+                if (moveData.LoadingUnitSource is LoadingUnitLocation.Elevator)
                 {
-                    var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
+                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData);
+                    if (destinationHeight is null)
+                    {
+                        var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
 
-                    throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                        throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    }
+
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
                 }
+                else
+                {
+                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData);
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
+                    if (sourceHeight is null)
+                    {
+                        var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
 
+                        throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    }
+
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
+                }
                 bool isEject = this.mission.LoadingUnitDestination != LoadingUnitLocation.Cell
                     && this.mission.LoadingUnitDestination != LoadingUnitLocation.Elevator
                     && this.mission.LoadingUnitDestination != LoadingUnitLocation.LoadingUnit
@@ -123,7 +137,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                    if (this.mission.LoadingUnitSource is LoadingUnitLocation.Elevator)
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                    }
+                    else
+                    {
+                        returnValue = this.GetState<IMoveLoadingUnitLoadElevatorState>();
+                    }
                     break;
 
                 case MessageStatus.OperationStop:

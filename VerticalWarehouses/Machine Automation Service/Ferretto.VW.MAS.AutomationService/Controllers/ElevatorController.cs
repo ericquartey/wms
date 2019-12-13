@@ -260,6 +260,23 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("vertical/move-to-free-cell")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesDefaultResponseType]
+        public IActionResult MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting)
+        {
+            this.elevatorProvider.MoveToFreeCell(
+                loadUnitId,
+                computeElongation,
+                performWeighting,
+                this.BayNumber,
+                MessageActor.AutomationService);
+
+            return this.Accepted();
+        }
+
         [HttpPost("vertical/move-to")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

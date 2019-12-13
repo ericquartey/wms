@@ -82,7 +82,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
 
         public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
-            if (sourceBay is LoadingUnitLocation.Cell || sourceBay is LoadingUnitLocation.LoadingUnit)
+            if (sourceBay is LoadingUnitLocation.Cell)
             {
                 throw new ArgumentException();
             }
