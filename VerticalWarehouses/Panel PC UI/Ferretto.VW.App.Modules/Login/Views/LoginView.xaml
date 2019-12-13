@@ -36,9 +36,19 @@
                                                    DockPanel.Dock="Left"
                                                    Template="{Binding Path=(dxe:BaseEdit.OwnerEdit).ActualEditorControlTemplate, RelativeSource={RelativeSource Self}}" />
                                 <TextBlock x:Name="PART_PasswordNullText"
+                                           Foreground="Gray"
                                            IsHitTestVisible="False"
                                            Style="{DynamicResource {dxet:PasswordBoxEditThemeKey ResourceKey=NullTextEditorStyle}}"
-                                           Text="{Binding Path=NullText, RelativeSource={RelativeSource TemplatedParent}}" />
+                                           Text="{Binding Path=NullText, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <TextBlock.Visibility>
+                                        <Binding Path="IsNullTextVisible"
+                                                 RelativeSource="{RelativeSource TemplatedParent}">
+                                            <Binding.Converter>
+                                                <BooleanToVisibilityConverter />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </TextBlock.Visibility>
+                                </TextBlock>
                             </Grid>
                         </Border>
                         <ControlTemplate.Triggers>
