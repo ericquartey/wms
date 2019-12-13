@@ -150,12 +150,12 @@
                                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                        Text="LOGIN" />
 
-
                             <ComboBox Margin="0,5"
                                       FontFamily="{DynamicResource VWAPP_TitleFont}"
                                       FontSize="22"
                                       FontWeight="Light"
-                                      SelectedValue="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}">
+                                      SelectedValue="{Binding UserLogin.UserName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}"
+                                      Style="{DynamicResource FlatComboBoxStyle}">
                                 <ComboBox.Items>
                                     <clr:String>installer</clr:String>
                                     <clr:String>operator</clr:String>

@@ -17,7 +17,7 @@
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/Sensor/SensorSquareStyle.xaml" />
         <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ProgressBarStyle.xaml" />
+        <ResourceDictionary Source="/Ferretto.VW.App.Controls;Component/Styles/ComboBoxStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
-
 
 </ResourceDictionary>
