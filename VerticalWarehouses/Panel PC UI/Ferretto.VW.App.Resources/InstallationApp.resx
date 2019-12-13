@@ -1198,9 +1198,6 @@ Una volta fatto proseguire premendo il tasto "Successivo"</value>
   <data name="GoToDrawer" xml:space="preserve">
     <value>Go to drawer</value>
   </data>
-  <data name="IntermediatePosition" xml:space="preserve">
-    <value>Intermediate position</value>
-  </data>
   <data name="LuPresenceOnMachineCradle" xml:space="preserve">
     <value>LU Presence on Machine Side</value>
     <comment>Sensor control text</comment>

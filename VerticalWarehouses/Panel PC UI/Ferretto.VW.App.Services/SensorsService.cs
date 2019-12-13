@@ -360,6 +360,8 @@ namespace Ferretto.VW.App.Services
                 return;
             }
 
+            System.Diagnostics.Debug.WriteLine($"CellId:{position?.CellId}");
+
             this.ElevatorVerticalPosition = position.Vertical;
             this.ElevatorHorizontalPosition = position.Horizontal;
 
@@ -367,7 +369,7 @@ namespace Ferretto.VW.App.Services
             {
                 this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
                 var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(position.CellId));
-                this.LogicalPosition = cell?.Status.ToString();
+                this.LogicalPosition = cell?.Status.ToString() + " / " + cell?.Side.ToString();
                 this.LogicalPositionId = position.CellId.ToString();
                 this.ElevatorPositionLoadingUnit = this.loadingUnits?.FirstOrDefault(l => l.CellId.Equals(position.CellId));
             }
@@ -418,14 +420,20 @@ namespace Ferretto.VW.App.Services
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
                         this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
-                        this.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        if (bayPositionDown.LoadingUnit != null)
+                        {
+                            this.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                        }
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
                         this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
-                        this.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        if (bayPositionUp.LoadingUnit != null)
+                        {
+                            this.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                        }
                     }
 
                     this.BayIsMultiPosition = this.Bay.IsDouble;

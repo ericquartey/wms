@@ -89,8 +89,8 @@
 
                                         <Border Grid.Row="1"
                                                 Grid.Column="2"
-                                                HorizontalAlignment="Center"
                                                 Margin="5,25"
+                                                HorizontalAlignment="Center"
                                                 BorderThickness="2,0,0,0">
                                             <Border.BorderBrush>
                                                 <DrawingBrush TileMode="Tile"
@@ -111,10 +111,10 @@
                                                 </DrawingBrush>
                                             </Border.BorderBrush>
                                         </Border>
-                                        
+
                                         <Grid Grid.Row="1"
-                                              HorizontalAlignment="Left"
-                                              Grid.Column="3">
+                                              Grid.Column="3"
+                                              HorizontalAlignment="Left">
 
                                             <Ellipse Width="56"
                                                      Height="56"
@@ -189,8 +189,8 @@
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsPressed" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource PpcButtonBackgroundPressed}" />
-                                <Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" />
-                                <Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />
+                                <!--<Setter Property="BorderBrush" Value="{DynamicResource PpcButtonBorderBrushPressed}" /> -->
+                                <!--<Setter Property="Foreground" Value="{DynamicResource PpcButtonForegroundPressed}" />-->
                                 <Setter Property="Cursor" Value="Hand" />
                                 <!--<Setter TargetName="ButtonBorder" Property="Effect">
                                     <Setter.Value>
