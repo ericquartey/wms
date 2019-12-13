@@ -200,6 +200,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     break;
 
+                case LoadingUnitLocation.Elevator:
+                    machineData.LoadingUnitDestination = LoadingUnitLocation.Elevator;
+                    returnValue = true;
+                    break;
+
                 case LoadingUnitLocation.LoadingUnit:
                     var description = $"Attempting to start {this.GetType()} Finite state machine with Loading Unit as destination Type";
 
@@ -314,23 +319,45 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
         private bool IsElevatorOk()
         {
-            var returnValue = this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+            var machineData = (IMoveLoadingUnitMachineData)this.MachineData;
+            var returnValue = false;
 
-            if (!returnValue)
+            if (machineData.LoadingUnitSource == LoadingUnitLocation.Elevator)
             {
-                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
-                this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
+                returnValue = this.elevatorDataProvider.GetLoadingUnitOnBoard() != null;
+                if (!returnValue)
+                {
+                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceElevator);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceElevator);
+                }
+                else
+                {
+                    returnValue = this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
+                    if (!returnValue)
+                    {
+                        this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                        this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
+                    }
+                }
             }
-#if CHECK_BAY_SENSOR
             else
             {
-                returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
-            }
-#endif
-            if (!returnValue)
-            {
-                this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
-                this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
+                returnValue = this.elevatorDataProvider.GetLoadingUnitOnBoard() == null;
+
+                if (!returnValue)
+                {
+                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
+                    this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
+                }
+                else
+                {
+                    returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
+                    if (!returnValue)
+                    {
+                        this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
+                        this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
+                    }
+                }
             }
 
             return returnValue;
@@ -402,7 +429,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     if (unitToMove == null)
                     {
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceCell);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceCell);
+                        return false;
                     }
 
                     break;
@@ -430,17 +459,27 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                             {
                                 machineData.LoadingUnitSource = sourceBay;
                             }
+                            else if (unitToMove.Id == this.elevatorDataProvider.GetLoadingUnitOnBoard().Id)
+                            {
+                                machineData.LoadingUnitSource = LoadingUnitLocation.Elevator;
+                            }
                         }
 
                         if (machineData.LoadingUnitSource == LoadingUnitLocation.NoLocation)
                         {
                             unitToMove = null;
+                            this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotLoaded);
                             this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotLoaded);
                         }
                     }
                     else
                     {
+                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
+                    }
+                    if (unitToMove == null)
+                    {
+                        return false;
                     }
 
                     break;

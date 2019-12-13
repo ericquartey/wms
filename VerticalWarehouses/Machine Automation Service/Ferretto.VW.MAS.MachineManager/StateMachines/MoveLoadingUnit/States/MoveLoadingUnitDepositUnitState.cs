@@ -174,7 +174,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         var destinationCellId = this.mission.DestinationCellId;
                         if (destinationCellId.HasValue)
                         {
-                            this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.mission.LoadingUnitId);
+                            if (this.mission.LoadingUnitId > 0)
+                            {
+                                this.cellsProvider.SetLoadingUnit(destinationCellId.Value, this.mission.LoadingUnitId);
+                            }
                         }
                         else
                         {
@@ -184,7 +187,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     else
                     {
                         var bayPosition = this.baysDataProvider.GetPositionByLocation(this.mission.LoadingUnitDestination);
-                        this.baysDataProvider.SetLoadingUnit(bayPosition.Id, this.mission.LoadingUnitId);
+                        if (this.mission.LoadingUnitId > 0)
+                        {
+                            this.baysDataProvider.SetLoadingUnit(bayPosition.Id, this.mission.LoadingUnitId);
+                        }
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
                         bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                     }

@@ -130,7 +130,7 @@
     <value>La Posizione iniziale non è valida</value>
   </data>
   <data name="TheShutterIsNotCompletelyOpen" xml:space="preserve">
-    <value>La serranta non è completamente aperta.</value>
+    <value>La serranda non è completamente aperta.</value>
   </data>
   <data name="TheShutterTypeIsNotValid" xml:space="preserve">
     <value>Il tipo di serranda non è valido</value>

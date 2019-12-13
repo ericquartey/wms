@@ -62,6 +62,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void MoveToCell(int cellId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender);
 
+        void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender);
+
         void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender);
 
         void MoveVerticalManual(VerticalMovementDirection direction, BayNumber requestingBay, MessageActor sender);

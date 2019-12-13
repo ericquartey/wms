@@ -195,8 +195,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 {
                     this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
                 }
-
-                returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+                if (this.mission.LoadingUnitDestination == LoadingUnitLocation.Elevator)
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                }
+                else
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+                }
             }
 
             return returnValue;

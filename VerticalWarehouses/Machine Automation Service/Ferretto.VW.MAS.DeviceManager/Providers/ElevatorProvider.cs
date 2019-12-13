@@ -758,6 +758,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 cellId);
         }
 
+        public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
+        {
+            int cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
+            var policy = this.CanMoveToCell(cellId);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var cell = this.cellsProvider.GetById(cellId);
+
+            this.MoveToVerticalPosition(
+                performWeighting ? MovementMode.PositionAndMeasure : MovementMode.Position,
+                cell.Position,
+                false,
+                computeElongation,
+                requestingBay,
+                sender,
+                targetBayPositionId: null,
+                cellId);
+        }
+
         public void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender)
         {
             if (distance == 0)

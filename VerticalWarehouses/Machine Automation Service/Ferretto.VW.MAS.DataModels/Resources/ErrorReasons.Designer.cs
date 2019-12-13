@@ -439,6 +439,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitSourceElevator.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitSourceElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitSourceElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.
         /// </summary>
         public static string MachineManagerErrorNoLoadingUnitInSource {
