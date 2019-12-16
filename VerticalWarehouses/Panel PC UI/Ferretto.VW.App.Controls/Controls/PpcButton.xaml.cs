@@ -18,22 +18,16 @@ namespace Ferretto.VW.App.Controls.Controls
         #region Fields
 
         public static readonly DependencyProperty ContentProperty =
-            DependencyProperty.Register("Content", typeof(object), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnContentChanged)));
+            DependencyProperty.Register(nameof(Content), typeof(object), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnContentChanged)));
 
         public static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register(nameof(ImageSource), typeof(ImageSource), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty IsActiveProperty = DependencyProperty.Register(
-            nameof(IsActive),
-            typeof(bool),
-            typeof(PpcButton),
-            new PropertyMetadata(false));
+            nameof(IsActive), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty IsBusyProperty = DependencyProperty.Register(
-            nameof(IsBusy),
-            typeof(bool),
-            typeof(PpcButton),
-            new PropertyMetadata(false));
+            nameof(IsBusy), typeof(bool), typeof(PpcButton), new PropertyMetadata(false));
 
         public static readonly DependencyProperty KindFontAwesomeProperty =
             DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
@@ -42,18 +36,15 @@ namespace Ferretto.VW.App.Controls.Controls
             DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
-            nameof(Permission),
-            typeof(UserAccessLevel),
-            typeof(PpcButton),
-            new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
+            nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
+
+        public bool PermissionValue = true;
 
         private IEventAggregator eventAggregator = null;
 
         private ISessionService sessionService = null;
 
         private SubscriptionToken userAccessLevelToken;
-
-        private bool? visibleOldStatus;
 
         #endregion
 
@@ -62,18 +53,13 @@ namespace Ferretto.VW.App.Controls.Controls
         static PpcButton()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(PpcButton), new FrameworkPropertyMetadata(typeof(PpcButton)));
+
+            UIElement.VisibilityProperty.AddOwner(typeof(PpcButton), new FrameworkPropertyMetadata(null, new CoerceValueCallback(CoerceVisibilityValue)));
         }
 
         public PpcButton()
         {
             this.InitializeComponent();
-
-            if (DesignerProperties.GetIsInDesignMode(this))
-            {
-                return;
-            }
-
-            this.Initialization();
         }
 
         #endregion
@@ -139,7 +125,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        public void PermissionChanged()
+        public void OnPermissionChanged()
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
@@ -167,52 +153,59 @@ namespace Ferretto.VW.App.Controls.Controls
                         break;
                 }
 
-                if ((condition && this.Visibility != Visibility.Visible) ||
-                    (!condition && this.Visibility == Visibility.Visible))
-                {
-                    // salvo lo stato precedente
-                    if (!this.visibleOldStatus.HasValue && this.Visibility == Visibility.Visible && !condition)
-                    {
-                        this.visibleOldStatus = this.Visibility == Visibility.Visible;
-                    }
+                this.PermissionValue = condition;
 
-                    // setto la visibilità in base alla consizione
-                    if (condition)
-                    {
-                        this.Visibility = !this.visibleOldStatus.HasValue || this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
-                    }
-                    else if (!condition)
-                    {
-                        this.Visibility = Visibility.Collapsed;
-                    }
-
-                    // relsetto lo stato vecchio
-                    if (condition)
-                    {
-                        this.visibleOldStatus = null;
-                    }
-                };
+                this.OnPropertyChanged(new DependencyPropertyChangedEventArgs(VisibilityProperty, null, this.Visibility));
             }
         }
 
-        public void VisibilityChange()
+        protected override void OnInitialized(EventArgs e)
         {
-            if (!this.visibleOldStatus.HasValue &&
-                this.Visibility == Visibility.Visible)
+            base.OnInitialized(e);
+
+            if (DesignerProperties.GetIsInDesignMode(this))
             {
-                this.visibleOldStatus = this.Visibility == Visibility.Visible;
+                return;
             }
-            this.Visibility = Visibility.Visible;
+
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
+
+            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
+
+            this.userAccessLevelToken = this.eventAggregator
+                    .GetEvent<UserAccessLevelNotificationPubSubEvent>()
+                    .Subscribe(
+                        (m) => this.OnPermissionChanged(),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.Loaded += (s, ev) =>
+            {
+                this.OnPermissionChanged();
+            };
+
+            this.Unloaded += (s, ev) =>
+            {
+                this.userAccessLevelToken?.Dispose();
+                this.userAccessLevelToken = null;
+            };
         }
 
-        public void VisibilityRestore()
+        private static object CoerceVisibilityValue(DependencyObject d, object value)
         {
-            if (this.Visibility != Visibility.Visible &&
-                this.visibleOldStatus.HasValue &&
-                this.Permission != UserAccessLevel.NoAccess)
+            if ((Visibility)value != Visibility.Visible)
             {
-                this.Visibility = this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
-                this.visibleOldStatus = null;
+                return value;
+            }
+
+            if (d is PpcButton button
+                && button.PermissionValue)
+            {
+                return Visibility.Visible;
+            }
+            else
+            {
+                return Visibility.Collapsed;
             }
         }
 
@@ -231,33 +224,8 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             if (d is PpcButton ppcButton)
             {
-                ppcButton.PermissionChanged();
+                ppcButton.OnPermissionChanged();
             }
-        }
-
-        private void Initialization()
-        {
-            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
-
-            this.sessionService = ServiceLocator.Current.GetInstance<ISessionService>();
-
-            this.userAccessLevelToken = this.eventAggregator
-                    .GetEvent<UserAccessLevelNotificationPubSubEvent>()
-                    .Subscribe(
-                        (m) => this.PermissionChanged(),
-                        ThreadOption.UIThread,
-                        false);
-
-            this.Loaded += (s, e) =>
-            {
-                this.PermissionChanged();
-            };
-
-            this.Unloaded += (s, e) =>
-            {
-                this.userAccessLevelToken?.Dispose();
-                this.userAccessLevelToken = null;
-            };
         }
 
         #endregion
