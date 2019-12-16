@@ -8,15 +8,19 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Installation.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
-            d:DesignHeight="450"
-            d:DesignWidth="800"
+            d:DataContext="{d:DesignInstance Type=viewmodels:ProfileHeightCheckStep1ViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="700"
+            d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="130,30,130,0">
+    <Grid Margin="15">
         <Grid.RowDefinitions>
-            <RowDefinition Height="95" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -33,6 +37,7 @@
 
         <controls:PpcLabeledText Grid.Row="1"
                                  Grid.ColumnSpan="3"
+                                 Margin="15"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{x:Static res:InstallationApp.PHC1ComandNote}"
@@ -49,10 +54,9 @@
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
                                EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                               LabelText="{x:Static res:InstallationApp.DrawerNumber}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
+                               LabelText="{x:Static res:InstallationApp.DrawerNumber}"
                                Mask="#0" />
-            <!--    -->
 
             <StackPanel Orientation="Vertical">
 
@@ -67,19 +71,23 @@
 
             </StackPanel>
 
-        </StackPanel>
-
-        <StackPanel Grid.Row="3"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
-
-            <controls:PpcButton Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}" />
 
         </StackPanel>
+
+        <controls:PpcCheckBox Grid.Row="3"
+                              Grid.Column="0"
+                              Grid.ColumnSpan="3"
+                              HorizontalAlignment="Center"
+                              IsChecked="{Binding LodingUnitManual, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                              LabelText="Cassetto caricato manualmente" />
+
+        <controls:PpcButton Grid.Row="4"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding StartCommand}"
+                            Content="{x:Static res:InstallationApp.Start}" />
 
     </Grid>
 </ctrls:View>

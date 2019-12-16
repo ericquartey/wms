@@ -167,7 +167,8 @@
                                                    Grid.Column="1"
                                                    FontSize="24"
                                                    Foreground="{DynamicResource FerrettoPureWhite}"
-                                                   Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}" />
+                                                   Text="{Binding ElementName=MenuButton, Path=Title, FallbackValue='TITOLO'}"
+                                                   TextWrapping="Wrap" />
 
                                         <TextBlock Grid.Row="2"
                                                    Grid.Column="1"
@@ -221,7 +222,7 @@
                              Command="{Binding ElementName=MenuButton, Path=Command}"
                              Content="{Binding ElementName=MenuButton, Path=Text, FallbackValue='01'}"
                              Kind="{Binding ElementName=MenuButton, Path=Kind, FallbackValue='Account'}"
-                             Visibility="{Binding ElementName=MenuButton, Path=VisibilityPermission}"
-                             MenuBrush="{Binding ElementName=MenuButton, Path=MenuBrush, FallbackValue='White'}" />
+                             MenuBrush="{Binding ElementName=MenuButton, Path=MenuBrush, FallbackValue='White'}"
+                             Visibility="{Binding ElementName=MenuButton, Path=VisibilityPermission}" />
 
 </UserControl>
