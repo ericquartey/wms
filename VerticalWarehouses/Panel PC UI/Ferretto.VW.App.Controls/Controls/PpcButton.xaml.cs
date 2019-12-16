@@ -38,6 +38,14 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
             nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
 
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly DependencyProperty VisibilityPermissionProperty =
+            DependencyProperty.Register(nameof(VisibilityPermission), typeof(Visibility), typeof(PpcButton), new PropertyMetadata(Visibility.Visible));
+
+        //public static readonly DependencyProperty VisibilityProperty =
+        //    DependencyProperty.Register(nameof(Visibility), typeof(Visibility), typeof(PpcButton), new FrameworkPropertyMetadata(Visibility.Visible));
+
         public bool PermissionValue = true;
 
         private IEventAggregator eventAggregator = null;
@@ -112,6 +120,18 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(PermissionProperty, value);
         }
 
+        //public Visibility Visibility
+        //{
+        //    get { return (Visibility)this.GetValue(VisibilityProperty); }
+        //    set { this.SetValue(VisibilityProperty, value); }
+        //}
+
+        public Visibility VisibilityPermission
+        {
+            get { return (Visibility)this.GetValue(VisibilityPermissionProperty); }
+            set { this.SetValue(VisibilityPermissionProperty, value); }
+        }
+
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
@@ -155,7 +175,15 @@ namespace Ferretto.VW.App.Controls.Controls
 
                 this.PermissionValue = condition;
 
-                this.OnPropertyChanged(new DependencyPropertyChangedEventArgs(VisibilityProperty, null, this.Visibility));
+                if (this.Visibility == Visibility.Visible
+                    && this.PermissionValue)
+                {
+                    this.VisibilityPermission = Visibility.Visible;
+                }
+                else
+                {
+                    this.VisibilityPermission = Visibility.Collapsed;
+                }
             }
         }
 
@@ -193,20 +221,19 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private static object CoerceVisibilityValue(DependencyObject d, object value)
         {
-            if ((Visibility)value != Visibility.Visible)
-            {
-                return value;
-            }
+            var button = d as PpcButton;
 
-            if (d is PpcButton button
+            if (((Visibility)value == Visibility.Visible)
                 && button.PermissionValue)
             {
-                return Visibility.Visible;
+                button.VisibilityPermission = Visibility.Visible;
             }
             else
             {
-                return Visibility.Collapsed;
+                button.VisibilityPermission = Visibility.Collapsed;
             }
+
+            return value;
         }
 
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

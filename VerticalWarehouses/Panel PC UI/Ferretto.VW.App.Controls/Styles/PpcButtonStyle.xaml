@@ -17,7 +17,7 @@
                         <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
                                                                    Invert="True" />
                     </ControlTemplate.Resources>
-                    <Grid>
+                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
                         <Border Name="PpcButton_Border"
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
