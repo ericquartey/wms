@@ -6,7 +6,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
-using Ferretto.VW.MAS.DataLayer.Providers;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
@@ -403,6 +402,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             return !this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
         }
 
+        private bool IsHorizontalSensorsError()
+        {
+            if (this.machineData.MachineSensorStatus.IsSensorZeroOnCradle
+                && (this.machineData.MachineSensorStatus.IsDrawerPartiallyOnCradle
+                    || this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle
+                    )
+                )
+            {
+                return true;
+            }
+            return false;
+        }
+
         private bool IsLoadingErrorDuringPickup()
         {
             if (!this.machineData.MessageData.IsStartedOnBoard)
@@ -427,6 +439,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         return true;
                     }
                 }
+            }
+            return false;
+        }
+
+        private bool IsSensorsError(Axis axisMovement)
+        {
+            if (axisMovement == Axis.Horizontal)
+            {
+                return this.IsHorizontalSensorsError();
+            }
+            if (axisMovement == Axis.Vertical)
+            {
+                return this.IsVerticalSensorsError();
             }
             return false;
         }
@@ -456,6 +481,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                 }
             }
+            return false;
+        }
+
+        private bool IsVerticalSensorsError()
+        {
+            if (this.machineData.MessageData.IsStartedOnBoard
+                && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                )
+            {
+                return true;
+            }
+            if (!this.machineData.MessageData.IsStartedOnBoard
+                && !(this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
+                )
+            {
+                return true;
+            }
+
             return false;
         }
 
@@ -520,6 +563,27 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             //this.Stop(StopRequestReason.Stop);
                         }
 
+                        if (this.IsHorizontalSensorsError())
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Stop);
+                        }
+                        break;
+                    }
+
+                case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Absolute:
+                case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Relative:
+                case MovementMode.PositionAndMeasure:
+                    {
+                        if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
+                        {
+                            this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                            this.stateData.FieldMessage = message;
+                            this.Stop(StopRequestReason.Stop);
+                        }
                         break;
                     }
 
@@ -558,6 +622,16 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                         break;
                     }
+
+                case MovementMode.BeltBurnishing:
+                    if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
+                    {
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.InvalidPresenceSensors, this.machineData.RequestingBay);
+
+                        this.stateData.FieldMessage = message;
+                        this.Stop(StopRequestReason.Stop);
+                    }
+                    break;
             }
 
             if (message.DeviceIndex == (byte)this.machineData.CurrentInverterIndex)
