@@ -52,12 +52,13 @@ namespace Ferretto.VW.MAS.AutomationService
         public VertimagConfiguration ConfigurationGet()
         {
             this.logger.LogDebug($"Configuration Provider get");
-            return new VertimagConfiguration
+            var r = new VertimagConfiguration
             {
                 Machine = this.machineProvider.Get(),
                 SetupProcedures = this.setupProceduresDataProvider.GetAll(),
-                LoadingUnits = this.loadingUnitsProvider.GetAll(),
+                //LoadingUnits = this.loadingUnitsProvider.GetAll(),
             };
+            return r;
         }
 
         public void ConfigurationImport(VertimagConfiguration vertimagConfiguration, IServiceScopeFactory serviceScopeFactory)
@@ -71,7 +72,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     try
                     {
                         this.machineProvider.Import(vertimagConfiguration.Machine, this.dataContext);
-                        this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        //this.loadingUnitsProvider.Import(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Import(vertimagConfiguration.SetupProcedures, this.dataContext);
 
                         this.dataContext.SaveChanges();
