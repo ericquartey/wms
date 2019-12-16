@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private double? bayChainPosition;
 
+        private Guid? currentMissionId;
+
         private string elevatorLogicalPosition;
 
         private string errorDescription;
@@ -35,6 +37,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.bayChainPosition;
             set => this.SetProperty(ref this.bayChainPosition, value);
+        }
+
+        public Guid? CurrentMissionId
+        {
+            get => this.currentMissionId;
+            set => this.SetProperty(ref this.currentMissionId, value);
         }
 
         public string ElevatorLogicalPosition

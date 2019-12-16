@@ -36,8 +36,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineProfileProcedureWebService profileProcedureService,
             IMachineModeService machineModeService,
-            IBayManager bayManager)
-            : base(eventAggregator, profileProcedureService, machineModeService, bayManager)
+            IBayManager bayManager,
+            IMachineService machineService)
+            : base(eventAggregator, profileProcedureService, machineModeService, machineService, bayManager)
         {
         }
 

@@ -372,9 +372,11 @@ namespace Ferretto.VW.App.Services
                         ms.IsError = false;
                         ms.IsMoving = true;
 
-                        if (message?.Data is MoveLoadingUnitMessageData)
+                        if (message?.Data is MoveLoadingUnitMessageData messageData)
                         {
                             ms.IsMovingLoadingUnit = true;
+
+                            ms.CurrentMissionId = messageData.MissionId;
 
                             this.Notification = "Movimento in corso...";
                         }
