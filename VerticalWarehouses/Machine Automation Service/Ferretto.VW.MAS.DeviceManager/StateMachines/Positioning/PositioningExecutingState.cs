@@ -161,7 +161,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureWeight:
+                case MovementMode.PositionAndMeasureProfile:
                 case MovementMode.BayChain:
                 case MovementMode.BayChainManual:
                     {
@@ -175,8 +176,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             FieldMessageType.Positioning,
                             inverterIndex);
 
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
-                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
                         {
                             var ioCommandMessageData = new MeasureProfileFieldMessageData(true);
                             var ioCommandMessage = new FieldCommandMessage(
@@ -310,7 +310,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
-            if ((this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure
+            if ((this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
                 || this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
                 )
                 && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
@@ -410,7 +410,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     )
                 )
             {
-                return true;
+                //return true;
+                this.Logger.LogWarning("Sensors error during horizontal positioning");
+                return false;
             }
             return false;
         }
@@ -575,7 +577,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
                 case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Absolute:
                 case MovementMode.Position when this.machineData.MessageData.MovementType == MovementType.Relative:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
                     {
                         if (this.IsSensorsError(this.machineData.MessageData.AxisMovement))
                         {
@@ -692,7 +695,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             switch (this.machineData.MessageData.MovementMode)
             {
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
                     this.Logger.LogDebug($"FSM Finished Executing State in {this.machineData.MessageData.MovementMode} Mode");
                     this.machineData.ExecutedSteps = this.performedCycles;
                     if (this.IsZeroSensorError())
@@ -718,8 +722,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.Logger.LogError("Cradle not correctly loaded after pickup");
                         this.Stop(StopRequestReason.Stop);
                     }
-                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
-                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                    else if (this.machineData.MessageData.MovementType == MovementType.TableTarget
                         && this.machineData.MessageData.IsStartedOnBoard
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
@@ -729,8 +732,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     }
                     else
                     {
-                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasure &&
-                            this.machineData.MessageData.AxisMovement == Axis.Horizontal)
+                        if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile)
                         {
                             var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
                             var ioCommandMessage = new FieldCommandMessage(
