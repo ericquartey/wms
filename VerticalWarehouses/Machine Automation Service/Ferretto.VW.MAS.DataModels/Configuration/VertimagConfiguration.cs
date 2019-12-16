@@ -6,7 +6,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+        //public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
 
         public Machine Machine { get; set; }
 
