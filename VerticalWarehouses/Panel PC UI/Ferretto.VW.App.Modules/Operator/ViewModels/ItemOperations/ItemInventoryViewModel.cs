@@ -1,8 +1,6 @@
-﻿using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
+﻿using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
-using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
@@ -25,6 +23,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public override bool CanConfirmOperation()
+        {
+            return
+              !this.IsWaitingForResponse
+              &&
+              !this.IsBusyAbortingOperation
+              &&
+              !this.IsBusyConfirmingOperation
+              &&
+              this.InputQuantity.HasValue
+              &&
+              this.InputQuantity.Value >= 0;
+        }
 
         protected override void ShowOperationDetails()
         {

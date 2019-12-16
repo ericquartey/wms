@@ -127,6 +127,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public virtual bool CanConfirmOperation()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.IsBusyAbortingOperation
+                &&
+                !this.IsBusyConfirmingOperation
+                &&
+                this.InputQuantity.HasValue
+                &&
+                this.InputQuantity.Value >= 0
+                &&
+                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
+        }
+
         public async Task ConfirmOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -196,22 +212,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         protected abstract void ShowOperationDetails();
-
-        private bool CanConfirmOperation()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsBusyAbortingOperation
-                &&
-                !this.IsBusyConfirmingOperation
-                &&
-                this.InputQuantity.HasValue
-                &&
-                this.InputQuantity.Value >= 0
-                &&
-                this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
-        }
 
         private void GetLoadingUnitDetails()
         {
