@@ -94,7 +94,7 @@
                                     VerticalAlignment="Bottom"
                                     Abbreviation="MAINT"
                                     Command="{Binding MenuMaintenanceCommand}"
-                                    Description="Manutenzione della macchina"
+                                    Description="Contatori e manutenzione macchina"
                                     Kind="SettingsOutline"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.1" />
@@ -109,7 +109,7 @@
                                     VerticalAlignment="Bottom"
                                     Abbreviation="COM"
                                     Command="{Binding MenuCompactionCommand}"
-                                    Description="Esegue uno spostamento dei cassetti ottimizzando lo spazio"
+                                    Description="Ottimizzazione dello spazio di magazzino"
                                     Kind="FileCompare"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.3" />
@@ -124,7 +124,7 @@
                                     VerticalAlignment="Top"
                                     Abbreviation="UPD"
                                     Command="{Binding MenuUpdateCommand}"
-                                    Description="Aggiornamento software del programma"
+                                    Description="Aggiornamento software Vertimag"
                                     Kind="Update"
                                     MenuBrush="{StaticResource FerrettoOrange}"
                                     Number="2.2" />
