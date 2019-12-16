@@ -61,6 +61,8 @@
                                  CardSensorLabel3=""
                                  CardText="Verticale (mm)"
                                  CardValue="{Binding SensorsService.ElevatorVerticalPosition, StringFormat={}{0:F2}}"
+                                 LuHeight="{Binding SensorsService.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                                 LuWeight="{Binding SensorsService.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
                                  Sensor1="False"
                                  Sensor2="False"
                                  Sensor3="False" />
@@ -258,6 +260,7 @@
                                                 IsActive="{Binding IsPositionUpSelected}"
                                                 IsEnabled="{Binding IsPositionDownSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+
                         </StackPanel>
                     </Grid>
 

@@ -53,6 +53,7 @@
                 </Trigger>-->
             </ControlTemplate.Triggers>
         </ControlTemplate>
+
         <DataTemplate x:Key="DataTemplateAxis">
             <Grid Margin="4">
                 <Grid.RowDefinitions>
@@ -276,13 +277,13 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Text="1000.00 kg" />
+                                                   Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="1"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Text="999.99 mm" />
+                                                   Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
 
                                     </Grid>
                                 </Border>
@@ -666,6 +667,21 @@
                             BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}"
                             CornerRadius="4">
+                        <Border.Style>
+                            <Style>
+                                <Setter Property="Border.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Margin="4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -673,22 +689,27 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardBadge1}" />
                     </Border>
+                    
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
                                Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                        <!--<TextBlock.Style>
+                        <TextBlock.Style>
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
                                                  Value="">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>-->
+                        </TextBlock.Style>
                     </TextBlock>
                 </StackPanel>
             </Grid>

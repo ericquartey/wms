@@ -53,8 +53,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken elevatorPositionChangedToken;
 
-        private LoadingUnit embarkedLoadingUnit;
-
         private DelegateCommand goToMovementsGuidedCommand;
 
         private DelegateCommand goToMovementsManualCommand;
@@ -138,27 +136,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.bayIsMultiPosition;
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
-        }
-
-        public LoadingUnit EmbarkedLoadingUnit
-        {
-            // TODO  for the moment we use only presence sensors
-            // get => this.embarkedLoadingUnit;
-            get
-            {
-                if (this.CanEmbark())
-                {
-                    this.embarkedLoadingUnit = new LoadingUnit();
-                }
-                else
-                {
-                    this.embarkedLoadingUnit = null;
-                }
-
-                return this.embarkedLoadingUnit;
-            }
-
-            private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
@@ -326,6 +303,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.IsElevatorInCell = elevatorPosition.CellId != null;
                 this.IsElevatorInBay = elevatorPosition.BayPositionId != null;
+
                 if (this.IsElevatorInCell)
                 {
                     this.InputCellId = elevatorPosition.CellId;
@@ -583,7 +561,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
         {
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaiseCanExecuteChanged();
         }
 
