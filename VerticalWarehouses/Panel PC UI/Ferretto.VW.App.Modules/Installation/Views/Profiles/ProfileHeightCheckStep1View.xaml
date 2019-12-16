@@ -53,7 +53,7 @@
             <ctrls:PpcSpinEdit Margin="15,5"
                                HorizontalAlignment="Stretch"
                                VerticalAlignment="Top"
-                               EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               EditValue="{Binding Path=InputLoadingUnitId, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                IsEnabled="{Binding CanInputLoadingUnitId}"
                                LabelText="{x:Static res:InstallationApp.DrawerNumber}"
                                Mask="#0" />
@@ -62,7 +62,7 @@
 
                 <controls:PpcLabeledText Margin="15,5"
                                          HorizontalAlignment="Left"
-                                         VerticalAlignment="Top"
+                                         VerticalAlignment="Bottom"
                                          LabelText="{x:Static res:InstallationApp.LuPresentInBay}" />
 
                 <controls:PpcSensorControl Margin="15,5"
@@ -81,13 +81,20 @@
                               IsChecked="{Binding LodingUnitManual, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                               LabelText="Cassetto caricato manualmente" />
 
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="0"
-                            Grid.ColumnSpan="3"
-                            HorizontalAlignment="Center"
-                            VerticalAlignment="Bottom"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}" />
+        <StackPanel Grid.Row="4"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <controls:PpcButton Margin="0,0,15,0"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
+
+            <controls:PpcButton Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}" />
+
+        </StackPanel>
 
     </Grid>
 </ctrls:View>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls.Controls;
@@ -49,6 +50,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand startCommand;
 
+        private DelegateCommand stopCommand;
+
         #endregion
 
         #region Constructors
@@ -59,8 +62,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineProfileProcedureWebService profileProcedureService,
             IMachineModeService machineModeService,
+            IMachineService machineService,
             IBayManager bayManager)
-            : base(eventAggregator, profileProcedureService, machineModeService, bayManager)
+            : base(eventAggregator, profileProcedureService, machineModeService, machineService, bayManager)
         {
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
@@ -75,8 +79,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.canInputLoadingUnitId;
             private set => this.SetProperty(ref this.canInputLoadingUnitId, value);
         }
-
-        public override string Error => nameof(this.InputLoadingUnitId);
 
         public int? InputLoadingUnitId
         {
@@ -109,6 +111,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected bool IsValid => this.InputLoadingUnitIdValidation() is null;
+
         public IEnumerable<LoadingUnit> LoadingUnits { get => this.loadingUnits; set => this.loadingUnits = value; }
 
         public bool LodingUnitManual
@@ -136,11 +140,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
                    async () => await this.StartAsync(),
                    this.CanExecuteStartCommand));
 
+        public ICommand StopCommand =>
+               this.stopCommand
+               ??
+               (this.stopCommand = new DelegateCommand(
+                   async () => await this.StopAsync(),
+                   this.CanExecuteStopCommand));
+
         private bool IsCanExecuteStepCommand =>
-                   !this.IsExecutingProcedure
-                && !this.IsWaitingForResponse
-                && string.IsNullOrWhiteSpace(this.Error)
-                && (this.LUPresentInBay || this.LodingUnitManual);
+            !this.IsExecutingProcedure
+            && !this.IsWaitingForResponse
+            && ((this.LUPresentInBay && this.IsValid) || this.LodingUnitManual);
 
         #endregion
 
@@ -150,20 +160,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get
             {
+                string result = null;
+
                 switch (columnName)
                 {
                     case nameof(this.InputLoadingUnitId):
+                        result = this.InputLoadingUnitIdValidation();
+                        break;
 
-                        if (!this.LodingUnitManual &&
-                            !this.InputLoadingUnitId.HasValue)
-                        {
-                            return $"Filed is required.";
-                        }
-
+                    default:
                         break;
                 }
 
-                return null;
+                return result;
             }
         }
 
@@ -183,6 +192,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.LUPresentInBay
                 &&
                 string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        public bool CanExecuteStopCommand()
+        {
+            return this.MachineService.MachineStatus.IsMoving;
         }
 
         public override void Disappear()
@@ -283,11 +297,40 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 Services.Models.NotificationSeverity.Success);
         }
 
+        protected string InputLoadingUnitIdValidation()
+        {
+            if (!this.LodingUnitManual &&
+                !this.InputLoadingUnitId.HasValue)
+            {
+                return $"Filed is required.";
+            }
+
+            if (!this.LodingUnitManual &&
+                this.InputLoadingUnitId.HasValue)
+            {
+                if (this.InputLoadingUnitId.Value < 1 ||
+                    this.InputLoadingUnitId.Value > 99)
+                {
+                    return $"Invalid value";
+                }
+            }
+
+            return null;
+        }
+
+        protected override async Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            await base.OnMachineStatusChangedAsync(e);
+
+            this.RaiseCanExecuteChanged();
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 
             this.startCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
 
             this.CanInputLoadingUnitId =
                 !this.LodingUnitManual &&
@@ -347,6 +390,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected async Task StopAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                await this.machineLoadingUnitsWebService.StopAsync(this.MachineService.MachineStatus.CurrentMissionId, this.BayNumber);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
         private void OnMoveLoadingUnitChanged(NotificationMessageUI<MoveLoadingUnitMessageData> message)
         {
             switch (message.Status)
@@ -354,9 +415,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationStart:
                     this.IsExecutingProcedure = true;
                     this.RaiseCanExecuteChanged();
-
-                    //this.CurrentMissionId = (message.Data as MoveLoadingUnitMessageData).MissionId;
-
                     break;
 
                 case MessageStatus.OperationWaitResume:
@@ -380,9 +438,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationFaultStop:
                 case MessageStatus.OperationRunningStop:
                     {
-                        this.ShowNotification(
-                            VW.App.Resources.InstallationApp.ProcedureWasStopped,
-                            Services.Models.NotificationSeverity.Warning);
+                        this.Ended();
 
                         break;
                     }

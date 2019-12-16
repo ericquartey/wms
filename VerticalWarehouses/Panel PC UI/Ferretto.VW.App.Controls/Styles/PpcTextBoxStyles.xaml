@@ -10,6 +10,10 @@
         <Setter Property="VerticalAlignment" Value="Top" />
 
         <Style.Triggers>
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+            </Trigger>
             <Trigger Property="Highlighted" Value="false">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
             </Trigger>

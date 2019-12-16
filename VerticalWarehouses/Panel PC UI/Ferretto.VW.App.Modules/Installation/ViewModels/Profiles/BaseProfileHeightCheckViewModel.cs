@@ -67,6 +67,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineModeService machineModeService;
 
+        private readonly IMachineService machineService;
+
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
         private readonly IMachineProfileProcedureWebService profileProcedureService;
@@ -91,6 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineProfileProcedureWebService profileProcedureService,
             IMachineModeService machineModeService,
+            IMachineService machineService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
@@ -98,6 +101,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.profileProcedureService = profileProcedureService ?? throw new ArgumentNullException(nameof(profileProcedureService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.InitializeNavigationMenu();
         }
@@ -144,6 +148,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public IMachineService MachineService => this.machineService;
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 

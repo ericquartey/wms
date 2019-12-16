@@ -20,17 +20,15 @@
         <Setter Property="VerticalAlignment" Value="Top" />
 
         <Style.Triggers>
-            <Trigger Property="Highlighted" Value="false">
-                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+            <Trigger Property="Validation.HasError" Value="True">
+                <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
+                <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="true">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Disabled}" />
-            </Trigger>
-            <Trigger Property="Highlighted" Value="true">
-                <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Highlighted}" />
             </Trigger>
         </Style.Triggers>
     </Style>
