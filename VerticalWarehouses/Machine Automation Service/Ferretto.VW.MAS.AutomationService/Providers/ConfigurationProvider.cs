@@ -99,7 +99,7 @@ namespace Ferretto.VW.MAS.AutomationService
                     try
                     {
                         this.machineProvider.Update(vertimagConfiguration.Machine, this.dataContext);
-                        this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
+                        //this.loadingUnitsProvider.UpdateRange(vertimagConfiguration.LoadingUnits, this.dataContext);
                         this.setupProceduresDataProvider.Update(vertimagConfiguration.SetupProcedures, this.dataContext);
 
                         transaction.Commit();
