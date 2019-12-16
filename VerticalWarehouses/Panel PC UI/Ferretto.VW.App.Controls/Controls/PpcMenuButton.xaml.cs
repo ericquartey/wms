@@ -28,67 +28,38 @@ namespace Ferretto.VW.App.Controls.Controls
         #region Fields
 
         public static readonly DependencyProperty AbbreviationProperty =
-            DependencyProperty.Register(
-                nameof(Abbreviation),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Abbreviation), typeof(string), typeof(PpcMenuButton), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register(
-                nameof(Command),
-                typeof(ICommand),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(PpcMenuButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty DescriptionProperty =
-            DependencyProperty.Register(
-                nameof(Description),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Description), typeof(string), typeof(PpcMenuButton), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty KindProperty =
-                            DependencyProperty.Register(
-                nameof(Kind),
-                typeof(PackIconMaterialKind),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialKind), typeof(PpcMenuButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty MenuBrushProperty =
-            DependencyProperty.Register(
-                nameof(MenuBrush),
-                typeof(Brush),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(Brushes.Green));
+            DependencyProperty.Register(nameof(MenuBrush), typeof(Brush), typeof(PpcMenuButton), new PropertyMetadata(Brushes.Green));
 
         public static readonly DependencyProperty NumberProperty =
-            DependencyProperty.Register(
-                nameof(Number),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Number), typeof(string), typeof(PpcMenuButton), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty PermissionProperty =
-            DependencyProperty.Register(
-                nameof(Permission),
-                typeof(UserAccessLevel),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(OnPermissionChanged)));
+            DependencyProperty.Register(nameof(Permission), typeof(UserAccessLevel), typeof(PpcMenuButton), new PropertyMetadata(UserAccessLevel.Operator, new PropertyChangedCallback(PermissionChanged)));
 
         public static readonly DependencyProperty TextProperty =
-            DependencyProperty.Register(
-                nameof(Text),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Text), typeof(string), typeof(PpcMenuButton), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register(
-                nameof(Title),
-                typeof(string),
-                typeof(PpcMenuButton),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(Title), typeof(string), typeof(PpcMenuButton), new PropertyMetadata(string.Empty));
+
+        [Browsable(false)]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public static readonly DependencyProperty VisibilityPermissionProperty =
+            DependencyProperty.Register(nameof(VisibilityPermission), typeof(Visibility), typeof(PpcMenuButton), new PropertyMetadata(Visibility.Visible));
+
+        public bool PermissionValue = true;
 
         private readonly IEventAggregator eventAggregator = null;
 
@@ -96,11 +67,14 @@ namespace Ferretto.VW.App.Controls.Controls
 
         private SubscriptionToken userAccessLevelToken;
 
-        private bool? visibleOldStatus;
-
         #endregion
 
         #region Constructors
+
+        static PpcMenuButton()
+        {
+            UIElement.VisibilityProperty.AddOwner(typeof(PpcMenuButton), new FrameworkPropertyMetadata(null, new CoerceValueCallback(CoerceVisibilityValue)));
+        }
 
         public PpcMenuButton()
         {
@@ -176,6 +150,12 @@ namespace Ferretto.VW.App.Controls.Controls
             set { this.SetValue(TitleProperty, value); }
         }
 
+        public Visibility VisibilityPermission
+        {
+            get { return (Visibility)this.GetValue(VisibilityPermissionProperty); }
+            set { this.SetValue(VisibilityPermissionProperty, value); }
+        }
+
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
@@ -189,7 +169,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        public void PermissionChanged()
+        public void OnPermissionChanged()
         {
             if (!(this.sessionService?.UserAccessLevel is null))
             {
@@ -217,39 +197,34 @@ namespace Ferretto.VW.App.Controls.Controls
                         break;
                 }
 
-                if ((condition && this.Visibility != Visibility.Visible) ||
-                    (!condition && this.Visibility == Visibility.Visible))
-                {
-                    // salvo lo stato precedente
-                    if (!this.visibleOldStatus.HasValue && this.Visibility == Visibility.Visible && !condition)
-                    {
-                        this.visibleOldStatus = this.Visibility == Visibility.Visible;
-                    }
-
-                    // setto la visibilità in base alla consizione
-                    if (condition)
-                    {
-                        this.Visibility = !this.visibleOldStatus.HasValue || this.visibleOldStatus.Value ? Visibility.Visible : Visibility.Collapsed;
-                    }
-                    else if (!condition)
-                    {
-                        this.Visibility = Visibility.Collapsed;
-                    }
-
-                    // relsetto lo stato vecchio
-                    if (condition)
-                    {
-                        this.visibleOldStatus = null;
-                    }
-                };
+                this.PermissionValue = condition;
+                //refresh
+                this.Visibility = this.Visibility;
             }
         }
 
-        private static void OnPermissionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static object CoerceVisibilityValue(DependencyObject d, object value)
+        {
+            var button = d as PpcMenuButton;
+
+            if (((Visibility)value == Visibility.Visible)
+                && button.PermissionValue)
+            {
+                button.VisibilityPermission = Visibility.Visible;
+            }
+            else
+            {
+                button.VisibilityPermission = Visibility.Collapsed;
+            }
+
+            return value;
+        }
+
+        private static void PermissionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcMenuButton button)
             {
-                button.PermissionChanged();
+                button.OnPermissionChanged();
             }
         }
 
@@ -258,13 +233,13 @@ namespace Ferretto.VW.App.Controls.Controls
             this.userAccessLevelToken = this.eventAggregator
                     .GetEvent<UserAccessLevelNotificationPubSubEvent>()
                     .Subscribe(
-                        ((m) => this.PermissionChanged()),
+                        ((m) => this.OnPermissionChanged()),
                         ThreadOption.UIThread,
                         false);
 
             this.Loaded += (s, e) =>
             {
-                this.PermissionChanged();
+                this.OnPermissionChanged();
             };
 
             this.Unloaded += (s, e) =>

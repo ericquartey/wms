@@ -565,6 +565,7 @@ namespace Ferretto.VW.App.Services
         private void RaisePropertyChanged()
         {
             this.RaisePropertyChanged(nameof(this.Sensors));
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChainIsVisible));

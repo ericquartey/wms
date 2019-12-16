@@ -221,6 +221,7 @@
                              Command="{Binding ElementName=MenuButton, Path=Command}"
                              Content="{Binding ElementName=MenuButton, Path=Text, FallbackValue='01'}"
                              Kind="{Binding ElementName=MenuButton, Path=Kind, FallbackValue='Account'}"
+                             Visibility="{Binding ElementName=MenuButton, Path=VisibilityPermission}"
                              MenuBrush="{Binding ElementName=MenuButton, Path=MenuBrush, FallbackValue='White'}" />
 
 </UserControl>

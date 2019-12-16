@@ -529,8 +529,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         private bool CanCloseShutter()

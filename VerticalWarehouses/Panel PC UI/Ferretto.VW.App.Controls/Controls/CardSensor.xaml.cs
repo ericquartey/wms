@@ -23,116 +23,58 @@ namespace Ferretto.VW.App.Controls.Controls
         #region Fields
 
         public static readonly DependencyProperty CardBadge1LabelProperty =
-            DependencyProperty.Register(
-                nameof(CardBadgeLabel1),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadgeLabel1), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge1Property =
-            DependencyProperty.Register(
-                nameof(CardBadge1),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadge1), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge2LabelProperty =
-            DependencyProperty.Register(
-                nameof(CardBadgeLabel2),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadgeLabel2), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge2Property =
-            DependencyProperty.Register(
-                nameof(CardBadge2),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadge2), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge3LabelProperty =
-            DependencyProperty.Register(
-                nameof(CardBadgeLabel3),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadgeLabel3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardBadge3Property =
-            DependencyProperty.Register(
-                nameof(CardBadge3),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardBadge3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardDescriptionProperty =
-            DependencyProperty.Register(
-                nameof(CardDescription),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardSensorLabel1Property =
-                    DependencyProperty.Register(
-                nameof(CardSensorLabel1),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardSensorLabel1), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardSensorLabel2Property =
-            DependencyProperty.Register(
-                nameof(CardSensorLabel2),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardSensorLabel2), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardSensorLabel3Property =
-            DependencyProperty.Register(
-                nameof(CardSensorLabel3),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardSensorLabel3), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardTextProperty =
-            DependencyProperty.Register(
-                nameof(CardText),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardText), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty CardTypeProperty =
-            DependencyProperty.Register(
-                nameof(Type),
-                typeof(CardType),
-                typeof(CardSensor),
-                new PropertyMetadata(CardType.Axis));
+            DependencyProperty.Register(nameof(Type), typeof(CardType), typeof(CardSensor), new PropertyMetadata(CardType.Axis));
 
         public static readonly DependencyProperty CardValueProperty =
-            DependencyProperty.Register(
-                nameof(CardValue),
-                typeof(string),
-                typeof(CardSensor),
-                new PropertyMetadata(string.Empty));
+            DependencyProperty.Register(nameof(CardValue), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LuHeightProperty =
+            DependencyProperty.Register(nameof(LuHeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
+
+        public static readonly DependencyProperty LuWeightProperty =
+                    DependencyProperty.Register(nameof(LuWeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
         public static readonly DependencyProperty Sensor1Property =
-            DependencyProperty.Register(
-                nameof(Sensor1),
-                typeof(bool),
-                typeof(CardSensor),
-                new PropertyMetadata(false));
+                    DependencyProperty.Register(nameof(Sensor1), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         public static readonly DependencyProperty Sensor2Property =
-            DependencyProperty.Register(
-                nameof(Sensor2),
-                typeof(bool),
-                typeof(CardSensor),
-                new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(Sensor2), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         public static readonly DependencyProperty Sensor3Property =
-            DependencyProperty.Register(
-                nameof(Sensor3),
-                typeof(bool),
-                typeof(CardSensor),
-                new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(Sensor3), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
         #endregion
 
@@ -234,6 +176,18 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(CardValueProperty);
             set => this.SetValue(CardValueProperty, value);
+        }
+
+        public string LuHeight
+        {
+            get => (string)this.GetValue(LuHeightProperty);
+            set => this.SetValue(LuHeightProperty, value);
+        }
+
+        public string LuWeight
+        {
+            get => (string)this.GetValue(LuWeightProperty);
+            set => this.SetValue(LuWeightProperty, value);
         }
 
         public bool Sensor1

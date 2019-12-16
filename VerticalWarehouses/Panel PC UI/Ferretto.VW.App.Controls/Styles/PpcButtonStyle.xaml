@@ -17,7 +17,7 @@
                         <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
                                                                    Invert="True" />
                     </ControlTemplate.Resources>
-                    <Grid>
+                    <Grid Visibility="{TemplateBinding VisibilityPermission}">
                         <Border Name="PpcButton_Border"
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
@@ -51,7 +51,7 @@
                                                             HorizontalAlignment="Center"
                                                             VerticalAlignment="Center"
                                                             Foreground="{TemplateBinding Foreground}"
-                                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}"
+                                                            Kind="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=User}"
                                                             Tag="{Binding Kind, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconMaterialLight.Style>
                                         <Style TargetType="{x:Type icon:PackIconMaterialLight}">
@@ -72,7 +72,7 @@
                                                           HorizontalAlignment="Center"
                                                           VerticalAlignment="Center"
                                                           Foreground="{TemplateBinding Foreground}"
-                                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}"
+                                                          Kind="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}, TargetNullValue=User}"
                                                           Tag="{Binding KindFontAwesome, RelativeSource={RelativeSource TemplatedParent}}">
                                     <icon:PackIconFontAwesome.Style>
                                         <Style TargetType="{x:Type icon:PackIconFontAwesome}">
