@@ -183,7 +183,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 this.data.TargetAcceleration = fieldMessageData.TargetAcceleration;
                 this.data.TargetDeceleration = fieldMessageData.TargetDeceleration;
 
-                this.Logger.LogDebug($"ScaleMovementsByWeight: {MovementMode.PositionAndMeasure}; " +
+                this.Logger.LogDebug($"ScaleMovementsByWeight: {MovementMode.PositionAndMeasureWeight}; " +
                     $"targetPosition: {this.data.TargetPosition}; " +
                     $"speed: {this.data.TargetSpeed[0]}; " +
                     $"acceleration: {this.data.TargetAcceleration[0]}; " +

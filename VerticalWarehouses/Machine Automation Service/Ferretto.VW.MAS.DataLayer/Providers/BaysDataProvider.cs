@@ -441,7 +441,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     break;
 
                 case MovementMode.Position:
-                case MovementMode.PositionAndMeasure:
+                case MovementMode.PositionAndMeasureProfile:
+                case MovementMode.PositionAndMeasureWeight:
                     switch (data.AxisMovement)
                     {
                         case Axis.Horizontal:
@@ -581,7 +582,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     switch (data.MovementMode)
                     {
                         case MovementMode.Position:
-                        case MovementMode.PositionAndMeasure:
+                        case MovementMode.PositionAndMeasureProfile:
+                        case MovementMode.PositionAndMeasureWeight:
                         case MovementMode.ProfileCalibration:
                             switch (data.AxisMovement)
                             {

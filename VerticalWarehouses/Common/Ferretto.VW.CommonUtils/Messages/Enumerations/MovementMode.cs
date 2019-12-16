@@ -6,7 +6,9 @@
 
         Position,
 
-        PositionAndMeasure,
+        PositionAndMeasureWeight,
+
+        PositionAndMeasureProfile,
 
         BeltBurnishing,
 
