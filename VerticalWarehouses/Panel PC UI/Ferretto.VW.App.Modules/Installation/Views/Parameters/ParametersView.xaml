@@ -51,8 +51,11 @@
                                       InsertDefinitionsFrom="{dxprg:RootPropertyDefinition}"
                                       Path="*" />
 
-            <!--<dxprg:PropertyDefinition Path="Id"
-                                      Visibility="Collapsed" />-->
+            <dxprg:PropertyDefinition Path="Id"
+                                      Visibility="Collapsed" />
+
+            <dxprg:PropertyDefinition Path="LoadingUnits"
+                                      Visibility="Collapsed" />
 
 
         </dxprg:PropertyGridControl>

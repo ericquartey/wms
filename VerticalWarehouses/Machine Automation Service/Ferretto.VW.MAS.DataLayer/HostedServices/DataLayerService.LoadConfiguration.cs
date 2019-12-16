@@ -56,7 +56,7 @@ namespace Ferretto.VW.MAS.DataLayer
             var vertimagConfiguration = JsonConvert.DeserializeObject<VertimagConfiguration>(jsonObject.ToString(), settings);
 
             dataContext.Machines.Add(vertimagConfiguration.Machine);
-            //dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);
+            dataContext.LoadingUnits.AddRange(vertimagConfiguration.LoadingUnits);
             dataContext.SetupProceduresSets.Add(vertimagConfiguration.SetupProcedures);
 
             dataContext.SaveChanges();

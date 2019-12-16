@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -6,7 +8,7 @@ namespace Ferretto.VW.MAS.DataModels
     {
         #region Properties
 
-        //public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
+        public IEnumerable<LoadingUnit> LoadingUnits { get; set; }
 
         public Machine Machine { get; set; }
 
