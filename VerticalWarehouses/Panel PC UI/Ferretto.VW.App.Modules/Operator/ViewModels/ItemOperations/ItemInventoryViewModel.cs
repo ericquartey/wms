@@ -47,6 +47,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
               trackCurrentView: true);
         }
 
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = null;
+        }
+
         #endregion
     }
 }
