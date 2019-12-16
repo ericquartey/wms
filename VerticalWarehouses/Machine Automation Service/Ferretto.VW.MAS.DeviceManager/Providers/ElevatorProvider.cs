@@ -623,7 +623,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 BayNumber.ElevatorBay);
         }
 
-        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, BayNumber requestingBay, MessageActor sender)
+        public void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, BayNumber requestingBay, MessageActor sender)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
 
@@ -645,7 +645,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var messageData = new PositioningMessageData(
                 Axis.Horizontal,
                 MovementType.Relative,
-                MovementMode.Position,
+                (measure ? MovementMode.PositionAndMeasure : MovementMode.Position),
                 targetPosition,
                 speed,
                 acceleration,
@@ -758,6 +758,28 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 cellId);
         }
 
+        public void MoveToFreeCell(int loadUnitId, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender)
+        {
+            int cellId = this.cellsProvider.FindEmptyCell(loadUnitId);
+            var policy = this.CanMoveToCell(cellId);
+            if (!policy.IsAllowed)
+            {
+                throw new InvalidOperationException(policy.Reason);
+            }
+
+            var cell = this.cellsProvider.GetById(cellId);
+
+            this.MoveToVerticalPosition(
+                performWeighting ? MovementMode.PositionAndMeasure : MovementMode.Position,
+                cell.Position,
+                false,
+                computeElongation,
+                requestingBay,
+                sender,
+                targetBayPositionId: null,
+                cellId);
+        }
+
         public void MoveToRelativeVerticalPosition(double distance, BayNumber requestingBay, MessageActor sender)
         {
             if (distance == 0)
@@ -844,7 +866,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             else
             {
                 feedRate = parameters.FeedRate;
-                targetPosition = parameters.TargetDistance;
+                targetPosition = parameters.TargetDistance * (direction == VerticalMovementDirection.Up ? 1 : -1);
             }
 
             var sensors = this.sensorsProvider.GetAll();

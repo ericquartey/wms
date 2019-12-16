@@ -4,6 +4,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -52,6 +53,52 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public MachineErrorCode CanElevatorDeposit(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+            }
+            else if (bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayOccupied;
+            }
+            else if (!bayPosition.IsUpper
+                && this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayOccupied;
+            }
+            return returnValue;
+        }
+
+        public MachineErrorCode CanElevatorPickup(BayPosition bayPosition)
+        {
+            var bayNumber = bayPosition.Bay.Number;
+            var returnValue = MachineErrorCode.NoError;
+            if (!this.machineResourcesProvider.IsSensorZeroOnBay(bayNumber))
+            {
+                returnValue = MachineErrorCode.SensorZeroBayNotActiveAtStart;
+            }
+            else if (bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayTop(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.TopLevelBayEmpty;
+            }
+            else if (!bayPosition.IsUpper
+                && !this.machineResourcesProvider.IsDrawerInBayBottom(bayNumber)
+                )
+            {
+                returnValue = MachineErrorCode.BottomLevelBayEmpty;
+            }
+            return returnValue;
+        }
 
         public ActionPolicy CanMove(VerticalMovementDirection direction, BayNumber bayNumber, MovementCategory movementCategory)
         {

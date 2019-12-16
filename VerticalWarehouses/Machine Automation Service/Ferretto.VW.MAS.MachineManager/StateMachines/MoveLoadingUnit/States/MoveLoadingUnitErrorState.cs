@@ -411,7 +411,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             if (!toBay)
             {
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal forward positioning start");
-                if (this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, MessageActor.MachineManager, this.mission.TargetBay))
+                if (this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay))
                 {
                     this.isMovingForward = true;
                 }
@@ -434,7 +434,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 else
                 {
                     this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal forward positioning start");
-                    if (this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, MessageActor.MachineManager, this.mission.TargetBay))
+                    if (this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay))
                     {
                         this.isMovingForward = true;
                     }

@@ -139,11 +139,21 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (existingUnresolvedError != null)
                 {
-                    this.logger.LogWarning($"User error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
+                    this.logger.LogWarning($"Machine error {code} ({(int)code}) for {bayNumber} was not triggered because already present and still unresolved.");
                     return existingUnresolvedError;
                 }
 
-                this.logger.LogError($"User error {code} ({(int)code}) for {bayNumber} was triggered.");
+                // TODO: per il momento prendiamo il testo dell'errore dal database: si può utilizzare la risorsa ErrorDescriptions?
+                var errorDefinition = this.dataContext.ErrorDefinitions.FirstOrDefault(e => e.Code == newError.Code);
+                this.logger.LogError($"Machine error {errorDefinition?.Description ?? code.ToString()} ({(int)code}) for {bayNumber} was triggered.");
+                if (errorDefinition != null)
+                {
+                    newError.Definition = new ErrorDefinition
+                    {
+                        Code = errorDefinition.Code,
+                        Description = errorDefinition.Description
+                    };
+                }
                 this.dataContext.Errors.Add(newError);
 
                 var errorStatistics = this.dataContext.ErrorStatistics.SingleOrDefault(e => e.Code == newError.Code);

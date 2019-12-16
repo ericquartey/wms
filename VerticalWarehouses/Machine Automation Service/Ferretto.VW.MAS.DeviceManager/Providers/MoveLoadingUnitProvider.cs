@@ -85,6 +85,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
+        public MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit)
+        {
+            var bayPosition = this.baysDataProvider.GetPositionByLocation(loadingUnitPosition);
+            if (deposit)
+            {
+                return this.carouselProvider.CanElevatorDeposit(bayPosition);
+            }
+            else
+            {
+                return this.carouselProvider.CanElevatorPickup(bayPosition);
+            }
+        }
+
         public void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore)
         {
             try
@@ -304,11 +317,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return false;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, requestingBay, sender);
             return true;
         }
 
-        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
@@ -322,7 +335,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 distance = profileSteps.Last().Position;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, requestingBay, sender);
             return true;
         }
 

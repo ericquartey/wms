@@ -423,14 +423,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        private void OnManualErrorStatusChanged()
-        {
-            if (!(this.MachineError is null))
-            {
-                this.StopMoving();
-            }
-        }
-
         private void OnManualMachinePowerChanged()
         {
             this.RaiseCanExecuteChanged();
@@ -661,6 +653,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusyLoadingFromCell = false;
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;
+            this.IsExecutingProcedure = false;
 
             this.VerticalTargetPosition = null;
             this.HorizontalTargetPosition = null;

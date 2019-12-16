@@ -6,7 +6,7 @@
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
-            xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
             d:DataContext="{d:DesignInstance Type=viewmodels:MaintenanceMenuViewModel,
                                              IsDesignTimeCreatable=False}"
@@ -17,8 +17,8 @@
 
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -26,54 +26,121 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Manutenzione" />
+        <StackPanel Margin="0,10,50,0"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top">
+            <TextBlock x:Name="txtTime"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       FontSize="56"
+                       Foreground="{DynamicResource FerrettoPureWhite}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="10:10" />
+            <TextBlock x:Name="txtDate"
+                       Margin="0"
+                       HorizontalAlignment="Center"
+                       FontSize="24"
+                       Foreground="{DynamicResource FerrettoPureWhite}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="12/12/2019" />
+        </StackPanel>
 
-        <Grid Grid.Row="0"
-              Margin="15,0">
+        <StackPanel Grid.Row="0"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Margin="50,25,0,0">
+
+            <TextBlock Grid.Row="1"
+                       Margin="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding MachineIdentity.ModelName, FallbackValue='ModelName'}" />
+
+            <TextBlock Grid.Row="2"
+                       Margin="0,25"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       FontSize="{DynamicResource FontSize_High}"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{Binding MachineIdentity.SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}, FallbackValue='SerialNumber'}" />
+
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+
+            <Grid.Background>
+                <ImageBrush ImageSource="{DynamicResource LoginBacackgroud}"
+                            Opacity="0.3"
+                            Stretch="UniformToFill" />
+            </Grid.Background>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
+                <RowDefinition />
+                <RowDefinition />
             </Grid.RowDefinitions>
 
-            <controls:PpcButton Grid.Row="0"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuMaintenanceCommand}"
-                                Content="Manutenzione" />
+            <controls:PpcMenuButton Title="Manutenzione"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Width="400"
+                                    Height="120"
+                                    Margin="15"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Bottom"
+                                    Abbreviation="MAINT"
+                                    Command="{Binding MenuMaintenanceCommand}"
+                                    Description="Manutenzione della macchina"
+                                    Kind="SettingsOutline"
+                                    MenuBrush="{StaticResource FerrettoOrange}"
+                                    Number="2.1" />
 
-            <controls:PpcButton Grid.Row="1"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuCompactionCommand}"
-                                Content="Compattazione" />
+            <controls:PpcMenuButton Title="Compattazione"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Width="400"
+                                    Height="120"
+                                    Margin="15"
+                                    HorizontalAlignment="Left"
+                                    VerticalAlignment="Bottom"
+                                    Abbreviation="COM"
+                                    Command="{Binding MenuCompactionCommand}"
+                                    Description="Esegue uno spostamento dei cassetti ottimizzando lo spazio"
+                                    Kind="FileCompare"
+                                    MenuBrush="{StaticResource FerrettoOrange}"
+                                    Number="2.3" />
 
-            <!--<controls:PpcButton Grid.Row="4"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuRestoreCommand}"
-                                Content="Restore" />-->
+            <controls:PpcMenuButton Title="Aggiornamento"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Width="400"
+                                    Height="120"
+                                    Margin="15"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Abbreviation="UPD"
+                                    Command="{Binding MenuUpdateCommand}"
+                                    Description="Aggiornamento software del programma"
+                                    Kind="Update"
+                                    MenuBrush="{StaticResource FerrettoOrange}"
+                                    Number="2.2" />
 
-            <controls:PpcButton Grid.Row="5"
-                                Margin="0,0,15,15"
-                                HorizontalAlignment="Left"
-                                Command="{Binding MenuUpdateCommand}"
-                                Content="Aggiornamento" />
+
 
         </Grid>
 
-        <Grid Grid.Row="1"
-              Grid.Column="1" />
+        <controls:PpcBadge Grid.RowSpan="2"
+                           Grid.ColumnSpan="2"
+                           Margin="15,15,30,-10"
+                           HorizontalAlignment="Right"
+                           VerticalAlignment="Bottom"
+                           TextBadge="{Binding BayNumber, StringFormat={x:Static res:VWApp.BayNumber}}"
+                           Visibility="Collapsed" />
 
     </Grid>
+
 </ctrls:View>

@@ -70,6 +70,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to TheBayContainsALoadingUnitInItsLowerPosition.
+        /// </summary>
+        public static string TheBayContainsALoadingUnitInItsLowerPosition {
+            get {
+                return ResourceManager.GetString("TheBayContainsALoadingUnitInItsLowerPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The bay contains a loading unit in its upper position..
         /// </summary>
         public static string TheBayContainsALoadingUnitInItsUpperPosition {
@@ -93,6 +102,24 @@ namespace Ferretto.VW.MAS.Resources {
         public static string TheBayHeightMustBeInRange {
             get {
                 return ResourceManager.GetString("TheBayHeightMustBeInRange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TheBayNotContainsALoadingUnitInItsLowerPosition.
+        /// </summary>
+        public static string TheBayNotContainsALoadingUnitInItsLowerPosition {
+            get {
+                return ResourceManager.GetString("TheBayNotContainsALoadingUnitInItsLowerPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TheBayNotContainsALoadingUnitInItsUpperPosition.
+        /// </summary>
+        public static string TheBayNotContainsALoadingUnitInItsUpperPosition {
+            get {
+                return ResourceManager.GetString("TheBayNotContainsALoadingUnitInItsUpperPosition", resourceCulture);
             }
         }
         

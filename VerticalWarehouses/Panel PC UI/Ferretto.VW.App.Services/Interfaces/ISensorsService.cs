@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Services
 
         LoadingUnit EmbarkedLoadingUnit { get; }
 
+        LoadingUnit ElevatorPositionLoadingUnit { get; }
+
         bool IsLoadingUnitInBay { get; }
 
         bool IsLoadingUnitInMiddleBottomBay { get; }

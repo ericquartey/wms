@@ -263,7 +263,18 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public void Stop(StopRequestReason reason)
         {
-            this.ActiveState = this.OnStop(reason);
+            if (this.activeState is null)
+            {
+                var eventArgs = new FiniteStateMachinesEventArgs
+                {
+                    InstanceId = this.MachineData?.FsmId ?? this.InstanceId,
+                };
+                this.RaiseCompleted(eventArgs);
+            }
+            else
+            {
+                this.ActiveState = this.OnStop(reason);
+            }
         }
 
         protected virtual void Dispose(bool disposing)

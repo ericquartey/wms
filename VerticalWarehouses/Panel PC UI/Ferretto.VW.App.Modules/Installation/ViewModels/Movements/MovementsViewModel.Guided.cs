@@ -354,8 +354,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isUseWeightControl, value);
         }
 
-        public ICommand LoadFromBayCommand =>
-                                                                                                                                                            this.loadFromBayCommand
+        public ICommand LoadFromBayCommand => this.loadFromBayCommand
             ??
             (this.loadFromBayCommand = new DelegateCommand(
                 async () => await this.LoadFromBayAsync(),
@@ -530,8 +529,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
             this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
             this.moveToBayPositionCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         private bool CanCloseShutter()
@@ -646,12 +643,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanMoveToLoadingUnitHeight()
         {
-            return
+            var canMove =
                 !this.IsKeyboardOpened
                 &&
                 this.SelectedLoadingUnit != null
                 &&
-                this.SelectedLoadingUnit.CellId != null
+                (this.SelectedLoadingUnit.CellId != null)
                 &&
                 !this.IsExecutingProcedure
                 &&
@@ -662,6 +659,30 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
                 !this.sensorsService.Sensors.LuPresentInOperatorSide;
+
+            if (!canMove)
+            {
+                canMove =
+                    !this.IsKeyboardOpened
+                    &&
+                    this.SelectedLoadingUnit != null
+                    &&
+                    this.sensorsService.EmbarkedLoadingUnit != null
+                    &&
+                    this.sensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
+                    &&
+                    !this.IsExecutingProcedure
+                    &&
+                    !this.IsWaitingForResponse
+                    &&
+                    !this.IsMoving
+                    &&
+                    this.sensorsService.Sensors.LuPresentInMachineSide
+                    &&
+                    this.sensorsService.Sensors.LuPresentInOperatorSide;
+            }
+
+            return canMove;
         }
 
         private bool CanOpenShutter()
@@ -749,7 +770,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             return
                 !this.IsKeyboardOpened
                 &&
-                this.SelectedCell != null
+                (this.SelectedCell != null ||
+                    (this.SensorsService.ElevatorLogicalPosition != null && this.SensorsService.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
                 &&
                 !this.IsMoving
                 &&
@@ -757,7 +779,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 &&
                 !this.IsWaitingForResponse
                 &&
-                this.unloadToCellPolicy?.IsAllowed == true;
+                (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
         }
 
         private async Task ClosedShutterAsync()
@@ -856,7 +878,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedBayPosition != null,
                     "A bay position should be selected");
 
-                await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
+                if (this.SelectedBayPosition.LoadingUnit is null)
+                {
+                    await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.SelectedBayPosition.LoadingUnit.Id, LoadingUnitLocation.Elevator);
+                }
 
                 this.IsBusyLoadingFromBay = true;
                 this.IsExecutingProcedure = true;
@@ -881,7 +910,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell != null,
                     "A cell should be selected");
 
-                await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
+                if (this.LoadingUnitInCell is null)
+                {
+                    await this.machineElevatorWebService.LoadFromCellAsync(this.SelectedCell.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.StartMovingLoadingUnitToBayAsync(this.LoadingUnitInCell.Id, LoadingUnitLocation.Elevator);
+                }
 
                 this.IsBusyLoadingFromCell = true;
                 this.IsExecutingProcedure = true;
@@ -975,12 +1011,25 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 Debug.Assert(this.SelectedLoadingUnit != null, "A loading unit should be selected.");
-                Debug.Assert(this.SelectedLoadingUnit.Cell != null, "The selected loading unit should specify a cell.");
 
-                await this.machineElevatorWebService.MoveToCellAsync(
-                    this.SelectedLoadingUnit.Cell.Id,
-                    performWeighting: this.isUseWeightControl,
-                    computeElongation: true);
+                if (this.SensorsService.EmbarkedLoadingUnit != null
+                    && this.SensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
+                    )
+                {
+                    await this.machineElevatorWebService.MoveToFreeCellAsync(
+                        this.SelectedLoadingUnit.Id,
+                        performWeighting: this.isUseWeightControl,
+                        computeElongation: true);
+                }
+                else
+                {
+                    Debug.Assert(this.SelectedLoadingUnit.Cell != null, "The selected loading unit should specify a cell.");
+
+                    await this.machineElevatorWebService.MoveToCellAsync(
+                        this.SelectedLoadingUnit.Cell.Id,
+                        performWeighting: this.isUseWeightControl,
+                        computeElongation: true);
+                }
 
                 this.IsElevatorMovingToLoadingUnit = true;
                 this.IsExecutingProcedure = true;
@@ -1154,7 +1203,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedBayPosition != null,
                     "A bay position should be selected");
 
-                await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
+                if (this.SensorsService.EmbarkedLoadingUnit is null)
+                {
+                    await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(LoadingUnitLocation.Elevator, this.SelectedBayPosition.Id);
+                }
 
                 this.IsBusyUnloadingToBay = true;
                 this.IsExecutingProcedure = true;
@@ -1179,7 +1235,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.SelectedCell != null,
                     "A cell should be selected");
 
-                await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
+                if (this.SensorsService.EmbarkedLoadingUnit is null)
+                {
+                    await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
+                }
+                else
+                {
+                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, this.SelectedCell.Id, this.SensorsService.EmbarkedLoadingUnit.Id);
+                }
 
                 this.IsBusyUnloadingToCell = true;
                 this.IsExecutingProcedure = true;

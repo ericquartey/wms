@@ -154,10 +154,10 @@ namespace Ferretto.VW.MAS.IODriver
 
         private void InitializeIoDevice()
         {
-            var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
-
             var useMockedTransport = this.configuration.GetValue<bool>("Vertimag:RemoteIODriver:UseMock");
             var readTimeoutMilliseconds = this.configuration.GetValue("Vertimag:RemoteIODriver:ReadTimeoutMilliseconds", -1);
+
+            var ioDevices = this.digitalDevicesDataProvider.GetAllIoDevices();
 
             var mainIoDevice = ioDevices.SingleOrDefault(d => d.Index == DataModels.IoIndex.IoDevice1);
 

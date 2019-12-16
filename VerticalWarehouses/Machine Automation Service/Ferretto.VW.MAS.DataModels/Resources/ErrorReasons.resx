@@ -231,8 +231,8 @@
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
     <value>MissingZeroSensorWithEmptyElevator</value>
   </data>
-  <data name="SensoZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>SensoZeroBayNotActiveAtStart</value>
+  <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
+    <value>SensorZeroBayNotActiveAtStart</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
     <value>Livello alto baia occupato</value>
@@ -278,5 +278,26 @@
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitOtherBay</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
+    <value>MachineManagerErrorLoadingUnitSourceElevator</value>
+  </data>
+  <data name="BottomLevelBayEmpty" xml:space="preserve">
+    <value>BottomLevelBayEmpty</value>
+  </data>
+  <data name="TopLevelBayEmpty" xml:space="preserve">
+    <value>TopLevelBayEmpty</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
+    <value>AnotherMissionIsActiveForThisBay</value>
+  </data>
+  <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
+    <value>AnotherMissionIsActiveForThisLoadUnit</value>
+  </data>
+  <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
+    <value>AnotherMissionOfThisTypeIsActive</value>
+  </data>
+  <data name="NoError" xml:space="preserve">
+    <value>NoError</value>
   </data>
 </root>

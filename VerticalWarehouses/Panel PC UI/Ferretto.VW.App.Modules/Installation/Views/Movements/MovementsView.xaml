@@ -61,6 +61,8 @@
                                  CardSensorLabel3=""
                                  CardText="Verticale (mm)"
                                  CardValue="{Binding SensorsService.ElevatorVerticalPosition, StringFormat={}{0:F2}}"
+                                 LuHeight="{Binding SensorsService.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                                 LuWeight="{Binding SensorsService.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
                                  Sensor1="False"
                                  Sensor2="False"
                                  Sensor3="False" />
@@ -213,6 +215,7 @@
                     <Grid Grid.Row="1"
                           Grid.Column="0"
                           Grid.ColumnSpan="4"
+                          Margin="0,8,0,0"
                           HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -257,12 +260,14 @@
                                                 IsActive="{Binding IsPositionUpSelected}"
                                                 IsEnabled="{Binding IsPositionDownSelected}"
                                                 Visibility="{Binding BayIsMultiPosition, Converter={StaticResource BTVC}}" />
+
                         </StackPanel>
                     </Grid>
 
                     <Grid Grid.Row="2"
                           Grid.Column="0"
                           Grid.ColumnSpan="4"
+                          Margin="0,8,0,0"
                           HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -322,6 +327,7 @@
                     <Grid Grid.Row="3"
                           Grid.Column="0"
                           Grid.ColumnSpan="4"
+                          Margin="0,8,0,0"
                           HorizontalAlignment="Left">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
@@ -359,6 +365,7 @@
                     <Grid Grid.Row="4"
                           Grid.Column="0"
                           Grid.ColumnSpan="4"
+                          Margin="0,8,0,0"
                           HorizontalAlignment="Left"
                           Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}">
                         <Grid.ColumnDefinitions>
@@ -393,10 +400,11 @@
                                             Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding IntermediateShutterCommand}"
-                                            Content="{x:Static res:InstallationApp.IntermediatePosition}"
+                                            Content="{x:Static res:InstallationApp.ShutterMidWay}"
                                             Visibility="{Binding BayIsShutterThreeSensors, Converter={StaticResource BTVC}}" />
 
-                        <controls:PpcButton Margin="5"
+                        <controls:PpcButton Grid.Column="3"
+                                            Margin="5"
                                             HorizontalAlignment="Left"
                                             Command="{Binding ClosedShutterCommand}"
                                             Content="{x:Static res:InstallationApp.GateClose}">
@@ -418,6 +426,7 @@
                     <Grid Grid.Row="5"
                           Grid.Column="0"
                           Grid.ColumnSpan="4"
+                          Margin="0,8,0,0"
                           HorizontalAlignment="Left"
                           Visibility="{Binding HasCarousel, Converter={StaticResource BTVC}}">
                         <Grid.ColumnDefinitions>
@@ -621,7 +630,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="0"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="{x:Static res:InstallationApp.ShutterUp}"
                                                            IsEnabled="{Binding CanShutterMoveUpCommand}"
@@ -632,7 +641,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="1"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Giostra su"
                                                            IsEnabled="{Binding CanMoveCarouselOpenCommand}"
@@ -643,7 +652,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="0"
                                                            Grid.Column="2"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Baia su"
                                                            IsEnabled="False"
@@ -654,7 +663,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="0"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="{x:Static res:InstallationApp.ShutterDown}"
                                                            IsEnabled="{Binding CanShutterMoveDownCommand}"
@@ -665,7 +674,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="1"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Giostra giù"
                                                            IsEnabled="{Binding CanMoveCarouselCloseCommand}"
@@ -676,7 +685,7 @@
 
                         <controls:PpcPressAndReleaseButton Grid.Row="1"
                                                            Grid.Column="2"
-                                                           Margin="10,5"
+                                                           Margin="30,5"
                                                            HorizontalAlignment="Left"
                                                            Content="Baia giù"
                                                            IsEnabled="False"
@@ -711,10 +720,7 @@
                                         Margin="0"
                                         HorizontalAlignment="Center"
                                         Command="{Binding StopMovingCommand}"
-                                        Content="{x:Static res:InstallationApp.Stop}"
-                                        ToolTip="{Binding Path=Description}"
-                                        ToolTipService.ShowDuration="500"
-                                        ToolTipService.ShowOnDisabled="true" />
+                                        Content="{x:Static res:InstallationApp.Stop}" />
 
                     <StackPanel Grid.Row="6"
                                 Grid.Column="3"

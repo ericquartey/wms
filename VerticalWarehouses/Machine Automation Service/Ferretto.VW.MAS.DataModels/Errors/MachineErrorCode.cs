@@ -4,6 +4,9 @@ namespace Ferretto.VW.MAS.DataModels
 {
     public enum MachineErrorCode
     {
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(NoError))]
+        NoError = -1,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(CradleNotCompletelyLoaded))]
         CradleNotCompletelyLoaded = 1,
 
@@ -61,8 +64,14 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayOccupied))]
         BottomLevelBayOccupied,
 
-        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensoZeroBayNotActiveAtStart))]
-        SensoZeroBayNotActiveAtStart,
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(TopLevelBayEmpty))]
+        TopLevelBayEmpty,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(BottomLevelBayEmpty))]
+        BottomLevelBayEmpty,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(SensorZeroBayNotActiveAtStart))]
+        SensorZeroBayNotActiveAtStart,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightExceeded), 1)]
         LoadingUnitWeightExceeded,
@@ -81,6 +90,15 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineModeNotValid), 1)]
         MachineModeNotValid,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(AnotherMissionIsActiveForThisLoadUnit), 1)]
+        AnotherMissionIsActiveForThisLoadUnit,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(AnotherMissionIsActiveForThisBay), 1)]
+        AnotherMissionIsActiveForThisBay,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(AnotherMissionOfThisTypeIsActive), 1)]
+        AnotherMissionOfThisTypeIsActive,
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
@@ -171,5 +189,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitOtherBay), 1)]
         MachineManagerErrorLoadingUnitOtherBay = MachineManagerErrorBaseCode + 14,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceElevator), 1)]
+        MachineManagerErrorLoadingUnitSourceElevator = MachineManagerErrorBaseCode + 15,
     }
 }

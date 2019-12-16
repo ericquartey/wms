@@ -372,11 +372,21 @@ namespace Ferretto.VW.App.Services
                         ms.IsError = false;
                         ms.IsMoving = true;
 
+                        if (message?.Data is MoveLoadingUnitMessageData)
+                        {
+                            ms.IsMovingLoadingUnit = true;
+
+                            this.Notification = "Movimento in corso...";
+                        }
+
                         if (message?.Data is PositioningMessageData dataPositioning)
                         {
                             ms.IsMovingElevator = true;
 
-                            this.WriteInfo(dataPositioning?.AxisMovement);
+                            if (!this.MachineStatus.IsMovingLoadingUnit)
+                            {
+                                this.WriteInfo(dataPositioning?.AxisMovement);
+                            }
                         }
 
                         if (message?.Data is ShutterPositioningMessageData)
@@ -392,10 +402,16 @@ namespace Ferretto.VW.App.Services
                     {
                         if (this.MachineStatus.IsMoving)
                         {
-                            if (message?.Data is PositioningMessageData dataPositioningInfo)
+                            if (message?.Data is PositioningMessageData dataPositioningInfo
+                                && !this.MachineStatus.IsMovingLoadingUnit)
                             {
                                 this.WriteInfo(dataPositioningInfo?.AxisMovement);
                             }
+                        }
+
+                        if (this.MachineStatus.IsMovingLoadingUnit)
+                        {
+                            this.Notification = "Movimento in corso...";
                         }
                         break;
                     }
@@ -418,7 +434,15 @@ namespace Ferretto.VW.App.Services
                             ms.IsMovingShutter = false;
                         }
 
-                        this.ClearNotifications();
+                        if (message?.Data is MoveLoadingUnitMessageData)
+                        {
+                            ms.IsMovingLoadingUnit = false;
+                        }
+
+                        if (!this.MachineStatus.IsMovingLoadingUnit)
+                        {
+                            this.ClearNotifications();
+                        }
 
                         this.MachineStatus = ms;
                         break;
@@ -440,6 +464,11 @@ namespace Ferretto.VW.App.Services
                         if (message?.Data is ShutterPositioningMessageData)
                         {
                             ms.IsMovingShutter = false;
+                        }
+
+                        if (message?.Data is MoveLoadingUnitMessageData)
+                        {
+                            ms.IsMovingLoadingUnit = false;
                         }
 
                         this.ShowNotification(message.Description, NotificationSeverity.Error);
@@ -472,6 +501,7 @@ namespace Ferretto.VW.App.Services
             ms.IsError = false;
             ms.IsMovingElevator = false;
             ms.IsMovingShutter = false;
+            ms.IsMovingLoadingUnit = false;
             ms.ErrorDescription = string.Empty;
 
             this.MachineStatus = ms;
@@ -512,7 +542,7 @@ namespace Ferretto.VW.App.Services
 
         private void WarningsManagement(string view)
         {
-            if (!(view is null) && !this.MachineStatus.IsMoving)
+            if (!(view is null) && !this.MachineStatus.IsMoving && !this.MachineStatus.IsMovingLoadingUnit)
             {
                 switch (true)
                 {
@@ -545,10 +575,6 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
                 }
-            }
-            else
-            {
-                this.ClearNotifications();
             }
         }
 

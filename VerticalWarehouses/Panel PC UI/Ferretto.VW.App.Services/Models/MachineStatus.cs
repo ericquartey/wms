@@ -23,6 +23,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private bool isMovingElevator;
 
+        private bool isMovingLoadingUnit;
+
         private bool isMovingShutter;
 
         #endregion
@@ -63,6 +65,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.isMovingElevator;
             set => this.SetProperty(ref this.isMovingElevator, value);
+        }
+
+        public bool IsMovingLoadingUnit
+        {
+            get => this.isMovingLoadingUnit;
+            set => this.SetProperty(ref this.isMovingLoadingUnit, value);
         }
 
         public bool IsMovingShutter

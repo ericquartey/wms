@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Interfaces;
 using Ferretto.VW.MAS.DeviceManager.Positioning.Models;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -108,6 +109,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 }
                 else
                 {
+                    using (var scope = this.ServiceScopeFactory.CreateScope())
+                    {
+                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
+
+                        errorsProvider.RecordNew(errorCode, this.machineData.RequestingBay);
+                    }
+
                     var notificationMessage = new NotificationMessage(
                         this.machineData.MessageData,
                         errorText,
@@ -117,15 +125,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         this.machineData.RequestingBay,
                         this.machineData.TargetBay,
                         MessageStatus.OperationStart);
-
-                    using (var scope = this.ServiceScopeFactory.CreateScope())
-                    {
-                        var errorsProvider = scope.ServiceProvider.GetRequiredService<IErrorsProvider>();
-
-                        errorsProvider.RecordNew(errorCode, this.machineData.RequestingBay);
-                    }
-
-                    this.Logger.LogError(errorText);
 
                     this.PublishNotificationMessage(notificationMessage);
                     this.ChangeState(new PositioningErrorState(stateData));
@@ -155,13 +154,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                    !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                 {
                     ok = false;
-                    errorText = "Invalid presence sensors";
+                    errorText = ErrorDescriptions.InvalidPresenceSensors;
                     errorCode = DataModels.MachineErrorCode.InvalidPresenceSensors;
                 }
                 else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle && !this.machineData.MachineSensorStatus.IsSensorZeroOnCradle)
                 {
                     ok = false;
-                    errorText = "Missing Zero sensor with empty elevator";
+                    errorText = ErrorDescriptions.MissingZeroSensorWithEmptyElevator;
                     errorCode = DataModels.MachineErrorCode.MissingZeroSensorWithEmptyElevator;
                 }
                 else if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle &&
@@ -172,14 +171,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     )
                 {
                     ok = false;
-                    errorText = "Zero sensor active with full elevator";
+                    errorText = ErrorDescriptions.ZeroSensorActiveWithFullElevator;
                     errorCode = DataModels.MachineErrorCode.ZeroSensorActiveWithFullElevator;
                 }
                 else if (this.machineData.MessageData.LoadingUnitId.HasValue &&
                     !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                 {
                     ok = false;
-                    errorText = "Load Unit present on empty Elevator";
+                    errorText = ErrorDescriptions.LoadUnitPresentOnEmptyElevator;
                     errorCode = DataModels.MachineErrorCode.LoadUnitPresentOnEmptyElevator;
                 }
             }
@@ -204,8 +203,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     ok = this.machineData.MachineSensorStatus.IsSensorZeroOnBay(this.machineData.TargetBay);
                     if (!ok)
                     {
-                        errorText = $"Sensor zero Bay {(int)this.machineData.TargetBay} not active at start";
-                        errorCode = DataModels.MachineErrorCode.SensoZeroBayNotActiveAtStart;
+                        errorText = $"{ErrorDescriptions.SensorZeroBayNotActiveAtStart} in Bay {(int)this.machineData.TargetBay}";
+                        errorCode = DataModels.MachineErrorCode.SensorZeroBayNotActiveAtStart;
                     }
                 }
             }

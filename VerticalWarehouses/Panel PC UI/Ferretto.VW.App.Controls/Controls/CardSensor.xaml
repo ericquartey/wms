@@ -12,6 +12,48 @@
     <UserControl.Resources>
         <converters:BooleanConverter x:Key="BooleanConverter" />
 
+        <ControlTemplate x:Key="ButtonBaseControlTemplate1"
+                         TargetType="{x:Type ButtonBase}">
+            <Border x:Name="border"
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    SnapsToDevicePixels="True">
+                <ContentPresenter x:Name="contentPresenter"
+                                  Margin="{TemplateBinding Padding}"
+                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                  VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                  Content="{TemplateBinding Content}"
+                                  ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                                  ContentTemplate="{TemplateBinding ContentTemplate}"
+                                  Focusable="False"
+                                  RecognizesAccessKey="True"
+                                  SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+            </Border>
+            <ControlTemplate.Triggers>
+                <!--<Trigger Property="Button.IsDefaulted" Value="True">
+                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
+                </Trigger>
+                <Trigger Property="ToggleButton.IsChecked" Value="True">
+                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
+                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
+                    <Setter Property="Foreground" Value="#FF838383"/>
+                </Trigger>-->
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+
         <DataTemplate x:Key="DataTemplateAxis">
             <Grid Margin="4">
                 <Grid.RowDefinitions>
@@ -156,19 +198,23 @@
 
                     <StackPanel Margin="4,0"
                                 VerticalAlignment="Center">
-                        <Border Width="35"
+                        <Border x:Name="BorderBadge"
+                                Width="35"
                                 Height="35"
                                 Margin="4"
                                 HorizontalAlignment="Center"
+                                Background="{DynamicResource PpcBackground}"
                                 BorderBrush="{DynamicResource PpcBorderBrush}"
                                 BorderThickness="{DynamicResource PpcBorderThickness}"
                                 CornerRadius="4">
-                            <TextBlock Margin="4"
-                                       HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="{StaticResource FontSize_High}"
-                                       Foreground="{DynamicResource PpcForeground}"
-                                       Text="{Binding ElementName=Card, Path=CardBadge1}" />
+                            <ToggleButton x:Name="ToggleButtonBadge"
+                                          Margin="0"
+                                          Background="{DynamicResource PpcBackground}"
+                                          BorderThickness="0"
+                                          Content="{Binding ElementName=Card, Path=CardBadge1}"
+                                          FontSize="{StaticResource FontSize_High}"
+                                          Foreground="{DynamicResource PpcForeground}"
+                                          Template="{DynamicResource ButtonBaseControlTemplate1}" />
                             <Border.Style>
                                 <Style>
                                     <Setter Property="Grid.RowSpan" Value="1" />
@@ -182,6 +228,78 @@
                                 </Style>
                             </Border.Style>
                         </Border>
+
+                        <Popup Width="315"
+                               Height="70"
+                               VerticalAlignment="Top"
+                               AllowsTransparency="True"
+                               HorizontalOffset="0"
+                               IsOpen="{Binding IsChecked, ElementName=ToggleButtonBadge}"
+                               Placement="Right"
+                               PlacementTarget="{Binding ElementName=BorderBadge}"
+                               SnapsToDevicePixels="True"
+                               StaysOpen="False"
+                               VerticalOffset="-18">
+                            <Grid Width="300">
+                                <Border Grid.RowSpan="2"
+                                        Grid.ColumnSpan="4"
+                                        Margin="15,0,0,0"
+                                        HorizontalAlignment="Left"
+                                        Background="{StaticResource FerrettoYellow}"
+                                        BorderBrush="{DynamicResource PpcBorderBrush}"
+                                        CornerRadius="10,10,10,10">
+                                    <Grid Margin="4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="0"
+                                                   Margin="4"
+                                                   HorizontalAlignment="Left"
+                                                   FontSize="16"
+                                                   Text="Peso" />
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="0"
+                                                   Margin="4"
+                                                   HorizontalAlignment="Left"
+                                                   FontSize="16"
+                                                   Text="Altezza" />
+
+                                        <TextBlock Grid.Row="0"
+                                                   Grid.Column="1"
+                                                   Margin="4"
+                                                   HorizontalAlignment="Left"
+                                                   FontSize="16"
+                                                   Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="1"
+                                                   Margin="4"
+                                                   HorizontalAlignment="Left"
+                                                   FontSize="16"
+                                                   Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
+
+                                    </Grid>
+                                </Border>
+
+                                <Path Width="15"
+                                      Height="15"
+                                      Margin="0,27,0,0"
+                                      HorizontalAlignment="Left"
+                                      VerticalAlignment="Top"
+                                      Data="M0,10L15,15 15,5"
+                                      Fill="{StaticResource FerrettoYellow}"
+                                      Stretch="Fill"
+                                      Stroke="{x:Null}" />
+                            </Grid>
+                        </Popup>
+
                         <TextBlock Margin="1"
                                    HorizontalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_Small}"
@@ -549,6 +667,21 @@
                             BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}"
                             CornerRadius="4">
+                        <Border.Style>
+                            <Style>
+                                <Setter Property="Border.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Margin="4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -556,22 +689,27 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardBadge1}" />
                     </Border>
+                    
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
                                Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding ElementName=Card, Path=CardBadgeLabel1}">
-                        <!--<TextBlock.Style>
+                        <TextBlock.Style>
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
                                                  Value="">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </TextBlock.Style>-->
+                        </TextBlock.Style>
                     </TextBlock>
                 </StackPanel>
             </Grid>

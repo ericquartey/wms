@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus CarouselStatus(NotificationMessage message);
 
+        MachineErrorCode CheckBaySensors(Bay bay, LoadingUnitLocation loadingUnitPosition, bool deposit);
+
         void CloseShutter(MessageActor sender, BayNumber requestingBay, bool restore);
 
         void ContinuePositioning(MessageActor sender, BayNumber requestingBay);
@@ -37,7 +39,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay);
 
-        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, MessageActor sender, BayNumber requestingBay);
+        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, MessageActor sender, BayNumber requestingBay);
 
         void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId);
 

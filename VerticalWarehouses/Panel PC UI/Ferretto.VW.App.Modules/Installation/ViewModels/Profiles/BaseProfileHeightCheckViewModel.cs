@@ -209,6 +209,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             await base.OnAppearedAsync();
 
+            this.IsBackNavigationAllowed = false;
+            this.ShowAbortStep(true, true);
+
             this.sensorsToken = this.sensorsToken
                 ??
                 this.EventAggregator
