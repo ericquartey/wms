@@ -387,7 +387,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanMoveToBayPosition));
 
         public ICommand MoveToLoadingUnitHeightCommand =>
-                   this.moveToLoadingUnitHeightCommand
+           this.moveToLoadingUnitHeightCommand
            ??
            (this.moveToLoadingUnitHeightCommand = new DelegateCommand(
                async () => await this.MoveToLoadingUnitHeightAsync(),
@@ -495,17 +495,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected void OnGuidedRaiseCanExecuteChanged()
         {
             this.CanInputLoadingUnitId =
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.loadingUnits != null
                 &&
-                this.cells != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse;
+                this.cells != null;
 
             this.RefreshActionPoliciesAsync().ConfigureAwait(false);
 
@@ -534,13 +528,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanCloseShutter()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
+                this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
                 &&
@@ -550,13 +538,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteIntermediateCommand()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
+                this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
                 &&
@@ -568,15 +550,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromBay()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedBayPosition != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
                 &&
                 this.loadFromBayPolicy?.IsAllowed == true;
         }
@@ -584,15 +560,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanLoadFromCell()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedCell != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
                 &&
                 this.loadFromCellPolicy?.IsAllowed == true;
         }
@@ -600,13 +570,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveCarouselDown()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
+                this.CanBaseExecute()
                 &&
                 this.moveCarouselDownPolicy?.IsAllowed == true;
         }
@@ -614,13 +578,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveCarouselUp()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
+                this.CanBaseExecute()
                 &&
                 this.moveCarouselUpPolicy?.IsAllowed == true;
         }
@@ -628,15 +586,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToBayPosition()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedBayPosition != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
                 &&
                 this.moveToBayPositionPolicy?.IsAllowed == true;
         }
@@ -644,17 +596,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToLoadingUnitHeight()
         {
             var canMove =
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedLoadingUnit != null
                 &&
-                (this.SelectedLoadingUnit.CellId != null)
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
+                this.SelectedLoadingUnit.CellId != null
                 &&
                 !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
@@ -663,19 +609,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (!canMove)
             {
                 canMove =
-                    !this.IsKeyboardOpened
+                    this.CanBaseExecute()
                     &&
                     this.SelectedLoadingUnit != null
                     &&
                     this.sensorsService.EmbarkedLoadingUnit != null
                     &&
                     this.sensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
-                    &&
-                    !this.IsExecutingProcedure
-                    &&
-                    !this.IsWaitingForResponse
-                    &&
-                    !this.IsMoving
                     &&
                     this.sensorsService.Sensors.LuPresentInMachineSide
                     &&
@@ -688,13 +628,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanOpenShutter()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
+                this.CanBaseExecute()
                 &&
                 !this.IsShutterMoving
                 &&
@@ -703,26 +637,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanSelectBayPosition()
         {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving;
+            return this.CanBaseExecute();
         }
 
         private bool CanTuneBay()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
+                this.CanBaseExecute()
                 &&
                 !this.IsTuningBay
                 &&
@@ -732,13 +653,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanTuningChain()
         {
             return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
+                this.CanBaseExecute()
                 &&
                 !this.IsTuningChain
                 &&
@@ -752,15 +667,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToBay()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedBayPosition != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
                 &&
                 this.unloadToBayPolicy?.IsAllowed == true;
         }
@@ -768,16 +677,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanUnloadToCell()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
-                    (this.SensorsService.ElevatorLogicalPosition != null && this.SensorsService.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
-                &&
-                !this.IsMoving
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
+                    (this.SensorsService.ElevatorLogicalPosition != null &&
+                     this.SensorsService.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
                 &&
                 (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
         }
@@ -874,10 +778,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                System.Diagnostics.Debug.Assert(
-                    this.SelectedBayPosition != null,
-                    "A bay position should be selected");
-
                 if (this.SelectedBayPosition.LoadingUnit is null)
                 {
                     await this.machineElevatorWebService.LoadFromBayAsync(this.SelectedBayPosition.Id);
@@ -905,10 +805,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsWaitingForResponse = true;
-
-                System.Diagnostics.Debug.Assert(
-                    this.SelectedCell != null,
-                    "A cell should be selected");
 
                 if (this.LoadingUnitInCell is null)
                 {
@@ -978,10 +874,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                Debug.Assert(
-                    this.SelectedBayPosition != null,
-                    "A bay position should be selected.");
-
                 this.InputHeight = this.SelectedBayPosition.Height;
 
                 await this.machineElevatorWebService.MoveToBayPositionAsync(
@@ -1010,8 +902,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                Debug.Assert(this.SelectedLoadingUnit != null, "A loading unit should be selected.");
-
                 if (this.SensorsService.EmbarkedLoadingUnit != null
                     && this.SensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
                     )
@@ -1023,8 +913,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    Debug.Assert(this.SelectedLoadingUnit.Cell != null, "The selected loading unit should specify a cell.");
-
                     await this.machineElevatorWebService.MoveToCellAsync(
                         this.SelectedLoadingUnit.Cell.Id,
                         performWeighting: this.isUseWeightControl,
@@ -1199,10 +1087,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                System.Diagnostics.Debug.Assert(
-                    this.SelectedBayPosition != null,
-                    "A bay position should be selected");
-
                 if (this.SensorsService.EmbarkedLoadingUnit is null)
                 {
                     await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
@@ -1231,17 +1115,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                System.Diagnostics.Debug.Assert(
-                    this.SelectedCell != null,
-                    "A cell should be selected");
-
                 if (this.SensorsService.EmbarkedLoadingUnit is null)
                 {
                     await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, this.SelectedCell.Id, this.SensorsService.EmbarkedLoadingUnit.Id);
+                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.SensorsService.EmbarkedLoadingUnit.Id);
                 }
 
                 this.IsBusyUnloadingToCell = true;

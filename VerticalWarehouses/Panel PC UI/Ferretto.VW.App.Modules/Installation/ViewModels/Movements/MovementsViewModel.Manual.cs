@@ -309,15 +309,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToCellHeight()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
                 this.SelectedCell != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving
                 &&
                 this.moveToCellPolicy?.IsAllowed == true;
         }
@@ -325,15 +319,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanMoveToHeight()
         {
             return
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
-                this.InputHeight != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsMoving;
+                this.InputHeight != null;
         }
 
         private void CloseOperation()
@@ -463,24 +451,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void OnManualRaiseCanExecuteChanged()
         {
             this.CanInputCellId =
-                !this.IsKeyboardOpened
+                this.CanBaseExecute()
                 &&
-                this.cells != null
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+                this.cells != null;
 
-            this.CanInputHeight =
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+            this.CanInputHeight = this.CanBaseExecute();
 
             this.CanShutterMoveUpCommand = !this.IsShutterMovingDown && !(this.SensorsService?.ShutterSensors?.Open ?? false) &&
                                            !this.IsMovingElevatorBackwards && !this.IsMovingElevatorForwards && !this.IsMovingElevatorUp && !this.IsMovingElevatorDown &&

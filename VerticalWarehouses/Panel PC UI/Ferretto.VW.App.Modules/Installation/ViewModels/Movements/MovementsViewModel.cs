@@ -380,16 +380,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private bool CanEmbark()
+        private bool CanBaseExecute()
         {
             return
                 !this.IsKeyboardOpened
                 &&
-                !this.IsWaitingForResponse
-                &&
                 !this.IsExecutingProcedure
                 &&
-                !this.IsMoving
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving;
+        }
+
+        private bool CanEmbark()
+        {
+            return
+                this.CanBaseExecute()
                 &&
                 !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
@@ -422,14 +428,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanResetCommand()
         {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+            return this.CanBaseExecute();
         }
 
         private bool CanStopMoving()
