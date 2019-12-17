@@ -912,49 +912,49 @@
             "Id": 39,
             "Position": 1913.0,
             "Priority": 39,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 41,
             "Position": 1938.0,
             "Priority": 41,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 43,
             "Position": 1963.0,
             "Priority": 43,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 45,
             "Position": 1988.0,
             "Priority": 45,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 47,
             "Position": 2013.0,
             "Priority": 47,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 49,
             "Position": 2038.0,
             "Priority": 49,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 51,
             "Position": 2063.0,
             "Priority": 51,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 53,
             "Position": 2088.0,
             "Priority": 53,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 55,
@@ -1014,49 +1014,49 @@
             "Id": 73,
             "Position": 2339.0,
             "Priority": 73,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 75,
             "Position": 2364.0,
             "Priority": 75,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 77,
             "Position": 2389.0,
             "Priority": 77,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 79,
             "Position": 2414.0,
             "Priority": 79,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 81,
             "Position": 2439.0,
             "Priority": 81,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 83,
             "Position": 2464.0,
             "Priority": 83,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 85,
             "Position": 2489.0,
             "Priority": 85,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 87,
             "Position": 2514.0,
             "Priority": 87,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 89,
@@ -1080,49 +1080,49 @@
             "Id": 95,
             "Position": 2614.0,
             "Priority": 95,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 97,
             "Position": 2639.0,
             "Priority": 97,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 99,
             "Position": 2664.0,
             "Priority": 99,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 101,
             "Position": 2689.0,
             "Priority": 101,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 103,
             "Position": 2714.0,
             "Priority": 103,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 105,
             "Position": 2739.0,
             "Priority": 105,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 107,
             "Position": 2764.0,
             "Priority": 107,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 109,
             "Position": 2789.0,
             "Priority": 109,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 111,
@@ -1152,49 +1152,49 @@
             "Id": 119,
             "Position": 2914.0,
             "Priority": 119,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 121,
             "Position": 2939.0,
             "Priority": 121,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 123,
             "Position": 2964.0,
             "Priority": 123,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 125,
             "Position": 2989.0,
             "Priority": 125,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 127,
             "Position": 3014.0,
             "Priority": 127,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 129,
             "Position": 3039.0,
             "Priority": 129,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 131,
             "Position": 3064.0,
             "Priority": 131,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 133,
             "Position": 3089.0,
             "Priority": 133,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 135,
@@ -2724,49 +2724,49 @@
             "Id": 40,
             "Position": 1914.0,
             "Priority": 40,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 42,
             "Position": 1939.0,
             "Priority": 42,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 44,
             "Position": 1964.0,
             "Priority": 44,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 46,
             "Position": 1989.0,
             "Priority": 46,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 48,
             "Position": 2014.0,
             "Priority": 48,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 50,
             "Position": 2039.0,
             "Priority": 50,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 52,
             "Position": 2064.0,
             "Priority": 52,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 54,
             "Position": 2089.0,
             "Priority": 54,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 56,
@@ -2826,49 +2826,49 @@
             "Id": 74,
             "Position": 2339.0,
             "Priority": 74,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 76,
             "Position": 2364.0,
             "Priority": 76,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 78,
             "Position": 2389.0,
             "Priority": 78,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 80,
             "Position": 2414.0,
             "Priority": 80,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 82,
             "Position": 2439.0,
             "Priority": 82,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 84,
             "Position": 2464.0,
             "Priority": 84,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 86,
             "Position": 2489.0,
             "Priority": 86,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 88,
             "Position": 2514.0,
             "Priority": 88,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 90,
@@ -2892,49 +2892,49 @@
             "Id": 96,
             "Position": 2614.0,
             "Priority": 96,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 98,
             "Position": 2639.0,
             "Priority": 98,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 100,
             "Position": 2664.0,
             "Priority": 100,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 102,
             "Position": 2689.0,
             "Priority": 102,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 104,
             "Position": 2714.0,
             "Priority": 104,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 106,
             "Position": 2739.0,
             "Priority": 106,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 108,
             "Position": 2764.0,
             "Priority": 108,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 110,
             "Position": 2789.0,
             "Priority": 110,
-            "Status": "Free"
+            "Status": "Occupied"
           },
           {
             "Id": 112,
@@ -4417,7 +4417,7 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "Prototype #2"
+    "SerialNumber": "Simulation Prototype #2"
   },
   "SetupProcedures": {
     "BayHeightCheck": {
