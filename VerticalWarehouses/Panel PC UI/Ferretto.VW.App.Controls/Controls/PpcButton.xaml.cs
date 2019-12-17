@@ -17,6 +17,9 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
+        public static readonly DependencyProperty AbbrevationProperty =
+            DependencyProperty.Register(nameof(Abbrevation), typeof(string), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnAbbrevationChanged)));
+
         public static readonly DependencyProperty ContentProperty =
             DependencyProperty.Register(nameof(Content), typeof(object), typeof(PpcButton), new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnContentChanged)));
 
@@ -43,11 +46,10 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty VisibilityPermissionProperty =
             DependencyProperty.Register(nameof(VisibilityPermission), typeof(Visibility), typeof(PpcButton), new PropertyMetadata(Visibility.Visible));
 
-        //public static readonly DependencyProperty VisibilityProperty =
-        //    DependencyProperty.Register(nameof(Visibility), typeof(Visibility), typeof(PpcButton), new FrameworkPropertyMetadata(Visibility.Visible));
-
         public bool PermissionValue = true;
 
+        //public static readonly DependencyProperty VisibilityProperty =
+        //    DependencyProperty.Register(nameof(Visibility), typeof(Visibility), typeof(PpcButton), new FrameworkPropertyMetadata(Visibility.Visible));
         private IEventAggregator eventAggregator = null;
 
         private ISessionService sessionService = null;
@@ -73,6 +75,12 @@ namespace Ferretto.VW.App.Controls.Controls
         #endregion
 
         #region Properties
+
+        public string Abbrevation
+        {
+            get { return (string)this.GetValue(AbbrevationProperty); }
+            set { this.SetValue(AbbrevationProperty, value); }
+        }
 
         public object Content
         {
@@ -120,18 +128,17 @@ namespace Ferretto.VW.App.Controls.Controls
             set => this.SetValue(PermissionProperty, value);
         }
 
-        //public Visibility Visibility
-        //{
-        //    get { return (Visibility)this.GetValue(VisibilityProperty); }
-        //    set { this.SetValue(VisibilityProperty, value); }
-        //}
-
         public Visibility VisibilityPermission
         {
             get { return (Visibility)this.GetValue(VisibilityPermissionProperty); }
             set { this.SetValue(VisibilityPermissionProperty, value); }
         }
 
+        //public Visibility Visibility
+        //{
+        //    get { return (Visibility)this.GetValue(VisibilityProperty); }
+        //    set { this.SetValue(VisibilityProperty, value); }
+        //}
         protected bool IsAdmin => this.sessionService.UserAccessLevel == UserAccessLevel.Admin;
 
         protected bool IsInstaller => this.sessionService.UserAccessLevel == UserAccessLevel.Installer ||
@@ -234,6 +241,10 @@ namespace Ferretto.VW.App.Controls.Controls
             }
 
             return value;
+        }
+
+        private static void OnAbbrevationChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
         }
 
         private static void OnContentChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
