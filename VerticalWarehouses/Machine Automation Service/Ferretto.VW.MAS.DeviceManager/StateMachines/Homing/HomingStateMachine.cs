@@ -8,7 +8,6 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.InverterDriver.Contracts;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
-using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
@@ -24,6 +23,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
 
         private readonly Calibration calibration;
 
+        private readonly int? loadingUnitId;
+
         private readonly IHomingMachineData machineData;
 
         #endregion
@@ -33,6 +34,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         public HomingStateMachine(
             Axis axisToCalibrate,
             Calibration calibration,
+            int? loadingUnitId,
             bool isOneKMachine,
             BayNumber requestingBay,
             BayNumber targetBay,
@@ -45,9 +47,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         {
             this.axisToCalibrate = axisToCalibrate;
             this.calibration = calibration;
+            this.loadingUnitId = loadingUnitId;
 
             this.machineData = new HomingMachineData(
                 isOneKMachine,
+                loadingUnitId,
                 requestingBay,
                 targetBay,
                 machineResourcesProvider,

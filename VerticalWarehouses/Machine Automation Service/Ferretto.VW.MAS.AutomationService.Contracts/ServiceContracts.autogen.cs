@@ -1171,6 +1171,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("missionType", Required = Newtonsoft.Json.Required.Always)]
         public MissionType MissionType { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("needHomingAxis", Required = Newtonsoft.Json.Required.Always)]
+        public Axis NeedHomingAxis { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     
@@ -1261,6 +1264,21 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         OUT = 4,
     
         Test = 5,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum Axis
+    {
+        None = 0,
+    
+        Horizontal = 1,
+    
+        Vertical = 2,
+    
+        HorizontalAndVertical = 3,
+    
+        BayChain = 4,
     
     }
     

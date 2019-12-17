@@ -102,8 +102,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             ILogger<InverterDriverService> logger,
             IEventAggregator eventAggregator,
             IServiceScopeFactory serviceScopeFactory,
-            ISocketTransport socketTransport,
-            IServiceProvider serviceProvider)
+            ISocketTransport socketTransport)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.socketTransport = socketTransport ?? throw new ArgumentNullException(nameof(socketTransport));
@@ -115,9 +114,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.axisPositionUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
             this.statusWordUpdateTimer = new Timer[(int)InverterIndex.Slave7 + 1];
             this.forceStatusPublish = new bool[(int)InverterIndex.Slave7 + 1];
-
-            // performance optimization
-            _ = serviceProvider.GetRequiredService<IInvertersProvider>();
         }
 
         #endregion

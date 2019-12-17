@@ -1406,6 +1406,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("NeedHomingAxis");
+
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
@@ -1490,7 +1492,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 13, 16, 0, 31, 225, DateTimeKind.Local).AddTicks(1161),
+                            InstallationDate = new DateTime(2017, 2, 17, 14, 19, 15, 127, DateTimeKind.Local).AddTicks(3057),
                             ServiceStatus = 86
                         });
                 });

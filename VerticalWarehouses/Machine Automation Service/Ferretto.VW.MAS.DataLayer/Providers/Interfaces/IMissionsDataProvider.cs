@@ -33,6 +33,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Update(Mission mission);
 
+        void UpdateHomingMissions(BayNumber bayNumber, Axis axis);
+
         #endregion
     }
 }
