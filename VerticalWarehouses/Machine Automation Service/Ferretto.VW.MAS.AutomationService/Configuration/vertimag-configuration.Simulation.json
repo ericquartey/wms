@@ -4,19 +4,16 @@
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
       "Id": 1
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
       "Id": 2
     },
     {
       "Tare": 120,
       "MaxNetWeight": 800,
-      "Height": 100,
       "Id": 3
     }
   ],
@@ -40,30 +37,30 @@
         "Number": "BayOne",
         "Positions": [
           {
-            "Height": 446,
+            "Height": 645,
             "Location": "InternalBay1Down"
           }
         ],
         "Resolution": 369.8453,
         "Shutter": {
           "Inverter": {
-            "Type": "Agl",
-            "Index": "Slave2"
+            "Index": "Slave2",
+            "Type": "Agl"
           },
           "Type": "TwoSensors",
           "ManualMovements": {
             "FeedRate": 0.1,
-            "MaxSpeed": 40000,
+            "MaxSpeed": 32000,
             "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
           },
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "MaxSpeed": 40000,
+            "MaxSpeed": 32000,
             "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
           }
         },
         "EmptyLoadMovement": {
@@ -90,11 +87,11 @@
         "Number": "BayTwo",
         "Positions": [
           {
-            "Height": 446,
+            "Height": 645,
             "Location": "InternalBay2Down"
           },
           {
-            "Height": 795,
+            "Height": 1045,
             "Location": "InternalBay2Up"
           }
         ],
@@ -116,17 +113,17 @@
           },
           "ManualMovements": {
             "FeedRate": 0.1,
-            "MaxSpeed": 40000,
+            "MaxSpeed": 32000,
             "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
           },
           "AssistedMovements": {
             "FeedRate": 0.2,
-            "MaxSpeed": 40000,
+            "MaxSpeed": 32000,
             "MinSpeed": 5000,
-            "HighSpeedDurationOpen": 14,
-            "HighSpeedDurationClose": 13
+            "HighSpeedDurationOpen": 16,
+            "HighSpeedDurationClose": 16
           }
         },
         "Inverter": {
@@ -173,9 +170,9 @@
             "Speed": 550
           },
           "WeightMeasurement": {
-            "MeasureConst0": -1130.6,
-            "MeasureConst1": 249.75,
-            "MeasureConst2": -4.9268,
+            "MeasureConst0": -723.53,
+            "MeasureConst1": 159.73,
+            "MeasureConst2": -1.8163,
             "MeasureSpeed": 20,
             "MeasureTime": 15
           },
@@ -192,13 +189,13 @@
         },
         {
           "Orientation": "Horizontal",
-          "Resolution": 77.6722,
+          "Resolution": 88.3038556,
           "Offset": 0,
-          "ChainOffset": -6.4,
+          "ChainOffset": -5,
           "Inverter": null,
           "FullLoadMovement": {
-            "Acceleration": 200,
-            "Deceleration": 200,
+            "Acceleration": 350,
+            "Deceleration": 350,
             "Speed": 480
           },
           "EmptyLoadMovement": {
@@ -363,8 +360,8 @@
                 },
                 {
                   "Acceleration": 1000,
-                  "Deceleration": 0,
                   "Speed": 100,
+                  "Deceleration": 0,
                   "Position": 350,
                   "Number": 1
                 },
@@ -1663,12 +1660,12 @@
       }
     ],
     "ProductionDate": "2019-10-19T16:39:57-08:00",
-    "SerialNumber": "Simulation"
+    "SerialNumber": "Simulation Prototype #1"
   },
   "SetupProcedures": {
     "BayHeightCheck": {
-      "Step": 0.5,
-      "FeedRate": 0.2
+      "FeedRate": 0.2,
+      "Step": 0.5
     },
     "BeltBurnishingTest": {
       "RequiredCycles": 200
@@ -1684,8 +1681,8 @@
       "Step": 0.5
     },
     "CellsHeightCheck": {
-      "Step": 0.5,
-      "FeedRate": 0.2
+      "FeedRate": 0.2,
+      "Step": 0.5
     },
     "DepositAndPickUpTest": {
       "RequiredCycles": 10
