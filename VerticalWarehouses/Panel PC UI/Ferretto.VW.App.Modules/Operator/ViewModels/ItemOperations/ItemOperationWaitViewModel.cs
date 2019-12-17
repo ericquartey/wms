@@ -3,12 +3,15 @@ using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Picking)]
     public class ItemOperationWaitViewModel : BaseOperatorViewModel
     {
         #region Fields
@@ -17,10 +20,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMissionOperationsService missionOperationsService;
 
+        private bool isPerformingOperation;
+
         private SubscriptionToken missionToken;
 
         private int pendingMissionOperationsCount;
-        private bool isPerformingOperation;
 
         #endregion
 

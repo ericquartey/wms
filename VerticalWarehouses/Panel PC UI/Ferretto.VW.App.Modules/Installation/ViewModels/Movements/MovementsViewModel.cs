@@ -13,12 +13,15 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 using Prism.Regions;
 using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed partial class MovementsViewModel : BaseMainViewModel
     {
         #region Fields

@@ -5,9 +5,12 @@ using System.Threading.Tasks;
 using System.Windows.Threading;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     public class BaseParametersImportExportViewModel : BaseMainViewModel
     {
         #region Fields
