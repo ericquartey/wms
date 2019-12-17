@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public MissionType MissionType { get; set; }
 
+        public Axis NeedHomingAxis { get; set; }
+
         public int Priority { get; set; }
 
         public bool RestoreConditions { get; set; }

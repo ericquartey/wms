@@ -40,7 +40,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             switch (receivedMessage.Type)
             {
                 case FieldMessageType.DataLayerReady:
+                    // performance optimization
+                    _ = serviceProvider.GetRequiredService<IInvertersProvider>();
 
+                    // start communication
                     await this.StartHardwareCommunicationsAsync(serviceProvider);
                     this.InitializeTimers();
 

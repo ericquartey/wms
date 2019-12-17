@@ -17,6 +17,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 
         public HomingMachineData(
             bool isOneKMachine,
+            int? loadingUnitId,
             BayNumber requestingBay,
             BayNumber targetBay,
             IMachineResourcesProvider machineResourcesProvider,
@@ -26,6 +27,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
             IServiceScopeFactory serviceScopeFactory)
         {
             this.IsOneKMachine = isOneKMachine;
+            this.LoadingUnitId = loadingUnitId;
             this.RequestingBay = requestingBay;
             this.TargetBay = targetBay;
             this.MachineSensorStatus = machineResourcesProvider;
@@ -51,6 +53,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
         public InverterIndex InverterIndexOld { get; set; }
 
         public bool IsOneKMachine { get; }
+
+        public int? LoadingUnitId { get; }
 
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
         public ILogger Logger { get; }

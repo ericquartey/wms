@@ -203,14 +203,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-#if !TEST_ERROR_STATE
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
-                return;
-            }
-#endif
-
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
@@ -232,7 +224,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
                         {
                             var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
-                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
 
                             this.EventAggregator
                                 .GetEvent<CommandEvent>()
@@ -247,7 +239,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else
                         {
-                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
 
                             this.EventAggregator
                                 .GetEvent<CommandEvent>()
@@ -264,18 +256,25 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
-                    var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-
-                    foreach (var bay in bayProvider.GetAll())
+                    if (this.configuration.IsWmsEnabled())
                     {
-                        try
+                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+
+                        foreach (var bay in bayProvider.GetAll())
                         {
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                            try
+                            {
+                                await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
-                        }
+                    }
+                    else
+                    {
+                        this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                     }
                 }
                 else

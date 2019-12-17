@@ -18,6 +18,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         bool IsOneKMachine { get; }
 
+        int? LoadingUnitId { get; }
+
         IMachineResourcesProvider MachineSensorStatus { get; }
 
         int MaximumSteps { get; set; }
