@@ -246,6 +246,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     public partial interface IMachineElevatorWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>

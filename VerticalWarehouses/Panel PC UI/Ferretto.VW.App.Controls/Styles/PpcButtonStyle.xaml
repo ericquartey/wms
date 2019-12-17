@@ -94,6 +94,13 @@
                                                   ImageSource="{Binding ImageSource, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
                                                   Visibility="{Binding ImageSource, Converter={StaticResource RTVC}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}" />
 
+                                <TextBlock x:Name="PpcButton_Abbrevation"
+                                           Grid.Column="0"
+                                           Margin="-45,13,0,0"
+                                           FontSize="24"
+                                           Foreground="White"
+                                           Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
+
                                 <TextBlock x:Name="PpcButton_Text"
                                            Grid.Column="1"
                                            Margin="10,0"
@@ -323,7 +330,6 @@
         </Style.Triggers>
     </Style>
 
-
     <Style x:Key="PpcButtonMovementsManualTabStyle"
            BasedOn="{StaticResource PpcButtonTabStyle}"
            TargetType="{x:Type controls:PpcButton}">
@@ -349,4 +355,15 @@
             </Trigger>
         </Style.Triggers>
     </Style>
+
+    <Style x:Key="PpcButtonMenuStyle"
+           BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+           TargetType="{x:Type controls:PpcButton}">
+
+        <Setter Property="BorderThickness" Value="60,0,0,0" />
+
+        <!--<Setter Property="BorderBrush" Value="{TemplateBinding BorderBrush}" />-->
+
+    </Style>
+
 </ResourceDictionary>
