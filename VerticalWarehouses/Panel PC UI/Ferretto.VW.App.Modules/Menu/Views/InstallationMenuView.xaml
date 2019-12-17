@@ -43,7 +43,7 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.1"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuElevatorCommand}"
@@ -53,7 +53,7 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     Margin="0,15,0,0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.2"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuBaysCommand}"
@@ -63,7 +63,7 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="0,15,0,0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.3"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuCellsCommand}"
@@ -73,7 +73,7 @@
 
                 <controls:PpcButton Grid.Row="3"
                                     Margin="0,15,0,0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuLoadingUnitsCommand}"
@@ -83,7 +83,7 @@
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="0,15,0,0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.5"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuAccessoriesCommand}"
@@ -93,7 +93,7 @@
 
                 <controls:PpcButton Grid.Row="6"
                                     Margin="0,15,0,0"
-                                    Padding="-2,2,0,0"
+                                    Padding="-2,1,0,0"
                                     Abbrevation="4.6"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuOtherCommand}"

@@ -28,7 +28,7 @@
 
         <controls:PpcButton Grid.Row="0"
                             Margin="0,0,15,15"
-                            Padding="-1,2,0,0"
+                            Padding="-1,1,0,0"
                             Abbrevation="3.1"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding GeneralCommand}"
@@ -38,7 +38,7 @@
 
         <controls:PpcButton Grid.Row="1"
                             Margin="0,0,15,15"
-                            Padding="-1,2,0,0"
+                            Padding="-1,1,0,0"
                             Abbrevation="3.2"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding CountersCommand}"
@@ -48,7 +48,7 @@
 
         <controls:PpcButton Grid.Row="2"
                             Margin="0,0,15,15"
-                            Padding="-1,2,0,0"
+                            Padding="-1,1,0,0"
                             Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding StatisticsCommand}"
@@ -58,7 +58,7 @@
 
         <controls:PpcButton Grid.Row="3"
                             Margin="0,0,15,15"
-                            Padding="-1,2,0,0"
+                            Padding="-1,1,0,0"
                             Abbrevation="3.4"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding AllarmCommand}"
@@ -68,7 +68,7 @@
 
         <controls:PpcButton Grid.Row="4"
                             Margin="0,0,15,15"
-                            Padding="-1,2,0,0"
+                            Padding="-1,1,0,0"
                             Abbrevation="3.5"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding DiagnosticsCommand}"
