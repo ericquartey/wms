@@ -43,12 +43,6 @@
                                      ContentText="Operazione precedente terminata."
                                      LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
 
-            <controls:PpcLabeledText Grid.Row="2"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding PendingMissionOperationsCount, UpdateSourceTrigger=PropertyChanged}"
-                                     LabelText="{x:Static Resources:OperatorApp.DrawerWaitOperation}" />
-
         </Grid>
 
 

@@ -53,7 +53,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
-        public string ItemId => this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString();
+        public string ItemId => this.MissionOperationsService.CurrentMissionOperation?.ItemId.ToString();
 
         public MissionWithLoadingUnitDetails Mission
         {

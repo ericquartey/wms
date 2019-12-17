@@ -1243,4 +1243,8 @@
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operation cancelled</value>
   </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Operation confirmed.</value>
+    <comment>Notification</comment>
+  </data>
 </root>

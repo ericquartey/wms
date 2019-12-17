@@ -58,11 +58,11 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
-        public async Task CompleteCurrentAsync()
+        public async Task CompleteCurrentAsync(double quantity)
         {
             await this.missionOperationsWebService.CompleteAsync(
                 this.CurrentMissionOperation.Id,
-                this.CurrentMissionOperation.RequestedQuantity);
+                quantity);
         }
 
         public async Task PartiallyCompleteCurrentAsync(double quantity)

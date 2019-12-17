@@ -38,6 +38,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
               this.InputQuantity.Value >= 0;
         }
 
+        public override void OnMisionOperationRetrieved()
+        {
+            this.InputQuantity = null;
+        }
+
         protected override void ShowOperationDetails()
         {
             this.NavigationService.Appear(
@@ -45,11 +50,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
               Utils.Modules.Operator.ItemOperations.INVENTORY_DETAILS,
               null,
               trackCurrentView: true);
-        }
-
-        public override void OnMisionOperationRetrieved()
-        {
-            this.InputQuantity = null;
         }
 
         #endregion

@@ -153,8 +153,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsBusyConfirmingOperation = true;
                 this.IsWaitingForResponse = true;
+                this.ClearNotifications();
 
-                await this.MissionOperationsService.CompleteCurrentAsync();
+                await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
+
+                this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }
             catch (Exception ex)
             {
@@ -172,6 +175,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.eventAggregator.GetEvent<PubSubEvent<AssignedMissionOperationChangedEventArgs>>().Unsubscribe(this.missionToken);
             this.missionToken?.Dispose();
+            this.missionToken = null;
 
             base.Disappear();
         }

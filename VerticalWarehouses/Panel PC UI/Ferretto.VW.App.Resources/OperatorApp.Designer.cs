@@ -2086,6 +2086,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation confirmed..
+        /// </summary>
+        public static string OperationConfirmed {
+            get {
+                return ResourceManager.GetString("OperationConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Cell.
         /// </summary>
         public static string OtherDrawerDataGridHeaderCell {

@@ -99,6 +99,18 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.Update(bay);
 
+                this.notificationEvent.Publish(
+                  new NotificationMessage(
+                      new BayOperationalStatusChangedMessageData
+                      {
+                          BayStatus = bay.Status,
+                      },
+                      $"Bay #{bay.Number} status changed to {bay.Status}",
+                      MessageActor.MissionManager,
+                      MessageActor.WebApi,
+                      MessageType.BayOperationalStatusChanged,
+                      bay.Number));
+
                 return bay;
             }
         }
@@ -249,6 +261,18 @@ namespace Ferretto.VW.MAS.DataLayer
                     bay.IsActive = false;
 
                     this.Update(bay);
+
+                    this.notificationEvent.Publish(
+                      new NotificationMessage(
+                          new BayOperationalStatusChangedMessageData
+                          {
+                              BayStatus = bay.Status,
+                          },
+                          $"Bay #{bay.Number} status changed to {bay.Status}",
+                          MessageActor.MissionManager,
+                          MessageActor.WebApi,
+                          MessageType.BayOperationalStatusChanged,
+                          bay.Number));
 
                     this.logger.LogInformation($"The bay {bay.Number} is now deactivated and can no longer accept missions.");
                 }
@@ -878,27 +902,21 @@ namespace Ferretto.VW.MAS.DataLayer
                 var bay = this.dataContext.Bays
                     .Include(b => b.Carousel)
                     .SingleOrDefault(b => b.Number == bayNumber);
+
                 if (bay is null)
                 {
                     throw new EntityNotFoundException(bayNumber.ToString());
                 }
+
+                if (bay.Carousel is null)
+                {
+                    throw new InvalidOperationException($"The bay {bayNumber} has no carousel.");
+                }
+
                 bay.Carousel.IsHomingExecuted = isExecuted;
                 this.dataContext.SaveChanges();
 
-                if (isExecuted)
-                {
-                    this.notificationEvent.Publish(
-                        new NotificationMessage(
-                            new BayOperationalStatusChangedMessageData
-                            {
-                                BayStatus = bay.Status,
-                            },
-                            $"Bay #{bay.Number} status changed to {bay.Status}",
-                            MessageActor.MissionManager,
-                            MessageActor.WebApi,
-                            MessageType.BayOperationalStatusChanged,
-                            bay.Number));
-                }
+                this.Activate(bayNumber);
             }
         }
 
@@ -971,18 +989,6 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 this.dataContext.SaveChanges();
             }
-
-            this.notificationEvent.Publish(
-                new NotificationMessage(
-                    new BayOperationalStatusChangedMessageData
-                    {
-                        BayStatus = bay.Status,
-                    },
-                    $"Bay #{bay.Number} status changed to {bay.Status}",
-                    MessageActor.MissionManager,
-                    MessageActor.WebApi,
-                    MessageType.BayOperationalStatusChanged,
-                    bay.Number));
         }
 
         #endregion
