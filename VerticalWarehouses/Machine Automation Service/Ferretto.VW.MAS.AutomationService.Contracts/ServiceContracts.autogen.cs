@@ -1174,6 +1174,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("needHomingAxis", Required = Newtonsoft.Json.Required.Always)]
         public Axis NeedHomingAxis { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("needMovingBackward", Required = Newtonsoft.Json.Required.Always)]
+        public bool NeedMovingBackward { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("priority", Required = Newtonsoft.Json.Required.Always)]
         public int Priority { get; set; }
     

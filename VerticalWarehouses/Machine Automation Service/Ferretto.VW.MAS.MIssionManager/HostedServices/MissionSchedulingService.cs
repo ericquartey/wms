@@ -358,6 +358,21 @@ namespace Ferretto.VW.MAS.MissionManager
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
                     mission.FsmStateName = "MoveLoadingUnitErrorState";
+                    if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
+                    {
+                        mission.NeedHomingAxis = Axis.BayChain;
+                    }
+                    else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
+                        || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
+                        )
+                    {
+                        mission.NeedMovingBackward = true;
+                        mission.NeedHomingAxis = Axis.Horizontal;
+                    }
+                    else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
+                    {
+                        mission.NeedHomingAxis = Axis.Vertical;
+                    }
                     missionsDataProvider.Update(mission);
                 }
 

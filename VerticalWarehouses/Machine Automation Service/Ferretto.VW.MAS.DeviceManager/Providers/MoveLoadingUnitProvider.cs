@@ -361,20 +361,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore)
         {
-            try
+            if (restore)
+            {
+                this.shutterProvider.Move(ShutterMovementDirection.Up, requestingBay, sender);
+            }
+            else
             {
                 this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
-            }
-            catch (InvalidOperationException)
-            {
-                if (restore)
-                {
-                    this.shutterProvider.Move(ShutterMovementDirection.Up, requestingBay, sender);
-                }
-                else
-                {
-                    throw;
-                }
             }
         }
 

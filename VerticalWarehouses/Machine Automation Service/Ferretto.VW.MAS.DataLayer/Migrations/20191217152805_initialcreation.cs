@@ -163,6 +163,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     LoadingUnitSource = table.Column<string>(type: "text", nullable: false),
                     MissionType = table.Column<string>(type: "text", nullable: false),
                     NeedHomingAxis = table.Column<int>(nullable: false),
+                    NeedMovingBackward = table.Column<bool>(nullable: false),
                     Priority = table.Column<int>(nullable: false),
                     RestoreConditions = table.Column<bool>(nullable: false),
                     Status = table.Column<string>(type: "text", nullable: false),
@@ -1166,7 +1167,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 17, 14, 19, 15, 127, DateTimeKind.Local).AddTicks(3057), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 17, 16, 28, 4, 926, DateTimeKind.Local).AddTicks(6670), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

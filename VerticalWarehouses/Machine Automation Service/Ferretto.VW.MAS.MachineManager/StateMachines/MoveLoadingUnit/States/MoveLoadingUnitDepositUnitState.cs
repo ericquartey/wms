@@ -228,6 +228,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 )
             {
                 this.mission.FsmRestoreStateName = this.mission.FsmStateName;
+                if (reason == StopRequestReason.Error)
+                {
+                    this.mission.NeedMovingBackward = true;
+                }
                 returnValue = this.GetState<IMoveLoadingUnitErrorState>();
             }
             else
