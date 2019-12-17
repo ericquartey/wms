@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
-    [Warning(WarningsArea.Login)]
+    [Warning(WarningsArea.Menu)]
     internal sealed class MainMenuViewModel : BaseMainViewModel
     {
         #region Fields

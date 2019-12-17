@@ -615,6 +615,10 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
 
+                    case WarningsArea.Menu:
+                        this.ClearNotifications();
+                        break;
+
                     default:
                         break;
                 }
