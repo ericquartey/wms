@@ -158,14 +158,15 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
-        public Mission GetExecutingMissionInBay(BayNumber bayNumber)
+        public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)
             {
                 return this.dataContext.Missions
                     .AsNoTracking()
-                    .SingleOrDefault(m => m.TargetBay == bayNumber
-                        && (m.Status == MissionStatus.Executing || m.Status == MissionStatus.Waiting));
+                    .Any(m => m.TargetBay == bayNumber
+                        && m.Status == MissionStatus.Waiting
+                        && m.LoadingUnitId == loadingUnitId);
             }
         }
 

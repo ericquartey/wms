@@ -194,7 +194,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     if (!returnValue)
                     {
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationCell);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationCell);
                     }
 
@@ -274,17 +273,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             {
                 if (showErrors)
                 {
-                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitDestinationBay);
                     this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitDestinationBay);
                 }
             }
             else if (this.baysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
                 && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
+                && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Opened
                 )
             {
                 if (showErrors)
                 {
-                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
                     this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
                 }
                 returnValue = false;
@@ -293,16 +291,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 && destination != LoadingUnitLocation.NoLocation)
             {
                 var destinationBay = this.baysDataProvider.GetByLoadingUnitLocation(destination);
-                if (destinationBay != null)
+                if (destinationBay != null
+                    && destinationBay.Number != requestingBay
+                    )
                 {
                     // move from bay to bay
                     if (this.baysDataProvider.GetByLoadingUnitLocation(destination).Shutter.Type != ShutterType.NotSpecified
                         && this.sensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Closed
+                        && this.sensorsProvider.GetShutterPosition(destinationBay.Number) != ShutterPosition.Opened
                         )
                     {
                         if (showErrors)
                         {
-                            this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
                             this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
                         }
                         returnValue = false;
@@ -327,7 +327,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                 returnValue = this.elevatorDataProvider.GetLoadingUnitOnBoard() != null;
                 if (!returnValue)
                 {
-                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceElevator);
                     this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceElevator);
                 }
                 else
@@ -335,7 +334,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     returnValue = this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
                     if (!returnValue)
                     {
-                        this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
                         this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
                     }
                 }
@@ -346,7 +344,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                 if (!returnValue)
                 {
-                    this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitElevator);
                     this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitElevator);
                 }
                 else
@@ -354,7 +351,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     returnValue = !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator);
                     if (!returnValue)
                     {
-                        this.Logger.LogError(ErrorDescriptions.LoadUnitPresentOnEmptyElevator);
                         this.errorsProvider.RecordNew(MachineErrorCode.LoadUnitPresentOnEmptyElevator);
                     }
                 }
@@ -387,7 +383,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
             if (!returnValue)
             {
-                this.Logger.LogError(ErrorDescriptions.MachineModeNotValid);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineModeNotValid);
                 return false;
             }
@@ -401,7 +396,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             }
             if (!returnValue)
             {
-                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorNoLoadingUnitInSource);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorNoLoadingUnitInSource);
             }
 
@@ -429,7 +423,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 
                     if (unitToMove == null)
                     {
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceCell);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceCell);
                         return false;
                     }
@@ -468,13 +461,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         if (machineData.LoadingUnitSource == LoadingUnitLocation.NoLocation)
                         {
                             unitToMove = null;
-                            this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotLoaded);
                             this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotLoaded);
                         }
                     }
                     else
                     {
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
                     if (unitToMove == null)
@@ -498,7 +489,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                             }
                             else
                             {
-                                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitOtherBay);
                                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitOtherBay);
                             }
                         }
@@ -511,20 +501,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     if (unitToMove == null || unitToMove.CellId.HasValue)
                     {
                         unitToMove = null;
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitNotFound);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
                     }
                     else if (unitToMove.CellId.HasValue)
                     {
                         unitToMove = null;
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceDb);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
                     }
 #if CHECK_BAY_SENSOR
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
                     {
                         unitToMove = null;
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceBay);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceBay);
                     }
 #endif
@@ -534,7 +521,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         )
                     {
                         unitToMove = null;
-                        this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitShutterOpen);
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
                     }
                     if (unitToMove == null)
@@ -553,7 +539,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
             else
             {
                 unitToMove = null;
-                this.Logger.LogError(ErrorDescriptions.MachineManagerErrorLoadingUnitSourceDb);
                 this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
             }
 

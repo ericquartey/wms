@@ -182,9 +182,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     throw new EntityNotFoundException(id);
                 }
-
-                loadingUnit.Height = height;
-
+                if (height == 0)
+                {
+                    loadingUnit.Height = 0;
+                }
+                else
+                {
+                    loadingUnit.Height = Math.Max(loadingUnit.Height, height);
+                }
                 this.dataContext.SaveChanges();
             }
         }

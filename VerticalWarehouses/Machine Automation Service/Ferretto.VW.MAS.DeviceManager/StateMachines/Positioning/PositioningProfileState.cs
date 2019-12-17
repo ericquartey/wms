@@ -21,6 +21,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly IElevatorDataProvider elevatorDataProvider;
+
         private readonly ILoadingUnitsDataProvider loadingUnitProvider;
 
         private readonly IPositioningMachineData machineData;
@@ -50,6 +52,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope();
             this.baysDataProvider = this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
             this.loadingUnitProvider = this.scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+            this.elevatorDataProvider = this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
         }
 
         #endregion
@@ -87,9 +90,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 }
                                 break;
                             }
-                            if (this.machineData.MessageData.LoadingUnitId.HasValue)
+                            int? loadUnitId = this.machineData.MessageData.LoadingUnitId;
+                            if (!loadUnitId.HasValue)
                             {
-                                this.loadingUnitProvider.SetHeight(this.machineData.MessageData.LoadingUnitId.Value, profileHeight);
+                                var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
+                                var loadingUnitOnElevator = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                                if (bayPosition != null
+                                    && bayPosition.LoadingUnit != null
+                                    && loadingUnitOnElevator is null
+                                    )
+                                {
+                                    // manual pickup from bay
+                                    loadUnitId = bayPosition.LoadingUnit.Id;
+                                }
+                            }
+                            if (loadUnitId.HasValue)
+                            {
+                                this.loadingUnitProvider.SetHeight(loadUnitId.Value, profileHeight);
                             }
                             this.ParentStateMachine.ChangeState(new PositioningEndState(this.stateData));
                         }

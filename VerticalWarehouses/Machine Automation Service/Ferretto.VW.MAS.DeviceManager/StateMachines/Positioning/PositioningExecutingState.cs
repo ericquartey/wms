@@ -310,10 +310,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             this.stateData.StopRequestReason = reason;
             this.machineData.ExecutedSteps = this.performedCycles;
-            if ((this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
+            if (this.machineData.MessageData.MovementMode == MovementMode.PositionAndMeasureProfile
                 || this.machineData.MessageData.MovementMode == MovementMode.ProfileCalibration
                 )
-                && this.machineData.MessageData.AxisMovement == Axis.Horizontal)
             {
                 var ioCommandMessageData = new MeasureProfileFieldMessageData(false);
                 var ioCommandMessage = new FieldCommandMessage(
@@ -704,22 +703,18 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         if (this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterPickup, this.machineData.RequestingBay);
-                            this.Logger.LogError($"Zero sensor error after pickup");
                         }
                         else
                         {
                             this.errorsProvider.RecordNew(DataModels.MachineErrorCode.ZeroSensorErrorAfterDeposit, this.machineData.RequestingBay);
-                            this.Logger.LogError($"Zero sensor error after deposit");
                         }
                         this.Stop(StopRequestReason.Stop);
                     }
-                    else if (this.machineData.MessageData.MovementMode == MovementMode.Position
-                        && this.machineData.MessageData.MovementType == MovementType.TableTarget
+                    else if (this.machineData.MessageData.MovementType == MovementType.TableTarget
                         && !this.machineData.MessageData.IsStartedOnBoard
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOnCradle)
                     {
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyLoadedDuringPickup, this.machineData.RequestingBay);
-                        this.Logger.LogError("Cradle not correctly loaded after pickup");
                         this.Stop(StopRequestReason.Stop);
                     }
                     else if (this.machineData.MessageData.MovementType == MovementType.TableTarget
@@ -727,7 +722,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                         && !this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle)
                     {
                         this.errorsProvider.RecordNew(DataModels.MachineErrorCode.CradleNotCorrectlyUnloadedDuringDeposit, this.machineData.RequestingBay);
-                        this.Logger.LogError("Cradle not correctly unloaded after deposit");
                         this.Stop(StopRequestReason.Stop);
                     }
                     else
