@@ -616,7 +616,6 @@ namespace Ferretto.VW.App.Services
                         break;
 
                     default:
-                        this.ClearNotifications();
                         break;
                 }
             }
