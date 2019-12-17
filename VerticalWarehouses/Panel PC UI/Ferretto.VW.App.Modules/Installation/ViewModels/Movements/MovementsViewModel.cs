@@ -600,6 +600,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
+            this.RaisePropertyChanged(nameof(this.SensorsService.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
