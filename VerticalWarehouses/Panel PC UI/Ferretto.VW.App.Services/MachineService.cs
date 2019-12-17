@@ -306,14 +306,18 @@ namespace Ferretto.VW.App.Services
         private WarningsArea GetWarningAreaAttribute()
         {
             var viewType = this.GetActiveViewModelType();
+            if (viewType is null)
+            {
+                string s = "";
+            }
 
             WarningsArea area = WarningsArea.None;
-            WarningAttribute attribute = viewType.GetCustomAttributes(typeof(WarningAttribute), true).FirstOrDefault() as WarningAttribute;
+            WarningAttribute attribute = viewType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
 
             if (attribute is null &&
                 viewType.BaseType != null)
             {
-                attribute = viewType.BaseType.GetCustomAttributes(typeof(WarningAttribute), true).FirstOrDefault() as WarningAttribute;
+                attribute = viewType?.BaseType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
             }
 
             return attribute?.Area ?? WarningsArea.None;

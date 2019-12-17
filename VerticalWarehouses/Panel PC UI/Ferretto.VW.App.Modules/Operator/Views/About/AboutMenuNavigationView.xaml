@@ -27,63 +27,43 @@
         </Grid.RowDefinitions>
 
         <controls:PpcButton Grid.Row="0"
-                            Width="200"
                             Margin="0,0,15,15"
-                            HorizontalAlignment="Left"
                             Abbrevation="3.1"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding GeneralCommand}"
                             Content="Generali"
-                            FontFamily="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                            FontSize="{DynamicResource FontSize_High}"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="1"
-                            Width="200"
                             Margin="0,0,15,15"
-                            HorizontalAlignment="Left"
                             Abbrevation="3.2"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding CountersCommand}"
                             Content="Contatori"
-                            FontFamily="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                            FontSize="{DynamicResource FontSize_High}"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="2"
-                            Width="200"
                             Margin="0,0,15,15"
-                            HorizontalAlignment="Left"
                             Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding StatisticsCommand}"
                             Content="Statistiche"
-                            FontFamily="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                            FontSize="{DynamicResource FontSize_High}"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="3"
-                            Width="200"
                             Margin="0,0,15,15"
-                            HorizontalAlignment="Left"
                             Abbrevation="3.4"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding AllarmCommand}"
                             Content="Allarmi"
-                            FontFamily="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                            FontSize="{DynamicResource FontSize_High}"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="4"
-                            Width="200"
                             Margin="0,0,15,15"
-                            HorizontalAlignment="Left"
                             Abbrevation="3.5"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding DiagnosticsCommand}"
                             Content="Diagnostica"
-                            FontFamily="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                            FontSize="{DynamicResource FontSize_High}"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
     </Grid>
