@@ -368,13 +368,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type controls:PpcButton}">
-                    <ControlTemplate.Resources>
-                        <BooleanToVisibilityConverter x:Key="BTVC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVC" />
-                        <converters:ReferenceToHorizontalAlignmentConverter x:Key="RTAC" />
-                        <converters:ReferenceToVisibilityConverter x:Key="RTVIC"
-                                                                   Invert="True" />
-                    </ControlTemplate.Resources>
                     <Grid Visibility="{TemplateBinding VisibilityPermission}">
                         <Border Background="{DynamicResource PpcBackground}"
                                 BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -412,33 +405,14 @@
                                 </Border>
 
                                 <TextBlock Grid.Column="1"
-                                           Margin="10,0"
+                                           Margin="15,0"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{TemplateBinding FontSize}"
                                            FontWeight="{TemplateBinding FontWeight}"
                                            Text="{Binding Content, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:PpcButton}}}"
-                                           TextWrapping="Wrap">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="TextAlignment" Value="Center" />
-                                            <Setter Property="Visibility" Value="Visible" />
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Visibility, ElementName=PpcButton_Icon}"
-                                                             Value="Visible">
-                                                    <Setter Property="TextAlignment" Value="Left" />
-                                                </DataTrigger>
-                                                <Trigger Property="Text" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                                <Trigger Property="Text" Value="">
-                                                    <Setter Property="Visibility" Value="Collapsed" />
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
+                                           TextWrapping="Wrap"/>
 
                             </Grid>
                         </Border>
