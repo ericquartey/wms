@@ -1,8 +1,11 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed partial class DepositAndPickUpTestViewModel
     {
         #region Fields

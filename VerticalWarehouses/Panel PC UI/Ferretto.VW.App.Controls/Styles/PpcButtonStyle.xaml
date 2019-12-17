@@ -208,16 +208,16 @@
            BasedOn="{StaticResource PpcHeaderButtonStyle}"
            TargetType="{x:Type controls:PpcButton}">
         <Setter Property="Content" Value="{x:Static res:InstallationApp.Manual}" />
-        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
         <Style.Triggers>
             <DataTrigger Binding="{Binding IsMachineInAutomaticMode}"
                          Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Auto}" />
             </DataTrigger>
             <DataTrigger Binding="{Binding IsMachineInTestMode}"
                          Value="True">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoOrange}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
                 <Setter Property="Content" Value="{x:Static res:InstallationApp.Test}" />
             </DataTrigger>
         </Style.Triggers>
@@ -318,7 +318,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoBlue}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -329,7 +329,7 @@
            TargetType="{x:Type controls:PpcButton}">
         <Style.Triggers>
             <Trigger Property="IsActive" Value="true">
-                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoGreen}" />
+                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoRed}" />
             </Trigger>
         </Style.Triggers>
     </Style>

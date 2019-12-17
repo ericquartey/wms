@@ -6,10 +6,13 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class InstallationMenuViewModel : BaseMainViewModel
     {
         #region Fields
@@ -29,7 +32,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         private DelegateCommand menuLoadingUnitsCommand;
 
         private DelegateCommand menuMovementsCommand;
-
 
         private DelegateCommand menuOtherCommand;
 
@@ -62,7 +64,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             LoadingUnits,
 
             Other,
-
         }
 
         #endregion

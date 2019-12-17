@@ -5,11 +5,14 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
+    [Warning(WarningsArea.Login)]
     internal sealed class LoginViewModel : BaseMainViewModel
     {
         #region Fields
