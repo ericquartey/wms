@@ -43,33 +43,63 @@
 
                 <controls:PpcButton Grid.Row="0"
                                     Margin="0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.1"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuElevatorCommand}"
-                                    Content="{x:Static res:Menu.MenuElevator}" />
+                                    Content="{x:Static res:Menu.MenuElevator}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
                 <controls:PpcButton Grid.Row="1"
                                     Margin="0,15,0,0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.2"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuBaysCommand}"
-                                    Content="Baia" />
+                                    Content="Baia"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
                 <controls:PpcButton Grid.Row="2"
                                     Margin="0,15,0,0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.3"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuCellsCommand}"
-                                    Content="{x:Static res:Menu.MenuCells}" />
+                                    Content="{x:Static res:Menu.MenuCells}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Margin="0,15,0,0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.4"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuLoadingUnitsCommand}"
-                                    Content="{x:Static res:Menu.MenuLoadingUnits}" />
+                                    Content="{x:Static res:Menu.MenuLoadingUnits}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
                 <controls:PpcButton Grid.Row="4"
                                     Margin="0,15,0,0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.5"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuAccessoriesCommand}"
-                                    Content="{x:Static res:Menu.MenuAccessories}" />
+                                    Content="{x:Static res:Menu.MenuAccessories}"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
                 <controls:PpcButton Grid.Row="6"
                                     Margin="0,15,0,0"
+                                    Padding="-2,2,0,0"
+                                    Abbrevation="4.6"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuOtherCommand}"
-                                    Content="Altro" />
+                                    Content="Altro"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuStyle}" />
 
             </Grid>
         </Grid>
