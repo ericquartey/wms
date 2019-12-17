@@ -115,6 +115,15 @@ namespace Ferretto.VW.MAS.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No loading unit is waiting to be extracted in the specified bay position..
+        /// </summary>
+        public static string NoMissionIsWaitingInTheSpecifiedBayPosition {
+            get {
+                return ResourceManager.GetString("NoMissionIsWaitingInTheSpecifiedBayPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Target position ({0}mm) must be in the range [{1}mm; {2}mm]..
         /// </summary>
         public static string TargetPositionMustBeInRange {

@@ -75,8 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 if (moveData.LoadingUnitId > 0)
                 {
-                    var machine = this.machineProvider.Get();
-                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
+                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, 0);
                 }
                 moveData.Status = MissionStatus.Waiting;
                 this.mission.RestoreConditions = false;

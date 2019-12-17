@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         private readonly IMachineResourcesProvider machineResourcesProvider;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         private readonly ISensorsProvider sensorsProvider;
 
         private readonly ISetupProceduresDataProvider setupProceduresDataProvider;
@@ -49,6 +51,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             ICellsProvider cellsProvider,
             IMachineProvider machineProvider,
             IMachineResourcesProvider machineResourcesProvider,
+            IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
             ILoadingUnitsDataProvider loadingUnitsDataProvider)
             : base(eventAggregator)
@@ -61,6 +64,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.machineResourcesProvider = machineResourcesProvider ?? throw new ArgumentNullException(nameof(machineResourcesProvider));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
         }
@@ -84,6 +88,22 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         #endregion
 
         #region Methods
+
+        public ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber)
+        {
+            // check #1: a loading unit must be present in the bay position
+            if (!this.IsBayPositionOccupied(bayNumber, bayPositionId))
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.NoLoadingUnitIsPresentInTheSpecifiedBayPosition };
+            }
+            // check #2: a loading unit must be waiting to be extracted in the bay position
+            var bayPosition = this.baysDataProvider.GetPositionById(bayPositionId);
+            if (!this.missionsDataProvider.IsMissionInWaitState(bayNumber, bayPosition.LoadingUnit.Id))
+            {
+                return new ActionPolicy { Reason = Resources.Elevator.NoMissionIsWaitingInTheSpecifiedBayPosition };
+            }
+            return ActionPolicy.Allowed;
+        }
 
         public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber)
         {

@@ -201,6 +201,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
             var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
             var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
 
             var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
             if (loadingUnitOnBoard is null)
@@ -216,7 +217,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
             if (targetBayPositionId.HasValue)
             {
-                baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
+                using (var transaction = elevatorDataProvider.GetContextTransaction())
+                {
+                    baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
+                    loadingUnitProvider.SetHeight(loadingUnitOnBoard.Id, 0);
+                    transaction.Commit();
+                }
             }
             else if (targetCellId.HasValue)
             {
@@ -241,21 +247,25 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                     $"A pickup was requested, but the elevator has already a loading unit (id={loadingUnitOnBoard.Id}) on board.");
             }
 
-            if (sourceBayPositionId.HasValue)
+            using (var transaction = elevatorDataProvider.GetContextTransaction())
             {
-                var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
+                if (sourceBayPositionId.HasValue)
+                {
+                    var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
 
-                elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
+                    elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
 
-                baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
-            }
-            else if (sourceCellId.HasValue)
-            {
-                var cell = cellsProvider.GetById(sourceCellId.Value);
+                    baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
+                }
+                else if (sourceCellId.HasValue)
+                {
+                    var cell = cellsProvider.GetById(sourceCellId.Value);
 
-                elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
+                    elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
 
-                cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                    cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                }
+                transaction.Commit();
             }
         }
 
@@ -265,8 +275,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             {
                 var elevatorDataProvider = scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>();
 
-                elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
-                elevatorDataProvider.SetCurrentCell(targetCellId);
+                using (var transaction = elevatorDataProvider.GetContextTransaction())
+                {
+                    elevatorDataProvider.SetCurrentBayPosition(targetBayPositionId);
+                    elevatorDataProvider.SetCurrentCell(targetCellId);
+                    transaction.Commit();
+                }
             }
         }
 
@@ -294,6 +308,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var baysDataProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                 var cellsProvider = scope.ServiceProvider.GetRequiredService<ICellsProvider>();
                 var machineResourcesProvider = scope.ServiceProvider.GetRequiredService<IMachineResourcesProvider>();
+                var loadingUnitProvider = scope.ServiceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
 
                 var loadingUnitOnElevator = elevatorDataProvider.GetLoadingUnitOnBoard();
 
@@ -301,77 +316,82 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
 
-                if (bayPosition != null)
+                using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
-                    var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
-                    var isDrawerInBay = bayPosition.IsUpper
-                         ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                         : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
+                    if (bayPosition != null)
+                    {
+                        var bay = baysDataProvider.GetByBayPositionId(bayPosition.Id);
+                        var isDrawerInBay = bayPosition.IsUpper
+                             ? machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+                             : machineResourcesProvider.IsDrawerInBayBottom(bay.Number);
 
-                    if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
-                    // possible pickup from bay
-                    {
-                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
+                        if (loadingUnitOnElevator == null && bayPosition.LoadingUnit != null)
+                        // possible pickup from bay
                         {
-                            elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
-                            baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                            if (machineResourcesProvider.IsDrawerCompletelyOnCradle && !isDrawerInBay)
+                            {
+                                elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
+                                baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                            }
                         }
-                    }
-                    else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
-                    // possible deposit to bay
-                    {
-                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
+                        else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
+                        // possible deposit to bay
                         {
-                            elevatorDataProvider.SetLoadingUnit(null);
-                            baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
-                        }
-                    }
-                }
-                else if (cell != null)
-                {
-                    if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
-                    // possible pickup from cell
-                    {
-                        if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
-                        {
-                            elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
-                            cellsProvider.SetLoadingUnit(cell.Id, null);
-                        }
-                    }
-                    else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
-                    // possible deposit to cell
-                    {
-                        if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
-                        {
-                            if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                            if (machineResourcesProvider.IsDrawerCompletelyOffCradle && isDrawerInBay)
                             {
                                 elevatorDataProvider.SetLoadingUnit(null);
-                                cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
-                            }
-                            else
-                            {
-                                this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                                baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
+                                loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
                             }
                         }
                     }
-                }
-                else if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
-                {
-                    var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
-                    if (this.machineData.MessageData.TargetPosition > 0
-                        && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
-                        && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+                    else if (cell != null)
                     {
-                        var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
-                        var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
-                        if (origin != null
-                            && destination != null
-                            && origin.LoadingUnit != null)
+                        if (loadingUnitOnElevator == null && cell.LoadingUnit != null)
+                        // possible pickup from cell
                         {
-                            baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
-                            baysDataProvider.SetLoadingUnit(origin.Id, null);
+                            if (machineResourcesProvider.IsDrawerCompletelyOnCradle)
+                            {
+                                elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
+                                cellsProvider.SetLoadingUnit(cell.Id, null);
+                            }
+                        }
+                        else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
+                        // possible deposit to cell
+                        {
+                            if (machineResourcesProvider.IsDrawerCompletelyOffCradle)
+                            {
+                                if (cellsProvider.CanFitLoadingUnit(cell.Id, loadingUnitOnElevator.Id))
+                                {
+                                    elevatorDataProvider.SetLoadingUnit(null);
+                                    cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                                }
+                                else
+                                {
+                                    this.Logger.LogWarning("Detected loading unit leaving the cradle, but cell cannot store it.");
+                                }
+                            }
                         }
                     }
+                    else if (this.machineData.MessageData.AxisMovement is Axis.BayChain)
+                    {
+                        var bay = baysDataProvider.GetByNumber(this.machineData.RequestingBay);
+                        if (this.machineData.MessageData.TargetPosition > 0
+                            && machineResourcesProvider.IsDrawerInBayTop(bay.Number)
+                            && !machineResourcesProvider.IsDrawerInBayBottom(bay.Number))
+                        {
+                            var destination = bay.Positions.FirstOrDefault(p => p.IsUpper);
+                            var origin = bay.Positions.FirstOrDefault(p => !p.IsUpper);
+                            if (origin != null
+                                && destination != null
+                                && origin.LoadingUnit != null)
+                            {
+                                baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
+                                baysDataProvider.SetLoadingUnit(origin.Id, null);
+                            }
+                        }
+                    }
+                    transaction.Commit();
                 }
             }
         }
@@ -392,8 +412,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             scope.ServiceProvider);
                     }
                 }
-                else
-                if (this.machineData.MessageData.TargetCellId.HasValue
+                else if (this.machineData.MessageData.TargetCellId.HasValue
                     ||
                     this.machineData.MessageData.TargetBayPositionId.HasValue)
                 {

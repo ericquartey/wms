@@ -1093,7 +1093,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(LoadingUnitLocation.Elevator, this.SelectedBayPosition.Id);
+                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.SelectedBayPosition.Location, this.SensorsService.EmbarkedLoadingUnit.Id);
                 }
 
                 this.IsBusyUnloadingToBay = true;

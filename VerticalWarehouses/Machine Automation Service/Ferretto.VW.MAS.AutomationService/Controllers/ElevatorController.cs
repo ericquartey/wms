@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("horizontal/can-extract-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanExtractFromBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanExtractFromBay(bayPositionId, this.BayNumber));
+        }
+
         [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
         public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
         {

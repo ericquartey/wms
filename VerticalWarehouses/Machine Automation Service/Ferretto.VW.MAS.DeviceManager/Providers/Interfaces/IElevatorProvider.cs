@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
+
         ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber);
 
         ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
