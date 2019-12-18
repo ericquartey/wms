@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Enumerations;
+using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOff
@@ -32,6 +35,19 @@ namespace Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOff
         public override void Start()
         {
             this.Logger.LogTrace("1:Method Start");
+
+            var endNotification = new FieldNotificationMessage(
+                null,
+                "Laser Switch Off complete",
+                FieldMessageActor.LaserDriver,
+                FieldMessageActor.LaserDriver,
+                FieldMessageType.LaserOff,
+                MessageStatus.OperationEnd,
+                (byte)this.BayNumber);
+
+            this.Logger.LogTrace($"1:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
+
+            this.ParentStateMachine.PublishNotificationEvent(endNotification);
         }
 
         #endregion

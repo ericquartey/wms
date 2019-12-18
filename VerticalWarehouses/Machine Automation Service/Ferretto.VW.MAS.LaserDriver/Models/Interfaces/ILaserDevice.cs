@@ -14,5 +14,11 @@ namespace Ferretto.VW.MAS.LaserDriver
         int TcpPort { get; }
 
         #endregion
+
+        #region Methods
+
+        void DestroyStateMachine();
+
+        #endregion
     }
 }

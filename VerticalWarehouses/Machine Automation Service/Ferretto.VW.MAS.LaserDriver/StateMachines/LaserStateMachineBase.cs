@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.Utils.Events;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -79,6 +80,13 @@ namespace Ferretto.VW.MAS.LaserDriver.StateMachines
             {
                 this.CurrentState?.ProcessResponseMessage(message);
             }
+        }
+
+        public void PublishNotificationEvent(FieldNotificationMessage notificationMessage)
+        {
+            this.Logger.LogTrace($"1:Type={notificationMessage.Type}:Destination={notificationMessage.Destination}:Status={notificationMessage.Status}");
+
+            this.EventAggregator?.GetEvent<FieldNotificationEvent>().Publish(notificationMessage);
         }
 
         public abstract void Start();

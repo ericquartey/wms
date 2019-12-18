@@ -87,6 +87,16 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         #region Methods
 
+        public void DestroyStateMachine()
+        {
+            if (this.CurrentStateMachine is IDisposable stateMachine)
+            {
+                stateMachine.Dispose();
+            }
+
+            this.CurrentStateMachine = null;
+        }
+
         public void ExecuteLaserOff()
         {
             if (this.CurrentStateMachine != null)

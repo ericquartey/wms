@@ -20,6 +20,8 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         void ProcessResponseMessage(string message);        // TODO: Check signature
 
+        void PublishNotificationEvent(FieldNotificationMessage notificationMessage);
+
         void Start();
 
         #endregion
