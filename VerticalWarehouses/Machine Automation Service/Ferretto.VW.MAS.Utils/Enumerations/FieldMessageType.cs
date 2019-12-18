@@ -61,5 +61,11 @@
         ContinueMovement,
 
         InverterCurrentError,
+
+        LaserOn,
+
+        LaserOff,
+
+        LaserMove
     }
 }

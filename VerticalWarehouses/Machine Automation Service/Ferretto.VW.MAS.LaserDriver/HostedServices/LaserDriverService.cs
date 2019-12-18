@@ -69,7 +69,36 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         protected override async Task OnCommandReceivedAsync(FieldCommandMessage command, IServiceProvider serviceProvider)
         {
-            throw new NotImplementedException();
+            this.Logger.LogTrace($"1:Command received: {command.Type}, destination: {command.Destination}, source: {command.Source}");
+
+            var laserKey = Enum.Parse<BayNumber>(command.DeviceIndex.ToString());
+            if (!this.lasers.ContainsKey(laserKey))
+            {
+                this.Logger.LogError($"Laser Driver received a command for unknown device: {laserKey}");
+                return;
+            }
+
+            try
+            {
+                var device = this.lasers[laserKey];
+
+                switch (command.Type)
+                {
+                    case FieldMessageType.LaserOn:
+
+                        break;
+
+                    case FieldMessageType.LaserOff:
+                        break;
+
+                    case FieldMessageType.LaserMove:
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.Logger.LogError(ex, "Received invalid command");
+            }
         }
 
         protected override async Task OnNotificationReceivedAsync(FieldNotificationMessage message, IServiceProvider serviceProvider)
