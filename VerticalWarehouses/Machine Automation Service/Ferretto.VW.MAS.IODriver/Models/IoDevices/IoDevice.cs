@@ -179,7 +179,7 @@ namespace Ferretto.VW.MAS.IODriver
                     }
                     catch (Exception ex)
                     {
-                        this.logger.LogCritical($"Error while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}, ex");
+                        this.logger.LogCritical($"Error while connecting to Modbus I/O master - ExceptionCode: {IoDriverExceptionCode.CreationFailure}");
 
                         this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)IoDriverExceptionCode.CreationFailure), isFatalError: true);
 
@@ -272,7 +272,7 @@ namespace Ferretto.VW.MAS.IODriver
                 var extractedMessages = BufferUtility.GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 3, 0, 0);
                 if (this.receiveBuffer.Length > 0)
                 {
-                    this.logger.LogWarning($" extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
+                    this.logger.LogWarning($"Message extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
                 }
 
                 if (extractedMessages.Count > 0)

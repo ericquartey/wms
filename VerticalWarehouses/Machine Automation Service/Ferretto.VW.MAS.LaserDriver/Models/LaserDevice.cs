@@ -19,13 +19,19 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly CancellationToken cancellationToken;
 
-        //private readonly Task laserReceiveTask;
+        private readonly BlockingConcurrentQueue<FieldCommandMessage> laserCommandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
-        //private readonly Task laserSendTask;
+        private readonly Task laserReceiveTask;
+
+        private readonly Task laserSendTask;
 
         private readonly ILogger logger;
 
         private readonly ISocketTransport socketTransport;
+
+        private readonly ManualResetEventSlim writeEnableEvent;
+
+        private byte[] receiveBuffer;
 
         #endregion
 
@@ -38,11 +44,12 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.IpAddress = ipAddress;
             this.TcpPort = port;
 
+            this.writeEnableEvent = new ManualResetEventSlim(true);
             this.socketTransport = transport;
             this.logger = logger;
             this.cancellationToken = cancellationToken;
 
-            //this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
+            this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
             //this.laserSendTask = new Task(async () => await this.SendLaserCommandTaskFunction());
         }
 
@@ -71,23 +78,16 @@ namespace Ferretto.VW.MAS.LaserDriver
             catch (SocketTransportException ex)
             {
                 this.logger.LogError($"2:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode};\nInner exception: {ex.InnerException.Message}");
-
-                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", (int)ex.ExceptionCode));
             }
             catch (Exception ex)
             {
                 this.logger.LogCritical($"Fatal error while connecting to Laser {this.BayNumber}: {ex.Message}");
-
-                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "IO Driver Exception", 0), isFatalError: true);
-
                 return;
             }
 
             if (!this.socketTransport.IsConnected)
             {
                 this.logger.LogError($"3:Failed to connect to Laser {this.BayNumber}");
-
-                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(null, "Socket Transport failed to connect", (int)IoDriverExceptionCode.DeviceNotConnected));
             }
             else
             {
@@ -96,16 +96,13 @@ namespace Ferretto.VW.MAS.LaserDriver
 
             try
             {
-                //this.laserReceiveTask.Start();
+                this.laserReceiveTask.Start();
 
                 //this.laserSendTask.Start();
             }
             catch (Exception ex)
             {
                 this.logger.LogCritical($"4:Exception: {ex.Message} while starting service hardware threads");
-
-                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "Laser Driver Exception", 0), isFatalError: true);
-
                 return;
             }
 
@@ -114,6 +111,91 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private async Task ReceiveLaserDataTaskFunction()
         {
+            this.logger.LogTrace("1:Method Start");
+            do
+            {
+                if (!this.socketTransport.IsConnected)
+                {
+                    try
+                    {
+                        this.receiveBuffer = null;
+                        await this.socketTransport.ConnectAsync(this.IpAddress, this.TcpPort);
+                    }
+                    catch (SocketTransportException ex)
+                    {
+                        this.logger.LogError($"2:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode};\nInner exception: {ex.InnerException.Message}");
+                    }
+                    catch (Exception ex)
+                    {
+                        this.logger.LogCritical($"Error while connecting to Laser {this.BayNumber}");
+
+                        return;
+                    }
+
+                    if (!this.socketTransport.IsConnected)
+                    {
+                        this.logger.LogError("3:Socket Transport failed to connect");
+                        continue;
+                    }
+                    else
+                    {
+                        this.logger.LogInformation($"3:Connection OK Laser {this.BayNumber} on {this.IpAddress}:{this.TcpPort}");
+                    }
+
+                    this.writeEnableEvent.Set();
+
+                    this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOff, (byte)this.BayNumber));
+                }
+
+                byte[] telegram;
+                try
+                {
+                    telegram = await this.socketTransport.ReadAsync(this.cancellationToken);
+
+                    if (telegram == null || telegram.Length == 0)
+                    {
+                        // connection error
+                        this.logger.LogError($"4:Laser Driver message is null");
+                        var ex = new Exception();
+                        continue;
+                    }
+                }
+                catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                {
+                    this.logger.LogDebug($"Terminating Laser Device {this.BayNumber} read thread.");
+
+                    return;
+                }
+                catch (SocketTransportException ex)
+                {
+                    // connection error
+                    this.logger.LogError(ex, $"3:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
+                    continue;
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogCritical($"Fatal error for Laser device {this.BayNumber} while reading message {ex.Message}");
+                    return;
+                }
+
+                this.receiveBuffer = this.receiveBuffer.AppendArrays(telegram, telegram.Length);
+
+                var extractedMessages = BufferUtility.GetMessagesToEnqueue(ref this.receiveBuffer, null, new byte[] { 13, 10 });
+                if (this.receiveBuffer.Length > 0)
+                {
+                    this.logger.LogWarning($"Message extracted: count {extractedMessages.Count}: left bytes {this.receiveBuffer.Length}");
+                }
+
+                if (extractedMessages.Count > 0)
+                {
+                    this.writeEnableEvent.Set();
+                }
+
+                foreach (var extractedMessage in extractedMessages)
+                {
+                }
+            }
+            while (!this.cancellationToken.IsCancellationRequested);
         }
 
         private async Task SendLaserCommandTaskFunction()
