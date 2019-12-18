@@ -12,6 +12,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         ErrorStatisticsSummary GetStatistics();
 
+        bool IsErrorSmall();
+
         MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None);
 
         MachineError Resolve(int id);

@@ -125,7 +125,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     else
                     {
                         this.Logger.LogDebug($"Manual Horizontal forward positioning start");
-                        this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay);
+                        this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                     }
                 }
                 else
@@ -170,7 +170,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                                 if (this.mission.NeedHomingAxis == Axis.Horizontal)
                                 {
                                     this.Logger.LogDebug($"Manual Horizontal forward positioning start");
-                                    this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay);
+                                    this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                                 }
                                 else
                                 {
@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 )
             {
                 this.mission.FsmRestoreStateName = this.mission.FsmStateName;
-                if (reason == StopRequestReason.Error)
+                if (!this.errorsProvider.IsErrorSmall())
                 {
                     this.mission.NeedMovingBackward = true;
                 }

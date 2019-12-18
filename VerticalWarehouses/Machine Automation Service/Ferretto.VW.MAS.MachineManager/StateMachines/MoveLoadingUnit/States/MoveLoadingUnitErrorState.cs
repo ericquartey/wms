@@ -127,12 +127,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                                 {
                                     if (this.mission.NeedMovingBackward)
                                     {
-                                        this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                                        this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                                     }
                                     else
                                     {
                                         var isLoaded = (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitDepositUnitState));
-                                        this.isMovingForward = this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, isLoaded, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
+                                        this.isMovingForward = this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, isLoaded, this.measure, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                                     }
                                 }
                                 if (!this.isMovingForward && !this.isMovingBackward)
@@ -475,12 +475,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission.NeedMovingBackward = true;
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal back positioning start");
-                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
             }
             else
             {
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal forward positioning start");
-                this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
             }
 
             if (!this.isMovingBackward && !this.isMovingForward)
@@ -613,12 +613,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             if (this.mission.NeedMovingBackward)
             {
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal back positioning start");
-                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
             }
             else
             {
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal forward positioning start");
-                this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
             }
 
             if (!this.isMovingBackward && !this.isMovingForward)

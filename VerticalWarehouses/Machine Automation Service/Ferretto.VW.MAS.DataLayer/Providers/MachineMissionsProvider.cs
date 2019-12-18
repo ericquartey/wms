@@ -77,6 +77,8 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                     data.LoadingUnitDestination = mission.LoadingUnitDestination;
                     data.LoadingUnitId = mission.LoadingUnitId;
                     data.LoadingUnitSource = mission.LoadingUnitSource;
+                    data.NeedHomingAxis = mission.NeedHomingAxis;
+                    data.NeedMovingBackward = mission.NeedMovingBackward;
                     data.MissionType = mission.MissionType;
                     data.Priority = mission.Priority;
                     data.RestoreConditions = mission.RestoreConditions;

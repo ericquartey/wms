@@ -39,9 +39,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
-        bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay);
+        bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay);
 
-        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, MessageActor sender, BayNumber requestingBay);
+        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, MessageActor sender, BayNumber requestingBay);
 
         void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId);
 

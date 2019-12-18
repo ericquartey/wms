@@ -96,6 +96,11 @@ namespace Ferretto.VW.MAS.MissionManager
                     return;
                 }
             }
+            if (!this.configuration.IsWmsEnabled())
+            {
+                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
+                return;
+            }
 
             System.Diagnostics.Debug.Assert(mission != null);
 
@@ -256,25 +261,18 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
-                    if (this.configuration.IsWmsEnabled())
-                    {
-                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
+                    var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
-                        foreach (var bay in bayProvider.GetAll())
-                        {
-                            try
-                            {
-                                await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
-                            }
-                            catch (Exception ex)
-                            {
-                                this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
-                            }
-                        }
-                    }
-                    else
+                    foreach (var bay in bayProvider.GetAll())
                     {
-                        this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
+                        try
+                        {
+                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                        }
                     }
                 }
                 else
@@ -357,24 +355,24 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
-                    mission.FsmStateName = "MoveLoadingUnitErrorState";
-                    if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
-                    {
-                        mission.NeedHomingAxis = Axis.BayChain;
-                    }
-                    else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
-                        || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
-                        )
-                    {
-                        mission.NeedMovingBackward = true;
-                        mission.NeedHomingAxis = Axis.Horizontal;
-                    }
-                    else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
-                    {
-                        mission.NeedHomingAxis = Axis.Horizontal;
-                    }
-                    missionsDataProvider.Update(mission);
                 }
+                mission.FsmStateName = "MoveLoadingUnitErrorState";
+                if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
+                {
+                    mission.NeedHomingAxis = Axis.BayChain;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
+                    || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
+                    )
+                {
+                    mission.NeedMovingBackward = true;
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
+                {
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                missionsDataProvider.Update(mission);
 
                 machineMissionsProvider.AddMission(mission, mission.FsmId);
             }
@@ -404,12 +402,6 @@ namespace Ferretto.VW.MAS.MissionManager
             if (!this.dataLayerIsReady)
             {
                 this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
-                return;
-            }
-
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                 return;
             }
 

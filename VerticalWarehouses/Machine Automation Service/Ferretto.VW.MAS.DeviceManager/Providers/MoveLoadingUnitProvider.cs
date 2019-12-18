@@ -189,13 +189,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             var openShutter = ShutterPosition.NotSpecified;
             if (bay.Shutter.Type != ShutterType.NotSpecified)
             {
-                var shutterPosition = this.sensorsProvider.GetShutterPosition(bay.Number);
                 if (bay.Shutter.Type == ShutterType.TwoSensors)
                 {
-                    if (shutterPosition != ShutterPosition.Opened)
-                    {
-                        openShutter = ShutterPosition.Opened;
-                    }
+                    openShutter = ShutterPosition.Opened;
                 }
                 else
                 {
@@ -203,15 +199,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     if (bayPosition is null)
                     {
                         // TODO: throw an exception?
-                        openShutter = ShutterPosition.Opened;
+                        openShutter = ShutterPosition.NotSpecified;
                     }
-                    else if (bayPosition.IsUpper
-                        && shutterPosition != ShutterPosition.Opened)
+                    else if (bayPosition.IsUpper)
                     {
                         openShutter = ShutterPosition.Opened;
                     }
-                    else if (!bayPosition.IsUpper
-                        && shutterPosition == ShutterPosition.Closed)
+                    else
                     {
                         openShutter = ShutterPosition.Half;
                     }
@@ -338,7 +332,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return MessageStatus.NotSpecified;
         }
 
-        public bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var distance = Math.Abs(this.elevatorDataProvider.HorizontalPosition - axis.LastIdealPosition);
@@ -346,11 +340,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 return false;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, false, loadUnitId, requestingBay, sender);
             return true;
         }
 
-        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, MessageActor sender, BayNumber requestingBay)
+        public bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, MessageActor sender, BayNumber requestingBay)
         {
             var axis = this.elevatorDataProvider.GetAxis(Orientation.Horizontal);
             var profileType = this.elevatorProvider.SelectProfileType(direction, isLoadingUnitOnBoard);
@@ -364,7 +358,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             {
                 distance = profileSteps.Last().Position;
             }
-            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, requestingBay, sender);
             return true;
         }
 

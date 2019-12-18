@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     else
                     {
                         this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.direction}");
-                        this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
+                        this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                     }
                 }
                 else
@@ -184,7 +184,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                                 if (this.mission.NeedHomingAxis == Axis.BayChain)
                                 {
                                     this.Logger.LogDebug($"MoveManualLoadingUnitForward start: direction {this.direction}");
-                                    this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
+                                    this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, this.mission.LoadingUnitId, MessageActor.MachineManager, this.mission.TargetBay);
                                 }
                                 else
                                 {
@@ -247,7 +247,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 )
             {
                 this.mission.FsmRestoreStateName = this.mission.FsmStateName;
-                if (reason == StopRequestReason.Error)
+                if (!this.errorsProvider.IsErrorSmall())
                 {
                     this.mission.NeedMovingBackward = true;
                 }
