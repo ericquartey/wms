@@ -119,21 +119,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             {
             }
 
-            // This is wrong: this code must not be here.
-            // Do not make improper use of disposal methods, please.
-            var notificationMessageData = new MachineStateActiveMessageData(MessageActor.IoDriver, string.Empty, MessageVerbosity.Info);
-            var notificationMessage = new NotificationMessage(
-                notificationMessageData,
-                $"IoDriver current state null",
-                MessageActor.Any,
-                MessageActor.IoDriver,
-                MessageType.MachineStateActive,
-                BayNumber.None,
-                BayNumber.None,
-                MessageStatus.OperationStart);
-
-            this.EventAggregator?.GetEvent<NotificationEvent>().Publish(notificationMessage);
-
             this.isDisposed = true;
         }
 

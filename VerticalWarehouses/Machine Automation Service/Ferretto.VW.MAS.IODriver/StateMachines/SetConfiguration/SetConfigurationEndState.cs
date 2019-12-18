@@ -36,11 +36,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SetConfiguration
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace("1:Method Start");
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1: Received Message = {message.ToString()}");

@@ -13,8 +13,6 @@
 
         #region Methods
 
-        void ProcessMessage(IoMessage message);
-
         void ProcessResponseMessage(IoReadMessage message);
 
         void Start();

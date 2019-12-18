@@ -36,28 +36,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}");
-
-            if (message.ValidOutputs && message.ElevatorMotorOn)
-            {
-                this.Logger.LogTrace("End State State ProcessMessage Notification Event");
-                var endNotification = new FieldNotificationMessage(
-                    null,
-                    "IO Reset complete",
-                    FieldMessageActor.IoDriver,
-                    FieldMessageActor.IoDriver,
-                    FieldMessageType.IoReset,
-                    MessageStatus.OperationEnd,
-                    (byte)this.index);
-
-                this.Logger.LogTrace($"2:Type={endNotification.Type}:Destination={endNotification.Destination}:Status={endNotification.Status}");
-
-                this.ParentStateMachine.PublishNotificationEvent(endNotification);
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}");

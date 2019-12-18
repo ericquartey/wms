@@ -40,11 +40,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Message processed: {message}");
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Message processed: {message}");

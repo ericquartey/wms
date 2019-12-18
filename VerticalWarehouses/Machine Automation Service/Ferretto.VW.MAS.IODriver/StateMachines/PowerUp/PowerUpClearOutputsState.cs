@@ -33,18 +33,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerUp
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");
-
-            if (message.CodeOperation == ShdCodeOperation.Data &&
-                message.ValidOutputs &&
-                message.OutputsCleared)
-            {
-                this.ParentStateMachine.ChangeState(new PowerUpEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs Cleared={message.OutputsCleared}");

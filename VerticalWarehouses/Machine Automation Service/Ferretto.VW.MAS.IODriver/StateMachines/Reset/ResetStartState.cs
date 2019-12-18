@@ -33,16 +33,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Reset
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
-
-            if (message.ValidOutputs && message.OutputsCleared)
-            {
-                this.ParentStateMachine.ChangeState(new ResetEndState(this.ParentStateMachine, this.status, this.index, this.Logger));
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Outputs cleared={message.OutputsCleared}");
