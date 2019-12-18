@@ -70,7 +70,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public MessageStatus CarouselStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning)
+            if (message.Type == MessageType.Positioning
+                || message.Type == MessageType.Homing
+                )
             {
                 return message.Status;
             }
@@ -140,9 +142,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return this.elevatorProvider.VerticalPosition;
         }
 
-        public double? GetDestinationHeight(Mission moveData)
+        public double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId)
         {
             double? targetPosition = null;
+            targetBayPositionId = null;
+            targetCellId = null;
+
             switch (moveData.LoadingUnitDestination)
             {
                 case LoadingUnitLocation.LoadingUnit:
@@ -153,6 +158,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
+                            targetCellId = cell.Id;
                         }
                     }
                     break;
@@ -165,12 +171,14 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Free)
                         {
                             targetPosition = cell.Position;
+                            targetCellId = cell.Id;
                         }
                     }
                     break;
 
                 default:
                     targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadingUnitDestination);
+                    targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadingUnitDestination).Id;
                     break;
             }
             return targetPosition;
@@ -212,9 +220,12 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return openShutter;
         }
 
-        public double? GetSourceHeight(Mission moveData)
+        public double? GetSourceHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId)
         {
             double? targetPosition = null;
+            targetBayPositionId = null;
+            targetCellId = null;
+
             switch (moveData.LoadingUnitSource)
             {
                 case LoadingUnitLocation.LoadingUnit:
@@ -225,6 +236,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
+                            targetCellId = cell.Id;
                         }
                     }
                     break;
@@ -237,15 +249,29 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                         if (cell != null && cell.Status == CellStatus.Occupied)
                         {
                             targetPosition = cell.Position;
+                            targetCellId = cell.Id;
                         }
                     }
                     break;
 
                 default:
                     targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadingUnitSource);
+                    targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadingUnitSource).Id;
                     break;
             }
             return targetPosition;
+        }
+
+        public void Homing(Axis axis, Calibration calibration, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
+        {
+            if (axis == Axis.BayChain)
+            {
+                this.carouselProvider.Homing(calibration, loadingUnitId, requestingBay, sender);
+            }
+            else
+            {
+                this.elevatorProvider.Homing(axis, calibration, loadingUnitId, requestingBay, sender);
+            }
         }
 
         public bool IsOnlyBottomPositionOccupied(BayNumber bayNumber)
@@ -288,20 +314,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             }
         }
 
-        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
+        public void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId)
         {
             //TODO***********REFACTOR THIS
-            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (openShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
+            this.elevatorProvider.MoveHorizontalAuto(direction, !moveToCradle, loadUnitId, null, (moveShutter != ShutterPosition.NotSpecified), measure, requestingBay, sender);
 
-            if (openShutter != ShutterPosition.NotSpecified)
+            if (moveShutter != ShutterPosition.NotSpecified)
             {
-                this.shutterProvider.MoveTo(openShutter, requestingBay, sender);
+                this.shutterProvider.MoveTo(moveShutter, requestingBay, sender);
             }
         }
 
         public MessageStatus MoveLoadingUnitStatus(NotificationMessage message)
         {
-            if (message.Type == MessageType.Positioning || message.Type == MessageType.ShutterPositioning)
+            if (message.Type == MessageType.Positioning
+                || message.Type == MessageType.ShutterPositioning
+                || message.Type == MessageType.Homing
+                )
             {
                 return message.Status;
             }
@@ -379,7 +408,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore)
+        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId)
         {
             if (closeShutter)
             {
@@ -405,6 +434,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 targetHeight,
                 true,
                 measure,
+                targetBayPositionId,
+                targetCellId,
                 requestingBay,
                 MessageActor.MachineManager);
         }
@@ -413,7 +444,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         {
             if (message.Type == MessageType.Positioning ||
                 message.Type == MessageType.ShutterPositioning ||
-                message.Type == MessageType.MachineManagerException)
+                message.Type == MessageType.MachineManagerException ||
+                message.Type == MessageType.Homing)
             {
                 return message.Status;
             }

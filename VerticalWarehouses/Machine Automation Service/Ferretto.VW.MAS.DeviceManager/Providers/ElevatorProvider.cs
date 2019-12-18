@@ -3,6 +3,7 @@ using System.Linq;
 using Ferretto.VW.CommonUtils.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
@@ -429,6 +430,20 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return new AxisBounds { Upper = verticalAxis.UpperBound, Lower = verticalAxis.LowerBound };
         }
 
+        public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
+        {
+            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, loadUnitId);
+
+            this.PublishCommand(
+                homingData,
+                "Execute Homing Command",
+                MessageActor.DeviceManager,
+                sender,
+                MessageType.Homing,
+                bayNumber,
+                BayNumber.ElevatorBay);
+        }
+
         public bool IsZeroChainSensor()
         {
             var sensors = this.sensorsProvider.GetAll();
@@ -463,7 +478,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 bayPosition.LoadingUnit.Id,
                 supposedLoadingUnitGrossWeight,
                 waitContinue: false,
-                measure: false,
+                measure: true,
                 bayNumber,
                 sender,
                 sourceBayPositionId: bayPositionId);
@@ -722,6 +737,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     double targetPosition,
                     bool computeElongation,
                     bool performWeighting,
+                    int? targetBayPositionId,
+                    int? targetCellId,
                     BayNumber requestingBay,
                     MessageActor sender)
         {
@@ -732,8 +749,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 computeElongation,
                 requestingBay,
                 sender,
-                null,
-                null);
+                targetBayPositionId,
+                targetCellId);
         }
 
         public void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender)

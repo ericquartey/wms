@@ -234,7 +234,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                             }
                             // the other mission must be in waiting state
                             var activeMission = this.missionsDataProvider.GetAllActiveMissionsByBay(requestingBay)
-                                .FirstOrDefault(x => x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting);
+                                .FirstOrDefault(x => (x.Status == MissionStatus.Executing || x.Status == MissionStatus.Waiting)
+                                    && x.NeedHomingAxis != Axis.BayChain);
 
                             if (activeMission != null
                                 && activeMission.Status != MissionStatus.Waiting
