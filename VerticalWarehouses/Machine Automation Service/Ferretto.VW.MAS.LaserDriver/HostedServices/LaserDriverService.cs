@@ -122,7 +122,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.lasers = lasersDto.ToDictionary(
                 x => x.Bay.Number,
                 y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
-                     new SocketTransport(readTimeoutMilliseconds), this.Logger, this.CancellationToken)
+                     new SocketTransport(readTimeoutMilliseconds), this.EventAggregator, this.Logger, this.CancellationToken)
                 );
         }
 

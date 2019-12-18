@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
@@ -19,10 +20,12 @@ namespace Ferretto.VW.MAS.LaserDriver.StateMachines
         #region Constructors
 
         public LaserStateMachineBase(
+            BayNumber bayNumber,
             IEventAggregator eventAggregator,
             ILogger logger,
             BlockingConcurrentQueue<FieldCommandMessage> laserCommandQueue)
         {
+            this.BayNumber = bayNumber;
             this.EventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.LaserCommandQueue = laserCommandQueue ?? throw new ArgumentNullException(nameof(laserCommandQueue));
@@ -31,6 +34,8 @@ namespace Ferretto.VW.MAS.LaserDriver.StateMachines
         #endregion
 
         #region Properties
+
+        public BayNumber BayNumber { get; }
 
         protected ILaserState CurrentState { get; private set; }
 

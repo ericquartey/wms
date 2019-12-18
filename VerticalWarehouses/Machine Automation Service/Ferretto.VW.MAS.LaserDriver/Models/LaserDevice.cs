@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOff;
+using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
+using Prism.Events;
 
 namespace Ferretto.VW.MAS.LaserDriver
 {
@@ -18,6 +21,8 @@ namespace Ferretto.VW.MAS.LaserDriver
         #region Fields
 
         private readonly CancellationToken cancellationToken;
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly BlockingConcurrentQueue<FieldCommandMessage> laserCommandQueue = new BlockingConcurrentQueue<FieldCommandMessage>();
 
@@ -31,6 +36,8 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         private readonly ManualResetEventSlim writeEnableEvent;
 
+        private ILaserStateMachine currentStateMachine;
+
         private byte[] receiveBuffer;
 
         #endregion
@@ -38,7 +45,7 @@ namespace Ferretto.VW.MAS.LaserDriver
         #region Constructors
 
         public LaserDevice(BayNumber bayNumber, IPAddress ipAddress, int port,
-            ISocketTransport transport, ILogger logger, CancellationToken cancellationToken)
+            ISocketTransport transport, IEventAggregator eventAggregator, ILogger logger, CancellationToken cancellationToken)
         {
             this.BayNumber = bayNumber;
             this.IpAddress = ipAddress;
@@ -48,6 +55,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.socketTransport = transport;
             this.logger = logger;
             this.cancellationToken = cancellationToken;
+            this.eventAggregator = eventAggregator;
 
             this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
             this.laserSendTask = new Task(async () => await this.SendLaserCommandTaskFunction());
@@ -63,18 +71,62 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         public int TcpPort { get; }
 
+        private ILaserStateMachine CurrentStateMachine
+        {
+            get => this.currentStateMachine;
+            set
+            {
+                if (this.currentStateMachine != value)
+                {
+                    this.currentStateMachine = value;
+                }
+            }
+        }
+
         #endregion
 
         #region Methods
 
         public void ExecuteLaserOff()
         {
-            this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOff, (byte)this.BayNumber));
+            if (this.CurrentStateMachine != null)
+            {
+                this.logger.LogInformation($"Laser {this.BayNumber} already executing operation {this.CurrentStateMachine.GetType().Name}");
+
+                var ex = new Exception();
+                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+            }
+            else
+            {
+                this.CurrentStateMachine = new SwitchOffStateMachine(
+                    this.BayNumber,
+                    this.eventAggregator,
+                    this.logger,
+                    this.laserCommandQueue);
+
+                this.CurrentStateMachine.Start();
+            }
         }
 
         public void ExecuteLaserOn()
         {
-            this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOn, (byte)this.BayNumber));
+            if (this.CurrentStateMachine != null)
+            {
+                this.logger.LogInformation($"Laser {this.BayNumber} already executing operation {this.CurrentStateMachine.GetType().Name}");
+
+                var ex = new Exception();
+                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+            }
+            else
+            {
+                this.CurrentStateMachine = new SwitchOnStateMachine(
+                    this.BayNumber,
+                    this.eventAggregator,
+                    this.logger,
+                    this.laserCommandQueue);
+
+                this.CurrentStateMachine.Start();
+            }
         }
 
         public async Task StartHardwareCommunicationsAsync()
@@ -203,6 +255,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                 foreach (var extractedMessage in extractedMessages)
                 {
+                    this.CurrentStateMachine?.ProcessResponseMessage(extractedMessage);
                 }
             }
             while (!this.cancellationToken.IsCancellationRequested);

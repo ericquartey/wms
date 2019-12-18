@@ -115,24 +115,24 @@ namespace Ferretto.VW.MAS.IODriver
                     this.currentStateMachine = value;
                 }
 
-                var objectName = string.Empty;
-                if (this.currentStateMachine != null)
-                {
-                    objectName = this.currentStateMachine.GetType().Name;
-                }
+                //var objectName = string.Empty;
+                //if (this.currentStateMachine != null)
+                //{
+                //    objectName = this.currentStateMachine.GetType().Name;
+                //}
 
-                var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, objectName, MessageVerbosity.Info);
-                var notificationMessage = new NotificationMessage(
-                    notificationMessageData,
-                    !string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null",
-                    MessageActor.Any,
-                    MessageActor.IoDriver,
-                    MessageType.MachineStatusActive,
-                    BayNumber.None,
-                    BayNumber.None,
-                    MessageStatus.OperationStart);
+                //var notificationMessageData = new MachineStatusActiveMessageData(MessageActor.IoDriver, objectName, MessageVerbosity.Info);
+                //var notificationMessage = new NotificationMessage(
+                //    notificationMessageData,
+                //    !string.IsNullOrEmpty(objectName) ? $"IoDriver current machine state {objectName}" : $"IoDriver current machine is null",
+                //    MessageActor.Any,
+                //    MessageActor.IoDriver,
+                //    MessageType.MachineStatusActive,
+                //    BayNumber.None,
+                //    BayNumber.None,
+                //    MessageStatus.OperationStart);
 
-                this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
+                //this.eventAggregator.GetEvent<NotificationEvent>().Publish(notificationMessage);
             }
         }
 
