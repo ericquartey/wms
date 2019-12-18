@@ -364,6 +364,15 @@ namespace Ferretto.VW.Simulator.Services
 
         private void ReplyLaser(TcpClient client, byte[] message, int index)
         {
+            string messageText = Encoding.ASCII.GetString(message).Trim();
+            switch (messageText)
+            {
+                case "LASER ON":
+                case "LASER OFF":
+                    client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
+                    break;
+            }
+
         }
 
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
