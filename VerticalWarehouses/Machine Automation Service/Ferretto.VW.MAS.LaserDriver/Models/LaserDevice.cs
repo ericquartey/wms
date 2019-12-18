@@ -72,6 +72,11 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOff, (byte)this.BayNumber));
         }
 
+        public void ExecuteLaserOn()
+        {
+            this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOn, (byte)this.BayNumber));
+        }
+
         public async Task StartHardwareCommunicationsAsync()
         {
             this.logger.LogInformation($"1:Configure Laser {this.BayNumber}, tcp-endpoint={this.IpAddress}:{this.TcpPort}");

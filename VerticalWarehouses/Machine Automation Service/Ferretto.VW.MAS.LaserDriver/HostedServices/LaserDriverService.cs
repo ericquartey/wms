@@ -85,10 +85,11 @@ namespace Ferretto.VW.MAS.LaserDriver
                 switch (command.Type)
                 {
                     case FieldMessageType.LaserOn:
-
+                        device.ExecuteLaserOn();
                         break;
 
                     case FieldMessageType.LaserOff:
+                        device.ExecuteLaserOff();
                         break;
 
                     case FieldMessageType.LaserMove:
