@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
-using Ferretto.VW.CommonUtils;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -37,9 +35,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private HorizontalMovementDirection direction;
 
-        private bool isMovingForward;
+        private bool isMovingBackward;
 
-        private bool isMovingManual;
+        private bool isMovingForward;
 
         private bool isMovingShutter;
 
@@ -99,7 +97,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.missionsDataProvider.Update(this.mission);
 
                 this.isMovingForward = false;
-                this.isMovingManual = false;
+                this.isMovingBackward = false;
                 this.isMovingShutter = false;
             }
         }
@@ -108,7 +106,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         {
             IState returnValue = this;
 
-            if (this.isMovingManual
+            if (this.isMovingBackward
                 || this.isMovingForward
                 || this.isMovingShutter)
             {
@@ -123,13 +121,13 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             if (shutterPosition == this.openShutter)
                             {
                                 this.isMovingShutter = false;
-                                this.isMovingManual = false;
+                                this.isMovingBackward = false;
                                 this.isMovingForward = false;
                                 if (this.mission.FsmRestoreStateName != nameof(MoveLoadingUnitCloseShutterState))
                                 {
                                     if (this.mission.NeedMovingBackward)
                                     {
-                                        this.isMovingManual = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                                        this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
                                     }
                                     else
                                     {
@@ -137,7 +135,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                                         this.isMovingForward = this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, isLoaded, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
                                     }
                                 }
-                                if (!this.isMovingForward && !this.isMovingManual)
+                                if (!this.isMovingForward && !this.isMovingBackward)
                                 {
                                     returnValue = this.RestoreOriginalStep();
                                 }
@@ -154,9 +152,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         else
                         {
                             this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal positioning end");
-                            if (this.isMovingManual)
+                            if (this.isMovingBackward)
                             {
-                                returnValue = this.RestoreOriginalStep();
+                                this.mission.NeedMovingBackward = false;
+                                if (this.mission.NeedHomingAxis == Axis.Horizontal
+                                    && this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitDepositUnitState)
+                                    )
+                                {
+                                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+                                }
+                                else
+                                {
+                                    returnValue = this.RestoreOriginalStep();
+                                }
                             }
                             else
                             {
@@ -178,7 +186,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     case MessageStatus.OperationError:
                     case MessageStatus.OperationRunningStop:
                         {
-                            this.isMovingManual = false;
+                            this.isMovingBackward = false;
                             this.isMovingForward = false;
                             this.isMovingShutter = false;
                             var newMessageData = new StopMessageData(StopRequestReason.Error);
@@ -403,17 +411,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private IState RestoreDepositStart()
         {
             IState returnValue = this;
-            var destination = this.loadingUnitMovementProvider.GetDestinationHeight(this.mission);
+            var destination = this.loadingUnitMovementProvider.GetDestinationHeight(this.mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
             if (!destination.HasValue || Math.Abs((destination.Value - current)) > 2)
             {
-                // the conservative approach
-                //this.Logger.LogError($"MoveLoadingUnitErrorState: Vertical position is not valid {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
-
-                //returnValue = this.GetState<IMoveLoadingUnitEndState>();
-                //((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
-
-                // the brave approach
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
                 this.mission.RestoreConditions = true;
@@ -466,12 +467,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     break;
             }
-            this.isMovingManual = false;
+            this.isMovingBackward = false;
             this.isMovingForward = false;
-            if (this.mission.NeedMovingBackward)
+            if (this.mission.NeedMovingBackward
+                || this.mission.NeedHomingAxis == Axis.Horizontal
+                )
             {
+                this.mission.NeedMovingBackward = true;
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal back positioning start");
-                this.isMovingManual = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
             }
             else
             {
@@ -479,7 +483,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, true, false, MessageActor.MachineManager, this.mission.TargetBay);
             }
 
-            if (!this.isMovingManual && !this.isMovingForward)
+            if (!this.isMovingBackward && !this.isMovingForward)
             {
                 returnValue = this.RestoreOriginalStep();
             }
@@ -546,17 +550,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private IState RestoreLoadElevatorStart()
         {
             IState returnValue = this;
-            var origin = this.loadingUnitMovementProvider.GetSourceHeight(this.mission);
+            var origin = this.loadingUnitMovementProvider.GetSourceHeight(this.mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
             if (!origin.HasValue || Math.Abs((origin.Value - current)) > 2)
             {
-                // the conservative approach
-                //this.Logger.LogError($"MoveLoadingUnitErrorState: Vertical position is not valid {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
-
-                //returnValue = this.GetState<IMoveLoadingUnitEndState>();
-                //((IEndState)returnValue).StopRequestReason = StopRequestReason.NoReason;
-
-                // the brave approach
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
                 this.mission.RestoreConditions = true;
@@ -611,12 +608,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     break;
             }
-            this.isMovingManual = false;
+            this.isMovingBackward = false;
             this.isMovingForward = false;
             if (this.mission.NeedMovingBackward)
             {
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Manual Horizontal back positioning start");
-                this.isMovingManual = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
+                this.isMovingBackward = this.loadingUnitMovementProvider.MoveManualLoadingUnitBack(this.direction, MessageActor.MachineManager, this.mission.TargetBay);
             }
             else
             {
@@ -624,7 +621,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.isMovingForward = this.loadingUnitMovementProvider.MoveManualLoadingUnitForward(this.direction, false, this.measure, MessageActor.MachineManager, this.mission.TargetBay);
             }
 
-            if (!this.isMovingManual && !this.isMovingForward)
+            if (!this.isMovingBackward && !this.isMovingForward)
             {
                 returnValue = this.RestoreOriginalStep();
             }
@@ -634,7 +631,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
         private IState RestoreOriginalStep()
         {
             IState returnValue;
-            this.isMovingManual = false;
+            this.isMovingBackward = false;
             this.isMovingForward = false;
             this.isMovingShutter = false;
             this.mission.RestoreConditions = true;
