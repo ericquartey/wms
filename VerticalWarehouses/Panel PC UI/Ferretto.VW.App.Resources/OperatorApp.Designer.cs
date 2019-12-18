@@ -1610,6 +1610,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is 1 loading unit send to bay.
+        /// </summary>
+        public static string LoadingUnitSendToBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitSendToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are {0} loading units send to bay.
+        /// </summary>
+        public static string LoadingUnitsSendToBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitsSendToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
         public static string LoadingUnitWidth {
@@ -2065,6 +2083,15 @@ namespace Ferretto.VW.App.Resources {
         public static string NavigationMainMenuOther {
             get {
                 return ResourceManager.GetString("NavigationMainMenuOther", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No loading units to move.
+        /// </summary>
+        public static string NoLoadingUnitsToMove {
+            get {
+                return ResourceManager.GetString("NoLoadingUnitsToMove", resourceCulture);
             }
         }
         

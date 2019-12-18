@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -15,12 +16,19 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IEventAggregator eventAggregator;
 
+        private readonly IMachineMissionOperationsWebService machineMissionOperationsWebService;
+
+        private readonly IMachineModeService machineModeService;
+
         private readonly IMissionOperationsService missionOperationsService;
+
+        private bool isPerformingOperation;
+
+        private int loadingUnitsMovements;
 
         private SubscriptionToken missionToken;
 
         private int pendingMissionOperationsCount;
-        private bool isPerformingOperation;
 
         #endregion
 
@@ -28,10 +36,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemOperationWaitViewModel(
             IMissionOperationsService missionOperationsService,
+            IMachineMissionOperationsWebService machineMissionOperationsWebService,
+            IMachineModeService machineModeService,
             IEventAggregator eventAggregator)
             : base(PresentationMode.Operator)
         {
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+            this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
+            this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(missionOperationsService));
         }
 
@@ -39,7 +51,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.Any;
+        public string LoadingUnitsInfo
+        {
+            get
+            {
+                if (this.loadingUnitsMovements == 0)
+                {
+                    return OperatorApp.NoLoadingUnitsToMove;
+                }
+
+                if (this.loadingUnitsMovements == 1)
+                {
+                    return OperatorApp.LoadingUnitSendToBay;
+                }
+
+                return string.Format(OperatorApp.LoadingUnitsSendToBay, this.loadingUnitsMovements);
+            }
+        }
 
         public int PendingMissionOperationsCount
         {
@@ -75,7 +103,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     ThreadOption.UIThread,
                     false);
 
-            if (this.isPerformingOperation)
+            if (this.isPerformingOperation
+                &&
+                this.machineModeService.MachineMode == MachineMode.Automatic)
             {
                 this.NavigationService.GoBack();
                 this.isPerformingOperation = false;
@@ -83,6 +113,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
 
             this.CheckForNewOperation();
+
+            await Task.Run(async () =>
+            {
+                do
+                {
+                    await this.CheckForNewOperationCount();
+                    await Task.Delay(5000);
+                } while (this.IsVisible);
+            });
         }
 
         public override void OnNavigatedFrom(NavigationContext navigationContext)
@@ -97,6 +136,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void CheckForNewOperation()
         {
+            if (this.machineModeService.MachineMode != MachineMode.Automatic)
+            {
+                return;
+            }
+
             this.PendingMissionOperationsCount = this.missionOperationsService.PendingMissionOperationsCount;
 
             var missionOperation = this.missionOperationsService.CurrentMissionOperation;
@@ -144,6 +188,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     this.isPerformingOperation = true;
                     break;
             }
+        }
+
+        private async Task CheckForNewOperationCount()
+        {
+            this.loadingUnitsMovements = await this.machineMissionOperationsWebService.GetByBayCountAsync();
+            this.RaisePropertyChanged(nameof(this.LoadingUnitsInfo));
         }
 
         private void OnAssignedMissionOperationChanged(AssignedMissionOperationChangedEventArgs e)
