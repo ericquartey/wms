@@ -91,14 +91,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
             this.IoCommandQueue.Enqueue(message);
         }
 
-        public virtual void ProcessMessage(IoMessage message)
-        {
-            lock (this.lockObj)
-            {
-                this.CurrentState?.ProcessMessage(message);
-            }
-        }
-
         public virtual void ProcessResponseMessage(IoReadMessage message)
         {
             lock (this.lockObj)

@@ -48,18 +48,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.ResetSecurity
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
-
-            if (message.ValidOutputs && message.ResetSecurity)
-            {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PulseInterval, Timeout.Infinite);
-            }
-
-            base.ProcessMessage(message);
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Reset security={message.ResetSecurity}");
