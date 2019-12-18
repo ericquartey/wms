@@ -67,6 +67,7 @@
                                HorizontalAlignment="Right"
                                VerticalAlignment="Top"
                                EditValue="{Binding InputQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                               IsEnabled="{Binding CanInputQuantity}"
                                LabelText="{x:Static resources:OperatorApp.DrawerActivityRefillingQtyRefilled}" />
 
             <StackPanel Grid.Row="4"

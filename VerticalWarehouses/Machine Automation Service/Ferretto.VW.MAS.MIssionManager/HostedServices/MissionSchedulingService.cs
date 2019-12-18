@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (mission is null)
                 {
                     // no more missions are available for scheduling on this bay
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
                     return;
                 }
             }
@@ -110,7 +111,7 @@ namespace Ferretto.VW.MAS.MissionManager
             var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
             if (newOperations.Any())
             {
-#if !MOCK
+#if MOCK
                 if (mission.Status == MissionStatus.New)
                 {
                     // activate new mission
@@ -166,7 +167,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (nextMission is null)
                 {
                     // send back the LU
-#if !MOCK
+#if MOCK
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
 
 #else
@@ -181,7 +182,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 //}
                 else
                 {
-#if !MOCK
+#if MOCK
                      // close current mission
                     moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
 

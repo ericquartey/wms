@@ -53,6 +53,8 @@ namespace Ferretto.VW.MAS.DataLayer
                     throw new EntityNotFoundException(nameof(mission));
                 }
 
+                this.logger.LogInformation("Completing mission {id}", id);
+
                 mission.Status = MissionStatus.Completed;
 
                 this.dataContext.SaveChanges();

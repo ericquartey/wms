@@ -340,7 +340,8 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current operation is no longer available..
+        ///   Looks up a localized string similar to The current operation was remotely cancelled.
+        ///Please put back any moved pieces in their original position..
         /// </summary>
         public static string CurrentOperationIsNoLongerAvailable {
             get {

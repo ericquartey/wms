@@ -982,7 +982,8 @@
     <value>Disponibilità su macchine</value>
   </data>
   <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>L'operazione corrente non è più disponibile.</value>
+    <value>L'operazione corrente è stata cancellata da remoto.
+Prego riportare gli eventuali articoli movimentati nella loro posizione originale.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operazione annullata</value>

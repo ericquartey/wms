@@ -6,6 +6,7 @@ using System.Windows.Input;
 using Ferretto.Common.Controls.WPF;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.WMS.Data.WebAPI.Contracts;
@@ -32,6 +33,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isBusyConfirmingOperation;
 
+        private bool isOperationCanceled;
+
+        private bool isOperationConfirmed;
+
         private double loadingUnitDepth;
 
         private double loadingUnitWidth;
@@ -56,7 +61,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
-            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#444444" : "#444444";
+
+            this.CompartmentColoringFunction = (compartment, selectedCompartment) => compartment == selectedCompartment ? "#0288f7" : "#444444";
         }
 
         #endregion
@@ -136,6 +142,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 &&
                 !this.IsBusyConfirmingOperation
                 &&
+                !this.isOperationConfirmed
+                &&
+                !this.isOperationCanceled
+                &&
                 this.InputQuantity.HasValue
                 &&
                 this.InputQuantity.Value >= 0
@@ -157,6 +167,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
                 await this.MissionOperationsService.CompleteCurrentAsync(this.InputQuantity.Value);
 
+                this.isOperationConfirmed = true;
+
                 this.ShowNotification(Resources.OperatorApp.OperationConfirmed);
             }
             catch (Exception ex)
@@ -166,8 +178,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             finally
             {
-                this.IsWaitingForResponse = false;
                 // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
             }
         }
 
@@ -183,13 +195,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public override async Task OnAppearedAsync()
         {
             this.IsWaitingForResponse = false;
-
-            this.isBusyAbortingOperation = false;
-
+            this.IsBusyAbortingOperation = false;
             this.IsBusyConfirmingOperation = false;
-
+            this.isOperationConfirmed = false;
+            this.isOperationCanceled = false;
             this.InputQuantity = null;
-
             this.SelectedCompartment = null;
 
             await base.OnAppearedAsync();
@@ -219,7 +229,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void GetLoadingUnitDetails()
         {
-            if (this.MissionOperationsService.CurrentMission is null)
+            if (this.Mission is null)
             {
                 this.Compartments = null;
                 this.SelectedCompartment = null;
@@ -232,7 +242,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.LoadingUnitWidth = this.Mission.LoadingUnit.Width;
                 this.LoadingUnitDepth = this.Mission.LoadingUnit.Depth;
                 this.SelectedCompartment = this.Compartments.SingleOrDefault(c =>
-                    c.Id == this.MissionOperationsService.CurrentMissionOperation.CompartmentId);
+                    c.Id == this.MissionOperation.CompartmentId);
             }
             catch (Exception ex)
             {
@@ -263,9 +273,21 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task OnAssignedMissionOperationChangedAsync(AssignedMissionOperationChangedEventArgs e)
         {
-            await this.RetrieveMissionOperationAsync();
+            if (this.isOperationConfirmed)
+            {
+                this.isOperationConfirmed = false;
 
-            this.GetLoadingUnitDetails();
+                await this.RetrieveMissionOperationAsync();
+
+                this.GetLoadingUnitDetails();
+            }
+            else
+            {
+                this.isOperationCanceled = true;
+                this.CanInputQuantity = false;
+                this.DialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
+                this.ShowNotification(OperatorApp.CurrentOperationIsNoLongerAvailable, Services.Models.NotificationSeverity.Warning);
+            }
 
             this.IsBusyConfirmingOperation = false;
             this.IsWaitingForResponse = false;
