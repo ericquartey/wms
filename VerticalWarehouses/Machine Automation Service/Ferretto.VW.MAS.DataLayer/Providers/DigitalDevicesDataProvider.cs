@@ -80,6 +80,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public IEnumerable<Laser> GetAllLasers()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Lasers.Include(x => x.Bay).ToArray();
+            }
+        }
+
         public Inverter GetInverterByIndex(InverterIndex index)
         {
             lock (this.dataContext)

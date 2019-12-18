@@ -15,9 +15,9 @@ using Microsoft.Extensions.Logging;
 using Prism.Events;
 using Microsoft.Extensions.Hosting;
 
-namespace Ferretto.VW.MAS.LaserDriver.HostedServices
+namespace Ferretto.VW.MAS.LaserDriver
 {
-    internal sealed class LaserDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
+    public sealed class LaserDriverService : AutomationBackgroundService<FieldCommandMessage, FieldNotificationMessage, FieldCommandEvent, FieldNotificationEvent>
     {
         #region Fields
 
@@ -25,18 +25,24 @@ namespace Ferretto.VW.MAS.LaserDriver.HostedServices
 
         private readonly IConfiguration configuration;
 
+        private readonly IDigitalDevicesDataProvider digitalDevicesDataProvider;
+
+        private IDictionary<BayNumber, LaserDevice> lasers;
+
         #endregion
 
         #region Constructors
 
         public LaserDriverService(
             IEventAggregator eventAggregator,
+            IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysDataProvider baysDataProvider,
             ILogger<LaserDriverService> logger,
             IConfiguration configuration,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
+            this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -72,9 +78,16 @@ namespace Ferretto.VW.MAS.LaserDriver.HostedServices
             {
                 case FieldMessageType.DataLayerReady:
 
+                    this.InitializeLaserDevices();
                     //await this.StartHardwareCommunicationsAsync(serviceProvider);
                     break;
             }
+        }
+
+        private void InitializeLaserDevices()
+        {
+            var lasersDto = this.digitalDevicesDataProvider.GetAllLasers();
+            this.lasers = lasersDto.ToDictionary(x => x.Bay.Number, y => new LaserDevice(y.IpAddress, y.TcpPort));
         }
 
         #endregion

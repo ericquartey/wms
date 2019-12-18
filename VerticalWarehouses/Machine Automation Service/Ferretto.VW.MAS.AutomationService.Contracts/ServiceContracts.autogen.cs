@@ -1037,6 +1037,9 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("isExternal", Required = Newtonsoft.Json.Required.Always)]
         public bool IsExternal { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("laser", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public Laser Laser { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("number", Required = Newtonsoft.Json.Required.Always)]
         public BayNumber Number { get; set; }
     
@@ -1509,6 +1512,30 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         All = 16,
     
         None = 255,
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public partial class Laser : DataModel
+    {
+        [Newtonsoft.Json.JsonProperty("bayId", Required = Newtonsoft.Json.Required.Always)]
+        public int BayId { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("ipAddress", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public IPAddress IpAddress { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("tcpPort", Required = Newtonsoft.Json.Required.Always)]
+        public int TcpPort { get; set; }
+    
+        public string ToJson() 
+        {
+            return Newtonsoft.Json.JsonConvert.SerializeObject(this, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
+    
+        public static Laser FromJson(string data)
+        {
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<Laser>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
+        }
     
     }
     
