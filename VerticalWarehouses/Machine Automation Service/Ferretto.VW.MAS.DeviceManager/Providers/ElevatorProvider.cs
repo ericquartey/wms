@@ -603,7 +603,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
             var speed = profileSteps.Select(s => s.Speed).ToArray();
             var acceleration = profileSteps.Select(s => s.Acceleration).ToArray();
-            var deceleration = profileSteps.Select(s => s.Deceleration).ToArray();
+            var deceleration = profileSteps.Select(s => s.Acceleration).ToArray();
 
             // we use compensation for small errors only (large errors come from new database)
             var compensation = this.HorizontalPosition - axis.LastIdealPosition;
