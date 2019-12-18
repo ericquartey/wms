@@ -990,4 +990,13 @@
   <data name="OperationConfirmed" xml:space="preserve">
     <value>Operazione confermata.</value>
   </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>Non ci sono cassetti da movimentare</value>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>Ci sono {0} cassetti da portare in baia</value>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>C'è un cassetto da portare in baia</value>
+  </data>
 </root>

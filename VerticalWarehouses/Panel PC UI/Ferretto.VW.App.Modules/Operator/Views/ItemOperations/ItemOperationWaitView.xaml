@@ -27,7 +27,7 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static Resources:OperatorApp.DrawerWaitPageHeader}" />
+                   Text="{x:Static Resources:OperatorApp.NavigationMainMenuDrawerOperation}" />
 
         <Grid Grid.Row="1">
             <Grid.RowDefinitions>
@@ -37,11 +37,11 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <controls:PpcLabeledText Grid.Row="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="Operazione precedente terminata."
-                                     LabelText="{x:Static Resources:OperatorApp.CommonNote}" />
+            <TextBlock Grid.ColumnSpan="2"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{Binding LoadingUnitsInfo}" />
 
         </Grid>
 
