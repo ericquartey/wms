@@ -85,10 +85,11 @@ namespace Ferretto.VW.MAS.LaserDriver
                 switch (command.Type)
                 {
                     case FieldMessageType.LaserOn:
-
+                        device.ExecuteLaserOn();
                         break;
 
                     case FieldMessageType.LaserOff:
+                        device.ExecuteLaserOff();
                         break;
 
                     case FieldMessageType.LaserMove:
@@ -111,6 +112,26 @@ namespace Ferretto.VW.MAS.LaserDriver
                     await this.StartHardwareCommunicationsAsync();
                     break;
             }
+
+            if (message.Source is FieldMessageActor.LaserDriver && message.Destination is FieldMessageActor.LaserDriver
+                && (message.Status is MessageStatus.OperationEnd || message.Status is MessageStatus.OperationError || message.Status is MessageStatus.OperationStop))
+            {
+                var laserKey = Enum.Parse<BayNumber>(message.DeviceIndex.ToString());
+                if (!this.lasers.ContainsKey(laserKey))
+                {
+                    this.Logger.LogError($"Laser Driver received a command for unknown device: {laserKey}");
+                    return;
+                }
+
+                this.lasers[laserKey].DestroyStateMachine();
+
+                // forward the message to upper level
+                message.Destination = FieldMessageActor.DeviceManager;
+
+                this.EventAggregator
+                    .GetEvent<FieldNotificationEvent>()
+                    .Publish(message);
+            }
         }
 
         private void InitializeLaserDevices()
@@ -121,7 +142,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.lasers = lasersDto.ToDictionary(
                 x => x.Bay.Number,
                 y => new LaserDevice(y.Bay.Number, y.IpAddress, y.TcpPort,
-                     new SocketTransport(readTimeoutMilliseconds), this.Logger, this.CancellationToken)
+                     new SocketTransport(readTimeoutMilliseconds), this.EventAggregator, this.Logger, this.CancellationToken)
                 );
         }
 

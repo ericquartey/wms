@@ -192,7 +192,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.transportClient.Client?.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead) ?? false)
                 {
-                    var readBytes = await this.transportStream.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
+                    var readBytes = await this.transportStream?.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer.Length, stoppingToken);
 
                     this.readStopwatch.Stop();
                     this.roundTripStopwatch.Stop();
