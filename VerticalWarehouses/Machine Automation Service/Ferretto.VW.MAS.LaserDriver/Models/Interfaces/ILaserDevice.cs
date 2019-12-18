@@ -7,7 +7,12 @@ namespace Ferretto.VW.MAS.LaserDriver
 {
     internal interface ILaserDevice
     {
-        IPAddress IpAddress { get; set; }
-        int TcpPort { get; set; }
+        #region Properties
+
+        IPAddress IpAddress { get; }
+
+        int TcpPort { get; }
+
+        #endregion
     }
 }

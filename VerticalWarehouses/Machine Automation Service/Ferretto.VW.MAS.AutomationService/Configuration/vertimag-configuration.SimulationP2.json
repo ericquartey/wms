@@ -492,7 +492,7 @@
                 },
                 "Laser": {
                     "IpAddress": "127.0.0.1",
-                    "TcpPort": 21000
+                    "TcpPort": 2020
                 }
             },
             {
@@ -504,9 +504,6 @@
                 "Side": "Back",
                 "IsExternal": false,
                 "ChainOffset": 0,
-                "LaserPointer": {
-                    "Heights": [ 680, 1080 ]
-                },
                 "Number": "BayTwo",
                 "Positions": [
                     {
