@@ -2466,7 +2466,7 @@
                         "Id": 96,
                         "Position": 2614.0,
                         "Priority": 96,
-                        "Status": "Occupied"
+                        "Status": "Free"
                     },
                     {
                         "Id": 98,
@@ -2514,7 +2514,7 @@
                         "Id": 112,
                         "Position": 2814.0,
                         "Priority": 112,
-                        "Status": "Free"
+                        "Status": "Occupied"
                     },
                     {
                         "Id": 114,
