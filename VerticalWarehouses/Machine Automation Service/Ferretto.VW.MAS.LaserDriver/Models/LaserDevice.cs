@@ -50,7 +50,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.cancellationToken = cancellationToken;
 
             this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
-            //this.laserSendTask = new Task(async () => await this.SendLaserCommandTaskFunction());
+            this.laserSendTask = new Task(async () => await this.SendLaserCommandTaskFunction());
         }
 
         #endregion
@@ -66,6 +66,16 @@ namespace Ferretto.VW.MAS.LaserDriver
         #endregion
 
         #region Methods
+
+        public void ExecuteLaserOff()
+        {
+            this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOff, (byte)this.BayNumber));
+        }
+
+        public void ExecuteLaserOn()
+        {
+            this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOn, (byte)this.BayNumber));
+        }
 
         public async Task StartHardwareCommunicationsAsync()
         {
@@ -98,7 +108,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             {
                 this.laserReceiveTask.Start();
 
-                //this.laserSendTask.Start();
+                this.laserSendTask.Start();
             }
             catch (Exception ex)
             {
@@ -106,7 +116,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                 return;
             }
 
-            //this.StartPollingIoMessage();
+            this.ExecuteLaserOff();
         }
 
         private async Task ReceiveLaserDataTaskFunction()
@@ -144,7 +154,7 @@ namespace Ferretto.VW.MAS.LaserDriver
 
                     this.writeEnableEvent.Set();
 
-                    this.laserCommandQueue.Enqueue(new FieldCommandMessage(null, string.Empty, FieldMessageActor.LaserDriver, FieldMessageActor.LaserDriver, FieldMessageType.LaserOff, (byte)this.BayNumber));
+                    this.ExecuteLaserOff();
                 }
 
                 byte[] telegram;
@@ -204,6 +214,66 @@ namespace Ferretto.VW.MAS.LaserDriver
             {
                 if (this.socketTransport.IsConnected)
                 {
+                    try
+                    {
+                        if (this.laserCommandQueue.TryPeek(Timeout.Infinite, this.cancellationToken, out var message) && message != null)
+                        {
+                            this.logger.LogTrace($"1:message={message}: index {this.BayNumber}");
+                        }
+
+                        if (this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
+                        {
+                            if (this.socketTransport.IsConnected)
+                            {
+                                this.writeEnableEvent.Reset();
+
+                                var isWriteSuccessful = false;
+
+                                switch (message.Type)
+                                {
+                                    case FieldMessageType.LaserOff:
+                                        {
+                                            var telegram = Encoding.ASCII.GetBytes("LASER OFF\r\n");
+                                            isWriteSuccessful = await this.socketTransport.WriteAsync(telegram, this.cancellationToken) == telegram.Length;
+                                        }
+                                        break;
+
+                                    case FieldMessageType.LaserOn:
+                                        {
+                                            var telegram = Encoding.ASCII.GetBytes("LASER ON\r\n");
+                                            isWriteSuccessful = await this.socketTransport.WriteAsync(telegram, this.cancellationToken) == telegram.Length;
+                                        }
+                                        break;
+
+                                    case FieldMessageType.LaserMove:
+                                        break;
+                                }
+
+                                if (isWriteSuccessful)
+                                {
+                                    this.laserCommandQueue.Dequeue(out _);
+                                }
+                                else
+                                {
+                                    this.writeEnableEvent.Set();
+                                }
+                            }
+                            else
+                            {
+                                Thread.Sleep(5);
+                            }
+                        }
+                    }
+                    catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
+                    {
+                        this.logger.LogDebug($"Terminating Laser {this.BayNumber} write thread.");
+
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        return;
+                    }
                 }
                 else
                 {
