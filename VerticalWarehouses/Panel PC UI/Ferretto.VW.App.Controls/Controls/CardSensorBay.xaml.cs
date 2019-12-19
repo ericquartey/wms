@@ -1,14 +1,20 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 
-namespace Ferretto.VW.App.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class SensorsPanel : UserControl
+    /// <summary>
+    /// Interaction logic for CardSensorAxisBay
+    /// </summary>
+    public partial class CardSensorBay : UserControl
     {
         #region Fields
+
+        public static readonly DependencyProperty BayChainTargetPositionProperty =
+            DependencyProperty.Register(nameof(BayChainTargetPosition), typeof(double?), typeof(CardSensorBay));
 
         private readonly IMachineService machineService;
 
@@ -18,7 +24,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public SensorsPanel()
+        public CardSensorBay()
         {
             this.InitializeComponent();
 
@@ -27,26 +33,24 @@ namespace Ferretto.VW.App.Controls
                 return;
             }
 
-            this.Loaded += this.SensorsPanel_Loaded;
-
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
 
             this.DataContext = new
             {
                 MachineService = this.machineService,
-                MachineStatus = this.machineService.MachineStatus,
                 SensorsService = this.sensorsService
             };
         }
 
         #endregion
 
-        #region Methods
+        #region Properties
 
-        private void SensorsPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        public double? BayChainTargetPosition
         {
-            this.sensorsService.RefreshAsync(true);
+            get => (double?)this.GetValue(BayChainTargetPositionProperty);
+            set => this.SetValue(BayChainTargetPositionProperty, value);
         }
 
         #endregion

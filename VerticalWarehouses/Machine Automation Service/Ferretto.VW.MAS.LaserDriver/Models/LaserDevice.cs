@@ -5,18 +5,20 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.LaserDriver.StateMachines.MoveAndSwitchOn;
 using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOn;
 using Ferretto.VW.MAS.Utils.Enumerations;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.Messages;
+using Ferretto.VW.MAS.Utils.Messages.FieldData;
 using Ferretto.VW.MAS.Utils.Utilities;
 using Microsoft.Extensions.Logging;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.LaserDriver
 {
-    internal sealed class LaserDevice : ILaserDevice
+    internal sealed class LaserDevice : ILaserDevice, IDisposable
     {
         #region Fields
 
@@ -37,6 +39,8 @@ namespace Ferretto.VW.MAS.LaserDriver
         private readonly ManualResetEventSlim writeEnableEvent;
 
         private ILaserStateMachine currentStateMachine;
+
+        private bool disposedValue = false;
 
         private byte[] receiveBuffer;
 
@@ -95,6 +99,35 @@ namespace Ferretto.VW.MAS.LaserDriver
             }
 
             this.CurrentStateMachine = null;
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            this.Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+
+        public void ExecuteLaserMoveAndSwitchOn()
+        {
+            if (this.CurrentStateMachine != null)
+            {
+                this.logger.LogInformation($"Laser {this.BayNumber} already executing operation {this.CurrentStateMachine.GetType().Name}");
+
+                var ex = new Exception();
+                //this.SendOperationErrorMessage(new IoExceptionFieldMessageData(ex, "Io Driver already executing operation", 0));
+            }
+            else
+            {
+                this.CurrentStateMachine = new MoveAndSwitchOnStateMachine(
+                    this.BayNumber,
+                    this.eventAggregator,
+                    this.logger,
+                    this.laserCommandQueue);
+
+                this.CurrentStateMachine.Start();
+            }
         }
 
         public void ExecuteLaserOff()
@@ -179,6 +212,26 @@ namespace Ferretto.VW.MAS.LaserDriver
             }
 
             this.ExecuteLaserOff();
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    this.laserCommandQueue?.Dispose();
+                    this.laserReceiveTask?.Dispose();
+                    this.laserSendTask?.Dispose();
+                    this.writeEnableEvent?.Dispose();
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                this.disposedValue = true;
+            }
         }
 
         private async Task ReceiveLaserDataTaskFunction()
@@ -284,6 +337,8 @@ namespace Ferretto.VW.MAS.LaserDriver
                             this.logger.LogTrace($"1:message={message}: index {this.BayNumber}");
                         }
 
+                        var data = message.Data as LaserFieldMessageData;
+
                         if (this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
                         {
                             if (this.socketTransport.IsConnected)
@@ -309,6 +364,10 @@ namespace Ferretto.VW.MAS.LaserDriver
                                         break;
 
                                     case FieldMessageType.LaserMove:
+                                        {
+                                            var telegram = Encoding.ASCII.GetBytes($"MOVE X={data.X}, Y={data.Y}, Z={data.Z}, V={data.Speed}\r\n");
+                                            isWriteSuccessful = await this.socketTransport.WriteAsync(telegram, this.cancellationToken) == telegram.Length;
+                                        }
                                         break;
                                 }
 
@@ -347,5 +406,7 @@ namespace Ferretto.VW.MAS.LaserDriver
         }
 
         #endregion
+
+        // To detect redundant calls
     }
 }

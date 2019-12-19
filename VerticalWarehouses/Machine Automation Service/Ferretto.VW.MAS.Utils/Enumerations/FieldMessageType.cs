@@ -66,6 +66,8 @@
 
         LaserOff,
 
-        LaserMove
+        LaserMove,
+
+        LaserMoveAndSwitchOn
     }
 }

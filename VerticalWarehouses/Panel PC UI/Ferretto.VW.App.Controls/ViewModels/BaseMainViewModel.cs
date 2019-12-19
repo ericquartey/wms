@@ -74,6 +74,10 @@ namespace Ferretto.VW.App.Controls
 
         public IMachineModeService MachineModeService => this.machineModeService;
 
+        public IMachineService MachineService => this.machineService;
+
+        public MachineStatus MachineStatus => this.MachineService.MachineStatus;
+
         public PresentationMode Mode
         {
             get => this.mode;

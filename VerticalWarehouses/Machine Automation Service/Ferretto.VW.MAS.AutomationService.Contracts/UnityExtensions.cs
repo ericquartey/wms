@@ -1,4 +1,5 @@
-﻿using Prism.Ioc;
+﻿using System;
+using Prism.Ioc;
 using Prism.Unity;
 using Unity;
 using Unity.Injection;
@@ -14,15 +15,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
             System.Uri webServiceUrl,
             System.Func<IUnityContainer, RetryHttpClient> resolveHttpClientFunction = null)
         {
-            if (container is null)
-            {
-                throw new System.ArgumentNullException(nameof(container));
-            }
-
-            if (webServiceUrl is null)
-            {
-                throw new System.ArgumentNullException(nameof(webServiceUrl));
-            }
+            _ = container ?? throw new ArgumentNullException(nameof(container));
+            _ = webServiceUrl ?? throw new ArgumentNullException(nameof(webServiceUrl));
 
             var urlString = webServiceUrl.ToString();
 

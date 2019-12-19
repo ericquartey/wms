@@ -119,10 +119,6 @@ namespace Ferretto.VW.App
 
             containerRegistry.RegisterMachineAutomationHubs(serviceUrl, operatorHubPath, installationHubPath);
 
-            //var sensorsService = this.Container.Resolve<SensorsService>();
-            //containerRegistry.RegisterInstance<ISensorsService>(sensorsService);
-            containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
-
             // WMS Web API services
             RegisterWmsHubs(containerRegistry);
 

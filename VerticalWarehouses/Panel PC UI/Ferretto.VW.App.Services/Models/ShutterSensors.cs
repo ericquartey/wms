@@ -1,4 +1,8 @@
-﻿using Ferretto.VW.CommonUtils.Enumerations;
+﻿using System;
+using System.ComponentModel;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using Ferretto.VW.CommonUtils.Enumerations;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services
@@ -7,7 +11,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
-        private readonly int bayNumber;
+        private int bayNumber;
 
         private bool closed;
 
@@ -21,9 +25,8 @@ namespace Ferretto.VW.App.Services
 
         #region Constructors
 
-        public ShutterSensors(int bayNumber)
+        public ShutterSensors()
         {
-            this.bayNumber = bayNumber;
         }
 
         #endregion
@@ -42,8 +45,19 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        public void Update(bool[] sensorStates, int bayNumber)
+        {
+            this.bayNumber = bayNumber;
+            this.Update(sensorStates);
+        }
+
         public void Update(bool[] sensorStates)
         {
+            if (this.bayNumber == 0)
+            {
+                return;
+            }
+
             if (sensorStates is null)
             {
                 return;

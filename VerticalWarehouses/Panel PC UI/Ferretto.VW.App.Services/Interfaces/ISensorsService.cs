@@ -7,18 +7,6 @@ namespace Ferretto.VW.App.Services
     {
         #region Properties
 
-        double? BayChainPosition { get; }
-
-        double? ElevatorHorizontalPosition { get; }
-
-        string ElevatorLogicalPosition { get; }
-
-        double? ElevatorVerticalPosition { get; }
-
-        LoadingUnit EmbarkedLoadingUnit { get; }
-
-        LoadingUnit ElevatorPositionLoadingUnit { get; }
-
         bool IsLoadingUnitInBay { get; }
 
         bool IsLoadingUnitInMiddleBottomBay { get; }
@@ -26,14 +14,6 @@ namespace Ferretto.VW.App.Services
         bool IsLoadingUnitOnElevator { get; }
 
         bool IsZeroChain { get; }
-
-        string LoadingUnitPositionDownInBayCode { get; }
-
-        string LoadingUnitPositionUpInBayCode { get; }
-
-        string LogicalPosition { get; }
-
-        string LogicalPositionId { get; }
 
         Sensors Sensors { get; }
 
@@ -45,8 +25,8 @@ namespace Ferretto.VW.App.Services
 
         Task RefreshAsync(bool forceRefresh);
 
-        void RetrieveElevatorPosition(ElevatorPosition position);
-
         #endregion
+
+        //void RetrieveElevatorPosition(ElevatorPosition position);
     }
 }
