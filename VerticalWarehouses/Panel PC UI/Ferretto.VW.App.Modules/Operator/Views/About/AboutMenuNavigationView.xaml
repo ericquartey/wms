@@ -44,12 +44,13 @@
                             Command="{Binding CountersCommand}"
                             Content="Contatori"
                             Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="Collapsed" />
 
         <controls:PpcButton Grid.Row="2"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.3"
+                            Abbrevation="3.2"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding StatisticsCommand}"
                             Content="Statistiche"
@@ -59,7 +60,7 @@
         <controls:PpcButton Grid.Row="3"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.4"
+                            Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding AllarmCommand}"
                             Content="Allarmi"
@@ -69,7 +70,7 @@
         <controls:PpcButton Grid.Row="4"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.5"
+                            Abbrevation="3.4"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding DiagnosticsCommand}"
                             Content="Diagnostica"
