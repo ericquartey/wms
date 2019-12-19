@@ -37,7 +37,8 @@ namespace Ferretto.VW.MAS.DataModels
             get => this.grossWeight;
             set
             {
-                if (value > this.tare)
+                // TODO please move this check in calling process
+                //if (value > this.tare)
                 {
                     this.grossWeight = value;
                 }

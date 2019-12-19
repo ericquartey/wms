@@ -9,6 +9,7 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -236,8 +237,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
            ??
            (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
 
+        public IMachineService MachineService => this.machineService;
+
+        public MachineStatus MachineStatus => this.machineService.MachineStatus;
+
         public ICommand ResetCommand =>
-            this.resetCommand
+                            this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                async () => await this.ResetCommandAsync(),
@@ -406,24 +411,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanGoToMovementsGuidedExecuteCommand()
         {
-            return
-                !this.IsWaitingForResponse
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving;
+            return true;
         }
 
         private bool CanGoToMovementsManualExecuteCommand()
         {
-            return
-                this.MachineModeService?.MachineMode == MachineMode.Manual
-                &&
-                !this.IsWaitingForResponse
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving;
+            return this.MachineModeService?.MachineMode == MachineMode.Manual;
         }
 
         private bool CanResetCommand()
@@ -600,7 +593,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
-            this.RaisePropertyChanged(nameof(this.SensorsService.EmbarkedLoadingUnit));
+            this.RaisePropertyChanged(nameof(this.MachineService));
+            this.RaisePropertyChanged(nameof(this.MachineStatus));
+            this.RaisePropertyChanged(nameof(this.MachineStatus.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));

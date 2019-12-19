@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Controls.Controls.CardSensorAxisVertical"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+             Name="UserControl"
+             d:DesignHeight="150"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+
+    <local:CardSensor CardBadge1="{Binding MachineStatus.EmbarkedLoadingUnit.Id}"
+                      CardBadgeLabel1="Cassetto"
+                      CardDescription="{Binding ElementName=UserControl, Path=VerticalTargetPosition, StringFormat={}{0:F2}}"
+                      CardSensorLabel1=""
+                      CardSensorLabel2=""
+                      CardSensorLabel3=""
+                      CardText="Verticale (mm)"
+                      CardValue="{Binding MachineStatus.ElevatorVerticalPosition, StringFormat={}{0:F2}}"
+                      LuHeight="{Binding MachineStatus.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                      LuWeight="{Binding MachineStatus.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
+                      Sensor1="False"
+                      Sensor2="False"
+                      Sensor3="False"
+                      Type="Axis" />
+    
+</UserControl>

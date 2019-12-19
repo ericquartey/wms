@@ -50,6 +50,45 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public MachineErrorCode CheckWeight(int id)
+        {
+            var check = MachineErrorCode.NoError;
+            lock (this.dataContext)
+            {
+                var loadingUnit = this.dataContext
+                    .LoadingUnits
+                    .SingleOrDefault(l => l.Id == id);
+
+                if (loadingUnit is null)
+                {
+                    throw new EntityNotFoundException(id);
+                }
+
+                var machine = this.machineProvider.Get();
+
+                if (loadingUnit.GrossWeight < MinimumLoadOnBoard)
+                {
+                    check = MachineErrorCode.LoadingUnitWeightTooLow;
+                }
+                else if (loadingUnit.GrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare)
+                {
+                    check = MachineErrorCode.LoadingUnitWeightExceeded;
+                }
+                else
+                {
+                    var totalWeight = this.dataContext
+                        .LoadingUnits
+                        .Where(lu => lu.IsIntoMachine)
+                        .Sum(lu => lu.GrossWeight);
+                    if (loadingUnit.GrossWeight + totalWeight > machine.MaxGrossWeight)
+                    {
+                        check = MachineErrorCode.MachineWeightExceeded;
+                    }
+                }
+            }
+            return check;
+        }
+
         public IEnumerable<LoadingUnit> GetAll()
         {
             lock (this.dataContext)
@@ -204,21 +243,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 var elevatorWeight = elevator.StructuralProperties.ElevatorWeight;
 
-                if (loadingUnitGrossWeight < MinimumLoadOnBoard + elevatorWeight)
-                {
-                    throw new ArgumentOutOfRangeException(
-                        $"The loading unit's weight ({loadingUnitGrossWeight}kg) is lower than the expected minimum weight ({MinimumLoadOnBoard + elevatorWeight}kg).");
-                }
-
                 var loadingUnit = this.dataContext
                     .LoadingUnits
                     .SingleOrDefault(l => l.Id == id);
-
-                if (loadingUnitGrossWeight > loadingUnit.MaxNetWeight + loadingUnit.Tare + elevatorWeight)
-                {
-                    throw new ArgumentOutOfRangeException(
-                        $"The specified gross weight ({loadingUnitGrossWeight}) is greater than the loading unit's weight capacity (max net: {loadingUnit.MaxNetWeight}, tare: {loadingUnit.Tare}).");
-                }
 
                 loadingUnit.GrossWeight = loadingUnitGrossWeight - elevatorWeight;
 

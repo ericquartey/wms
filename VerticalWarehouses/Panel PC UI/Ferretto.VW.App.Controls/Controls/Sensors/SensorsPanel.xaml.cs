@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.ComponentModel;
+using System.Windows.Controls;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
@@ -8,6 +9,8 @@ namespace Ferretto.VW.App.Controls
     public partial class SensorsPanel : UserControl
     {
         #region Fields
+
+        private readonly IMachineService machineService;
 
         private readonly ISensorsService sensorsService;
 
@@ -19,10 +22,22 @@ namespace Ferretto.VW.App.Controls
         {
             this.InitializeComponent();
 
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
+
             this.Loaded += this.SensorsPanel_Loaded;
 
+            this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
-            this.DataContext = this.sensorsService;
+
+            this.DataContext = new
+            {
+                MachineService = this.machineService,
+                MachineStatus = this.machineService.MachineStatus,
+                SensorsService = this.sensorsService
+            };
         }
 
         #endregion

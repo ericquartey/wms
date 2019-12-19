@@ -1,4 +1,5 @@
-﻿using Ferretto.VW.MAS.AutomationService.Contracts;
+﻿using System;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
@@ -17,15 +18,8 @@ namespace Ferretto.VW.App.Services
             string serviceLiveHealthPath,
             string serviceReadyHealthPath)
         {
-            if (containerRegistry is null)
-            {
-                throw new System.ArgumentNullException(nameof(containerRegistry));
-            }
-
-            if (serviceUrl is null)
-            {
-                throw new System.ArgumentNullException(nameof(serviceUrl));
-            }
+            _ = containerRegistry ?? throw new ArgumentNullException(nameof(containerRegistry));
+            _ = serviceUrl ?? throw new ArgumentNullException(nameof(serviceUrl));
 
             containerRegistry.RegisterSingleton<IAuthenticationService, AuthenticationService>();
             containerRegistry.RegisterSingleton<IBayManager, BayManager>();
@@ -34,9 +28,15 @@ namespace Ferretto.VW.App.Services
             containerRegistry.RegisterSingleton<IHubNotificationService, HubNotificationService>();
             containerRegistry.RegisterSingleton<IMachineModeService, MachineModeService>();
             containerRegistry.RegisterSingleton<IMachineElevatorService, MachineElevatorService>();
+
+            containerRegistry.RegisterSingleton<ISensorsService, SensorsService>();
+
+            //var sensorsService = this.Container.Resolve<SensorsService>();
+            //containerRegistry.RegisterInstance<ISensorsService>(sensorsService);
             containerRegistry.RegisterSingleton<IMachineService, MachineService>();
 
             containerRegistry.RegisterSingleton<IMachineErrorsService, MachineErrorsService>();
+
             // Operator
             containerRegistry.RegisterSingleton<IWmsDataProvider, WmsDataProvider>();
             containerRegistry.RegisterSingleton<IWmsImagesProvider, WmsImagesProvider>();
@@ -55,16 +55,14 @@ namespace Ferretto.VW.App.Services
 
         public static IContainerProvider UseUiServices(this IContainerProvider containerProvider)
         {
-            if (containerProvider is null)
-            {
-                throw new System.ArgumentNullException(nameof(containerProvider));
-            }
+            _ = containerProvider ?? throw new ArgumentNullException(nameof(containerProvider));
 
             // force the instantiation of the services
             _ = containerProvider.Resolve<IHubNotificationService>();
             _ = containerProvider.Resolve<IMachineModeService>();
 
             containerProvider.Resolve<IHealthProbeService>().Start();
+            containerProvider.Resolve<IMachineService>().ServiceStart();
 
             return containerProvider;
         }

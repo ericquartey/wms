@@ -26,6 +26,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
+        private readonly ShutterSensors sensors = new ShutterSensors();
+
         private readonly IMachineShuttersWebService shuttersWebService;
 
         private int bayNumber;
@@ -45,8 +47,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isWaitingForResponse;
 
         private int? performedCyclesThisSession;
-
-        private ShutterSensors sensors;
 
         private SubscriptionToken sensorsChangedToken;
 
@@ -290,10 +290,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.InputDelayBetweenCycles = 1;
                 this.CumulativePerformedCycles = procedureParameters.PerformedCycles;
 
-                this.sensors = new ShutterSensors(this.BayNumber);
-
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
-                this.sensors.Update(sensorsStates.ToArray());
+                this.sensors.Update(sensorsStates.ToArray(), this.BayNumber);
 
                 this.IsShutterThreeSensors = bay.Shutter.Type == ShutterType.ThreeSensors;
 

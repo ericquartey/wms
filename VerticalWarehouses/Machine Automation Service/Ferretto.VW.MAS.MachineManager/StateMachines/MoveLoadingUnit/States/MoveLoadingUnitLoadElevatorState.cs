@@ -76,10 +76,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             if (machineData is Mission moveData)
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitLoadElevatorState);
                 this.missionsDataProvider.Update(this.mission);
@@ -100,8 +99,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     default:
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitSource);
+                        if (bay is null)
+                        {
+                            var description = $"{this.GetType().Name}: source bay not found {moveData.LoadingUnitSource}";
+
+                            throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                        }
                         this.direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Backwards : HorizontalMovementDirection.Forwards;
                         this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, this.mission.LoadingUnitSource);
+                        if (this.openShutter == this.sensorsProvider.GetShutterPosition(bay.Number))
+                        {
+                            this.openShutter = ShutterPosition.NotSpecified;
+                        }
                         this.measure = true;
                         if (bay.Carousel != null)
                         {
@@ -297,17 +306,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 && this.mission.LoadingUnitId > 0
                 )
             {
-                this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                try
+                {
+                    this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                }
+                catch (InvalidOperationException)
+                {
+                    // cell not found: go back to bay
+                    this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                    return this.GetState<IMoveLoadingUnitDepositUnitState>();
+                }
             }
 
-            if (this.mission.LoadingUnitDestination == LoadingUnitLocation.Elevator)
-            {
-                returnValue = this.GetState<IMoveLoadingUnitEndState>();
-            }
-            else
-            {
-                returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
-            }
+            returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
 
             return returnValue;
         }

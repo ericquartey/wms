@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Mvvm;
 
 namespace Ferretto.VW.App.Services.Models
@@ -15,7 +16,15 @@ namespace Ferretto.VW.App.Services.Models
 
         private Guid? currentMissionId;
 
+        private double? elevatorHorizontalPosition;
+
         private string elevatorLogicalPosition;
+
+        private LoadingUnit elevatorPositionLoadingUnit;
+
+        private double? elevatorVerticalPosition;
+
+        private LoadingUnit embarkedLoadingUnit;
 
         private string errorDescription;
 
@@ -28,6 +37,14 @@ namespace Ferretto.VW.App.Services.Models
         private bool isMovingLoadingUnit;
 
         private bool isMovingShutter;
+
+        private string loadingUnitPositionDownInBayCode;
+
+        private string loadingUnitPositionUpInBayCode;
+
+        private string logicalPosition;
+
+        private string logicalPositionId;
 
         #endregion
 
@@ -45,10 +62,34 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.currentMissionId, value);
         }
 
+        public double? ElevatorHorizontalPosition
+        {
+            get => this.elevatorHorizontalPosition;
+            set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
+        }
+
         public string ElevatorLogicalPosition
         {
             get => this.elevatorLogicalPosition;
             set => this.SetProperty(ref this.elevatorLogicalPosition, value);
+        }
+
+        public LoadingUnit ElevatorPositionLoadingUnit
+        {
+            get => this.elevatorPositionLoadingUnit;
+            set => this.SetProperty(ref this.elevatorPositionLoadingUnit, value);
+        }
+
+        public double? ElevatorVerticalPosition
+        {
+            get => this.elevatorVerticalPosition;
+            set => this.SetProperty(ref this.elevatorVerticalPosition, value);
+        }
+
+        public LoadingUnit EmbarkedLoadingUnit
+        {
+            get => this.embarkedLoadingUnit;
+            set => this.SetProperty(ref this.embarkedLoadingUnit, value);
         }
 
         public string ErrorDescription
@@ -85,6 +126,30 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.isMovingShutter;
             set => this.SetProperty(ref this.isMovingShutter, value);
+        }
+
+        public string LoadingUnitPositionDownInBayCode
+        {
+            get => this.loadingUnitPositionDownInBayCode;
+            set => this.SetProperty(ref this.loadingUnitPositionDownInBayCode, value);
+        }
+
+        public string LoadingUnitPositionUpInBayCode
+        {
+            get => this.loadingUnitPositionUpInBayCode;
+            set => this.SetProperty(ref this.loadingUnitPositionUpInBayCode, value);
+        }
+
+        public string LogicalPosition
+        {
+            get => this.logicalPosition;
+            set => this.SetProperty(ref this.logicalPosition, value);
+        }
+
+        public string LogicalPositionId
+        {
+            get => this.logicalPositionId;
+            set => this.SetProperty(ref this.logicalPositionId, value);
         }
 
         #endregion
