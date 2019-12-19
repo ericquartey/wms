@@ -52,7 +52,7 @@
                         </Grid.RowDefinitions>
 
                         <Grid.Background>
-                            <ImageBrush ImageSource="{DynamicResource LoginBacackgroud}"
+                            <ImageBrush ImageSource="{DynamicResource LoginBackground}"
                                         Opacity="0.7"
                                         Stretch="UniformToFill" />
                         </Grid.Background>
