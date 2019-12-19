@@ -111,7 +111,6 @@ namespace Ferretto.VW.MAS.MissionManager
             var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
             if (newOperations.Any())
             {
-#if MOCK
                 if (mission.Status == MissionStatus.New)
                 {
                     // activate new mission
@@ -125,7 +124,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         moveLoadingUnitProvider.ActivateMove(mission.FsmId, LoadingUnitLocation.LoadingUnit, bayNumber, bayNumber, MessageActor.MissionManager);
                     }
-                    return;
                 }
                 else if (mission.Status == MissionStatus.Waiting)
                 {
@@ -137,7 +135,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         return;
                     }
                 }
-#endif
+
                 // there are more operations for the same wms mission
                 var newOperation = newOperations.OrderBy(o => o.Priority).First();
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
@@ -167,14 +165,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (nextMission is null)
                 {
                     // send back the LU
-#if MOCK
-                    moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
 
-#else
-                    this.Logger.LogWarning("*** SIMULATION: moving LU back to the warehouse***");
-                    await Task.Delay(1000);
-                    this.Logger.LogWarning("*** SIMULATION: loading unit is in cell now ***");
-#endif
+                    moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
                 }
                 // else are there other missions for this LU and another bay?
                 //{
@@ -182,17 +174,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 //}
                 else
                 {
-#if MOCK
-                     // close current mission
+                    // close current mission
                     moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
 
                     // activate new mission
                     moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, loadingUnitSource, bayNumber, bayNumber, MessageActor.MissionManager);
-#else
-                    this.Logger.LogWarning("*** SIMULATION: moving LU to bay ***");
-                    await Task.Delay(1000);
-                    this.Logger.LogWarning("*** SIMULATION: loading unit is bay ***");
-#endif
                 }
             }
         }
