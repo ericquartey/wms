@@ -381,53 +381,16 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
+                                <Border Name="PpcButtonMenu_Border"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="5,0,0,0"
+                                        Opacity="0.8"
+                                        Visibility="Collapsed" />
+
                                 <Border Grid.Column="0"
                                         Margin="0"
                                         Background="Transparent">
-
                                     <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="*" />
-                                            <!--<ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition Width="Auto" />-->
-                                        </Grid.ColumnDefinitions>
-
-                                        <TextBlock Grid.Column="0"
-                                                   Margin="5"
-                                                   HorizontalAlignment="Center"
-                                                   VerticalAlignment="Center"
-                                                   FontFamily="{TemplateBinding FontFamily}"
-                                                   FontSize="24"
-                                                   FontWeight="{TemplateBinding FontWeight}"
-                                                   Foreground="White"
-                                                   Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}"
-                                                   Visibility="Collapsed" />
-
-                                        <Border Grid.Column="1"
-                                                Margin="2,7"
-                                                HorizontalAlignment="Center"
-                                                BorderThickness="2,0,0,0"
-                                                Visibility="Collapsed">
-                                            <Border.BorderBrush>
-                                                <DrawingBrush TileMode="Tile"
-                                                              Viewport="0,0,8,8"
-                                                              ViewportUnits="Absolute">
-                                                    <DrawingBrush.Drawing>
-                                                        <DrawingGroup>
-                                                            <GeometryDrawing Brush="White">
-                                                                <GeometryDrawing.Geometry>
-                                                                    <GeometryGroup>
-                                                                        <RectangleGeometry Rect="0,0,50,50" />
-                                                                        <RectangleGeometry Rect="50,50,50,50" />
-                                                                    </GeometryGroup>
-                                                                </GeometryDrawing.Geometry>
-                                                            </GeometryDrawing>
-                                                        </DrawingGroup>
-                                                    </DrawingBrush.Drawing>
-                                                </DrawingBrush>
-                                            </Border.BorderBrush>
-                                        </Border>
-
                                         <Grid Grid.Column="0"
                                               Margin="2,5,5,5"
                                               Visibility="Visible">
@@ -448,9 +411,7 @@
                                                        FontWeight="{TemplateBinding FontWeight}"
                                                        Foreground="White"
                                                        Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
-
                                         </Grid>
-
                                     </Grid>
                                 </Border>
 
@@ -467,6 +428,13 @@
                             </Grid>
                         </Border>
                     </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsActive" Value="True">
+                            <Setter TargetName="PpcButtonMenu_Border" Property="Visibility" Value="Visible" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
                 </ControlTemplate>
 
             </Setter.Value>

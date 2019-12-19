@@ -13,13 +13,11 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
-    internal sealed class CountersViewModel : BaseMainViewModel
+    internal sealed class CountersViewModel : BaseAboutMenuViewModel
     {
         #region Fields
 
         private readonly IMachineIdentityWebService machineIdentityWebService;
-
-        private bool isWaitingForResponse;
 
         private MachineStatistics model;
 
@@ -28,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #region Constructors
 
         public CountersViewModel(IMachineIdentityWebService machineIdentityWebService)
-            : base(PresentationMode.Operator)
+            : base()
         {
             this.machineIdentityWebService = machineIdentityWebService ?? throw new ArgumentNullException(nameof(machineIdentityWebService));
         }
@@ -36,14 +34,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
-
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public MachineStatistics Model
         {
@@ -54,11 +44,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
-
-        public override void Disappear()
-        {
-            base.Disappear();
-        }
 
         public override async Task OnAppearedAsync()
         {
@@ -71,10 +56,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.IsWaitingForResponse = false;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
         }
 
         #endregion
