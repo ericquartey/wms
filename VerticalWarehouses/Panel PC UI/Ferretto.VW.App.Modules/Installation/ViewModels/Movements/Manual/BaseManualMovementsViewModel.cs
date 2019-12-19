@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly Sensors sensors = new Sensors();
 
+        private readonly ShutterSensors shutterSensors = new ShutterSensors();
+
         private Bay bay;
 
         private int bayNumber;
@@ -39,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken movementsSubscriptionToken;
 
         private SubscriptionToken sensorsToken;
-
-        private ShutterSensors shutterSensors;
 
         private DelegateCommand stopMovementCommand;
 
@@ -233,12 +233,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.sensors.Update(sensorsStates.ToArray());
 
-                if (this.shutterSensors is null)
-                {
-                    this.shutterSensors = new ShutterSensors((int)this.bay.Number);
-                }
-
-                this.shutterSensors?.Update(sensorsStates.ToArray());
+                this.shutterSensors.Update(sensorsStates.ToArray(), (int)this.bay.Number);
 
                 this.RaisePropertyChanged();
             }
@@ -248,12 +243,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             this.sensors.Update(message.Data.SensorsStates.ToArray());
 
-            if (this.shutterSensors is null)
-            {
-                this.shutterSensors = new ShutterSensors((int)this.bay.Number);
-            }
-
-            this.shutterSensors?.Update(message.Data.SensorsStates.ToArray());
+            this.shutterSensors.Update(message.Data.SensorsStates.ToArray(), (int)this.bay.Number);
 
             this.RaiseCanExecuteChanged();
         }

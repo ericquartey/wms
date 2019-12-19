@@ -135,8 +135,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 async () => await this.StartToBayAsync(),
                 () => !this.IsExecutingProcedure &&
                       !this.IsWaitingForResponse &&
-                      (!string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ||
-                       !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionDownInBayCode))
+                      (!string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode) ||
+                       !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBayCode))
                 ));
 
         #endregion
@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         {
             try
             {
-                var source = this.GetLoadingUnitSource(string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode));
+                var source = this.GetLoadingUnitSource(string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode));
 
                 if (source == LoadingUnitLocation.NoLocation)
                 {
@@ -192,9 +192,9 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                     return;
                 }
 
-                var loadingUnit = !string.IsNullOrEmpty(this.sensorsService.LoadingUnitPositionUpInBayCode) ?
-                                      this.sensorsService.LoadingUnitPositionUpInBayCode :
-                                      this.sensorsService.LoadingUnitPositionDownInBayCode;
+                var loadingUnit = !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode) ?
+                                      this.MachineStatus.LoadingUnitPositionUpInBayCode :
+                                      this.MachineStatus.LoadingUnitPositionDownInBayCode;
                 int id = 0;
                 int.TryParse(loadingUnit, out id);
 

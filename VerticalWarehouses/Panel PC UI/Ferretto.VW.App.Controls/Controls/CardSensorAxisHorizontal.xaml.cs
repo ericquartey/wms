@@ -1,14 +1,20 @@
 ﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 
-namespace Ferretto.VW.App.Controls
+namespace Ferretto.VW.App.Controls.Controls
 {
-    public partial class SensorsPanel : UserControl
+    /// <summary>
+    /// Interaction logic for CardSensorAxisHorizontal
+    /// </summary>
+    public partial class CardSensorAxisHorizontal : UserControl
     {
         #region Fields
+
+        public static readonly DependencyProperty HorizontalTargetPositionProperty =
+            DependencyProperty.Register(nameof(HorizontalTargetPosition), typeof(double?), typeof(CardSensorAxisHorizontal));
 
         private readonly IMachineService machineService;
 
@@ -18,7 +24,7 @@ namespace Ferretto.VW.App.Controls
 
         #region Constructors
 
-        public SensorsPanel()
+        public CardSensorAxisHorizontal()
         {
             this.InitializeComponent();
 
@@ -27,7 +33,10 @@ namespace Ferretto.VW.App.Controls
                 return;
             }
 
-            this.Loaded += this.SensorsPanel_Loaded;
+            this.Loaded += (s, e) =>
+            {
+                this.sensorsService.RefreshAsync(true);
+            };
 
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
@@ -35,18 +44,18 @@ namespace Ferretto.VW.App.Controls
             this.DataContext = new
             {
                 MachineService = this.machineService,
-                MachineStatus = this.machineService.MachineStatus,
                 SensorsService = this.sensorsService
             };
         }
 
         #endregion
 
-        #region Methods
+        #region Properties
 
-        private void SensorsPanel_Loaded(object sender, System.Windows.RoutedEventArgs e)
+        public double? HorizontalTargetPosition
         {
-            this.sensorsService.RefreshAsync(true);
+            get => (double?)this.GetValue(HorizontalTargetPositionProperty);
+            set => this.SetValue(HorizontalTargetPositionProperty, value);
         }
 
         #endregion

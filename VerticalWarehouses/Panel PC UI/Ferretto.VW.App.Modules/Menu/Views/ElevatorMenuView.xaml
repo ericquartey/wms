@@ -57,12 +57,6 @@
 
                 <controls:PpcButton Width="175"
                                     Margin="15"
-                                    Command="{Binding WeightMeasurementCommand}"
-                                    Content="Controllo Peso"
-                                    Visibility="Collapsed" />
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
                                     Command="{Binding WeightAnalysisCommand}"
                                     Content="Analisi profilo peso"
                                     Visibility="Collapsed" />

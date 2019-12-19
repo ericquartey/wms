@@ -31,75 +31,33 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <controls:CardSensor Grid.Row="0"
-                                 Width="250"
-                                 Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.ElevatorPositionLoadingUnit.Id}"
-                                 CardBadgeLabel1="Cassetto"
-                                 CardDescription="{Binding SensorsService.LogicalPosition}"
-                                 CardText="Posizione"
-                                 CardValue="{Binding SensorsService.ElevatorLogicalPosition}"
-                                 Type="Position" />
-            <controls:CardSensor Grid.Row="1"
-                                 Width="250"
-                                 Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2} kg}"
-                                 CardBadge2="{Binding SensorsService.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2} mm}"
-                                 CardBadgeLabel1="Peso"
-                                 CardBadgeLabel2="Altezza"
-                                 CardDescription="Elevatore"
-                                 CardText="Cassetto"
-                                 Type="Drawer" />
-            <controls:CardSensor Grid.Row="2"
-                                 Width="250"
-                                 Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.EmbarkedLoadingUnit.Id}"
-                                 CardBadgeLabel1="Cassetto"
-                                 CardDescription="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}"
-                                 CardSensorLabel1=""
-                                 CardSensorLabel2=""
-                                 CardSensorLabel3=""
-                                 CardText="Verticale (mm)"
-                                 CardValue="{Binding SensorsService.ElevatorVerticalPosition, StringFormat={}{0:F2}}"
-                                 LuHeight="{Binding SensorsService.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
-                                 LuWeight="{Binding SensorsService.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
-                                 Sensor1="False"
-                                 Sensor2="False"
-                                 Sensor3="False" />
-            <controls:CardSensor Grid.Row="3"
-                                 Width="250"
-                                 Margin="0,0,15,5"
-                                 CardDescription="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}"
-                                 CardSensorLabel1="Zero"
-                                 CardSensorLabel2="Front"
-                                 CardSensorLabel3="Back"
-                                 CardText="Orizzontale (mm)"
-                                 CardValue="{Binding SensorsService.ElevatorHorizontalPosition, StringFormat={}{0:F2}}"
-                                 Sensor1="{Binding SensorsService.IsZeroChain}"
-                                 Sensor2="{Binding SensorsService.Sensors.LuPresentInMachineSide}"
-                                 Sensor3="{Binding SensorsService.Sensors.LuPresentInOperatorSide}" />
-            <controls:CardSensor Grid.Row="4"
-                                 Width="250"
-                                 Margin="0,0,15,5"
-                                 CardBadge1="{Binding SensorsService.LoadingUnitPositionUpInBayCode}"
-                                 CardBadge2="{Binding SensorsService.LoadingUnitPositionDownInBayCode}"
-                                 CardDescription="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}"
-                                 CardSensorLabel1="Zero"
-                                 CardSensorLabel2="Alta"
-                                 CardSensorLabel3="Bassa"
-                                 CardText="Baia"
-                                 CardValue="{Binding SensorsService.BayChainPosition, StringFormat={}{0:F2}}"
-                                 Sensor1="{Binding SensorsService.BayZeroChain}"
-                                 Sensor2="{Binding SensorsService.IsLoadingUnitInBay}"
-                                 Sensor3="{Binding SensorsService.IsLoadingUnitInMiddleBottomBay}"
-                                 Type="Bay" />
-            <controls:CardSensor Grid.Row="5"
-                                 Width="250"
-                                 Margin="0,0,15,0"
-                                 CardText="{x:Static res:InstallationApp.Shutter}"
-                                 CardValue="{Binding SensorsService.ShutterSensors.Status}"
-                                 Type="Shutter"
-                                 Visibility="{Binding HasShutter, Converter={StaticResource BTVC}}" />
+            <controls:CardSensorPosition Grid.Row="0"
+                                         Width="250"
+                                         Margin="0,0,15,5" />
+
+            <controls:CardSensorDrawer Grid.Row="1"
+                                       Width="250"
+                                       Margin="0,0,15,5" />
+
+            <controls:CardSensorAxisVertical Grid.Row="2"
+                                             Width="250"
+                                             Margin="0,0,15,5"
+                                             VerticalTargetPosition="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}" />
+
+            <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                               Width="250"
+                                               Margin="0,0,15,5"
+                                               HorizontalTargetPosition="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}" />
+
+            <controls:CardSensorBay Grid.Row="4"
+                                    Width="250"
+                                    Margin="0,0,15,5"
+                                    BayChainTargetPosition="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}" />
+
+            <controls:CardSensorShutter Grid.Row="5"
+                                        Width="250"
+                                        Margin="0,0,15,0"
+                                        Visibility="{Binding MachineService.HasShutter, Converter={StaticResource BTVC}}" />
         </Grid>
 
         <Grid Grid.Column="1">
