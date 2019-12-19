@@ -8,6 +8,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:AccessoriesMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
@@ -15,36 +16,54 @@
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="80">
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid Grid.Column="0"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Accessori" />
-
-        <Grid Grid.Row="1"
-              Margin="15">
-            <WrapPanel>
-
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="15"
-                                    Command="{Binding LaserCommand}"
-                                    Content="Puntatore Laser" />
-
-
-            </WrapPanel>
+            <views:InstallationNavigationMenuView Grid.Row="1" />
         </Grid>
 
+        <Grid Grid.Column="1"
+              Margin="15,0">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.ColumnSpan="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Menu Accessori" />
+
+            <Grid Grid.Row="1"
+                  Margin="15">
+                <WrapPanel>
+
+                    <controls:PpcButton Grid.Row="0"
+                                        Margin="15"
+                                        Command="{Binding LaserCommand}"
+                                        Content="Puntatore Laser" />
+
+
+                </WrapPanel>
+            </Grid>
+
+        </Grid>
     </Grid>
 </ctrls:View>

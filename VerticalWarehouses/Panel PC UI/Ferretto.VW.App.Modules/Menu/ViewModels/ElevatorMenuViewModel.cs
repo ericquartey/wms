@@ -13,13 +13,11 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class ElevatorMenuViewModel : BaseMainViewModel
+    internal sealed class ElevatorMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
 
         private DelegateCommand beltBurnishingCommand;
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand verticalOffsetCalibration;
 
@@ -36,7 +34,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public ElevatorMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
@@ -70,13 +68,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.BeltBurnishing),
                 this.CanExecuteCommand));
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
+        public override EnableMask EnableMask => EnableMask.Any;
 
         public ICommand VerticalOffsetCalibrationCommand =>
             this.verticalOffsetCalibration
@@ -117,25 +109,16 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
-        }
+            base.RaiseCanExecuteChanged();
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
+            this.beltBurnishingCommand?.RaiseCanExecuteChanged();
+            this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
+            this.verticalOriginCalibration?.RaiseCanExecuteChanged();
+            this.verticalResolutionCalibration?.RaiseCanExecuteChanged();
+            this.weightAnalysisCommand?.RaiseCanExecuteChanged();
+            this.weightMeasurement?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -190,16 +173,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         trackCurrentView: true);
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.beltBurnishingCommand?.RaiseCanExecuteChanged();
-            this.verticalOffsetCalibration?.RaiseCanExecuteChanged();
-            this.verticalOriginCalibration?.RaiseCanExecuteChanged();
-            this.verticalResolutionCalibration?.RaiseCanExecuteChanged();
-            this.weightAnalysisCommand?.RaiseCanExecuteChanged();
-            this.weightMeasurement?.RaiseCanExecuteChanged();
         }
 
         #endregion

@@ -9,6 +9,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:InstallationMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
@@ -27,81 +28,7 @@
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.1"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuElevatorCommand}"
-                                    Content="{x:Static res:Menu.MenuElevator}"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-                <controls:PpcButton Grid.Row="1"
-                                    Margin="0,15,0,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.2"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuBaysCommand}"
-                                    Content="Baia"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-                <controls:PpcButton Grid.Row="2"
-                                    Margin="0,15,0,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.3"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuCellsCommand}"
-                                    Content="{x:Static res:Menu.MenuCells}"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0,15,0,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.4"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuLoadingUnitsCommand}"
-                                    Content="{x:Static res:Menu.MenuLoadingUnits}"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-                <controls:PpcButton Grid.Row="4"
-                                    Margin="0,15,0,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.5"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuAccessoriesCommand}"
-                                    Content="{x:Static res:Menu.MenuAccessories}"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-                <controls:PpcButton Grid.Row="6"
-                                    Margin="0,15,0,0"
-                                    Padding="-2,1,0,0"
-                                    Abbrevation="4.6"
-                                    BorderBrush="{DynamicResource FerrettoRed}"
-                                    Command="{Binding MenuOtherCommand}"
-                                    Content="Altro"
-                                    Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
-
-            </Grid>
+            <views:InstallationNavigationMenuView Grid.Row="1" />
         </Grid>
 
         <Grid Grid.Column="1"
