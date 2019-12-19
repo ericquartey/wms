@@ -54,38 +54,35 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="Menu Baia" />
 
-            <Grid Grid.Row="1"
-                  Margin="15">
+            <Grid Grid.Row="1">
                 <WrapPanel>
 
-                    <controls:PpcButton Grid.Row="0"
-                                        Margin="15"
+                    <controls:PpcButton Title="Controllo baia"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.3.1"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayControlCommand}"
-                                        Content="Controllo baia" />
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                    <controls:PpcButton Grid.Row="2"
-                                        Margin="15"
+                    <controls:PpcButton Title="Barriera misura altezza"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.3.2"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
-                                        Content="Barriera misura altezza" />
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                </WrapPanel>
-            </Grid>
-
-            <TextBlock Grid.Row="3"
-                       Grid.ColumnSpan="2"
-                       HorizontalAlignment="Left"
-                       VerticalAlignment="Center"
-                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                       Text="Test" />
-
-            <Grid Grid.Row="4"
-                  Margin="15">
-                <WrapPanel>
-
-                    <controls:PpcButton Grid.Row="0"
-                                        Margin="15"
+                    <controls:PpcButton Title="Test serranda"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.3.3"
+                                        BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestShutterCommand}"
-                                        Content="Test serranda" />
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
                 </WrapPanel>
             </Grid>
