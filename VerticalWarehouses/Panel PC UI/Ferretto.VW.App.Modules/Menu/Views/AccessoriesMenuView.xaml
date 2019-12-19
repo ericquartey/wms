@@ -60,6 +60,7 @@
                                         Abbrevation="4.6.1"
                                         BorderBrush="{DynamicResource FerrettoBlue}"
                                         Command="{Binding LaserCommand}"
+                                        Content="Gestione della configurazione e test funzionalità del DEVICE LASER"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 

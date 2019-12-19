@@ -99,7 +99,6 @@
                                         Abbrevation="4.4.5"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding BayFirstLoadingUnitCommand}"
-                                        Content="Bla bla bla bls"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
