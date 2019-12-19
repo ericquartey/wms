@@ -293,7 +293,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var sensorsStates = await this.machineSensorsWebService.GetAsync();
                 this.sensors.Update(sensorsStates.ToArray(), this.BayNumber);
 
-                this.IsShutterThreeSensors = bay.Shutter.Type == ShutterType.ThreeSensors;
+                this.IsShutterThreeSensors = this.MachineService.IsShutterThreeSensors;
 
                 this.RaisePropertyChanged(nameof(this.Sensors));
             }

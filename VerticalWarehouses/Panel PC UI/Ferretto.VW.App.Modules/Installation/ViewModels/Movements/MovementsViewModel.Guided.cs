@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? bayChainTargetPosition;
 
-        private bool bayIsShutterThreeSensors;
-
         private DelegateCommand closedShutterCommand;
 
         private double? horizontalTargetPosition;
@@ -129,11 +127,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.bayChainTargetPosition;
             private set => this.SetProperty(ref this.bayChainTargetPosition, value);
         }
-
+        
         public bool BayIsShutterThreeSensors
         {
-            get => this.bayIsShutterThreeSensors;
-            set => this.SetProperty(ref this.bayIsShutterThreeSensors, value);
+            get => this.MachineService.IsShutterThreeSensors;
+        }
+
+        public bool HasBayExternal
+        {
+            get => this.MachineService.HasBayExternal;
         }
 
         public ICommand CarouselDownCommand =>

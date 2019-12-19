@@ -26,6 +26,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly IBayManager bayManagerService;
 
+        private readonly IHealthProbeService healthProbeService;
         private readonly IEventAggregator eventAggregator;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -89,6 +90,9 @@ namespace Ferretto.VW.App.Services
         private SubscriptionToken receiveHomingUpdateToken;
 
         private SubscriptionToken shutterPositionToken;
+        private bool isShutterThreeSensors;
+        private bool hasCarousel;
+        private bool hasBayExternal;
 
         #endregion
 
@@ -107,6 +111,7 @@ namespace Ferretto.VW.App.Services
             IMachinePowerWebService machinePowerWebService,
             IMachineModeService machineModeService,
             ISensorsService sensorsService,
+            IHealthProbeService healthProbeService,
             IBayManager bayManagerService)
         {
             this.regionManager = regionManager ?? throw new ArgumentNullException(nameof(regionManager));
@@ -122,7 +127,16 @@ namespace Ferretto.VW.App.Services
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.machineCellsWebService = machineCellsWebService ?? throw new ArgumentNullException(nameof(machineCellsWebService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
         }
+
+        public bool IsShutterThreeSensors
+        {
+            get => this.isShutterThreeSensors;
+            set => this.SetProperty(ref this.isShutterThreeSensors, value);
+        }
+
+        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
 
         #endregion
 
@@ -336,6 +350,18 @@ namespace Ferretto.VW.App.Services
             return attribute?.Area ?? WarningsArea.None;
         }
 
+        public bool HasBayExternal
+        {
+            get => this.hasBayExternal;
+            set => this.SetProperty(ref this.hasBayExternal, value);
+        }
+
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
+
         private async Task InitializationBay()
         {
             this.bays = await this.machineBaysWebService.GetAllAsync();
@@ -345,13 +371,37 @@ namespace Ferretto.VW.App.Services
             this.Bay = await this.bayManagerService.GetBayAsync();
             this.BayNumber = this.Bay.Number;
 
+            this.HasBayExternal = this.bay.IsExternal;
+
             this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
+
+            this.HasCarousel = this.bay.Carousel != null;
+
+            this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
 
             await this.GetElevatorAsync(true);
 
             var ms = (MachineStatus)this.MachineStatus.Clone();
 
             ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
+
+            if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+            {
+                ms.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
+                if (bayPositionDown.LoadingUnit != null)
+                {
+                    ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                }
+            }
+
+            if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
+            {
+                ms.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
+                if (bayPositionUp.LoadingUnit != null)
+                {
+                    ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                }
+            }
 
             this.MachineStatus = ms;
 

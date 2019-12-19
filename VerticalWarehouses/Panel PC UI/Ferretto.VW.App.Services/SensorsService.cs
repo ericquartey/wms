@@ -43,21 +43,7 @@ namespace Ferretto.VW.App.Services
         private double? bayPositionUpHeight;
 
         private bool bayZeroChainIsVisible;
-
-        private string elevatorLogicalPosition;
-
-        private LoadingUnit elevatorPositionLoadingUnit;
-
-        private bool isShutterThreeSensors;
-
-        private string loadingUnitPositionDownInBayCode;
-
-        private string loadingUnitPositionUpInBayCode;
-
-        private string logicalPosition;
-
-        private string logicalPositionId;
-
+        
         private SubscriptionToken sensorsToken;
 
         #endregion
@@ -85,12 +71,6 @@ namespace Ferretto.VW.App.Services
         #region Properties
 
         public Bay Bay { get; private set; }
-
-        //public double? BayChainPosition
-        //{
-        //    get => this.bayChainPosition;
-        //    private set => this.SetProperty(ref this.bayChainPosition, value);
-        //}
 
         public bool BayIsMultiPosition
         {
@@ -148,42 +128,6 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.bayZeroChainIsVisible, value);
         }
 
-        //public double? ElevatorHorizontalPosition
-        //{
-        //    get => this.elevatorHorizontalPosition;
-        //    set => this.SetProperty(ref this.elevatorHorizontalPosition, value);
-        //}
-
-        public string ElevatorLogicalPosition
-        {
-            get => this.elevatorLogicalPosition;
-            private set => this.SetProperty(ref this.elevatorLogicalPosition, value);
-        }
-
-        public LoadingUnit ElevatorPositionLoadingUnit
-        {
-            get => this.elevatorPositionLoadingUnit;
-            private set => this.SetProperty(ref this.elevatorPositionLoadingUnit, value);
-        }
-
-        //public double? ElevatorVerticalPosition
-        //{
-        //    get => this.elevatorVerticalPosition;
-        //    set => this.SetProperty(ref this.elevatorVerticalPosition, value);
-        //}
-
-        //public LoadingUnit EmbarkedLoadingUnit
-        //{
-        //    get => this.embarkedLoadingUnit;
-        //    private set => this.SetProperty(ref this.embarkedLoadingUnit, value);
-        //}
-
-        //public bool HasShutter
-        //{
-        //    get => this.hasShutter;
-        //    set => this.SetProperty(ref this.hasShutter, value);
-        //}
-
         public bool IsLoadingUnitInBay
         {
             get
@@ -240,37 +184,8 @@ namespace Ferretto.VW.App.Services
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-        public bool IsShutterThreeSensors
-        {
-            get => this.isShutterThreeSensors;
-            set => this.SetProperty(ref this.isShutterThreeSensors, value);
-        }
 
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
-
-        public string LoadingUnitPositionDownInBayCode
-        {
-            get => this.loadingUnitPositionDownInBayCode;
-            private set => this.SetProperty(ref this.loadingUnitPositionDownInBayCode, value);
-        }
-
-        public string LoadingUnitPositionUpInBayCode
-        {
-            get => this.loadingUnitPositionUpInBayCode;
-            private set => this.SetProperty(ref this.loadingUnitPositionUpInBayCode, value);
-        }
-
-        public string LogicalPosition
-        {
-            get => this.logicalPosition;
-            private set => this.SetProperty(ref this.logicalPosition, value);
-        }
-
-        public string LogicalPositionId
-        {
-            get => this.logicalPositionId;
-            private set => this.SetProperty(ref this.logicalPositionId, value);
-        }
 
         public Sensors Sensors => this.sensors;
 
@@ -291,76 +206,14 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                //this.bays = await this.machineBaysWebService.GetAllAsync();
-
-                //this.cells = await this.machineCellsWebService.GetAllAsync();
-
-                //this.RetrieveElevatorPosition(this.machineElevatorService.Position);
-
                 await this.GetBayAsync()
                     .ContinueWith(async (m) => await this.InitializeSensorsAsync());
-
-                this.GetShutter();
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
         }
-
-        //public void RetrieveElevatorPosition(ElevatorPosition position)
-        //{
-        //    if (position is null)
-        //    {
-        //        return;
-        //    }
-
-        //    //System.Diagnostics.Debug.WriteLine($"CellId:{position?.CellId}");
-
-        //    this.ElevatorVerticalPosition = position.Vertical;
-        //    this.ElevatorHorizontalPosition = position.Horizontal;
-
-        //    if (position.CellId != null)
-        //    {
-        //        this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.CellWithNumber, position.CellId);
-        //        var cell = this.cells?.FirstOrDefault(l => l.Id.Equals(position.CellId));
-        //        this.LogicalPosition = cell?.Status.ToString() + " / " + cell?.Side.ToString();
-        //        this.LogicalPositionId = position.CellId.ToString();
-        //        //this.ElevatorPositionLoadingUnit = this.machineService.LoadUnits.FirstOrDefault(l => l.CellId.Equals(position.CellId));
-        //    }
-        //    else if (position.BayPositionId != null)
-        //    {
-        //        if (this.bays != null)
-        //        {
-        //            var bay = this.bays.SingleOrDefault(b => b.Positions.Any(p => p.Id == position.BayPositionId));
-        //            //System.Diagnostics.Debug.Assert(bay != null);
-        //            this.ElevatorLogicalPosition = string.Format(Resources.InstallationApp.InBayWithNumber, (int)bay.Number);
-        //            if (position?.BayPositionUpper ?? false)
-        //            {
-        //                this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnTop;
-        //            }
-        //            else
-        //            {
-        //                this.LogicalPosition = "Posizione " + Resources.InstallationApp.PositionOnBotton;
-        //            }
-        //            this.LogicalPositionId = ((int)bay.Number).ToString();
-        //        }
-        //        else
-        //        {
-        //            this.ElevatorLogicalPosition = Resources.InstallationApp.InBay;
-        //            this.LogicalPosition = null;
-        //            this.LogicalPositionId = null;
-        //            this.ElevatorPositionLoadingUnit = null;
-        //        }
-        //    }
-        //    else
-        //    {
-        //        this.ElevatorPositionLoadingUnit = null;
-        //        this.ElevatorLogicalPosition = null;
-        //        this.LogicalPosition = null;
-        //        this.LogicalPositionId = null;
-        //    }
-        //}
 
         private async Task GetBayAsync()
         {
@@ -374,41 +227,22 @@ namespace Ferretto.VW.App.Services
                     if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
                     {
                         this.BayPositionDownHeight = bayPositionDown.Height;
-                        this.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
-                        if (bayPositionDown.LoadingUnit != null)
-                        {
-                            this.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
-                        }
                     }
 
                     if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
                     {
-                        this.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
                         this.BayPositionUpHeight = bayPositionUp.Height;
-                        if (bayPositionUp.LoadingUnit != null)
-                        {
-                            this.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
-                        }
                     }
 
                     this.BayIsMultiPosition = this.Bay.IsDouble;
 
-                    //this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
-
                     this.BayZeroChainIsVisible = this.Bay.IsExternal || this.Bay.Carousel != null;
-
-                    //this.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
                 }
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void GetShutter()
-        {
-            this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
         }
 
         private async Task InitializeSensorsAsync()
@@ -420,24 +254,6 @@ namespace Ferretto.VW.App.Services
 
             this.RaisePropertyChanged();
         }
-
-        //private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)
-        //{
-        //    this.BayChainPosition = e.Position;
-        //}
-
-        //private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-        //{
-        //    this.RetrieveElevatorPosition(
-        //        new ElevatorPosition
-        //        {
-        //            Horizontal = e.HorizontalPosition,
-        //            Vertical = e.VerticalPosition,
-        //            BayPositionId = e.BayPositionId,
-        //            CellId = e.CellId,
-        //            BayPositionUpper = e.BayPositionUpper
-        //        });
-        //}
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
@@ -451,8 +267,6 @@ namespace Ferretto.VW.App.Services
                 this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
             }
 
-            //await this.GetElevatorAsync(false);
-
             this.RaisePropertyChanged();
         }
 
@@ -460,7 +274,6 @@ namespace Ferretto.VW.App.Services
         {
             this.RaisePropertyChanged(nameof(this.Sensors));
             this.RaisePropertyChanged(nameof(this.ShutterSensors));
-            this.RaisePropertyChanged(nameof(this.ElevatorPositionLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChain));
             this.RaisePropertyChanged(nameof(this.BayZeroChainIsVisible));
