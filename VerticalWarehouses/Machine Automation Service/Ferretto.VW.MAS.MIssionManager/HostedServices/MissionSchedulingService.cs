@@ -93,6 +93,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (mission is null)
                 {
                     // no more missions are available for scheduling on this bay
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
                     return;
                 }
             }
@@ -128,7 +129,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     {
                         moveLoadingUnitProvider.ActivateMove(mission.FsmId, LoadingUnitLocation.LoadingUnit, bayNumber, bayNumber, MessageActor.MissionManager);
                     }
-                    return;
                 }
                 else if (mission.Status == MissionStatus.Waiting)
                 {
@@ -140,6 +140,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         return;
                     }
                 }
+
                 // there are more operations for the same wms mission
                 var newOperation = newOperations.OrderBy(o => o.Priority).First();
                 this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
@@ -169,14 +170,8 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (nextMission is null)
                 {
                     // send back the LU
-#if MOCK
-                    this.Logger.LogWarning("*** SIMULATION: moving LU back to the warehouse***");
-                    await Task.Delay(1000);
-                    this.Logger.LogWarning("*** SIMULATION: loading unit is in cell now ***");
-#else
 
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
-#endif
                 }
                 // else are there other missions for this LU and another bay?
                 //{
@@ -184,18 +179,11 @@ namespace Ferretto.VW.MAS.MissionManager
                 //}
                 else
                 {
-#if MOCK
-                    this.Logger.LogWarning("*** SIMULATION: moving LU to bay ***");
-                    await Task.Delay(1000);
-                    this.Logger.LogWarning("*** SIMULATION: loading unit is bay ***");
-
-#else
                     // close current mission
                     moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
 
                     // activate new mission
                     moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, loadingUnitSource, bayNumber, bayNumber, MessageActor.MissionManager);
-#endif
                 }
             }
         }
@@ -211,6 +199,7 @@ namespace Ferretto.VW.MAS.MissionManager
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+                var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
                 if (modeProvider.GetCurrent() is MachineMode.SwitchingToAutomatic)
                 {
@@ -224,7 +213,6 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
                         var bays = bayProvider.GetAll();
                         if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
                         {
@@ -261,13 +249,14 @@ namespace Ferretto.VW.MAS.MissionManager
                 }
                 else if (modeProvider.GetCurrent() is MachineMode.Automatic)
                 {
-                    var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
-
                     foreach (var bay in bayProvider.GetAll())
                     {
                         try
                         {
-                            await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                            if (bay.IsActive)
+                            {
+                                await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                            }
                         }
                         catch (Exception ex)
                         {
@@ -307,41 +296,6 @@ namespace Ferretto.VW.MAS.MissionManager
             this.EventAggregator
                 .GetEvent<NotificationEvent>()
                 .Publish(notificationMessage);
-        }
-
-        private async Task OnAssignedMissionOperationChangedAsync(NotificationMessage message)
-        {
-            Contract.Requires(message != null);
-            Contract.Requires(message.Data is AssignedMissionOperationChangedMessageData);
-
-            var messageData = message.Data as AssignedMissionOperationChangedMessageData;
-
-            if (messageData.MissionId.HasValue)
-            {
-                var bayNumber = messageData.BayNumber;
-                var missionId = messageData.MissionId.Value;
-                var wmsMission = await this.missionsDataService.GetByIdAsync(missionId);
-                var newOperations = wmsMission.Operations
-                    .Where(o => o.Status == WMS.Data.WebAPI.Contracts.MissionOperationStatus.New);
-                var operation = newOperations.OrderBy(o => o.Priority).First();
-
-                using (var scope = this.ServiceScopeFactory.CreateScope())
-                {
-                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                    var machineId = machineProvider.GetIdentity();
-                    var pendingMissionsOnBay = (await this.machinesDataService.GetMissionsByIdAsync(machineId))
-                        .Where(m => m.BayId.Value == (int)bayNumber
-                            && m.Status != WMS.Data.WebAPI.Contracts.MissionStatus.Completed);
-
-                    var pendingMissionsCount = 0;
-                    if (pendingMissionsOnBay.Any())
-                    {
-                        pendingMissionsCount = pendingMissionsOnBay.SelectMany(m => m.Operations).Count();
-                    }
-
-                    this.NotifyAssignedMissionOperationChanged(bayNumber, missionId, operation?.Id ?? 0, pendingMissionsCount);
-                }
-            }
         }
 
         private static void GetPersistedMissions(IServiceProvider serviceProvider)

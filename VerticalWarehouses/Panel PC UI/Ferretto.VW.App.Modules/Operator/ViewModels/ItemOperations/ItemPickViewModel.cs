@@ -47,10 +47,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
-
-        public override async Task OnAppearedAsync()
+        public override Task OnAppearedAsync()
         {
-            await base.OnAppearedAsync();
+            this.Compartments = null;
+            this.SelectedCompartment = null;
+            return base.OnAppearedAsync();
         }
 
         public override void OnMisionOperationRetrieved()

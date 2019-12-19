@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages;
@@ -22,6 +23,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IMissionOperationsDataService missionOperationsDataService;
 
+        private readonly IMissionsDataProvider missionsDataProvider;
+
         #endregion
 
         #region Constructors
@@ -29,10 +32,12 @@ namespace Ferretto.VW.MAS.MissionManager
         public MissionOperationsProvider(
             IEventAggregator eventAggregator,
             IMissionOperationsDataService missionOperationsDataService,
+            IMissionsDataProvider missionsDataProvider,
             IConfiguration configuration)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -97,6 +102,19 @@ namespace Ferretto.VW.MAS.MissionManager
             }
         }
 
+        public async Task<MissionOperation> GetByIdAsync(int wmsId)
+        {
+            return await this.missionOperationsDataService.GetByIdAsync(wmsId);
+        }
+
+        public int GetCountByBay(BayNumber bayNumber)
+        {
+            return this.missionsDataProvider
+                .GetAllActiveMissionsByBay(bayNumber)
+                .Where(m => m.WmsId != null && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                .Count();
+        }
+
         /// <summary>
         /// the UI informs mission manager that the operation is completed
         /// </summary>
@@ -135,11 +153,6 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 this.NegativeResult(ex);
             }
-        }
-
-        public async Task<MissionOperation> GetByIdAsync(int wmsId)
-        {
-            return await this.missionOperationsDataService.GetByIdAsync(wmsId);
         }
 
         private void NegativeResult(SwaggerException exception)

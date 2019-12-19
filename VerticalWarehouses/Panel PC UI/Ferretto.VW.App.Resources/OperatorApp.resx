@@ -1238,9 +1238,26 @@
     <value>Machines availabiility</value>
   </data>
   <data name="CurrentOperationIsNoLongerAvailable" xml:space="preserve">
-    <value>Current operation is no longer available.</value>
+    <value>The current operation was remotely cancelled.
+Please put back any moved pieces in their original position.</value>
   </data>
   <data name="OperationCancelled" xml:space="preserve">
     <value>Operation cancelled</value>
+  </data>
+  <data name="OperationConfirmed" xml:space="preserve">
+    <value>Operation confirmed.</value>
+    <comment>Notification</comment>
+  </data>
+  <data name="NoLoadingUnitsToMove" xml:space="preserve">
+    <value>No loading units to move</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="LoadingUnitsSendToBay" xml:space="preserve">
+    <value>There are {0} loading units send to bay</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="LoadingUnitSendToBay" xml:space="preserve">
+    <value>There is 1 loading unit send to bay</value>
+    <comment>Description text</comment>
   </data>
 </root>

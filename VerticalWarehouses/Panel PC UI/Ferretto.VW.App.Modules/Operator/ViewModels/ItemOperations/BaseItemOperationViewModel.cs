@@ -15,9 +15,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IDialogService dialogService;
-
         private readonly IMissionsDataService missionDataService;
+
+        private bool canInputQuantity;
 
         private bool isWaitingForResponse;
 
@@ -41,12 +41,18 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
             this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
-            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
+            this.DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
         #endregion
 
         #region Properties
+
+        public bool CanInputQuantity
+        {
+            get => this.canInputQuantity;
+            protected set => this.SetProperty(ref this.canInputQuantity, value, this.RaiseCanExecuteChanged);
+        }
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -56,7 +62,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
-        public string ItemId => this.MissionOperationsService.CurrentMissionOperation.ItemId.ToString();
+        public string ItemId => this.MissionOperationsService.CurrentMissionOperation?.ItemId.ToString();
 
         public MissionWithLoadingUnitDetails Mission
         {
@@ -76,6 +82,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         protected IBayManager BayManager { get; }
 
+        protected IDialogService DialogService { get; private set; }
+
         protected IMissionOperationsService MissionOperationsService { get; }
 
         protected IWmsImagesProvider WmsImagesProvider { get; }
@@ -90,6 +98,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             await this.RetrieveMissionOperationAsync();
 
+            this.CanInputQuantity = true;
+
             this.IsBackNavigationAllowed = true;
         }
 
@@ -100,6 +110,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public virtual void RaiseCanExecuteChanged()
         {
+            // do nothing
         }
 
         protected async Task RetrieveMissionOperationAsync()
@@ -108,11 +119,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             if (newMissionOperation is null || (this.MissionOperation != null && this.MissionOperation.Type != newMissionOperation.Type))
             {
-                if (this.IsWaitingForResponse)
-                {
-                    this.dialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
-                }
-
                 this.NavigationService.GoBack();
                 return;
             }
