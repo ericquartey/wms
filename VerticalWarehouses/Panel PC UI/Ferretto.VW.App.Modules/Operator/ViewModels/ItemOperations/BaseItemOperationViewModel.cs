@@ -4,10 +4,13 @@ using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Picking)]
     public abstract class BaseItemOperationViewModel : BaseOperatorViewModel
     {
         #region Fields

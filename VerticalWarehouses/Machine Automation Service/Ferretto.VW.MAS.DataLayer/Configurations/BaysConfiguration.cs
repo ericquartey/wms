@@ -28,6 +28,10 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasConversion(
                     enumValue => enumValue.ToString(),
                     stringValue => System.Enum.Parse<WarehouseSide>(stringValue));
+
+            builder.HasOne(a => a.Laser)
+                   .WithOne(b => b.Bay)
+                   .HasForeignKey<Laser>(b => b.BayId);
         }
 
         #endregion

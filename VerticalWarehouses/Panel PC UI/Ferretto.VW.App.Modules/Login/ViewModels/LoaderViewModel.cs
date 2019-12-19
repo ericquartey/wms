@@ -4,10 +4,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Modules.Login.ViewModels
 {
+    [Warning(WarningsArea.Login)]
     internal sealed class LoaderViewModel : BaseMainViewModel
     {
         #region Fields

@@ -1,9 +1,12 @@
 ﻿using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Maintenance)]
     public class DrawerCompactingDetailViewModel : BaseOperatorViewModel
     {
         #region Constructors

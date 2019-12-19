@@ -53,7 +53,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitStartState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
 
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
                 && machineData is Mission moveData
@@ -65,7 +65,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 if (moveData.LoadingUnitSource is LoadingUnitLocation.Elevator)
                 {
-                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData);
+                    var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData, out var targetBayPositionId, out var targetCellId);
                     if (destinationHeight is null)
                     {
                         var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
@@ -73,11 +73,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
 
-                    this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                        closeShutter: false,
+                        measure: false,
+                        MessageActor.MachineManager,
+                        commandMessage.RequestingBay,
+                        moveData.RestoreConditions,
+                        targetBayPositionId,
+                        targetCellId);
                 }
                 else
                 {
-                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData);
+                    var sourceHeight = this.loadingUnitMovementProvider.GetSourceHeight(moveData, out var targetBayPositionId, out var targetCellId);
 
                     if (sourceHeight is null)
                     {
@@ -86,7 +93,14 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
 
-                    this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value, false, false, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
+                        closeShutter: false,
+                        measure: false,
+                        MessageActor.MachineManager,
+                        commandMessage.RequestingBay,
+                        moveData.RestoreConditions,
+                        targetBayPositionId,
+                        targetCellId);
                 }
                 bool isEject = this.mission.LoadingUnitDestination != LoadingUnitLocation.Cell
                     && this.mission.LoadingUnitDestination != LoadingUnitLocation.Elevator

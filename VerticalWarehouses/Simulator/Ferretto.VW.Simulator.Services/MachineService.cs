@@ -37,6 +37,8 @@ namespace Ferretto.VW.Simulator.Services
 
         private readonly TcpListener listenerIoDriver3 = new TcpListener(IPAddress.Any, 19552);
 
+        private readonly TcpListener listenerLaser1 = new TcpListener(IPAddress.Any, 2020);
+
         private readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         private readonly ObservableCollection<IODeviceModel> remoteIOs = new ObservableCollection<IODeviceModel>();
@@ -122,6 +124,7 @@ namespace Ferretto.VW.Simulator.Services
             {
                 this.listenerIoDriver3.Start();
             }
+            this.listenerLaser1.Start();
 
             _ = Task.Run(() => this.AcceptClient(this.listenerInverter, this.cts.Token, (client, message) => this.ReplyInverter(client, message)));
             if (this.RemoteIOs01.Enabled)
@@ -138,6 +141,8 @@ namespace Ferretto.VW.Simulator.Services
             {
                 _ = Task.Run(() => this.AcceptClient(this.listenerIoDriver3, this.cts.Token, (client, message) => this.ReplyIoDriver(client, message, 2)));
             }
+
+            _ = Task.Run(() => this.AcceptClient(this.listenerLaser1, this.cts.Token, (client, message) => this.ReplyLaser(client, message, 1)));
 
             await Task.Delay(100);
             this.IsStartedSimulator = true;
@@ -355,6 +360,19 @@ namespace Ferretto.VW.Simulator.Services
             {
                 throw new NotSupportedException();
             }
+        }
+
+        private void ReplyLaser(TcpClient client, byte[] message, int index)
+        {
+            string messageText = Encoding.ASCII.GetString(message).Trim();
+            switch (messageText)
+            {
+                case "LASER ON":
+                case "LASER OFF":
+                    client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
+                    break;
+            }
+
         }
 
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)

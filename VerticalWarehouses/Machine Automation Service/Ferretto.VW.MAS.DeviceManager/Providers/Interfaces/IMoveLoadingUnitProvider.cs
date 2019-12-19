@@ -21,11 +21,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double GetCurrentVerticalPosition();
 
-        double? GetDestinationHeight(Mission moveData);
+        double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
 
         ShutterPosition GetShutterOpenPosition(Bay bay, LoadingUnitLocation location);
 
-        double? GetSourceHeight(Mission moveData);
+        double? GetSourceHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
+
+        void Homing(Axis axis, Calibration calibration, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
 
@@ -33,19 +35,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool MoveCarousel(int? loadUnitId, MessageActor sender, BayNumber requestingBay, bool restore);
 
-        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition openShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
+        void MoveLoadingUnit(HorizontalMovementDirection direction, bool moveToCradle, ShutterPosition moveShutter, bool measure, MessageActor sender, BayNumber requestingBay, int? loadUnitId);
 
         MessageStatus MoveLoadingUnitStatus(NotificationMessage message);
 
-        bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, MessageActor sender, BayNumber requestingBay);
+        bool MoveManualLoadingUnitBack(HorizontalMovementDirection direction, int? loadUnitId, MessageActor sender, BayNumber requestingBay);
 
-        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, MessageActor sender, BayNumber requestingBay);
+        bool MoveManualLoadingUnitForward(HorizontalMovementDirection direction, bool isLoadingUnitOnBoard, bool measure, int? loadUnitId, MessageActor sender, BayNumber requestingBay);
 
         void NotifyAssignedMissionOperationChanged(BayNumber bayNumber, int missionId);
 
         void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore);
 
-        void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore);
+        void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 

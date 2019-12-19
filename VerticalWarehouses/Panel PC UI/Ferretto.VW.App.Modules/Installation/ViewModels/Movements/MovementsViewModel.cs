@@ -13,12 +13,15 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 using Prism.Regions;
 using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed partial class MovementsViewModel : BaseMainViewModel
     {
         #region Fields
@@ -377,16 +380,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private bool CanEmbark()
+        private bool CanBaseExecute()
         {
             return
                 !this.IsKeyboardOpened
                 &&
-                !this.IsWaitingForResponse
-                &&
                 !this.IsExecutingProcedure
                 &&
-                !this.IsMoving
+                !this.IsWaitingForResponse
+                &&
+                !this.IsMoving;
+        }
+
+        private bool CanEmbark()
+        {
+            return
+                this.CanBaseExecute()
                 &&
                 !this.sensorsService.Sensors.LuPresentInMachineSide
                 &&
@@ -419,14 +428,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool CanResetCommand()
         {
-            return
-                !this.IsKeyboardOpened
-                &&
-                !this.IsExecutingProcedure
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
+            return this.CanBaseExecute();
         }
 
         private bool CanStopMoving()
@@ -598,6 +600,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
+            this.RaisePropertyChanged(nameof(this.SensorsService.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));

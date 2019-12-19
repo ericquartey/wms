@@ -40,14 +40,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.Template
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            if (message.ValidOutputs)
-            {
-                this.ParentStateMachine.ChangeState(new TemplateEndState(this.templateData, this.status, this.index, this.Logger, this.ParentStateMachine));
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             if (message.ValidOutputs)

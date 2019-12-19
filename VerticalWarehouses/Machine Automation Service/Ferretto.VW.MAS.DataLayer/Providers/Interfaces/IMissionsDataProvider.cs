@@ -27,11 +27,13 @@ namespace Ferretto.VW.MAS.DataLayer
 
         IEnumerable<Mission> GetAllWmsMissions();
 
-        Mission GetExecutingMissionInBay(BayNumber bayNumber);
+        bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 
         void ResetMachine(MessageActor sender);
 
         void Update(Mission mission);
+
+        void UpdateHomingMissions(BayNumber bayNumber, Axis axis);
 
         #endregion
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Newtonsoft.Json;
 
 namespace Ferretto.VW.MAS.DataModels
 {
@@ -16,7 +17,10 @@ namespace Ferretto.VW.MAS.DataModels
 
         #region Properties
 
+        [JsonIgnore]
         public Bay Bay { get; set; }
+
+        public int BayId { get; set; }
 
         public IPAddress IpAddress { get; set; }
 

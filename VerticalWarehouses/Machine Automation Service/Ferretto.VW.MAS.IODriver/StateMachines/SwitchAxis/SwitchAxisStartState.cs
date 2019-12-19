@@ -39,22 +39,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            if (message.ValidOutputs)
-            {
-                this.Logger.LogTrace($"1:this.Axis to switch on={this.axisToSwitchOn}:Cradle motor on{message.CradleMotorOn}:Elevator motor on={message.ElevatorMotorOn}");
-
-                if ((this.axisToSwitchOn == Axis.Horizontal && message.CradleMotorOn)
-                    ||
-                    (this.axisToSwitchOn == Axis.Vertical && message.ElevatorMotorOn))
-                {
-                    this.Logger.LogTrace("2:Change State to SwitchOnMotorState");
-                    this.ParentStateMachine.ChangeState(new SwitchAxisSwitchOnMotorState(this.axisToSwitchOn, this.status, this.index, this.Logger, this.ParentStateMachine));
-                }
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace("1:Method Start");

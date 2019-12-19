@@ -154,6 +154,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.Logger.LogTrace($"1:currentMessage={message}");
 
             var invertersProvider = serviceProvider.GetRequiredService<IInvertersProvider>();
+            this.Logger.LogTrace($"1a:currentMessage={message}");
 
             if (message.ParameterId == InverterParameterId.StatusWord)
             {

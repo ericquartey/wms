@@ -109,7 +109,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public int GetCountByBay(BayNumber bayNumber)
         {
-            return this.missionsDataProvider.GetAllWmsMissions().Where(m => m.TargetBay == bayNumber).Count();
+            return this.missionsDataProvider
+                .GetAllActiveMissionsByBay(bayNumber)
+                .Where(m => m.WmsId != null && m.Status != CommonUtils.Messages.Enumerations.MissionStatus.Completed)
+                .Count();
         }
 
         /// <summary>

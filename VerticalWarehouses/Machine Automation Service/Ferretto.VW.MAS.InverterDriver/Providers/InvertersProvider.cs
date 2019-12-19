@@ -122,12 +122,12 @@ namespace Ferretto.VW.MAS.InverterDriver
                 if (position < axis.LowerBound)
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationBelowLowerBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
+                    throw new InvalidOperationException($"The requested position ({position}) is less than the axis lower bound ({axis.LowerBound}).");
                 }
                 if (position > axis.UpperBound)
                 {
                     this.errorsProvider.RecordNew(DataModels.MachineErrorCode.DestinationOverUpperBound, this.baysDataProvider.GetByInverterIndex(inverter.SystemIndex));
-                    throw new Exception($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
+                    throw new InvalidOperationException($"The requested position ({position}) is greater than the axis upper bound ({axis.UpperBound}).");
                 }
 
                 position -= axis.Offset;
@@ -187,6 +187,18 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.logger.LogDebug($"Position:\t    Speed\t    Acceleration\t    Deceleration");
             for (var i = 0; i < positioningData.SwitchPosition.Length; i++)
             {
+                if (positioningData.TargetSpeed[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Speed of position {i} can not be zero.");
+                }
+                if (positioningData.TargetAcceleration[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Acceleration of position {i} can not be zero.");
+                }
+                if (positioningData.TargetDeceleration[i] == 0)
+                {
+                    throw new InvalidOperationException($"The Deceleration of position {i} can not be zero.");
+                }
                 this.logger.LogDebug($"{positioningData.SwitchPosition[i]:0.00} mm,\t {positioningData.TargetSpeed[i]:0.00} mm/s,\t {positioningData.TargetAcceleration[i]} mm/s2,\t {positioningData.TargetDeceleration[i]} mm/s2");
             }
 

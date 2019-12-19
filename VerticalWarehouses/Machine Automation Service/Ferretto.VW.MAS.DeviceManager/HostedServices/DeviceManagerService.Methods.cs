@@ -117,6 +117,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     currentStateMachine = new HomingStateMachine(
                         data.AxisToCalibrate,
                         data.CalibrationType,
+                        data.LoadingUnitId,
                         serviceProvider.GetRequiredService<IMachineProvider>().IsOneTonMachine(),
                         receivedMessage.RequestingBay,
                         receivedMessage.TargetBay,

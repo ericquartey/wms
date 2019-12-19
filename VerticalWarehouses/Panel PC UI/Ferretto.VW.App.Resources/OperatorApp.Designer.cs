@@ -1142,7 +1142,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Installation date.
+        ///   Looks up a localized string similar to Acceptance date.
         /// </summary>
         public static string GeneralInfoInstallationDate {
             get {
@@ -1151,7 +1151,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Last service date.
+        ///   Looks up a localized string similar to Last service.
         /// </summary>
         public static string GeneralInfoLastMaintenanceDate {
             get {
@@ -1169,7 +1169,7 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Next service date.
+        ///   Looks up a localized string similar to Next service.
         /// </summary>
         public static string GeneralInfoNextMaintenanceDate {
             get {

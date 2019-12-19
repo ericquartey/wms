@@ -5,6 +5,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DeviceManager;
 using Ferretto.VW.MAS.InverterDriver;
 using Ferretto.VW.MAS.IODriver;
+using Ferretto.VW.MAS.LaserDriver;
 using Ferretto.VW.MAS.MachineManager;
 using Ferretto.VW.MAS.MissionManager;
 using Ferretto.VW.MAS.Utils;
@@ -159,6 +160,7 @@ namespace Ferretto.VW.MAS.AutomationService
             services
                 .AddIODriver()
                 .AddInverterDriver()
+                .AddLaserDriver()
                 .AddFiniteStateMachines()
                 .AddMachineManager()
                 .AddMissionManager();

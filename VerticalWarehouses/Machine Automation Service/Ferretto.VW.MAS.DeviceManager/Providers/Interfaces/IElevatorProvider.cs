@@ -16,6 +16,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         #region Methods
 
+        ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
+
         ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber);
 
         ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
@@ -32,6 +34,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         AxisBounds GetVerticalBounds();
 
+        void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, BayNumber bayNumber, MessageActor sender);
+
         bool IsZeroChainSensor();
 
         void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor automationService);
@@ -44,7 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? loadingUnitId,
             double? loadingUnitNetWeight,
             bool waitContinue,
-            bool performWeighting,
+            bool measureProfile,
             BayNumber requestingBay,
             MessageActor sender,
             int? targetCellId = null,
@@ -52,11 +56,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
             int? sourceCellId = null,
             int? sourceBayPositionId = null);
 
-        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, BayNumber requestingBay, MessageActor sender);
+        void MoveHorizontalManual(HorizontalMovementDirection direction, double distance, bool measure, int? loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void MoveHorizontalProfileCalibration(HorizontalMovementDirection direction, BayNumber requestingBay, MessageActor sender);
 
-        void MoveToAbsoluteVerticalPosition(bool manualMovment, double targetPosition, bool computeElongation, bool performWeighting, BayNumber requestingBay, MessageActor sender);
+        void MoveToAbsoluteVerticalPosition(bool manualMovment, double targetPosition, bool computeElongation, bool performWeighting, int? targetBayPositionId, int? targetCellId, BayNumber requestingBay, MessageActor sender);
 
         void MoveToBayPosition(int bayPositionId, bool computeElongation, bool performWeighting, BayNumber bayNumber, MessageActor sender);
 
