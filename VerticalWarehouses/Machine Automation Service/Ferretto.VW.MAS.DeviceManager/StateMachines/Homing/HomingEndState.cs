@@ -103,6 +103,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
         /// <inheritdoc/>
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             if (this.stateData.StopRequestReason != StopRequestReason.NoReason)
             {
                 var targetInverter = this.machineData.CurrentInverterIndex;
@@ -137,10 +138,24 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     this.machineData.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     this.scope.ServiceProvider.GetRequiredService<IElevatorDataProvider>().UpdateLastIdealPosition(0);
+
+                    if (!this.machineData.LoadingUnitId.HasValue
+                        && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
+                        )
+                    {
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, Axis.Horizontal);
+                    }
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
                 {
                     this.scope.ServiceProvider.GetRequiredService<IBaysDataProvider>().UpdateLastIdealPosition(0, this.machineData.RequestingBay);
+
+                    if (!this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
+                        && !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
+                        )
+                    {
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.AxisToCalibrate);
+                    }
                 }
             }
 

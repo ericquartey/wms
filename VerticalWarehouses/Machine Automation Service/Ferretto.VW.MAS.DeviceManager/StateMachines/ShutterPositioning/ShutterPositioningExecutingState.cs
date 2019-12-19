@@ -98,6 +98,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
+
             var notificationMessageData = new ShutterPositioningMessageData(this.machineData.PositioningMessageData);
             var inverterStatus = new AglInverterStatus(this.machineData.InverterIndex);
             var sensorStart = (int)(IOMachineSensors.PowerOnOff + (int)this.machineData.InverterIndex * inverterStatus.Inputs.Length);

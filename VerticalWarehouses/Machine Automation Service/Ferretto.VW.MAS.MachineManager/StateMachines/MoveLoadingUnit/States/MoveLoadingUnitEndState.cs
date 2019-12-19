@@ -70,7 +70,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitEndState: received command {commandMessage.Type}, request reason {this.StopRequestReason}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, request reason {this.StopRequestReason}, {commandMessage.Description}");
 
             if (machineData is Mission moveData)
             {
@@ -118,8 +118,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             if (this.StopRequestReason == StopRequestReason.NoReason)
             {
                 this.IsCompleted = true;
-                if(this.mission != null)
-                { 
+                if (this.mission != null)
+                {
                     this.missionsDataProvider.Delete(this.mission.Id);
                 }
             }

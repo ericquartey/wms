@@ -162,6 +162,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             if (this.machineData.MessageData.AxisMovement is Axis.Horizontal
                 || this.machineData.MessageData.AxisMovement is Axis.BayChain
                 )

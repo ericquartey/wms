@@ -153,6 +153,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             FieldCommandMessage commandMessage = null;
             var inverterIndex = (byte)this.machineData.CurrentInverterIndex;
 

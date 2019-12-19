@@ -170,24 +170,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 MessageStatus.OperationStepStop);
 
             this.ParentStateMachine.PublishNotificationMessage(notificationMessage);
-
-            // if the elevator (or bayChain) is empty and the homing is not controlled by a mission I try to update all pending missions
-            if (!this.machineData.LoadingUnitId.HasValue)
-            {
-                if (this.machineData.AxisToCalibrate == Axis.BayChain
-                    && !this.machineData.MachineSensorStatus.IsDrawerInBayTop(this.machineData.TargetBay)
-                    && !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
-                    )
-                {
-                    this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.AxisToCalibrate);
-                }
-                else if (this.machineData.AxisToCalibrate != Axis.BayChain
-                    && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
-                    )
-                {
-                    this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.AxisToCalibrate);
-                }
-            }
         }
 
         public override void Stop(StopRequestReason reason)

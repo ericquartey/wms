@@ -131,6 +131,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Type == MessageType.Stop ||
                  notification.Type == MessageType.InverterStop ||
                  notification.Type == MessageType.ShutterPositioning ||
+                 notification.Type == MessageType.Homing ||
                  notification.Status == MessageStatus.OperationStop ||
                  notification.Status == MessageStatus.OperationError ||
                  notification.Status == MessageStatus.OperationFaultStop ||
@@ -357,6 +358,11 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             if (distance > profileSteps.Last().Position)
             {
                 distance = profileSteps.Last().Position;
+            }
+            else if (distance <= 0)
+            {
+                // already arrived at destination?
+                distance = 1;
             }
             this.elevatorProvider.MoveHorizontalManual(direction, distance, measure, loadUnitId, requestingBay, sender);
             return true;

@@ -4,7 +4,6 @@ using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
-using Ferretto.VW.MAS.DataModels.Resources;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
@@ -77,7 +76,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitLoadElevatorState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
 
             if (machineData is Mission moveData)
             {
@@ -117,7 +116,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
                 if (this.mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing start");
+                    this.Logger.LogDebug($"Homing elevator occupied start");
                     this.loadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.mission.LoadingUnitId, commandMessage.RequestingBay, MessageActor.MachineManager);
                 }
                 else if (this.mission.NeedHomingAxis == Axis.BayChain)
@@ -227,7 +226,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
                 if (this.mission.NeedHomingAxis == Axis.BayChain)
                 {
-                    this.Logger.LogDebug($"Homing start");
+                    this.Logger.LogDebug($"Homing Bay free start");
                     this.loadingUnitMovementProvider.Homing(Axis.BayChain, Calibration.FindSensor, this.mission.LoadingUnitId, notification.RequestingBay, MessageActor.MachineManager);
                 }
                 else

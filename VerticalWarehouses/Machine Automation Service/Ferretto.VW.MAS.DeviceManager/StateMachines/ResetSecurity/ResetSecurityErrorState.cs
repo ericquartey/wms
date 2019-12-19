@@ -50,6 +50,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
                 null,
                 "Reset Security Stopped due to an error",
