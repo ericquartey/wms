@@ -115,13 +115,9 @@
             <Grid Grid.Row="1">
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="115" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
                 <StackPanel Margin="5,0,5,0">
                     <TextBlock HorizontalAlignment="Left"
@@ -129,7 +125,7 @@
                                Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                                Text="{x:Static res:Menu.InstallationStatus}" />
 
-                    <TextBlock Margin="0,20,0,0"
+                    <TextBlock Margin="0,0,0,0"
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top"
                                FontFamily="{DynamicResource VWAPP_TitleFont}"
@@ -138,33 +134,35 @@
 
                     <Grid Margin="0,5,0,0"
                           HorizontalAlignment="Stretch"
-                          VerticalAlignment="Top">
+                          VerticalAlignment="Stretch">
 
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="3*" />
                             <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
 
                         <controls:PpcProgressBar Height="8"
                                                  HorizontalAlignment="Stretch"
                                                  VerticalAlignment="Center"
-                                                 Color1="#F6AB3C"
-                                                 Color2="#F59C1A"
+                                                 Color1="{DynamicResource FerrettoGreen}"
+                                                 Color2="Green"
                                                  Maximum="100"
                                                  Minimum="0"
                                                  Value="{Binding Completion, FallbackValue=60}" />
 
                         <TextBlock Grid.Column="1"
-                                   Margin="15,0,0,0"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Top"
+                                   Margin="15,5,0,0"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Center"
                                    FontFamily="{DynamicResource VWAPP_TitleFont}"
                                    Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
                                    Text="40%" />
                     </Grid>
 
                 </StackPanel>
-                <Grid Grid.Column="1">
+
+                <Grid Grid.Column="1"
+                      Visibility="Collapsed">
                     <Viewbox Width="300"
                              Height="80"
                              HorizontalAlignment="Right"
@@ -788,7 +786,7 @@
 
                 <Grid Grid.Row="1"
                       Grid.ColumnSpan="2"
-                      Margin="10">
+                      Margin="10,0">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -919,7 +917,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                       Text="{x:Static res:InstallationApp.PanelsControlDescription}" />
+                                       Text="{x:Static res:InstallationApp.LoadFirstDrawerPageHeader}" />
                         </StackPanel>
 
                         <StackPanel Grid.Row="8"
@@ -935,7 +933,7 @@
                                        HorizontalAlignment="Left"
                                        VerticalAlignment="Top"
                                        Style="{StaticResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                       Text="{x:Static res:InstallationApp.WeightControl}" />
+                                       Text="Conferma collaudo" />
                         </StackPanel>
 
                     </Grid>
