@@ -63,18 +63,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
                 && machineData is Mission moveData
                 )
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.messageData = messageData;
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitBayChainState);
                 this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
+                if (bay is null)
+                {
+                    var description = $"{this.GetType().Name}: destination bay not found {moveData.LoadingUnitDestination}";
+
+                    throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                }
                 if (this.loadingUnitMovementProvider.IsOnlyBottomPositionOccupied(bay.Number))
                 {
                     this.mission.RestoreConditions = false;

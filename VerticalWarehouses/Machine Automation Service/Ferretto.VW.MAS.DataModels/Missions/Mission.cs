@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 
 namespace Ferretto.VW.MAS.DataModels
@@ -61,5 +62,28 @@ namespace Ferretto.VW.MAS.DataModels
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            var returnString = new StringBuilder();
+
+            returnString
+                .Append("Mission:")
+                .Append($"LoadingUnitId={this.LoadingUnitId}; ")
+                .Append($"WmsId={this.WmsId}; ")
+                .Append($"TargetBay={this.TargetBay}; ")
+                .Append($"FsmStateName={this.FsmStateName}; ")
+                .Append($"Source={this.LoadingUnitSource}; ")
+                .Append($"Destination={this.LoadingUnitDestination}; ")
+                .Append($"CellSourceId={this.LoadingUnitCellSourceId}; ")
+                .Append($"FsmRestoreStateName={this.FsmRestoreStateName}; ")
+                .Append($"MissionType={this.MissionType}; ")
+                .Append($"NeedHomingAxis={this.NeedHomingAxis}; ")
+                .Append($"NeedMovingBackward={this.NeedMovingBackward}; ")
+                .Append($"RestoreConditions={this.RestoreConditions}; ")
+                .Append($"Status={this.Status}; ")
+                .Append($"Priority={this.Priority}; ");
+            return returnString.ToString();
+        }
     }
 }

@@ -177,6 +177,10 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                     }
                     break;
 
+                case LoadingUnitLocation.Elevator:
+                    targetPosition = this.elevatorProvider.VerticalPosition;
+                    break;
+
                 default:
                     targetPosition = this.baysDataProvider.GetLoadingUnitDestinationHeight(moveData.LoadingUnitDestination);
                     targetBayPositionId = this.baysDataProvider.GetPositionByLocation(moveData.LoadingUnitDestination).Id;

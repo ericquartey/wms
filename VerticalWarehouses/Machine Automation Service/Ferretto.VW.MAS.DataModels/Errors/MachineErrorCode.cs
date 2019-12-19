@@ -76,6 +76,12 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightExceeded), 1)]
         LoadingUnitWeightExceeded,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(LoadingUnitWeightTooLow), 1)]
+        LoadingUnitWeightTooLow,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineWeightExceeded), 1)]
+        MachineWeightExceeded,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(DestinationBelowLowerBound), 1)]
         DestinationBelowLowerBound,
 

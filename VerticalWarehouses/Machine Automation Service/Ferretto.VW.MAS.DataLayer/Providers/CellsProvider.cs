@@ -89,7 +89,12 @@ namespace Ferretto.VW.MAS.DataLayer
             if (loadingUnit.Height == 0)
             {
                 var machine = this.machineProvider.Get();
+                if (machine.LoadUnitMaxHeight == 0)
+                {
+                    throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
+                }
                 loadingUnit.Height = machine.LoadUnitMaxHeight;
+                this.logger.LogInformation($"FindEmptyCell: height is not defined for LU {loadingUnitId}; new height is {loadingUnit.Height} (as configured for max);");
             }
             using (var availableCell = new BlockingCollection<AvailableCell>())
             {

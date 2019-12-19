@@ -300,4 +300,10 @@
   <data name="NoError" xml:space="preserve">
     <value>NoError</value>
   </data>
+  <data name="LoadingUnitWeightTooLow" xml:space="preserve">
+    <value>LoadingUnitWeightTooLow</value>
+  </data>
+  <data name="MachineWeightExceeded" xml:space="preserve">
+    <value>MachineWeightExceeded</value>
+  </data>
 </root>

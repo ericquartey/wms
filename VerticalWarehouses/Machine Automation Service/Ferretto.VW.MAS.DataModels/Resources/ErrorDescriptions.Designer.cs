@@ -340,6 +340,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LoadingUnitWeightTooLow.
+        /// </summary>
+        public static string LoadingUnitWeightTooLow {
+            get {
+                return ResourceManager.GetString("LoadingUnitWeightTooLow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to LoadUnitPresentOnEmptyElevator.
         /// </summary>
         public static string LoadUnitPresentOnEmptyElevator {
@@ -498,6 +507,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string MachineModeNotValid {
             get {
                 return ResourceManager.GetString("MachineModeNotValid", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to MachineWeightExceeded.
+        /// </summary>
+        public static string MachineWeightExceeded {
+            get {
+                return ResourceManager.GetString("MachineWeightExceeded", resourceCulture);
             }
         }
         

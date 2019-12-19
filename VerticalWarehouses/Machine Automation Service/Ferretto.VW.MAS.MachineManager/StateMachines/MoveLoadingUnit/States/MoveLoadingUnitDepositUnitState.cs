@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
-using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DataModels.Resources;
@@ -75,10 +74,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             if (machineData is Mission moveData)
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitDepositUnitState);
                 this.missionsDataProvider.Update(this.mission);
@@ -100,9 +98,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     default:
                         var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
+                        if (bay is null)
+                        {
+                            var description = $"{this.GetType().Name}: destination bay not found {moveData.LoadingUnitDestination}";
+
+                            throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                        }
                         this.direction = bay.Side == WarehouseSide.Front ? HorizontalMovementDirection.Forwards : HorizontalMovementDirection.Backwards;
                         bayNumber = bay.Number;
                         this.openShutter = this.loadingUnitMovementProvider.GetShutterOpenPosition(bay, moveData.LoadingUnitDestination);
+                        if (this.openShutter == this.sensorsProvider.GetShutterPosition(bay.Number))
+                        {
+                            this.openShutter = ShutterPosition.NotSpecified;
+                        }
                         if (bay.Carousel != null)
                         {
                             var result = this.loadingUnitMovementProvider.CheckBaySensors(bay, moveData.LoadingUnitDestination, deposit: true);
