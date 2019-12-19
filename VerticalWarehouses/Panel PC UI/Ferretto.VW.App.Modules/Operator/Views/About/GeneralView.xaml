@@ -382,7 +382,7 @@
                                 Grid.Column="1"
                                 Margin="0,25"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="White"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
                                 BorderThickness="1" />
 
                     </Grid>
@@ -414,14 +414,14 @@
                                    VerticalAlignment="Top"
                                    FontSize="36"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="999999"
+                                   Text="1.254.450"
                                    TextWrapping="Wrap" />
 
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Margin="0,25"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="White"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
                                 BorderThickness="1" />
 
                     </Grid>
@@ -454,14 +454,14 @@
                                    VerticalAlignment="Top"
                                    FontSize="36"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="999999"
+                                   Text="35.205"
                                    TextWrapping="Wrap" />
 
                         <Border Grid.RowSpan="2"
                                 Grid.Column="1"
                                 Margin="0,25"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="White"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
                                 BorderThickness="1" />
 
                     </Grid>
@@ -490,7 +490,7 @@
                                    VerticalAlignment="Top"
                                    FontSize="36"
                                    Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="9999"
+                                   Text="45.120"
                                    TextWrapping="Wrap" />
 
                     </Grid>
