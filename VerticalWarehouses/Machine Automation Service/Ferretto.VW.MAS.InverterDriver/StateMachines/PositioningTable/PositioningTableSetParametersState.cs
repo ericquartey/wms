@@ -136,7 +136,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                                 (short)this.tableIndex,
                                 this.data.TargetSpeed[this.stepId],
                                 this.data.TargetAcceleration[this.stepId],
-                                this.data.TargetAcceleration[this.stepId]
+                                this.data.TargetDeceleration[this.stepId]
                             };
                             this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
                             this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
@@ -283,7 +283,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         (short)this.tableIndex,
                         this.data.TargetSpeed[this.stepId],
                         this.data.TargetAcceleration[this.stepId],
-                        this.data.TargetAcceleration[this.stepId]
+                        this.data.TargetDeceleration[this.stepId]
                     };
                     this.ParentStateMachine.EnqueueCommandMessage(new InverterMessage(this.InverterStatus.SystemIndex, (short)InverterParameterId.BlockWrite, blockValues));
                     this.Logger.LogDebug($"Set block values: {blockValues[0]}, {blockValues[1]}, {blockValues[2]}, {blockValues[3]} ");
@@ -366,7 +366,8 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                 for (var iStep = step; iStep < this.data.SwitchPosition.Length; iStep++)
                 {
                     if (this.data.TargetSpeed[iStep] != (this.dataOld?.TargetSpeed[iStep] ?? 0) ||
-                        this.data.TargetAcceleration[iStep] != (this.dataOld?.TargetAcceleration[iStep] ?? 0)
+                        this.data.TargetAcceleration[iStep] != (this.dataOld?.TargetAcceleration[iStep] ?? 0) ||
+                        this.data.TargetDeceleration[iStep] != (this.dataOld?.TargetDeceleration[iStep] ?? 0)
                         )
                     {
                         return step;

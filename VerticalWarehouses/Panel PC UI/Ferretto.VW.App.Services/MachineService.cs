@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
@@ -10,11 +9,12 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
-using NLog;
-using Prism.Commands;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
+using Axis = Ferretto.VW.CommonUtils.Messages.Enumerations.Axis;
 
 namespace Ferretto.VW.App.Services
 {
@@ -294,6 +294,33 @@ namespace Ferretto.VW.App.Services
             return activeView?.GetType()?.Name;
         }
 
+        private Type GetActiveViewModelType()
+        {
+            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
+            var model = (activeView as System.Windows.FrameworkElement)?.DataContext;
+            return model?.GetType();
+        }
+
+        private WarningsArea GetWarningAreaAttribute()
+        {
+            var viewType = this.GetActiveViewModelType();
+            if (viewType is null)
+            {
+                string s = "";
+            }
+
+            WarningsArea area = WarningsArea.None;
+            WarningAttribute attribute = viewType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
+
+            if (attribute is null &&
+                viewType.BaseType != null)
+            {
+                attribute = viewType?.BaseType?.GetCustomAttributes(typeof(WarningAttribute), true)?.FirstOrDefault() as WarningAttribute;
+            }
+
+            return attribute?.Area ?? WarningsArea.None;
+        }
+
         private async Task InitializatioBay()
         {
             var ms = (MachineStatus)this.MachineStatus.Clone();
@@ -372,9 +399,11 @@ namespace Ferretto.VW.App.Services
                         ms.IsError = false;
                         ms.IsMoving = true;
 
-                        if (message?.Data is MoveLoadingUnitMessageData)
+                        if (message?.Data is MoveLoadingUnitMessageData messageData)
                         {
                             ms.IsMovingLoadingUnit = true;
+
+                            ms.CurrentMissionId = messageData.MissionId;
 
                             this.Notification = "Movimento in corso...";
                         }
@@ -544,15 +573,9 @@ namespace Ferretto.VW.App.Services
         {
             if (!(view is null) && !this.MachineStatus.IsMoving && !this.MachineStatus.IsMovingLoadingUnit)
             {
-                switch (true)
+                switch (this.GetWarningAreaAttribute())
                 {
-                    case var b1 when view.Equals("LoginView", StringComparison.InvariantCultureIgnoreCase):
-                    case var b2 when view.Equals("LoaderView", StringComparison.InvariantCultureIgnoreCase):
-                    case var b3 when view.Equals("MainMenuView", StringComparison.InvariantCultureIgnoreCase):
-                        this.ClearNotifications();
-                        break;
-
-                    default:
+                    case WarningsArea.Installation:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
@@ -573,6 +596,32 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ClearNotifications();
                         }
+                        break;
+
+                    case WarningsArea.Maintenance:
+                        if (!this.IsHoming)
+                        {
+                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
+                        }
+                        break;
+
+                    case WarningsArea.Information:
+                    case WarningsArea.Picking:
+                        if (this.machineModeService.MachineMode != MachineMode.Automatic)
+                        {
+                            this.ShowNotification("Manca automatico.", NotificationSeverity.Warning);
+                        }
+                        else if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        break;
+
+                    case WarningsArea.Menu:
+                        this.ClearNotifications();
+                        break;
+
+                    default:
                         break;
                 }
             }

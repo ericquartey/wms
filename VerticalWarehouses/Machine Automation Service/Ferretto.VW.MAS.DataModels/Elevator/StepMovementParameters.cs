@@ -22,14 +22,28 @@ namespace Ferretto.VW.MAS.DataModels
             {
                 throw new ArgumentNullException(nameof(axis));
             }
+            if (axis.EmptyLoadMovement.Speed < axis.FullLoadMovement.Speed)
+            {
+                throw new InvalidOperationException($"Invalid {axis.Orientation} Axis movement Speed configuration");
+            }
+            if (axis.EmptyLoadMovement.Acceleration < axis.FullLoadMovement.Acceleration)
+            {
+                throw new InvalidOperationException($"Invalid {axis.Orientation} Axis movement Acceleration configuration");
+            }
 
             if (this.AdjustByWeight)
             {
-                var deltaSpeed = (Math.Min(axis.EmptyLoadMovement.Speed, this.Speed) - Math.Min(axis.FullLoadMovement.Speed, this.Speed)) * scalingFactor;
-                this.Speed = Math.Max(this.Speed - deltaSpeed, axis.FullLoadMovement.Speed);
+                if (this.Speed >= axis.FullLoadMovement.Speed && this.Speed <= axis.EmptyLoadMovement.Speed)
+                {
+                    var deltaSpeed = (axis.EmptyLoadMovement.Speed - axis.FullLoadMovement.Speed) * scalingFactor;
+                    this.Speed = Math.Max(this.Speed - deltaSpeed, axis.FullLoadMovement.Speed);
+                }
 
-                var deltaAcceleration = (Math.Min(axis.EmptyLoadMovement.Acceleration, this.Acceleration) - Math.Min(axis.FullLoadMovement.Acceleration, this.Acceleration)) * scalingFactor;
-                this.Acceleration = Math.Max(this.Acceleration - deltaAcceleration, axis.FullLoadMovement.Acceleration);
+                if (this.Acceleration >= axis.FullLoadMovement.Acceleration && this.Acceleration <= axis.EmptyLoadMovement.Acceleration)
+                {
+                    var deltaAcceleration = (axis.EmptyLoadMovement.Acceleration - axis.FullLoadMovement.Acceleration) * scalingFactor;
+                    this.Acceleration = Math.Max(this.Acceleration - deltaAcceleration, axis.FullLoadMovement.Acceleration);
+                }
             }
         }
 

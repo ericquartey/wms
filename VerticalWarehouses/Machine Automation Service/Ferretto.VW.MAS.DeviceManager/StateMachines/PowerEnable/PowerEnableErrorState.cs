@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.PowerEnable.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
@@ -47,6 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.PowerEnable
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Power Enable Stopped due to an error. Filed message: {this.stateData.FieldMessage?.Description ?? string.Empty}",

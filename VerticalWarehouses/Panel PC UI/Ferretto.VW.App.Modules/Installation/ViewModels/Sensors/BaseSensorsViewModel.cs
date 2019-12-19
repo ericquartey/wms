@@ -10,10 +10,13 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal class BaseSensorsViewModel : BaseMainViewModel
     {
         #region Fields

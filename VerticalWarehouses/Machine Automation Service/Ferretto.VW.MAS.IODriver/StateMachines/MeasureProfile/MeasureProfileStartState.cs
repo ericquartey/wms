@@ -39,20 +39,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.MeasureProfile
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            if (message.ValidOutputs)
-            {
-                this.Logger.LogTrace($"1:Measure Profile on{message.MeasureProfileOn}");
-
-                if (message.MeasureProfileOn == this.enable)
-                {
-                    this.Logger.LogTrace("2:Change State to MeasureProfileEndState");
-                    this.ParentStateMachine.ChangeState(new MeasureProfileEndState(this.enable, this.status, this.Logger, this.ParentStateMachine, this.deviceIndex));
-                }
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace("1:Method Start");

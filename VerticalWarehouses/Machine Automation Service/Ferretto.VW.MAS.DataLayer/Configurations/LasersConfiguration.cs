@@ -21,6 +21,10 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
                 .HasConversion(
                     enumValue => enumValue.ToString(),
                     stringValue => IPAddress.Parse(stringValue));
+
+            //builder.HasOne(a => a.Bay)
+            //       .WithOne(b => b.Laser)
+            //       .HasForeignKey<Bay>(b => b.Id);
         }
 
         #endregion

@@ -119,6 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.CurrentInverterIndex}");
             if (!this.machineData.MessageData.IsOneKMachine &&
                 this.machineData.MessageData.MovementMode < MovementMode.ShutterPosition)
             {

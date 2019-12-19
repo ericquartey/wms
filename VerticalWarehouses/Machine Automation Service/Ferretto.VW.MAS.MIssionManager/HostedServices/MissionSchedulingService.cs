@@ -97,6 +97,11 @@ namespace Ferretto.VW.MAS.MissionManager
                     return;
                 }
             }
+            if (!this.configuration.IsWmsEnabled())
+            {
+                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
+                return;
+            }
 
             System.Diagnostics.Debug.Assert(mission != null);
 
@@ -191,14 +196,6 @@ namespace Ferretto.VW.MAS.MissionManager
                 return;
             }
 
-#if !TEST_ERROR_STATE
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
-                return;
-            }
-#endif
-
             using (var scope = this.ServiceScopeFactory.CreateScope())
             {
                 var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
@@ -220,7 +217,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
                         {
                             var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
-                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor);
+                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
 
                             this.EventAggregator
                                 .GetEvent<CommandEvent>()
@@ -235,7 +232,7 @@ namespace Ferretto.VW.MAS.MissionManager
                         }
                         else
                         {
-                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor);
+                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
 
                             this.EventAggregator
                                 .GetEvent<CommandEvent>()
@@ -312,9 +309,24 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
                 {
                     mission.FsmRestoreStateName = mission.FsmStateName;
-                    mission.FsmStateName = "MoveLoadingUnitErrorState";
-                    missionsDataProvider.Update(mission);
                 }
+                mission.FsmStateName = "MoveLoadingUnitErrorState";
+                if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
+                {
+                    mission.NeedHomingAxis = Axis.BayChain;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
+                    || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
+                    )
+                {
+                    mission.NeedMovingBackward = true;
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
+                {
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                missionsDataProvider.Update(mission);
 
                 machineMissionsProvider.AddMission(mission, mission.FsmId);
             }
@@ -344,12 +356,6 @@ namespace Ferretto.VW.MAS.MissionManager
             if (!this.dataLayerIsReady)
             {
                 this.Logger.LogTrace("Cannot perform mission scheduling, because data layer is not ready.");
-                return;
-            }
-
-            if (!this.configuration.IsWmsEnabled())
-            {
-                this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
                 return;
             }
 

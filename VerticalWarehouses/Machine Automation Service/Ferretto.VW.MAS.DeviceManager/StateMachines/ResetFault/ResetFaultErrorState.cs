@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DeviceManager.ResetFault.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
+using Microsoft.Extensions.Logging;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.MAS.DeviceManager.ResetFault
@@ -47,6 +48,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetFault
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
             var notificationMessage = new NotificationMessage(
                 null,
                 $"Inverter Fault reset failed on bay {this.machineData.TargetBay}. Filed message: {this.stateData.FieldMessage.Description}",

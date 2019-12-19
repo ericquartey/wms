@@ -8,10 +8,13 @@ using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Menu.ViewModels
 {
+    [Warning(WarningsArea.Maintenance)]
     internal sealed class MaintenanceMenuViewModel : BaseMainViewModel
     {
         #region Fields

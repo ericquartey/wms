@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         double GetPosition(BayNumber bayNumber);
 
-        void Homing(Calibration calibration, BayNumber bayNumber, MessageActor sender);
+        void Homing(Calibration calibration, int? loadingUnitId, BayNumber bayNumber, MessageActor sender);
 
         bool IsOnlyBottomPositionOccupied(BayNumber bayNumber);
 

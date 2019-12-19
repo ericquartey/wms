@@ -362,15 +362,15 @@
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoInstallationDate" xml:space="preserve">
-    <value>Installation date</value>
+    <value>Acceptance date</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>Last service date</value>
+    <value>Last service</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>Next service date</value>
+    <value>Next service</value>
     <comment>Label text</comment>
   </data>
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">

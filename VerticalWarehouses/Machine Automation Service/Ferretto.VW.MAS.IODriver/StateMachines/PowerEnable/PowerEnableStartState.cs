@@ -39,20 +39,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.PowerEnable
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            if (message.ValidOutputs)
-            {
-                this.Logger.LogTrace($"1:Power Enable on{message.PowerEnable}");
-
-                if (message.PowerEnable == this.enable)
-                {
-                    this.Logger.LogTrace("2:Change State to PowerEnableEndState");
-                    this.ParentStateMachine.ChangeState(new PowerEnableEndState(this.enable, this.status, this.Logger, this.ParentStateMachine, this.deviceIndex));
-                }
-            }
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             this.Logger.LogTrace("1:Method Start");

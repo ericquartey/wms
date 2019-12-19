@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Ferretto.VW.MAS.Utils.Utilities
 {
@@ -58,6 +60,70 @@ namespace Ferretto.VW.MAS.Utils.Utilities
             }
 
             return -1;
+        }
+
+        public static IList<string> GetMessagesToEnqueue(ref byte[] receiveBuffer, byte[] messageStartPattern, byte[] messageEndPattern)
+        {
+            if (messageEndPattern == null)
+            {
+                throw new ArgumentNullException(nameof(messageEndPattern));
+            }
+
+            int startIndex = 0;
+
+            bool useStartPattern = false;
+            if (messageStartPattern != null)
+            {
+                useStartPattern = messageStartPattern.Any();
+            }
+            else
+            {
+                messageStartPattern = new byte[0];
+            }
+
+            IList<string> messages = new List<string>();
+            while (startIndex != -1 && startIndex < receiveBuffer.Length)
+            {
+                if (receiveBuffer.Length > 0)
+                {
+                    if (useStartPattern)
+                    {
+                        startIndex = ByteIndexOf(receiveBuffer, messageStartPattern, startIndex);
+                    }
+
+                    if (!useStartPattern || (startIndex != -1 && receiveBuffer.Length >= (startIndex + messageStartPattern.Length)))
+                    {
+                        int endIndex = ByteIndexOf(receiveBuffer, messageEndPattern, startIndex + 1);
+                        if (endIndex != -1)
+                        {
+                            // Cut message from raw buffer and enqueue it
+                            byte[] message = new byte[endIndex - startIndex - messageStartPattern.Length];
+                            Array.Copy(receiveBuffer, startIndex + messageStartPattern.Length, message, 0, message.Length);
+                            messages.Add(Encoding.ASCII.GetString(message));
+
+                            // Remove message from raw buffer
+                            int count = receiveBuffer.Length - endIndex - messageEndPattern.Length;
+                            byte[] newarray = new byte[count];
+                            Buffer.BlockCopy(receiveBuffer, endIndex + messageEndPattern.Length, newarray, 0, count);
+                            receiveBuffer = newarray;
+                            startIndex = 0;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return messages;
         }
 
         public static IList<byte[]> GetMessagesWithHeaderLengthToEnqueue(ref byte[] receiveBuffer, int totalHeaderLength, int iLength, int lengthAdjust)

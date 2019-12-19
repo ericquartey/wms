@@ -118,6 +118,21 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public bool IsErrorSmall()
+        {
+            var error = this.GetCurrent();
+
+            if (error is null)
+            {
+                return true;
+            }
+            return (error.Code == (int)MachineErrorCode.SecurityWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityBarrierWasTriggered
+                || error.Code == (int)MachineErrorCode.SecurityButtonWasTriggered
+                || error.Code == (int)MachineErrorCode.SecuritySensorWasTriggered
+                || error.Code == (int)MachineErrorCode.InverterFaultStateDetected);
+        }
+
         public MachineError RecordNew(MachineErrorCode code, BayNumber bayNumber = BayNumber.None)
         {
             var newError = new MachineError

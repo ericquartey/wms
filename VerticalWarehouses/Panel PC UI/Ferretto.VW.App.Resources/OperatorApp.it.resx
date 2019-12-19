@@ -301,16 +301,16 @@
     <value>Versione software</value>
   </data>
   <data name="GeneralInfoInstallationDate" xml:space="preserve">
-    <value>Data di installazione</value>
+    <value>Collaudo</value>
   </data>
   <data name="GeneralInfoLastMaintenanceDate" xml:space="preserve">
-    <value>Data ultima manutenzione</value>
+    <value>Ultima manutenzione</value>
   </data>
   <data name="GeneralInfoNextMaintenanceDate" xml:space="preserve">
-    <value>Data prossima manutenzione:</value>
+    <value>Prossima manutenzione</value>
   </data>
   <data name="GeneralInfoOperativeStatus" xml:space="preserve">
-    <value>Stato operativo macchina</value>
+    <value>Stato macchina</value>
   </data>
   <data name="DrawerCompactingHeader" xml:space="preserve">
     <value>Procedura di compattazione cassetti.</value>
@@ -667,7 +667,7 @@
     <value>Tipo lista</value>
   </data>
   <data name="GeneralInfoWmsStatus" xml:space="preserve">
-    <value>Stato del WMS</value>
+    <value>Stato WMS</value>
   </data>
   <data name="DrawerCompactingDetailHeader" xml:space="preserve">
     <value>Visualizza dettagli compattazione.</value>

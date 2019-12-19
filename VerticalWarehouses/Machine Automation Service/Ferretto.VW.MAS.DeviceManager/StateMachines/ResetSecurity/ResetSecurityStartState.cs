@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS.DeviceManager.ResetSecurity
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name}");
             var commandMessageData = new ResetSecurityFieldMessageData();
             var commandMessage = new FieldCommandMessage(
                 commandMessageData,

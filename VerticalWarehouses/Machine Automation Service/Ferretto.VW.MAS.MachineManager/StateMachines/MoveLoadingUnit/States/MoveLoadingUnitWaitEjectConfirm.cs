@@ -61,7 +61,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitWaitEjectConfirm: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
 
             this.requestingBay = commandMessage.RequestingBay;
 
@@ -75,8 +75,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 if (moveData.LoadingUnitId > 0)
                 {
-                    var machine = this.machineProvider.Get();
-                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, machine.LoadUnitMaxHeight);
+                    this.loadingUnitsDataProvider.SetHeight(moveData.LoadingUnitId, 0);
                 }
                 moveData.Status = MissionStatus.Waiting;
                 this.mission.RestoreConditions = false;

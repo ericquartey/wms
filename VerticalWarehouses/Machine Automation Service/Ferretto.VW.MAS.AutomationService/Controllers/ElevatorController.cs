@@ -60,6 +60,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #region Methods
 
+        [HttpGet("horizontal/can-extract-from-bay/{bayPositionId}")]
+        public ActionResult<ActionPolicy> CanExtractFromBay(int bayPositionId)
+        {
+            return this.Ok(this.elevatorProvider.CanExtractFromBay(bayPositionId, this.BayNumber));
+        }
+
         [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
         public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
         {
@@ -101,14 +107,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult FindZero()
         {
-            var homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
-
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 
@@ -201,7 +200,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult MoveHorizontalManual(HorizontalMovementDirection direction)
         {
-            this.elevatorProvider.MoveHorizontalManual(direction, -1, false, this.BayNumber, MessageActor.AutomationService);
+            this.elevatorProvider.MoveHorizontalManual(direction, -1, false, null, this.BayNumber, MessageActor.AutomationService);
             return this.Accepted();
         }
 
@@ -220,6 +219,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetPosition,
                 computeElongation,
                 performWeighting,
+                null,
+                null,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -292,6 +293,8 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 targetPosition,
                 computeElongation,
                 performWeighting,
+                null,
+                null,
                 this.BayNumber,
                 MessageActor.AutomationService);
 
@@ -321,14 +324,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         [ProducesDefaultResponseType]
         public IActionResult SearchHorizontalZero()
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.Horizontal, Calibration.FindSensor);
-
-            this.PublishCommand(
-                homingData,
-                "Execute FindZeroSensor Command",
-                MessageActor.DeviceManager,
-                MessageType.Homing);
-
+            this.elevatorProvider.Homing(Axis.Horizontal, Calibration.FindSensor, null, this.BayNumber, MessageActor.WebApi);
             return this.Accepted();
         }
 

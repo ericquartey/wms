@@ -7,10 +7,13 @@ using System.Windows.Media;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Information)]
     internal sealed class GeneralViewModel : BaseMainViewModel
     {
         #region Fields
@@ -138,12 +141,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             if (this.dataHubClient.IsConnected)
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOnline;
+                this.WmsServicesStatusDescription = "Online"; // VW.App.Resources.OperatorApp.WmsServicesOnline;
                 this.WmsServicesStatusBrush = Brushes.Green;
             }
             else
             {
-                this.WmsServicesStatusDescription = VW.App.Resources.OperatorApp.WmsServicesOffline;
+                this.WmsServicesStatusDescription = "Offline"; //VW.App.Resources.OperatorApp.WmsServicesOffline;
                 this.WmsServicesStatusBrush = Brushes.Red;
             }
         }

@@ -10,6 +10,8 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         Calibration CalibrationType { get; }
 
+        int? LoadingUnitId { get; }
+
         #endregion
     }
 }

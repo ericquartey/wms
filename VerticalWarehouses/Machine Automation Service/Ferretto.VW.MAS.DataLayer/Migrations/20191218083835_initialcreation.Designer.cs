@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191213150031_initialcreation")]
+    [Migration("20191218083835_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1209,7 +1209,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int?>("BayId");
+                    b.Property<int>("BayId");
 
                     b.Property<string>("IpAddress")
                         .HasColumnType("text");
@@ -1218,7 +1218,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BayId");
+                    b.HasIndex("BayId")
+                        .IsUnique();
 
                     b.ToTable("Lasers");
                 });
@@ -1408,6 +1409,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("NeedHomingAxis");
+
+                    b.Property<bool>("NeedMovingBackward");
+
                     b.Property<int>("Priority");
 
                     b.Property<bool>("RestoreConditions");
@@ -1492,7 +1497,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 13, 16, 0, 31, 225, DateTimeKind.Local).AddTicks(1161),
+                            InstallationDate = new DateTime(2017, 2, 18, 9, 38, 34, 916, DateTimeKind.Local).AddTicks(2284),
                             ServiceStatus = 86
                         });
                 });
@@ -1950,8 +1955,9 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.Laser", b =>
                 {
                     b.HasOne("Ferretto.VW.MAS.DataModels.Bay", "Bay")
-                        .WithMany()
-                        .HasForeignKey("BayId");
+                        .WithOne("Laser")
+                        .HasForeignKey("Ferretto.VW.MAS.DataModels.Laser", "BayId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Ferretto.VW.MAS.DataModels.LoadingUnit", b =>

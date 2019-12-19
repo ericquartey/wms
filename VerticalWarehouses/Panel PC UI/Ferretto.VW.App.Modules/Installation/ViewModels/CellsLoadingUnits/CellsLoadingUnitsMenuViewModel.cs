@@ -12,12 +12,15 @@ using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.Utils;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.VW.Utils.Extensions;
 using Prism.Regions;
 
 // ReSharper disable ArrangeThisQualifier
 namespace Ferretto.VW.App.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     internal sealed class CellsLoadingUnitsMenuViewModel : BaseMainViewModel
     {
         #region Fields

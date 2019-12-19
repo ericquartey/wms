@@ -30,6 +30,8 @@ namespace Ferretto.VW.MAS.DataModels
 
         public bool IsExternal { get; set; }
 
+        public Laser Laser { get; set; }
+
         public BayNumber Number { get; set; }
 
         public BayOperation Operation { get; set; }

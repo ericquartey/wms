@@ -27,6 +27,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private bool closeShutter;
 
+        private bool measure;
+
         private Mission mission;
 
         #endregion
@@ -55,9 +57,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitMoveToTargetState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
 
-            bool measure = false;
+            this.measure = false;
             if (machineData is Mission moveData)
             {
                 this.mission = moveData;
@@ -68,10 +70,10 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 {
                     var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitSource);
                     this.closeShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
-                    measure = true;
+                    this.measure = true;
                 }
 
-                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData);
+                var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(moveData, out var targetBayPositionId, out var targetCellId);
                 if (destinationHeight is null)
                 {
                     var description = $"GetSourceHeight error: position not found ({moveData.LoadingUnitSource} {(moveData.LoadingUnitSource == LoadingUnitLocation.Cell ? moveData.LoadingUnitCellSourceId : moveData.LoadingUnitId)})";
@@ -79,7 +81,22 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                 }
 
-                this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value, this.closeShutter, measure, MessageActor.MachineManager, commandMessage.RequestingBay, moveData.RestoreConditions);
+                if (this.mission.NeedHomingAxis == Axis.Horizontal)
+                {
+                    this.Logger.LogDebug($"Homing elevator occupied start");
+                    this.loadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.mission.LoadingUnitId, commandMessage.RequestingBay, MessageActor.MachineManager);
+                }
+                else
+                {
+                    this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                        this.closeShutter,
+                        this.measure,
+                        MessageActor.MachineManager,
+                        commandMessage.RequestingBay,
+                        moveData.RestoreConditions,
+                        targetBayPositionId,
+                        targetCellId);
+                }
                 this.mission.RestoreConditions = false;
                 this.missionsDataProvider.Update(this.mission);
             }
@@ -100,7 +117,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             switch (notificationStatus)
             {
                 case MessageStatus.OperationEnd:
-                    this.UpdateResponseList(notificationStatus, notification.Type);
+                    if (notification.Type == MessageType.Homing)
+                    {
+                        // do not clear needHoming because will have to do it after unloading (DepositUnitState)
+                        var destinationHeight = this.loadingUnitMovementProvider.GetDestinationHeight(this.mission, out var targetBayPositionId, out var targetCellId);
+                        this.loadingUnitMovementProvider.PositionElevatorToPosition(destinationHeight.Value,
+                            this.closeShutter,
+                            this.measure,
+                            MessageActor.MachineManager,
+                            notification.RequestingBay,
+                            this.mission.RestoreConditions,
+                            targetBayPositionId,
+                            targetCellId);
+                    }
+                    else
+                    {
+                        this.UpdateResponseList(notificationStatus, notification.Type);
+                    }
 
                     break;
 

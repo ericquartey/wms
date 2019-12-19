@@ -27,8 +27,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines
 
         #region Methods
 
-        public abstract void ProcessMessage(IoMessage message);
-
         public abstract void ProcessResponseMessage(IoReadMessage message);
 
         public abstract void Start();

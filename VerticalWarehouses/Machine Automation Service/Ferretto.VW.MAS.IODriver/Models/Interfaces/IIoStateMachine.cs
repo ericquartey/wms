@@ -11,8 +11,6 @@ namespace Ferretto.VW.MAS.IODriver
 
         void EnqueueMessage(IoWriteMessage message);
 
-        void ProcessMessage(IoMessage message);
-
         void ProcessResponseMessage(IoReadMessage message);
 
         void PublishNotificationEvent(FieldNotificationMessage notificationMessage);

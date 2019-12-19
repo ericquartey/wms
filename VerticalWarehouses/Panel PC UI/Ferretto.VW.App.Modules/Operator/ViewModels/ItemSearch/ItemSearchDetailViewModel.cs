@@ -3,10 +3,13 @@ using System.Drawing;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
+    [Warning(WarningsArea.Picking)]
     public class ItemSearchDetailViewModel : BaseOperatorViewModel
     {
         #region Fields

@@ -10,12 +10,15 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
 namespace Ferretto.VW.App.Modules.Installation.ViewModels
 {
+    [Warning(WarningsArea.Installation)]
     public partial class BaseMovementsViewModel : BaseMainViewModel, IRegionMemberLifetime
     {
         #region Fields

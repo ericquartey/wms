@@ -16,6 +16,8 @@ using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
+using Ferretto.VW.Utils.Attributes;
+using Ferretto.VW.Utils.Enumerators;
 using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
@@ -55,6 +57,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         ResultCheck,
     }
 
+    [Warning(WarningsArea.Installation)]
     internal abstract class BaseProfileHeightCheckViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
@@ -66,6 +69,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineModeService machineModeService;
+
+        private readonly IMachineService machineService;
 
         private readonly BindingList<NavigationMenuItem> menuItems = new BindingList<NavigationMenuItem>();
 
@@ -91,6 +96,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IEventAggregator eventAggregator,
             IMachineProfileProcedureWebService profileProcedureService,
             IMachineModeService machineModeService,
+            IMachineService machineService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
@@ -98,6 +104,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.profileProcedureService = profileProcedureService ?? throw new ArgumentNullException(nameof(profileProcedureService));
             this.machineModeService = machineModeService ?? throw new ArgumentNullException(nameof(machineModeService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.InitializeNavigationMenu();
         }
@@ -144,6 +151,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
             }
         }
+
+        public IMachineService MachineService => this.machineService;
 
         public IEnumerable<NavigationMenuItem> MenuItems => this.menuItems;
 

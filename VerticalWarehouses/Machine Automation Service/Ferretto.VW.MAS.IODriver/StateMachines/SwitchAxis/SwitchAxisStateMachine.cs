@@ -58,18 +58,6 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.SwitchAxis
 
         #region Methods
 
-        public override void ProcessMessage(IoMessage message)
-        {
-            if (message.ValidOutputs && !message.ElevatorMotorOn && !message.CradleMotorOn)
-            {
-                this.delayTimer = new Timer(this.DelayElapsed, null, PauseInterval, Timeout.Infinite);
-            }
-
-            this.Logger.LogTrace($"1:Valid Outputs={message.ValidOutputs}:Elevator motor on={message.ElevatorMotorOn}:Cradle motor on={message.CradleMotorOn}");
-
-            base.ProcessMessage(message);
-        }
-
         public override void ProcessResponseMessage(IoReadMessage message)
         {
             var checkMessage = message.FormatDataOperation == ShdFormatDataOperation.Data &&

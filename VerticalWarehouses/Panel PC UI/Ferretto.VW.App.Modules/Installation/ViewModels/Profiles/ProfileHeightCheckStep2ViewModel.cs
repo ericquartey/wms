@@ -63,8 +63,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineElevatorService machineElevatorService,
             IBayManager bayManager,
             ISensorsService sensorsService,
-            IMachineElevatorWebService machineElevatorWebService)
-            : base(eventAggregator, profileProcedureService, machineModeService, bayManager)
+            IMachineElevatorWebService machineElevatorWebService,
+            IMachineService machineService)
+            : base(eventAggregator, profileProcedureService, machineModeService, machineService, bayManager)
         {
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
