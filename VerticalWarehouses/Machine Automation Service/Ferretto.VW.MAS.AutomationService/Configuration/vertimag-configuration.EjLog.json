@@ -26,7 +26,8 @@
             {
                 "Number": "BayOne",
                 "Id": 21, // same ID as on EjLog (Destination Group)
-                "AlphaNumericBar": null,
+                "DestinationGroups": [ 10, 42 ],
+        "AlphaNumericBar": null,
                 "Inverter": {
                     "Type": "Acu",
                     "Index": "Slave3"
@@ -71,6 +72,7 @@
             {
                 "Number": "BayTwo",
                 "Id": 22, // same ID as on EjLog (Destination Group)
+        "DestinationGroups": [ 10 ],
                 "IoDevice": {
                     "Index": "IoDevice2",
                     "IpAddress": "127.0.0.1",

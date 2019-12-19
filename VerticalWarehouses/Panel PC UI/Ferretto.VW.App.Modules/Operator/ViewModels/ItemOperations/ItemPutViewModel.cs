@@ -45,11 +45,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
-        public async override Task OnAppearedAsync()
-        {
-            await base.OnAppearedAsync();
-        }
-
         public override void OnMisionOperationRetrieved()
         {
             this.InputQuantity = this.MissionOperation.RequestedQuantity;

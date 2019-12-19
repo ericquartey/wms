@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Ferretto.VW.App.Modules.Operator.Interfaces;
@@ -31,7 +32,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int? areaId;
 
-        private int currentItemIndex;
+        private int? currentItemIndex;
 
         private DelegateCommand downCommand;
 
@@ -69,7 +70,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownCommand => this.downCommand ?? (this.downCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(false), this.CanDown));
+        public ICommand DownCommand => this.downCommand
+            ?? (this.downCommand = new DelegateCommand(
+            () => this.ChangeSelectedList(false),
+            this.CanSelectNext));
 
         public bool IsWaitingForResponse
         {
@@ -79,64 +83,76 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override bool KeepAlive => true;
 
-        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
+        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.ShowDetails(), this.CanShowDetails));
 
         public ICommand ListExecuteCommand =>
-                    this.listExecuteCommand
+            this.listExecuteCommand
             ??
-            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
+            (this.listExecuteCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
 
         public ItemListExecution SelectedList
         {
             get => this.selectedList;
+            set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand UpCommand => this.upCommand
+            ??
+            (this.upCommand = new DelegateCommand(
+                () => this.ChangeSelectedList(true),
+                this.CanSelectPrevious));
+
+        private int? CurrentItemIndex
+        {
+            get => this.currentItemIndex;
             set
             {
-                if (this.SetProperty(ref this.selectedList, value))
+                if (this.SetProperty(ref this.currentItemIndex, value))
                 {
-                    this.RaiseCanExecuteChanged();
+                    if (this.currentItemIndex.HasValue)
+                    {
+                        this.SelectedList = this.lists.ElementAtOrDefault(this.currentItemIndex.Value);
+                    }
+                    else
+                    {
+                        this.SelectedList = null;
+                    }
                 }
             }
         }
-
-        public ICommand UpCommand => this.upCommand ?? (this.upCommand = new DelegateCommand(() => this.ChangeSelectedListAsync(true), this.CanUp));
 
         #endregion
 
         #region Methods
 
-        public void ChangeSelectedListAsync(bool isUp)
+        public void ChangeSelectedList(bool isUp)
         {
-            if (this.lists == null)
+            if (this.lists is null || !this.CurrentItemIndex.HasValue)
             {
                 return;
             }
 
-            if (this.lists.Count() != 0)
+            if (this.lists.Any())
             {
-                this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
-                if (this.currentItemIndex < 0 || this.currentItemIndex >= this.lists.Count())
-                {
-                    this.currentItemIndex = (this.currentItemIndex < 0) ? 0 : this.lists.Count() - 1;
-                }
+                var newIndex = isUp ? this.CurrentItemIndex.Value - 1 : this.CurrentItemIndex.Value + 1;
 
-                this.SelectedList = this.lists[this.currentItemIndex];
+                this.CurrentItemIndex = Math.Max(0, Math.Min(newIndex, this.lists.Count - 1));
             }
-
-            this.SelectLoadingUnit();
         }
 
         public async Task ExecuteListAsync()
         {
+            System.Diagnostics.Debug.Assert(this.areaId.HasValue, "The area should be specified");
+
             try
             {
-                if (!this.areaId.HasValue)
-                {
-                    return;
-                }
                 var bay = await this.bayManager.GetBayAsync();
                 await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+
                 await this.LoadListsAsync();
             }
             catch
@@ -152,7 +168,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             var machineIdentity = await this.identityService.GetAsync();
-            if (machineIdentity == null)
+            if (machineIdentity is null)
             {
                 return;
             }
@@ -160,43 +176,114 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
-            await this.LoadListsAsync();
-        }
-
-        private bool CanDetailCommand()
-        {
-            return !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
-        }
-
-        private bool CanDown()
-        {
-            return
-                this.currentItemIndex < this.lists.Count - 1;
+            await Task.Run(async () =>
+            {
+                do
+                {
+                    await this.LoadListsAsync();
+                    await Task.Delay(5000);
+                } while (this.IsVisible);
+            });
         }
 
         private bool CanExecuteList()
         {
-            if (this.selectedList == null)
-            {
-                return false;
-            }
-            if (this.selectedList.ExecutionMode != ListExecutionMode.None)
-            {
-                return true;
-            }
-
-            return false;
+            return
+                this.areaId.HasValue
+                &&
+                !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null
+                &&
+                this.SelectedList.ExecutionMode != ListExecutionMode.None;
         }
 
-        private bool CanUp()
+        private bool CanSelectNext()
         {
             return
-                this.currentItemIndex > 0;
+                this.CurrentItemIndex < this.lists.Count - 1
+                &&
+                !this.IsWaitingForResponse;
         }
 
-        private void Detail()
+        private bool CanSelectPrevious()
+        {
+            return
+                this.CurrentItemIndex > 0
+                &&
+                !this.IsWaitingForResponse;
+        }
+
+        private bool CanShowDetails()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null;
+        }
+
+        private async Task LoadListsAsync()
+        {
+            if (!this.areaId.HasValue)
+            {
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var lastItemListId = this.selectedList?.Id;
+                var newLists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+                this.IsWaitingForResponse = false;
+
+                var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
+                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count)
+                {
+                    return;
+                }
+
+                this.lists.Clear();
+                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
+
+                this.RaisePropertyChanged(nameof(this.Lists));
+                this.RaiseCanExecuteChanged();
+                this.SetCurrentIndex(lastItemListId);
+            }
+            catch (Exception ex)
+            {
+                this.Lists?.Clear();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.upCommand?.RaiseCanExecuteChanged();
+            this.downCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+            this.listDetailButtonCommand.RaiseCanExecuteChanged();
+        }
+
+        private void SetCurrentIndex(int? itemListId)
+        {
+            if (itemListId.HasValue
+                &&
+                this.lists.FirstOrDefault(l => l.Id == itemListId.Value) is ItemListExecution foundList)
+            {
+                this.CurrentItemIndex = this.Lists.IndexOf(foundList);
+            }
+            else
+            {
+                this.CurrentItemIndex = 0;
+            }
+        }
+
+        private void ShowDetails()
         {
             this.IsWaitingForResponse = true;
 
@@ -215,68 +302,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
-            }
-        }
-
-        private async Task LoadListsAsync()
-        {
-            if (!this.areaId.HasValue)
-            {
-                return;
-            }
-
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                var lastItemListId = this.selectedList?.Id;
-                var lists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
-
-                this.lists.Clear();
-                lists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
-
-                this.RaisePropertyChanged(nameof(this.Lists));
-
-                this.SetCurrentIndex(lastItemListId);
-
-                this.SelectLoadingUnit();
-            }
-            catch (Exception ex)
-            {
-                this.lists?.Clear();
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.upCommand?.RaiseCanExecuteChanged();
-            this.downCommand?.RaiseCanExecuteChanged();
-            this.listExecuteCommand?.RaiseCanExecuteChanged();
-            this.listDetailButtonCommand.RaiseCanExecuteChanged();
-        }
-
-        private void SelectLoadingUnit()
-        {
-            this.SelectedList = this.lists.ElementAtOrDefault(this.currentItemIndex);
-            this.RaiseCanExecuteChanged();
-        }
-
-        private void SetCurrentIndex(int? itemListId)
-        {
-            if (itemListId.HasValue
-                &&
-                this.lists.FirstOrDefault(l => l.Id == itemListId.Value) is ItemListExecution itemListFound)
-            {
-                this.currentItemIndex = this.Lists.IndexOf(itemListFound);
-            }
-            else
-            {
-                this.currentItemIndex = 0;
             }
         }
 

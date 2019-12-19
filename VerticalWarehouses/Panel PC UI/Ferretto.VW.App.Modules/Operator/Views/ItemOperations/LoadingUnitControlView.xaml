@@ -20,7 +20,7 @@
                                  IsEnabled="False"
                                  IsRotated="{Binding IsBaySideBack}"
                                  SelectedColorFilterFunc="{Binding CompartmentColoringFunction}"
-                                 SelectedItem="{Binding SelectedCompartment, Mode=OneWay}"
+                                 SelectedItem="{Binding SelectedCompartment, Mode=TwoWay}"
                                  ShowBackground="False"
                                  ShowRuler="False" />
     </Grid>

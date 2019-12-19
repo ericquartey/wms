@@ -72,7 +72,9 @@ namespace Ferretto.VW.MAS.MissionManager
                     .Where(m => m.BayId.HasValue)
                     .Where(m => !localMissions.Any(lm => lm.WmsId == m.Id));
 
-                this.Logger.LogDebug("A total of {newMissionsCount} is available", newWmsMissions.Count());
+                this.Logger.LogDebug(newWmsMissions.Any()
+                    ? "A total of {newMissionsCount} new WMS mission(s) are available."
+                    : "No new WMS missions are available.", newWmsMissions.Count());
 
                 foreach (var wmsMission in newWmsMissions)
                 {
@@ -80,7 +82,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                     if (bay is null)
                     {
-                        this.Logger.LogWarning($"The WMS mission id={wmsMission.Id} cannot be accepted because no bay with id={wmsMission.BayId.Value} exists on the machine.");
+                        this.Logger.LogWarning($"The WMS mission id={wmsMission.Id} cannot be accepted: no bay with id={wmsMission.BayId.Value} exists on the machine.");
                     }
                     else
                     {

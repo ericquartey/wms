@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.MissionManager;
-using Ferretto.WMS.Data.WebAPI.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -11,7 +10,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MissionOperationsController : ControllerBase
+    public class MissionOperationsController : ControllerBase, IRequestingBayController
     {
         #region Fields
 
@@ -45,6 +44,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpPost("{id}/abort")]
@@ -61,6 +66,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             await this.missionOperationsProvider.CompleteAsync(id, quantity);
 
             return this.Ok();
+        }
+
+        [HttpGet("GetByBayCount")]
+        public ActionResult<int> GetByBayCount()
+        {
+            var missionOperationsCount = this.missionOperationsProvider.GetCountByBay(this.BayNumber);
+
+            return this.Ok(missionOperationsCount);
         }
 
         [HttpPost("{id}/partially-complete")]

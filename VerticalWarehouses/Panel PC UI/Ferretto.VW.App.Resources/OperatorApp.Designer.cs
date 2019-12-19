@@ -340,7 +340,8 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Current operation is no longer available..
+        ///   Looks up a localized string similar to The current operation was remotely cancelled.
+        ///Please put back any moved pieces in their original position..
         /// </summary>
         public static string CurrentOperationIsNoLongerAvailable {
             get {
@@ -1609,6 +1610,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is 1 loading unit send to bay.
+        /// </summary>
+        public static string LoadingUnitSendToBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitSendToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are {0} loading units send to bay.
+        /// </summary>
+        public static string LoadingUnitsSendToBay {
+            get {
+                return ResourceManager.GetString("LoadingUnitsSendToBay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Width.
         /// </summary>
         public static string LoadingUnitWidth {
@@ -2068,6 +2087,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No loading units to move.
+        /// </summary>
+        public static string NoLoadingUnitsToMove {
+            get {
+                return ResourceManager.GetString("NoLoadingUnitsToMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Notes.
         /// </summary>
         public static string Notes {
@@ -2082,6 +2110,15 @@ namespace Ferretto.VW.App.Resources {
         public static string OperationCancelled {
             get {
                 return ResourceManager.GetString("OperationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Operation confirmed..
+        /// </summary>
+        public static string OperationConfirmed {
+            get {
+                return ResourceManager.GetString("OperationConfirmed", resourceCulture);
             }
         }
         
