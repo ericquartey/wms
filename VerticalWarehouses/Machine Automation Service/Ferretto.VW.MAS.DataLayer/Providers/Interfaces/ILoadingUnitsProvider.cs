@@ -9,6 +9,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Add(IEnumerable<LoadingUnit> loadingUnits);
 
+        MachineErrorCode CheckWeight(int id);
+
         IEnumerable<LoadingUnit> GetAll();
 
         LoadingUnit GetById(int id);

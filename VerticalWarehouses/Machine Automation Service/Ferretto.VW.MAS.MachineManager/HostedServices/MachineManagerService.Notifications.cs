@@ -38,6 +38,7 @@ namespace Ferretto.VW.MAS.MachineManager
                 case MessageType.DataLayerReady:
                     // performance optimization
                     this.serviceScope.ServiceProvider.GetRequiredService<ICellsProvider>().GetAll();
+                    this.serviceScope.ServiceProvider.GetRequiredService<IMachineProvider>().Get();
                     break;
             }
 

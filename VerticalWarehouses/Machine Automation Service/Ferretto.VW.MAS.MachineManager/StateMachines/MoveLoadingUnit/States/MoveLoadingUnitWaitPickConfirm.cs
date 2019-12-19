@@ -69,10 +69,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             if (machineData is Mission moveData)
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitWaitPickConfirm);
                 this.missionsDataProvider.Update(this.mission);
