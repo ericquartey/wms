@@ -34,10 +34,6 @@
 
         <Grid Grid.Column="1"
               Margin="15,0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -45,81 +41,88 @@
             </Grid.RowDefinitions>
 
             <TextBlock Grid.Row="0"
-                       Grid.Column="1"
                        HorizontalAlignment="Left"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="Menu Altro" />
 
-            <Grid Grid.Row="0"
-                  Margin="15,0">
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
                 </Grid.RowDefinitions>
 
-                <controls:PpcButton Grid.Row="0"
-                                    Margin="0,0,15,15"
+                <controls:PpcButton Title="Gestione Utenti"
+                                    Grid.Row="0"
+                                    Grid.Column="0"
+                                    Margin="15"
                                     Padding="-2,1,0,0"
                                     HorizontalAlignment="Left"
                                     Abbrevation="4.6.1"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuUsersCommand}"
-                                    Content="Gestione Utenti"
+                                    Content="bla bla bla bla bla"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Grid.Row="1"
-                                    Margin="0,0,15,15"
+                <controls:PpcButton Title="Comunicazione WMS"
+                                    Grid.Row="0"
+                                    Grid.Column="1"
+                                    Margin="15"
                                     Padding="-2,1,0,0"
-                                    HorizontalAlignment="Left"
+                                    HorizontalAlignment="Center"
                                     Abbrevation="4.6.2"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuComunicationWmsCommand}"
-                                    Content="Comunicazione WMS"
+                                    Content="bla bla bla bla bla"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Grid.Row="2"
-                                    Margin="0,0,15,15"
+                <controls:PpcButton Title="Parametri"
+                                    Grid.Row="0"
+                                    Grid.Column="2"
+                                    Margin="15"
                                     Padding="-2,1,0,0"
-                                    HorizontalAlignment="Left"
+                                    HorizontalAlignment="Right"
                                     Abbrevation="4.6.3"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParametersCommand}"
-                                    Content="Parametri"
+                                    Content="bla bla bla bla bla"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Grid.Row="3"
-                                    Margin="0,0,15,15"
+                <controls:PpcButton Title="Parametrizzazione Inverter"
+                                    Grid.Row="1"
+                                    Grid.Column="0"
+                                    Margin="15"
                                     Padding="-2,1,0,0"
+                                    HorizontalAlignment="Left"
                                     Abbrevation="4.6.4"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParameterInverterCommand}"
-                                    Content="Parametrizzazione Inverter"
+                                    Content="bla bla bla bla bla"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
-                <controls:PpcButton Grid.Row="4"
-                                    Margin="0,0,15,15"
+                <controls:PpcButton Title="Menu OLD"
+                                    Grid.Row="1"
+                                    Grid.Column="1"
+                                    Margin="15"
                                     Padding="-2,1,0,0"
+                                    HorizontalAlignment="Center"
                                     Abbrevation="4.6.5"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuOldCommand}"
-                                    Content="Menu OLD"
+                                    Content="bla bla bla bla bla"
                                     Kind="Account"
-                                    Style="{DynamicResource PpcButtonMenuStyle}" />
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
             </Grid>
-
-            <Grid Grid.Row="1"
-                  Grid.Column="1" />
 
         </Grid>
     </Grid>
