@@ -57,7 +57,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"MoveLoadingUnitMoveToTargetState: received command {commandMessage.Type}, {commandMessage.Description}");
+            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
 
             this.measure = false;
             if (machineData is Mission moveData)
@@ -83,7 +83,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 if (this.mission.NeedHomingAxis == Axis.Horizontal)
                 {
-                    this.Logger.LogDebug($"Homing start");
+                    this.Logger.LogDebug($"Homing elevator occupied start");
                     this.loadingUnitMovementProvider.Homing(Axis.HorizontalAndVertical, Calibration.FindSensor, this.mission.LoadingUnitId, commandMessage.RequestingBay, MessageActor.MachineManager);
                 }
                 else

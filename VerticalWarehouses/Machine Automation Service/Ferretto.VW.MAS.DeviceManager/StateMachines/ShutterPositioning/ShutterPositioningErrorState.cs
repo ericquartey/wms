@@ -83,6 +83,8 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
 
         public override void Start()
         {
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.machineData.InverterIndex}");
+
             var stopMessage = new FieldCommandMessage(
                 null,
                 "Reset Inverter ShutterPositioning",
@@ -90,8 +92,6 @@ namespace Ferretto.VW.MAS.DeviceManager.ShutterPositioning
                 FieldMessageActor.DeviceManager,
                 FieldMessageType.InverterStop,
                 (byte)this.machineData.InverterIndex);
-
-            this.Logger.LogTrace($"1:Publish Field Command Message processed: {stopMessage.Type}, {stopMessage.Destination}");
 
             this.ParentStateMachine.PublishFieldCommandMessage(stopMessage);
 

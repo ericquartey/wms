@@ -134,6 +134,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
         public override void Start()
         {
             this.inverterIndex = this.baysDataProvider.GetInverterIndexByProfile(this.machineData.RequestingBay);
+            this.Logger.LogDebug($"Start {this.GetType().Name} Inverter {this.inverterIndex}");
         }
 
         public override void Stop(StopRequestReason reason)
