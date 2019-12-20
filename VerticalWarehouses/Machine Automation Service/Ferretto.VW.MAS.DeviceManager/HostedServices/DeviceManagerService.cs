@@ -638,6 +638,7 @@ namespace Ferretto.VW.MAS.DeviceManager
                     break;
 
                 case FieldMessageType.MeasureProfile:
+                case FieldMessageType.BayLight:
                     bayNumber = BayNumber.ElevatorBay;
                     break;
 

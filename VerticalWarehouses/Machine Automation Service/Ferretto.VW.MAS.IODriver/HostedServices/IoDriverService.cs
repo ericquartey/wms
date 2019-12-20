@@ -111,6 +111,10 @@ namespace Ferretto.VW.MAS.IODriver
                 case FieldMessageType.MeasureProfile:
                     ioDevice.ExecuteMeasureProfile(command);
                     break;
+
+                case FieldMessageType.BayLight:
+                    ioDevice.ExecuteBayLight(command);
+                    break;
             }
 
             return Task.CompletedTask;

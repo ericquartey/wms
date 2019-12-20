@@ -11,6 +11,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         void DestroyStateMachine();
 
+        void ExecuteBayLight(FieldCommandMessage receivedMessage);
+
         void ExecuteIoPowerUp();
 
         void ExecuteIoReset();
