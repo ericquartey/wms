@@ -136,6 +136,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
+        public LoadingUnit EmbarkedLoadingUnit => this.MachineStatus.EmbarkedLoadingUnit;
+
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public ICommand GoToMovementsGuidedCommand =>
@@ -157,7 +159,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             ??
             (this.goToStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand()));
-
 
         public bool HasCarousel
         {
@@ -229,7 +230,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public MachineStatus MachineStatus => this.machineService.MachineStatus;
 
         public ICommand ResetCommand =>
-                            this.resetCommand
+            this.resetCommand
             ??
             (this.resetCommand = new DelegateCommand(
                async () => await this.ResetCommandAsync(),
@@ -309,7 +310,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
-                
+
                 this.OnManualAppearedAsync();
 
                 this.SubscribeToEvents();
@@ -490,27 +491,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             switch (message.Status)
             {
-                case CommonUtils.Messages.Enumerations.MessageStatus.OperationStart:
-                    if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Vertical)
-                    {
-                        this.VerticalTargetPosition = message.Data?.TargetPosition;
-                    }
-                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.Horizontal)
-                    {
-                        this.HorizontalTargetPosition = message.Data?.TargetPosition;
-                    }
-                    else if (message.Data?.AxisMovement == CommonUtils.Messages.Enumerations.Axis.BayChain)
-                    {
-                        this.BayChainTargetPosition = message.Data?.TargetPosition;
-                    }
-                    break;
-
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationEnd:
                     {
-                        this.VerticalTargetPosition = null;
-                        this.HorizontalTargetPosition = null;
-                        this.BayChainTargetPosition = null;
-
                         this.StopMoving();
 
                         await this.RefreshMachineInfoAsync();
@@ -520,10 +502,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationError:
                 case CommonUtils.Messages.Enumerations.MessageStatus.OperationStop:
                     {
-                        this.VerticalTargetPosition = null;
-                        this.HorizontalTargetPosition = null;
-                        this.BayChainTargetPosition = null;
-
                         this.StopMoving();
 
                         await this.RefreshMachineInfoAsync();
@@ -576,7 +554,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.MachineService));
             this.RaisePropertyChanged(nameof(this.MachineStatus));
-            this.RaisePropertyChanged(nameof(this.MachineStatus.EmbarkedLoadingUnit));
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));
@@ -592,7 +570,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var selectedBayPosition = this.SelectedBayPosition;
                 if (selectedBayPosition != null)
                 {
-                    this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id);
+                    this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id, (this.SelectedBayPosition.LoadingUnit != null));
                     this.loadFromBayCommand?.RaiseCanExecuteChanged();
                     //if (!string.IsNullOrEmpty(this.loadFromBayPolicy.Reason))
                     //{
@@ -601,7 +579,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     //System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
 
-                    this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id);
+                    this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id, (this.MachineStatus.EmbarkedLoadingUnit != null));
                     this.unloadToBayCommand?.RaiseCanExecuteChanged();
                     //if (!string.IsNullOrEmpty(this.unloadToBayPolicy.Reason))
                     //{

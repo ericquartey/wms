@@ -11,7 +11,8 @@
             mc:Ignorable="d">
     <Grid Margin="130,30,0,0">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="120" />
             <RowDefinition />
             <RowDefinition />
             <RowDefinition />
@@ -28,51 +29,50 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
 
-        <controls:PpcLabeledText Grid.Row="1"
+        <StackPanel Grid.Row="1"
+                    Grid.ColumnSpan="3"
+                    Orientation="Horizontal">
+
+            <controls:CardSensorAxisVertical Width="250"
+                                             Margin="0,5,5,15" />
+
+            <controls:CardSensorAxisHorizontal Width="250"
+                                               Margin="5,5,5,15" />
+
+        </StackPanel>
+
+        <controls:PpcLabeledText Grid.Row="2"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.LowerBound}" />
-        <controls:PpcLabeledText Grid.Row="1"
+        <controls:PpcLabeledText Grid.Row="2"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Offset}" />
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentVerticalPosition, StringFormat={}{0:F1}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentHorizontalPosition, StringFormat={}{0:F1}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorHorizontalPosition}" />
-
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.UpperBound}" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <controls:PpcLabeledText Grid.Row="3"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding Resolution, StringFormat={}{0:F6}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                  LabelText="{x:Static res:InstallationApp.Resolution}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="5"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="5"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"

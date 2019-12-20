@@ -41,18 +41,15 @@
 
             <controls:CardSensorAxisVertical Grid.Row="2"
                                              Width="250"
-                                             Margin="0,0,15,5"
-                                             VerticalTargetPosition="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}" />
+                                             Margin="0,0,15,5" />
 
             <controls:CardSensorAxisHorizontal Grid.Row="3"
                                                Width="250"
-                                               Margin="0,0,15,5"
-                                               HorizontalTargetPosition="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}" />
+                                               Margin="0,0,15,5" />
 
             <controls:CardSensorBay Grid.Row="4"
                                     Width="250"
-                                    Margin="0,0,15,5"
-                                    BayChainTargetPosition="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}" />
+                                    Margin="0,0,15,5" />
 
             <controls:CardSensorShutter Grid.Row="5"
                                         Width="250"

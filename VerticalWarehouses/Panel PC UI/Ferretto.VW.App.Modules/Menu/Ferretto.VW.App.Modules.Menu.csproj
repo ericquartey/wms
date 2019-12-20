@@ -53,6 +53,7 @@
     <None Remove="Views\BaysMenuView.xaml" />
     <None Remove="Views\CellsMenuView.xaml" />
     <None Remove="Views\ElevatorMenuView.xaml" />
+    <None Remove="Views\InstallationNavigationFooterView.xaml" />
     <None Remove="Views\InstallationNavigationMenuView.xaml" />
     <None Remove="Views\LoadingUnitsMenuView.xaml" />
     <None Remove="Views\OtherMenuView.xaml" />
@@ -69,6 +70,9 @@
 
   <ItemGroup>
     <Compile Update="App.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\InstallationNavigationFooterView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\InstallationNavigationMenuView.xaml.cs">

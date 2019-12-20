@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Services
         private double? bayPositionUpHeight;
 
         private bool bayZeroChainIsVisible;
-        
+
         private SubscriptionToken sensorsToken;
 
         #endregion
@@ -184,7 +184,6 @@ namespace Ferretto.VW.App.Services
 
         public bool IsOneTonMachine => this.bayManagerService.Identity.IsOneTonMachine;
 
-
         public bool IsZeroChain => this.IsOneTonMachine ? this.sensors.ZeroPawlSensorOneK : this.sensors.ZeroPawlSensor;
 
         public Sensors Sensors => this.sensors;
@@ -196,6 +195,42 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Methods
+
+        public bool IsLoadingUnitInBayByNumber(MAS.AutomationService.Contracts.BayNumber bayNumber)
+        {
+            if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                return this.Sensors.LUPresentInBay1;
+            }
+            else if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                return this.Sensors.LUPresentInBay2;
+            }
+            else if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                return this.Sensors.LUPresentInBay3;
+            }
+
+            return false;
+        }
+
+        public bool IsLoadingUnitInMiddleBottomBayByNumber(MAS.AutomationService.Contracts.BayNumber bayNumber)
+        {
+            if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayOne)
+            {
+                return this.Sensors.LUPresentMiddleBottomBay1;
+            }
+            else if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayTwo)
+            {
+                return this.Sensors.LUPresentMiddleBottomBay2;
+            }
+            else if (bayNumber is MAS.AutomationService.Contracts.BayNumber.BayThree)
+            {
+                return this.Sensors.LUPresentMiddleBottomBay3;
+            }
+
+            return false;
+        }
 
         public bool IsNavigationTarget(NavigationContext navigationContext)
         {

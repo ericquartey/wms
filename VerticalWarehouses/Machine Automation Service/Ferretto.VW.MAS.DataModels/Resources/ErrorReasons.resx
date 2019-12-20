@@ -306,4 +306,7 @@
   <data name="MachineWeightExceeded" xml:space="preserve">
     <value>MachineWeightExceeded</value>
   </data>
+  <data name="WarehouseIsFull" xml:space="preserve">
+    <value>WarehouseIsFull</value>
+  </data>
 </root>

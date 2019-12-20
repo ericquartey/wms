@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191219133512_initialcreation")]
+    [Migration("20191220134901_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -605,6 +605,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 33,
+                            Code = 33,
+                            Description = "WarehouseIsFull",
+                            Reason = "WarehouseIsFull",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -1022,6 +1030,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 32,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 33,
                             TotalErrors = 0
                         },
                         new
@@ -1523,7 +1536,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 19, 14, 35, 11, 460, DateTimeKind.Local).AddTicks(7740),
+                            InstallationDate = new DateTime(2017, 2, 20, 14, 49, 0, 764, DateTimeKind.Local).AddTicks(6360),
                             ServiceStatus = 86
                         });
                 });

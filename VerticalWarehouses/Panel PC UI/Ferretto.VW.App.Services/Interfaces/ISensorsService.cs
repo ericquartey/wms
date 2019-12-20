@@ -23,10 +23,12 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        bool IsLoadingUnitInBayByNumber(MAS.AutomationService.Contracts.BayNumber bayNumber);
+
+        bool IsLoadingUnitInMiddleBottomBayByNumber(MAS.AutomationService.Contracts.BayNumber bayNumber);
+
         Task RefreshAsync(bool forceRefresh);
 
         #endregion
-
-        //void RetrieveElevatorPosition(ElevatorPosition position);
     }
 }

@@ -101,7 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         Status = MissionStatus.New,
                         TargetBay = bayNumber,
                         WmsId = wmsId,
-                    }); ;
+                    });
 
                 this.dataContext.SaveChanges();
 
