@@ -8,6 +8,7 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:OtherMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
@@ -21,87 +22,83 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-
-        <TextBlock Grid.Row="0"
-                   Grid.Column="1"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Altro" />
-
-        <Grid Grid.Row="0"
+        <Grid Grid.Column="0"
               Margin="15,0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <controls:PpcButton Grid.Row="0"
-                                Margin="0,0,15,15"
-                                Padding="-2,1,0,0"
-                                HorizontalAlignment="Left"
-                                Abbrevation="4.6.1"
-                                BorderBrush="{DynamicResource FerrettoRed}"
-                                Command="{Binding MenuUsersCommand}"
-                                Content="Gestione Utenti"
-                                Kind="Account"
-                                Style="{DynamicResource PpcButtonMenuStyle}" />
-
-            <controls:PpcButton Grid.Row="1"
-                                Margin="0,0,15,15"
-                                Padding="-2,1,0,0"
-                                HorizontalAlignment="Left"
-                                Abbrevation="4.6.2"
-                                BorderBrush="{DynamicResource FerrettoRed}"
-                                Command="{Binding MenuComunicationWmsCommand}"
-                                Content="Comunicazione WMS"
-                                Kind="Account"
-                                Style="{DynamicResource PpcButtonMenuStyle}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Margin="0,0,15,15"
-                                Padding="-2,1,0,0"
-                                HorizontalAlignment="Left"
-                                Abbrevation="4.6.3"
-                                BorderBrush="{DynamicResource FerrettoRed}"
-                                Command="{Binding MenuParametersCommand}"
-                                Content="Parametri"
-                                Kind="Account"
-                                Style="{DynamicResource PpcButtonMenuStyle}" />
-
-            <controls:PpcButton Grid.Row="3"
-                                Margin="0,0,15,15"
-                                Padding="-2,1,0,0"
-                                Abbrevation="4.6.4"
-                                BorderBrush="{DynamicResource FerrettoRed}"
-                                Command="{Binding MenuParameterInverterCommand}"
-                                Content="Parametrizzazione Inverter"
-                                Kind="Account"
-                                Style="{DynamicResource PpcButtonMenuStyle}" />
-
-            <controls:PpcButton Grid.Row="4"
-                                Margin="0,0,15,15"
-                                Padding="-2,1,0,0"
-                                Abbrevation="4.6.5"
-                                BorderBrush="{DynamicResource FerrettoRed}"
-                                Command="{Binding MenuOldCommand}"
-                                Content="Menu OLD"
-                                Kind="Account"
-                                Style="{DynamicResource PpcButtonMenuStyle}" />
+            <views:InstallationNavigationMenuView Grid.Row="1" />
         </Grid>
 
-        <Grid Grid.Row="1"
-              Grid.Column="1" />
+        <Grid Grid.Column="1"
+              Margin="15,0">
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Menu Altro" />
+
+            <WrapPanel Grid.Row="1">
+
+                <controls:PpcButton Title="Gestione Utenti"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.1"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuUsersCommand}"
+                                    Content="Gestione uteti locali"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Comunicazione WMS"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.2"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuComunicationWmsCommand}"
+                                    Content="Impostazione dell'IP e PORTA del WMS"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Parametri"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.3"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuParametersCommand}"
+                                    Content="Modifica, importazione, esportazione dei parametri macchina"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Parametrizzazione Inverter"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.4"
+                                    BorderBrush="{DynamicResource FerrettoRed}"
+                                    Command="{Binding MenuParameterInverterCommand}"
+                                    Content="Caricamento della parametrizzazione dell'inverter con parametri standard"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                <controls:PpcButton Title="Menu OLD"
+                                    Margin="0,0,30,30"
+                                    Padding="-2,1,0,0"
+                                    Abbrevation="4.7.5"
+                                    BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                    Command="{Binding MenuOldCommand}"
+                                    Content="Collegamento al menu versione prototipo"
+                                    Kind="Account"
+                                    Style="{DynamicResource PpcButtonMenuCardStyle}" />
+            </WrapPanel>
+
+        </Grid>
     </Grid>
 </ctrls:View>

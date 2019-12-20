@@ -33,4 +33,5 @@
     <conv:MachinesToStringConverter x:Key="MTSC" />
     <conv:MultiValueConverterAdapter x:Key="MVC" />
 
+    <conv:DebugDummyConverter x:Key="DEBUG" />
 </ResourceDictionary>

@@ -24,8 +24,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? bayChainTargetPosition;
 
-        private bool bayIsShutterThreeSensors;
-
         private DelegateCommand closedShutterCommand;
 
         private double? horizontalTargetPosition;
@@ -129,11 +127,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             get => this.bayChainTargetPosition;
             private set => this.SetProperty(ref this.bayChainTargetPosition, value);
         }
-
+        
         public bool BayIsShutterThreeSensors
         {
-            get => this.bayIsShutterThreeSensors;
-            set => this.SetProperty(ref this.bayIsShutterThreeSensors, value);
+            get => this.MachineService.IsShutterThreeSensors;
+        }
+
+        public bool HasBayExternal
+        {
+            get => this.MachineService.HasBayExternal;
         }
 
         public ICommand CarouselDownCommand =>
@@ -613,9 +615,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.SelectedLoadingUnit != null
                     &&
-                    this.sensorsService.EmbarkedLoadingUnit != null
+                    this.MachineStatus.EmbarkedLoadingUnit != null
                     &&
-                    this.sensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
+                    this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
                     &&
                     this.sensorsService.Sensors.LuPresentInMachineSide
                     &&
@@ -680,8 +682,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanBaseExecute()
                 &&
                 (this.SelectedCell != null ||
-                    (this.SensorsService.ElevatorLogicalPosition != null &&
-                     this.SensorsService.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
+                    (this.MachineStatus.ElevatorLogicalPosition != null &&
+                     this.MachineStatus.ElevatorLogicalPosition.Contains("Cella"))) // TODO: X Mirco, DA CAMBIARE!!!!!
                 &&
                 (this.SelectedCell == null || this.unloadToCellPolicy?.IsAllowed == true);
         }
@@ -902,8 +904,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SensorsService.EmbarkedLoadingUnit != null
-                    && this.SensorsService.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
+                if (this.MachineStatus.EmbarkedLoadingUnit != null
+                    && this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
                     )
                 {
                     await this.machineElevatorWebService.MoveToFreeCellAsync(
@@ -1087,13 +1089,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SensorsService.EmbarkedLoadingUnit is null)
+                if (this.MachineStatus.EmbarkedLoadingUnit is null)
                 {
                     await this.machineElevatorWebService.UnloadToBayAsync(this.SelectedBayPosition.Id);
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.SelectedBayPosition.Location, this.SensorsService.EmbarkedLoadingUnit.Id);
+                    await this.machineLoadingUnitsWebService.EjectLoadingUnitAsync(this.SelectedBayPosition.Location, this.MachineStatus.EmbarkedLoadingUnit.Id);
                 }
 
                 this.IsBusyUnloadingToBay = true;
@@ -1115,13 +1117,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                if (this.SensorsService.EmbarkedLoadingUnit is null)
+                if (this.MachineStatus.EmbarkedLoadingUnit is null)
                 {
                     await this.machineElevatorWebService.UnloadToCellAsync(this.SelectedCell.Id);
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.SensorsService.EmbarkedLoadingUnit.Id);
+                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
                 }
 
                 this.IsBusyUnloadingToCell = true;

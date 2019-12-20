@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191218083835_initialcreation")]
+    [Migration("20191219133512_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -527,62 +527,78 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 23,
                             Code = 23,
-                            Description = "DestinationBelowLowerBound",
-                            Reason = "DestinationBelowLowerBound",
+                            Description = "LoadingUnitWeightTooLow",
+                            Reason = "LoadingUnitWeightTooLow",
                             Severity = 1
                         },
                         new
                         {
                             Id = 24,
                             Code = 24,
-                            Description = "DestinationOverUpperBound",
-                            Reason = "DestinationOverUpperBound",
+                            Description = "MachineWeightExceeded",
+                            Reason = "MachineWeightExceeded",
                             Severity = 1
                         },
                         new
                         {
                             Id = 25,
                             Code = 25,
-                            Description = "BayInvertersBusy",
-                            Reason = "BayInvertersBusy",
+                            Description = "DestinationBelowLowerBound",
+                            Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
                         {
                             Id = 26,
                             Code = 26,
-                            Description = "IoDeviceError",
-                            Reason = "IoDeviceError",
+                            Description = "DestinationOverUpperBound",
+                            Reason = "DestinationOverUpperBound",
                             Severity = 1
                         },
                         new
                         {
                             Id = 27,
                             Code = 27,
-                            Description = "MachineModeNotValid",
-                            Reason = "MachineModeNotValid",
+                            Description = "BayInvertersBusy",
+                            Reason = "BayInvertersBusy",
                             Severity = 1
                         },
                         new
                         {
                             Id = 28,
                             Code = 28,
-                            Description = "AnotherMissionIsActiveForThisLoadUnit",
-                            Reason = "AnotherMissionIsActiveForThisLoadUnit",
+                            Description = "IoDeviceError",
+                            Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
                         {
                             Id = 29,
                             Code = 29,
-                            Description = "AnotherMissionIsActiveForThisBay",
-                            Reason = "AnotherMissionIsActiveForThisBay",
+                            Description = "MachineModeNotValid",
+                            Reason = "MachineModeNotValid",
                             Severity = 1
                         },
                         new
                         {
                             Id = 30,
                             Code = 30,
+                            Description = "AnotherMissionIsActiveForThisLoadUnit",
+                            Reason = "AnotherMissionIsActiveForThisLoadUnit",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Code = 31,
+                            Description = "AnotherMissionIsActiveForThisBay",
+                            Reason = "AnotherMissionIsActiveForThisBay",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Code = 32,
                             Description = "AnotherMissionOfThisTypeIsActive",
                             Reason = "AnotherMissionOfThisTypeIsActive",
                             Severity = 1
@@ -996,6 +1012,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 30,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 31,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 32,
                             TotalErrors = 0
                         },
                         new
@@ -1497,7 +1523,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 18, 9, 38, 34, 916, DateTimeKind.Local).AddTicks(2284),
+                            InstallationDate = new DateTime(2017, 2, 19, 14, 35, 11, 460, DateTimeKind.Local).AddTicks(7740),
                             ServiceStatus = 86
                         });
                 });

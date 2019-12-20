@@ -41,25 +41,24 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                 targetBay);
         }
 
-        public void ActivateMove(Guid? missionId, LoadingUnitLocation sourceBay, BayNumber requestingBay, BayNumber targetBay, MessageActor sender)
+        public void ActivateMove(Guid? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             this.SendCommandToMachineManager(
                 new MoveLoadingUnitMessageData(
-                    MissionType.NoType,
-                    sourceBay,
+                    missionType,
+                    LoadingUnitLocation.LoadingUnit,
                     LoadingUnitLocation.NoLocation,
                     null,
                     null,
-                    null,
+                    loadingUnitId,
                     false,
                     false,
                     missionId,
                     CommandAction.Activate),
-                $"Bay {requestingBay} requested to activate move Loading unit on Bay {targetBay}",
+                $"Bay {requestingBay} requested to activate move Loading unit {loadingUnitId} to Bay {requestingBay}",
                 sender,
                 MessageType.MoveLoadingUnit,
-                requestingBay,
-                targetBay);
+                requestingBay);
         }
 
         public void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender)

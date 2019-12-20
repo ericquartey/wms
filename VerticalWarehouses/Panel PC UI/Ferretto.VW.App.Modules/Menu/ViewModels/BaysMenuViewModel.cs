@@ -13,15 +13,13 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class BaysMenuViewModel : BaseMainViewModel
+    internal sealed class BaysMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
 
         private DelegateCommand bayControlCommand;
 
         private DelegateCommand bayHeightCommand;
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand testShutterCommand;
 
@@ -30,7 +28,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public BaysMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
@@ -67,12 +65,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public ICommand TestShutterCommand =>
             this.testShutterCommand
             ??
@@ -84,25 +76,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
-        }
+            base.RaiseCanExecuteChanged();
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
+            this.bayControlCommand?.RaiseCanExecuteChanged();
+            this.bayHeightCommand?.RaiseCanExecuteChanged();
+            this.testShutterCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -133,13 +113,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         trackCurrentView: true);
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.bayControlCommand?.RaiseCanExecuteChanged();
-            this.bayHeightCommand?.RaiseCanExecuteChanged();
-            this.testShutterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

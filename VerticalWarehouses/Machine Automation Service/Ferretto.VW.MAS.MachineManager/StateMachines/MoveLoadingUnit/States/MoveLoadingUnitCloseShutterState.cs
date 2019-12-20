@@ -8,6 +8,7 @@ using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
+using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
@@ -58,18 +59,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             if (commandMessage.Data is IMoveLoadingUnitMessageData messageData
                 && machineData is Mission moveData
                 )
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.messageData = messageData;
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitCloseShutterState);
                 this.missionsDataProvider.Update(this.mission);
 
                 var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitDestination);
+                if (bay is null)
+                {
+                    var description = $"{this.GetType().Name}: destination bay not found {moveData.LoadingUnitDestination}";
+
+                    throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                }
                 this.loadingUnitMovementProvider.CloseShutter(MessageActor.MachineManager, bay.Number, moveData.RestoreConditions);
 
                 moveData.RestoreConditions = false;

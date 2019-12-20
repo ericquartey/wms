@@ -680,7 +680,7 @@
     <value>Richiama cassetto</value>
   </data>
   <data name="BayHeightCheck" xml:space="preserve">
-    <value>Controllo quote baia</value>
+    <value>Controllo baie</value>
   </data>
   <data name="BayHeightCheckSelectedPosition" xml:space="preserve">
     <value>Posizione nella baia</value>

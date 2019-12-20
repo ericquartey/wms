@@ -9,7 +9,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers.Interfaces
 
         void AbortMove(Guid? missionId, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
 
-        void ActivateMove(Guid? missionId, LoadingUnitLocation sourceBay, BayNumber requestingBay, BayNumber targetBay, MessageActor sender);
+        void ActivateMove(Guid? missionId, MissionType missionType, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 
         void EjectFromCell(MissionType missionType, LoadingUnitLocation destinationBay, int loadingUnitId, BayNumber requestingBay, MessageActor sender);
 

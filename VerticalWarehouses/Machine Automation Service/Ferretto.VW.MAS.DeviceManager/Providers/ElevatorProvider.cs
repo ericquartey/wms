@@ -129,15 +129,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
             }
 
-            // check #4: the shutter must be completely open
+            // check #4: the shutter must be completely closed
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                if ((bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened)
-                    || (!bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened && shutterPosition != ShutterPosition.Half)
-                    )
+                if (shutterPosition != ShutterPosition.Closed)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
                 }
             }
 
@@ -328,15 +326,13 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 };
             }
 
-            // check #4: the shutter must be completely open
+            // check #4: the shutter must be completely closed
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                if ((bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened)
-                    || (!bayPosition.IsUpper && shutterPosition != ShutterPosition.Opened && shutterPosition != ShutterPosition.Half)
-                    )
+                if (shutterPosition != ShutterPosition.Closed)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
                 }
             }
 

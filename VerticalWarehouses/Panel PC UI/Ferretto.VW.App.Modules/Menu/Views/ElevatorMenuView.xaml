@@ -8,86 +8,105 @@
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Menu.ViewModels"
+            xmlns:views="clr-namespace:Ferretto.VW.App.Menu.Views"
             d:DataContext="{d:DesignInstance Type=viewmodels:ElevatorMenuViewModel,
                                              IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-
-    <Grid Margin="80,50">
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="30" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+        <Grid Grid.Column="0"
+              Margin="15,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Menu Elevatore" />
-
-        <Grid Grid.Row="1"
-              Margin="15">
-            <WrapPanel>
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding VerticalOriginCalibrationCommand}"
-                                    Content="Calibrazione origine asse verticale" />
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding VerticalResolutionCalibrationCommand}"
-                                    Content="Calibrazione risoluzione asse verticale" />
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding VerticalOffsetCalibrationCommand}"
-                                    Content="Calibrazione offset asse verticale" />
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding WeightMeasurementCommand}"
-                                    Content="Controllo Peso"
-                                    Visibility="Collapsed" />
-
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding WeightAnalysisCommand}"
-                                    Content="Analisi profilo peso"
-                                    Visibility="Collapsed" />
-
-            </WrapPanel>
+            <views:InstallationNavigationMenuView Grid.Row="1" />
         </Grid>
 
-        <TextBlock Grid.Row="3"
-                   Grid.ColumnSpan="2"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Center"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="Test" />
+        <Grid Grid.Column="1"
+              Margin="15,0">
 
-        <Grid Grid.Row="4"
-              Margin="15">
-            <WrapPanel>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
 
-                <controls:PpcButton Width="175"
-                                    Margin="15"
-                                    Command="{Binding BeltBurnishingCommand}"
-                                    Content="Rodaggio cinghia" />
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="30" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            </WrapPanel>
+            <TextBlock Grid.ColumnSpan="2"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="Menu Elevatore" />
+
+            <Grid Grid.Row="1">
+                <WrapPanel>
+
+                    <controls:PpcButton Title="Calibrazione origine asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.1"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalOriginCalibrationCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="Calibrazione risoluzione asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.2"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalResolutionCalibrationCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="Calibrazione offset asse verticale"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.3"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding VerticalOffsetCalibrationCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                    <controls:PpcButton Title="Analisi profilo peso"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.4"
+                                        BorderBrush="{DynamicResource FerrettoRed}"
+                                        Command="{Binding WeightAnalysisCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}"
+                                        Visibility="Collapsed" />
+
+                    <controls:PpcButton Title="Rodaggio cinghia"
+                                        Margin="0,0,30,30"
+                                        Padding="-2,1,0,0"
+                                        Abbrevation="4.2.4"
+                                        BorderBrush="{DynamicResource FerrettoOrange}"
+                                        Command="{Binding BeltBurnishingCommand}"
+                                        Kind="Account"
+                                        Style="{DynamicResource PpcButtonMenuCardStyle}" />
+
+                </WrapPanel>
+            </Grid>
+
         </Grid>
 
     </Grid>
+
 </ctrls:View>

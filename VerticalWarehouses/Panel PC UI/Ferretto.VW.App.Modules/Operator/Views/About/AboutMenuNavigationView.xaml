@@ -7,9 +7,6 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:resources="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Operator.ViewModels"
-            d:DataContext="{d:DesignInstance Type=viewmodels:AboutMenuNavigationViewModel,
-                                             IsDesignTimeCreatable=False}"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -33,6 +30,7 @@
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding GeneralCommand}"
                             Content="Generali"
+                            IsActive="{Binding IsGeneralActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
@@ -43,36 +41,41 @@
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding CountersCommand}"
                             Content="Contatori"
+                            IsActive="{Binding IsGeneralActive}"
                             Kind="Account"
-                            Style="{DynamicResource PpcButtonMenuStyle}" />
+                            Style="{DynamicResource PpcButtonMenuStyle}"
+                            Visibility="Collapsed" />
 
         <controls:PpcButton Grid.Row="2"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.3"
+                            Abbrevation="3.2"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding StatisticsCommand}"
                             Content="Statistiche"
+                            IsActive="{Binding IsStatisticsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="3"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.4"
+                            Abbrevation="3.3"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding AllarmCommand}"
                             Content="Allarmi"
+                            IsActive="{Binding IsAlarmActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 
         <controls:PpcButton Grid.Row="4"
                             Margin="0,0,15,15"
                             Padding="-1,1,0,0"
-                            Abbrevation="3.5"
+                            Abbrevation="3.4"
                             BorderBrush="{DynamicResource FerrettoGreen}"
                             Command="{Binding DiagnosticsCommand}"
                             Content="Diagnostica"
+                            IsActive="{Binding IsDiagnosticsActive}"
                             Kind="Account"
                             Style="{DynamicResource PpcButtonMenuStyle}" />
 

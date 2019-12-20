@@ -453,9 +453,20 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                             {
                                 machineData.LoadingUnitSource = sourceBay;
                             }
-                            else if (unitToMove.Id == this.elevatorDataProvider.GetLoadingUnitOnBoard().Id)
+                            else
                             {
-                                machineData.LoadingUnitSource = LoadingUnitLocation.Elevator;
+                                // it is not in bay and not in cell, maybe it is on the elevator?
+                                var elevatorLoadUnit = this.elevatorDataProvider.GetLoadingUnitOnBoard();
+                                if (elevatorLoadUnit is null
+                                    || unitToMove.Id != elevatorLoadUnit.Id)
+                                {
+                                    unitToMove = null;
+                                    this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotLoaded);
+                                }
+                                else
+                                {
+                                    machineData.LoadingUnitSource = LoadingUnitLocation.Elevator;
+                                }
                             }
                         }
 

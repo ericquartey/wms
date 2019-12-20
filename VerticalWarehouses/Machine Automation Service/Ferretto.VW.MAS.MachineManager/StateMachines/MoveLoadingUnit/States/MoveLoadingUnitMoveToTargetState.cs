@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
@@ -19,13 +20,19 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly IBaysDataProvider baysDataProvider;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
+
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly Dictionary<MessageType, MessageStatus> stateMachineResponses;
 
         private bool closeShutter;
+
+        private bool ejectLoadUnit;
 
         private bool measure;
 
@@ -37,13 +44,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         public MoveLoadingUnitMoveToTargetState(
             IBaysDataProvider baysDataProvider,
+            IErrorsProvider errorsProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMissionsDataProvider missionsDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
 
             this.stateMachineResponses = new Dictionary<MessageType, MessageStatus>();
@@ -57,11 +68,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         protected override void OnEnter(CommandMessage commandMessage, IFiniteStateMachineData machineData)
         {
-            this.Logger.LogDebug($"{this.GetType().Name}: received command {commandMessage.Type}, {commandMessage.Description}");
-
             this.measure = false;
+            this.ejectLoadUnit = false;
             if (machineData is Mission moveData)
             {
+                this.Logger.LogDebug($"{this.GetType().Name}: {moveData}");
                 this.mission = moveData;
                 this.mission.FsmStateName = nameof(MoveLoadingUnitMoveToTargetState);
                 this.missionsDataProvider.Update(this.mission);
@@ -69,6 +80,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 if (moveData.LoadingUnitSource != LoadingUnitLocation.Cell)
                 {
                     var bay = this.baysDataProvider.GetByLoadingUnitLocation(moveData.LoadingUnitSource);
+                    if (bay is null)
+                    {
+                        var description = $"{this.GetType().Name}: source bay not found {moveData.LoadingUnitSource}";
+
+                        throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
+                    }
                     this.closeShutter = (bay.Shutter.Type != ShutterType.NotSpecified);
                     this.measure = true;
                 }
@@ -80,7 +97,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                     throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                 }
-
                 if (this.mission.NeedHomingAxis == Axis.Horizontal)
                 {
                     this.Logger.LogDebug($"Homing elevator occupied start");
@@ -132,7 +148,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     }
                     else
                     {
-                        this.UpdateResponseList(notificationStatus, notification.Type);
+                        if (!this.ejectLoadUnit
+                            || notification.Type == MessageType.ShutterPositioning
+                            )
+                        {
+                            this.UpdateResponseList(notificationStatus, notification.Type);
+                        }
                     }
 
                     break;
@@ -140,17 +161,50 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case MessageStatus.OperationError:
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationRunningStop:
-                    returnValue = this.OnStop(StopRequestReason.Error);
-                    if (returnValue is IEndState endState)
+                    if (this.ejectLoadUnit)
                     {
-                        endState.ErrorMessage = notification;
+                        this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                        this.missionsDataProvider.Update(this.mission);
+                        returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
                     }
+                    else
+                    {
+                        returnValue = this.OnStop(StopRequestReason.Error);
+                        if (returnValue is IEndState endState)
+                        {
+                            endState.ErrorMessage = notification;
+                        }
+                    }
+                    break;
+
+                case MessageStatus.OperationUpdateData:
+                    // check weight value
+                    if (this.measure && !this.ejectLoadUnit)
+                    {
+                        var check = this.loadingUnitsDataProvider.CheckWeight(this.mission.LoadingUnitId);
+                        if (check != MachineErrorCode.NoError)
+                        {
+                            // stop movement and  go back to bay
+                            this.errorsProvider.RecordNew(check);
+                            this.ejectLoadUnit = true;
+                            var newMessageData = new StopMessageData(StopRequestReason.Stop);
+                            this.loadingUnitMovementProvider.StopOperation(newMessageData, notification.RequestingBay, MessageActor.MachineManager, notification.RequestingBay);
+                        }
+                    }
+
                     break;
             }
 
             if ((this.closeShutter && this.stateMachineResponses.Count == 2) || (!this.closeShutter && this.stateMachineResponses.Count == 1))
             {
-                returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                if (this.mission.LoadingUnitDestination == LoadingUnitLocation.Elevator)
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
+                }
+                else
+                {
+                    returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                }
             }
 
             return returnValue;

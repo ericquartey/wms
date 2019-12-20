@@ -2,6 +2,7 @@
 using Ferretto.VW.CommonUtils.Messages;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.DataLayer.Providers.Interfaces;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly ILogger<MissionSchedulingService> logger;
 
+        private readonly IMachineMissionsProvider machineMissionsProvider;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly NotificationEvent notificationEvent;
@@ -25,6 +28,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionSchedulingProvider(
             IEventAggregator eventAggregator,
+            IMachineMissionsProvider missionsProvider,
             IMissionsDataProvider missionsDataProvider,
             ILogger<MissionSchedulingService> logger)
         {
@@ -33,6 +37,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 throw new ArgumentNullException(nameof(eventAggregator));
             }
 
+            this.machineMissionsProvider = missionsProvider ?? throw new ArgumentNullException(nameof(missionsProvider));
             this.notificationEvent = eventAggregator.GetEvent<NotificationEvent>();
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -62,6 +67,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber);
+            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
 
             this.NotifyNewMachineMissionAvailable(mission);
         }
@@ -75,6 +81,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 targetBayNumber);
 
             var mission = this.missionsDataProvider.CreateBayMission(loadingUnitId, targetBayNumber, wmsMissionId, wmsMissionPriority);
+            this.machineMissionsProvider.AddMission(mission, mission.FsmId);
 
             this.NotifyNewMachineMissionAvailable(mission);
         }
