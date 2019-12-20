@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Modules.Operator.Interfaces;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -32,9 +31,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int? areaId;
 
-        private int? currentItemIndex;
-
-        private DelegateCommand downCommand;
+        private int currentItemIndex;
 
         private bool isWaitingForResponse;
 
@@ -46,7 +43,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private ItemListExecution selectedList;
 
-        private DelegateCommand upCommand;
+        private DelegateCommand selectNextCommand;
+
+        private DelegateCommand selectPreviousCommand;
 
         #endregion
 
@@ -70,11 +69,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public ICommand DownCommand => this.downCommand
-            ?? (this.downCommand = new DelegateCommand(
-            () => this.ChangeSelectedList(false),
-            this.CanSelectNext));
-
         public bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -83,47 +77,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override bool KeepAlive => true;
 
-        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.ShowDetails(), this.CanShowDetails));
+        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.ShowDetails(), this.CanShowDetailCommand));
 
         public ICommand ListExecuteCommand =>
-            this.listExecuteCommand
+                    this.listExecuteCommand
             ??
-            (this.listExecuteCommand = new DelegateCommand(
-                async () => await this.ExecuteListAsync(),
-                this.CanExecuteList));
+            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
 
         public ItemListExecution SelectedList
         {
             get => this.selectedList;
-            set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
-        }
-
-        public ICommand UpCommand => this.upCommand
-            ??
-            (this.upCommand = new DelegateCommand(
-                () => this.ChangeSelectedList(true),
-                this.CanSelectPrevious));
-
-        private int? CurrentItemIndex
-        {
-            get => this.currentItemIndex;
             set
             {
-                if (this.SetProperty(ref this.currentItemIndex, value))
+                if (this.SetProperty(ref this.selectedList, value))
                 {
-                    if (this.currentItemIndex.HasValue)
-                    {
-                        this.SelectedList = this.lists.ElementAtOrDefault(this.currentItemIndex.Value);
-                    }
-                    else
-                    {
-                        this.SelectedList = null;
-                    }
+                    this.RaiseCanExecuteChanged();
                 }
             }
         }
+
+        public ICommand SelectNextCommand => this.selectNextCommand ?? (this.selectNextCommand = new DelegateCommand(() => this.ChangeSelectedList(false), this.CanSelectNext));
+
+        public ICommand SelectPreviousCommand => this.selectPreviousCommand ?? (this.selectPreviousCommand = new DelegateCommand(() => this.ChangeSelectedList(true), this.CanSelectPrevious));
 
         #endregion
 
@@ -131,28 +108,32 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public void ChangeSelectedList(bool isUp)
         {
-            if (this.lists is null || !this.CurrentItemIndex.HasValue)
+            if (this.lists is null)
             {
                 return;
             }
 
             if (this.lists.Any())
             {
-                var newIndex = isUp ? this.CurrentItemIndex.Value - 1 : this.CurrentItemIndex.Value + 1;
+                var newIndex = isUp ? this.currentItemIndex - 1 : this.currentItemIndex + 1;
 
-                this.CurrentItemIndex = Math.Max(0, Math.Min(newIndex, this.lists.Count - 1));
+                this.currentItemIndex = Math.Max(0, Math.Min(newIndex, this.lists.Count - 1));
             }
+
+            this.SelectLoadingUnit();
         }
 
         public async Task ExecuteListAsync()
         {
-            System.Diagnostics.Debug.Assert(this.areaId.HasValue, "The area should be specified");
-
             try
             {
+                if (!this.areaId.HasValue)
+                {
+                    return;
+                }
+
                 var bay = await this.bayManager.GetBayAsync();
                 await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
-
                 await this.LoadListsAsync();
             }
             catch
@@ -176,14 +157,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.machineId = machineIdentity.Id;
             this.areaId = machineIdentity.AreaId;
 
-            await Task.Run(async () =>
-            {
-                do
-                {
-                    await this.LoadListsAsync();
-                    await Task.Delay(5000);
-                } while (this.IsVisible);
-            });
+            await this.LoadListsAsync();
+
+            this.RefreshLists();
+        }
+
+        private bool CanShowDetailCommand()
+        {
+            return !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null;
         }
 
         private bool CanExecuteList()
@@ -201,7 +184,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanSelectNext()
         {
             return
-                this.CurrentItemIndex < this.lists.Count - 1
+                this.currentItemIndex < this.lists.Count - 1
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -209,78 +192,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanSelectPrevious()
         {
             return
-                this.CurrentItemIndex > 0
+                this.currentItemIndex > 0
                 &&
                 !this.IsWaitingForResponse;
-        }
-
-        private bool CanShowDetails()
-        {
-            return
-                !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
-        }
-
-        private async Task LoadListsAsync()
-        {
-            if (!this.areaId.HasValue)
-            {
-                return;
-            }
-
-            try
-            {
-                this.IsWaitingForResponse = true;
-
-                var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
-                this.IsWaitingForResponse = false;
-
-                var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
-                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count)
-                {
-                    return;
-                }
-
-                this.lists.Clear();
-                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
-
-                this.RaisePropertyChanged(nameof(this.Lists));
-                this.RaiseCanExecuteChanged();
-                this.SetCurrentIndex(lastItemListId);
-            }
-            catch (Exception ex)
-            {
-                this.Lists?.Clear();
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.upCommand?.RaiseCanExecuteChanged();
-            this.downCommand?.RaiseCanExecuteChanged();
-            this.listExecuteCommand?.RaiseCanExecuteChanged();
-            this.listDetailButtonCommand.RaiseCanExecuteChanged();
-        }
-
-        private void SetCurrentIndex(int? itemListId)
-        {
-            if (itemListId.HasValue
-                &&
-                this.lists.FirstOrDefault(l => l.Id == itemListId.Value) is ItemListExecution foundList)
-            {
-                this.CurrentItemIndex = this.Lists.IndexOf(foundList);
-            }
-            else
-            {
-                this.CurrentItemIndex = 0;
-            }
         }
 
         private void ShowDetails()
@@ -302,6 +216,105 @@ namespace Ferretto.VW.App.Operator.ViewModels
             finally
             {
                 this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task LoadListsAsync()
+        {
+            if (!this.areaId.HasValue
+                ||
+                this.IsWaitingForResponse)
+            {
+                return;
+            }
+
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                var lastItemListId = this.selectedList?.Id;
+                var newLists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+
+                var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
+                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count)
+                {
+                    return;
+                }
+
+                this.lists.Clear();
+                newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
+
+                this.RaisePropertyChanged(nameof(this.Lists));
+
+                this.SetCurrentIndex(lastItemListId);
+
+                this.SelectLoadingUnit();
+            }
+            catch (Exception ex)
+            {
+                this.lists?.Clear();
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void RaiseCanExecuteChanged()
+        {
+            this.selectPreviousCommand?.RaiseCanExecuteChanged();
+            this.selectNextCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+            this.listDetailButtonCommand.RaiseCanExecuteChanged();
+        }
+
+        private void RefreshLists(ObservableCollection<ItemList> newLists, int? lastItemListId)
+        {
+            this.lists.Clear();
+            newLists.ForEach(l => this.lists.Add(new ItemListExecution(l, this.machineId)));
+
+            this.RaisePropertyChanged(nameof(this.Lists));
+
+            this.SetCurrentIndex(lastItemListId);
+
+            this.SelectLoadingUnit();
+        }
+
+        private async Task RefreshLists()
+        {
+            while (this.IsVisible)
+            {
+                await this.LoadListsAsync();
+                await Task.Delay(5000);
+            }
+        }
+
+        private void SelectLoadingUnit()
+        {
+            if (this.lists.Count == 0)
+            {
+                this.SelectedList = null;
+            }
+            else
+            {
+                this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
+            }
+
+            this.RaiseCanExecuteChanged();
+        }
+
+        private void SetCurrentIndex(int? itemListId)
+        {
+            if (itemListId.HasValue
+                &&
+                this.lists.FirstOrDefault(l => l.Id == itemListId.Value) is ItemListExecution itemListFound)
+            {
+                this.currentItemIndex = this.lists.IndexOf(itemListFound);
+            }
+            else
+            {
+                this.currentItemIndex = 0;
             }
         }
 

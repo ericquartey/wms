@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
-        [HttpGet("GetByBayCount")]
+        [HttpGet("count")]
         public ActionResult<int> GetByBayCount()
         {
             var missionOperationsCount = this.missionOperationsProvider.GetCountByBay(this.BayNumber);
