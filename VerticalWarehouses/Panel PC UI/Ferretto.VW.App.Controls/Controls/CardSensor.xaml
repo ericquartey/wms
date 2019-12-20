@@ -245,7 +245,7 @@
                                         Grid.ColumnSpan="4"
                                         Margin="15,0,0,0"
                                         HorizontalAlignment="Left"
-                                        Background="{StaticResource FerrettoYellow}"
+                                        Background="{StaticResource FerrettoMediumGray}"
                                         BorderBrush="{DynamicResource PpcBorderBrush}"
                                         CornerRadius="10,10,10,10">
                                     <Grid Margin="4">
@@ -264,12 +264,14 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
                                                    Text="Peso" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
                                                    Text="Altezza" />
 
                                         <TextBlock Grid.Row="0"
@@ -277,12 +279,14 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
                                                    Text="{Binding ElementName=Card, Path=LuWeight, StringFormat={}{0} kg}" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="1"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
+                                                   Foreground="{DynamicResource FerrettoPureWhite}"
                                                    Text="{Binding ElementName=Card, Path=LuHeight, StringFormat={}{0} mm}" />
 
                                     </Grid>
@@ -294,7 +298,7 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Data="M0,10L15,15 15,5"
-                                      Fill="{StaticResource FerrettoYellow}"
+                                      Fill="{StaticResource FerrettoMediumGray}"
                                       Stretch="Fill"
                                       Stroke="{x:Null}" />
                             </Grid>
@@ -689,7 +693,7 @@
                                    Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding ElementName=Card, Path=CardBadge1}" />
                     </Border>
-                    
+
                     <TextBlock HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                FontSize="{StaticResource FontSize_Very_Small}"
