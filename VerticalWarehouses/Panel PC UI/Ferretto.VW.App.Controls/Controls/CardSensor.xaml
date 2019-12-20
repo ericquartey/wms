@@ -30,28 +30,6 @@
                                   RecognizesAccessKey="True"
                                   SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
             </Border>
-            <ControlTemplate.Triggers>
-                <!--<Trigger Property="Button.IsDefaulted" Value="True">
-                    <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
-                </Trigger>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" TargetName="border" Value="#FFBEE6FD"/>
-                    <Setter Property="BorderBrush" TargetName="border" Value="#FF3C7FB1"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" TargetName="border" Value="#FFC4E5F6"/>
-                    <Setter Property="BorderBrush" TargetName="border" Value="#FF2C628B"/>
-                </Trigger>
-                <Trigger Property="ToggleButton.IsChecked" Value="True">
-                    <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
-                    <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" TargetName="border" Value="#FFF4F4F4"/>
-                    <Setter Property="BorderBrush" TargetName="border" Value="#FFADB2B5"/>
-                    <Setter Property="Foreground" Value="#FF838383"/>
-                </Trigger>-->
-            </ControlTemplate.Triggers>
         </ControlTemplate>
 
         <DataTemplate x:Key="DataTemplateAxis">
@@ -406,6 +384,21 @@
                             BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}"
                             CornerRadius="4">
+                        <Border.Style>
+                            <Style>
+                                <Setter Property="Border.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Margin="4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
@@ -422,6 +415,21 @@
                             BorderBrush="{DynamicResource PpcBorderBrush}"
                             BorderThickness="{DynamicResource PpcBorderThickness}"
                             CornerRadius="4">
+                        <Border.Style>
+                            <Style>
+                                <Setter Property="Border.Visibility" Value="Visible" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                                                 Value="">
+                                        <Setter Property="Border.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
                         <TextBlock Margin="4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"

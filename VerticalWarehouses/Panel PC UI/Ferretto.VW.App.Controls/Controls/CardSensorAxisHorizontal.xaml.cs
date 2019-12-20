@@ -28,10 +28,6 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty SensorsServiceProperty =
             DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorAxisHorizontal));
 
-        //Sensor1="{Binding IsZeroChain}"
-        //Sensor2="{Binding LuPresentInMachineSide}"
-        //Sensor3="{Binding LuPresentInOperatorSide}"
-
         private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
@@ -104,7 +100,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        protected virtual Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             this.ElevatorHorizontalPosition = this.machineService.MachineStatus.ElevatorHorizontalPosition;
             this.HorizontalTargetPosition = this.machineService.MachineStatus.HorizontalTargetPosition;

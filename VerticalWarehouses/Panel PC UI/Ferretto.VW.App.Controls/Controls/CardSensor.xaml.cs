@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using CommonServiceLocator;
+using Ferretto.VW.App.Services;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -67,6 +70,10 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty LuWeightProperty =
                     DependencyProperty.Register(nameof(LuWeight), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineServiceProperty =
+            DependencyProperty.Register(nameof(MachineService), typeof(IMachineService), typeof(CardSensor));
+
         public static readonly DependencyProperty Sensor1Property =
                     DependencyProperty.Register(nameof(Sensor1), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
@@ -76,6 +83,8 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty Sensor3Property =
             DependencyProperty.Register(nameof(Sensor3), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
+        private readonly IMachineService machineService;
+
         #endregion
 
         #region Constructors
@@ -83,6 +92,13 @@ namespace Ferretto.VW.App.Controls.Controls
         public CardSensor()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
+
+            this.MachineService = ServiceLocator.Current.GetInstance<IMachineService>();
         }
 
         #endregion
@@ -188,6 +204,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(LuWeightProperty);
             set => this.SetValue(LuWeightProperty, value);
+        }
+
+        public IMachineService MachineService
+        {
+            get => (IMachineService)this.GetValue(MachineServiceProperty);
+            set => this.SetValue(MachineServiceProperty, value);
         }
 
         public bool Sensor1

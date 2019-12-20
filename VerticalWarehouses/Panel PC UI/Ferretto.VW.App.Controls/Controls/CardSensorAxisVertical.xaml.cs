@@ -97,7 +97,7 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        protected virtual Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
         {
             this.EmbarkedLoadingUnit = this.machineService.MachineStatus.EmbarkedLoadingUnit;
             this.ElevatorVerticalPosition = this.machineService.MachineStatus.ElevatorVerticalPosition;
