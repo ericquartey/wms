@@ -13,7 +13,7 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class CellsMenuViewModel : BaseMainViewModel
+    internal sealed class CellsMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
 
@@ -27,14 +27,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand cellsHeightCheckCommand;
 
-        private bool isWaitingForResponse;
-
         #endregion
 
         #region Constructors
 
         public CellsMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
@@ -94,37 +92,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.ExecuteCommand(Menu.CellsHeightCheck),
                 this.CanExecuteCommand));
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         #endregion
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
-        }
+            base.RaiseCanExecuteChanged();
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
+            this.cellsCommand?.RaiseCanExecuteChanged();
+            this.cellPanelsCheckCommand?.RaiseCanExecuteChanged();
+            this.cellsHeightCheckCommand?.RaiseCanExecuteChanged();
+            this.cellsBlockTuningCommand?.RaiseCanExecuteChanged();
+            this.bayFirstLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -171,15 +151,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         trackCurrentView: true);
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.cellsCommand?.RaiseCanExecuteChanged();
-            this.cellPanelsCheckCommand?.RaiseCanExecuteChanged();
-            this.cellsHeightCheckCommand?.RaiseCanExecuteChanged();
-            this.cellsBlockTuningCommand?.RaiseCanExecuteChanged();
-            this.bayFirstLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

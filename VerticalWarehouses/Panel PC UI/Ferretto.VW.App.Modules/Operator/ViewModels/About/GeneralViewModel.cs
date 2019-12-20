@@ -14,15 +14,13 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     [Warning(WarningsArea.Information)]
-    internal sealed class GeneralViewModel : BaseMainViewModel
+    internal sealed class GeneralViewModel : BaseAboutMenuViewModel
     {
         #region Fields
 
         private readonly WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient;
 
         private readonly IMachineIdentityWebService identityService;
-
-        private bool isWaitingForResponse;
 
         private Brush machineServiceStatusBrush;
 
@@ -39,7 +37,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public GeneralViewModel(
             IMachineIdentityWebService identityService,
             WMS.Data.WebAPI.Contracts.IDataHubClient dataHubClient)
-            : base(PresentationMode.Operator)
+            : base()
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.dataHubClient = dataHubClient ?? throw new ArgumentNullException(nameof(dataHubClient));
@@ -50,14 +48,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
-
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public Brush MachineServiceStatusBrush
         {
@@ -131,10 +121,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             WMS.Data.WebAPI.Contracts.ConnectionStatusChangedEventArgs e)
         {
             this.UpdateWmsServicesStatus();
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
         }
 
         private void UpdateWmsServicesStatus()

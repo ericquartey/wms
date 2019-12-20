@@ -237,11 +237,11 @@
                                                        Template="{StaticResource PpcSensorControlSmallTemplate}" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
-                                    Visibility="{Binding SensorsService.IsShutterThreeSensors, Converter={StaticResource BTVC}}">
+                                    Visibility="{Binding MachineService.IsShutterThreeSensors, Converter={StaticResource BTVC}}">
                             <TextBlock VerticalAlignment="Center"
                                        Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.ShutterMidWay}"
-                                       Visibility="{Binding SensorsService.IsShutterThreeSensors, Converter={StaticResource BTVC}}" />
+                                       Visibility="{Binding MachineService.IsShutterThreeSensors, Converter={StaticResource BTVC}}" />
                             <controls:PpcSensorControl Margin="2,0"
                                                        VerticalAlignment="Center"
                                                        SensorState="{Binding SensorsService.ShutterSensors.MidWay}"

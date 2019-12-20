@@ -19,9 +19,13 @@ namespace Ferretto.VW.App.Services
 
         bool IsHoming { get; }
 
+        bool IsShutterThreeSensors { get; }
+        
         IEnumerable<LoadingUnit> LoadUnits { get; }
 
         MachineStatus MachineStatus { get; }
+        bool HasCarousel { get;  }
+        bool HasBayExternal { get; }
 
         #endregion
 

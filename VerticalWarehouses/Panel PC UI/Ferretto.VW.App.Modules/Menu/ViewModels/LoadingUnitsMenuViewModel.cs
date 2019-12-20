@@ -13,15 +13,13 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class LoadingUnitsMenuViewModel : BaseMainViewModel
+    internal sealed class LoadingUnitsMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
 
         private DelegateCommand extractionLoadingUnitsCommand;
 
         private DelegateCommand insertionLoadingUnitsCommand;
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand loadingUnitsBayToBayCommand;
 
@@ -38,7 +36,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public LoadingUnitsMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
@@ -67,8 +65,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Properties
 
-        public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
-
         public ICommand ExtractionLoadingUnitsCommand =>
             this.extractionLoadingUnitsCommand
             ??
@@ -82,12 +78,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             (this.insertionLoadingUnitsCommand = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.InsertionLoadingUnits),
                 this.CanExecuteCommand));
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public ICommand LoadingUnitsBayToBayCommand =>
             this.loadingUnitsBayToBayCommand
@@ -128,25 +118,17 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
-        }
+            base.RaiseCanExecuteChanged();
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
+            this.extractionLoadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.insertionLoadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.loadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.moveLoadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.testCompleteCommand?.RaiseCanExecuteChanged();
+            this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
+            this.loadingUnitsBayToBayCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand(Menu menu)
@@ -204,17 +186,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.TestComplete:
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.extractionLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.insertionLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.loadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.moveLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.testCompleteCommand?.RaiseCanExecuteChanged();
-            this.testDepositAndPickUpCommand?.RaiseCanExecuteChanged();
-            this.loadingUnitsBayToBayCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

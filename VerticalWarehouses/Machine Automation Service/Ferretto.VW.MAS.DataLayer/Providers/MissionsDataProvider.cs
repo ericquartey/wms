@@ -70,6 +70,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
+                        FsmId = Guid.NewGuid(),
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         TargetBay = bayNumber,
@@ -91,6 +92,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 var entry = this.dataContext.Missions.Add(
                     new Mission
                     {
+                        FsmId = Guid.NewGuid(),
                         CreationDate = DateTime.Now,
                         LoadingUnitId = loadingUnitId,
                         LoadingUnitSource = LoadingUnitLocation.LoadingUnit,
@@ -99,7 +101,7 @@ namespace Ferretto.VW.MAS.DataLayer
                         Status = MissionStatus.New,
                         TargetBay = bayNumber,
                         WmsId = wmsId,
-                    });
+                    }); ;
 
                 this.dataContext.SaveChanges();
 

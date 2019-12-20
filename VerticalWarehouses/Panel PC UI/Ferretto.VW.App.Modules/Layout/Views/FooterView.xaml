@@ -209,18 +209,19 @@
         </Grid.Resources>
 
         <Border Margin="0,0,0,0"
-                Padding="20,10,20,10"
+                Padding="15,5"
                 Background="{Binding NotificationSeverity, Converter={StaticResource NSTBC}}"
                 Visibility="{Binding NotificationMessage, Converter={StaticResource RTVC}}">
             <StackPanel Orientation="Horizontal">
-                <iconPacks:PackIconModern Width="15"
-                                          Height="15"
+                <iconPacks:PackIconModern Width="32"
+                                          Height="32"
                                           Margin="0,0,15,0"
                                           HorizontalAlignment="Center"
                                           VerticalAlignment="Center"
                                           Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                                           Kind="{Binding NotificationSeverity, Converter={StaticResource NSTINC}}" />
-                <TextBlock HorizontalAlignment="Left"
+                <TextBlock Margin="0"
+                           HorizontalAlignment="Left"
                            VerticalAlignment="Center"
                            Foreground="{Binding NotificationSeverity, Converter={StaticResource NSTFC}}"
                            Style="{StaticResource VWAPP_ViewErrorTextBlockStyle}"

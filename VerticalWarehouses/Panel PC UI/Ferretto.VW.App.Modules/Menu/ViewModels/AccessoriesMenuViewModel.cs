@@ -13,11 +13,9 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class AccessoriesMenuViewModel : BaseMainViewModel
+    internal sealed class AccessoriesMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand laserCommand;
 
@@ -26,21 +24,13 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public AccessoriesMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
         #endregion
 
         #region Properties
-
-        public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public ICommand LaserCommand =>
             this.laserCommand
@@ -53,34 +43,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
-        }
+            base.RaiseCanExecuteChanged();
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
+            this.laserCommand?.RaiseCanExecuteChanged();
         }
 
         private void ExecuteCommand()
         {
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.laserCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

@@ -41,6 +41,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
             nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
 
+        public static readonly DependencyProperty TitleProperty =
+            DependencyProperty.Register(nameof(Title), typeof(string), typeof(PpcButton), new PropertyMetadata(string.Empty));
+
         [Browsable(false)]
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static readonly DependencyProperty VisibilityPermissionProperty =
@@ -126,6 +129,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (UserAccessLevel)this.GetValue(PermissionProperty);
             set => this.SetValue(PermissionProperty, value);
+        }
+
+        public string Title
+        {
+            get { return (string)this.GetValue(TitleProperty); }
+            set { this.SetValue(TitleProperty, value); }
         }
 
         public Visibility VisibilityPermission

@@ -58,11 +58,6 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
-        private async Task OnBayOperationalStatusChangedAsync()
-        {
-            await this.InvokeSchedulerAsync();
-        }
-
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -127,7 +122,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                     else
                     {
-                        moveLoadingUnitProvider.ActivateMove(mission.FsmId, LoadingUnitLocation.LoadingUnit, bayNumber, bayNumber, MessageActor.MissionManager);
+                        moveLoadingUnitProvider.ActivateMove(mission.FsmId, mission.MissionType, mission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
                     }
                 }
                 else if (mission.Status == MissionStatus.Waiting)
@@ -140,13 +135,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         return;
                     }
                 }
+                /******************** MOVE THIS PIECE OF CODE AFTER THE END OF THE MACHINE MISSION*/
+               // there are more operations for the same wms mission
+               var newOperation = newOperations.OrderBy(o => o.Priority).First();
+               this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
 
-                // there are more operations for the same wms mission
-                var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
-
-                baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
+               baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
+               this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
+               /******************************/
             }
             else
             {
@@ -183,8 +179,42 @@ namespace Ferretto.VW.MAS.MissionManager
                     moveLoadingUnitProvider.StopMove(mission.FsmId, bayNumber, bayNumber, MessageActor.MissionManager);
 
                     // activate new mission
-                    moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, loadingUnitSource, bayNumber, bayNumber, MessageActor.MissionManager);
+                    moveLoadingUnitProvider.ActivateMove(nextMission.FsmId, nextMission.MissionType, nextMission.LoadingUnitId, bayNumber, MessageActor.MissionManager);
                 }
+            }
+        }
+
+        private static void GetPersistedMissions(IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+            var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
+
+            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
+            foreach (var mission in missions)
+            {
+                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
+                {
+                    mission.FsmRestoreStateName = mission.FsmStateName;
+                }
+                mission.FsmStateName = "MoveLoadingUnitErrorState";
+                if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
+                {
+                    mission.NeedHomingAxis = Axis.BayChain;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
+                    || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
+                    )
+                {
+                    mission.NeedMovingBackward = true;
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
+                {
+                    mission.NeedHomingAxis = Axis.Horizontal;
+                }
+                missionsDataProvider.Update(mission);
+
+                machineMissionsProvider.AddMission(mission, mission.FsmId);
             }
         }
 
@@ -298,38 +328,9 @@ namespace Ferretto.VW.MAS.MissionManager
                 .Publish(notificationMessage);
         }
 
-        private static void GetPersistedMissions(IServiceProvider serviceProvider)
+        private async Task OnBayOperationalStatusChangedAsync()
         {
-            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
-            var machineMissionsProvider = serviceProvider.GetRequiredService<IMachineMissionsProvider>();
-
-            var missions = missionsDataProvider.GetAllExecutingMissions().ToList();
-            foreach (var mission in missions)
-            {
-                if (string.IsNullOrEmpty(mission.FsmRestoreStateName))
-                {
-                    mission.FsmRestoreStateName = mission.FsmStateName;
-                }
-                mission.FsmStateName = "MoveLoadingUnitErrorState";
-                if (mission.FsmRestoreStateName == "MoveLoadingUnitBayChainState")
-                {
-                    mission.NeedHomingAxis = Axis.BayChain;
-                }
-                else if (mission.FsmRestoreStateName == "MoveLoadingUnitLoadElevatorState"
-                    || mission.FsmRestoreStateName == "MoveLoadingUnitDepositUnitState"
-                    )
-                {
-                    mission.NeedMovingBackward = true;
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                }
-                else if (mission.FsmRestoreStateName == "MoveLoadingUnitMoveToTargetState")
-                {
-                    mission.NeedHomingAxis = Axis.Horizontal;
-                }
-                missionsDataProvider.Update(mission);
-
-                machineMissionsProvider.AddMission(mission, mission.FsmId);
-            }
+            await this.InvokeSchedulerAsync();
         }
 
         private async Task OnDataLayerReadyAsync(IServiceProvider serviceProvider)

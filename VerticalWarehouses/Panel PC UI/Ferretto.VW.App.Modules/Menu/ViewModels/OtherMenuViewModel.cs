@@ -14,11 +14,9 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Menu.ViewModels
 {
     [Warning(WarningsArea.Installation)]
-    internal sealed class OtherMenuViewModel : BaseMainViewModel
+    internal sealed class OtherMenuViewModel : BaseInstallationMenuViewModel
     {
         #region Fields
-
-        private bool isWaitingForResponse;
 
         private DelegateCommand menuComunicationWMSCommand;
 
@@ -35,7 +33,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #region Constructors
 
         public OtherMenuViewModel()
-            : base(PresentationMode.Menu)
+            : base()
         {
         }
 
@@ -43,7 +41,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Enums
 
-        private enum Menu
+        private enum MenuOlther
         {
             Users,
 
@@ -62,73 +60,56 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public ICommand MenuComunicationWmsCommand =>
             this.menuComunicationWMSCommand
             ??
             (this.menuComunicationWMSCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.ComunicationWms),
+                () => this.MenuCommandOlther(MenuOlther.ComunicationWms),
                 this.CanExecuteCommand));
 
         public ICommand MenuOldCommand =>
                     this.menuOldCommand
             ??
             (this.menuOldCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Old),
+                () => this.MenuCommandOlther(MenuOlther.Old),
                 this.CanExecuteCommand));
 
         public ICommand MenuParameterInverterCommand =>
             this.menuParameterInverterCommand
             ??
             (this.menuParameterInverterCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.ParameterInverter),
+                () => this.MenuCommandOlther(MenuOlther.ParameterInverter),
                 this.CanExecuteCommand));
 
         public ICommand MenuParametersCommand =>
-                            this.menuParametersCommand
+            this.menuParametersCommand
             ??
             (this.menuParametersCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Parameters),
+                () => this.MenuCommandOlther(MenuOlther.Parameters),
                 this.CanExecuteCommand));
 
         public ICommand MenuUsersCommand =>
             this.menuUsersCommand
             ??
             (this.menuUsersCommand = new DelegateCommand(
-                () => this.MenuCommand(Menu.Users),
+                () => this.MenuCommandOlther(MenuOlther.Users),
                 this.CanExecuteCommand));
 
         #endregion
 
         #region Methods
 
-        public override void Disappear()
+        internal override void RaiseCanExecuteChanged()
         {
-            base.Disappear();
+            base.RaiseCanExecuteChanged();
+            this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
+            this.menuUsersCommand?.RaiseCanExecuteChanged();
+            this.menuOldCommand?.RaiseCanExecuteChanged();
+            this.menuParametersCommand?.RaiseCanExecuteChanged();
+            this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }
 
-        public override async Task OnAppearedAsync()
-        {
-            this.IsWaitingForResponse = true;
-
-            await base.OnAppearedAsync();
-
-            this.IsBackNavigationAllowed = true;
-
-            this.IsWaitingForResponse = false;
-        }
-
-        private bool CanExecuteCommand()
-        {
-            return !this.IsWaitingForResponse;
-        }
-
-        private void MenuCommand(Menu menu)
+        private void MenuCommandOlther(MenuOlther menu)
         {
             this.ClearNotifications();
 
@@ -140,7 +121,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 switch (menu)
                 {
-                    case Menu.Parameters:
+                    case MenuOlther.Parameters:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.Parameters.PARAMETERS,
@@ -148,7 +129,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.Old:
+                    case MenuOlther.Old:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.INSTALLATORMENU,
@@ -156,7 +137,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.Users:
+                    case MenuOlther.Users:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.USERS,
@@ -164,7 +145,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.ComunicationWms:
+                    case MenuOlther.ComunicationWms:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.COMUNICATIONWMS,
@@ -172,7 +153,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                             trackCurrentView: true);
                         break;
 
-                    case Menu.ParameterInverter:
+                    case MenuOlther.ParameterInverter:
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Installation),
                             Utils.Modules.Installation.PARAMETERINVERTER,
@@ -193,15 +174,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.menuComunicationWMSCommand?.RaiseCanExecuteChanged();
-            this.menuUsersCommand?.RaiseCanExecuteChanged();
-            this.menuOldCommand?.RaiseCanExecuteChanged();
-            this.menuParametersCommand?.RaiseCanExecuteChanged();
-            this.menuParameterInverterCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

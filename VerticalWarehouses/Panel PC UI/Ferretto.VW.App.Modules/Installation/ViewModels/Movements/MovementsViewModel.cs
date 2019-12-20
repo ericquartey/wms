@@ -63,12 +63,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand goToStatusSensorsCommand;
 
-        private bool hasBayExternal;
-
-        private bool hasCarousel;
-
-        private bool hasShutter;
-
         private SubscriptionToken homingToken;
 
         private bool isCarouselMoving;
@@ -164,22 +158,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.goToStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand()));
 
-        public bool HasBayExternal
-        {
-            get => this.hasBayExternal;
-            set => this.SetProperty(ref this.hasBayExternal, value);
-        }
 
         public bool HasCarousel
         {
-            get => this.hasCarousel;
-            set => this.SetProperty(ref this.hasCarousel, value);
+            get => this.MachineService.HasCarousel;
         }
 
         public bool HasShutter
         {
-            get => this.hasShutter;
-            set => this.SetProperty(ref this.hasShutter, value);
+            get => this.MachineService.HasShutter;
         }
 
         public bool IsCarouselMoving
@@ -322,13 +309,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
 
                 this.BayIsMultiPosition = this.bay.IsDouble;
-
-                this.HasCarousel = this.bay.Carousel != null;
-                this.HasShutter = this.bay.Shutter.Type != ShutterType.NotSpecified;
-                this.BayIsShutterThreeSensors = this.bay.Shutter.Type == ShutterType.ThreeSensors;
-
-                this.HasBayExternal = this.bay.IsExternal;
-
+                
                 this.OnManualAppearedAsync();
 
                 this.SubscribeToEvents();
