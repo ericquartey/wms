@@ -135,13 +135,14 @@ namespace Ferretto.VW.MAS.MissionManager
                         return;
                     }
                 }
+                /******************** MOVE THIS PIECE OF CODE AFTER THE END OF THE MACHINE MISSION*/
+               // there are more operations for the same wms mission
+               var newOperation = newOperations.OrderBy(o => o.Priority).First();
+               this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
 
-                // there are more operations for the same wms mission
-                var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
-
-                baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
+               baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
+               this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
+               /******************************/
             }
             else
             {

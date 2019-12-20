@@ -41,5 +41,5 @@
         <GradientStop Offset="0.5" Color="{DynamicResource EDBGrayH}" />
         <GradientStop Offset="1" Color="{DynamicResource EDBGrayH}" />
     </LinearGradientBrush>
-    
+
 </ResourceDictionary>
