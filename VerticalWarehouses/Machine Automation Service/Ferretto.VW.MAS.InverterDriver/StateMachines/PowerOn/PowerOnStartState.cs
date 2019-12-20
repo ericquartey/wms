@@ -103,7 +103,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.PowerOn
                         new PowerOnSwitchOnState(this.ParentStateMachine, this.InverterStatus, this.Logger));
                     responseReceived = true;
                 }
-                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2000)
+                else if (DateTime.UtcNow.Subtract(this.startTime).TotalMilliseconds > 2500)
                 {
                     this.Logger.LogError($"2:PowerOnStartState timeout, inverter {this.InverterStatus.SystemIndex}");
                     this.ParentStateMachine.ChangeState(

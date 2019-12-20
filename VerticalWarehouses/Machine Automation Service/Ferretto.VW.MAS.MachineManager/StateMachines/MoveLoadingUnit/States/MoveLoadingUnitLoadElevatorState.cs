@@ -8,12 +8,13 @@ using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.Exceptions;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitLoadElevatorState : StateBase, IMoveLoadingUnitLoadElevatorState
+    internal class MoveLoadingUnitLoadElevatorState : StateBase, IMoveLoadingUnitLoadElevatorState, IProgressMessageState
     {
         #region Fields
 
@@ -69,6 +70,12 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.measure = false;
             this.direction = HorizontalMovementDirection.Backwards;
         }
+
+        #endregion
+
+        #region Properties
+
+        public NotificationMessage Message { get; set; }
 
         #endregion
 
@@ -300,6 +307,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 transaction.Commit();
             }
+            this.Message = new NotificationMessage(
+                            null,
+                            $"Load Unit position changed",
+                            MessageActor.Any,
+                            MessageActor.MachineManager,
+                            MessageType.Positioning,
+                            this.mission.TargetBay,
+                            this.mission.TargetBay,
+                            MessageStatus.OperationUpdateData);
+
             // in bay-to-cell movements the profile may have changed so we have to find a new empty cell
             if (this.mission.LoadingUnitSource != LoadingUnitLocation.Cell
                 && this.mission.LoadingUnitDestination == LoadingUnitLocation.Cell

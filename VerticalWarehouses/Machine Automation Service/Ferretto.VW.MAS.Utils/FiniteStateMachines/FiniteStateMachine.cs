@@ -224,14 +224,22 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            if (this.isStarted)
-            {
-                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
-            }
-
             if (commandMessage is null)
             {
                 throw new ArgumentNullException(nameof(commandMessage));
+            }
+
+            bool isWait = false;
+            if (this.isStarted)
+            {
+                if (this.activeState is IWaitState)
+                {
+                    isWait = true;
+                }
+                else
+                {
+                    throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
+                }
             }
 
             if (this.OnStart(commandMessage, cancellationToken))
@@ -244,10 +252,13 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
                 this.requestingBay = commandMessage.RequestingBay;
 
-                this.commandsDequeuingThread.Start(cancellationToken);
-                this.notificationsDequeuingThread.Start(cancellationToken);
+                if (!isWait)
+                {
+                    this.commandsDequeuingThread.Start(cancellationToken);
+                    this.notificationsDequeuingThread.Start(cancellationToken);
 
-                this.InitializeSubscriptions();
+                    this.InitializeSubscriptions();
+                }
 
                 this.ActiveState = this.GetState<TStartState>();
             }

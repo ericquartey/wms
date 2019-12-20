@@ -253,11 +253,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ActionPolicy> CanExtractFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId);
+        System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanLoadFromCellAsync(int cellId);
@@ -281,11 +281,11 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task<ActionPolicy> CanMoveToCellAsync(int cellId, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId);
+        System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<ActionPolicy> CanUnloadToCellAsync(int cellId);

@@ -110,7 +110,7 @@ namespace Ferretto.VW.MAS.InverterDriver.StateMachines.Positioning
                         var notificationMessage = new FieldNotificationMessage(
                             this.data,
                             $"Positioning weight measured",
-                            FieldMessageActor.Any,
+                            FieldMessageActor.DeviceManager,
                             FieldMessageActor.InverterDriver,
                             FieldMessageType.Positioning,
                             MessageStatus.OperationUpdateData,

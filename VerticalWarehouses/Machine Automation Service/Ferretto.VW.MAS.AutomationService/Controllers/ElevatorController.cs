@@ -67,9 +67,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("horizontal/can-load-from-bay/{bayPositionId}")]
-        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId)
+        public ActionResult<ActionPolicy> CanLoadFromBay(int bayPositionId, bool isGuided)
         {
-            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber));
+            return this.Ok(this.elevatorProvider.CanLoadFromBay(bayPositionId, this.BayNumber, isGuided));
         }
 
         [HttpGet("horizontal/can-load-from-cell/{cellId}")]
@@ -91,9 +91,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpGet("horizontal/can-unload-to-bay/{bayPositionId}")]
-        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId)
+        public ActionResult<ActionPolicy> CanUnloadToBay(int bayPositionId, bool isGuided)
         {
-            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber));
+            return this.Ok(this.elevatorProvider.CanUnloadToBay(bayPositionId, this.BayNumber, isGuided));
         }
 
         [HttpGet("horizontal/can-unload-to-cell/{cellId}")]

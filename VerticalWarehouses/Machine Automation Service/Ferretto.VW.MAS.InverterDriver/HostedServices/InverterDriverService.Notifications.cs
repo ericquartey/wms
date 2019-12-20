@@ -287,12 +287,10 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             if (receivedMessage.Source == FieldMessageActor.InverterDriver
-                &&
-                (receivedMessage.Status == MessageStatus.OperationEnd
-                ||
-                receivedMessage.Status == MessageStatus.OperationStop
-                ||
-                receivedMessage.Status == MessageStatus.OperationUpdateData))
+                && (receivedMessage.Status == MessageStatus.OperationEnd
+                    || receivedMessage.Status == MessageStatus.OperationStop
+                    )
+                )
             {
                 var notificationMessageToFsm = receivedMessage;
 
