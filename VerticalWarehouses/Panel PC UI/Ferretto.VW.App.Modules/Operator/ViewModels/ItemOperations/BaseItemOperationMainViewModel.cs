@@ -109,6 +109,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isBusyConfirmingOperation, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsOperationCanceled
+        {
+            get => this.isOperationCanceled;
+            set => this.SetProperty(ref this.isOperationCanceled, value);
+        }
+
         public double LoadingUnitDepth
         {
             get => this.loadingUnitDepth;
@@ -201,7 +207,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBusyAbortingOperation = false;
             this.IsBusyConfirmingOperation = false;
             this.isOperationConfirmed = false;
-            this.isOperationCanceled = false;
+            this.IsOperationCanceled = false;
             this.InputQuantity = null;
             this.SelectedCompartment = null;
 
@@ -286,7 +292,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             else
             {
-                this.isOperationCanceled = true;
+                this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;
                 this.DialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
                 this.ShowNotification(OperatorApp.CurrentOperationIsNoLongerAvailable, Services.Models.NotificationSeverity.Warning);
