@@ -23,10 +23,6 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
-        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
-
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
-
         private SubscriptionToken bayChainPositionChangedToken;
 
         private SubscriptionToken healthStatusChangedToken;

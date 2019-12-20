@@ -197,7 +197,13 @@ namespace Ferretto.VW.App.Services
         public MachineStatus MachineStatus
         {
             get => this.machineStatus;
-            set => this.SetProperty(ref this.machineStatus, value, this.MachineStatusNotificationProperty);
+            set
+            {
+                if (this.SetProperty(ref this.machineStatus, value))
+                {
+                    this.MachineStatusNotificationProperty();
+                }
+            }
         }
 
         internal string Notification
@@ -335,6 +341,7 @@ namespace Ferretto.VW.App.Services
                 ms.EmbarkedLoadingUnit = isLoadingUnitEmbarked || forceRefresh || true
                         ? await this.machineElevatorWebService.GetLoadingUnitOnBoardAsync()
                         : null;
+                ms.EmbarkedLoadingUnitId = ms.EmbarkedLoadingUnit?.Id.ToString();
 
                 this.MachineStatus = ms;
 
@@ -575,6 +582,11 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationStepStop:
                     {
+                        if (message?.Data is PositioningMessageData)
+                        {
+                            Task.Run(async () => await this.GetElevatorAsync(true)).Wait();
+                        }
+
                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
                         ms.IsMoving = false;
@@ -582,8 +594,6 @@ namespace Ferretto.VW.App.Services
                         if (message?.Data is PositioningMessageData)
                         {
                             ms.IsMovingElevator = false;
-
-                            Task.Run(async () => await this.GetElevatorAsync(true)).Wait();
                         }
 
                         if (message?.Data is ShutterPositioningMessageData)

@@ -136,8 +136,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.bayIsMultiPosition, value);
         }
 
-        public LoadingUnit EmbarkedLoadingUnit => this.MachineStatus.EmbarkedLoadingUnit;
-
         public override EnableMask EnableMask => EnableMask.MachinePoweredOn;
 
         public ICommand GoToMovementsGuidedCommand =>
@@ -554,7 +552,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaisePropertyChanged(nameof(this.SensorsService));
             this.RaisePropertyChanged(nameof(this.MachineService));
             this.RaisePropertyChanged(nameof(this.MachineStatus));
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
             this.RaisePropertyChanged(nameof(this.BayIsShutterThreeSensors));

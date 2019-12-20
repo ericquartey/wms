@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private LoadingUnit embarkedLoadingUnit;
 
+        private string embarkedLoadingUnitId;
+
         private string errorDescription;
 
         private double? horizontalTargetPosition;
@@ -102,6 +104,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.embarkedLoadingUnit;
             set => this.SetProperty(ref this.embarkedLoadingUnit, value);
+        }
+
+        public string EmbarkedLoadingUnitId
+        {
+            get => this.embarkedLoadingUnitId;
+            set => this.SetProperty(ref this.embarkedLoadingUnitId, value);
         }
 
         public string ErrorDescription
