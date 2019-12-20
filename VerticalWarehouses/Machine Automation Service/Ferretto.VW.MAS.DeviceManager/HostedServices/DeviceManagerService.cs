@@ -187,6 +187,10 @@ namespace Ferretto.VW.MAS.DeviceManager
                 case MessageType.InverterPowerEnable:
                     this.ProcessInverterPowerEnable(command, serviceProvider);
                     break;
+
+                case MessageType.BayLight:
+                    this.ProcessBayLight(command, serviceProvider);
+                    break;
             }
 
             var notificationMessageData = new MachineStatusActiveMessageData(
@@ -637,8 +641,29 @@ namespace Ferretto.VW.MAS.DeviceManager
 
                     break;
 
+                case FieldMessageType.BayLight when receivedMessage.Source is FieldMessageActor.IoDriver &&
+                                                    receivedMessage.Data is IBayLightFieldMessageData:
+
+                    this.Logger.LogTrace($"3:BayLight received: {receivedMessage.Type}, destination: {receivedMessage.Destination}, source: {receivedMessage.Source}, status: {receivedMessage.Status}, data {receivedMessage.Data}");
+
+                    var enable = ((IBayLightFieldMessageData)receivedMessage.Data).Enable;
+
+                    this.EventAggregator
+                        .GetEvent<NotificationEvent>()
+                        .Publish(
+                            new NotificationMessage(
+                                null,
+                                $"BayLight={enable} completed, Bay={bayNumber}",
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.BayLight,
+                                bayNumber,
+                                bayNumber,
+                                receivedMessage.Status));
+
+                    break;
+
                 case FieldMessageType.MeasureProfile:
-                case FieldMessageType.BayLight:
                     bayNumber = BayNumber.ElevatorBay;
                     break;
 

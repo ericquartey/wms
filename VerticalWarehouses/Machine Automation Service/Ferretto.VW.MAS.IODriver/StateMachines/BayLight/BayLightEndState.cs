@@ -54,7 +54,7 @@ namespace Ferretto.VW.MAS.IODriver.StateMachines.BayLight
                 $"Bay light={this.enable} completed",
                 FieldMessageActor.IoDriver,
                 FieldMessageActor.IoDriver,
-                FieldMessageType.MeasureProfile,
+                FieldMessageType.BayLight,
                 MessageStatus.OperationEnd,
                 (byte)this.index);
 

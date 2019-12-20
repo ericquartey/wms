@@ -29,6 +29,28 @@ namespace Ferretto.VW.MAS.DeviceManager
     {
         #region Methods
 
+        private void ProcessBayLight(CommandMessage message, IServiceProvider serviceProvider)
+        {
+            this.Logger.LogTrace("1:Method Start");
+
+            if (message.Data is IBayLightMessageData data)
+            {
+                var bayDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                var ioIndex = bayDataProvider.GetIoDevice(message.TargetBay);
+
+                // Send a field message to ligh the bay (via output line) to IoDevice
+                var bayLightDataMessage = new BayLightFieldMessageData(data.Enable);
+                var inverterMessage = new FieldCommandMessage(
+                    bayLightDataMessage,
+                    $"Bay Light={data.Enable}",
+                    FieldMessageActor.IoDriver,
+                    FieldMessageActor.DeviceManager,
+                    FieldMessageType.BayLight,
+                    (byte)ioIndex);
+                this.EventAggregator.GetEvent<FieldCommandEvent>().Publish(inverterMessage);
+            }
+        }
+
         private void ProcessCheckConditionMessage(CommandMessage message, IServiceProvider serviceProvider)
         {
             this.Logger.LogTrace($"1:Processing Command {message.Type} Source {message.Source}");
