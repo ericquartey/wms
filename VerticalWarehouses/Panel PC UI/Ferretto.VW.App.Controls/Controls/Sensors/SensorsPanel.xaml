@@ -156,7 +156,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="Posizione Catena" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding SensorsService.BayChainPosition, StringFormat={}{0:F2}}" />
+                                       Text="{Binding MachineService.BayChainPosition, StringFormat={}{0:F2}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Vertical">

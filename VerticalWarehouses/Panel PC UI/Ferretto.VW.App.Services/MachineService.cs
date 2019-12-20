@@ -813,7 +813,7 @@ namespace Ferretto.VW.App.Services
 
             if (e is BayChainPositionChangedEventArgs dataBayChainPosition)
             {
-                if (this.MachineStatus.BayChainPosition == dataBayChainPosition.Position)
+                if (this.MachineStatus.BayChainPosition != dataBayChainPosition.Position)
                 {
                     var ms = (MachineStatus)this.MachineStatus.Clone();
                     ms.BayChainPosition = dataBayChainPosition.Position;
