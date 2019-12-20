@@ -170,6 +170,28 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         break;
 
                     case FsmType.MoveLoadingUnit:
+                        if (command.Data is MoveLoadingUnitMessageData messageData)
+                        {
+                            // if there is a mission waiting we have to take her place
+                            var waitMission = this.machineMissions.FirstOrDefault(m =>
+                                m.Type == fsmType
+                                && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
+                                && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
+                                && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
+                                );
+                            if (waitMission != null
+                                && waitMission.MachineData is MoveLoadingUnitMessageData waitData)
+                            {
+                                try
+                                {
+                                    this.StopMachineMission(waitData.MissionId.Value, StopRequestReason.Stop);
+                                }
+                                catch (Exception)
+                                {
+                                    return false;
+                                }
+                            }
+                        }
                         newMission = new MachineMission<IMoveLoadingUnitStateMachine>(this.serviceScopeFactory, this.OnActiveStateMachineCompleted);
                         break;
                 }
@@ -183,7 +205,6 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                         mission.CreationDate = DateTime.Now;
                     }
                     this.machineMissions.Add(newMission);
-
                     fsmId = newMission.FsmId;
 
                     return true;
@@ -234,9 +255,7 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 m.Type == moveRequestedMission
                                 && ((DataModels.Mission)m.MachineData).MissionType == messageData.MissionType
                                 && ((DataModels.Mission)m.MachineData).LoadingUnitId == messageData.LoadingUnitId
-                                && (((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
-                                    || ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
-                                    )
+                                && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Executing
                                 );
                             if (!returnValue)
                             {

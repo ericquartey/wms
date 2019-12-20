@@ -570,7 +570,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 var selectedBayPosition = this.SelectedBayPosition;
                 if (selectedBayPosition != null)
                 {
-                    this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id);
+                    this.loadFromBayPolicy = await this.machineElevatorWebService.CanLoadFromBayAsync(selectedBayPosition.Id, (this.SelectedBayPosition.LoadingUnit != null));
                     this.loadFromBayCommand?.RaiseCanExecuteChanged();
                     //if (!string.IsNullOrEmpty(this.loadFromBayPolicy.Reason))
                     //{
@@ -579,7 +579,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                     //System.Diagnostics.Debug.WriteLine($"ELEV <- BAY: {this.loadFromBayPolicy.IsAllowed} {this.loadFromBayPolicy.Reason}");
 
-                    this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id);
+                    this.unloadToBayPolicy = await this.machineElevatorWebService.CanUnloadToBayAsync(selectedBayPosition.Id, (this.MachineStatus.EmbarkedLoadingUnit != null));
                     this.unloadToBayCommand?.RaiseCanExecuteChanged();
                     //if (!string.IsNullOrEmpty(this.unloadToBayPolicy.Reason))
                     //{

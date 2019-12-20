@@ -2792,21 +2792,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId)
+        public System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided)
         {
-            return CanLoadFromBayAsync(bayPositionId, System.Threading.CancellationToken.None);
+            return CanLoadFromBayAsync(bayPositionId, isGuided, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ActionPolicy> CanLoadFromBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
                 throw new System.ArgumentNullException("bayPositionId");
     
+            if (isGuided == null)
+                throw new System.ArgumentNullException("isGuided");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-load-from-bay/{bayPositionId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-load-from-bay/{bayPositionId}?");
             urlBuilder_.Replace("{bayPositionId}", System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("isGuided") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isGuided, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
@@ -3070,21 +3075,26 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         }
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId)
+        public System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided)
         {
-            return CanUnloadToBayAsync(bayPositionId, System.Threading.CancellationToken.None);
+            return CanUnloadToBayAsync(bayPositionId, isGuided, System.Threading.CancellationToken.None);
         }
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task<ActionPolicy> CanUnloadToBayAsync(int bayPositionId, bool isGuided, System.Threading.CancellationToken cancellationToken)
         {
             if (bayPositionId == null)
                 throw new System.ArgumentNullException("bayPositionId");
     
+            if (isGuided == null)
+                throw new System.ArgumentNullException("isGuided");
+    
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-unload-to-bay/{bayPositionId}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/elevator/horizontal/can-unload-to-bay/{bayPositionId}?");
             urlBuilder_.Replace("{bayPositionId}", System.Uri.EscapeDataString(ConvertToString(bayPositionId, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Append(System.Uri.EscapeDataString("isGuided") + "=").Append(System.Uri.EscapeDataString(ConvertToString(isGuided, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            urlBuilder_.Length--;
     
             var client_ = _httpClient;
             try
