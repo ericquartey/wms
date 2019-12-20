@@ -222,6 +222,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case nameof(MoveLoadingUnitEndState):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     break;
 
@@ -232,24 +233,28 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case nameof(MoveLoadingUnitMoveToTargetState):
                     this.mission.RestoreConditions = true;
                     this.mission.FsmRestoreStateName = null;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
                     break;
 
                 case nameof(MoveLoadingUnitStartState):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitStartState>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitEjectConfirm):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitPickConfirm):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                     break;
 
@@ -318,6 +323,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.mission.FsmRestoreStateName = null;
                 this.mission.RestoreConditions = false;
+                this.mission.NeedMovingBackward = false;
                 if (this.mission.WmsId.HasValue)
                 {
                     returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
@@ -331,6 +337,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
             }
 
@@ -352,6 +359,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
             }
             return returnValue;
@@ -399,6 +407,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             MessageStatus.OperationUpdateData);
 
             this.mission.FsmRestoreStateName = null;
+            this.mission.NeedMovingBackward = false;
             if (bayShutter)
             {
                 returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
@@ -432,6 +441,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
 
                 return returnValue;
@@ -547,6 +557,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     // cell not found: go back to bay
                     this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
                     this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                    this.mission.NeedMovingBackward = false;
                     return this.GetState<IMoveLoadingUnitDepositUnitState>();
                 }
             }
@@ -562,6 +573,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             MessageStatus.OperationUpdateData);
 
             this.mission.FsmRestoreStateName = null;
+            this.mission.NeedMovingBackward = false;
             returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
             return returnValue;
         }
@@ -588,6 +600,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitStartState>();
 
                 return returnValue;
@@ -665,6 +678,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.isMovingBackward = false;
             this.isMovingForward = false;
             this.isMovingShutter = false;
+            this.mission.NeedMovingBackward = false;
             this.mission.RestoreConditions = true;
             if (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitLoadElevatorState))
             {

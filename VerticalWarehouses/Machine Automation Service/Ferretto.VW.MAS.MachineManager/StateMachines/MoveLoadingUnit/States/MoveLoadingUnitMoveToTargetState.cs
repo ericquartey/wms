@@ -185,7 +185,11 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         )
                     {
                         var check = this.loadingUnitsDataProvider.CheckWeight(this.mission.LoadingUnitId);
-                        if (check != MachineErrorCode.NoError)
+                        if (check == MachineErrorCode.NoError)
+                        {
+                            this.baysDataProvider.Light(this.mission.TargetBay, false);
+                        }
+                        else
                         {
                             // stop movement and  go back to bay
                             this.errorsProvider.RecordNew(check);

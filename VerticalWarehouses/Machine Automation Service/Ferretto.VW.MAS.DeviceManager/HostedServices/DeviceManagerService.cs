@@ -111,7 +111,8 @@ namespace Ferretto.VW.MAS.DeviceManager
                 && command.Type != MessageType.Stop
                 && command.Type != MessageType.SensorsChanged
                 && command.Type != MessageType.PowerEnable
-                && command.Type != MessageType.ContinueMovement)
+                && command.Type != MessageType.ContinueMovement
+                && command.Type != MessageType.BayLight)
             {
                 var errorNotification = new NotificationMessage(
                     command.Data,

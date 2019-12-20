@@ -316,6 +316,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             if (bayShutter)
             {
+                this.baysDataProvider.Light(this.mission.TargetBay, true);
                 returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
             }
             else
