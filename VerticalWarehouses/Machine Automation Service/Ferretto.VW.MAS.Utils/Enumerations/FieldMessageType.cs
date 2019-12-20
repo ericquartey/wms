@@ -68,6 +68,8 @@
 
         LaserMove,
 
-        LaserMoveAndSwitchOn
+        LaserMoveAndSwitchOn,
+
+        BayLight
     }
 }

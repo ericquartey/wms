@@ -802,6 +802,17 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public void Light(BayNumber bayNumber, bool enable)
+        {
+            this.PublishCommand(
+                new BayLightMessageData(enable),
+                "Execute BayLigth Command",
+                MessageActor.DeviceManager,
+                MessageType.BayLight,
+                bayNumber,
+                bayNumber);
+        }
+
         public void PerformHoming(BayNumber bayNumber)
         {
             this.PublishCommand(

@@ -214,6 +214,13 @@ namespace Ferretto.VW.MAS.IODriver
             return telegram;
         }
 
+        public bool SwitchBayLight(bool lightOn)
+        {
+            this.outputs[(int)IoPorts.BayLight] = lightOn;
+
+            return true;
+        }
+
         public bool SwitchCradleMotor(bool switchOn)
         {
             if (switchOn)
