@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private double? bayChainPosition;
 
+        private double? bayChainTargetPosition;
+
         private Guid? currentMissionId;
 
         private double? elevatorHorizontalPosition;
@@ -27,6 +29,8 @@ namespace Ferretto.VW.App.Services.Models
         private LoadingUnit embarkedLoadingUnit;
 
         private string errorDescription;
+
+        private double? horizontalTargetPosition;
 
         private bool isError;
 
@@ -46,6 +50,8 @@ namespace Ferretto.VW.App.Services.Models
 
         private string logicalPositionId;
 
+        private double? verticalTargetPosition;
+
         #endregion
 
         #region Properties
@@ -54,6 +60,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.bayChainPosition;
             set => this.SetProperty(ref this.bayChainPosition, value);
+        }
+
+        public double? BayChainTargetPosition
+        {
+            get => this.bayChainTargetPosition;
+            set => this.SetProperty(ref this.bayChainTargetPosition, value);
         }
 
         public Guid? CurrentMissionId
@@ -96,6 +108,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.errorDescription;
             set => this.SetProperty(ref this.errorDescription, value);
+        }
+
+        public double? HorizontalTargetPosition
+        {
+            get => this.horizontalTargetPosition;
+            set => this.SetProperty(ref this.horizontalTargetPosition, value);
         }
 
         public bool IsError
@@ -150,6 +168,12 @@ namespace Ferretto.VW.App.Services.Models
         {
             get => this.logicalPositionId;
             set => this.SetProperty(ref this.logicalPositionId, value);
+        }
+
+        public double? VerticalTargetPosition
+        {
+            get => this.verticalTargetPosition;
+            set => this.SetProperty(ref this.verticalTargetPosition, value);
         }
 
         #endregion

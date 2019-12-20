@@ -630,10 +630,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;
             this.IsExecutingProcedure = false;
-
-            this.VerticalTargetPosition = null;
-            this.HorizontalTargetPosition = null;
-            this.BayChainTargetPosition = null;
         }
 
         private void WriteInfo(Axis? axisMovement)

@@ -22,11 +22,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private double? bayChainTargetPosition;
-
         private DelegateCommand closedShutterCommand;
-
-        private double? horizontalTargetPosition;
 
         private int? inputCellId;
 
@@ -116,26 +112,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy unloadToCellPolicy;
 
-        private double? verticalTargetPosition;
-
         #endregion
 
         #region Properties
 
-        public double? BayChainTargetPosition
-        {
-            get => this.bayChainTargetPosition;
-            private set => this.SetProperty(ref this.bayChainTargetPosition, value);
-        }
-        
         public bool BayIsShutterThreeSensors
         {
             get => this.MachineService.IsShutterThreeSensors;
-        }
-
-        public bool HasBayExternal
-        {
-            get => this.MachineService.HasBayExternal;
         }
 
         public ICommand CarouselDownCommand =>
@@ -159,10 +142,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
 
-        public double? HorizontalTargetPosition
+        public bool HasBayExternal
         {
-            get => this.horizontalTargetPosition;
-            private set => this.SetProperty(ref this.horizontalTargetPosition, value);
+            get => this.MachineService.HasBayExternal;
         }
 
         public int? InputCellId
@@ -483,12 +465,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.unloadToCellCommand = new DelegateCommand(
                 async () => await this.UnloadToCellAsync(),
                 this.CanUnloadToCell));
-
-        public double? VerticalTargetPosition
-        {
-            get => this.verticalTargetPosition;
-            private set => this.SetProperty(ref this.verticalTargetPosition, value);
-        }
 
         #endregion
 
