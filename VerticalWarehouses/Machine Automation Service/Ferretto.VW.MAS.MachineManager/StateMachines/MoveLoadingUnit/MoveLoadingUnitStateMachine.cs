@@ -187,7 +187,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     }
                     else if (messageData.LoadingUnitId.HasValue)
                     {
-                        machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                        try
+                        {
+                            machineData.DestinationCellId = this.cellsProvider.FindEmptyCell(messageData.LoadingUnitId.Value);
+                        }
+                        catch (Exception)
+                        {
+                            this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
+                            throw new StateMachineException(ErrorDescriptions.WarehouseIsFull, null, MessageActor.MachineManager);
+                        }
                         returnValue = true;
                         machineData.LoadingUnitDestination = LoadingUnitLocation.Cell;
                     }

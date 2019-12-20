@@ -330,6 +330,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 catch (InvalidOperationException)
                 {
                     // cell not found: go back to bay
+                    this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
                     this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
                     return this.GetState<IMoveLoadingUnitDepositUnitState>();
                 }

@@ -180,11 +180,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
                                 && ((DataModels.Mission)m.MachineData).Status == MissionStatus.Waiting
                                 );
                             if (waitMission != null
-                                && waitMission.MachineData is MoveLoadingUnitMessageData waitData)
+                                && waitMission.MachineData is DataModels.Mission waitData)
                             {
                                 try
                                 {
-                                    this.StopMachineMission(waitData.MissionId.Value, StopRequestReason.Stop);
+                                    this.StopMachineMission(waitData.FsmId, StopRequestReason.Stop);
                                 }
                                 catch (Exception)
                                 {

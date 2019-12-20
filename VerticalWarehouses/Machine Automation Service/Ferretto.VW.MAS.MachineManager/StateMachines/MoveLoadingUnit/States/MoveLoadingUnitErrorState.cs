@@ -538,7 +538,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 && this.mission.LoadingUnitId > 0
                 )
             {
-                this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                try
+                {
+                    this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                }
+                catch (InvalidOperationException)
+                {
+                    // cell not found: go back to bay
+                    this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
+                    this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                    return this.GetState<IMoveLoadingUnitDepositUnitState>();
+                }
             }
 
             this.Message = new NotificationMessage(
