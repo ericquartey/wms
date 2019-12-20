@@ -42,9 +42,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -54,7 +52,8 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="Menu Cassetti" />
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1"
+                  Grid.RowSpan="2">
                 <WrapPanel>
 
                     <controls:PpcButton Title="Gestione cassetto"
@@ -122,6 +121,9 @@
 
                 </WrapPanel>
             </Grid>
+
+            <views:InstallationNavigationFooterView Grid.Row="2"
+                                                    HorizontalAlignment="Right" />
 
         </Grid>
     </Grid>

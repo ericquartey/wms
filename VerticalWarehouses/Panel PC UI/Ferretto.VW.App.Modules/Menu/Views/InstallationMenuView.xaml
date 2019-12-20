@@ -869,22 +869,9 @@
 
             </Grid>
 
-            <StackPanel Grid.Row="2"
-                        HorizontalAlignment="Right"
-                        Orientation="Horizontal">
+            <views:InstallationNavigationFooterView Grid.Row="2"
+                                                    HorizontalAlignment="Right" />
 
-                <controls:PpcButton Margin="15,15,0,0"
-                                    Command="{Binding MenuMovementsCommand}"
-                                    Content="{x:Static res:Menu.Movements}" />
-
-                <controls:PpcButton Width="60"
-                                    Margin="15,15,0,0"
-                                    HorizontalAlignment="Right"
-                                    Command="{Binding ViewStatusSensorsCommand}"
-                                    Foreground="{StaticResource FerrettoPureWhite}"
-                                    Kind="LightbulbOn" />
-
-            </StackPanel>
         </Grid>
     </Grid>
 </ctrls:View>

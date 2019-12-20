@@ -26,8 +26,9 @@ namespace Ferretto.VW.App.Services
 
         private readonly IBayManager bayManagerService;
 
-        private readonly IHealthProbeService healthProbeService;
         private readonly IEventAggregator eventAggregator;
+
+        private readonly IHealthProbeService healthProbeService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -67,11 +68,17 @@ namespace Ferretto.VW.App.Services
 
         private SubscriptionToken fsmExceptionToken;
 
+        private bool hasBayExternal;
+
+        private bool hasCarousel;
+
         private bool hasShutter;
 
         private bool isDisposed;
 
         private bool isHoming;
+
+        private bool isShutterThreeSensors;
 
         private IEnumerable<LoadingUnit> loadingUnits;
 
@@ -90,9 +97,6 @@ namespace Ferretto.VW.App.Services
         private SubscriptionToken receiveHomingUpdateToken;
 
         private SubscriptionToken shutterPositionToken;
-        private bool isShutterThreeSensors;
-        private bool hasCarousel;
-        private bool hasBayExternal;
 
         #endregion
 
@@ -130,14 +134,6 @@ namespace Ferretto.VW.App.Services
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
         }
 
-        public bool IsShutterThreeSensors
-        {
-            get => this.isShutterThreeSensors;
-            set => this.SetProperty(ref this.isShutterThreeSensors, value);
-        }
-
-        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
-
         #endregion
 
         #region Properties
@@ -160,6 +156,18 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.cells, value, this.CellsNotificationProperty);
         }
 
+        public bool HasBayExternal
+        {
+            get => this.hasBayExternal;
+            set => this.SetProperty(ref this.hasBayExternal, value);
+        }
+
+        public bool HasCarousel
+        {
+            get => this.hasCarousel;
+            set => this.SetProperty(ref this.hasCarousel, value);
+        }
+
         public bool HasShutter
         {
             get => this.hasShutter;
@@ -170,6 +178,12 @@ namespace Ferretto.VW.App.Services
         {
             get => this.isHoming;
             set => this.SetProperty(ref this.isHoming, value);
+        }
+
+        public bool IsShutterThreeSensors
+        {
+            get => this.isShutterThreeSensors;
+            set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
         public IEnumerable<LoadingUnit> LoadUnits
@@ -191,6 +205,8 @@ namespace Ferretto.VW.App.Services
             get => this.notification;
             set => this.SetProperty(ref this.notification, value, () => this.ShowNotification(this.notification, NotificationSeverity.Info));
         }
+
+        private bool IsHealthy => this.healthProbeService?.HealthStatus == HealthStatus.Healthy;
 
         #endregion
 
@@ -348,18 +364,6 @@ namespace Ferretto.VW.App.Services
             }
 
             return attribute?.Area ?? WarningsArea.None;
-        }
-
-        public bool HasBayExternal
-        {
-            get => this.hasBayExternal;
-            set => this.SetProperty(ref this.hasBayExternal, value);
-        }
-
-        public bool HasCarousel
-        {
-            get => this.hasCarousel;
-            set => this.SetProperty(ref this.hasCarousel, value);
         }
 
         private async Task InitializationBay()
@@ -879,6 +883,5 @@ namespace Ferretto.VW.App.Services
         }
 
         #endregion
-
     }
 }

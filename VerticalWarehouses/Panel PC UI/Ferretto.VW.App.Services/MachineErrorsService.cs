@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows;
+using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Ferretto.VW.MAS.AutomationService.Hubs;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Services
@@ -19,6 +21,10 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
+        private readonly ISensorsService sensorsService;
+
+        private readonly SubscriptionToken sensorsToken;
+
         private MachineError activeError;
 
         private bool autoNavigateOnError;
@@ -31,12 +37,22 @@ namespace Ferretto.VW.App.Services
             IMachineErrorsWebService machineErrorsWebService,
             IEventAggregator eventAggregator,
             INavigationService navigationService,
-            IOperatorHubClient operatorHubClient)
+            IOperatorHubClient operatorHubClient,
+            ISensorsService sensorsService)
         {
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
+            this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+
+            this.sensorsToken = this.eventAggregator
+                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
+                    .Subscribe(
+                        this.OnSensorsChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => m.Data != null);
 
             this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync();
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
@@ -109,6 +125,38 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        private void CheckMissingLoadunits()
+        {
+            // presenza elevatore
+            if (this.sensorsService.IsLoadingUnitOnElevator)
+            {
+            }
+
+            // presenza baia 1
+            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayOne))
+            {
+            }
+            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayOne))
+            {
+            }
+
+            // presenza baia 2
+            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayTwo))
+            {
+            }
+            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayTwo))
+            {
+            }
+
+            // presenza baia 3
+            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayThree))
+            {
+            }
+            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayThree))
+            {
+            }
+        }
+
         private async Task NavigateToErrorPageAsync()
         {
             if (!this.AutoNavigateOnError)
@@ -155,6 +203,11 @@ namespace Ferretto.VW.App.Services
         {
             await this.CheckErrorsPresenceAsync()
                 .ContinueWith((m) => this.ErrorStatusChanged?.Invoke(null, new MachineErrorEventArgs(this.ActiveError)));
+        }
+
+        private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)
+        {
+            this.CheckMissingLoadunits();
         }
 
         #endregion
