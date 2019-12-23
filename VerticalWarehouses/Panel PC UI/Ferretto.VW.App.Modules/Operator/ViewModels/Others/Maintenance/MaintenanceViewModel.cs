@@ -25,8 +25,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private BindableBase dataGridViewModel;
 
-        private bool isWaitingForResponse;
-
         private ObservableCollection<DataGridKit> kits;
 
         private ICommand maintenanceDetailButtonCommand;
@@ -55,12 +53,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
 
         public ICustomControlMaintenanceDataGridViewModel MaintenanceDataGridViewModel { get; }
 

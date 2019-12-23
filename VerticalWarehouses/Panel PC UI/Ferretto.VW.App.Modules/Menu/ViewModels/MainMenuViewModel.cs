@@ -22,8 +22,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private int bayNumber;
 
-        private bool isWaitingForResponse;
-
         private MachineIdentity machineIdentity;
 
         private DelegateCommand menuAboutCommand;
@@ -77,12 +75,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public MachineIdentity MachineIdentity
         {
@@ -156,6 +148,19 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.menuAboutCommand?.RaiseCanExecuteChanged();
+            this.menuInstalationCommand?.RaiseCanExecuteChanged();
+            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
+            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.MachineIdentity));
+            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private bool CanExecuteCommand()
@@ -254,17 +259,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.menuAboutCommand?.RaiseCanExecuteChanged();
-            this.menuInstalationCommand?.RaiseCanExecuteChanged();
-            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
-            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.MachineIdentity));
-            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         #endregion

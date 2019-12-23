@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
         }
 
-        public override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
             this.fullOperationCommand.RaiseCanExecuteChanged();

@@ -33,8 +33,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private bool isWaitingForResponse;
-
         private double lowerBound;
 
         private string noteString;
@@ -96,10 +94,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -222,6 +220,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.startCommand.RaiseCanExecuteChanged();
+            this.stopCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteStartCommand()
         {
             return
@@ -332,12 +338,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsExecutingProcedure = false;
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startCommand.RaiseCanExecuteChanged();
-            this.stopCommand.RaiseCanExecuteChanged();
         }
 
         private async Task StartAsync()

@@ -47,6 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
+
         public override Task OnAppearedAsync()
         {
             this.Compartments = null;
@@ -59,7 +60,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
         }
 
-        public override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
             this.emptyOperationCommand.RaiseCanExecuteChanged();

@@ -83,8 +83,6 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty Sensor3Property =
             DependencyProperty.Register(nameof(Sensor3), typeof(bool), typeof(CardSensor), new PropertyMetadata(false));
 
-        private readonly IMachineService machineService;
-
         #endregion
 
         #region Constructors

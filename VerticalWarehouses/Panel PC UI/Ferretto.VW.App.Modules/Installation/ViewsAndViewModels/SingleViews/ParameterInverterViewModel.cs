@@ -14,12 +14,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
     [Warning(WarningsArea.Installation)]
     internal sealed class ParameterInverterViewModel : BaseMainViewModel
     {
-        #region Fields
-
-        private bool isWaitingForResponse;
-
-        #endregion
-
         #region Constructors
 
         public ParameterInverterViewModel()
@@ -32,12 +26,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Properties
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         #endregion
 
@@ -57,8 +45,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        private void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
         }
 
         #endregion

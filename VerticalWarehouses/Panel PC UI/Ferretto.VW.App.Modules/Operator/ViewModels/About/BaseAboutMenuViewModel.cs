@@ -28,8 +28,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isStatisticsActive;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand statisticsCommand;
 
         #endregion
@@ -107,12 +105,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isStatisticsActive, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public ICommand StatisticsCommand =>
             this.statisticsCommand
             ??
@@ -167,6 +159,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsWaitingForResponse = false;
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.allarmCommand?.RaiseCanExecuteChanged();
+            this.diagnosticsCommand?.RaiseCanExecuteChanged();
+            this.generalCommand?.RaiseCanExecuteChanged();
+            this.statisticsCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteCommand()
         {
             return !this.IsWaitingForResponse;
@@ -208,14 +210,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         trackCurrentView: false);
                     break;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.allarmCommand?.RaiseCanExecuteChanged();
-            this.diagnosticsCommand?.RaiseCanExecuteChanged();
-            this.generalCommand?.RaiseCanExecuteChanged();
-            this.statisticsCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion

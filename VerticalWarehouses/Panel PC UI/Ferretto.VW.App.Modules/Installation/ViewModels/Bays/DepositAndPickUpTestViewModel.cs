@@ -45,8 +45,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isStopping;
 
-        private bool isWaitingForResponse;
-
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private double? netWeight;
@@ -187,10 +185,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isStopping, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -459,8 +457,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        private void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.startCommand.RaiseCanExecuteChanged();
             this.stopCommand.RaiseCanExecuteChanged();
         }

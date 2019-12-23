@@ -13,6 +13,8 @@ namespace Ferretto.VW.App.Controls
     {
         #region Fields
 
+        protected bool isWaitingForResponse;
+
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -62,6 +64,12 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        public virtual bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
+        }
+
         public virtual bool KeepAlive => true;
 
         protected NLog.Logger Logger => this.logger;
@@ -97,6 +105,8 @@ namespace Ferretto.VW.App.Controls
         {
             base.Disappear();
 
+            this.IsWaitingForResponse = false;
+
             /*
              * Avoid unsubscribing in case of navigation to error page.
              * We may need to review this behaviour.
@@ -118,7 +128,11 @@ namespace Ferretto.VW.App.Controls
 
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = false;
+
             this.UpdatePresentation();
+
+            await this.machineService.OnUpdateServiceAsync();
 
             this.InitializeSteps();
 
@@ -315,6 +329,10 @@ namespace Ferretto.VW.App.Controls
                 this.healthProbeService.HealthStatus);
 
             return Task.CompletedTask;
+        }
+
+        protected virtual void RaiseCanExecuteChanged()
+        {
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)

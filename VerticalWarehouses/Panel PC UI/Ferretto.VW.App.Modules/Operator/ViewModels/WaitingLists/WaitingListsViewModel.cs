@@ -33,8 +33,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private int currentItemIndex;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand listDetailButtonCommand;
 
         private DelegateCommand listExecuteCommand;
@@ -68,12 +66,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
 
         public override bool KeepAlive => true;
 
@@ -162,11 +154,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.RefreshLists();
         }
 
-        private bool CanShowDetailCommand()
+        protected override void RaiseCanExecuteChanged()
         {
-            return !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
+            base.RaiseCanExecuteChanged();
+
+            this.selectPreviousCommand?.RaiseCanExecuteChanged();
+            this.selectNextCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+            this.listDetailButtonCommand.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteList()
@@ -197,26 +192,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private void ShowDetails()
+        private bool CanShowDetailCommand()
         {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.WaitingLists.DETAIL,
-                    this.selectedList,
-                    trackCurrentView: true);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            return !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null;
         }
 
         private async Task LoadListsAsync()
@@ -259,14 +239,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.selectPreviousCommand?.RaiseCanExecuteChanged();
-            this.selectNextCommand?.RaiseCanExecuteChanged();
-            this.listExecuteCommand?.RaiseCanExecuteChanged();
-            this.listDetailButtonCommand.RaiseCanExecuteChanged();
         }
 
         private void RefreshLists(ObservableCollection<ItemList> newLists, int? lastItemListId)
@@ -315,6 +287,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
             else
             {
                 this.currentItemIndex = 0;
+            }
+        }
+
+        private void ShowDetails()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.WaitingLists.DETAIL,
+                    this.selectedList,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

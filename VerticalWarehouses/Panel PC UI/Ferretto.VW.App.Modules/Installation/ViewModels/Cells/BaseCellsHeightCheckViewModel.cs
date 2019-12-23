@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken elevatorPositionChangedToken;
 
-        private bool isWaitingForResponse;
-
         private SubscriptionToken positioningOperationChangedToken;
 
         private Cell selectedCell;
@@ -63,7 +61,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.currentPosition, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
             protected set
@@ -161,7 +159,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected abstract void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message);
 
-        protected abstract void RaiseCanExecuteChanged();
+        protected override abstract void RaiseCanExecuteChanged();
 
         private void InitializeNavigationMenu()
         {

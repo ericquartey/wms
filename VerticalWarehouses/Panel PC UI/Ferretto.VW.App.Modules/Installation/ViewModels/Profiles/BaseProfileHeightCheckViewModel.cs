@@ -82,8 +82,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private bool isWaitingForResponse;
-
         private SubscriptionToken sensorsToken;
 
         private decimal systemError;
@@ -135,7 +133,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
             protected set
@@ -268,7 +266,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.CheckMachinePowerAndMode();
         }
 
-        protected virtual void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
         }
 

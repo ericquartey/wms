@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private bool isWaitingForResponse;
-
         private IEnumerable<LoadingUnit> loadingUnits;
 
         private DelegateCommand removeDrawerCommand;
@@ -88,12 +86,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            private set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public IEnumerable<LoadingUnit> LoadingUnits
         {
             get => this.loadingUnits;
@@ -142,13 +134,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        private void ImmediateDrawerCall()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
+            this.ClearNotifications();
         }
 
-        private void RaiseCanExecuteChanged()
+        private void ImmediateDrawerCall()
         {
-            this.ClearNotifications();
         }
 
         private async Task RetrieveLoadingUnitsAsync()

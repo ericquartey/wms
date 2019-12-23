@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private string noteText;
 
-        //private int speed;
+        // private int speed;
 
         private DelegateCommand startCommand;
 
@@ -50,7 +50,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public decimal CurrentHeight { get => this.currentHeight; set => this.SetProperty(ref this.currentHeight, value); }
 
-        //public override string Error => string.Join(
+        // public override string Error => string.Join(
         //        System.Environment.NewLine,
         //        this[nameof(this.Speed)]);
 
@@ -58,7 +58,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public string NoteText { get => this.noteText; set => this.SetProperty(ref this.noteText, value); }
 
-        //public int Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
+        // public int Speed { get => this.speed; set => this.SetProperty(ref this.speed, value); }
 
         public ICommand StartCommand =>
             this.startCommand
@@ -78,8 +78,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #endregion
 
-        //public override string this[string columnName]
-        //{
+        // public override string this[string columnName]
+        // {
         //    get
         //    {
         //        switch (columnName)
@@ -93,7 +93,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         //        }
         //        return base[columnName];
         //    }
-        //}
+        // }
 
         #region Methods
 

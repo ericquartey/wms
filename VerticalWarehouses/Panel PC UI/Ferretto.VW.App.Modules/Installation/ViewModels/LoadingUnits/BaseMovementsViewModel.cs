@@ -39,8 +39,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private bool isStopping;
 
-        private bool isWaitingForResponse;
-
         private int? loadingUnitId;
 
         private IEnumerable<LoadingUnit> loadingUnits;
@@ -137,10 +135,10 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             set => this.SetProperty(ref this.isStopping, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -300,15 +298,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public virtual void RaiseCanExecuteChanged()
-        {
-            this.startCommand?.RaiseCanExecuteChanged();
-            this.stopCommand?.RaiseCanExecuteChanged();
-
-            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
-            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-        }
-
         public async Task RetrieveLoadingUnitsAsync()
         {
             try
@@ -405,6 +394,15 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         protected virtual void OnWaitResume()
         {
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.startCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
+
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanStop()

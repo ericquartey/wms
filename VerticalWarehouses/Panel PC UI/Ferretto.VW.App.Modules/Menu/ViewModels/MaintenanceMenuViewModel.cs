@@ -25,25 +25,15 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private int bayNumber;
 
-        private bool isWaitingForResponse;
-
         private MachineIdentity machineIdentity;
-
-        //private DelegateCommand menuBackupCommand;
 
         private DelegateCommand menuCompactionCommand;
 
-        //private DelegateCommand menuComunicationWMSCommand;
-
         private DelegateCommand menuMaintenanceCommand;
-
-        //private DelegateCommand menuRestoreCommand;
 
         private DelegateCommand menuUpdateCommand;
 
         #endregion
-
-        //private DelegateCommand menuUsersCommand;
 
         #region Constructors
 
@@ -80,12 +70,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public MachineIdentity MachineIdentity
         {
@@ -145,6 +129,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.menuCompactionCommand?.RaiseCanExecuteChanged();
+            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
+            this.menuUpdateCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.MachineIdentity));
+            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private bool CanExecuteCommand()
@@ -229,16 +225,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             {
                 this.IsWaitingForResponse = false;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.menuCompactionCommand?.RaiseCanExecuteChanged();
-            this.menuMaintenanceCommand?.RaiseCanExecuteChanged();
-            this.menuUpdateCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.MachineIdentity));
-            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         #endregion

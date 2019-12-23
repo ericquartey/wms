@@ -228,7 +228,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.GetLoadingUnitDetails();
         }
 
-        public override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();

@@ -15,8 +15,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private ICommand drawerCompactingDetailButtonCommand;
 
-        private bool isWaitingForResponse;
-
         #endregion
 
         #region Constructors
@@ -33,12 +31,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DrawerCompactingDetailButtonCommand => this.drawerCompactingDetailButtonCommand ?? (this.drawerCompactingDetailButtonCommand = new DelegateCommand(() => this.Detail(), this.CanDetailCommand));
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
 
         #endregion
 

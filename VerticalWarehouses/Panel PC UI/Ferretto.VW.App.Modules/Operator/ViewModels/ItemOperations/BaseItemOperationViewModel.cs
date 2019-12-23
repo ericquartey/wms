@@ -19,8 +19,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool canInputQuantity;
 
-        private bool isWaitingForResponse;
-
         private MissionWithLoadingUnitDetails mission;
 
         private MissionOperation missionOperation;
@@ -55,12 +53,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public string ItemId => this.MissionOperationsService.CurrentMissionOperation?.ItemId.ToString();
 
@@ -108,7 +100,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             // do nothing
         }
 
-        public virtual void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             // do nothing
         }

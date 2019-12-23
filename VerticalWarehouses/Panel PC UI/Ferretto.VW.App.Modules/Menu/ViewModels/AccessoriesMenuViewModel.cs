@@ -43,7 +43,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         #region Methods
 
-        internal override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
 

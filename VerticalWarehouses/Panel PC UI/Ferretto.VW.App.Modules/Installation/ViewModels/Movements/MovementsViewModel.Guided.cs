@@ -881,8 +881,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 if (this.MachineStatus.EmbarkedLoadingUnit != null
-                    && this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
-                    )
+                    && this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id)
                 {
                     await this.machineElevatorWebService.MoveToFreeCellAsync(
                         this.SelectedLoadingUnit.Id,
@@ -1099,7 +1098,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
+                    {
+                        int cell = int.Parse(this.MachineStatus.LogicalPositionId);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    }
+                    else
+                    {
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    }
                 }
 
                 this.IsBusyUnloadingToCell = true;

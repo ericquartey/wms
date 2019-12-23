@@ -136,8 +136,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 () => !this.IsExecutingProcedure &&
                       !this.IsWaitingForResponse &&
                       (!string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode) ||
-                       !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBayCode))
-                ));
+                       !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBayCode))));
 
         #endregion
 
@@ -167,17 +166,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             await this.SetDataBays()
                 .ContinueWith((m) => this.RaiseCanExecuteChanged());
-        }
-
-        public override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.sendToBay1Command?.RaiseCanExecuteChanged();
-            this.sendToBay2Command?.RaiseCanExecuteChanged();
-            this.sendToBay3Command?.RaiseCanExecuteChanged();
-            this.startToBayCommand?.RaiseCanExecuteChanged();
-            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         public async Task StartToBayAsync()
@@ -250,6 +238,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.sendToBay1Command?.RaiseCanExecuteChanged();
+            this.sendToBay2Command?.RaiseCanExecuteChanged();
+            this.sendToBay3Command?.RaiseCanExecuteChanged();
+            this.startToBayCommand?.RaiseCanExecuteChanged();
             this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 

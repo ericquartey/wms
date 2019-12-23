@@ -34,7 +34,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
 
         public override Task ExecuteAsync()
         {
-            //this.navigationService.Appear(
+            // this.navigationService.Appear(
             //    nameof(Utils.Modules.Installation),
             //    $"Help{this.GetActiveView()}",
             //    null,

@@ -34,8 +34,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand immediateLoadingUnitCallMenuCommand;
 
-        private bool isWaitingForResponse;
-
         private MachineIdentity machineIdentity;
 
         private DelegateCommand showItemListsCommand;
@@ -90,12 +88,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ImmediateLoadingUnitCallMenu,
                 this.CanShowOtherMenu));
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set => this.SetProperty(ref this.isWaitingForResponse, value);
-        }
-
         public override bool KeepAlive => true;
 
         public MachineIdentity MachineIdentity
@@ -149,6 +141,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await base.OnMachinePowerChangedAsync(e);
 
             this.AreItemsEnabled = e.MachinePowerState is MachinePowerState.Powered;
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.MachineIdentity));
+            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private bool CanShowItemLists()
@@ -206,12 +206,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
                 null,
                 trackCurrentView: true);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.RaisePropertyChanged(nameof(this.MachineIdentity));
-            this.RaisePropertyChanged(nameof(this.BayNumber));
         }
 
         private void ShowItemLists()

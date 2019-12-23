@@ -79,10 +79,6 @@ namespace Ferretto.VW.App.Installation.Resources
         [Display(Description = "Test di Imbarco/Sbarco")]
         HorizontalHoming,
 
-        //[View(Utils.Modules.Installation.INSTALLATORMENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
-        //[Display(Description = "Puntatore Laser")]
-        //BayLaser,
-
         [View(Utils.Modules.Installation.CellsLoadingUnitsMenu.MENU, nameof(Utils.Modules.Installation), InstallatorMenuTypes.Others)]
         [Display(Description = "Celle e Cassetti")]
         CellsLoadingUnits,

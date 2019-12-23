@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool isOtherActive;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand menuAccessoriesCommand;
 
         private DelegateCommand menuBaysCommand;
@@ -127,12 +125,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
         {
             get => this.isOtherActive;
             set => this.SetProperty(ref this.isOtherActive, value, this.RaiseCanExecuteChanged);
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
         }
 
         public ICommand MenuAccessoriesCommand =>
@@ -260,18 +252,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        internal virtual void RaiseCanExecuteChanged()
-        {
-            this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
-            this.menuBaysCommand?.RaiseCanExecuteChanged();
-            this.menuCellsCommand?.RaiseCanExecuteChanged();
-            this.menuElevatorCommand?.RaiseCanExecuteChanged();
-            this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.menuOtherCommand?.RaiseCanExecuteChanged();
-            this.menuMovementsCommand?.RaiseCanExecuteChanged();
-            this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
-        }
-
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             await base.OnHealthStatusChangedAsync(e);
@@ -284,6 +264,18 @@ namespace Ferretto.VW.App.Menu.ViewModels
             await base.OnMachinePowerChangedAsync(e);
 
             this.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
+            this.menuBaysCommand?.RaiseCanExecuteChanged();
+            this.menuCellsCommand?.RaiseCanExecuteChanged();
+            this.menuElevatorCommand?.RaiseCanExecuteChanged();
+            this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.menuOtherCommand?.RaiseCanExecuteChanged();
+            this.menuMovementsCommand?.RaiseCanExecuteChanged();
+            this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanExecuteMovementsCommand()

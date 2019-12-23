@@ -53,8 +53,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isSearching;
 
-        private bool isWaitingForResponse;
-
         private int maxKnownIndexSelection;
 
         private DelegateCommand requestItemPickCommand;
@@ -135,10 +133,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value) && value)
                 {
@@ -336,6 +334,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SetSelectedItem();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
+            this.selectNextItemCommand?.RaiseCanExecuteChanged();
+        }
+
         private void AdjustItemsAppearance()
         {
             if (this.maxKnownIndexSelection == 0)
@@ -395,14 +403,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.requestItemPickCommand?.RaiseCanExecuteChanged();
-            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
-            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
-            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
         private void SetCurrentIndex(int? itemId)

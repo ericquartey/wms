@@ -36,8 +36,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isStopping;
 
-        private bool isWaitingForResponse;
-
         private SubscriptionToken movementsSubscriptionToken;
 
         private SubscriptionToken sensorsToken;
@@ -87,10 +85,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -217,7 +215,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.OnMachinePowerChanged();
         }
 
-        protected virtual void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             this.RaisePropertyChanged(nameof(this.Sensors));
             this.RaisePropertyChanged(nameof(this.ShutterSensors));

@@ -30,8 +30,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isFrontActive;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand sideBackCommand;
 
         private DelegateCommand sideFrontCommand;
@@ -103,10 +101,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isFrontActive, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -227,6 +225,16 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.ToggleSide();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.sideBackCommand?.RaiseCanExecuteChanged();
+            this.sideFrontCommand?.RaiseCanExecuteChanged();
+            this.correctCommand?.RaiseCanExecuteChanged();
+            this.ClearNotifications();
+        }
+
         private bool CanCorrectCommand()
         {
             return string.IsNullOrEmpty(this.Error)
@@ -270,14 +278,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.sideBackCommand?.RaiseCanExecuteChanged();
-            this.sideFrontCommand?.RaiseCanExecuteChanged();
-            this.correctCommand?.RaiseCanExecuteChanged();
-            this.ClearNotifications();
         }
 
         private async Task RetrieveCellsAsync()

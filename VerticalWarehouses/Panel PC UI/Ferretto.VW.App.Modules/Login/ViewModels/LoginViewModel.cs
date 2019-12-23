@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         private int bayNumber;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand loginCommand;
 
         private MachineIdentity machineIdentity;
@@ -80,18 +78,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
         }
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
 
         public ICommand LoginCommand =>
                     this.loginCommand
@@ -202,6 +188,13 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.loginCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteLogin()
         {
             return
@@ -277,11 +270,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 Utils.Modules.Operator.OPERATOR_MENU,
                 data: null,
                 trackCurrentView: true);
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.loginCommand?.RaiseCanExecuteChanged();
         }
 
         #endregion
