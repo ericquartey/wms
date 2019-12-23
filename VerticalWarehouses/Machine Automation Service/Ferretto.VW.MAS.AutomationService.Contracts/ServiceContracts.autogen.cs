@@ -1096,6 +1096,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("elevatorDistance", Required = Newtonsoft.Json.Required.Always)]
         public double ElevatorDistance { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("homingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingCreepSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingFastSpeed { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("isHomingExecuted", Required = Newtonsoft.Json.Required.Always)]
         public bool IsHomingExecuted { get; set; }
     
@@ -2126,6 +2132,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("fullLoadMovement", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public MovementParameters FullLoadMovement { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("homingCreepSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingCreepSpeed { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("homingFastSpeed", Required = Newtonsoft.Json.Required.Always)]
+        public double HomingFastSpeed { get; set; }
     
         [Newtonsoft.Json.JsonProperty("inverter", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public Inverter Inverter { get; set; }
