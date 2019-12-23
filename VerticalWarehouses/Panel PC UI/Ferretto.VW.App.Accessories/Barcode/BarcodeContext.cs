@@ -17,7 +17,7 @@ namespace Ferretto.VW.App.Accessories
 
         public BarcodeRule Match(string barcode)
         {
-            return this.Rules.FirstOrDefault(r => r.IsMatch(barcode)));
+            return this.Rules.FirstOrDefault(r => r.IsMatch(barcode));
         }
 
         #endregion
