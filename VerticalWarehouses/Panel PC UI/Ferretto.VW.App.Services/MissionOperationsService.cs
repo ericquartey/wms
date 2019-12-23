@@ -62,12 +62,16 @@ namespace Ferretto.VW.App.Services
         {
             await this.missionOperationsWebService.CompleteAsync(
                 this.CurrentMissionOperation.Id,
-                quantity);
+                quantity,
+                ConfigurationManager.AppSettings.GetLabelPrinterName());
         }
 
         public async Task PartiallyCompleteCurrentAsync(double quantity)
         {
-            await this.missionOperationsWebService.PartiallyCompleteAsync(this.CurrentMissionOperation.Id, quantity);
+            await this.missionOperationsWebService.PartiallyCompleteAsync(
+                this.CurrentMissionOperation.Id,
+                quantity,
+                ConfigurationManager.AppSettings.GetLabelPrinterName());
         }
 
         private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)

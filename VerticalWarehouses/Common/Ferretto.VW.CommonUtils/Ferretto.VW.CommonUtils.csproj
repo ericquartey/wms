@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.13.0-alpha0024" />
+    <PackageReference Include="Ferretto.WMS.Data.WebAPI.Contracts" Version="0.13.0-alpha0028" />
     <PackageReference Include="NLog" Version="4.6.8" />
     <PackageReference Include="Prism.Core" Version="7.1.0.431" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.7">
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
