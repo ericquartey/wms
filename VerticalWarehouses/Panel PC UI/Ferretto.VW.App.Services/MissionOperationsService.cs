@@ -14,6 +14,8 @@ namespace Ferretto.VW.App.Services
     {
         #region Fields
 
+        private readonly IBayManager bayManager;
+
         private readonly IEventAggregator eventAggregator;
 
         private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
@@ -24,6 +26,8 @@ namespace Ferretto.VW.App.Services
 
         private readonly IOperatorHubClient operatorHubClient;
 
+        private Bay bay;
+
         #endregion
 
         #region Constructors
@@ -33,12 +37,14 @@ namespace Ferretto.VW.App.Services
             IMachineMissionOperationsWebService missionOperationsWebService,
             WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
             WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService,
+            IBayManager bayManager,
             IOperatorHubClient operatorHubClient)
         {
             this.eventAggregator = eventAggregator;
             this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
             this.missionOperationsWebService = missionOperationsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWebService));
             this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.operatorHubClient.AssignedMissionOperationChanged += async (sender, e) => await this.OnAssignedMissionOperationChangedAsync(sender, e);
@@ -76,6 +82,16 @@ namespace Ferretto.VW.App.Services
 
         private async Task OnAssignedMissionOperationChangedAsync(object sender, AssignedMissionOperationChangedEventArgs e)
         {
+            if (this.bay is null)
+            {
+                this.bay = await this.bayManager.GetBayAsync();
+            }
+
+            if (e.BayNumber != this.bay.Number)
+            {
+                return;
+            }
+
             this.PendingMissionOperationsCount = e.PendingMissionOperationsCount;
 
             var currentMissionOperation = this.CurrentMissionOperation;

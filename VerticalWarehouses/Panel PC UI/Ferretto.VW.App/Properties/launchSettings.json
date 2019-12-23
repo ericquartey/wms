@@ -29,6 +29,15 @@
         "WMS_DATASERVICE_HUBS_DATA_PATH": "http://localhost:10000/hubs/data",
         "LOGOUT_WHEN_UNHEALTHY": "False"
       }
+    },
+    "PanelPC (Bay 2 - EjLog)": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "BAY_NUMBER": "2",
+        "WMS_DATASERVICE_URL": "http://localhost:10000",
+        "WMS_DATASERVICE_HUBS_DATA_PATH": "http://localhost:10000/hubs/data",
+        "LOGOUT_WHEN_UNHEALTHY": "False"
+      }
     }
   }
 }
