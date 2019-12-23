@@ -176,6 +176,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return
                 !this.IsWaitingForResponse
                 &&
+                !this.isOperationConfirmed
+                &&
                 this.isOperationCanceled;
         }
 
@@ -218,8 +220,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.ClearNotifications();
 
                 await this.MissionOperationsService.CancelCurrentAsync();
-
-                this.isOperationConfirmed = true;
 
                 this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
             }
