@@ -20,14 +20,14 @@ namespace Ferretto.VW.App.Accessories
 
         #region Methods
 
-        public static int GetBarcodeReaderBaudRate(this NameValueCollection appSettings)
+        public static int? GetBarcodeReaderBaudRate(this NameValueCollection appSettings)
         {
             if (appSettings is null)
             {
                 throw new ArgumentNullException(nameof(appSettings));
             }
 
-            var baudRateString = appSettings.Get(BaudRateKey) ?? DefaultBaudRate;
+            var baudRateString = appSettings.Get(BaudRateKey);
 
             if (int.TryParse(baudRateString, out var baudRate))
             {
@@ -35,7 +35,7 @@ namespace Ferretto.VW.App.Accessories
             }
             else
             {
-                throw new ConfigurationErrorsException();
+                return null;
             }
         }
 

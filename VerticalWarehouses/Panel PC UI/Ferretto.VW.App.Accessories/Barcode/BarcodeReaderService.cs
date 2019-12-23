@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 using Ferretto.VW.Devices.BarcodeReader;
-using Ferretto.VW.Devices.BarcodeReader.Newland;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Schema;
 using Prism.Events;
 
 namespace Ferretto.VW.App.Accessories
@@ -57,15 +54,25 @@ namespace Ferretto.VW.App.Accessories
 
         private void OnBarcodeReceived(object sender, BarcodeEventArgs e)
         {
-            //TODO:
             // 1. select current context
             var activeContext = this.ruleSet.Contexts.First();
 
             // 2. stop on first rule match
-            // 3. publish event
-            this.eventAggregator
-                .GetEvent<PubSubEvent<BarcodeEventArgs>>()
-                .Publish(e);
+            var rule = activeContext.Match(e.Barcode);
+
+            if (rule is null)
+            {
+                System.Diagnostics.Debug.WriteLine($"Barcode {e.Barcode} does not match any rule.'");
+            }
+            else
+            {
+                System.Diagnostics.Debug.WriteLine($"Barcode {e.Barcode} matched rule: '{rule}'");
+
+                // 3. publish event
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<BarcodeEventArgs>>()
+                    .Publish(e);
+            }
         }
 
         #endregion

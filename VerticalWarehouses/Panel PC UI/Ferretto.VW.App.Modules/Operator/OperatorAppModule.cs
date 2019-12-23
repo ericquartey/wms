@@ -53,18 +53,7 @@ namespace Ferretto.VW.App.Modules.Operator
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var barcodeReaderPortName = ConfigurationManager.AppSettings.GetBarcodeReaderSerialPortName();
-            if (!string.IsNullOrEmpty(barcodeReaderPortName))
-            {
-                containerRegistry.ConfigureNewlandBarcodeReader(
-                    new ConfigurationOptions
-                    {
-                        PortName = barcodeReaderPortName,
-                        BaudRate = ConfigurationManager.AppSettings.GetBarcodeReaderBaudRate(),
-                    });
-
-                containerRegistry.UseBarcodeReader();
-            }
+            ConfigureBarcodeReader(containerRegistry);
 
             containerRegistry.RegisterForNavigation<OperatorMenuView>();
             containerRegistry.RegisterForNavigation<EmptyView>();
@@ -112,6 +101,27 @@ namespace Ferretto.VW.App.Modules.Operator
             containerRegistry.Register<ICustomControlErrorsDataGridViewModel, CustomControlErrorsDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerWeightSaturationDataGridViewModel, CustomControlDrawerWeightSaturationDataGridViewModel>();
             containerRegistry.Register<ICustomControlDrawerSaturationDataGridViewModel, CustomControlDrawerSaturationDataGridViewModel>();
+        }
+
+        private static void ConfigureBarcodeReader(IContainerRegistry containerRegistry)
+        {
+            var portName = ConfigurationManager.AppSettings.GetBarcodeReaderSerialPortName();
+            if (!string.IsNullOrEmpty(portName))
+            {
+                var options = new ConfigurationOptions
+                {
+                    PortName = portName,
+                };
+
+                var baudRate = ConfigurationManager.AppSettings.GetBarcodeReaderBaudRate();
+                if (baudRate.HasValue)
+                {
+                    options.BaudRate = baudRate.Value;
+                }
+
+                containerRegistry.UseBarcodeReader();
+                containerRegistry.ConfigureNewlandBarcodeReader(options);
+            }
         }
 
         #endregion

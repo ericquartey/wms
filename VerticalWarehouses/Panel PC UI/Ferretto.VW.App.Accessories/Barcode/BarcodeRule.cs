@@ -18,5 +18,19 @@ namespace Ferretto.VW.App.Accessories
         public UserAction UserAction { get; set; }
 
         #endregion
+
+        #region Methods
+
+        public bool IsMatch(string barcode)
+        {
+            return this.Patterns.Any(p => p.IsMatch(barcode));
+        }
+
+        public override string ToString()
+        {
+            return this.Name ?? base.ToString();
+        }
+
+        #endregion
     }
 }
