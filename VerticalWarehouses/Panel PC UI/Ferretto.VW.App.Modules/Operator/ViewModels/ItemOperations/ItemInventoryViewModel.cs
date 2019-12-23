@@ -26,7 +26,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override bool CanConfirmOperation()
         {
-            return
+           return
               !this.IsWaitingForResponse
               &&
               !this.IsBusyAbortingOperation
@@ -36,11 +36,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
               this.InputQuantity.HasValue
               &&
               this.InputQuantity.Value >= 0;
-        }
-
-        public override void OnMisionOperationRetrieved()
-        {
-            this.InputQuantity = null;
         }
 
         protected override void ShowOperationDetails()

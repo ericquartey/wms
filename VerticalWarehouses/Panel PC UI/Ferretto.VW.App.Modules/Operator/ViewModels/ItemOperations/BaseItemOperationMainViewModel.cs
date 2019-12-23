@@ -274,7 +274,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
-            this.confirmOperationCanceledCommand.RaiseCanExecuteChanged();
+            this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
         }
 
         protected abstract void ShowOperationDetails();
