@@ -55,7 +55,7 @@ namespace Ferretto.VW.App.Accessories
         private void OnBarcodeReceived(object sender, BarcodeEventArgs e)
         {
             // 1. select current context
-            var activeContext = this.ruleSet.Contexts.First();
+            var activeContext = this.ruleSet.Contexts.First(); // TODO
 
             // 2. stop on first rule match
             var rule = activeContext.Match(e.Barcode);
