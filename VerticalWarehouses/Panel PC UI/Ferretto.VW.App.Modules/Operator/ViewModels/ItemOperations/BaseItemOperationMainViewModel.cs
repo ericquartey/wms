@@ -279,6 +279,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return noLongerOperationMsg;
         }
 
+        private void HideNavigationBack()
+        {
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                case MissionOperationType.Put:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         private IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
         {
             return compartmentsFromMission
@@ -317,6 +334,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 var msg = this.GetNoLongerOperationMessageByType();
                 this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
                 this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
+                this.HideNavigationBack();
             }
 
             this.IsBusyConfirmingOperation = false;

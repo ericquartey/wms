@@ -88,6 +88,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel pick.
+        /// </summary>
+        public static string CancelPick {
+            get {
+                return ResourceManager.GetString("CancelPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel put.
+        /// </summary>
+        public static string CancelPut {
+            get {
+                return ResourceManager.GetString("CancelPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disabled.
         /// </summary>
         public static string Cell_Status_Disabled {

@@ -111,6 +111,16 @@
                                     Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="3"
+                                    Margin="20,0,40,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ConfirmOperationCanceledCommand}"
+                                    Content="{x:Static resources:OperatorApp.CancelPut}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+
             </StackPanel>
         </Grid>
     </Grid>

@@ -1268,4 +1268,10 @@ Please put back any moved pieces in their original position.</value>
     <value>If you have picked up items, put them back in the original compartment.</value>
     <comment>DEscription text</comment>
   </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Cancel put</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Cancel pick</value>
+  </data>
 </root>

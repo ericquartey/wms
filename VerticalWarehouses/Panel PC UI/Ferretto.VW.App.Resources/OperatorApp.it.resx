@@ -1006,4 +1006,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
     <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
   </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Annulla versamento</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Annulla prelievo</value>
+  </data>
 </root>
