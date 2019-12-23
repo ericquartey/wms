@@ -68,7 +68,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="id">operation id</param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        public async Task CompleteAsync(int wmsId, double quantity)
+        public async Task CompleteAsync(int wmsId, double quantity, string printerName)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.CompleteItemAsync(wmsId, quantity);
+                await this.missionOperationsDataService.CompleteItemAsync(wmsId, quantity, printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
@@ -121,7 +121,7 @@ namespace Ferretto.VW.MAS.MissionManager
         /// <param name="id">operation id</param>
         /// <param name="quantity"></param>
         /// <returns></returns>
-        public async Task PartiallyCompleteAsync(int wmsId, double quantity)
+        public async Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName)
         {
             if (!this.configuration.IsWmsEnabled())
             {
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity);
+                await this.missionOperationsDataService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {

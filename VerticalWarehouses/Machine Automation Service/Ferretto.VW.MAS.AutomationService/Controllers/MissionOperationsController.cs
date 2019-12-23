@@ -61,9 +61,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/complete")]
-        public async Task<ActionResult> CompleteAsync(int id, double quantity)
+        public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName)
         {
-            await this.missionOperationsProvider.CompleteAsync(id, quantity);
+            await this.missionOperationsProvider.CompleteAsync(id, quantity, printerName);
 
             return this.Ok();
         }
@@ -77,9 +77,9 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         }
 
         [HttpPost("{id}/partially-complete")]
-        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity)
+        public async Task<ActionResult> PartiallyCompleteAsync(int id, double quantity, string printerName)
         {
-            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity);
+            await this.missionOperationsProvider.PartiallyCompleteAsync(id, quantity, printerName);
 
             return this.Ok();
         }

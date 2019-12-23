@@ -10,13 +10,13 @@ namespace Ferretto.VW.MAS.MissionManager
 
         Task AbortAsync(int id);
 
-        Task CompleteAsync(int wmsId, double quantity);
+        Task CompleteAsync(int wmsId, double quantity, string printerName);
 
         Task<MissionOperation> GetByIdAsync(int wmsId);
 
         int GetCountByBay(BayNumber bayNumber);
 
-        Task PartiallyCompleteAsync(int wmsId, double quantity);
+        Task PartiallyCompleteAsync(int wmsId, double quantity, string printerName);
 
         #endregion
     }
