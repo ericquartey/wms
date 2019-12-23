@@ -1274,4 +1274,7 @@ Please put back any moved pieces in their original position.</value>
   <data name="CancelPick" xml:space="preserve">
     <value>Cancel pick</value>
   </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>Operation cancelled confirmed</value>
+  </data>
 </root>

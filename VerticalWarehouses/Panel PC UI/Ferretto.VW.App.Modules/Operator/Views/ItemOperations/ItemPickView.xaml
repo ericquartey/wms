@@ -92,6 +92,7 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding EmptyOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.ConfirmOnEmpty}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
                 <controls:PpcButton Grid.Row="4"

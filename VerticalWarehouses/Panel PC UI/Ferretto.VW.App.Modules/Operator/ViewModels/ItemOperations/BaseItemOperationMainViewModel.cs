@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private IEnumerable<TrayControlCompartment> compartments;
 
+        private DelegateCommand confirmOperationCanceledCommand;
+
         private DelegateCommand confirmOperationCommand;
 
         private double? inputQuantity;
@@ -80,8 +82,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.compartments, value);
         }
 
+        public ICommand ConfirmOperationCanceledCommand =>
+            this.confirmOperationCanceledCommand
+            ??
+            (this.confirmOperationCanceledCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationCanceledAsync(),
+                this.CanConfirmOperationCanceled));
+
         public ICommand ConfirmOperationCommand =>
-            this.confirmOperationCommand
+                    this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(),
@@ -162,6 +171,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
         }
 
+        public virtual bool CanConfirmOperationCanceled()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                this.isOperationCanceled;
+        }
+
         public async Task ConfirmOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -188,6 +205,31 @@ namespace Ferretto.VW.App.Operator.ViewModels
             finally
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        public async Task ConfirmOperationCanceledAsync()
+        {
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                await this.MissionOperationsService.CancelCurrentAsync();
+
+                this.isOperationConfirmed = true;
+
+                this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+            }
+            finally
+            {
                 this.IsWaitingForResponse = false;
             }
         }
@@ -232,6 +274,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCanceledCommand.RaiseCanExecuteChanged();
         }
 
         protected abstract void ShowOperationDetails();

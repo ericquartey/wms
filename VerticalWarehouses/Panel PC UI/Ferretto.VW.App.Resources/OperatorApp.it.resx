@@ -1012,4 +1012,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="CancelPick" xml:space="preserve">
     <value>Annulla prelievo</value>
   </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>L'operazione annullata è confermata</value>
+  </data>
 </root>

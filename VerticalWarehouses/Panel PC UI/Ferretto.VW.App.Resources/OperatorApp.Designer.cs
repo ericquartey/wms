@@ -2141,6 +2141,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation cancelled confirmed.
+        /// </summary>
+        public static string OperationCancelledConfirmed {
+            get {
+                return ResourceManager.GetString("OperationCancelledConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation confirmed..
         /// </summary>
         public static string OperationConfirmed {

@@ -27,8 +27,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
 
-        <localControls:LoadingUnitControlView Grid.Row="1"
-                                              Margin="50,0,0,0" />
+        <localControls:LoadingUnitControlView Grid.Row="1" />
 
         <Grid Grid.Row="2"
               Margin="0,15,0,0">
