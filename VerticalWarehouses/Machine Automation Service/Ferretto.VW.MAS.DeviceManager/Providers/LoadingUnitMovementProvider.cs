@@ -7,7 +7,6 @@ using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
-using Ferretto.VW.MAS.Utils.FiniteStateMachines;
 using Prism.Events;
 
 namespace Ferretto.VW.MAS.DeviceManager.Providers

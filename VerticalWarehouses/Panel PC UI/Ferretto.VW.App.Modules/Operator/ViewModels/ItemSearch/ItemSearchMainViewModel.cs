@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
@@ -27,6 +28,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private const int ItemsVisiblePageSize = 10;
 
         private readonly IAreasDataService areasDataService;
+
+        private readonly IBarcodeReaderService barcodeReaderService;
 
         private readonly IBayManager bayManager;
 
@@ -76,12 +79,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
             IBayManager bayManager,
-            IAreasDataService areasDataService)
+            IAreasDataService areasDataService,
+            IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
             this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
             this.maxKnownIndexSelection = ItemsVisiblePageSize;

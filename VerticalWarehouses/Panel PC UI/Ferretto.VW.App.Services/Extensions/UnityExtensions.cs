@@ -1,5 +1,4 @@
 ﻿using System;
-using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Events;
 using Prism.Ioc;
 using Prism.Unity;
