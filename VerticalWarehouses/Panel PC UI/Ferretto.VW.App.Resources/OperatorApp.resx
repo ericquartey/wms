@@ -1277,4 +1277,8 @@ Please put back any moved pieces in their original position.</value>
   <data name="OperationCancelledConfirmed" xml:space="preserve">
     <value>Operation cancelled confirmed</value>
   </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>Inventory operation cancelled.</value>
+    <comment>Description text</comment>
+  </data>
 </root>

@@ -1015,4 +1015,7 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="OperationCancelledConfirmed" xml:space="preserve">
     <value>L'operazione annullata è confermata</value>
   </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>L'operazione di inventario è stata annullata.</value>
+  </data>
 </root>

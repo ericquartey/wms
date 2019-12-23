@@ -315,6 +315,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     noLongerOperationMsg = OperatorApp.RemoveAnySpilledItemsFromCompartment;
                     break;
 
+                case MissionOperationType.Inventory:
+                    noLongerOperationMsg = OperatorApp.InventoryOperationCancelled;
+                    break;
+
                 default:
                     break;
             }

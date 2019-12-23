@@ -1295,6 +1295,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Inventory operation cancelled..
+        /// </summary>
+        public static string InventoryOperationCancelled {
+            get {
+                return ResourceManager.GetString("InventoryOperationCancelled", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Quantity detected.
         /// </summary>
         public static string InventoryQuantityDetected {
