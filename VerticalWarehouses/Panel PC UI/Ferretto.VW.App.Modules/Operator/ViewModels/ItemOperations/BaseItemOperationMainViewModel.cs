@@ -259,6 +259,26 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
         }
 
+        private string GetNoLongerOperationMessageByType()
+        {
+            var noLongerOperationMsg = string.Empty;
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    noLongerOperationMsg = OperatorApp.IfPickedItemsPutThemBackInTheOriginalCompartment;
+                    break;
+
+                case MissionOperationType.Put:
+                    noLongerOperationMsg = OperatorApp.RemoveAnySpilledItemsFromCompartment;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return noLongerOperationMsg;
+        }
+
         private IEnumerable<TrayControlCompartment> MapCompartments(IEnumerable<CompartmentMissionInfo> compartmentsFromMission)
         {
             return compartmentsFromMission
@@ -294,8 +314,9 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;
-                this.DialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
-                this.ShowNotification(OperatorApp.CurrentOperationIsNoLongerAvailable, Services.Models.NotificationSeverity.Warning);
+                var msg = this.GetNoLongerOperationMessageByType();
+                this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
+                this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
             }
 
             this.IsBusyConfirmingOperation = false;

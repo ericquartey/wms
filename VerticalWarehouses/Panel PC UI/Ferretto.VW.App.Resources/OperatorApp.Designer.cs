@@ -1223,6 +1223,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
+        /// </summary>
+        public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
+            get {
+                return ResourceManager.GetString("IfPickedItemsPutThemBackInTheOriginalCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drawer call.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
@@ -2290,6 +2299,15 @@ namespace Ferretto.VW.App.Resources {
         public static string QuantityToPick {
             get {
                 return ResourceManager.GetString("QuantityToPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove any spilled items from the compartment..
+        /// </summary>
+        public static string RemoveAnySpilledItemsFromCompartment {
+            get {
+                return ResourceManager.GetString("RemoveAnySpilledItemsFromCompartment", resourceCulture);
             }
         }
         

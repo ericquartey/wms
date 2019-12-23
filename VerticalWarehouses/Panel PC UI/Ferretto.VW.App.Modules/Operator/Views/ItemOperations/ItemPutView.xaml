@@ -88,6 +88,7 @@
                                     Margin="20,0,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -96,6 +97,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding FullOperationCommand}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
@@ -106,7 +108,9 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.Confirm}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
+
             </StackPanel>
         </Grid>
     </Grid>

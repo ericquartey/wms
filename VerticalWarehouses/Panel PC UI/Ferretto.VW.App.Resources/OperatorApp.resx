@@ -1260,4 +1260,12 @@ Please put back any moved pieces in their original position.</value>
     <value>There is 1 loading unit send to bay</value>
     <comment>Description text</comment>
   </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Remove any spilled items from the compartment.</value>
+    <comment>Description text</comment>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>If you have picked up items, put them back in the original compartment.</value>
+    <comment>DEscription text</comment>
+  </data>
 </root>

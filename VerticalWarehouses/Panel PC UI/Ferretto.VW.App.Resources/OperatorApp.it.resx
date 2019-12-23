@@ -1000,4 +1000,10 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="LoadingUnitSendToBay" xml:space="preserve">
     <value>C'è un cassetto da portare in baia</value>
   </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
 </root>
