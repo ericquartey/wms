@@ -99,6 +99,8 @@
                 },
                 "Carousel": {
                     "ElevatorDistance": 450.5,
+                    "HomingFastSpeed": 8000,
+                    "HomingCreepSpeed": 2000,
                     "ManualMovements": {
                         "FeedRate": 0.1
                     },
@@ -123,6 +125,8 @@
                     "Resolution": 99.177657,
                     "Offset": 461,
                     "ChainOffset": 0,
+                    "HomingFastSpeed": 2000,
+                    "HomingCreepSpeed": 500,
                     "UpperBound": 8600,
                     "LowerBound": 305,
                     "EmptyLoadMovement": {
@@ -162,6 +166,8 @@
                     "Resolution": 88.3038556,
                     "Offset": 0,
                     "ChainOffset": -10,
+                    "HomingFastSpeed": 2000,
+                    "HomingCreepSpeed": 500,
                     "ProfileCalibratePosition": 300,
                     "ProfileCalibrateSpeed": 30,
                     "ProfileCalibrateLength": 900,

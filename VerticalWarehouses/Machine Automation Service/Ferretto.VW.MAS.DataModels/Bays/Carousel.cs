@@ -13,6 +13,10 @@ namespace Ferretto.VW.MAS.DataModels
         /// </summary>
         public double ElevatorDistance { get; set; }
 
+        public double HomingCreepSpeed { get; set; }
+
+        public double HomingFastSpeed { get; set; }
+
         public bool IsHomingExecuted { get; set; }
 
         public double LastIdealPosition { get; set; }
