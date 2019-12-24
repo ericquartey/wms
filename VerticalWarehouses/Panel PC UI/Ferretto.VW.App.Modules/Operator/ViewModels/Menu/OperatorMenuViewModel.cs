@@ -9,7 +9,6 @@ using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
-using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
@@ -29,6 +28,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool areItemsEnabled;
 
         private int bayNumber;
+
+        private bool checkOnlyFirstAppeared;
 
         private DelegateCommand drawerActivityButtonCommand;
 
@@ -55,6 +56,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.sessionService = sessionService ?? throw new ArgumentNullException(nameof(sessionService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.missionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
+
+            this.checkOnlyFirstAppeared = true;
         }
 
         #endregion
@@ -76,7 +79,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ICommand DrawerActivityButtonCommand => this.drawerActivityButtonCommand
             ??
             (this.drawerActivityButtonCommand = new DelegateCommand(
-                this.ShowItemOperations,
+                () => this.ShowItemOperations(true),
                 this.CanShowItemOperations));
 
         public override EnableMask EnableMask => EnableMask.Any;
@@ -125,6 +128,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 await this.machineBaysWebService.ActivateAsync();
 
                 await this.GetBayNumber();
+
+                this.CheckForNewOperations();
             }
             catch (Exception ex)
             {
@@ -171,6 +176,26 @@ namespace Ferretto.VW.App.Operator.ViewModels
             return !this.IsWaitingForResponse;
         }
 
+        private void CheckForNewOperation()
+        {
+            if (this.MachineModeService.MachineMode != MachineMode.Automatic)
+            {
+                return;
+            }
+
+            this.ShowItemOperations(false);
+        }
+
+        private async Task CheckForNewOperations()
+        {
+            while (this.IsVisible &&
+                   this.checkOnlyFirstAppeared)
+            {
+                this.CheckForNewOperation();
+                await Task.Delay(3000);
+            }
+        }
+
         private async Task GetBayNumber()
         {
             try
@@ -201,6 +226,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void ImmediateLoadingUnitCallMenu()
         {
+            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.Others.IMMEDIATELOADINGUNITCALL,
@@ -210,6 +236,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private void ShowItemLists()
         {
+            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.WaitingLists.MAIN,
@@ -217,7 +244,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private void ShowItemOperations()
+        private void ShowItemOperations(bool showItemOperationWait)
         {
             var missionOperation = this.missionOperationsService.CurrentMissionOperation;
             if (missionOperation != null)
@@ -225,6 +252,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 switch (missionOperation.Type)
                 {
                     case MissionOperationType.Inventory:
+                        this.checkOnlyFirstAppeared = false;
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.ItemOperations.INVENTORY,
@@ -233,6 +261,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         break;
 
                     case MissionOperationType.Pick:
+                        this.checkOnlyFirstAppeared = false;
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.ItemOperations.PICK,
@@ -241,6 +270,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         break;
 
                     case MissionOperationType.Put:
+                        this.checkOnlyFirstAppeared = false;
                         this.NavigationService.Appear(
                             nameof(Utils.Modules.Operator),
                             Utils.Modules.Operator.ItemOperations.PUT,
@@ -251,16 +281,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
             }
             else
             {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.ItemOperations.WAIT,
-                    null,
-                    trackCurrentView: true);
+                if (showItemOperationWait)
+                {
+                    this.NavigationService.Appear(
+                        nameof(Utils.Modules.Operator),
+                        Utils.Modules.Operator.ItemOperations.WAIT,
+                        null,
+                        trackCurrentView: true);
+                }
             }
         }
 
         private void ShowItemSearch()
         {
+            this.checkOnlyFirstAppeared = false;
             this.NavigationService.Appear(
                 nameof(Utils.Modules.Operator),
                 Utils.Modules.Operator.ItemSearch.MAIN,

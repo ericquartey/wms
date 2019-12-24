@@ -20,6 +20,8 @@ namespace Ferretto.VW.App.Services
 
         #region Methods
 
+        Task CancelCurrentAsync();
+
         Task CompleteCurrentAsync(double quantity);
 
         Task PartiallyCompleteCurrentAsync(double quantity);

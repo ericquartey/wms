@@ -88,6 +88,24 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cancel pick.
+        /// </summary>
+        public static string CancelPick {
+            get {
+                return ResourceManager.GetString("CancelPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cancel put.
+        /// </summary>
+        public static string CancelPut {
+            get {
+                return ResourceManager.GetString("CancelPut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Disabled.
         /// </summary>
         public static string Cell_Status_Disabled {
@@ -1223,6 +1241,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to If you have picked up items, put them back in the original compartment..
+        /// </summary>
+        public static string IfPickedItemsPutThemBackInTheOriginalCompartment {
+            get {
+                return ResourceManager.GetString("IfPickedItemsPutThemBackInTheOriginalCompartment", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Drawer call.
         /// </summary>
         public static string ImmediateDrawerCallDrawerCall {
@@ -1264,6 +1291,15 @@ namespace Ferretto.VW.App.Resources {
         public static string InventoryOperation {
             get {
                 return ResourceManager.GetString("InventoryOperation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inventory operation cancelled..
+        /// </summary>
+        public static string InventoryOperationCancelled {
+            get {
+                return ResourceManager.GetString("InventoryOperationCancelled", resourceCulture);
             }
         }
         
@@ -2114,6 +2150,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Operation cancelled confirmed.
+        /// </summary>
+        public static string OperationCancelledConfirmed {
+            get {
+                return ResourceManager.GetString("OperationCancelledConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Operation confirmed..
         /// </summary>
         public static string OperationConfirmed {
@@ -2290,6 +2335,15 @@ namespace Ferretto.VW.App.Resources {
         public static string QuantityToPick {
             get {
                 return ResourceManager.GetString("QuantityToPick", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Remove any spilled items from the compartment..
+        /// </summary>
+        public static string RemoveAnySpilledItemsFromCompartment {
+            get {
+                return ResourceManager.GetString("RemoveAnySpilledItemsFromCompartment", resourceCulture);
             }
         }
         
