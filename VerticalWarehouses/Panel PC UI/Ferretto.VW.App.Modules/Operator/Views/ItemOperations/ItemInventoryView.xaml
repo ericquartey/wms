@@ -85,6 +85,7 @@
                                         VerticalAlignment="Top"
                                         Command="{Binding ConfirmOperationCommand}"
                                         Content="{x:Static resources:OperatorApp.Confirm}"
+                                        Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                         IsBusy="{Binding IsBusyConfirmingOperation}" />
                 </StackPanel>
 

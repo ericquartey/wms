@@ -1000,4 +1000,22 @@ Prego riportare gli eventuali articoli movimentati nella loro posizione original
   <data name="LoadingUnitSendToBay" xml:space="preserve">
     <value>C'è un cassetto da portare in baia</value>
   </data>
+  <data name="RemoveAnySpilledItemsFromCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
+  <data name="IfPickedItemsPutThemBackInTheOriginalCompartment" xml:space="preserve">
+    <value>Rimuovere dallo scomparto gli eventuali articoli versati.</value>
+  </data>
+  <data name="CancelPut" xml:space="preserve">
+    <value>Annulla versamento</value>
+  </data>
+  <data name="CancelPick" xml:space="preserve">
+    <value>Annulla prelievo</value>
+  </data>
+  <data name="OperationCancelledConfirmed" xml:space="preserve">
+    <value>L'operazione annullata è confermata</value>
+  </data>
+  <data name="InventoryOperationCancelled" xml:space="preserve">
+    <value>L'operazione di inventario è stata annullata.</value>
+  </data>
 </root>

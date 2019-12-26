@@ -60,6 +60,14 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Ok();
         }
 
+        [HttpPost("cancel")]
+        public async Task<ActionResult> CancelAsync()
+        {
+            await this.missionOperationsProvider.CancelAsync();
+
+            return this.Ok();
+        }
+
         [HttpPost("{id}/complete")]
         public async Task<ActionResult> CompleteAsync(int id, double quantity, string printerName)
         {

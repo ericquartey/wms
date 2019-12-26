@@ -27,8 +27,7 @@
                    Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                    Text="{x:Static resources:OperatorApp.DrawerActivityRefillingHeader}" />
 
-        <localControls:LoadingUnitControlView Grid.Row="1"
-                                              Margin="50,0,0,0" />
+        <localControls:LoadingUnitControlView Grid.Row="1" />
 
         <Grid Grid.Row="2"
               Margin="0,15,0,0">
@@ -88,6 +87,7 @@
                                     Margin="20,0,0,0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     Content="{x:Static resources:OperatorApp.DrawerActivityRefillingCapacityMaxAdjust}" />
 
                 <controls:PpcButton Grid.Row="4"
@@ -96,6 +96,7 @@
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
                                     Command="{Binding FullOperationCommand}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     Content="{x:Static resources:OperatorApp.ConfirmOnFull}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
 
@@ -106,7 +107,19 @@
                                     VerticalAlignment="Top"
                                     Command="{Binding ConfirmOperationCommand}"
                                     Content="{x:Static resources:OperatorApp.Confirm}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVIC}}"
                                     IsBusy="{Binding IsBusyConfirmingOperation}" />
+
+                <controls:PpcButton Grid.Row="4"
+                                    Grid.Column="3"
+                                    Margin="20,0,40,0"
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Command="{Binding ConfirmOperationCanceledCommand}"
+                                    Content="{x:Static resources:OperatorApp.CancelPut}"
+                                    Visibility="{Binding IsOperationCanceled, Converter={StaticResource BTVC}}"
+                                    IsBusy="{Binding IsBusyConfirmingOperation}" />
+
             </StackPanel>
         </Grid>
     </Grid>
