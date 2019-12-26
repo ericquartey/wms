@@ -394,6 +394,42 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Baia 1 occupato con cassetto sconosciuto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay1 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baia 2 occupato con cassetto sconosciuto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay2 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Baia 3 occupato con cassetto sconosciuto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay3 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Elevatore occupato con cassetto sconosciuto.
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Inconsistenza database cassetto.
         /// </summary>
         public static string MachineManagerErrorLoadingUnitNotFound {

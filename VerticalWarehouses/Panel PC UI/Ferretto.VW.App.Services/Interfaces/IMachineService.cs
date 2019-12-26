@@ -25,9 +25,11 @@ namespace Ferretto.VW.App.Services
 
         bool IsShutterThreeSensors { get; }
 
-        IEnumerable<LoadingUnit> LoadUnits { get; }
+        IEnumerable<LoadingUnit> Loadunits { get; }
 
         MachineStatus MachineStatus { get; }
+        MachineMode MachineMode { get; }
+        MachinePowerState MachinePower { get; }
 
         #endregion
 

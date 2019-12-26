@@ -309,4 +309,16 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>WarehouseIsFull</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+    <value>Baia 1 occupato con cassetto sconosciuto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+    <value>Baia 2 occupato con cassetto sconosciuto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+    <value>Baia 3 occupato con cassetto sconosciuto</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+    <value>Elevatore occupato con cassetto sconosciuto</value>
+  </data>
 </root>

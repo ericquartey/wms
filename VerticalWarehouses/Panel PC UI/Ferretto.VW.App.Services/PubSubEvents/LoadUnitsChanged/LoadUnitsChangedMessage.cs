@@ -9,14 +9,14 @@ namespace Ferretto.VW.App.Services
 
         public LoadUnitsChangedMessage(IEnumerable<LoadingUnit> loadUnits)
         {
-            this.LoadUnits = loadUnits;
+            this.Loadunits = loadUnits;
         }
 
         #endregion
 
         #region Properties
 
-        public IEnumerable<LoadingUnit> LoadUnits { get; }
+        public IEnumerable<LoadingUnit> Loadunits { get; }
 
         #endregion
     }

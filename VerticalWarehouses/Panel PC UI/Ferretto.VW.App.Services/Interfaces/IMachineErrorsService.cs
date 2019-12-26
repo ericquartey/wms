@@ -17,6 +17,8 @@ namespace Ferretto.VW.App.Services
 
         bool AutoNavigateOnError { get; set; }
 
+        string ViewErrorActive { get; }
+
         #endregion
     }
 }

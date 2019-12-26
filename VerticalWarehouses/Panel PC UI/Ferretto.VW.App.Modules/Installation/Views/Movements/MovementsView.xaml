@@ -142,7 +142,7 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             Command="{Binding MoveToLoadingUnitHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToDrawer}"
+                                            Content="{Binding LabelMoveToLoadunit}"
                                             IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
 
                         <StackPanel Grid.Column="2"
@@ -681,6 +681,14 @@
                                 Grid.Column="3"
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal">
+                        <!--  LightbulbOnOutline   LightbulbOutline  -->
+                        <controls:PpcButton Width="60"
+                                            Margin="15,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            BorderBrush="{DynamicResource FerrettoYellow}"
+                                            Foreground="{StaticResource FerrettoPureWhite}"
+                                            KindMaterial="LightbulbOnOutline"
+                                            Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}" />
                         <controls:PpcButton Width="60"
                                             Margin="15,0,0,0"
                                             HorizontalAlignment="Right"

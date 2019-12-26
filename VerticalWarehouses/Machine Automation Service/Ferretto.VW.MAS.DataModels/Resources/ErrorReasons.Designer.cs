@@ -394,6 +394,42 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verificare l&apos;id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay1 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare l&apos;id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay2 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare l&apos;id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnBay3 {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnBay3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Verificare l&apos;id del cassetto sull&apos;elevatore. Verificare che i sensori di presenza cassetto sull&apos;elevatore funzionino correttamente. Mettere la macchina in Automatico..
+        /// </summary>
+        public static string MachineManagerErrorLoadingUnitMissingOnElevator {
+            get {
+                return ResourceManager.GetString("MachineManagerErrorLoadingUnitMissingOnElevator", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Il cassetto selezionato non è presente nel database. Verificare il numero cassetto inserito e la corretta configurazione del database..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitNotFound {
@@ -579,6 +615,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string SensorZeroBayNotActiveAtStart {
             get {
                 return ResourceManager.GetString("SensorZeroBayNotActiveAtStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string String1 {
+            get {
+                return ResourceManager.GetString("String1", resourceCulture);
             }
         }
         

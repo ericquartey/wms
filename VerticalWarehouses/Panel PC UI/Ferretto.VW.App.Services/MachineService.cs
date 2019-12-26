@@ -186,7 +186,7 @@ namespace Ferretto.VW.App.Services
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
-        public IEnumerable<LoadingUnit> LoadUnits
+        public IEnumerable<LoadingUnit> Loadunits
         {
             get => this.loadingUnits;
             set => this.SetProperty(ref this.loadingUnits, value, this.LoadUnitsNotificationProperty);
@@ -194,16 +194,14 @@ namespace Ferretto.VW.App.Services
 
         protected NLog.Logger Logger => this.logger;
 
+        public MachineMode MachineMode => this.machineModeService.MachineMode;
+
+        public MachinePowerState MachinePower => this.machineModeService.MachinePower;
+
         public MachineStatus MachineStatus
         {
             get => this.machineStatus;
-            set
-            {
-                if (this.SetProperty(ref this.machineStatus, value))
-                {
-                    this.MachineStatusNotificationProperty();
-                }
-            }
+            set => this.SetProperty(ref this.machineStatus, value, this.MachineStatusNotificationProperty);
         }
 
         internal string Notification
@@ -374,11 +372,11 @@ namespace Ferretto.VW.App.Services
             this.Bay = await this.bayManagerService.GetBayAsync();
             this.BayNumber = this.Bay.Number;
 
-            this.HasBayExternal = this.bay.IsExternal;
+            this.HasBayExternal = this.Bay.IsExternal;
 
             this.HasShutter = this.Bay.Shutter.Type != ShutterType.NotSpecified;
 
-            this.HasCarousel = this.bay.Carousel != null;
+            this.HasCarousel = this.Bay.Carousel != null;
 
             this.IsShutterThreeSensors = this.Bay.Shutter.Type is MAS.AutomationService.Contracts.ShutterType.ThreeSensors;
 
@@ -388,18 +386,18 @@ namespace Ferretto.VW.App.Services
 
             ms.BayChainPosition = await this.machineCarouselWebService.GetPositionAsync();
 
-            if (this.Bay.Positions?.FirstOrDefault() is BayPosition bayPositionDown)
+            if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
             {
-                ms.LoadingUnitPositionDownInBayCode = bayPositionDown.LoadingUnit?.Id.ToString();
+                ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
                 if (bayPositionDown.LoadingUnit != null)
                 {
                     ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
                 }
             }
 
-            if (this.Bay.Positions?.LastOrDefault() is BayPosition bayPositionUp)
+            if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
             {
-                ms.LoadingUnitPositionUpInBayCode = bayPositionUp.LoadingUnit?.Id.ToString();
+                ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
                 if (bayPositionUp.LoadingUnit != null)
                 {
                     ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
@@ -430,14 +428,14 @@ namespace Ferretto.VW.App.Services
 
         private async Task InitializationLoadUnits()
         {
-            this.LoadUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
         }
 
         private void LoadUnitsNotificationProperty()
         {
             this.eventAggregator
                 .GetEvent<LoadUnitsChangedPubSubEvent>()
-                .Publish(new LoadUnitsChangedMessage(this.LoadUnits));
+                .Publish(new LoadUnitsChangedMessage(this.Loadunits));
         }
 
         private void MachineStatusNotificationProperty()
@@ -468,10 +466,10 @@ namespace Ferretto.VW.App.Services
         private void OnDataChanged<TData>(NotificationMessageUI<TData> message)
             where TData : class, IMessageData
         {
-            //Debug.WriteLine($"message.Status: {message.Status}");
-
             if (message?.Data is HomingMessageData dataHoming)
             {
+                this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+
                 this.machinePowerWebService.GetIsHomingAsync()
                     .ContinueWith((m) =>
                     {
@@ -497,6 +495,15 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationStart:
                 case MessageStatus.OperationStepStart:
                     {
+                        if (message?.Data is PositioningMessageData dataLog)
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                        }
+                        else
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                        }
+
                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
                         ms.IsError = false;
@@ -558,11 +565,20 @@ namespace Ferretto.VW.App.Services
                         {
                             this.Notification = "Movimento in corso...";
                         }
+
                         break;
                     }
 
                 case MessageStatus.OperationUpdateData:
                     {
+                        this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+
+                        Task.Run(async () =>
+                        {
+                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                            this.Cells = await this.machineCellsWebService.GetAllAsync();
+                        }).Wait();
+
                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
                         Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
@@ -576,19 +592,32 @@ namespace Ferretto.VW.App.Services
                 case MessageStatus.OperationStop:
                 case MessageStatus.OperationStepStop:
                     {
+                        if (message?.Data is PositioningMessageData dataLog)
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                        }
+                        else
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                        }
+
+                        Task.Run(async () =>
+                        {
+                            this.Loadunits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                            this.Cells = await this.machineCellsWebService.GetAllAsync();
+                            this.Bay = await this.bayManagerService.GetBayAsync();
+                        }).Wait();
+
                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
-                        if (message?.Data is PositioningMessageData)
+                        if (message?.Data is PositioningMessageData dataPositioning)
                         {
                             Task.Run(async () => ms = await this.GetElevatorAsync(ms)).Wait();
+
+                            ms.IsMovingElevator = false;
                         }
 
                         ms.IsMoving = false;
-
-                        if (message?.Data is PositioningMessageData)
-                        {
-                            ms.IsMovingElevator = false;
-                        }
 
                         if (message?.Data is ShutterPositioningMessageData)
                         {
@@ -609,22 +638,60 @@ namespace Ferretto.VW.App.Services
                             this.ClearNotifications();
                         }
 
+                        if (this.Bay.Positions?.OrderBy(o => o.Height).FirstOrDefault() is BayPosition bayPositionDown)
+                        {
+                            ms.LoadingUnitPositionDownInBay = bayPositionDown.LoadingUnit;
+                            if (bayPositionDown.LoadingUnit != null)
+                            {
+                                ms.ElevatorPositionLoadingUnit = bayPositionDown.LoadingUnit;
+                            }
+                        }
+
+                        if (this.Bay.Positions?.OrderBy(o => o.Height).LastOrDefault() is BayPosition bayPositionUp)
+                        {
+                            ms.LoadingUnitPositionUpInBay = bayPositionUp.LoadingUnit;
+                            if (bayPositionUp.LoadingUnit != null)
+                            {
+                                ms.ElevatorPositionLoadingUnit = bayPositionUp.LoadingUnit;
+                            }
+                        }
+
                         this.MachineStatus = ms;
 
-                        Task.Run(async () => this.LoadUnits = await this.machineLoadingUnitsWebService.GetAllAsync()).Wait();
+                        Task.Run(async () =>
+                        {
+                            var pos = await this.machineElevatorWebService.GetPositionAsync();
+
+                            this.UpdateMachineStatus(
+                                new ElevatorPositionChangedEventArgs(
+                                    pos.Vertical,
+                                    pos.Horizontal,
+                                    pos.CellId,
+                                    pos.BayPositionId,
+                                    pos.BayPositionUpper));
+                        }).Wait();
 
                         break;
                     }
 
                 case MessageStatus.OperationError:
                     {
+                        if (message?.Data is PositioningMessageData dataLog)
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status}; {dataLog?.AxisMovement};");
+                        }
+                        else
+                        {
+                            this.logger.Debug($"OnDataChanged:{typeof(TData).Name}; {message.Status};");
+                        }
+
                         var ms = (MachineStatus)this.MachineStatus.Clone();
 
                         ms.IsMoving = false;
                         ms.IsError = true;
                         ms.ErrorDescription = message.Description;
 
-                        if (message?.Data is PositioningMessageData)
+                        if (message?.Data is PositioningMessageData dataPositioning)
                         {
                             ms.IsMovingElevator = false;
                         }
@@ -892,6 +959,17 @@ namespace Ferretto.VW.App.Services
 
         private void WriteInfo(Axis? axisMovement)
         {
+            var view = this.GetWarningAreaAttribute();
+            if (view == WarningsArea.None &&
+                view == WarningsArea.Login &&
+                view == WarningsArea.Menu &&
+                view == WarningsArea.Maintenance &&
+                view == WarningsArea.Information &&
+                view == WarningsArea.Picking)
+            {
+                return;
+            }
+
             if (this.machineModeService.MachineMode == MachineMode.Manual)
             {
                 if (axisMovement.HasValue && axisMovement == Axis.Vertical)

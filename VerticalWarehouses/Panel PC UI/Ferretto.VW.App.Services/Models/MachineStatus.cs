@@ -44,9 +44,9 @@ namespace Ferretto.VW.App.Services.Models
 
         private bool isMovingShutter;
 
-        private string loadingUnitPositionDownInBayCode;
+        private LoadingUnit loadingUnitPositionDownInBay;
 
-        private string loadingUnitPositionUpInBayCode;
+        private LoadingUnit loadingUnitPositionUpInBay;
 
         private string logicalPosition;
 
@@ -154,16 +154,16 @@ namespace Ferretto.VW.App.Services.Models
             set => this.SetProperty(ref this.isMovingShutter, value);
         }
 
-        public string LoadingUnitPositionDownInBayCode
+        public LoadingUnit LoadingUnitPositionDownInBay
         {
-            get => this.loadingUnitPositionDownInBayCode;
-            set => this.SetProperty(ref this.loadingUnitPositionDownInBayCode, value);
+            get => this.loadingUnitPositionDownInBay;
+            set => this.SetProperty(ref this.loadingUnitPositionDownInBay, value);
         }
 
-        public string LoadingUnitPositionUpInBayCode
+        public LoadingUnit LoadingUnitPositionUpInBay
         {
-            get => this.loadingUnitPositionUpInBayCode;
-            set => this.SetProperty(ref this.loadingUnitPositionUpInBayCode, value);
+            get => this.loadingUnitPositionUpInBay;
+            set => this.SetProperty(ref this.loadingUnitPositionUpInBay, value);
         }
 
         public string LogicalPosition

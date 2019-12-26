@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -32,6 +34,12 @@ namespace Ferretto.VW.App.Controls
         private SubscriptionToken homingChangesToken;
 
         private bool isEnabled;
+
+        private bool isKeyboardOpened;
+
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
 
         private SubscriptionToken machineModeChangedToken;
 
@@ -64,6 +72,12 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        public bool IsKeyboardOpened
+        {
+            get => this.isKeyboardOpened;
+            set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
+        }
+
         public virtual bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
@@ -71,6 +85,16 @@ namespace Ferretto.VW.App.Controls
         }
 
         public virtual bool KeepAlive => true;
+
+        public ICommand KeyboardCloseCommand =>
+                            this.keyboardCloseCommand
+            ??
+            (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
 
         protected NLog.Logger Logger => this.logger;
 
@@ -333,6 +357,16 @@ namespace Ferretto.VW.App.Controls
 
         protected virtual void RaiseCanExecuteChanged()
         {
+        }
+
+        private void KeyboardClose()
+        {
+            this.IsKeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.IsKeyboardOpened = true;
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)

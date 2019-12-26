@@ -309,4 +309,19 @@
   <data name="WarehouseIsFull" xml:space="preserve">
     <value>WarehouseIsFull</value>
   </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
+    <value>Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay2" xml:space="preserve">
+    <value>Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnBay3" xml:space="preserve">
+    <value>Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
+  </data>
+  <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
+    <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -31,4 +31,7 @@
     <BitmapImage x:Key="Ferretto_Small_Logo_Inverse"
                  UriSource="/Ferretto.VW.App.Controls;Component/Assets/ferrettogrouplogo_small_light.png" />
 
+    <BitmapImage x:Key="BgMilestone"
+                 UriSource="/Ferretto.VW.App.Controls;Component/Assets/bg-milestone.jpg" />
+
 </ResourceDictionary>

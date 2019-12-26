@@ -29,6 +29,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IBayManager bayManagerService;
 
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineCarouselWebService machineCarouselWebService;
@@ -55,6 +57,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private IEnumerable<Cell> cells;
 
+        private SubscriptionToken cellsToken;
+
         private SubscriptionToken elevatorPositionChangedToken;
 
         private DelegateCommand goToMovementsGuidedCommand;
@@ -73,15 +77,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private bool isKeyboardOpened;
-
         private bool isMovementsGuided = true;
 
-        private DelegateCommand keyboardCloseCommand;
-
-        private DelegateCommand keyboardOpenCommand;
-
         private IEnumerable<LoadingUnit> loadingUnits;
+
+        private SubscriptionToken loadunitsToken;
 
         private SubscriptionToken positioningOperationChangedToken;
 
@@ -190,30 +190,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isExecutingProcedure, value);
         }
 
-        public bool IsKeyboardOpened
-        {
-            get => this.isKeyboardOpened;
-            set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
-        }
-
         public bool IsMovementsGuided => this.isMovementsGuided;
 
         public bool IsMovementsManual => !this.isMovementsGuided;
 
         public bool IsMoving
         {
-            get => this.machineService?.MachineStatus?.IsMoving ?? true;
+            get => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
         }
-
-        public ICommand KeyboardCloseCommand =>
-            this.keyboardCloseCommand
-            ??
-            (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
-
-        public ICommand KeyboardOpenCommand =>
-           this.keyboardOpenCommand
-           ??
-           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
 
         public IMachineService MachineService => this.machineService;
 
@@ -275,6 +259,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await base.OnAppearedAsync();
 
+                this.SubscribeToEvents();
+
                 this.GoToMovementsExecuteCommand(this.isMovementsGuided);
 
                 await this.RefreshMachineInfoAsync();
@@ -305,7 +291,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.OnManualAppearedAsync();
 
-                this.SubscribeToEvents();
+                this.RaiseCanExecuteChanged();
             }
             catch (System.Exception ex)
             {
@@ -350,17 +336,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            if (e.MachineStatus?.IsMoving ?? true && this.IsExecutingProcedure)
+            if ((e.MachineStatus?.IsMoving ?? false) && this.IsExecutingProcedure)
             {
                 this.IsExecutingProcedure = false;
             }
 
-            this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaiseCanExecuteChanged();
         }
 
         protected override void RaiseCanExecuteChanged()
         {
+            if (!this.IsVisible)
+            {
+                return;
+            }
+
             base.RaiseCanExecuteChanged();
 
             this.OnManualRaiseCanExecuteChanged();
@@ -370,6 +360,22 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.goToMovementsManualCommand?.RaiseCanExecuteChanged();
             this.stopMovingCommand?.RaiseCanExecuteChanged();
             this.resetCommand?.RaiseCanExecuteChanged();
+
+            if (this.MachineStatus.EmbarkedLoadingUnit != null)
+            {
+                if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
+                {
+                    this.LabelMoveToLoadunit = "Vai a cella";
+                }
+                else
+                {
+                    this.LabelMoveToLoadunit = "Vai a cella libera";
+                }
+            }
+            else
+            {
+                this.LabelMoveToLoadunit = InstallationApp.GoToDrawer;
+            }
 
             this.RaisePropertyChanged(nameof(this.IsMoving));
             this.RaisePropertyChanged(nameof(this.SensorsService));
@@ -458,16 +464,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.RaisePropertyChanged(nameof(this.IsMovementsGuided));
             this.RaisePropertyChanged(nameof(this.IsMovementsManual));
-        }
-
-        private void KeyboardClose()
-        {
-            this.IsKeyboardOpened = false;
-        }
-
-        private void KeyboardOpen()
-        {
-            this.IsKeyboardOpened = true;
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
@@ -651,9 +647,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             try
             {
-                this.bay = await this.bayManagerService.GetBayAsync();
-                this.cells = await this.machineCellsWebService.GetAllAsync();
-                this.loadingUnits = await this.machineLoadingUnitsWebService.GetAllAsync();
+                this.bay = this.machineService.Bay;
 
                 this.InputCellIdPropertyChanged();
                 this.InputLoadingUnitIdPropertyChanged();
@@ -677,8 +671,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     this.IsWaitingForResponse = true;
 
                     await this.machineMissionOperationsWebService.ResetMachineAsync();
-
-                    await this.sensorsService.RefreshAsync(false);
 
                     this.RaiseCanExecuteChanged();
 
@@ -744,6 +736,38 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void SubscribeToEvents()
         {
+            this.loadingUnits = this.MachineService.Loadunits;
+            this.loadunitsToken = this.loadunitsToken
+                 ??
+                 this.EventAggregator
+                     .GetEvent<LoadUnitsChangedPubSubEvent>()
+                     .Subscribe(
+                         m =>
+                         {
+                             this.loadingUnits = m.Loadunits;
+                             this.InputLoadingUnitIdPropertyChanged();
+                             this.RaiseCanExecuteChanged();
+                         },
+                         ThreadOption.UIThread,
+                         false,
+                         m => this.IsVisible);
+
+            this.cells = this.MachineService.Cells;
+            this.cellsToken = this.cellsToken
+                 ??
+                 this.EventAggregator
+                     .GetEvent<CellsChangedPubSubEvent>()
+                     .Subscribe(
+                         m =>
+                         {
+                             this.cells = m.Cells;
+                             this.InputCellIdPropertyChanged();
+                             this.RaiseCanExecuteChanged();
+                         },
+                         ThreadOption.UIThread,
+                         false,
+                         m => this.IsVisible);
+
             this.homingToken = this.homingToken
                 ??
                 this.EventAggregator
@@ -751,7 +775,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         async m => await this.OnHomingChangedAsync(m),
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => this.IsVisible);
 
             this.shutterPositionToken = this.shutterPositionToken
                 ??
@@ -760,7 +785,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         this.OnShutterPositionChanged,
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => this.IsVisible);
 
             this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
@@ -769,16 +795,18 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     .Subscribe(
                         async m => await this.OnPositioningOperationChangedAsync(m),
                         ThreadOption.UIThread,
-                        false);
+                        false,
+                        m => this.IsVisible);
 
             this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-            ??
-            this.EventAggregator
-                .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                .Subscribe(
-                    this.OnElevatorPositionChanged,
-                    ThreadOption.UIThread,
-                    false);
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
+                    .Subscribe(
+                        this.OnElevatorPositionChanged,
+                        ThreadOption.UIThread,
+                        false,
+                        m => this.IsVisible);
 
             this.sensorsToken = this.sensorsToken
                 ??
@@ -788,7 +816,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         this.OnSensorsChanged,
                         ThreadOption.UIThread,
                         false,
-                        m => m.Data != null);
+                        m => m.Data != null &&
+                             this.IsVisible);
         }
 
         #endregion

@@ -212,6 +212,25 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
+    public partial interface IMachineCompactingWebService
+    {
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CompactingAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task CompactingAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StopAsync();
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task StopAsync(System.Threading.CancellationToken cancellationToken);
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.1.6.0 (NJsonSchema v10.0.28.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IMachineConfigurationWebService
     {
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
@@ -522,6 +541,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<MachineError> ResolveAllAsync(System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<MachineError> SetErrorPPCAsync(MachineErrorCode errorCode, System.Threading.CancellationToken cancellationToken);
     
     }
     
@@ -2783,6 +2809,149 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         {
             return Newtonsoft.Json.JsonConvert.DeserializeObject<ErrorStatisticsDetail>(data, new Newtonsoft.Json.JsonConverter[] { new Ferretto.VW.CommonUtils.Converters.IPAddressConverter() });
         }
+    
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
+    public enum MachineErrorCode
+    {
+        CradleNotCompletelyLoaded = 1,
+    
+        ConditionsNotMetForPositioning = 2,
+    
+        ConditionsNotMetForRunning = 3,
+    
+        SecurityWasTriggered = 4,
+    
+        SecurityButtonWasTriggered = 5,
+    
+        SecurityBarrierWasTriggered = 6,
+    
+        SecuritySensorWasTriggered = 7,
+    
+        InverterFaultStateDetected = 8,
+    
+        CradleNotCorrectlyLoadedDuringPickup = 9,
+    
+        CradleNotCorrectlyUnloadedDuringDeposit = 10,
+    
+        ZeroSensorErrorAfterPickup = 11,
+    
+        ZeroSensorErrorAfterDeposit = 12,
+    
+        InvalidPresenceSensors = 13,
+    
+        MissingZeroSensorWithEmptyElevator = 14,
+    
+        ZeroSensorActiveWithFullElevator = 15,
+    
+        LoadUnitPresentOnEmptyElevator = 16,
+    
+        TopLevelBayOccupied = 17,
+    
+        BottomLevelBayOccupied = 18,
+    
+        TopLevelBayEmpty = 19,
+    
+        BottomLevelBayEmpty = 20,
+    
+        SensorZeroBayNotActiveAtStart = 21,
+    
+        LoadingUnitWeightExceeded = 22,
+    
+        LoadingUnitWeightTooLow = 23,
+    
+        MachineWeightExceeded = 24,
+    
+        DestinationBelowLowerBound = 25,
+    
+        DestinationOverUpperBound = 26,
+    
+        BayInvertersBusy = 27,
+    
+        IoDeviceError = 28,
+    
+        MachineModeNotValid = 29,
+    
+        AnotherMissionIsActiveForThisLoadUnit = 30,
+    
+        AnotherMissionIsActiveForThisBay = 31,
+    
+        AnotherMissionOfThisTypeIsActive = 32,
+    
+        WarehouseIsFull = 33,
+    
+        InverterErrorBaseCode = 200000,
+    
+        InverterErrorInvalidParameter = 200001,
+    
+        InverterErrorInvalidDataset = 200002,
+    
+        InverterErrorParameterIsWriteOnly = 200003,
+    
+        InverterErrorParameterIsReadOnly = 200004,
+    
+        InverterErrorEepromReadError = 200005,
+    
+        InverterErrorEepromWriteError = 200006,
+    
+        InverterErrorEepromChecksumError = 200007,
+    
+        InverterErrorCannotWriteParameterWhileRunning = 200008,
+    
+        InverterErrorDatasetValuesAreDifferent = 200009,
+    
+        InverterErrorUnknownParameter = 200011,
+    
+        InverterErrorSyntaxError = 200013,
+    
+        InverterErrorWrongPayloadLength = 200014,
+    
+        InverterErrorNodeNotAvailable = 200020,
+    
+        InverterErrorSyntaxError2 = 200030,
+    
+        MachineManagerErrorBaseCode = 300000,
+    
+        MachineManagerErrorNoLoadingUnitInSource = 300001,
+    
+        MachineManagerErrorLoadingUnitSourceDb = 300002,
+    
+        MachineManagerErrorLoadingUnitDestinationCell = 300003,
+    
+        MachineManagerErrorLoadingUnitElevator = 300004,
+    
+        MachineManagerErrorLoadingUnitNotRemoved = 300005,
+    
+        MachineManagerErrorLoadingUnitDestinationBay = 300006,
+    
+        MachineManagerErrorLoadingUnitSourceCell = 300007,
+    
+        MachineManagerErrorLoadingUnitNotFound = 300008,
+    
+        MachineManagerErrorLoadingUnitNotLoaded = 300009,
+    
+        MachineManagerErrorLoadingUnitSourceBay = 300010,
+    
+        MachineManagerErrorLoadingUnitShutterOpen = 300011,
+    
+        MachineManagerErrorLoadingUnitShutterClosed = 300012,
+    
+        MachineManagerErrorLoadingUnitPresentInCell = 300013,
+    
+        MachineManagerErrorLoadingUnitOtherBay = 300014,
+    
+        MachineManagerErrorLoadingUnitSourceElevator = 300015,
+    
+        MachineManagerErrorLoadingUnitMissingOnElevator = 300016,
+    
+        MachineManagerErrorLoadingUnitMissingOnBay1 = 300017,
+    
+        MachineManagerErrorLoadingUnitMissingOnBay2 = 300018,
+    
+        MachineManagerErrorLoadingUnitMissingOnBay3 = 300019,
+    
+        NoError = -1,
     
     }
     

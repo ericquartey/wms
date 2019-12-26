@@ -60,6 +60,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isUseWeightControl;
 
+        private string labelMoveToLoadunit;
+
         private DelegateCommand loadFromBayCommand;
 
         private ActionPolicy loadFromBayPolicy;
@@ -338,6 +340,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isUseWeightControl, value);
         }
 
+        public string LabelMoveToLoadunit
+        {
+            get => this.labelMoveToLoadunit;
+            set => this.SetProperty(ref this.labelMoveToLoadunit, value);
+        }
+
         public ICommand LoadFromBayCommand => this.loadFromBayCommand
             ??
             (this.loadFromBayCommand = new DelegateCommand(
@@ -593,11 +601,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.MachineStatus.EmbarkedLoadingUnit != null
                     &&
-                    this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
-                    &&
                     this.sensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    this.sensorsService.Sensors.LuPresentInOperatorSide
+                    &&
+                    this.loadFromCellPolicy?.IsAllowed == false
+                    &&
+                    this.unloadToCellPolicy?.IsAllowed == false;
             }
 
             return canMove;
@@ -881,10 +891,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 if (this.MachineStatus.EmbarkedLoadingUnit != null
-                    && this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id)
+                    && this.MachineStatus.EmbarkedLoadingUnit.Cell is null)
                 {
                     await this.machineElevatorWebService.MoveToFreeCellAsync(
-                        this.SelectedLoadingUnit.Id,
+                        this.MachineStatus.EmbarkedLoadingUnit.Id,
                         performWeighting: this.isUseWeightControl,
                         computeElongation: true);
                 }

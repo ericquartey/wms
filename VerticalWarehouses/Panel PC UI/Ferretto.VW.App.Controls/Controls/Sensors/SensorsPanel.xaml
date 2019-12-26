@@ -199,7 +199,7 @@
                                        Text="{x:Static res:InstallationApp.LoadingUnitCodePositionUp}"
                                        Visibility="{Binding SensorsService.BayIsMultiPosition, Converter={StaticResource BTVC}}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding MachineService.MachineStatus.LoadingUnitPositionUpInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding MachineService.MachineStatus.LoadingUnitPositionUpInBay.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"
@@ -207,7 +207,7 @@
                             <TextBlock Style="{StaticResource TextBlockTitleStyle}"
                                        Text="{x:Static res:InstallationApp.LoadingUnitCodePositionDown}" />
                             <TextBlock Style="{StaticResource TextBlockContentStyle}"
-                                       Text="{Binding MachineService.MachineStatus.LoadingUnitPositionDownInBayCode, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
+                                       Text="{Binding MachineService.MachineStatus.LoadingUnitPositionDownInBay.Id, TargetNullValue={x:Static res:General.TargetNullValue}, FallbackValue={x:Static res:General.TargetNullValue}}" />
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal"

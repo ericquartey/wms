@@ -9,9 +9,9 @@
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardBadge1="{Binding MachineStatus.LoadingUnitPositionUpInBayCode}"
-                      CardBadge2="{Binding MachineStatus.LoadingUnitPositionDownInBayCode}"
-                      CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
+    <local:CardSensor CardDescription="{Binding MachineStatus.BayChainTargetPosition, StringFormat={}{0:F2}}"
+                      CardLuDown="{Binding MachineStatus.LoadingUnitPositionDownInBay}"
+                      CardLuUp="{Binding MachineStatus.LoadingUnitPositionUpInBay}"
                       CardSensorLabel1="Zero"
                       CardSensorLabel2="Alta"
                       CardSensorLabel3="Bassa"

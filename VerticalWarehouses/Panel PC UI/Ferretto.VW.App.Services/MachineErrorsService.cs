@@ -17,6 +17,14 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachineErrorsWebService machineErrorsWebService;
 
+        private readonly SubscriptionToken machineModeChangedToken;
+
+        private readonly SubscriptionToken machinePowerChangedToken;
+
+        private readonly IMachineService machineService;
+
+        private readonly SubscriptionToken machineStatusChangesToken;
+
         private readonly INavigationService navigationService;
 
         private readonly IOperatorHubClient operatorHubClient;
@@ -37,6 +45,7 @@ namespace Ferretto.VW.App.Services
             IMachineErrorsWebService machineErrorsWebService,
             IEventAggregator eventAggregator,
             INavigationService navigationService,
+            IMachineService machineService,
             IOperatorHubClient operatorHubClient,
             ISensorsService sensorsService)
         {
@@ -45,14 +54,41 @@ namespace Ferretto.VW.App.Services
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
             this.operatorHubClient = operatorHubClient ?? throw new ArgumentNullException(nameof(operatorHubClient));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.machineService = machineService ?? throw new ArgumentNullException(nameof(machineService));
 
             this.sensorsToken = this.eventAggregator
                     .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
                     .Subscribe(
-                        this.OnSensorsChanged,
+                        async (m) => this.OnSensorsChanged(m),
                         ThreadOption.UIThread,
                         false,
                         m => m.Data != null);
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.eventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        this.OnMachineStatusChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            this.machineModeChangedToken = this.machineModeChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                    .Subscribe(
+                       this.OnChangedEventArgs,
+                       ThreadOption.UIThread,
+                       false);
+
+            this.machinePowerChangedToken = this.machinePowerChangedToken
+                ??
+                this.eventAggregator
+                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                    .Subscribe(
+                       this.OnChangedEventArgs,
+                       ThreadOption.UIThread,
+                       false);
 
             this.operatorHubClient.ErrorStatusChanged += async (sender, e) => await this.OnMachineErrorStatusChangedAsync();
             this.operatorHubClient.ConnectionStatusChanged += async (sender, e) => await this.OnHubConnectionChangedAsync(sender, e);
@@ -103,6 +139,8 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        public string ViewErrorActive { get; set; }
+
         #endregion
 
         #region Methods
@@ -113,7 +151,6 @@ namespace Ferretto.VW.App.Services
             {
                 var prevError = this.ActiveError;
                 this.ActiveError = await this.machineErrorsWebService.GetCurrentAsync();
-
                 if (this.ActiveError != prevError)
                 {
                     await this.NavigateToErrorPageAsync();
@@ -127,33 +164,51 @@ namespace Ferretto.VW.App.Services
 
         private void CheckMissingLoadunits()
         {
-            // presenza elevatore
-            if (this.sensorsService.IsLoadingUnitOnElevator)
+            try
             {
-            }
+                if (this.machineService.MachinePower.Equals(MachinePowerState.Powered) &&
+                    this.machineService.MachineMode.Equals(MachineMode.Automatic) &&
+                    this.machineService.MachineStatus.EmbarkedLoadingUnit is null &&
+                    this.ActiveError is null)
+                {
+                    lock (this)
+                    {
+                        // presenza elevatore
+                        if (this.sensorsService.IsLoadingUnitOnElevator &&
+                            !this.sensorsService.IsZeroChain)
+                        {
+                            Task.Run(() => this.machineErrorsWebService.SetErrorPPCAsync(MachineErrorCode.MachineManagerErrorLoadingUnitMissingOnElevator)).Wait();
+                        }
 
-            // presenza baia 1
-            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayOne))
-            {
-            }
-            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayOne))
-            {
-            }
+                        // presenza baia 1
+                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayOne))
+                        {
+                        }
+                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayOne))
+                        {
+                        }
 
-            // presenza baia 2
-            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayTwo))
-            {
-            }
-            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayTwo))
-            {
-            }
+                        // presenza baia 2
+                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayTwo))
+                        {
+                        }
+                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayTwo))
+                        {
+                        }
 
-            // presenza baia 3
-            if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayThree))
-            {
+                        // presenza baia 3
+                        if (this.sensorsService.IsLoadingUnitInBayByNumber(BayNumber.BayThree))
+                        {
+                        }
+                        if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayThree))
+                        {
+                        }
+                    }
+                }
             }
-            if (this.sensorsService.IsLoadingUnitInMiddleBottomBayByNumber(BayNumber.BayThree))
+            catch (Exception ex)
             {
+                string s = "";
             }
         }
 
@@ -170,7 +225,7 @@ namespace Ferretto.VW.App.Services
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
-                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), Utils.Modules.Errors.ERRORDETAILSVIEW))
+                        if (this.navigationService.IsActiveView(nameof(Utils.Modules.Errors), this.ViewErrorActive))
                         {
                             this.navigationService.GoBack();
                         }
@@ -178,17 +233,29 @@ namespace Ferretto.VW.App.Services
             }
             else
             {
+                this.ViewErrorActive = Utils.Modules.Errors.ERRORDETAILSVIEW;
+
+                if (this.ActiveError.Code == (int)MachineErrorCode.MachineManagerErrorLoadingUnitMissingOnElevator)
+                {
+                    this.ViewErrorActive = Utils.Modules.Errors.ERRORLOADUNITMISSING;
+                }
+
                 await Application.Current.Dispatcher.BeginInvoke(
                     System.Windows.Threading.DispatcherPriority.ApplicationIdle,
                     new Action(() =>
                     {
                         this.navigationService.Appear(
                             nameof(Utils.Modules.Errors),
-                            Utils.Modules.Errors.ERRORDETAILSVIEW,
+                            this.ViewErrorActive,
                             data: null,
                             trackCurrentView: true);
                     }));
             }
+        }
+
+        private void OnChangedEventArgs(EventArgs e)
+        {
+            this.CheckMissingLoadunits();
         }
 
         private async Task OnHubConnectionChangedAsync(object sender, ConnectionStatusChangedEventArgs e)
@@ -203,6 +270,11 @@ namespace Ferretto.VW.App.Services
         {
             await this.CheckErrorsPresenceAsync()
                 .ContinueWith((m) => this.ErrorStatusChanged?.Invoke(null, new MachineErrorEventArgs(this.ActiveError)));
+        }
+
+        private void OnMachineStatusChanged(MachineStatusChangedMessage e)
+        {
+            this.CheckMissingLoadunits();
         }
 
         private void OnSensorsChanged(NotificationMessageUI<SensorsChangedMessageData> message)

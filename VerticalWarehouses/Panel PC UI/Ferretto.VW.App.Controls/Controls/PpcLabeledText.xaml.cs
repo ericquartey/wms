@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Controls.Controls
@@ -26,6 +27,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcLabeledText()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
 
             var customLabelTextBlockControl = this;
             this.LayoutRoot.DataContext = customLabelTextBlockControl;

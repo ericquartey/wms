@@ -14,6 +14,8 @@
                       CardDescription="{Binding MachineStatus.LogicalPosition}"
                       CardText="Posizione"
                       CardValue="{Binding MachineStatus.ElevatorLogicalPosition}"
+                      LuHeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.Height, StringFormat={}{0:F2}}"
+                      LuWeight="{Binding MachineStatus.ElevatorPositionLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
                       Type="Position" />
 
 </UserControl>

@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.MAS.AutomationService.Contracts;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -46,6 +47,9 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty CardDescriptionProperty =
             DependencyProperty.Register(nameof(CardDescription), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
+        public static readonly DependencyProperty CardLuDownProperty =
+            DependencyProperty.Register(nameof(CardLuDown), typeof(LoadingUnit), typeof(CardSensor));
+
         public static readonly DependencyProperty CardSensorLabel1Property =
             DependencyProperty.Register(nameof(CardSensorLabel1), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
 
@@ -60,6 +64,9 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public static readonly DependencyProperty CardTypeProperty =
             DependencyProperty.Register(nameof(Type), typeof(CardType), typeof(CardSensor), new PropertyMetadata(CardType.Axis));
+
+        public static readonly DependencyProperty CardUpLuProperty =
+            DependencyProperty.Register(nameof(CardLuUp), typeof(LoadingUnit), typeof(CardSensor));
 
         public static readonly DependencyProperty CardValueProperty =
             DependencyProperty.Register(nameof(CardValue), typeof(string), typeof(CardSensor), new PropertyMetadata(string.Empty));
@@ -160,6 +167,18 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (string)this.GetValue(CardDescriptionProperty);
             set => this.SetValue(CardDescriptionProperty, value);
+        }
+
+        public LoadingUnit CardLuDown
+        {
+            get => (LoadingUnit)this.GetValue(CardLuDownProperty);
+            set => this.SetValue(CardLuDownProperty, value);
+        }
+
+        public LoadingUnit CardLuUp
+        {
+            get => (LoadingUnit)this.GetValue(CardUpLuProperty);
+            set => this.SetValue(CardUpLuProperty, value);
         }
 
         public string CardSensorLabel1

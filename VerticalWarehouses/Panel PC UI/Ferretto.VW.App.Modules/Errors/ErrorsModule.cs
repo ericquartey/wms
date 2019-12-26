@@ -23,6 +23,7 @@ namespace Ferretto.VW.App.Modules.Errors
         public void RegisterTypes(IContainerRegistry containerRegistry)
         {
             containerRegistry.RegisterForNavigation<ErrorDetailsView>();
+            containerRegistry.RegisterForNavigation<ErrorLoadunitMissingView>();
         }
 
         #endregion

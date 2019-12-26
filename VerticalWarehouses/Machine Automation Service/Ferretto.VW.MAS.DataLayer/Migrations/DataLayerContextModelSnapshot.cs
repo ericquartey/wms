@@ -864,6 +864,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Cassetto non presente sull'Elevatore",
                             Reason = "MachineManagerErrorLoadingUnitSourceElevator",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300016,
+                            Code = 300016,
+                            Description = "Elevatore occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300017,
+                            Code = 300017,
+                            Description = "Baia 1 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300018,
+                            Code = 300018,
+                            Description = "Baia 2 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300019,
+                            Code = 300019,
+                            Description = "Baia 3 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
                         });
                 });
 
@@ -1196,6 +1228,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300015,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300016,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300017,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300018,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300019,
                             TotalErrors = 0
                         },
                         new
@@ -1542,7 +1594,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 23, 11, 13, 20, 385, DateTimeKind.Local).AddTicks(4502),
+                            InstallationDate = new DateTime(2017, 2, 24, 17, 1, 7, 632, DateTimeKind.Local).AddTicks(4419),
                             ServiceStatus = 86
                         });
                 });

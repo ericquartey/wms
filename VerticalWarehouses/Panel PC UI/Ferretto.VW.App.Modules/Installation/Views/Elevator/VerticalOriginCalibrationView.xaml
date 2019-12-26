@@ -9,75 +9,224 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="130,30,0,0">
+    <Grid Margin="15,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="120" />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
-
-        <StackPanel Grid.Row="1"
-                    Grid.ColumnSpan="3"
+        <StackPanel Grid.ColumnSpan="2"
                     Orientation="Horizontal">
-
-            <controls:CardSensorAxisVertical Width="250"
-                                             Margin="0,5,5,15" />
-
-            <controls:CardSensorAxisHorizontal Width="250"
-                                               Margin="5,5,5,15" />
-
+            <TextBlock Margin="0,0,10,0"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.2.1" />
+            <TextBlock VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         </StackPanel>
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding LowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.LowerBound}" />
-        <controls:PpcLabeledText Grid.Row="2"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding Offset, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Offset}" />
+        <Border Grid.Row="1"
+                Grid.ColumnSpan="2"
+                BorderBrush="{DynamicResource VWAPP_BACKGROUND}"
+                BorderThickness="0,15">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.ColumnSpan="3">
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding UpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.UpperBound}" />
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
 
-        <controls:PpcLabeledText Grid.Row="3"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding Resolution, StringFormat={}{0:F6}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                 LabelText="{x:Static res:InstallationApp.Resolution}" />
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.LowerBound}"
+                                   TextAlignment="Left" />
 
-        <controls:PpcButton Grid.Row="5"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding LowerBound}"
+                                   TextWrapping="Wrap" />
 
-        <controls:PpcButton Grid.Row="5"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsBusy="{Binding IsExecutingProcedure}" />
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Column="3"
+                          Grid.ColumnSpan="3">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.Offset}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding Offset}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Row="2"
+                          Grid.Column="6"
+                          Grid.ColumnSpan="3">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.UpperBound}"
+                                   TextAlignment="Left" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding UpperBound}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Row="2"
+                          Grid.Column="9"
+                          Grid.ColumnSpan="3"
+                          Margin="0,0,15,0">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.Resolution}"
+                                   TextAlignment="Left" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding Resolution, StringFormat={}{0:F6}}"
+                                   TextWrapping="Wrap" />
+
+                    </Grid>
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="0"
+                                         Width="250"
+                                         Margin="15"
+                                         HorizontalAlignment="Right" />
+        <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                           Grid.Column="1"
+                                           Width="250"
+                                           Margin="15"
+                                           HorizontalAlignment="Left" />
+
+            <controls:PpcButton Grid.Row="3"
+                                Margin="15,0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+
+        <controls:PpcButton Grid.Row="4"
+                                Grid.Column="1"
+                                Margin="0"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Bottom"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
     </Grid>
 </ctrls:View>
