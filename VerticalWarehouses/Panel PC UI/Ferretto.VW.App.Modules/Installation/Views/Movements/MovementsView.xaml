@@ -681,13 +681,13 @@
                                 Grid.Column="3"
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal">
-                        <!--  LightbulbOnOutline   LightbulbOutline  -->
                         <controls:PpcButton Width="60"
                                             Margin="15,0,0,0"
                                             HorizontalAlignment="Right"
                                             BorderBrush="{DynamicResource FerrettoYellow}"
+                                            Command="{Binding LightCommand}"
                                             Foreground="{StaticResource FerrettoPureWhite}"
-                                            KindMaterial="LightbulbOnOutline"
+                                            KindMaterial="{Binding LightIcon}"
                                             Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}" />
                         <controls:PpcButton Width="60"
                                             Margin="15,0,0,0"
