@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -63,6 +60,11 @@ namespace Ferretto.VW.App.Services
         #endregion
 
         #region Methods
+
+        public async Task CancelCurrentAsync()
+        {
+            await this.missionOperationsWebService.CancelAsync();
+        }
 
         public async Task CompleteCurrentAsync(double quantity)
         {

@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private IEnumerable<TrayControlCompartment> compartments;
 
+        private DelegateCommand confirmOperationCanceledCommand;
+
         private DelegateCommand confirmOperationCommand;
 
         private double? inputQuantity;
@@ -80,8 +82,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.compartments, value);
         }
 
+        public ICommand ConfirmOperationCanceledCommand =>
+            this.confirmOperationCanceledCommand
+            ??
+            (this.confirmOperationCanceledCommand = new DelegateCommand(
+                async () => await this.ConfirmOperationCanceledAsync(),
+                this.CanConfirmOperationCanceled));
+
         public ICommand ConfirmOperationCommand =>
-            this.confirmOperationCommand
+                    this.confirmOperationCommand
             ??
             (this.confirmOperationCommand = new DelegateCommand(
                 async () => await this.ConfirmOperationAsync(),
@@ -162,6 +171,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.InputQuantity.Value == this.MissionOperation.RequestedQuantity;
         }
 
+        public virtual bool CanConfirmOperationCanceled()
+        {
+            return
+                !this.IsWaitingForResponse
+                &&
+                !this.isOperationConfirmed
+                &&
+                this.isOperationCanceled;
+        }
+
         public async Task ConfirmOperationAsync()
         {
             System.Diagnostics.Debug.Assert(
@@ -188,6 +207,29 @@ namespace Ferretto.VW.App.Operator.ViewModels
             finally
             {
                 // Do not enable the interface. Wait for a new notification to arrive.
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        public async Task ConfirmOperationCanceledAsync()
+        {
+            try
+            {
+                this.IsBusyConfirmingOperation = true;
+                this.IsWaitingForResponse = true;
+                this.ClearNotifications();
+
+                await this.MissionOperationsService.CancelCurrentAsync();
+
+                this.ShowNotification(Resources.OperatorApp.OperationCancelledConfirmed);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+                this.IsBusyConfirmingOperation = false;
+            }
+            finally
+            {
                 this.IsWaitingForResponse = false;
             }
         }
@@ -232,6 +274,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.confirmOperationCommand?.RaiseCanExecuteChanged();
             this.showDetailsCommand?.RaiseCanExecuteChanged();
+            this.confirmOperationCanceledCommand?.RaiseCanExecuteChanged();
         }
 
         protected abstract void ShowOperationDetails();
@@ -256,6 +299,47 @@ namespace Ferretto.VW.App.Operator.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
+            }
+        }
+
+        private string GetNoLongerOperationMessageByType()
+        {
+            var noLongerOperationMsg = string.Empty;
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    noLongerOperationMsg = OperatorApp.IfPickedItemsPutThemBackInTheOriginalCompartment;
+                    break;
+
+                case MissionOperationType.Put:
+                    noLongerOperationMsg = OperatorApp.RemoveAnySpilledItemsFromCompartment;
+                    break;
+
+                case MissionOperationType.Inventory:
+                    noLongerOperationMsg = OperatorApp.InventoryOperationCancelled;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return noLongerOperationMsg;
+        }
+
+        private void HideNavigationBack()
+        {
+            switch (this.MissionOperation.Type)
+            {
+                case MissionOperationType.Pick:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                case MissionOperationType.Put:
+                    this.IsBackNavigationAllowed = false;
+                    break;
+
+                default:
+                    break;
             }
         }
 
@@ -294,8 +378,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsOperationCanceled = true;
                 this.CanInputQuantity = false;
-                this.DialogService.ShowMessage(OperatorApp.CurrentOperationIsNoLongerAvailable, OperatorApp.OperationCancelled);
-                this.ShowNotification(OperatorApp.CurrentOperationIsNoLongerAvailable, Services.Models.NotificationSeverity.Warning);
+                var msg = this.GetNoLongerOperationMessageByType();
+                this.DialogService.ShowMessage(msg, OperatorApp.OperationCancelled);
+                this.ShowNotification(msg, Services.Models.NotificationSeverity.Warning);
+                this.HideNavigationBack();
             }
 
             this.IsBusyConfirmingOperation = false;
