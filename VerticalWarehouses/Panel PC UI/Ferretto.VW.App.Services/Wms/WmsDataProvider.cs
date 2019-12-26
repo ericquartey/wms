@@ -14,7 +14,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly IBayManager bayManager;
 
-        private readonly IItemsDataService itemsDataService;
+        private readonly IItemsWmsWebService itemsWmsWebService;
 
         #endregion
 
@@ -22,10 +22,10 @@ namespace Ferretto.VW.App.Services
 
         public WmsDataProvider(
             IBayManager bayManager,
-            IItemsDataService itemsDataService)
+            IItemsWmsWebService itemsWmsWebService)
         {
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
-            this.itemsDataService = itemsDataService ?? throw new System.ArgumentNullException(nameof(itemsDataService));
+            this.itemsWmsWebService = itemsWmsWebService ?? throw new System.ArgumentNullException(nameof(itemsWmsWebService));
         }
 
         #endregion
@@ -36,7 +36,7 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                var item = await this.itemsDataService.GetByIdAsync(itemId);
+                var item = await this.itemsWmsWebService.GetByIdAsync(itemId);
                 return item.Image;
             }
             catch
@@ -54,7 +54,7 @@ namespace Ferretto.VW.App.Services
 
             var bay = await this.bayManager.GetBayAsync();
 
-            await this.itemsDataService.PickAsync(itemId, new ItemOptions
+            await this.itemsWmsWebService.PickAsync(itemId, new ItemOptions
             {
                 AreaId = this.bayManager.Identity.AreaId.Value,
                 BayId = bay.Id,

@@ -24,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IDialogService dialogService;
+
         private readonly IMachineBaysWebService machineBaysWebService;
 
         private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
@@ -81,6 +83,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
             ISensorsService sensorsService,
+            IDialogService dialogService,
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
             IBayManager bayManagerService)
@@ -93,6 +96,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
         }

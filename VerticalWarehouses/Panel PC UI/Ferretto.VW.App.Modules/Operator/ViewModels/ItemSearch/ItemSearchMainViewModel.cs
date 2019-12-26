@@ -17,7 +17,7 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class ItemSearchMainViewModel : BaseOperatorViewModel
+    public class ItemSearchMainViewModel : BaseOperatorViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -27,7 +27,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private const int ItemsVisiblePageSize = 10;
 
-        private readonly IAreasDataService areasDataService;
+        private readonly IAreasWmsWebService areasWmsWebService;
 
         private readonly IBarcodeReaderService barcodeReaderService;
 
@@ -36,6 +36,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private readonly IMachineIdentityWebService identityService;
 
         private readonly List<ItemInfo> items = new List<ItemInfo>();
+
+        private readonly IItemsWmsWebService itemsWmsWebService;
 
         private readonly IWmsDataProvider wmsDataProvider;
 
@@ -78,14 +80,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
         public ItemSearchMainViewModel(
             IWmsDataProvider wmsDataProvider,
             IMachineIdentityWebService identityService,
+            IItemsWmsWebService itemsWmsWebService,
             IBayManager bayManager,
-            IAreasDataService areasDataService,
+            IAreasWmsWebService areasWmsWebService,
             IBarcodeReaderService barcodeReaderService)
             : base(PresentationMode.Operator)
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.itemsWmsWebService = itemsWmsWebService;
+            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
 
@@ -95,6 +99,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Properties
+
+        public string ActiveContextName => this.isBusyLoadingNextPage ? null : "ItemsSearch";
 
         public double? AvailableQuantity
         {
@@ -197,7 +203,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.selectPreviousItemCommand
             ??
             (this.selectPreviousItemCommand = new DelegateCommand(
-                async () => await this.SelectPreviousItemAsync(),
+                this.SelectPreviousItem,
                 this.CanSelectPreviousItem));
 
         #endregion
@@ -269,7 +275,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             try
             {
-                var newItems = await this.areasDataService.GetItemsAsync(
+                var newItems = await this.areasWmsWebService.GetItemsAsync(
                 this.areaId.Value,
                 skip,
                 DefaultPageSize,
@@ -325,7 +331,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SetSelectedItem();
         }
 
-        public async Task SelectPreviousItemAsync()
+        public void SelectPreviousItem()
         {
             this.currentItemIndex--;
             if ((this.maxKnownIndexSelection - ItemsVisiblePageSize) > this.currentItemIndex)
@@ -336,16 +342,34 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SetSelectedItem();
         }
 
+        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
+        {
+            await base.OnBarcodeMatchedAsync(e);
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                switch (userAction)
+                {
+                    case UserAction.FilterItems:
+                        // this.itemsWmsWebService.b
+                        break;
+
+                    case UserAction.PickItem:
+                        break;
+                }
+            }
+        }
+
         private void AdjustItemsAppearance()
         {
             if (this.maxKnownIndexSelection == 0)
             {
-                this.maxKnownIndexSelection = Math.Min(this.items.Count(), ItemsVisiblePageSize);
+                this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize);
             }
 
             if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
                 &&
-                this.Items.Count() > this.maxKnownIndexSelection)
+                this.Items.Count > this.maxKnownIndexSelection)
             {
                 this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
             }

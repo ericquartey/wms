@@ -12,13 +12,13 @@ namespace Ferretto.VW.App.Services
 
         private const string BLANKIMAGE = "no_image.jpg";
 
-        private readonly IImagesDataService imagesDataService;
+        private readonly IImagesWmsWebService imagesDataService;
 
         #endregion
 
         #region Constructors
 
-        public WmsImagesProvider(IImagesDataService imagesDataService)
+        public WmsImagesProvider(IImagesWmsWebService imagesDataService)
         {
             if (imagesDataService is null)
             {

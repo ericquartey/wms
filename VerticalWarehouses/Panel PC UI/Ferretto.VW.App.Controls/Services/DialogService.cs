@@ -2,15 +2,14 @@
 using System.Windows;
 using System.Windows.Threading;
 using CommonServiceLocator;
-using DevExpress.Xpf.Core;
 using DevExpress.Xpf.WindowsUI;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Controls
 {
-    public class DialogService : IDialogService
+    internal class DialogService : IDialogService
     {
         #region Fields
 
@@ -22,7 +21,7 @@ namespace Ferretto.VW.App.Services
 
         public DialogService()
         {
-            DXMessageBoxLocalizer.Active = new MesageBoxLocalizer();
+            DevExpress.Xpf.Core.DXMessageBoxLocalizer.Active = new MesageBoxLocalizer();
         }
 
         #endregion
@@ -67,32 +66,32 @@ namespace Ferretto.VW.App.Services
 
         public DialogResult ShowMessage(string message, string title)
         {
-            return this.ShowMessage(message, title, DialogType.Information, Controls.Interfaces.DialogButtons.OK);
+            return this.ShowMessage(message, title, DialogType.Information, DialogButtons.OK);
         }
 
         public DialogResult ShowMessage(
             string message,
             string title,
             DialogType type,
-            Controls.Interfaces.DialogButtons buttons)
+            DialogButtons buttons)
         {
             return ShowMessageDialog(message, title, type, buttons);
         }
 
-        private static MessageBoxButton ConvertDialogButtons(Controls.Interfaces.DialogButtons buttons)
+        private static MessageBoxButton ConvertDialogButtons(DialogButtons buttons)
         {
             switch (buttons)
             {
-                case Controls.Interfaces.DialogButtons.OK:
+                case DialogButtons.OK:
                     return MessageBoxButton.OK;
 
-                case Controls.Interfaces.DialogButtons.OKCancel:
+                case DialogButtons.OKCancel:
                     return MessageBoxButton.OKCancel;
 
-                case Controls.Interfaces.DialogButtons.YesNo:
+                case DialogButtons.YesNo:
                     return MessageBoxButton.YesNo;
 
-                case Controls.Interfaces.DialogButtons.YesNoCancel:
+                case DialogButtons.YesNoCancel:
                     return MessageBoxButton.YesNoCancel;
 
                 default:
@@ -149,10 +148,10 @@ namespace Ferretto.VW.App.Services
         }
 
         private static DialogResult ShowMessageDialog(
-                                    string message,
-                                    string title,
-                                    DialogType type,
-                                    Controls.Interfaces.DialogButtons buttons)
+            string message,
+            string title,
+            DialogType type,
+            DialogButtons buttons)
         {
             return ConvertDialogResult(WinUIMessageBox.Show(
                 message,
@@ -182,16 +181,16 @@ namespace Ferretto.VW.App.Services
 
         #region Classes
 
-        public class MesageBoxLocalizer : DXMessageBoxLocalizer
+        public class MesageBoxLocalizer : DevExpress.Xpf.Core.DXMessageBoxLocalizer
         {
             #region Methods
 
             protected override void PopulateStringTable()
             {
                 base.PopulateStringTable();
-                this.AddString(DXMessageBoxStringId.Yes, "Si");
-                this.AddString(DXMessageBoxStringId.No, "No");
-                this.AddString(DXMessageBoxStringId.Cancel, "Annulla");
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Yes, "Si");
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.No, "No");
+                this.AddString(DevExpress.Xpf.Core.DXMessageBoxStringId.Cancel, "Annulla");
             }
 
             #endregion

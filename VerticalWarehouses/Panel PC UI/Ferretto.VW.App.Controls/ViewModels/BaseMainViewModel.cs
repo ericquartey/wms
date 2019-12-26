@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -26,6 +27,8 @@ namespace Ferretto.VW.App.Controls
         private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
 
         private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
+
+        private SubscriptionToken barcodeMatchedToken;
 
         private SubscriptionToken bayChainPositionChangedToken;
 
@@ -126,13 +129,23 @@ namespace Ferretto.VW.App.Controls
 
             this.InitializeSteps();
 
+            this.barcodeMatchedToken = this.barcodeMatchedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<BarcodeMatchEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnBarcodeMatchedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
             this.healthStatusChangedToken = this.healthStatusChangedToken
-                ?? this.EventAggregator
-                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnHealthStatusChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
             this.machineModeChangedToken = this.machineModeChangedToken
                 ??
@@ -269,6 +282,12 @@ namespace Ferretto.VW.App.Controls
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
+        }
+
+        protected virtual Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
+        {
+            // do nothing
+            return Task.CompletedTask;
         }
 
         protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)

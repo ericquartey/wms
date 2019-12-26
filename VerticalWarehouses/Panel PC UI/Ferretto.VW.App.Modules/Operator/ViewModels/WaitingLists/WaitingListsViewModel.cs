@@ -19,13 +19,13 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IAreasDataService areasDataService;
+        private readonly IAreasWmsWebService areasWmsWebService;
 
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsDataService itemListsDataService;
+        private readonly IItemListsWmsWebService itemListsWmsWebService;
 
         private readonly IList<ItemListExecution> lists;
 
@@ -53,14 +53,14 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsDataService itemListsDataService,
-            IAreasDataService areasDataService,
+            IItemListsWmsWebService itemListsWmsWebService,
+            IAreasWmsWebService areasWmsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
-            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
+            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.lists = new List<ItemListExecution>();
         }
@@ -133,7 +133,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
             catch
@@ -160,13 +160,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             await this.LoadListsAsync();
 
             this.RefreshLists();
-        }
-
-        private bool CanShowDetailCommand()
-        {
-            return !this.IsWaitingForResponse
-                &&
-                this.SelectedList != null;
         }
 
         private bool CanExecuteList()
@@ -197,26 +190,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !this.IsWaitingForResponse;
         }
 
-        private void ShowDetails()
+        private bool CanShowDetailCommand()
         {
-            this.IsWaitingForResponse = true;
-
-            try
-            {
-                this.NavigationService.Appear(
-                    nameof(Utils.Modules.Operator),
-                    Utils.Modules.Operator.WaitingLists.DETAIL,
-                    this.selectedList,
-                    trackCurrentView: true);
-            }
-            catch (Exception ex)
-            {
-                this.ShowNotification(ex);
-            }
-            finally
-            {
-                this.IsWaitingForResponse = false;
-            }
+            return !this.IsWaitingForResponse
+                &&
+                this.SelectedList != null;
         }
 
         private async Task LoadListsAsync()
@@ -233,10 +211,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
 
                 var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
-                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count)
+                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count())
                 {
                     return;
                 }
@@ -315,6 +293,28 @@ namespace Ferretto.VW.App.Operator.ViewModels
             else
             {
                 this.currentItemIndex = 0;
+            }
+        }
+
+        private void ShowDetails()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Operator),
+                    Utils.Modules.Operator.WaitingLists.DETAIL,
+                    this.selectedList,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
             }
         }
 

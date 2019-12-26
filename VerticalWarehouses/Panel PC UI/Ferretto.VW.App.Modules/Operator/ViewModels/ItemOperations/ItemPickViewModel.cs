@@ -22,12 +22,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPickViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -47,6 +47,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
+
         public override Task OnAppearedAsync()
         {
             this.Compartments = null;

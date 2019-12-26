@@ -3,7 +3,9 @@ using System.Configuration;
 using System.Reflection;
 using System.Windows;
 using CommonServiceLocator;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Controls.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -90,18 +92,16 @@ namespace Ferretto.VW.App
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            var navigationService = this.Container.Resolve<NavigationService>();
-            containerRegistry.RegisterInstance<INavigationService>(navigationService);
+            // UI controls services
+            containerRegistry.RegisterUiControlServices(
+                new NavigationOptions { MainContentRegionName = Utils.Modules.Layout.REGION_MAINCONTENT });
 
-            containerRegistry.RegisterSingleton<IEventAggregator, EventAggregator>();
-            containerRegistry.RegisterSingleton<IDialogService, DialogService>();
-
-            // UI services
+            // App services
             var serviceUrl = ConfigurationManager.AppSettings.GetAutomationServiceUrl();
             var serviceLiveHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceLiveHealthPath();
             var serviceReadyHealthPath = ConfigurationManager.AppSettings.GetAutomationServiceReadyHealthPath();
 
-            containerRegistry.RegisterUiServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
+            containerRegistry.RegisterAppServices(serviceUrl, serviceLiveHealthPath, serviceReadyHealthPath);
 
             // MAS Web API services
             var operatorHubPath = ConfigurationManager.AppSettings.GetAutomationServiceOperatorHubPath();
@@ -136,15 +136,16 @@ namespace Ferretto.VW.App
         {
             var wmsServiceUrl = ConfigurationManager.AppSettings.GetWMSDataServiceUrl();
 
-            container.RegisterInstance(DataServiceFactory.GetService<IBaysDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IImagesDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMissionsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IItemListsDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IAreasDataService>(wmsServiceUrl));
-            container.RegisterInstance(DataServiceFactory.GetService<IMachinesDataService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IBaysWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IBarcodesWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IImagesWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMissionOperationsWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMissionsWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<ILoadingUnitsWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IItemsWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IItemListsWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IAreasWmsWebService>(wmsServiceUrl));
+            container.RegisterInstance(DataServiceFactory.GetService<IMachinesWmsWebService>(wmsServiceUrl));
         }
 
         private void Application_Exit(object sender, ExitEventArgs e)

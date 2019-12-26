@@ -56,12 +56,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationMainViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IBayManager bayManager,
             IEventAggregator eventAggregator,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, missionOperationsService, dialogService)
         {
             this.eventAggregator = eventAggregator;
 

@@ -4,6 +4,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Prism.Commands;
 
@@ -35,15 +36,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.moveCarouselDownCommand
             ??
             (this.moveCarouselDownCommand = new DelegateCommand(
-            async () => await this.MoveCarouselDownAsync(),
-            this.CanMoveCarouselDown));
+                async () => await this.MoveCarouselDownAsync(),
+                this.CanMoveCarouselDown));
 
         public ICommand CarouselUpCommand =>
             this.moveCarouselUpCommand
             ??
             (this.moveCarouselUpCommand = new DelegateCommand(
-            async () => await this.MoveCarouselUpAsync(),
-            this.CanMoveCarouselUp));
+                async () => await this.MoveCarouselUpAsync(),
+                this.CanMoveCarouselUp));
 
         public bool HasCarousel
         {
@@ -129,9 +130,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
-                if (messageBoxResult == DialogResult.Yes)
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                if (messageBoxResult is DialogResult.Yes)
                 {
                     await this.machineCarouselWebService.FindZeroAsync();
                     this.IsTuningBay = true;

@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
-using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Services;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils;
 using Prism.Events;
 using Prism.Modularity;
 using Prism.Regions;
 using Unity;
 
-namespace Ferretto.VW.App.Services
+namespace Ferretto.VW.App.Controls
 {
-    public class NavigationService : INavigationService
+    internal class NavigationService : INavigationService
     {
         #region Fields
 
@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Services
             }
         }
 
+        internal string MainContentRegionName { get; set; }
+
         #endregion
 
         #region Methods
@@ -102,7 +104,7 @@ namespace Ferretto.VW.App.Services
 
                 this.DisappearActiveView();
 
-                this.regionManager.RequestNavigate(Utils.Modules.Layout.REGION_MAINCONTENT, viewName, parameters);
+                this.regionManager.RequestNavigate(this.MainContentRegionName, viewName, parameters);
 
                 if (trackCurrentView)
                 {
@@ -140,6 +142,18 @@ namespace Ferretto.VW.App.Services
             {
                 this.logger.Error(ex, $"Cannot close view model '{viewModel.GetType().Name}'.");
             }
+        }
+
+        public INavigableViewModel GetActiveViewModel()
+        {
+            var activeView = this.regionManager.Regions[this.MainContentRegionName].ActiveViews.FirstOrDefault();
+
+            if (activeView is View view && view.DataContext is ViewModelBase viewModel)
+            {
+                return viewModel;
+            }
+
+            return null;
         }
 
         public void GoBack()
@@ -252,18 +266,6 @@ namespace Ferretto.VW.App.Services
             this.GetActiveViewModel()?.Disappear();
         }
 
-        private ViewModelBase GetActiveViewModel()
-        {
-            var activeView = this.regionManager.Regions[Utils.Modules.Layout.REGION_MAINCONTENT].ActiveViews.FirstOrDefault();
-
-            if (activeView is View view && view.DataContext is ViewModelBase viewModel)
-            {
-                return viewModel;
-            }
-
-            return null;
-        }
-
         private IBusyViewModel GetBusyViewModel()
         {
             if (Application.Current.MainWindow.Descendants<View>().FirstOrDefault() is View view &&
@@ -282,7 +284,7 @@ namespace Ferretto.VW.App.Services
             this.logger.Debug($"Navigating back to '{historyRecord.ModuleName}.{historyRecord.ViewName}'.");
 
             this.regionManager.RequestNavigate(
-                Utils.Modules.Layout.REGION_MAINCONTENT,
+                this.MainContentRegionName,
                 historyRecord.ViewName,
                 new NavigationParameters());
 

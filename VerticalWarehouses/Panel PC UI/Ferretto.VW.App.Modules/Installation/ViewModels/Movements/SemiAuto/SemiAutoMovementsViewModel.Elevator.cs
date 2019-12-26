@@ -4,10 +4,10 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Prism.Commands;
-using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {

@@ -20,7 +20,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsDataService itemListsDataService;
+        private readonly IItemListsWmsWebService itemListsWmsWebService;
 
         private int? areaId;
 
@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private DelegateCommand listExecuteCommand;
 
-        private IList<ItemListRow> listRows;
+        private IEnumerable<ItemListRow> listRows;
 
         private int machineId;
 
@@ -46,11 +46,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListDetailViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsDataService itemListsDataService)
+            IItemListsWmsWebService itemListsWmsWebService)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
+            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
 
             this.listRows = new List<ItemListRow>();
         }
@@ -66,7 +66,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
-        public IItemListsDataService ItemListsDataService { get; }
+        public IItemListsWmsWebService ItemListsWmsWebService { get; }
 
         public ItemList List => this.list;
 
@@ -101,7 +101,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            if (this.listRows.Count() != 0)
+            if (this.listRows.Any())
             {
                 this.currentItemIndex = isUp ? --this.currentItemIndex : ++this.currentItemIndex;
                 if (this.currentItemIndex < 0 || this.currentItemIndex >= this.listRows.Count())
@@ -124,7 +124,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                     return;
                 }
 
-                await this.itemListsDataService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value);
+                await this.itemListsWmsWebService.ExecuteAsync(this.selectedListRow.Id, this.areaId.Value);
                 await this.LoadListRowsAsync();
             }
             catch
@@ -164,7 +164,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         private bool CanDown()
         {
             return
-              this.currentItemIndex < this.listRows.Count - 1;
+              this.currentItemIndex < this.listRows.Count() - 1;
         }
 
         private bool CanExecuteList()
@@ -194,7 +194,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             try
             {
-                this.listRows = await this.itemListsDataService.GetRowsAsync(this.list.Id);
+                this.listRows = await this.itemListsWmsWebService.GetRowsAsync(this.list.Id);
                 this.RaisePropertyChanged(nameof(this.ListRows));
                 this.SelectedListRow = this.listRows.FirstOrDefault();
             }

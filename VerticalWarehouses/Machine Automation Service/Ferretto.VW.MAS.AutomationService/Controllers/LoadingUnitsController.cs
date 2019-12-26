@@ -25,7 +25,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachinesDataService machinesDataService;
+        private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private readonly IMissionSchedulingProvider missionSchedulingProvider;
 
@@ -40,12 +40,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             ILoadingUnitsDataProvider loadingUnitsDataProvider,
             IMachineProvider machineProvider,
             IMissionSchedulingProvider missionSchedulingProvider,
-            IMachinesDataService machinesDataService)
+            IMachinesWmsWebService machinesWmsWebService)
         {
             this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.machineProvider = machineProvider ?? throw new ArgumentNullException(nameof(machineProvider));
             this.missionSchedulingProvider = missionSchedulingProvider ?? throw new ArgumentNullException(nameof(missionSchedulingProvider));
-            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
             this.moveLoadingUnitProvider = moveLoadingUnitProvider ?? throw new ArgumentNullException(nameof(moveLoadingUnitProvider));
         }
 
@@ -102,7 +102,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);
@@ -137,7 +137,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machineId = this.machineProvider.GetIdentity();
-                    var loadingUnits = await this.machinesDataService.GetLoadingUnitsByIdAsync(machineId);
+                    var loadingUnits = await this.machinesWmsWebService.GetLoadingUnitsByIdAsync(machineId);
                     foreach (var stat in statistics)
                     {
                         var loadingUnit = loadingUnits.SingleOrDefault(l => l.Code == stat.Code);

@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly IMissionOperationsDataService missionOperationsDataService;
+        private readonly IMissionOperationsWmsWebService missionOperationsWmsWebService;
 
         private readonly IMissionsDataProvider missionsDataProvider;
 
@@ -31,12 +31,12 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionOperationsProvider(
             IEventAggregator eventAggregator,
-            IMissionOperationsDataService missionOperationsDataService,
+            IMissionOperationsWmsWebService missionOperationsWmsWebService,
             IMissionsDataProvider missionsDataProvider,
             IConfiguration configuration)
         {
             this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
-            this.missionOperationsDataService = missionOperationsDataService ?? throw new ArgumentNullException(nameof(missionOperationsDataService));
+            this.missionOperationsWmsWebService = missionOperationsWmsWebService ?? throw new ArgumentNullException(nameof(missionOperationsWmsWebService));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
@@ -54,9 +54,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.AbortAsync(wmsId);
+                await this.missionOperationsWmsWebService.AbortAsync(wmsId);
             }
-            catch (SwaggerException ex)
+            catch (WmsWebApiException ex)
             {
                 this.NegativeResult(ex);
             }
@@ -77,7 +77,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.CompleteItemAsync(wmsId, quantity, printerName);
+                await this.missionOperationsWmsWebService.CompleteItemAsync(wmsId, quantity, printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
@@ -96,7 +96,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     .GetEvent<NotificationEvent>()
                     .Publish(notificationMessage);
             }
-            catch (SwaggerException ex)
+            catch (WmsWebApiException ex)
             {
                 this.NegativeResult(ex);
             }
@@ -104,7 +104,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public async Task<MissionOperation> GetByIdAsync(int wmsId)
         {
-            return await this.missionOperationsDataService.GetByIdAsync(wmsId);
+            return await this.missionOperationsWmsWebService.GetByIdAsync(wmsId);
         }
 
         public int GetCountByBay(BayNumber bayNumber)
@@ -130,7 +130,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
             try
             {
-                await this.missionOperationsDataService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName);
+                await this.missionOperationsWmsWebService.PartiallyCompleteAndRescheduleItemAsync(wmsId, quantity, printerName);
 
                 var messageData = new MissionOperationCompletedMessageData
                 {
@@ -149,16 +149,16 @@ namespace Ferretto.VW.MAS.MissionManager
                     .GetEvent<NotificationEvent>()
                     .Publish(notificationMessage);
             }
-            catch (SwaggerException ex)
+            catch (WmsWebApiException ex)
             {
                 this.NegativeResult(ex);
             }
         }
 
-        private void NegativeResult(SwaggerException exception)
+        private void NegativeResult(WmsWebApiException exception)
         {
             var problemDetails = new ProblemDetails();
-            if (exception is SwaggerException<ProblemDetails> problemDetailsException)
+            if (exception is WmsWebApiException<ProblemDetails> problemDetailsException)
             {
                 problemDetails = problemDetailsException.Result;
             }

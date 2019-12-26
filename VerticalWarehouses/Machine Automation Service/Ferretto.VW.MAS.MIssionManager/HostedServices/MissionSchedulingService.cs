@@ -26,11 +26,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IConfiguration configuration;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService;
-
-        private readonly IMissionOperationsProvider missionOperationsProvider;
-
-        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
+        private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService;
 
         private bool dataLayerIsReady;
 
@@ -40,18 +36,14 @@ namespace Ferretto.VW.MAS.MissionManager
 
         public MissionSchedulingService(
             IConfiguration configuration,
-            WMS.Data.WebAPI.Contracts.IMachinesDataService machinesDataService,
-            IMissionOperationsProvider missionOperationsProvider,
-            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService,
+            WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsWmsWebService,
             IEventAggregator eventAggregator,
             ILogger<MissionSchedulingService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            this.missionsDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
-            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
-            this.missionOperationsProvider = missionOperationsProvider ?? throw new ArgumentNullException(nameof(missionOperationsProvider));
+            this.missionsWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
         }
 
         #endregion
@@ -107,7 +99,7 @@ namespace Ferretto.VW.MAS.MissionManager
             }
 
             var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var wmsMission = await this.missionsDataService.GetByIdAsync(mission.WmsId.Value);
+            var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
             var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
             if (newOperations.Any())
             {
@@ -136,13 +128,13 @@ namespace Ferretto.VW.MAS.MissionManager
                     }
                 }
                 /******************** MOVE THIS PIECE OF CODE AFTER THE END OF THE MACHINE MISSION*/
-               // there are more operations for the same wms mission
-               var newOperation = newOperations.OrderBy(o => o.Priority).First();
-               this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
+                // there are more operations for the same wms mission
+                var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
 
-               baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
-               this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
-               /******************************/
+                baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
+                this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
+                /******************************/
             }
             else
             {

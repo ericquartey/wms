@@ -30,10 +30,14 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Connect(IBarcodeConfigurationOptions options)
         {
+            if (this.serialPort.IsOpen)
+            {
+                System.Diagnostics.Debug.WriteLine("Serial port is already open.");
+                return;
+            }
+
             if (options is ConfigurationOptions serialOptions)
             {
-                this.Disconnect();
-
                 this.serialPort.PortName = serialOptions.PortName;
                 this.serialPort.BaudRate = serialOptions.BaudRate;
                 this.serialPort.Parity = serialOptions.Parity;
@@ -51,19 +55,21 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Disconnect()
         {
-            if (this.serialPort.IsOpen)
-            {
-                this.serialPort.Close();
-            }
-
             this.readThread?.Abort();
             this.readThread = null;
+
+            if (this.serialPort.IsOpen)
+            {
+                System.Diagnostics.Debug.WriteLine("Closing serial port.");
+                this.serialPort.Close();
+            }
         }
 
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void SendCommand(string command)
@@ -117,6 +123,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
             catch (ThreadAbortException)
             {
+                System.Diagnostics.Debug.WriteLine("Serial port reader thread stopped.");
                 return;
             }
         }

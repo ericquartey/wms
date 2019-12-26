@@ -158,6 +158,11 @@ namespace Ferretto.VW.MAS.DataLayer.Providers
 
         public bool TryCreateMachineMission(FsmType fsmType, CommandMessage command, out Guid fsmId)
         {
+            if (command is null)
+            {
+                throw new ArgumentNullException(nameof(command));
+            }
+
             fsmId = Guid.Empty;
 
             if (this.CanCreateStateMachine(fsmType, command))

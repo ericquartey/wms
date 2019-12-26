@@ -21,7 +21,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly IMachineProvider machineProvider;
 
-        private readonly IMachinesDataService machinesDataService;
+        private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private readonly IServicingProvider servicingProvider;
 
@@ -34,13 +34,13 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             IServicingProvider servicingProvider,
             IMachineProvider machineProvider,
             IConfiguration configuration,
-            IMachinesDataService machinesDataService)
+            IMachinesWmsWebService machinesWmsWebService)
         {
             this.loadingUnitStatisticsProvider = loadingUnitStatisticsProvider ?? throw new System.ArgumentNullException(nameof(loadingUnitStatisticsProvider));
             this.servicingProvider = servicingProvider ?? throw new System.ArgumentNullException(nameof(servicingProvider));
             this.machineProvider = machineProvider ?? throw new System.ArgumentNullException(nameof(machineProvider));
             this.configuration = configuration ?? throw new System.ArgumentNullException(nameof(configuration));
-            this.machinesDataService = machinesDataService ?? throw new System.ArgumentNullException(nameof(machinesDataService));
+            this.machinesWmsWebService = machinesWmsWebService ?? throw new System.ArgumentNullException(nameof(machinesWmsWebService));
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             int? areaId = null;
             if (this.configuration.IsWmsEnabled())
             {
-                var area = await this.machinesDataService.GetAreaByIdAsync(machine.Id);
+                var area = await this.machinesWmsWebService.GetAreaByIdAsync(machine.Id);
                 areaId = area.Id;
             }
 
@@ -90,7 +90,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
                 try
                 {
                     var machine = this.machineProvider.Get();
-                    var wmsMachine = await this.machinesDataService.GetByIdAsync(machine.Id);
+                    var wmsMachine = await this.machinesWmsWebService.GetByIdAsync(machine.Id);
 
                     statistics.AreaFillPercentage = wmsMachine.AreaFillRate;
                 }

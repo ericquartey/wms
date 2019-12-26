@@ -3,6 +3,7 @@ using System.Windows.Input;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -15,6 +16,8 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
     public class DiagnosticDetailsViewModel : BaseViewModel
     {
         #region Fields
+
+        private readonly IDialogService dialogService;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -40,19 +43,12 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         #region Constructors
 
-        public DiagnosticDetailsViewModel()
-        {
-        }
-
         public DiagnosticDetailsViewModel(
-            IEventAggregator eventAggregator)
+            IEventAggregator eventAggregator,
+            IDialogService dialogService)
         {
-            if (eventAggregator is null)
-            {
-                throw new System.ArgumentNullException(nameof(eventAggregator));
-            }
-
-            this.eventAggregator = eventAggregator;
+            this.eventAggregator = eventAggregator ?? throw new System.ArgumentNullException(nameof(eventAggregator));
+            this.dialogService = dialogService ?? throw new System.ArgumentNullException(nameof(dialogService));
             this.NavigationViewModel = null;
         }
 
@@ -119,8 +115,7 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
 
         private void ShowDevices()
         {
-            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-            dialogService.Show(
+            this.dialogService.Show(
                 nameof(Utils.Modules.Installation),
                 Utils.Modules.Installation.Devices.DEVICES);
         }
@@ -130,15 +125,15 @@ namespace Ferretto.VW.App.Installation.ViewsAndViewModels.SingleViews
             switch (messageActor)
             {
                 case MessageActor.DeviceManager:
-                    this.CurrentMachineStatusFSM = messageType.ToString();
+                    this.CurrentMachineStatusFSM = messageType;
                     break;
 
                 case MessageActor.InverterDriver:
-                    this.CurrentMachineStatusInverter = messageType.ToString();
+                    this.CurrentMachineStatusInverter = messageType;
                     break;
 
                 case MessageActor.IoDriver:
-                    this.CurrentMachineStatusIODriver = messageType.ToString();
+                    this.CurrentMachineStatusIODriver = messageType;
                     break;
 
                 default:

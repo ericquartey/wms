@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
-using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
-using Prism.Regions;
+using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -21,6 +19,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IBayManager bayManager;
 
         private readonly CarouselManualMovementsViewModel carouselManualMovementsViewModel;
+
+        private readonly IDialogService dialogService;
 
         private readonly ElevatorManualMovementsViewModel elevatorManualMovementsViewModel;
 
@@ -63,6 +63,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineBaysWebService machineBayWebService,
             IMachineSensorsWebService machineSensorsWebService,
             IHealthProbeService healthProbeService,
+            IDialogService dialogService,
             IBayManager bayManager)
             : base(PresentationMode.Installer)
         {
@@ -70,6 +71,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.machineCarouselWebService = machineCarouselWebService ?? throw new System.ArgumentNullException(nameof(machineCarouselWebService));
             this.machineElevatorWebService = machineElevatorWebService ?? throw new System.ArgumentNullException(nameof(machineElevatorWebService));
             this.machineBayWebService = machineBayWebService ?? throw new System.ArgumentNullException(nameof(machineBayWebService));
+            this.dialogService = dialogService ?? throw new System.ArgumentNullException(nameof(dialogService));
             this.bayManager = bayManager ?? throw new System.ArgumentNullException(nameof(bayManager));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
@@ -159,13 +161,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public void UnsafeReleaseAsync()
         {
-            var dialogService = ServiceLocator.Current.GetInstance<Controls.Interfaces.IDialogService>();
-            var messageBoxResult = dialogService.ShowMessage(
+            var messageBoxResult = this.dialogService.ShowMessage(
                 InstallationApp.ConfirmationOperation,
                 "Movimenti manuali",
-                Controls.Interfaces.DialogType.Question,
-                Controls.Interfaces.DialogButtons.YesNo);
-            if (messageBoxResult == Controls.Interfaces.DialogResult.Yes)
+                DialogType.Question,
+                DialogButtons.YesNo);
+
+            if (messageBoxResult is DialogResult.Yes)
             {
                 this.UnsafeRelease = !this.UnsafeRelease;
             }

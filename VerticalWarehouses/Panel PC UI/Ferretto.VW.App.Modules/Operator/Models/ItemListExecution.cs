@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Modules.Operator.Models
 
             if (itemList.Machines.Any(m => m.Id == machineId))
             {
-                this.ExecutionMode = (itemList.Machines.Count == 1) ? ListExecutionMode.AllRows : ListExecutionMode.SomeRows;
+                this.ExecutionMode = (itemList.Machines.Count() == 1) ? ListExecutionMode.AllRows : ListExecutionMode.SomeRows;
             }
 
             if (itemList.Machines.Any())

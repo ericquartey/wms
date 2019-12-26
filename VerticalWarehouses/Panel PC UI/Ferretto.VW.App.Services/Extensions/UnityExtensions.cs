@@ -11,7 +11,7 @@ namespace Ferretto.VW.App.Services
     {
         #region Methods
 
-        public static IContainerRegistry RegisterUiServices(
+        public static IContainerRegistry RegisterAppServices(
             this IContainerRegistry containerRegistry,
             System.Uri serviceUrl,
             string serviceLiveHealthPath,
