@@ -262,7 +262,10 @@ namespace Ferretto.VW.App.Services
 
         public async Task StopMovingByAllAsync()
         {
-            //this.machineLoadingUnitsWebService?.StopAsync();
+            if (this.machineStatus.CurrentMissionId != null)
+            {
+                this.machineLoadingUnitsWebService?.StopAsync(this.machineStatus.CurrentMissionId, this.BayNumber);
+            }
             this.machineElevatorWebService?.StopAsync();
             this.machineCarouselWebService?.StopAsync();
             this.shuttersWebService?.StopAsync();

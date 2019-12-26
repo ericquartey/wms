@@ -352,6 +352,8 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
         }
 

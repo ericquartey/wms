@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private SubscriptionToken elevatorPositionChangedToken;
 
-        private bool isExecutingProcedure;
-
         private double lowerBound;
 
         private string noteString;
@@ -80,18 +78,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.currentVerticalPosition;
             private set => this.SetProperty(ref this.currentVerticalPosition, value);
-        }
-
-        public bool IsExecutingProcedure
-        {
-            get => this.isExecutingProcedure;
-            set
-            {
-                if (this.SetProperty(ref this.isExecutingProcedure, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
         }
 
         public override bool IsWaitingForResponse
@@ -159,25 +145,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Methods
 
-        public override void Disappear()
-        {
-            base.Disappear();
-
-            /*
-             * Avoid unsubscribing in case of navigation to error page.
-             * We may need to review this behaviour.
-             *
-            this.receivedSwitchAxisUpdateToken?.Dispose();
-            this.receivedSwitchAxisUpdateToken = null;
-
-            this.receivedCalibrateAxisUpdateToken?.Dispose();
-            this.receivedCalibrateAxisUpdateToken = null;
-
-            this.receiveHomingUpdateToken?.Dispose();
-            this.receiveHomingUpdateToken = null;
-            */
-        }
-
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -209,17 +176,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
-        {
-            await base.OnMachinePowerChangedAsync(e);
-
-            if (e.MachinePowerState != MachinePowerState.Powered)
-            {
-                this.IsExecutingProcedure = false;
-                this.IsWaitingForResponse = false;
-            }
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -231,7 +187,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteStartCommand()
         {
             return
-                !this.isExecutingProcedure
+                !this.MachineService.MachineStatus.IsMoving
+                &&
+                !this.MachineService.MachineStatus.IsMovingLoadingUnit
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -239,7 +197,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanExecuteStopCommand()
         {
             return
-                this.isExecutingProcedure
+                this.MachineService.MachineStatus.IsMoving
                 &&
                 !this.IsWaitingForResponse;
         }
@@ -298,8 +256,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             else if (message.Status == MessageStatus.OperationError)
             {
                 this.ShowNotification(message.Description);
-
-                this.IsExecutingProcedure = false;
             }
         }
 
@@ -316,8 +272,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 case MessageStatus.OperationStart:
                     this.ShowNotification(VW.App.Resources.InstallationApp.HorizontalHomingStarted);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = true;
                     break;
 
                 case MessageStatus.OperationEnd:
@@ -325,8 +279,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         VW.App.Resources.InstallationApp.HorizontalHomingCompleted,
                         Services.Models.NotificationSeverity.Success);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = false;
                     break;
 
                 case MessageStatus.OperationError:
@@ -334,8 +286,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         VW.App.Resources.InstallationApp.HorizontalHomingError,
                         Services.Models.NotificationSeverity.Error);
 
-                    this.IsWaitingForResponse = false;
-                    this.IsExecutingProcedure = false;
                     break;
             }
         }
@@ -347,13 +297,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 await this.verticalOriginProcedureWebService.StartAsync();
-
-                this.IsExecutingProcedure = true;
             }
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
             }
             finally
             {
@@ -367,7 +314,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                await this.verticalOriginProcedureWebService.StopAsync();
+                await this.MachineService.StopMovingByAllAsync();
 
                 this.ShowNotification(
                     VW.App.Resources.InstallationApp.SetOriginVerticalAxisNotCompleted,
@@ -376,12 +323,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.ShowNotification(ex);
-                this.IsExecutingProcedure = false;
             }
             finally
             {
-                this.IsWaitingForResponse = false; // TODO missing notification from service, to confirm abort of operation
-                this.IsExecutingProcedure = false;
+                this.IsWaitingForResponse = false;
             }
         }
 

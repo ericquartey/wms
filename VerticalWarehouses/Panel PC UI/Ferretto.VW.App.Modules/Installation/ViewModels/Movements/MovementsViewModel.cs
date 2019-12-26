@@ -196,7 +196,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMoving
         {
-            get => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
+            get => this.machineService?.MachineStatus?.IsMoving ?? true;
         }
 
         public IMachineService MachineService => this.machineService;
@@ -235,6 +235,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             base.Disappear();
 
+            this.loadunitsToken?.Dispose();
+            this.loadunitsToken = null;
+
+            this.cellsToken?.Dispose();
+            this.cellsToken = null;
+
             this.sensorsToken?.Dispose();
             this.sensorsToken = null;
 
@@ -249,6 +255,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.elevatorPositionChangedToken?.Dispose();
             this.elevatorPositionChangedToken = null;
+
+            this.StopMoving();
         }
 
         public override async Task OnAppearedAsync()
@@ -268,6 +276,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 await this.sensorsService.RefreshAsync(true);
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
+
+                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
                 this.SelectBayPositionUp();
                 this.InputLoadingUnitIdPropertyChanged();
@@ -336,7 +346,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            if ((e.MachineStatus?.IsMoving ?? false) && this.IsExecutingProcedure)
+            if ((e.MachineStatus?.IsMovingLoadingUnit ?? false) && this.IsExecutingProcedure)
             {
                 this.IsExecutingProcedure = false;
             }

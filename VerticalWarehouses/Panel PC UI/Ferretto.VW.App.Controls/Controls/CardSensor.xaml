@@ -778,6 +778,10 @@
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
                                                  Value="{x:Null}">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                     </DataTrigger>
@@ -798,6 +802,10 @@
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge1}"
                                                  Value="{x:Null}">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
@@ -820,6 +828,10 @@
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
                                                  Value="{x:Null}">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
                                     </DataTrigger>
@@ -840,6 +852,10 @@
                             <Style>
                                 <Setter Property="TextBlock.Visibility" Value="Visible" />
                                 <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
+                                                 Value="">
+                                        <Setter Property="TextBlock.Visibility" Value="Collapsed" />
+                                    </DataTrigger>
                                     <DataTrigger Binding="{Binding ElementName=Card, Path=CardBadge2}"
                                                  Value="{x:Null}">
                                         <Setter Property="TextBlock.Visibility" Value="Collapsed" />
