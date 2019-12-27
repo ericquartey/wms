@@ -224,7 +224,8 @@
                                                 KindMaterial="{Binding LightIcon}"
                                                 Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}">
                                 <controls:PpcButton.Style>
-                                    <Style TargetType="{x:Type controls:PpcButton}">
+                                    <Style BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+                                           TargetType="{x:Type controls:PpcButton}">
                                         <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
                                         <Style.Triggers>
                                             <Trigger Property="KindMaterial" Value="LightbulbOnOutline">
