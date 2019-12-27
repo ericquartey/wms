@@ -228,7 +228,7 @@
                                            TargetType="{x:Type controls:PpcButton}">
                                         <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
                                         <Style.Triggers>
-                                            <Trigger Property="KindMaterial" Value="LightbulbOnOutline">
+                                            <Trigger Property="KindMaterial" Value="LightbulbOutline">
                                                 <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
                                             </Trigger>
                                         </Style.Triggers>

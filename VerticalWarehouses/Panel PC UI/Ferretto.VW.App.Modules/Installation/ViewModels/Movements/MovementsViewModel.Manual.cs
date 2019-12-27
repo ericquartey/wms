@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsLightActive = !this.IsLightActive;
-                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
                 await this.machineBaysWebService.LightAsync(this.IsLightActive);
             }
             catch (System.Exception ex)
