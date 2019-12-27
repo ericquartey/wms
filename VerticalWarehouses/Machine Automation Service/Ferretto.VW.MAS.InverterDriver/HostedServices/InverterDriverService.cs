@@ -52,8 +52,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly bool[] forceStatusPublish;
 
-        private readonly BlockingConcurrentQueue<InverterMessage> heartbeatQueue = new BlockingConcurrentQueue<InverterMessage>();
-
         private readonly BlockingConcurrentQueue<InverterMessage> inverterCommandQueue = new BlockingConcurrentQueue<InverterMessage>();
 
         private readonly Task inverterReceiveTask;
@@ -130,8 +128,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             if (disposing)
             {
                 this.inverterCommandQueue?.Dispose();
-
-                this.heartbeatQueue?.Dispose();
 
                 this.sensorStatusUpdateTimer?.Dispose();
 
@@ -375,15 +371,12 @@ namespace Ferretto.VW.MAS.InverterDriver
             //INFO Create WaitHandle array to wait for multiple events
             var commandHandles = new[]
             {
-                this.heartbeatQueue.WaitHandle,
                 this.inverterCommandQueue.WaitHandle
             };
 
-            IAngInverterStatus mainInverter = null;
-
             do
             {
-                this.Logger.LogTrace($"1:Heartbeat Queue Length: {this.heartbeatQueue.Count}, Command queue length: {this.inverterCommandQueue.Count}");
+                this.Logger.LogTrace($"1:Command queue length: {this.inverterCommandQueue.Count}");
 
                 if (Debugger.IsAttached
                     &&
@@ -394,18 +387,10 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                 if (this.socketTransport.IsConnected)
                 {
-                    int handleIndex;
-
-                    if (this.heartbeatQueue.Count == 0 && this.inverterCommandQueue.Count == 0)
+                    if (this.inverterCommandQueue.Count == 0)
                     {
-                        handleIndex = WaitHandle.WaitAny(commandHandles);
+                        WaitHandle.WaitAny(commandHandles);
                     }
-                    else
-                    {
-                        handleIndex = this.heartbeatQueue.Count > this.inverterCommandQueue.Count ? 0 : 1;
-                    }
-
-                    this.Logger.LogTrace($"2:handleIndex={handleIndex} {Thread.CurrentThread.ManagedThreadId}");
 
                     try
                     {
@@ -415,24 +400,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             {
                                 this.writeEnableEvent.Reset();
 
-                                var result = false;
-
-                                switch (handleIndex)
-                                {
-                                    case 0:
-                                        mainInverter = mainInverter ?? this.ServiceScopeFactory
-                                            .CreateScope()
-                                            .ServiceProvider
-                                            .GetRequiredService<IInvertersProvider>()
-                                            .GetMainInverter();
-
-                                        result = await this.ProcessHeartbeat(mainInverter);
-                                        break;
-
-                                    case 1:
-                                        result = await this.ProcessInverterCommand();
-                                        break;
-                                }
+                                var result = await this.ProcessInverterCommand();
 
                                 if (!result)
                                 {

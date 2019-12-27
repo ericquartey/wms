@@ -127,11 +127,14 @@ namespace Ferretto.VW.MAS.InverterDriver
                     {
                         if (updateData.UpdateInterval == 0)
                         {
-                            var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWord);
+                            if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.StatusWord && x.SystemIndex == inverterIndex) < 2)
+                            {
+                                var readStatusWordMessage = new InverterMessage(inverterIndex, InverterParameterId.StatusWord);
 
-                            this.Logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
+                                this.Logger.LogTrace($"1:ReadStatusWordMessage={readStatusWordMessage}");
 
-                            this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                                this.inverterCommandQueue.Enqueue(readStatusWordMessage);
+                            }
                         }
                         else
                         {
@@ -534,42 +537,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             currentStateMachine.Start();
 
             this.refreshTargetTable = true;
-        }
-
-        private async Task<bool> ProcessHeartbeat(IAngInverterStatus mainInverter)
-        {
-            if (this.heartbeatQueue.Dequeue(out _))
-            {
-                try
-                {
-                    var newMessage = new InverterMessage(
-                        (byte)InverterIndex.MainInverter,
-                        (short)InverterParameterId.ControlWord,
-                        mainInverter.CommonControlWord.Value);
-
-                    this.Logger.LogTrace($"1:heartbeat inverterMessage={newMessage}");
-
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
-
-                    var heartbeat = newMessage.GetHeartbeatMessage(newMessage.HeartbeatValue);
-                    return await this.socketTransport.WriteAsync(heartbeat, this.CancellationToken) == heartbeat.Length;
-                }
-                catch (InverterDriverException ex)
-                {
-                    this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                }
-                catch (Exception ex)
-                {
-                    this.Logger.LogError(ex, "An exception was thrown.");
-                }
-            }
-            else if (Debugger.IsAttached)
-            {
-                Debugger.Break();
-            }
-
-            return false;
         }
 
         private async Task<bool> ProcessInverterCommand()
@@ -1220,22 +1187,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             }
 
             return returnValue;
-        }
-
-        private void SendHeartBeat(object state)
-        {
-            if (this.socketTransport.IsConnected && state is IAngInverterStatus mainInverter)
-            {
-                mainInverter.CommonControlWord.HeartBeat = !mainInverter.CommonControlWord.HeartBeat;
-                mainInverter.WaitingHeartbeatAck = true;
-
-                var message = new InverterMessage(
-                    (byte)InverterIndex.MainInverter,
-                    (short)InverterParameterId.ControlWord,
-                    mainInverter.CommonControlWord.Value);
-
-                this.heartbeatQueue.Enqueue(message);
-            }
         }
 
         private async Task StartHardwareCommunicationsAsync(IServiceProvider serviceProvider)
