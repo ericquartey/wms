@@ -219,11 +219,21 @@
                             <controls:PpcButton Width="60"
                                                 Margin="5"
                                                 HorizontalAlignment="Center"
-                                                BorderBrush="{DynamicResource FerrettoYellow}"
                                                 Command="{Binding LightCommand}"
                                                 Foreground="{StaticResource FerrettoPureWhite}"
                                                 KindMaterial="{Binding LightIcon}"
-                                                Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}" />
+                                                Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}">
+                                <controls:PpcButton.Style>
+                                    <Style TargetType="{x:Type controls:PpcButton}">
+                                        <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                                        <Style.Triggers>
+                                            <Trigger Property="KindMaterial" Value="LightbulbOnOutline">
+                                                <Setter Property="BorderBrush" Value="{DynamicResource FerrettoYellow}" />
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </controls:PpcButton.Style>
+                            </controls:PpcButton>
 
                         </StackPanel>
                     </Grid>

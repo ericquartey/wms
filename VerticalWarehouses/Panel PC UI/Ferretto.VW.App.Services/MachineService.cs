@@ -564,39 +564,6 @@ namespace Ferretto.VW.App.Services
                             }
                         }
 
-                        if (!this.MachineStatus.IsMoving)
-                        {
-                            var ms = (MachineStatus)this.MachineStatus.Clone();
-
-                            ms.IsError = false;
-                            ms.IsMoving = true;
-
-                            if (message?.Data is PositioningMessageData dataPositioning)
-                            {
-                                ms.IsMovingElevator = true;
-
-                                if (dataPositioning.AxisMovement == Axis.Vertical)
-                                {
-                                    ms.VerticalTargetPosition = dataPositioning.TargetPosition;
-                                }
-                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
-                                {
-                                    ms.HorizontalTargetPosition = dataPositioning.TargetPosition;
-                                }
-                                else if (dataPositioning.AxisMovement == Axis.BayChain)
-                                {
-                                    ms.BayChainTargetPosition = dataPositioning.TargetPosition;
-                                }
-                            }
-
-                            if (message?.Data is ShutterPositioningMessageData)
-                            {
-                                ms.IsMovingShutter = true;
-                            }
-
-                            this.MachineStatus = ms;
-                        }
-
                         if (this.MachineStatus.IsMovingLoadingUnit)
                         {
                             this.Notification = "Movimento in corso...";
