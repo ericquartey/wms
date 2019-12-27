@@ -58,9 +58,13 @@ namespace Ferretto.VW.MAS.AutomationService
                     var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
                     this.baysDataProvider.UpdateHoming(bay.Number, true);
                 }
-                else
+                else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     this.machineProvider.IsHomingExecuted = true;
+                    this.ChangeMachineMode(serviceProvider);
+                }
+                else
+                {
                     this.ChangeMachineMode(serviceProvider);
                 }
             }
