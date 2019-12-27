@@ -196,7 +196,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMoving
         {
-            get => this.machineService?.MachineStatus?.IsMoving ?? true;
+            get => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
         }
 
         public IMachineService MachineService => this.machineService;
