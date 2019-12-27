@@ -28,17 +28,17 @@
         <StackPanel Margin="0,10,50,0"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Top">
-            <TextBlock Margin="0"
+            <TextBlock x:Name="txtTime"
+                       Margin="0"
                        HorizontalAlignment="Center"
                        FontSize="56"
-                       x:Name="txtTime"
                        Foreground="{DynamicResource FerrettoPureWhite}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="10:10" />
-            <TextBlock Margin="0"
+            <TextBlock x:Name="txtDate"
+                       Margin="0"
                        HorizontalAlignment="Center"
                        FontSize="24"
-                       x:Name="txtDate"
                        Foreground="{DynamicResource FerrettoPureWhite}"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="12/12/2019" />
@@ -143,8 +143,6 @@
                                     MenuBrush="{StaticResource FerrettoRed}"
                                     Number="04"
                                     Permission="Installer" />
-
-
 
         </Grid>
 

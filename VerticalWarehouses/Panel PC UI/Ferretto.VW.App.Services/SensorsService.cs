@@ -299,7 +299,10 @@ namespace Ferretto.VW.App.Services
                 {
                     await this.GetBayAsync().ContinueWith((m) =>
                     {
-                        this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                        if (this.IsHealthy)
+                        {
+                            this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                        }
                     });
                 }
                 else
