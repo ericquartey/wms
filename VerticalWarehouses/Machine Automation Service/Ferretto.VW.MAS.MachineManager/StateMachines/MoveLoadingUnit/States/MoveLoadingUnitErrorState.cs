@@ -426,18 +426,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             IState returnValue = this;
             var destination = this.loadingUnitMovementProvider.GetDestinationHeight(this.mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!destination.HasValue || Math.Abs((destination.Value - current)) > 2)
-                && this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                )
+            if ((!destination.HasValue || Math.Abs((destination.Value - current)) > 2))
             {
-                this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+                if (this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                {
+                    this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
-                this.mission.RestoreConditions = true;
-                this.mission.FsmRestoreStateName = null;
-                this.mission.NeedMovingBackward = false;
-                returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
+                    this.mission.RestoreConditions = true;
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.NeedMovingBackward = false;
+                    returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
 
-                return returnValue;
+                    return returnValue;
+                }
+                else
+                {
+                    throw new StateMachineException($"Impossible to restore mission for LoadUnit {this.mission.LoadingUnitId}");
+                }
             }
 
             this.direction = HorizontalMovementDirection.Backwards;
@@ -585,18 +590,23 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             IState returnValue = this;
             var origin = this.loadingUnitMovementProvider.GetSourceHeight(this.mission, out var targetBayPositionId, out var targetCellId);
             var current = this.loadingUnitMovementProvider.GetCurrentVerticalPosition();
-            if ((!origin.HasValue || Math.Abs((origin.Value - current)) > 2)
-                && !this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator)
-                )
+            if ((!origin.HasValue || Math.Abs((origin.Value - current)) > 2))
             {
-                this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
+                if (!this.sensorsProvider.IsLoadingUnitInLocation(LoadingUnitLocation.Elevator))
+                {
+                    this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
-                this.mission.RestoreConditions = true;
-                this.mission.FsmRestoreStateName = null;
-                this.mission.NeedMovingBackward = false;
-                returnValue = this.GetState<IMoveLoadingUnitStartState>();
+                    this.mission.RestoreConditions = true;
+                    this.mission.FsmRestoreStateName = null;
+                    this.mission.NeedMovingBackward = false;
+                    returnValue = this.GetState<IMoveLoadingUnitStartState>();
 
-                return returnValue;
+                    return returnValue;
+                }
+                else
+                {
+                    throw new StateMachineException($"Impossible to restore mission for LoadUnit {this.mission.LoadingUnitId}");
+                }
             }
 
             this.direction = HorizontalMovementDirection.Backwards;
