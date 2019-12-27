@@ -244,13 +244,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     returnValue = this.GetState<IMoveLoadingUnitStartState>();
                     break;
 
-                case nameof(MoveLoadingUnitWaitEjectConfirm):
-                    this.mission.FsmRestoreStateName = null;
-                    this.mission.RestoreConditions = false;
-                    this.mission.NeedMovingBackward = false;
-                    returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
-                    break;
-
                 case nameof(MoveLoadingUnitWaitPickConfirm):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
@@ -330,7 +323,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 }
                 else
                 {
-                    returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
+                    returnValue = this.GetState<IMoveLoadingUnitEndState>();
                 }
             }
             else
