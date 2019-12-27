@@ -258,10 +258,12 @@
                                         Grid.ColumnSpan="4"
                                         Margin="15,0,0,0"
                                         HorizontalAlignment="Left"
-                                        Background="{StaticResource FerrettoMediumGray}"
+                                        Background="{StaticResource PpcBackground}"
                                         BorderBrush="{DynamicResource PpcBorderBrush}"
+                                        BorderThickness="{DynamicResource PpcBorderThickness}"
                                         CornerRadius="10,10,10,10">
-                                    <Grid Margin="4">
+                                    <Grid Margin="4"
+                                          Background="{StaticResource PpcBackground}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition />
@@ -277,14 +279,14 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Peso" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Altezza" />
 
                                         <TextBlock Grid.Row="0"
@@ -311,7 +313,7 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Data="M0,10L15,15 15,5"
-                                      Fill="{StaticResource FerrettoMediumGray}"
+                                      Fill="{StaticResource PpcBorderBrush}"
                                       Stretch="Fill"
                                       Stroke="{x:Null}" />
                             </Grid>
@@ -462,10 +464,12 @@
                                         Grid.ColumnSpan="4"
                                         Margin="15,0,0,0"
                                         HorizontalAlignment="Left"
-                                        Background="{StaticResource FerrettoMediumGray}"
+                                        Background="{StaticResource PpcBackground}"
                                         BorderBrush="{DynamicResource PpcBorderBrush}"
+                                        BorderThickness="{DynamicResource PpcBorderThickness}"
                                         CornerRadius="10,10,10,10">
-                                    <Grid Margin="4">
+                                    <Grid Margin="4"
+                                          Background="{StaticResource PpcBackground}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition />
@@ -481,14 +485,14 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Peso" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Altezza" />
 
                                         <TextBlock Grid.Row="0"
@@ -515,7 +519,7 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Data="M0,10L15,15 15,5"
-                                      Fill="{StaticResource FerrettoMediumGray}"
+                                      Fill="{StaticResource PpcBorderBrush}"
                                       Stretch="Fill"
                                       Stroke="{x:Null}" />
                             </Grid>
@@ -574,10 +578,12 @@
                                         Grid.ColumnSpan="4"
                                         Margin="15,0,0,0"
                                         HorizontalAlignment="Left"
-                                        Background="{StaticResource FerrettoMediumGray}"
+                                        Background="{StaticResource PpcBackground}"
                                         BorderBrush="{DynamicResource PpcBorderBrush}"
+                                        BorderThickness="{DynamicResource PpcBorderThickness}"
                                         CornerRadius="10,10,10,10">
-                                    <Grid Margin="4">
+                                    <Grid Margin="4"
+                                          Background="{StaticResource PpcBackground}">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition />
                                             <ColumnDefinition />
@@ -593,14 +599,14 @@
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Peso" />
                                         <TextBlock Grid.Row="1"
                                                    Grid.Column="0"
                                                    Margin="4"
                                                    HorizontalAlignment="Left"
                                                    FontSize="16"
-                                                   Foreground="{DynamicResource FerrettoPureWhite}"
+                                                   Foreground="{DynamicResource FerrettoLightGray}"
                                                    Text="Altezza" />
 
                                         <TextBlock Grid.Row="0"
@@ -627,7 +633,7 @@
                                       HorizontalAlignment="Left"
                                       VerticalAlignment="Top"
                                       Data="M0,10L15,15 15,5"
-                                      Fill="{StaticResource FerrettoMediumGray}"
+                                      Fill="{StaticResource PpcBorderBrush}"
                                       Stretch="Fill"
                                       Stroke="{x:Null}" />
                             </Grid>
@@ -981,10 +987,12 @@
                                     Grid.ColumnSpan="4"
                                     Margin="15,0,0,0"
                                     HorizontalAlignment="Left"
-                                    Background="{StaticResource FerrettoMediumGray}"
+                                    Background="{StaticResource PpcBackground}"
                                     BorderBrush="{DynamicResource PpcBorderBrush}"
+                                    BorderThickness="{DynamicResource PpcBorderThickness}"
                                     CornerRadius="10,10,10,10">
-                                <Grid Margin="4">
+                                <Grid Margin="4"
+                                      Background="{StaticResource PpcBackground}">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition />
                                         <ColumnDefinition />
@@ -1000,14 +1008,14 @@
                                                Margin="4"
                                                HorizontalAlignment="Left"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
                                                Text="Peso" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                Margin="4"
                                                HorizontalAlignment="Left"
                                                FontSize="16"
-                                               Foreground="{DynamicResource FerrettoPureWhite}"
+                                               Foreground="{DynamicResource FerrettoLightGray}"
                                                Text="Altezza" />
 
                                     <TextBlock Grid.Row="0"
@@ -1034,7 +1042,7 @@
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Top"
                                   Data="M0,10L15,15 15,5"
-                                  Fill="{StaticResource FerrettoMediumGray}"
+                                  Fill="{StaticResource PpcBorderBrush}"
                                   Stretch="Fill"
                                   Stroke="{x:Null}" />
                         </Grid>
