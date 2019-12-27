@@ -51,8 +51,7 @@ namespace Ferretto.VW.MAS.AutomationService
         private void HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             if (receivedMessage.Status == MessageStatus.OperationEnd
-                && receivedMessage.Data is IHomingMessageData data
-                )
+                && receivedMessage.Data is IHomingMessageData data)
             {
                 if (data.AxisToCalibrate == Axis.BayChain)
                 {
