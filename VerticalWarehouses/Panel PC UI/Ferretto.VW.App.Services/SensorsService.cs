@@ -297,9 +297,15 @@ namespace Ferretto.VW.App.Services
                 this.sensors.Update(message.Data.SensorsStates);
                 if (this.Bay == null)
                 {
-                    await this.GetBayAsync();
+                    await this.GetBayAsync().ContinueWith((m) =>
+                    {
+                        this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                    });
                 }
-                this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                else
+                {
+                    this.shutterSensors.Update(message.Data.SensorsStates, (int)this.Bay.Number);
+                }
             }
 
             this.RaisePropertyChanged();
