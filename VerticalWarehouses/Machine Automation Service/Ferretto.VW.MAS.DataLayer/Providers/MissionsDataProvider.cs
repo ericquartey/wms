@@ -228,6 +228,10 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
+                if (axis == Axis.HorizontalAndVertical)
+                {
+                    axis = Axis.Horizontal;
+                }
                 var missions = this.dataContext.Missions
                     .AsNoTracking()
                     .Where(m => m.NeedHomingAxis == axis
