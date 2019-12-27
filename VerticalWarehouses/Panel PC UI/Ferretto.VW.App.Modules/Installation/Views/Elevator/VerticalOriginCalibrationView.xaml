@@ -14,29 +14,30 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
+        <StackPanel Grid.ColumnSpan="3"
                     Orientation="Horizontal">
-            <TextBlock Margin="0,0,10,0"
+            <TextBlock Margin="0,0,10,15"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="4.2.1" />
-            <TextBlock VerticalAlignment="Top"
+            <TextBlock Margin="0,0,0,15"
+                       VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         </StackPanel>
 
         <Border Grid.Row="1"
-                Grid.ColumnSpan="2"
-                BorderBrush="{DynamicResource VWAPP_BACKGROUND}"
-                BorderThickness="0,15">
+                Grid.ColumnSpan="3"
+                Margin="0,0,0,15">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
                 <Grid>
@@ -205,28 +206,48 @@
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="0"
                                          Width="250"
-                                         Margin="15"
+                                         Height="90"
+                                         Margin="0,0,0,15"
                                          HorizontalAlignment="Right" />
-        <controls:CardSensorAxisHorizontal Grid.Row="2"
-                                           Grid.Column="1"
+        <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                           Grid.Column="0"
                                            Width="250"
-                                           Margin="15"
+                                           Height="90"
+                                           Margin="0,0,0,15"
                                            HorizontalAlignment="Left" />
+        <Grid Grid.Row="2"
+              Grid.RowSpan="3"
+              Grid.Column="1"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
 
-            <controls:PpcButton Grid.Row="3"
-                                Margin="15,0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+            <controls:PpcButton Grid.Row="0"
+                                Width="300"
+                                Height="100"
+                                Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
                                 Content="{x:Static res:InstallationApp.Start}"
+                                FontSize="24"
+                                Kind="ShapeOctagon"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
-        <controls:PpcButton Grid.Row="4"
-                                Grid.Column="1"
-                                Margin="0"
-                                HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
+            <controls:PpcButton Grid.Row="1"
+                                Width="300"
+                                Height="100"
+                                Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Kind="Stop"
                                 Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
+                                Content="{x:Static res:InstallationApp.Stop}"
+                                FontSize="24" />
+        </Grid>
     </Grid>
 </ctrls:View>

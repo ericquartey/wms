@@ -175,7 +175,7 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     break;
 
                 case PresentationMode.Menu:
-                    this.Show(PresentationTypes.Back, true);
+                    this.Show(PresentationTypes.Back, false);
                     break;
 
                 case PresentationMode.Installer:

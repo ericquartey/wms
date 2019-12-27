@@ -120,7 +120,17 @@
                                            Margin="-45,13,0,0"
                                            FontSize="24"
                                            Foreground="White"
-                                           Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}" />
+                                           Text="{Binding Abbrevation, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Style.Triggers>
+                                                <Trigger Property="Text" Value="">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
 
                                 <TextBlock x:Name="PpcButton_Text"
                                            Grid.Column="1"
