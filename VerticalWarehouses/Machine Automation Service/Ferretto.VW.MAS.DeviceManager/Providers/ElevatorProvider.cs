@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, loadUnitId);
+            IHomingMessageData homingData = new HomingMessageData(calibrateAxis, calibration, loadUnitId);
 
             this.PublishCommand(
                 homingData,
