@@ -523,7 +523,7 @@
                                         Background="Transparent">
                                     <Grid>
                                         <Grid Grid.Column="0"
-                                              Margin="5"
+                                              Margin="10,10,5,5"
                                               VerticalAlignment="Top"
                                               Visibility="Visible">
                                             <Ellipse Width="38"
@@ -547,7 +547,7 @@
                                     </Grid>
                                 </Border>
 
-                                <TextBlock Margin="5"
+                                <TextBlock Margin="10,10,10,5"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{TemplateBinding FontSize}"
@@ -573,10 +573,9 @@
                                     </TextBlock.Style>
                                 </TextBlock>
 
-
                                 <TextBlock Grid.Row="1"
                                            Grid.ColumnSpan="2"
-                                           Margin="5,0"
+                                           Margin="10,10,10,5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Center"
                                            FontFamily="{TemplateBinding FontFamily}"

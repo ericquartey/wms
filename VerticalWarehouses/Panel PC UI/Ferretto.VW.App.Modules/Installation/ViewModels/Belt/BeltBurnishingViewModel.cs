@@ -33,6 +33,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private double? currentPosition;
 
+        private double? cyclesPercent;
+
         private SubscriptionToken elevatorPositionChangedToken;
 
         private int inputDelay;
@@ -98,6 +100,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.currentPosition;
             private set => this.SetProperty(ref this.currentPosition, value);
+        }
+
+        public double? CyclesPercent
+        {
+            get => this.cyclesPercent;
+            private set => this.SetProperty(ref this.cyclesPercent, value);
         }
 
         public override EnableMask EnableMask => EnableMask.MachineManualMode;
@@ -435,6 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
+                this.CyclesPercent = (message.Data.ExecutedCycles / message.Data.RequiredCycles) * 100.0;
             }
 
             if (message.Status == MessageStatus.OperationEnd &&

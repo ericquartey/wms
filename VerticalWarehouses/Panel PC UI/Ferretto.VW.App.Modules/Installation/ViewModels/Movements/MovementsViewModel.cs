@@ -277,7 +277,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
-                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
                 this.SelectBayPositionUp();
                 this.InputLoadingUnitIdPropertyChanged();
