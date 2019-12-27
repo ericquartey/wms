@@ -335,6 +335,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 await this.GetParameterValuesAsync();
 
+                this.IsExecutingProcedure = this.MachineService.MachineStatus.IsMoving;
+
                 this.CurrentPosition = this.machineElevatorService.Position.Vertical;
             }
             catch (Exception ex)
@@ -390,6 +392,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStartTest()
         {
             return
+                !this.MachineService.MachineStatus.IsMoving
+                &&
+                !this.MachineService.MachineStatus.IsMovingLoadingUnit
+                &&
                 !this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse
@@ -400,6 +406,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool CanStopTest()
         {
             return
+                this.MachineService.MachineStatus.IsMoving
+                &&
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
@@ -436,10 +444,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.ShowNotification(VW.App.Resources.InstallationApp.CompletedTest, Services.Models.NotificationSeverity.Success);
                 this.isCompleted = true;
                 this.IsExecutingProcedure = false;
-            }
-            else if (!message.IsNotRunning() && !this.isCompleted && this.IsEnabled)
-            {
-                this.ShowNotification(VW.App.Resources.InstallationApp.TestProgress, Services.Models.NotificationSeverity.Info);
             }
         }
 

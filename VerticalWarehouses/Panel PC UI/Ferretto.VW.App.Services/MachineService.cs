@@ -564,6 +564,39 @@ namespace Ferretto.VW.App.Services
                             }
                         }
 
+                        if (!this.MachineStatus.IsMoving)
+                        {
+                            var ms = (MachineStatus)this.MachineStatus.Clone();
+
+                            ms.IsError = false;
+                            ms.IsMoving = true;
+
+                            if (message?.Data is PositioningMessageData dataPositioning)
+                            {
+                                ms.IsMovingElevator = true;
+
+                                if (dataPositioning.AxisMovement == Axis.Vertical)
+                                {
+                                    ms.VerticalTargetPosition = dataPositioning.TargetPosition;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.Horizontal)
+                                {
+                                    ms.HorizontalTargetPosition = dataPositioning.TargetPosition;
+                                }
+                                else if (dataPositioning.AxisMovement == Axis.BayChain)
+                                {
+                                    ms.BayChainTargetPosition = dataPositioning.TargetPosition;
+                                }
+                            }
+
+                            if (message?.Data is ShutterPositioningMessageData)
+                            {
+                                ms.IsMovingShutter = true;
+                            }
+
+                            this.MachineStatus = ms;
+                        }
+
                         if (this.MachineStatus.IsMovingLoadingUnit)
                         {
                             this.Notification = "Movimento in corso...";
@@ -963,11 +996,11 @@ namespace Ferretto.VW.App.Services
         private void WriteInfo(Axis? axisMovement)
         {
             var view = this.GetWarningAreaAttribute();
-            if (view == WarningsArea.None &&
-                view == WarningsArea.Login &&
-                view == WarningsArea.Menu &&
-                view == WarningsArea.Maintenance &&
-                view == WarningsArea.Information &&
+            if (view == WarningsArea.None ||
+                view == WarningsArea.Login ||
+                view == WarningsArea.Menu ||
+                view == WarningsArea.Maintenance ||
+                view == WarningsArea.Information ||
                 view == WarningsArea.Picking)
             {
                 return;
@@ -987,6 +1020,10 @@ namespace Ferretto.VW.App.Services
                 {
                     this.Notification = "Movimento catena baia in corso...";
                 }
+            }
+            else if (this.machineModeService.MachineMode == MachineMode.Test)
+            {
+                this.Notification = "Test in corso...";
             }
             else
             {

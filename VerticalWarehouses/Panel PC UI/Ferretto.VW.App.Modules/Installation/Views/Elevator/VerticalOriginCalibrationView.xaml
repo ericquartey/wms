@@ -15,6 +15,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -25,19 +26,29 @@
 
         <StackPanel Grid.ColumnSpan="3"
                     Orientation="Horizontal">
-            <TextBlock Margin="0,0,10,15"
+            <TextBlock Margin="0,0,10,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="4.2.1" />
-            <TextBlock Margin="0,0,0,15"
+            <TextBlock Margin="0,0,0,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         </StackPanel>
 
-        <Border Grid.Row="1"
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   Height="Auto"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpVACDescription}"
+                   TextWrapping="Wrap" />
+
+        <Border Grid.Row="2"
                 Grid.ColumnSpan="3"
-                Margin="0,0,0,15">
+                Margin="0,15,0,15"
+                Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
                 <Grid>
@@ -55,8 +66,8 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.ColumnSpan="3">
 
+                    <Grid Grid.ColumnSpan="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -110,45 +121,6 @@
                                    VerticalAlignment="Center"
                                    FontSize="{DynamicResource FontSize_Small}"
                                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                   Text="{x:Static res:InstallationApp.Offset}" />
-
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding Offset}"
-                                   TextWrapping="Wrap" />
-
-                        <Border Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="0,25"
-                                VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoDarkGray}"
-                                BorderThickness="1" />
-
-                    </Grid>
-
-                    <Grid Grid.Row="2"
-                          Grid.Column="6"
-                          Grid.ColumnSpan="3">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
                                    Text="{x:Static res:InstallationApp.UpperBound}"
                                    TextAlignment="Left" />
 
@@ -170,8 +142,45 @@
 
                     </Grid>
 
-                    <Grid Grid.Row="2"
-                          Grid.Column="9"
+                    <Grid Grid.Column="6"
+                          Grid.ColumnSpan="3">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.Offset}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding Offset}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Column="9"
                           Grid.ColumnSpan="3"
                           Margin="0,0,15,0">
 
@@ -203,19 +212,19 @@
             </Border>
         </Border>
 
-        <controls:CardSensorAxisVertical Grid.Row="2"
+        <controls:CardSensorAxisVertical Grid.Row="3"
                                          Grid.Column="0"
                                          Width="250"
                                          Height="90"
                                          Margin="0,0,0,15"
                                          HorizontalAlignment="Right" />
-        <controls:CardSensorAxisHorizontal Grid.Row="3"
+        <controls:CardSensorAxisHorizontal Grid.Row="4"
                                            Grid.Column="0"
                                            Width="250"
                                            Height="90"
                                            Margin="0,0,0,15"
                                            HorizontalAlignment="Left" />
-        <Grid Grid.Row="2"
+        <Grid Grid.Row="3"
               Grid.RowSpan="3"
               Grid.Column="1"
               HorizontalAlignment="Center"
@@ -235,7 +244,6 @@
                                 Command="{Binding StartCommand}"
                                 Content="{x:Static res:InstallationApp.Start}"
                                 FontSize="24"
-                                Kind="ShapeOctagon"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
             <controls:PpcButton Grid.Row="1"
@@ -244,7 +252,6 @@
                                 Margin="15"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Kind="Stop"
                                 Command="{Binding StopCommand}"
                                 Content="{x:Static res:InstallationApp.Stop}"
                                 FontSize="24" />

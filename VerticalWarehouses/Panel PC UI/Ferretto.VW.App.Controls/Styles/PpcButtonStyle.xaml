@@ -124,6 +124,9 @@
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
+                                                <Trigger Property="Text" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Collapsed" />
+                                                </Trigger>
                                                 <Trigger Property="Text" Value="">
                                                     <Setter Property="Visibility" Value="Collapsed" />
                                                 </Trigger>

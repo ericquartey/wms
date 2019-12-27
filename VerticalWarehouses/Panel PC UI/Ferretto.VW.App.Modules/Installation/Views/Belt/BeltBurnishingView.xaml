@@ -10,92 +10,253 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="130,30,0,0">
+    <Grid Margin="15,0">
         <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition Width="50" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="2"
-                   VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.BeltBurnishing}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.UpperBound}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.LowerBound}" />
-
-        <controls:PpcLabeledText Grid.Row="3"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
-
-        <controls:PpcLabeledText Grid.Row="1"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding InputRequiredCycles}"
-                                 LabelText="{x:Static res:InstallationApp.RequiredCycles}" />
-
-        <ctrls:PpcSpinEdit Grid.Row="2"
-                           Grid.Column="1"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}" />
-
-        <StackPanel Grid.Row="3"
-                    Grid.Column="1"
+        <StackPanel Grid.ColumnSpan="3"
                     Orientation="Horizontal">
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="1"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding PerformedCyclesThisSession}"
-                                     LabelText="{x:Static res:InstallationApp.PerformedCyclesThisSession}" />
-
-            <controls:PpcLabeledText Grid.Row="3"
-                                     Grid.Column="2"
-                                     Margin="80,0,0,0"
-                                     HorizontalAlignment="Left"
-                                     VerticalAlignment="Top"
-                                     ContentText="{Binding CumulativePerformedCycles}"
-                                     LabelText="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
+            <TextBlock Margin="0,0,10,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.2.4" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,0,0,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.BeltBurnishing}" />
         </StackPanel>
 
-        <controls:PpcButton Grid.Row="4"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsBusy="{Binding IsExecutingProcedure}" />
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="3"
+                   Height="Auto"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.BeltBurnishingFunctionDescription}"
+                   TextWrapping="Wrap" />
 
-        <controls:PpcButton Grid.Row="4"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
+        <Border Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Margin="0,15,0,15"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.ColumnSpan="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.RequiredCycles}"
+                                   TextAlignment="Left" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding InputRequiredCycles}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Column="4"
+                          Grid.ColumnSpan="4">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.PerformedCyclesThisSession}"
+                                   TextAlignment="Left" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding InputRequiredCycles}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Column="8"
+                          Grid.ColumnSpan="4">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.CumulativePerformedCycles}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding CumulativePerformedCycles}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <controls:CardSensorAxisVertical Grid.Row="3"
+                                         Grid.Column="0"
+                                         Width="250"
+                                         Height="90"
+                                         Margin="0,0,0,15"
+                                         HorizontalAlignment="Left" />
+
+        <ctrls:PpcSpinEdit Grid.Row="4"
+                           Grid.Column="0"
+                           Margin="0,0,0,15"
+                           HorizontalAlignment="Left"
+                           EditValue="{Binding InputLowerBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.LowerBound}"
+                           WidthNumber="246" />
+
+        <ctrls:PpcSpinEdit Grid.Row="5"
+                           Grid.Column="0"
+                           Margin="0,0,0,15"
+                           HorizontalAlignment="Left"
+                           EditValue="{Binding InputUpperBound, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.UpperBound}"
+                           WidthNumber="246" />
+
+
+        <ctrls:PpcSpinEdit Grid.Row="6"
+                           Grid.Column="0"
+                           Margin="0,0,0,15"
+                           HorizontalAlignment="Left"
+                           EditValue="{Binding InputDelay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                           IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
+                           LabelText="{x:Static res:InstallationApp.DelayBetweenCycles}"
+                           WidthNumber="246" />
+
+
+
+        <Grid Grid.Row="3"
+              Grid.RowSpan="4"
+              Grid.Column="1"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+
+
+            <controls:PpcButton Grid.Row="0"
+                                Width="300"
+                                Height="100"
+                                Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                FontSize="24"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Width="300"
+                                Height="100"
+                                Margin="15"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}"
+                                FontSize="24" />
+        </Grid>
+
     </Grid>
 </ctrls:View>

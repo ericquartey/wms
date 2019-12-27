@@ -219,7 +219,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand LightCommand =>
             this.lightCommand
             ??
-            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync()));
+            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync(), !this.IsMoving));
 
         public string LightIcon
         {
