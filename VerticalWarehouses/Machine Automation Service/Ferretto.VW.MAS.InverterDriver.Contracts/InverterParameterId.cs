@@ -69,5 +69,7 @@
         BlockWrite = 18,
 
         BlockRead = 19,
+
+        HeartBeatTimer1 = 83,
     }
 }

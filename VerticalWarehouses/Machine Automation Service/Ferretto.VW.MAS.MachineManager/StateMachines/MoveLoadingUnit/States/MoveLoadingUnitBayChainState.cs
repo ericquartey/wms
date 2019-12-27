@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             }
             else
             {
-                returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
+                returnValue = this.GetState<IMoveLoadingUnitEndState>();
             }
 
             return returnValue;

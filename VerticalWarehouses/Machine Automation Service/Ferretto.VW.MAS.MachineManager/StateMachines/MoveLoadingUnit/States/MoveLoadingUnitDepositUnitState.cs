@@ -29,6 +29,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
         private readonly ILoadingUnitMovementProvider loadingUnitMovementProvider;
 
+        private readonly ILoadingUnitsDataProvider loadingUnitsDataProvider;
+
         private readonly IMissionsDataProvider missionsDataProvider;
 
         private readonly ISensorsProvider sensorsProvider;
@@ -50,6 +52,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             ICellsProvider cellsProvider,
             IElevatorDataProvider elevatorDataProvider,
             IErrorsProvider errorsProvider,
+            ILoadingUnitsDataProvider loadingUnitsDataProvider,
             ILoadingUnitMovementProvider loadingUnitMovementProvider,
             IMissionsDataProvider missionsDataProvider,
             ISensorsProvider sensorsProvider,
@@ -60,6 +63,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.cellsProvider = cellsProvider ?? throw new ArgumentNullException(nameof(cellsProvider));
             this.elevatorDataProvider = elevatorDataProvider ?? throw new ArgumentNullException(nameof(elevatorDataProvider));
             this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
+            this.loadingUnitsDataProvider = loadingUnitsDataProvider ?? throw new ArgumentNullException(nameof(loadingUnitsDataProvider));
             this.loadingUnitMovementProvider = loadingUnitMovementProvider ?? throw new ArgumentNullException(nameof(loadingUnitMovementProvider));
             this.missionsDataProvider = missionsDataProvider ?? throw new ArgumentNullException(nameof(missionsDataProvider));
             this.sensorsProvider = sensorsProvider ?? throw new ArgumentNullException(nameof(sensorsProvider));
@@ -296,6 +300,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                     if (this.mission.LoadingUnitId > 0)
                     {
                         this.baysDataProvider.SetLoadingUnit(bayPosition.Id, this.mission.LoadingUnitId);
+                        this.loadingUnitsDataProvider.SetHeight(this.mission.LoadingUnitId, 0);
                     }
                     var bay = this.baysDataProvider.GetByLoadingUnitLocation(this.mission.LoadingUnitDestination);
                     bayShutter = (bay.Shutter.Type != ShutterType.NotSpecified);

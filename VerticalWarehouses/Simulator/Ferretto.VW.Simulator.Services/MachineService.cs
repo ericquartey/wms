@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -45,12 +46,19 @@ namespace Ferretto.VW.Simulator.Services
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
+        private int DELAY_HEARTBEAT = 600;
+
+        private DateTime heartBeatTime;
+
+        private bool isInverterConnect;
+
         #endregion
 
         #region Constructors
 
         public MachineService()
         {
+            this.heartBeatTime = DateTime.UtcNow;
             this.remoteIOs.Add(new IODeviceModel() { Id = 0 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 1 });
             this.remoteIOs.Add(new IODeviceModel() { Id = 2, Enabled = false });
@@ -372,16 +380,37 @@ namespace Ferretto.VW.Simulator.Services
                     client.Client.Send(Encoding.ASCII.GetBytes("OK\r\n"));
                     break;
             }
-
         }
 
         private void ReplyToInverterMessage(TcpClient client, InverterMessage message)
         {
             var inverter = this.Inverters.First(x => x.InverterRole == (InverterRole)message.SystemIndex);
+            if (!this.isInverterConnect)
+            {
+                this.heartBeatTime = DateTime.UtcNow;
+            }
+            this.isInverterConnect = true;
+
+            if (DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds > this.DELAY_HEARTBEAT)
+            {
+                var timeout = DateTime.UtcNow.Subtract(this.heartBeatTime).TotalMilliseconds;
+
+                // TODO: enable heartbeat control
+                //if (Debugger.IsAttached)
+                //{
+                //    Debugger.Break();
+                //}
+                //inverter.IsFault = true;
+            }
 
             var result = 0;
             switch (message.ParameterId)
             {
+                case InverterParameterId.HeartBeatTimer1:
+                    result = client.Client.Send(message.ToBytes());
+                    this.heartBeatTime = DateTime.UtcNow;
+                    break;
+
                 case InverterParameterId.ControlWord:
                     inverter.ControlWord = message.UShortPayload;
                     inverter.RefreshControlWordArray();
