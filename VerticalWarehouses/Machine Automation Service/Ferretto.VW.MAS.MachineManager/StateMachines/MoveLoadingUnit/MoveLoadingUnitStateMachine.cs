@@ -537,8 +537,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 #endif
                     else if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadingUnit
-                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
-                        )
+                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed)
                     {
                         unitToMove = null;
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);
