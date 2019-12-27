@@ -3079,6 +3079,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         [Newtonsoft.Json.JsonProperty("totalVerticalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
         public double TotalVerticalAxisKilometers { get; set; }
     
+        [Newtonsoft.Json.JsonProperty("totalWeightBack", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalWeightBack { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalWeightFront", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalWeightFront { get; set; }
+    
         [Newtonsoft.Json.JsonProperty("usageTimePercentage", Required = Newtonsoft.Json.Required.Always)]
         public double UsageTimePercentage { get; set; }
     

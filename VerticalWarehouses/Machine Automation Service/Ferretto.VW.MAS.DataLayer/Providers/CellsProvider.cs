@@ -86,6 +86,20 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
+            var machineStatistics = this.machineProvider.GetStatistics();
+            if (machineStatistics is null)
+            {
+                throw new EntityNotFoundException();
+            }
+            WarehouseSide preferredSide = WarehouseSide.NotSpecified;
+            if (machineStatistics.TotalWeightFront + loadingUnit.GrossWeight < machineStatistics.TotalWeightBack)
+            {
+                preferredSide = WarehouseSide.Front;
+            }
+            else if (machineStatistics.TotalWeightBack + loadingUnit.GrossWeight < machineStatistics.TotalWeightFront)
+            {
+                preferredSide = WarehouseSide.Back;
+            }
             if (loadingUnit.Height == 0)
             {
                 var machine = this.machineProvider.Get();
@@ -146,14 +160,14 @@ namespace Ferretto.VW.MAS.DataLayer
                 if (availableCell.Count > cells.Count / 3)
                 {
                     // empty vertimag: start from lower cells
-                    cellId = availableCell.OrderBy(t => t.Cell.Priority).First().Cell.Id;
+                    cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
                 }
                 else
                 {
                     // vertimag partially full: optimize space
-                    cellId = availableCell.OrderBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+                    cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
                 }
-                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; available cells {availableCell.Count}");
+                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; available cells {availableCell.Count}; preferredSide {preferredSide}");
                 return cellId;
             }
         }
@@ -232,106 +246,139 @@ namespace Ferretto.VW.MAS.DataLayer
 
         public void SetLoadingUnit(int cellId, int? loadingUnitId)
         {
-            var cell = this.dataContext.Cells
+            lock (this.dataContext)
+            {
+                var cell = this.dataContext.Cells
                 .Include(c => c.LoadingUnit)
                 .Include(c => c.Panel)
                 .SingleOrDefault(c => c.Id == cellId);
 
-            if (cell is null)
-            {
-                throw new EntityNotFoundException(cellId);
-            }
-
-            if (loadingUnitId is null)
-            {
-                if (cell.LoadingUnit is null)
+                if (cell is null)
                 {
-                    return;
+                    throw new EntityNotFoundException(cellId);
                 }
 
-                var occupiedCells = this.dataContext.Cells
-                    .Include(c => c.LoadingUnit)
-                    .Where(c =>
-                        c.Panel.Side == cell.Side
-                        &&
-                        c.Position >= cell.Position
-                        &&
-                        c.Position <= cell.Position + cell.LoadingUnit.Height + VerticalPositionTolerance)
-                    .ToArray();
+                var statistics = this.dataContext.MachineStatistics.FirstOrDefault();
 
-                foreach (var occupiedCell in occupiedCells)
+                if (loadingUnitId is null)
                 {
-                    if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != cell.LoadingUnit.Id)
+                    if (cell.LoadingUnit is null)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                        return;
                     }
 
-                    //if (occupiedCell.Status != CellStatus.Occupied)
-                    //{
-                    //    throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
-                    //}
+                    var occupiedCells = this.dataContext.Cells
+                        .Include(c => c.LoadingUnit)
+                        .Where(c =>
+                            c.Panel.Side == cell.Side
+                            &&
+                            c.Position >= cell.Position
+                            &&
+                            c.Position <= cell.Position + cell.LoadingUnit.Height + VerticalPositionTolerance)
+                        .ToArray();
 
-                    occupiedCell.Status = CellStatus.Free;
-                    occupiedCell.LoadingUnit = null;
-                }
-            }
-            else
-            {
-                if (cell.IsDeactivated)
-                {
-                    throw new InvalidOperationException(Resources.Cells.TheTargetCellIsDeactivated);
-                }
-
-                if (cell.IsUnusable)
-                {
-                    throw new InvalidOperationException(Resources.Cells.TheTargetCellIsUnusable);
-                }
-
-                if (cell.LoadingUnit != null)
-                {
-                    throw new InvalidOperationException(Resources.Cells.TheCellAlreadyContainsAnotherLoadingUnit);
-                }
-
-                var loadingUnit = this.dataContext.LoadingUnits
-                    .AsNoTracking()
-                    .SingleOrDefault(l => l.Id == loadingUnitId);
-                if (loadingUnit is null)
-                {
-                    throw new EntityNotFoundException(loadingUnitId.Value);
-                }
-
-                if (loadingUnit.CellId != null)
-                {
-                    throw new InvalidOperationException(Resources.Cells.TheLoadingUnitIsAlreadyLocatedInAnotherCell);
-                }
-
-                var freeCells = this.dataContext.Cells
-                   .Include(c => c.LoadingUnit)
-                   .Where(c =>
-                       c.Panel.Side == cell.Side
-                       &&
-                       c.Position >= cell.Position
-                       &&
-                       c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
-                   .ToArray();
-
-                foreach (var freeCell in freeCells)
-                {
-                    freeCell.Status = CellStatus.Occupied;
-                    if (freeCell.LoadingUnit != null)
+                    double weight = cell.LoadingUnit.GrossWeight;
+                    if (cell.Side == WarehouseSide.Front)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                        statistics.TotalWeightFront -= weight;
+                        if (statistics.TotalWeightFront < 0)
+                        {
+                            statistics.TotalWeightFront = 0;
+                        }
+                    }
+                    else
+                    {
+                        statistics.TotalWeightBack -= weight;
+                        if (statistics.TotalWeightBack < 0)
+                        {
+                            statistics.TotalWeightBack = 0;
+                        }
                     }
 
-                    if (freeCell.IsDeactivated)
+                    foreach (var occupiedCell in occupiedCells)
                     {
-                        throw new InvalidOperationException(Resources.Cells.TheLoadingCannotBePlacedOppositeADeactivatedCell);
+                        if (occupiedCell.LoadingUnit != null && occupiedCell.LoadingUnit.Id != cell.LoadingUnit.Id)
+                        {
+                            throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                        }
+
+                        //if (occupiedCell.Status != CellStatus.Occupied)
+                        //{
+                        //    throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
+                        //}
+
+                        occupiedCell.Status = CellStatus.Free;
+                        occupiedCell.LoadingUnit = null;
                     }
                 }
-                // TODO check if this could be done better
-                cell.LoadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+                else
+                {
+                    if (cell.IsDeactivated)
+                    {
+                        throw new InvalidOperationException(Resources.Cells.TheTargetCellIsDeactivated);
+                    }
+
+                    if (cell.IsUnusable)
+                    {
+                        throw new InvalidOperationException(Resources.Cells.TheTargetCellIsUnusable);
+                    }
+
+                    if (cell.LoadingUnit != null)
+                    {
+                        throw new InvalidOperationException(Resources.Cells.TheCellAlreadyContainsAnotherLoadingUnit);
+                    }
+
+                    var loadingUnit = this.dataContext.LoadingUnits
+                        .AsNoTracking()
+                        .SingleOrDefault(l => l.Id == loadingUnitId);
+                    if (loadingUnit is null)
+                    {
+                        throw new EntityNotFoundException(loadingUnitId.Value);
+                    }
+
+                    if (loadingUnit.CellId != null)
+                    {
+                        throw new InvalidOperationException(Resources.Cells.TheLoadingUnitIsAlreadyLocatedInAnotherCell);
+                    }
+
+                    var freeCells = this.dataContext.Cells
+                       .Include(c => c.LoadingUnit)
+                       .Where(c =>
+                           c.Panel.Side == cell.Side
+                           &&
+                           c.Position >= cell.Position
+                           &&
+                           c.Position <= cell.Position + loadingUnit.Height + VerticalPositionTolerance)
+                       .ToArray();
+
+                    foreach (var freeCell in freeCells)
+                    {
+                        freeCell.Status = CellStatus.Occupied;
+                        if (freeCell.LoadingUnit != null)
+                        {
+                            throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
+                        }
+
+                        if (freeCell.IsDeactivated)
+                        {
+                            throw new InvalidOperationException(Resources.Cells.TheLoadingCannotBePlacedOppositeADeactivatedCell);
+                        }
+                    }
+                    // TODO check if this could be done better
+                    cell.LoadingUnit = this.dataContext.LoadingUnits.SingleOrDefault(l => l.Id == loadingUnitId);
+
+                    double weight = loadingUnit.GrossWeight;
+                    if (cell.Side == WarehouseSide.Front)
+                    {
+                        statistics.TotalWeightFront += weight;
+                    }
+                    else
+                    {
+                        statistics.TotalWeightBack += weight;
+                    }
+                }
+                this.dataContext.SaveChanges();
             }
-            this.dataContext.SaveChanges();
         }
 
         public IEnumerable<Cell> UpdateHeights(int fromCellId, int toCellId, WarehouseSide side, double height)
