@@ -1,6 +1,6 @@
 ﻿namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public static class Commands
+    public static class BarcodeCommands
     {
         #region Fields
 

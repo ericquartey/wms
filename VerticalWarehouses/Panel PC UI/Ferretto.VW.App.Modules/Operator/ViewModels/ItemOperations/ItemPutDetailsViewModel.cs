@@ -38,11 +38,11 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPutDetailsViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, missionOperationsService, dialogService)
         {
         }
 

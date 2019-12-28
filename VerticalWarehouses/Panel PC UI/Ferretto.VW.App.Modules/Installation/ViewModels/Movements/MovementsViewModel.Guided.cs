@@ -1,20 +1,14 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.MAS.AutomationService.Contracts;
-using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
 using Ferretto.VW.MAS.AutomationService.Hubs;
-using Prism.Regions;
-using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -118,24 +112,21 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
-        public bool BayIsShutterThreeSensors
-        {
-            get => this.MachineService.IsShutterThreeSensors;
-        }
+        public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
 
         public ICommand CarouselDownCommand =>
-                    this.moveCarouselDownCommand
+            this.moveCarouselDownCommand
             ??
             (this.moveCarouselDownCommand = new DelegateCommand(
-            async () => await this.MoveCarouselDownAsync(),
-            this.CanMoveCarouselDown));
+                async () => await this.MoveCarouselDownAsync(),
+                this.CanMoveCarouselDown));
 
         public ICommand CarouselUpCommand =>
             this.moveCarouselUpCommand
             ??
             (this.moveCarouselUpCommand = new DelegateCommand(
-            async () => await this.MoveCarouselUpAsync(),
-            this.CanMoveCarouselUp));
+                async () => await this.MoveCarouselUpAsync(),
+                this.CanMoveCarouselUp));
 
         public ICommand ClosedShutterCommand =>
             this.closedShutterCommand
@@ -144,10 +135,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.ClosedShutterAsync(),
                 this.CanCloseShutter));
 
-        public bool HasBayExternal
-        {
-            get => this.MachineService.HasBayExternal;
-        }
+        public bool HasBayExternal => this.MachineService.HasBayExternal;
 
         public int? InputCellId
         {
@@ -168,7 +156,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         }
 
         public ICommand IntermediateShutterCommand =>
-                    this.intermediateShutterCommand
+            this.intermediateShutterCommand
             ??
             (this.intermediateShutterCommand = new DelegateCommand(
                 async () => await this.IntermediateShutterAsync(),
@@ -393,7 +381,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanOpenShutter));
 
         public ICommand SelectBayPositionDownCommand =>
-                                                                                                                                                                            this.selectBayPositionDownCommand
+            this.selectBayPositionDownCommand
             ??
             (this.selectBayPositionDownCommand = new DelegateCommand(
                 this.SelectBayPositionDown,
@@ -1021,8 +1009,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineCarouselWebService.FindZeroAsync();
@@ -1044,8 +1031,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task TuningChainAsync()
         {
-            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, "Movimenti semi-automatici", DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

@@ -15,7 +15,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
     {
         #region Fields
 
-        private readonly IMissionsDataService missionDataService;
+        private readonly IMissionsWmsWebService missionWmsWebService;
 
         private bool canInputQuantity;
 
@@ -29,7 +29,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public BaseItemOperationViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IBayManager bayManager,
             IMissionOperationsService missionOperationsService,
             IDialogService dialogService)
@@ -38,7 +38,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.WmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
             this.BayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
             this.MissionOperationsService = missionOperationsService ?? throw new ArgumentNullException(nameof(missionOperationsService));
-            this.missionDataService = missionsDataService ?? throw new ArgumentNullException(nameof(missionsDataService));
+            this.missionWmsWebService = missionsWmsWebService ?? throw new ArgumentNullException(nameof(missionsWmsWebService));
             this.DialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
         }
 
@@ -119,7 +119,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.MissionOperation = newMissionOperation;
 
-                this.Mission = await this.missionDataService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
+                this.Mission = await this.missionWmsWebService.GetDetailsByIdAsync(this.MissionOperationsService.CurrentMission.Id);
 
                 this.RaisePropertyChanged(nameof(this.ItemId));
 

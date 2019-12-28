@@ -12,8 +12,23 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
     {
         #region Methods
 
+        public static IContainerRegistry ConfigureMockBarcodeReader(
+            this IContainerRegistry containerRegistry,
+            ConfigurationOptions options)
+        {
+            if (containerRegistry is null)
+            {
+                throw new ArgumentNullException(nameof(containerRegistry));
+            }
+
+            containerRegistry.RegisterInstance<IBarcodeConfigurationOptions>(options);
+            containerRegistry.RegisterSingleton<IBarcodeReader, MockReader>();
+
+            return containerRegistry;
+        }
+
         public static IContainerRegistry ConfigureNewlandBarcodeReader(
-           this IContainerRegistry containerRegistry,
+                   this IContainerRegistry containerRegistry,
            ConfigurationOptions options)
         {
             if (containerRegistry is null)
@@ -22,7 +37,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
 
             containerRegistry.RegisterInstance<IBarcodeConfigurationOptions>(options);
-            containerRegistry.RegisterSingleton<IBarcodeReader, Reader>();
+            containerRegistry.RegisterSingleton<IBarcodeReader, BarcodeReader>();
 
             return containerRegistry;
         }

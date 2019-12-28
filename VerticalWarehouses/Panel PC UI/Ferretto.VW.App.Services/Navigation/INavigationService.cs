@@ -14,6 +14,8 @@
 
         void Disappear(INavigableViewModel viewModel);
 
+        INavigableViewModel GetActiveViewModel();
+
         void GoBack();
 
         void GoBackTo(string modelName, string viewModelName);

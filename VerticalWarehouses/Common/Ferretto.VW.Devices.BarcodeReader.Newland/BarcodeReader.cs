@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public class Reader : IBarcodeReader, IDisposable
+    internal sealed class BarcodeReader : IBarcodeReader, IDisposable
     {
         #region Fields
 
@@ -30,10 +30,14 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Connect(IBarcodeConfigurationOptions options)
         {
+            if (this.serialPort.IsOpen)
+            {
+                System.Diagnostics.Debug.WriteLine("Serial port is already open.");
+                return;
+            }
+
             if (options is ConfigurationOptions serialOptions)
             {
-                this.Disconnect();
-
                 this.serialPort.PortName = serialOptions.PortName;
                 this.serialPort.BaudRate = serialOptions.BaudRate;
                 this.serialPort.Parity = serialOptions.Parity;
@@ -51,13 +55,14 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void Disconnect()
         {
-            if (this.serialPort.IsOpen)
-            {
-                this.serialPort.Close();
-            }
-
             this.readThread?.Abort();
             this.readThread = null;
+
+            if (this.serialPort.IsOpen)
+            {
+                System.Diagnostics.Debug.WriteLine("Closing serial port.");
+                this.serialPort.Close();
+            }
         }
 
         public void Dispose()
@@ -77,7 +82,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             this.serialPort.Write(commandString.ToString());
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!this.isDisposed)
             {
@@ -117,6 +122,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             }
             catch (ThreadAbortException)
             {
+                System.Diagnostics.Debug.WriteLine("Serial port reader thread stopped.");
                 return;
             }
         }

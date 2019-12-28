@@ -15,11 +15,11 @@ namespace Ferretto.VW.App.Services
 
         private readonly IEventAggregator eventAggregator;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService;
+        private readonly WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsDataService;
 
         private readonly IMachineMissionOperationsWebService missionOperationsWebService;
 
-        private readonly WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService;
+        private readonly WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsDataService;
 
         private readonly IOperatorHubClient operatorHubClient;
 
@@ -32,8 +32,8 @@ namespace Ferretto.VW.App.Services
         public MissionOperationsService(
             IEventAggregator eventAggregator,
             IMachineMissionOperationsWebService missionOperationsWebService,
-            WMS.Data.WebAPI.Contracts.IMissionOperationsDataService missionOperationsDataService,
-            WMS.Data.WebAPI.Contracts.IMissionsDataService missionsDataService,
+            WMS.Data.WebAPI.Contracts.IMissionOperationsWmsWebService missionOperationsDataService,
+            WMS.Data.WebAPI.Contracts.IMissionsWmsWebService missionsDataService,
             IBayManager bayManager,
             IOperatorHubClient operatorHubClient)
         {

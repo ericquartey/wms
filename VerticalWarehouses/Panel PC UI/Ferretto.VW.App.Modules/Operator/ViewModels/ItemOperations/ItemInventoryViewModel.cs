@@ -5,20 +5,26 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
+    public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Constructors
 
         public ItemInventoryViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
+
+        #endregion
+
+        #region Properties
+
+        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
 
         #endregion
 
@@ -26,16 +32,16 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public override bool CanConfirmOperation()
         {
-           return
-              !this.IsWaitingForResponse
-              &&
-              !this.IsBusyAbortingOperation
-              &&
-              !this.IsBusyConfirmingOperation
-              &&
-              this.InputQuantity.HasValue
-              &&
-              this.InputQuantity.Value >= 0;
+            return
+               !this.IsWaitingForResponse
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsBusyConfirmingOperation
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value >= 0;
         }
 
         protected override void ShowOperationDetails()

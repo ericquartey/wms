@@ -21,21 +21,21 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         private readonly ILogger<UsersController> logger;
 
-        private readonly IUsersDataService usersDataService;
-
         private readonly IUsersProvider usersProvider;
+
+        private readonly IUsersWmsWebService usersWmsWebService;
 
         #endregion
 
         #region Constructors
 
         public UsersController(
-            IUsersDataService usersDataService,
+            IUsersWmsWebService usersWmsWebService,
             IUsersProvider usersProvider,
             IConfiguration configuration,
             ILogger<UsersController> logger)
         {
-            this.usersDataService = usersDataService ?? throw new ArgumentNullException(nameof(usersDataService));
+            this.usersWmsWebService = usersWmsWebService ?? throw new ArgumentNullException(nameof(usersWmsWebService));
             this.usersProvider = usersProvider ?? throw new ArgumentNullException(nameof(usersProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -59,7 +59,7 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             {
                 try
                 {
-                    var claims = await this.usersDataService
+                    var claims = await this.usersWmsWebService
                         .AuthenticateWithResourceOwnerPasswordAsync(userName, password);
 
                     this.logger.LogInformation($"Login success for user '{userName}' through WMS.");

@@ -20,7 +20,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
         private readonly IConfiguration configuration;
 
-        private readonly IMachinesDataService machinesDataService;
+        private readonly IMachinesWmsWebService machinesWmsWebService;
 
         private bool dataLayerIsReady;
 
@@ -29,14 +29,14 @@ namespace Ferretto.VW.MAS.MissionManager
         #region Constructors
 
         public WmsMissionProxyService(
-            IMachinesDataService machinesDataService,
+            IMachinesWmsWebService machinesWmsWebService,
             IConfiguration configuration,
             IEventAggregator eventAggregator,
             ILogger<WmsMissionProxyService> logger,
             IServiceScopeFactory serviceScopeFactory)
             : base(eventAggregator, logger, serviceScopeFactory)
         {
-            this.machinesDataService = machinesDataService ?? throw new ArgumentNullException(nameof(machinesDataService));
+            this.machinesWmsWebService = machinesWmsWebService ?? throw new ArgumentNullException(nameof(machinesWmsWebService));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 
@@ -62,7 +62,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 // 1. Get all missions from WMS
                 var machineId = machineProvider.GetIdentity();
-                var wmsMissions = await this.machinesDataService.GetMissionsByIdAsync(machineId);
+                var wmsMissions = await this.machinesWmsWebService.GetMissionsByIdAsync(machineId);
 
                 // 2. Get all known WMS missions (already recorded in the local database)
                 var localMissions = missionsDataProvider.GetAllWmsMissions();

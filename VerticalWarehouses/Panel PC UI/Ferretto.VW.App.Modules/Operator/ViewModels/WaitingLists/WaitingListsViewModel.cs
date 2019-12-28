@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
@@ -15,19 +16,21 @@ using Prism.Commands;
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class WaitingListsViewModel : BaseOperatorViewModel
+    public class WaitingListsViewModel : BaseOperatorViewModel, IOperationalContextViewModel
     {
         #region Fields
 
-        private readonly IAreasDataService areasDataService;
+        private const int PollIntervalMilliseconds = 5000;
+
+        private readonly IAreasWmsWebService areasWmsWebService;
 
         private readonly IBayManager bayManager;
 
         private readonly IMachineIdentityWebService identityService;
 
-        private readonly IItemListsDataService itemListsDataService;
+        private readonly IItemListsWmsWebService itemListsWmsWebService;
 
-        private readonly IList<ItemListExecution> lists;
+        private readonly IList<ItemListExecution> lists = new List<ItemListExecution>();
 
         private int? areaId;
 
@@ -51,48 +54,58 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public WaitingListsViewModel(
             IMachineIdentityWebService identityService,
-            IItemListsDataService itemListsDataService,
-            IAreasDataService areasDataService,
+            IItemListsWmsWebService itemListsWmsWebService,
+            IAreasWmsWebService areasWmsWebService,
             IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemListsDataService = itemListsDataService ?? throw new ArgumentNullException(nameof(itemListsDataService));
-            this.areasDataService = areasDataService ?? throw new ArgumentNullException(nameof(areasDataService));
+            this.itemListsWmsWebService = itemListsWmsWebService ?? throw new ArgumentNullException(nameof(itemListsWmsWebService));
+            this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
-            this.lists = new List<ItemListExecution>();
         }
 
         #endregion
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ListSearch.ToString();
+
         public override bool KeepAlive => true;
 
-        public ICommand ListDetailButtonCommand => this.listDetailButtonCommand ?? (this.listDetailButtonCommand = new DelegateCommand(() => this.ShowDetails(), this.CanShowDetailCommand));
+        public ICommand ListDetailButtonCommand =>
+            this.listDetailButtonCommand
+            ??
+            (this.listDetailButtonCommand = new DelegateCommand(this.ShowDetails, this.CanShowDetailCommand));
 
         public ICommand ListExecuteCommand =>
-                    this.listExecuteCommand
+            this.listExecuteCommand
             ??
-            (this.listExecuteCommand = new DelegateCommand(async () => await this.ExecuteListAsync(), this.CanExecuteList));
+            (this.listExecuteCommand = new DelegateCommand(
+                async () => await this.ExecuteListAsync(),
+                this.CanExecuteList));
 
         public IList<ItemListExecution> Lists => new List<ItemListExecution>(this.lists);
 
         public ItemListExecution SelectedList
         {
             get => this.selectedList;
-            set
-            {
-                if (this.SetProperty(ref this.selectedList, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.selectedList, value, this.RaiseCanExecuteChanged);
         }
 
-        public ICommand SelectNextCommand => this.selectNextCommand ?? (this.selectNextCommand = new DelegateCommand(() => this.ChangeSelectedList(false), this.CanSelectNext));
+        public ICommand SelectNextCommand =>
+            this.selectNextCommand
+            ??
+            (this.selectNextCommand = new DelegateCommand(
+                () => this.ChangeSelectedList(false),
+                this.CanSelectNext));
 
-        public ICommand SelectPreviousCommand => this.selectPreviousCommand ?? (this.selectPreviousCommand = new DelegateCommand(() => this.ChangeSelectedList(true), this.CanSelectPrevious));
+        public ICommand SelectPreviousCommand =>
+            this.selectPreviousCommand
+            ??
+            (this.selectPreviousCommand = new DelegateCommand(
+                () => this.ChangeSelectedList(true),
+                this.CanSelectPrevious));
 
         #endregion
 
@@ -125,7 +138,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 }
 
                 var bay = await this.bayManager.GetBayAsync();
-                await this.itemListsDataService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
+                await this.itemListsWmsWebService.ExecuteAsync(this.selectedList.Id, this.areaId.Value, bay.Id);
                 await this.LoadListsAsync();
             }
             catch
@@ -151,7 +164,63 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
             await this.LoadListsAsync();
 
-            this.RefreshLists();
+            await this.RefreshListsAsync();
+        }
+
+        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
+        {
+            await base.OnBarcodeMatchedAsync(e);
+
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                switch (userAction)
+                {
+                    case UserAction.FilterLists:
+                        {
+                            var listId = e.GetListId();
+                            if (listId.HasValue)
+                            {
+                                try
+                                {
+                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
+                                    this.ShowDetails();
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.ShowNotification(ex);
+                                }
+                            }
+
+                            break;
+                        }
+
+                    case UserAction.ExecuteList:
+                        {
+                            var listId = e.GetListId();
+                            if (listId.HasValue)
+                            {
+                                try
+                                {
+                                    var list = await this.itemListsWmsWebService.GetByIdAsync(listId.Value);
+                                    this.selectedList = new ItemListExecution(list, this.bayManager.Identity.Id);
+                                    await this.ExecuteListAsync();
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.ShowNotification(ex);
+                                }
+                            }
+
+                            break;
+                        }
+                }
+            }
         }
 
         protected override void RaiseCanExecuteChanged()
@@ -194,7 +263,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool CanShowDetailCommand()
         {
-            return !this.IsWaitingForResponse
+            return
+                !this.IsWaitingForResponse
                 &&
                 this.SelectedList != null;
         }
@@ -213,10 +283,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.IsWaitingForResponse = true;
 
                 var lastItemListId = this.selectedList?.Id;
-                var newLists = await this.areasDataService.GetItemListsAsync(this.areaId.Value);
+                var newLists = await this.areasWmsWebService.GetItemListsAsync(this.areaId.Value);
 
                 var commonListsCount = newLists.Select(l => l.Id).Intersect(this.lists.Select(l => l.Id)).Count();
-                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count)
+                if (commonListsCount == this.lists.Count && commonListsCount == newLists.Count())
                 {
                     return;
                 }
@@ -253,24 +323,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
-        private async Task RefreshLists()
+        private async Task RefreshListsAsync()
         {
             while (this.IsVisible)
             {
                 await this.LoadListsAsync();
-                await Task.Delay(5000);
+                await Task.Delay(PollIntervalMilliseconds);
             }
         }
 
         private void SelectLoadingUnit()
         {
-            if (this.lists.Count == 0)
+            if (this.lists.Any())
             {
-                this.SelectedList = null;
+                this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
             }
             else
             {
-                this.SelectedList = this.lists.ElementAt(this.currentItemIndex);
+                this.SelectedList = null;
             }
 
             this.RaiseCanExecuteChanged();

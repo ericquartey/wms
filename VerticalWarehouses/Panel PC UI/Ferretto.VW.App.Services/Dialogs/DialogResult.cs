@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Controls.Interfaces
+﻿namespace Ferretto.VW.App.Services
 {
     /// <summary>
     /// Specifies which dialog button that a user choice.

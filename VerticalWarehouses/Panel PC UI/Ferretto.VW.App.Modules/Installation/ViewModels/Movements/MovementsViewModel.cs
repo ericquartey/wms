@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommonServiceLocator;
 using DevExpress.Mvvm;
 using Ferretto.VW.App.Controls;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
@@ -17,8 +15,6 @@ using Ferretto.VW.MAS.AutomationService.Hubs;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
 using Prism.Events;
-using Prism.Regions;
-using IDialogService = Ferretto.VW.App.Controls.Interfaces.IDialogService;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
@@ -28,6 +24,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #region Fields
 
         private readonly IBayManager bayManagerService;
+
+        private readonly Services.IDialogService dialogService;
 
         private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -105,6 +103,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineShuttersWebService shuttersWebService,
             IMachineCarouselWebService machineCarouselWebService,
+            Services.IDialogService dialogService,
             ISensorsService sensorsService,
             IMachineBaysWebService machineBaysWebService,
             IMachineMissionOperationsWebService machineMissionOperationsWebService,
@@ -119,6 +118,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.bayManagerService = bayManagerService ?? throw new ArgumentNullException(nameof(bayManagerService));
             this.shuttersWebService = shuttersWebService ?? throw new ArgumentNullException(nameof(shuttersWebService));
             this.machineCarouselWebService = machineCarouselWebService ?? throw new ArgumentNullException(nameof(machineCarouselWebService));
+            this.dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
             this.sensorsService = sensorsService ?? throw new ArgumentNullException(nameof(sensorsService));
             this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
             this.machineMissionOperationsWebService = machineMissionOperationsWebService ?? throw new ArgumentNullException(nameof(machineMissionOperationsWebService));
@@ -156,15 +156,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.goToStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand()));
 
-        public bool HasCarousel
-        {
-            get => this.MachineService.HasCarousel;
-        }
+        public bool HasCarousel => this.MachineService.HasCarousel;
 
-        public bool HasShutter
-        {
-            get => this.MachineService.HasShutter;
-        }
+        public bool HasShutter => this.MachineService.HasShutter;
 
         public bool IsCarouselMoving
         {
@@ -194,10 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovementsManual => !this.isMovementsGuided;
 
-        public bool IsMoving
-        {
-            get => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
-        }
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public IMachineService MachineService => this.machineService;
 
@@ -672,8 +663,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task ResetCommandAsync()
         {
-            var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-            var messageBoxResult = dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
+            var messageBoxResult = this.dialogService.ShowMessage(InstallationApp.ConfirmationOperation, this.Title, DialogType.Question, DialogButtons.YesNo);
             if (messageBoxResult is DialogResult.Yes)
             {
                 try

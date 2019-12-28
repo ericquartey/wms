@@ -161,12 +161,13 @@ namespace Ferretto.VW.App.Controls
             this.InitializeSteps();
 
             this.healthStatusChangedToken = this.healthStatusChangedToken
-                ?? this.EventAggregator
-                .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
-                .Subscribe(
-                    async e => await this.OnHealthStatusChangedAsync(e),
-                    ThreadOption.UIThread,
-                    false);
+                ??
+                this.EventAggregator
+                    .GetEvent<PubSubEvent<HealthStatusChangedEventArgs>>()
+                    .Subscribe(
+                        async e => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
 
             this.machineModeChangedToken = this.machineModeChangedToken
                 ??

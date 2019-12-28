@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -9,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemPutViewModel : BaseItemOperationMainViewModel
+    public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -21,18 +20,20 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPutViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
         #endregion
 
         #region Properties
+
+        public string ActiveContextName => OperationalContext.ItemPut.ToString();
 
         public ICommand FullOperationCommand =>
             this.fullOperationCommand

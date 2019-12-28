@@ -1,4 +1,4 @@
-﻿namespace Ferretto.VW.App.Controls.Interfaces
+﻿namespace Ferretto.VW.App.Services
 {
     public interface IDialogService
     {

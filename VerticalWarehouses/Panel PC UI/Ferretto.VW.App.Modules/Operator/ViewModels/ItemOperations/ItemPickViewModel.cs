@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -22,12 +22,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         public ItemPickViewModel(
             IWmsImagesProvider wmsImagesProvider,
-            IMissionsDataService missionsDataService,
+            IMissionsWmsWebService missionsWmsWebService,
             IMissionOperationsService missionOperationsService,
             IEventAggregator eventAggregator,
             IBayManager bayManager,
             IDialogService dialogService)
-            : base(wmsImagesProvider, missionsDataService, bayManager, eventAggregator, missionOperationsService, dialogService)
+            : base(wmsImagesProvider, missionsWmsWebService, bayManager, eventAggregator, missionOperationsService, dialogService)
         {
         }
 
@@ -35,8 +35,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ItemPick.ToString();
+
         public ICommand EmptyOperationCommand =>
-            this.emptyOperationCommand
+                    this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
