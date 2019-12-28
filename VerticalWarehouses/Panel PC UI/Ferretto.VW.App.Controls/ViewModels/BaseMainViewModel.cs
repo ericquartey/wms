@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Ferretto.VW.App.Accessories;
 using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
@@ -27,8 +26,6 @@ namespace Ferretto.VW.App.Controls
         private readonly IMachineModeService machineModeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineModeService>();
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
-
-        private SubscriptionToken barcodeMatchedToken;
 
         private SubscriptionToken bayChainPositionChangedToken;
 
@@ -162,15 +159,6 @@ namespace Ferretto.VW.App.Controls
             await this.machineService.OnUpdateServiceAsync();
 
             this.InitializeSteps();
-
-            this.barcodeMatchedToken = this.barcodeMatchedToken
-                ??
-                this.EventAggregator
-                    .GetEvent<PubSubEvent<BarcodeMatchEventArgs>>()
-                    .Subscribe(
-                        async e => await this.OnBarcodeMatchedAsync(e),
-                        ThreadOption.UIThread,
-                        false);
 
             this.healthStatusChangedToken = this.healthStatusChangedToken
                 ??
@@ -316,12 +304,6 @@ namespace Ferretto.VW.App.Controls
         public virtual void UpdateNotifications()
         {
             this.ClearNotifications();
-        }
-
-        protected virtual Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
-        {
-            // do nothing
-            return Task.CompletedTask;
         }
 
         protected virtual Task OnErrorStatusChangedAsync(MachineErrorEventArgs e)

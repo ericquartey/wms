@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace Ferretto.VW.Devices.BarcodeReader.Newland
 {
-    public class BarcodeReader : IBarcodeReader, IDisposable
+    internal sealed class BarcodeReader : IBarcodeReader, IDisposable
     {
         #region Fields
 
@@ -69,7 +69,6 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             this.Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public void SendCommand(string command)
@@ -83,7 +82,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
             this.serialPort.Write(commandString.ToString());
         }
 
-        protected virtual void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!this.isDisposed)
             {
