@@ -51,17 +51,20 @@ namespace Ferretto.VW.MAS.AutomationService
         private void HomingMethod(NotificationMessage receivedMessage, IServiceProvider serviceProvider)
         {
             if (receivedMessage.Status == MessageStatus.OperationEnd
-                && receivedMessage.Data is IHomingMessageData data
-                )
+                && receivedMessage.Data is IHomingMessageData data)
             {
                 if (data.AxisToCalibrate == Axis.BayChain)
                 {
                     var bay = this.baysDataProvider.GetByNumber(receivedMessage.RequestingBay);
                     this.baysDataProvider.UpdateHoming(bay.Number, true);
                 }
-                else
+                else if (data.AxisToCalibrate == Axis.HorizontalAndVertical)
                 {
                     this.machineProvider.IsHomingExecuted = true;
+                    this.ChangeMachineMode(serviceProvider);
+                }
+                else
+                {
                     this.ChangeMachineMode(serviceProvider);
                 }
             }

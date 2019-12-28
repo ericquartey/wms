@@ -11,6 +11,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
     {
         #region Fields
 
+        private readonly IMachineBaysWebService machineBaysWebService;
+
         private DelegateCommand confirmEjectLoadingUnitCommand;
 
         private bool isEjectLoadingUnitConfirmationEnabled;
@@ -20,12 +22,14 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
         #region Constructors
 
         public LoadingUnitFromCellToBayViewModel(
+                    IMachineBaysWebService machineBaysWebService,
                     IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
                     IBayManager bayManagerService)
             : base(
                 machineLoadingUnitsWebService,
                 bayManagerService)
         {
+            this.machineBaysWebService = machineBaysWebService ?? throw new ArgumentNullException(nameof(machineBaysWebService));
         }
 
         #endregion
@@ -113,7 +117,7 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
         private async Task ConfirmEjectLoadingUnit()
         {
-            await this.MachineLoadingUnitsWebService.ResumeAsync(this.CurrentMissionId, this.Bay.Number);
+            await this.machineBaysWebService.RemoveLoadUnitAsync(this.LoadingUnitId.Value);
         }
 
         #endregion

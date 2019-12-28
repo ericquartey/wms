@@ -518,7 +518,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                         unitToMove = this.baysDataProvider.GetLoadingUnitByDestination(messageData.Source);
                     }
 
-                    if (unitToMove == null || unitToMove.CellId.HasValue)
+                    if (unitToMove == null)
                     {
                         unitToMove = null;
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitNotFound);
@@ -526,7 +526,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
                     else if (unitToMove.CellId.HasValue)
                     {
                         unitToMove = null;
-                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitSourceDb);
+                        this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitPresentInCell);
                     }
 #if CHECK_BAY_SENSOR
                     else if (!this.sensorsProvider.IsLoadingUnitInLocation(messageData.Source))
@@ -537,8 +537,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit
 #endif
                     else if (this.baysDataProvider.GetByLoadingUnitLocation(messageData.Source).Shutter.Type != ShutterType.NotSpecified
                         && messageData.InsertLoadingUnit
-                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed
-                        )
+                        && this.sensorsProvider.GetShutterPosition(requestingBay) != ShutterPosition.Closed)
                     {
                         unitToMove = null;
                         this.errorsProvider.RecordNew(MachineErrorCode.MachineManagerErrorLoadingUnitShutterOpen);

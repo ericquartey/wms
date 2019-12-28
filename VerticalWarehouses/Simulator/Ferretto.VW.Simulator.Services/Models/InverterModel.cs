@@ -731,6 +731,12 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
+            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
+            {
+                this.homingTimerActive = false;
+                this.homingTimer.Change(-1, Timeout.Infinite);
+                return;
+            }
             var increment = 50d;
             if (Math.Abs(this.TargetPosition[this.currentAxis] - this.AxisPosition) < 1)
             {
@@ -998,6 +1004,13 @@ namespace Ferretto.VW.Simulator.Services.Models
             {
                 return;
             }
+            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
+            {
+                this.shutterTimer.Change(-1, Timeout.Infinite);
+
+                this.shutterTimerActive = false;
+                return;
+            }
             if (this.TargetShutterPosition == (int)ShutterPosition.Opened
                 || (this.TargetShutterPosition == (int)ShutterPosition.Half && this.AxisPosition <= 4)
                 )
@@ -1055,6 +1068,12 @@ namespace Ferretto.VW.Simulator.Services.Models
         {
             if (!this.targetTimerActive)
             {
+                return;
+            }
+            if (!this.ioDevice[(int)IoPorts.NormalState].Value)
+            {
+                this.targetTimer.Change(-1, Timeout.Infinite);
+                this.targetTimerActive = false;
                 return;
             }
             var target = this.TargetPosition[this.currentAxis];

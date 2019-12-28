@@ -219,7 +219,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public ICommand LightCommand =>
             this.lightCommand
             ??
-            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync()));
+            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync(), !this.IsMoving));
 
         public string LightIcon
         {
@@ -295,7 +295,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             try
             {
                 this.IsLightActive = !this.IsLightActive;
-                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
                 await this.machineBaysWebService.LightAsync(this.IsLightActive);
             }
             catch (System.Exception ex)

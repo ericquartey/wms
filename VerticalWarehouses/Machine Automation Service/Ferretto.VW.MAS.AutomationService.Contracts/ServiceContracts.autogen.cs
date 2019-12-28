@@ -76,6 +76,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
         System.Threading.Tasks.Task LightAsync(bool enable, System.Threading.CancellationToken cancellationToken);
     
         /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId);
+    
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task RemoveLoadUnitAsync(int loadingUnitId, System.Threading.CancellationToken cancellationToken);
+    
+        /// <exception cref="SwaggerException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Bay> UpdateHeightAsync(int position, double height);
     
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3071,6 +3078,12 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         [Newtonsoft.Json.JsonProperty("totalVerticalAxisKilometers", Required = Newtonsoft.Json.Required.Always)]
         public double TotalVerticalAxisKilometers { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalWeightBack", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalWeightBack { get; set; }
+    
+        [Newtonsoft.Json.JsonProperty("totalWeightFront", Required = Newtonsoft.Json.Required.Always)]
+        public double TotalWeightFront { get; set; }
     
         [Newtonsoft.Json.JsonProperty("usageTimePercentage", Required = Newtonsoft.Json.Required.Always)]
         public double UsageTimePercentage { get; set; }

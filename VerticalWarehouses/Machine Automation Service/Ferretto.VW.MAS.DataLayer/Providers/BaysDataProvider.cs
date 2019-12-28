@@ -832,8 +832,18 @@ namespace Ferretto.VW.MAS.DataLayer
                 throw new EntityNotFoundException($"LoadingUnit ID={loadingUnitId}");
             }
 
-            this.dataContext.LoadingUnits.Remove(lu);
-            this.dataContext.SaveChanges();
+            var sourceBay = this.GetLoadingUnitLocationByLoadingUnit(loadingUnitId);
+            if (sourceBay != LoadingUnitLocation.NoLocation)
+            {
+                var positionId = this.GetPositionByLocation(sourceBay).Id;
+                this.SetLoadingUnit(positionId, null);
+            }
+
+            lock (this.dataContext)
+            {
+                this.dataContext.LoadingUnits.Remove(lu);
+                this.dataContext.SaveChanges();
+            }
         }
 
         public void ResetMachine()

@@ -17,12 +17,12 @@
                     </Grid.RowDefinitions>
                     <Thumb x:Name="PART_DragWidget"
                            Grid.Row="0"
-                           Visibility="Collapsed"
                            Template="{DynamicResource {dxt:FloatingContainerThemeKey ThemeName=Office2016White,
-                                                                                     ResourceKey=FloatingContainerDragWidgetTemplate}}" />
+                                                                                     ResourceKey=FloatingContainerDragWidgetTemplate}}"
+                           Visibility="Collapsed" />
                     <Border x:Name="FloatingContainerHeader"
-                            Visibility="Collapsed"
-                            Grid.Row="0">
+                            Grid.Row="0"
+                            Visibility="Collapsed">
                         <Grid Margin="8,8,8,0">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />

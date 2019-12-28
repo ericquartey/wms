@@ -31,8 +31,12 @@
 
         public double TotalVerticalAxisKilometers { get; set; }
 
+        public double TotalWeightBack { get; set; }
+
+        public double TotalWeightFront { get; set; }
+
         public double UsageTimePercentage => this.TotalAutomaticTime.TotalHours > 0
-            ? this.TotalMissionTime.TotalHours * 100 / this.TotalAutomaticTime.TotalHours
+                            ? this.TotalMissionTime.TotalHours * 100 / this.TotalAutomaticTime.TotalHours
             : 0;
 
         public double WeightCapacityPercentage { get; set; }

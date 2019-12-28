@@ -65,13 +65,14 @@
             <Grid Grid.RowSpan="5"
                   Grid.ColumnSpan="12"
                   Margin="0,0,15,0">
-                <Grid.Background>
-                    <ImageBrush AlignmentX="Center"
-                                AlignmentY="Top"
-                                ImageSource="{DynamicResource BgMilestone}"
-                                Opacity="0.7"
-                                Stretch="UniformToFill" />
-                </Grid.Background>
+                <Image HorizontalAlignment="Center"
+                       Opacity="0.7"
+                       Source="{DynamicResource BgMilestone}"
+                       Stretch="UniformToFill">
+                    <Image.Effect>
+                        <BlurEffect Radius="15" />
+                    </Image.Effect>
+                </Image>
             </Grid>
 
             <Border Grid.ColumnSpan="7"

@@ -938,7 +938,6 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
 
-                    case WarningsArea.Information:
                     case WarningsArea.Picking:
                         if (this.machineModeService.MachineMode != MachineMode.Automatic)
                         {
@@ -950,6 +949,7 @@ namespace Ferretto.VW.App.Services
                         }
                         break;
 
+                    case WarningsArea.Information:
                     case WarningsArea.Menu:
                         this.ClearNotifications();
                         break;
@@ -963,11 +963,11 @@ namespace Ferretto.VW.App.Services
         private void WriteInfo(Axis? axisMovement)
         {
             var view = this.GetWarningAreaAttribute();
-            if (view == WarningsArea.None &&
-                view == WarningsArea.Login &&
-                view == WarningsArea.Menu &&
-                view == WarningsArea.Maintenance &&
-                view == WarningsArea.Information &&
+            if (view == WarningsArea.None ||
+                view == WarningsArea.Login ||
+                view == WarningsArea.Menu ||
+                view == WarningsArea.Maintenance ||
+                view == WarningsArea.Information ||
                 view == WarningsArea.Picking)
             {
                 return;
@@ -987,6 +987,10 @@ namespace Ferretto.VW.App.Services
                 {
                     this.Notification = "Movimento catena baia in corso...";
                 }
+            }
+            else if (this.machineModeService.MachineMode == MachineMode.Test)
+            {
+                this.Notification = "Test in corso...";
             }
             else
             {

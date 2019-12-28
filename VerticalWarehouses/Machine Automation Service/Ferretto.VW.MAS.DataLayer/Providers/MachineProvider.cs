@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Ferretto.VW.MAS.DataModels;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 
@@ -290,6 +289,15 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.AddOrUpdate(machine, (e) => e.Id);
 
             dataContext.SaveChanges();
+        }
+
+        public void UpdateStatistics(MachineStatistics statistics)
+        {
+            lock (this.dataContext)
+            {
+                this.dataContext.MachineStatistics.Update(statistics);
+                this.dataContext.SaveChanges();
+            }
         }
 
         private void DeleteBays(IEnumerable<Bay> bays)

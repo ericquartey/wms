@@ -109,7 +109,6 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                         var lu = bayPosition.LoadingUnit?.Id ?? throw new EntityNotFoundException($"LoadingUnit by BayPosition ID={bayPosition.Id}");
 
-                        this.baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
                         this.baysDataProvider.RemoveLoadingUnit(lu);
 
                         returnValue = this.GetState<IMoveLoadingUnitEndState>();

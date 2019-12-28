@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                         )
                     {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, Axis.Horizontal);
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.AxisToCalibrate);
                     }
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)

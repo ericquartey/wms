@@ -74,6 +74,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                             this.Logger.LogTrace("4: Stop the timer for update shaft position");
                             this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
+
                             this.Logger.LogDebug($"4b: currentStateMachines count {this.currentStateMachines.Count}");
                         }
 
@@ -91,6 +94,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {
@@ -110,6 +116,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         if (messageCurrentStateMachine is ShutterPositioningStateMachine)
                         {
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {
@@ -137,6 +146,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                     }
 
                     break;
@@ -156,6 +167,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterSwitchOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -182,6 +196,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterPowerOnFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -215,6 +231,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                         {
                             this.Logger.LogError($"Failed to deallocate {messageCurrentStateMachine.GetType().Name} Handling {receivedMessage.Type}");
                         }
+                        this.Logger.LogTrace("Stop the timer for update status word");
+                        this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
 
                         var nextMessage = ((InverterPowerOffFieldMessageData)receivedMessage.Data).NextCommandMessage;
                         if (nextMessage != null)
@@ -241,6 +259,9 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 this.axisPositionUpdateTimer[(int)inverterIndex]?.Change(1000, 10000);
                             }
                             this.currentStateMachines.Remove(inverterIndex);
+
+                            this.Logger.LogTrace("Stop the timer for update status word");
+                            this.statusWordUpdateTimer[(int)inverterIndex]?.Change(100, 10000);
                         }
                         else
                         {

@@ -9,8 +9,9 @@
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
-    <Grid Margin="15,0">
+    <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -20,23 +21,53 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <StackPanel Grid.ColumnSpan="2"
+        <StackPanel Grid.ColumnSpan="4"
                     Orientation="Horizontal">
-            <TextBlock Margin="0,0,10,0"
+            <TextBlock Margin="0,10,15,10"
                        VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="4.2.1" />
-            <TextBlock VerticalAlignment="Top"
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.OriginVerticalAxis}" />
         </StackPanel>
 
-        <Border Grid.Row="1"
-                Grid.ColumnSpan="2"
-                BorderBrush="{DynamicResource VWAPP_BACKGROUND}"
-                BorderThickness="0,15">
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,0"
+                   VerticalAlignment="Top"
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.HelpVACDescription}"
+                   TextWrapping="Wrap" />
+
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="0"
+                                         Height="90"
+                                         Margin="0,30,15,0" />
+        <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                           Grid.Column="1"
+                                           Height="90"
+                                           Margin="0,30,15,0" />
+        <controls:CardSensorPosition Grid.Row="2"
+                                     Grid.Column="2"
+                                     Height="90"
+                                     Margin="0,30,15,0" />
+        <controls:CardSensorDrawer Grid.Row="2"
+                                   Grid.Column="3"
+                                   Height="90"
+                                   Margin="0,30,15,0" />
+
+        <Border Grid.Row="3"
+                Grid.ColumnSpan="4"
+                Margin="0,15,15,0"
+                Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
                 <Grid>
@@ -54,8 +85,8 @@
                         <ColumnDefinition />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.ColumnSpan="3">
 
+                    <Grid Grid.ColumnSpan="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -86,51 +117,12 @@
                                 Grid.Column="1"
                                 Margin="0,25"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderBrush="{DynamicResource FerrettoMediumGray}"
                                 BorderThickness="1" />
 
                     </Grid>
 
                     <Grid Grid.Column="3"
-                          Grid.ColumnSpan="3">
-
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-
-                        <TextBlock Margin="0,20,0,0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   FontSize="{DynamicResource FontSize_Small}"
-                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
-                                   Text="{x:Static res:InstallationApp.Offset}" />
-
-                        <TextBlock Grid.Row="1"
-                                   Margin="0"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Top"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
-                                   Text="{Binding Offset}"
-                                   TextWrapping="Wrap" />
-
-                        <Border Grid.RowSpan="2"
-                                Grid.Column="1"
-                                Margin="0,25"
-                                VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoDarkGray}"
-                                BorderThickness="1" />
-
-                    </Grid>
-
-                    <Grid Grid.Row="2"
-                          Grid.Column="6"
                           Grid.ColumnSpan="3">
 
                         <Grid.RowDefinitions>
@@ -164,13 +156,50 @@
                                 Grid.Column="1"
                                 Margin="0,25"
                                 VerticalAlignment="Stretch"
-                                BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderBrush="{DynamicResource FerrettoMediumGray}"
                                 BorderThickness="1" />
 
                     </Grid>
 
-                    <Grid Grid.Row="2"
-                          Grid.Column="9"
+                    <Grid Grid.Column="6"
+                          Grid.ColumnSpan="3">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+
+                        <TextBlock Margin="0,20,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{DynamicResource FontSize_Small}"
+                                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                                   Text="{x:Static res:InstallationApp.Offset}" />
+
+                        <TextBlock Grid.Row="1"
+                                   Margin="0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Top"
+                                   FontSize="36"
+                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                                   Text="{Binding Offset}"
+                                   TextWrapping="Wrap" />
+
+                        <Border Grid.RowSpan="2"
+                                Grid.Column="1"
+                                Margin="0,25"
+                                VerticalAlignment="Stretch"
+                                BorderBrush="{DynamicResource FerrettoMediumGray}"
+                                BorderThickness="1" />
+
+                    </Grid>
+
+                    <Grid Grid.Column="9"
                           Grid.ColumnSpan="3"
                           Margin="0,0,15,0">
 
@@ -202,31 +231,25 @@
             </Border>
         </Border>
 
-        <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="0"
-                                         Width="250"
-                                         Margin="15"
-                                         HorizontalAlignment="Right" />
-        <controls:CardSensorAxisHorizontal Grid.Row="2"
-                                           Grid.Column="1"
-                                           Width="250"
-                                           Margin="15"
-                                           HorizontalAlignment="Left" />
-
-            <controls:PpcButton Grid.Row="3"
-                                Margin="15,0"
+        <StackPanel Grid.Row="4"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+            <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
+                                VerticalAlignment="Center"
                                 Command="{Binding StartCommand}"
                                 Content="{x:Static res:InstallationApp.Start}"
                                 IsBusy="{Binding IsExecutingProcedure}" />
 
-        <controls:PpcButton Grid.Row="4"
-                                Grid.Column="1"
-                                Margin="0"
+            <controls:PpcButton Margin="0,0,15,0"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Bottom"
+                                VerticalAlignment="Center"
                                 Command="{Binding StopCommand}"
                                 Content="{x:Static res:InstallationApp.Stop}" />
+        </StackPanel>
+
     </Grid>
 </ctrls:View>

@@ -16,9 +16,9 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
     {
         #region Fields
 
-        private readonly IMachineElevatorWebService machineElevatorWebService;
-
         private readonly IMachineErrorsWebService machineErrorsWebService;
+
+        private readonly IMachineLoadingUnitsWebService machineLoadingUnitsWebService;
 
         private bool canInputLoadingUnitId;
 
@@ -47,11 +47,11 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         #region Constructors
 
         public ErrorLoadunitMissingViewModel(
-            IMachineElevatorWebService machineElevatorWebService,
+            IMachineLoadingUnitsWebService machineLoadingUnitsWebService,
             IMachineErrorsWebService machineErrorsWebService)
             : base(Services.PresentationMode.Menu | Services.PresentationMode.Installer | Services.PresentationMode.Operator)
         {
-            this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.machineLoadingUnitsWebService = machineLoadingUnitsWebService ?? throw new ArgumentNullException(nameof(machineLoadingUnitsWebService));
             this.machineErrorsWebService = machineErrorsWebService ?? throw new ArgumentNullException(nameof(machineErrorsWebService));
         }
 
@@ -214,8 +214,7 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         private bool CanMoveLoadunit()
         {
             return
-                this.CanMarkAsResolved() &&
-                this.SelectedLoadingUnit?.Cell != null;
+                this.CanMarkAsResolved();
         }
 
         private void InputLoadingUnitIdPropertyChanged()
@@ -243,7 +242,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
             {
                 this.IsWaitingForResponse = true;
 
-                // await this.machineErrorsWebService.ResolveAsync(this.Error.Id);
                 await this.machineErrorsWebService.ResolveAllAsync();
 
                 this.Error = await this.machineErrorsWebService.GetCurrentAsync();
@@ -266,17 +264,17 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
                 if (this.SelectedLoadingUnit.Cell is null)
                 {
-                    await this.machineElevatorWebService.MoveToFreeCellAsync(
-                        this.SelectedLoadingUnit.Id,
-                        performWeighting: true,
-                        computeElongation: true);
+                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(
+                        LoadingUnitLocation.Elevator,
+                        null,
+                        this.SelectedLoadingUnit.Id);
                 }
                 else
                 {
-                    await this.machineElevatorWebService.MoveToCellAsync(
+                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(
+                        LoadingUnitLocation.Elevator,
                         this.SelectedLoadingUnit.Cell.Id,
-                        performWeighting: true,
-                        computeElongation: true);
+                        this.SelectedLoadingUnit.Id);
                 }
             }
             catch (Exception ex)

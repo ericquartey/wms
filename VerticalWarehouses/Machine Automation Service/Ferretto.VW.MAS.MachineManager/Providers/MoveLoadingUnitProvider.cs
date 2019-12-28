@@ -79,6 +79,7 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                  requestingBay);
         }
 
+        // sourceBay can be also Elevator 
         public void InsertToCell(MissionType missionType, LoadingUnitLocation sourceBay, int? destinationCellId, int loadingUnitId, BayNumber requestingBay, MessageActor sender)
         {
             if (sourceBay is LoadingUnitLocation.Cell)

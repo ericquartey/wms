@@ -188,7 +188,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         public bool IsMovementsManual => !this.isMovementsGuided;
 
-        public bool IsMoving => this.machineService?.MachineStatus?.IsMoving ?? true;
+        public bool IsMoving => (this.machineService?.MachineStatus?.IsMoving ?? true) || (this.machineService?.MachineStatus?.IsMovingLoadingUnit ?? true);
 
         public IMachineService MachineService => this.machineService;
 
@@ -268,7 +268,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.bays = await this.machineBaysWebService.GetAllAsync();
 
-                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                this.LightIcon = !this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
 
                 this.SelectBayPositionUp();
                 this.InputLoadingUnitIdPropertyChanged();

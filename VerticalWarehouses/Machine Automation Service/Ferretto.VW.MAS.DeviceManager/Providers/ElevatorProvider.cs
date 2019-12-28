@@ -448,7 +448,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void Homing(Axis calibrateAxis, Calibration calibration, int? loadUnitId, BayNumber bayNumber, MessageActor sender)
         {
-            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, loadUnitId);
+            IHomingMessageData homingData = new HomingMessageData(calibrateAxis, calibration, loadUnitId);
 
             this.PublishCommand(
                 homingData,
@@ -927,17 +927,9 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 targetPosition = parameters.TargetDistance * (direction == VerticalMovementDirection.Up ? 1 : -1);
             }
 
-            var sensors = this.sensorsProvider.GetAll();
-            var isLoadingUnitOnBoard =
-                sensors[(int)IOMachineSensors.LuPresentInMachineSide]
-                &&
-                sensors[(int)IOMachineSensors.LuPresentInOperatorSide];
-
-            var movementParameters = this.elevatorDataProvider.ScaleMovementsByWeight(Orientation.Vertical, isLoadingUnitOnBoard);
-
-            var speed = new[] { movementParameters.Speed * feedRate };
-            var acceleration = new[] { movementParameters.Acceleration };
-            var deceleration = new[] { movementParameters.Deceleration };
+            var speed = new[] { verticalAxis.FullLoadMovement.Speed * feedRate };
+            var acceleration = new[] { verticalAxis.FullLoadMovement.Acceleration };
+            var deceleration = new[] { verticalAxis.FullLoadMovement.Deceleration };
             var switchPosition = new[] { 0.0 };
 
             var messageData = new PositioningMessageData(
