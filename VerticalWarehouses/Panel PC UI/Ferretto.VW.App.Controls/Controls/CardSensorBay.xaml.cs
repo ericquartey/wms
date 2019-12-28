@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using CommonServiceLocator;
 using Ferretto.VW.App.Services;
+using Ferretto.VW.App.Services.Models;
+using Prism.Events;
 
 namespace Ferretto.VW.App.Controls.Controls
 {
@@ -13,12 +17,21 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty BayChainTargetPositionProperty =
-            DependencyProperty.Register(nameof(BayChainTargetPosition), typeof(double?), typeof(CardSensorBay));
+        [Browsable(false)]
+        public static readonly DependencyProperty MachineStatusProperty =
+            DependencyProperty.Register(nameof(MachineStatus), typeof(MachineStatus), typeof(CardSensorBay));
+
+        [Browsable(false)]
+        public static readonly DependencyProperty SensorsServiceProperty =
+            DependencyProperty.Register(nameof(SensorsService), typeof(ISensorsService), typeof(CardSensorBay));
+
+        private readonly IEventAggregator eventAggregator;
 
         private readonly IMachineService machineService;
 
         private readonly ISensorsService sensorsService;
+
+        private SubscriptionToken machineStatusChangesToken;
 
         #endregion
 
@@ -33,24 +46,64 @@ namespace Ferretto.VW.App.Controls.Controls
                 return;
             }
 
+            this.Dispatcher.ShutdownStarted += this.Dispatcher_ShutdownStarted;
+
+            this.eventAggregator = ServiceLocator.Current.GetInstance<IEventAggregator>();
             this.machineService = ServiceLocator.Current.GetInstance<IMachineService>();
             this.sensorsService = ServiceLocator.Current.GetInstance<ISensorsService>();
 
-            this.DataContext = new
+            this.Loaded += (s, e) =>
             {
-                MachineService = this.machineService,
-                SensorsService = this.sensorsService
+                this.sensorsService.RefreshAsync(true);
+                this.SensorsService = this.sensorsService;
+                this.MachineStatus = this.machineService.MachineStatus;
             };
+
+            this.machineStatusChangesToken = this.machineStatusChangesToken
+                ?? this.eventAggregator
+                    .GetEvent<MachineStatusChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnMachineStatusChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.DataContext = this;
         }
 
         #endregion
 
         #region Properties
 
-        public double? BayChainTargetPosition
+        public MachineStatus MachineStatus
         {
-            get => (double?)this.GetValue(BayChainTargetPositionProperty);
-            set => this.SetValue(BayChainTargetPositionProperty, value);
+            get => (MachineStatus)this.GetValue(MachineStatusProperty);
+            set => this.SetValue(MachineStatusProperty, value);
+        }
+
+        public ISensorsService SensorsService
+        {
+            get => (ISensorsService)this.GetValue(SensorsServiceProperty);
+            set => this.SetValue(SensorsServiceProperty, value);
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected Task OnMachineStatusChangedAsync(MachineStatusChangedMessage e)
+        {
+            this.MachineStatus = e.MachineStatus;
+
+            return Task.CompletedTask;
+        }
+
+        private void Dispatcher_ShutdownStarted(object sender, EventArgs e)
+        {
+            if (this.machineStatusChangesToken != null)
+            {
+                this.machineStatusChangesToken.Dispose();
+                this.machineStatusChangesToken = null;
+            }
         }
 
         #endregion

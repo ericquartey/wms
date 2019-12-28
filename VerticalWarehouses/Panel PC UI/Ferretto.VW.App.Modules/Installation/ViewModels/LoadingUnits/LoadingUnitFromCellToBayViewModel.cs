@@ -49,13 +49,6 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.SelectBayPositionDown();
         }
 
-        public override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
-        }
-
         public override async Task StartAsync()
         {
             try
@@ -104,6 +97,13 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
             this.confirmEjectLoadingUnitCommand.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 
         private bool CanConfirmEjectLoadingUnit()

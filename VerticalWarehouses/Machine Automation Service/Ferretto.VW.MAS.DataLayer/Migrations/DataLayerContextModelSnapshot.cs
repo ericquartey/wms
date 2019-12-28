@@ -112,6 +112,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
 
                     b.Property<double>("ElevatorDistance");
 
+                    b.Property<double>("HomingCreepSpeed");
+
+                    b.Property<double>("HomingFastSpeed");
+
                     b.Property<bool>("IsHomingExecuted");
 
                     b.Property<double>("LastIdealPosition");
@@ -227,6 +231,10 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                     b.Property<int?>("EmptyLoadMovementId");
 
                     b.Property<int?>("FullLoadMovementId");
+
+                    b.Property<double>("HomingCreepSpeed");
+
+                    b.Property<double>("HomingFastSpeed");
 
                     b.Property<int?>("InverterId");
 
@@ -603,6 +611,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Id = 33,
+                            Code = 33,
+                            Description = "WarehouseIsFull",
+                            Reason = "WarehouseIsFull",
+                            Severity = 1
+                        },
+                        new
+                        {
                             Id = 200000,
                             Code = 200000,
                             Description = "Errore inverter.",
@@ -848,6 +864,38 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Description = "Cassetto non presente sull'Elevatore",
                             Reason = "MachineManagerErrorLoadingUnitSourceElevator",
                             Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300016,
+                            Code = 300016,
+                            Description = "Elevatore occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300017,
+                            Code = 300017,
+                            Description = "Baia 1 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300018,
+                            Code = 300018,
+                            Description = "Baia 2 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 2. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 300019,
+                            Code = 300019,
+                            Description = "Baia 3 occupato con cassetto sconosciuto",
+                            Reason = "Verificare l'id del cassetto sulla baia 3. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.",
+                            Severity = 1
                         });
                 });
 
@@ -1024,6 +1072,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         },
                         new
                         {
+                            Code = 33,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
                             Code = 200000,
                             TotalErrors = 0
                         },
@@ -1175,6 +1228,26 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 300015,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300016,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300017,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300018,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 300019,
                             TotalErrors = 0
                         },
                         new
@@ -1521,7 +1594,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 19, 14, 35, 11, 460, DateTimeKind.Local).AddTicks(7740),
+                            InstallationDate = new DateTime(2017, 2, 24, 17, 1, 7, 632, DateTimeKind.Local).AddTicks(4419),
                             ServiceStatus = 86
                         });
                 });

@@ -27,8 +27,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isSearching;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand loadingUnitCallCommand;
 
         private int? loadingUnitId;
@@ -65,10 +63,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value) && value)
                 {
@@ -207,6 +205,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectLoadingUnit();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.loadingUnitCallCommand?.RaiseCanExecuteChanged();
+            this.upSelectionCommand?.RaiseCanExecuteChanged();
+            this.downSelectionCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanRequestLoadingUnitCall()
         {
             return
@@ -254,13 +261,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 this.currentItemIndex = 0;
                 this.SelectLoadingUnit();
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.loadingUnitCallCommand?.RaiseCanExecuteChanged();
-            this.upSelectionCommand?.RaiseCanExecuteChanged();
-            this.downSelectionCommand?.RaiseCanExecuteChanged();
         }
 
         private void SelectLoadingUnit()

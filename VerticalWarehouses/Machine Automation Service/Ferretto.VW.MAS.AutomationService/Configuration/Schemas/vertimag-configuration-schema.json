@@ -393,6 +393,8 @@
                             "title": "The Carousel Schema",
                             "required": [
                                 "ElevatorDistance",
+                                "HomingFastSpeed",
+                                "HomingCreepSpeed",
                                 "ManualMovements",
                                 "AssistedMovements"
                             ],
@@ -402,6 +404,20 @@
                                     "type": "number",
                                     "title": "The Elevatordistance Schema",
                                     "default": 0
+                                },
+                                "HomingFastSpeed": {
+                                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/HomingFastSpeed",
+                                    "type": "number",
+                                    "title": "The HomingFastSpeed Schema",
+                                    "minimum": 0,
+                                    "default": 8000
+                                },
+                                "HomingCreepSpeed": {
+                                    "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/HomingCreepSpeed",
+                                    "type": "number",
+                                    "title": "The HomingCreepSpeed Schema",
+                                    "minimum": 0,
+                                    "default": 2000
                                 },
                                 "ManualMovements": {
                                     "$id": "#/properties/Machine/properties/Bays/items/properties/Carousel/properties/ManualMovements",
@@ -463,6 +479,8 @@
                                 "Resolution",
                                 "Offset",
                                 "ChainOffset",
+                                "HomingFastSpeed",
+                                "HomingCreepSpeed",
                                 "EmptyLoadMovement",
                                 "FullLoadMovement",
                                 "ManualMovements",
@@ -545,6 +563,20 @@
                                     "minimum": -10,
                                     "maximum": 10,
                                     "default": -5
+                                },
+                                "HomingFastSpeed": {
+                                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/HomingFastSpeed",
+                                    "type": "number",
+                                    "title": "The HomingFastSpeed Schema",
+                                    "minimum": 0,
+                                    "default": 2000
+                                },
+                                "HomingCreepSpeed": {
+                                    "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/HomingCreepSpeed",
+                                    "type": "number",
+                                    "title": "The HomingCreepSpeed Schema",
+                                    "minimum": 0,
+                                    "default": 500
                                 },
                                 "UpperBound": {
                                     "$id": "#/properties/Machine/properties/Elevator/properties/Axes/items/properties/UpperBound",

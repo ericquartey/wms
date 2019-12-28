@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
-        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber)
+        public ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided)
         {
             // check #1: elevator must be located opposite to the specified bay position
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -129,13 +129,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 return new ActionPolicy { Reason = Resources.Elevator.ALoadingUnitIsAlreadyOnBoardOfTheElevator };
             }
 
-            // check #4: the shutter must be completely closed
+            // check #4: the shutter must be completely closed or open depending if mission is guided or not
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                if (shutterPosition != ShutterPosition.Closed)
+                if (isGuided)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                    if (shutterPosition != ShutterPosition.Closed)
+                    {
+                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                    }
+                }
+                else
+                {
+                    if (shutterPosition != ShutterPosition.Opened)
+                    {
+                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    }
                 }
             }
 
@@ -294,7 +304,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
             return ActionPolicy.Allowed;
         }
 
-        public ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber)
+        public ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber, bool isGuided)
         {
             // check #1: elevator must be located opposite to the specified bay position
             var bayPosition = this.elevatorDataProvider.GetCurrentBayPosition();
@@ -326,13 +336,23 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                 };
             }
 
-            // check #4: the shutter must be completely closed
+            // check #4: the shutter must be completely closed or open depending if mission is guided or not
             var shutterPosition = this.machineResourcesProvider.GetShutterPosition(bayNumber);
             if (shutterPosition != ShutterPosition.NotSpecified)
             {
-                if (shutterPosition != ShutterPosition.Closed)
+                if (isGuided)
                 {
-                    return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                    if (shutterPosition != ShutterPosition.Closed)
+                    {
+                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterOfBayIsNotCompletelyClosed };
+                    }
+                }
+                else
+                {
+                    if (shutterPosition != ShutterPosition.Opened)
+                    {
+                        return new ActionPolicy { Reason = Resources.Shutters.TheShutterIsNotCompletelyOpen };
+                    }
                 }
             }
 
@@ -453,7 +473,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void LoadFromBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanLoadFromBay(bayPositionId, bayNumber);
+            var policy = this.CanLoadFromBay(bayPositionId, bayNumber, isGuided: false);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);
@@ -1127,7 +1147,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
 
         public void UnloadToBay(int bayPositionId, BayNumber bayNumber, MessageActor sender)
         {
-            var policy = this.CanUnloadToBay(bayPositionId, bayNumber);
+            var policy = this.CanUnloadToBay(bayPositionId, bayNumber, isGuided: false);
             if (!policy.IsAllowed)
             {
                 throw new InvalidOperationException(policy.Reason);

@@ -130,6 +130,8 @@
                     "Resolution": 77.61182,
                     "Offset": 350,
                     "ChainOffset": 0,
+                    "HomingFastSpeed": 2000,
+                    "HomingCreepSpeed": 500,
                     "UpperBound": 4000,
                     "LowerBound": 350,
                     "EmptyLoadMovement": {
@@ -165,6 +167,8 @@
                     "Resolution": 88.3038556,
                     "Offset": 0,
                     "ChainOffset": -5,
+                    "HomingFastSpeed": 2000,
+                    "HomingCreepSpeed": 500,
                     "Inverter": null,
                     "FullLoadMovement": {
                         "Acceleration": 350,

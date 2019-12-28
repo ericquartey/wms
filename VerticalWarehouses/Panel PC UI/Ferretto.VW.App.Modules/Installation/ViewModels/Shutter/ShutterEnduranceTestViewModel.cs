@@ -44,8 +44,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isShutterThreeSensors;
 
-        private bool isWaitingForResponse;
-
         private int? performedCyclesThisSession;
 
         private SubscriptionToken sensorsChangedToken;
@@ -152,10 +150,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isShutterThreeSensors, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -307,6 +305,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.startTestCommand.RaiseCanExecuteChanged();
+            this.stopTestCommand.RaiseCanExecuteChanged();
+        }
+
         private bool CanExecuteStartCommand()
         {
             return
@@ -346,12 +352,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.CumulativePerformedCycles = message.Data.PerformedCycles;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.startTestCommand.RaiseCanExecuteChanged();
-            this.stopTestCommand.RaiseCanExecuteChanged();
         }
 
         private async Task StartTestAsync()

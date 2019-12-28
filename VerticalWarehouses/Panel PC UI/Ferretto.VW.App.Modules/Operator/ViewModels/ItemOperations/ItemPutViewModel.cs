@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -9,7 +8,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemPutViewModel : BaseItemOperationMainViewModel
+    public class ItemPutViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -34,6 +33,8 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ItemPut.ToString();
+
         public ICommand FullOperationCommand =>
             this.fullOperationCommand
             ??
@@ -50,7 +51,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
         }
 
-        public override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
             this.fullOperationCommand.RaiseCanExecuteChanged();

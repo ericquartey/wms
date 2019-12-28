@@ -42,9 +42,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="30" />
-                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -86,6 +84,9 @@
 
                 </WrapPanel>
             </Grid>
+
+            <views:InstallationNavigationFooterView Grid.Row="2"
+                                                    HorizontalAlignment="Right" />
 
         </Grid>
     </Grid>

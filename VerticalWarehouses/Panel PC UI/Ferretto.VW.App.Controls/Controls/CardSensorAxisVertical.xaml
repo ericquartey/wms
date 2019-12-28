@@ -5,24 +5,23 @@
              xmlns:local="clr-namespace:Ferretto.VW.App.Controls.Controls"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-             Name="UserControl"
              d:DesignHeight="150"
              d:DesignWidth="300"
              mc:Ignorable="d">
 
-    <local:CardSensor CardBadge1="{Binding MachineStatus.EmbarkedLoadingUnit.Id}"
+    <local:CardSensor CardBadge1="{Binding EmbarkedLoadingUnit.Id}"
                       CardBadgeLabel1="Cassetto"
-                      CardDescription="{Binding ElementName=UserControl, Path=VerticalTargetPosition, StringFormat={}{0:F2}}"
-                      CardSensorLabel1=""
-                      CardSensorLabel2=""
-                      CardSensorLabel3=""
+                      CardDescription="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}"
+                      CardSensorLabel1="{x:Null}"
+                      CardSensorLabel2="{x:Null}"
+                      CardSensorLabel3="{x:Null}"
                       CardText="Verticale (mm)"
-                      CardValue="{Binding MachineStatus.ElevatorVerticalPosition, StringFormat={}{0:F2}}"
-                      LuHeight="{Binding MachineStatus.EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
-                      LuWeight="{Binding MachineStatus.EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
+                      CardValue="{Binding ElevatorVerticalPosition, StringFormat={}{0:F2}}"
+                      LuHeight="{Binding EmbarkedLoadingUnit.Height, StringFormat={}{0:F2}}"
+                      LuWeight="{Binding EmbarkedLoadingUnit.GrossWeight, StringFormat={}{0:F2}}"
                       Sensor1="False"
                       Sensor2="False"
                       Sensor3="False"
                       Type="Axis" />
-    
+
 </UserControl>

@@ -31,8 +31,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private bool isOtherActive;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand menuAccessoriesCommand;
 
         private DelegateCommand menuBaysCommand;
@@ -45,7 +43,11 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private DelegateCommand menuLoadingUnitsCommand;
 
+        private DelegateCommand menuMovementsCommand;
+
         private DelegateCommand menuOtherCommand;
+
+        private DelegateCommand viewStatusSensorsCommand;
 
         #endregion
 
@@ -125,12 +127,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             set => this.SetProperty(ref this.isOtherActive, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
-
         public ICommand MenuAccessoriesCommand =>
             this.menuAccessoriesCommand
             ??
@@ -173,11 +169,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 () => this.MenuCommand(Menu.LoadingUnits),
                 this.CanExecuteCommand));
 
+        public ICommand MenuMovementsCommand =>
+                                                                                                                            this.menuMovementsCommand
+            ??
+            (this.menuMovementsCommand = new DelegateCommand(
+                () => this.MovementsCommand(),
+                this.CanExecuteMovementsCommand));
+
         public ICommand MenuOtherCommand =>
             this.menuOtherCommand
             ??
             (this.menuOtherCommand = new DelegateCommand(
                 () => this.MenuCommand(Menu.Other),
+                this.CanExecuteCommand));
+
+        public ICommand ViewStatusSensorsCommand =>
+                    this.viewStatusSensorsCommand
+            ??
+            (this.viewStatusSensorsCommand = new DelegateCommand(
+                () => this.StatusSensorsCommand(),
                 this.CanExecuteCommand));
 
         #endregion
@@ -242,16 +252,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
             return !this.IsWaitingForResponse;
         }
 
-        internal virtual void RaiseCanExecuteChanged()
-        {
-            this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
-            this.menuBaysCommand?.RaiseCanExecuteChanged();
-            this.menuCellsCommand?.RaiseCanExecuteChanged();
-            this.menuElevatorCommand?.RaiseCanExecuteChanged();
-            this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
-            this.menuOtherCommand?.RaiseCanExecuteChanged();
-        }
-
         protected override async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             await base.OnHealthStatusChangedAsync(e);
@@ -264,6 +264,25 @@ namespace Ferretto.VW.App.Menu.ViewModels
             await base.OnMachinePowerChangedAsync(e);
 
             this.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
+            this.menuBaysCommand?.RaiseCanExecuteChanged();
+            this.menuCellsCommand?.RaiseCanExecuteChanged();
+            this.menuElevatorCommand?.RaiseCanExecuteChanged();
+            this.menuLoadingUnitsCommand?.RaiseCanExecuteChanged();
+            this.menuOtherCommand?.RaiseCanExecuteChanged();
+            this.menuMovementsCommand?.RaiseCanExecuteChanged();
+            this.viewStatusSensorsCommand?.RaiseCanExecuteChanged();
+        }
+
+        private bool CanExecuteMovementsCommand()
+        {
+            return !this.IsWaitingForResponse
+                && this.MachineModeService.MachinePower == MachinePowerState.Powered
+                && this.HealthProbeService.HealthStatus == HealthStatus.Healthy;
         }
 
         private void MenuCommand(Menu menu)
@@ -338,6 +357,50 @@ namespace Ferretto.VW.App.Menu.ViewModels
                         Debugger.Break();
                         break;
                 }
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void MovementsCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.MOVEMENTS,
+                    data: null,
+                    trackCurrentView: true);
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private void StatusSensorsCommand()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.NavigationService.Appear(
+                    nameof(Utils.Modules.Installation),
+                    Utils.Modules.Installation.Sensors.SECURITY,
+                    data: null,
+                    trackCurrentView: true);
             }
             catch (Exception ex)
             {

@@ -106,6 +106,9 @@ namespace Ferretto.VW.MAS.DataModels
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(AnotherMissionOfThisTypeIsActive), 1)]
         AnotherMissionOfThisTypeIsActive,
 
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(WarehouseIsFull), 1)]
+        WarehouseIsFull,
+
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(InverterErrorBaseCode), 1)]
         InverterErrorBaseCode = 200000,
 
@@ -198,5 +201,17 @@ namespace Ferretto.VW.MAS.DataModels
 
         [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitSourceElevator), 1)]
         MachineManagerErrorLoadingUnitSourceElevator = MachineManagerErrorBaseCode + 15,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnElevator), 1)]
+        MachineManagerErrorLoadingUnitMissingOnElevator = MachineManagerErrorBaseCode + 16,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay1), 1)]
+        MachineManagerErrorLoadingUnitMissingOnBay1 = MachineManagerErrorBaseCode + 17,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay2), 1)]
+        MachineManagerErrorLoadingUnitMissingOnBay2 = MachineManagerErrorBaseCode + 18,
+
+        [ErrorDescription(typeof(ErrorDescriptions), typeof(ErrorReasons), nameof(MachineManagerErrorLoadingUnitMissingOnBay3), 1)]
+        MachineManagerErrorLoadingUnitMissingOnBay3 = MachineManagerErrorBaseCode + 19,
     }
 }

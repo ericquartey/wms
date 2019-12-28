@@ -18,7 +18,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         ActionPolicy CanExtractFromBay(int bayPositionId, BayNumber bayNumber);
 
-        ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber);
+        ActionPolicy CanLoadFromBay(int bayPositionId, BayNumber bayNumber, bool isGuided);
 
         ActionPolicy CanLoadFromCell(int cellId, BayNumber bayNumber);
 
@@ -26,7 +26,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         ActionPolicy CanMoveToCell(int cellId);
 
-        ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber);
+        ActionPolicy CanUnloadToBay(int bayPositionId, BayNumber bayNumber, bool isGuided);
 
         ActionPolicy CanUnloadToCell(int cellId);
 

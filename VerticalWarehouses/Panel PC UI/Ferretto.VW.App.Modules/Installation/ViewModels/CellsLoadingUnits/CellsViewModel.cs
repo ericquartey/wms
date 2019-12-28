@@ -28,8 +28,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private DelegateCommand downDataGridButtonCommand;
 
-        private bool isWaitingForResponse;
-
         private Cell selectedCell;
 
         private DelegateCommand upDataGridButtonCommand;
@@ -63,12 +61,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             (this.downDataGridButtonCommand = new DelegateCommand(() => this.ChangeSelectedItemAsync(false), this.IsWaitingForResponse));
 
         public override EnableMask EnableMask => EnableMask.Any;
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            private set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
-        }
 
         public Cell SelectedCell
         {
@@ -115,8 +107,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBackNavigationAllowed = true;
         }
 
-        private void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.ClearNotifications();
         }
 

@@ -5,7 +5,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemInventoryViewModel : BaseItemOperationMainViewModel
+    public class ItemInventoryViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Constructors
 
@@ -22,20 +22,26 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #endregion
 
+        #region Properties
+
+        public string ActiveContextName => OperationalContext.ItemInventory.ToString();
+
+        #endregion
+
         #region Methods
 
         public override bool CanConfirmOperation()
         {
-           return
-              !this.IsWaitingForResponse
-              &&
-              !this.IsBusyAbortingOperation
-              &&
-              !this.IsBusyConfirmingOperation
-              &&
-              this.InputQuantity.HasValue
-              &&
-              this.InputQuantity.Value >= 0;
+            return
+               !this.IsWaitingForResponse
+               &&
+               !this.IsBusyAbortingOperation
+               &&
+               !this.IsBusyConfirmingOperation
+               &&
+               this.InputQuantity.HasValue
+               &&
+               this.InputQuantity.Value >= 0;
         }
 
         protected override void ShowOperationDetails()

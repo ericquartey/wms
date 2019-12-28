@@ -16,11 +16,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
     {
         #region Fields
 
-        private double? bayChainTargetPosition;
-
         private DelegateCommand closedShutterCommand;
-
-        private double? horizontalTargetPosition;
 
         private int? inputCellId;
 
@@ -57,6 +53,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isTuningChain;
 
         private bool isUseWeightControl;
+
+        private string labelMoveToLoadunit;
 
         private DelegateCommand loadFromBayCommand;
 
@@ -110,17 +108,9 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private ActionPolicy unloadToCellPolicy;
 
-        private double? verticalTargetPosition;
-
         #endregion
 
         #region Properties
-
-        public double? BayChainTargetPosition
-        {
-            get => this.bayChainTargetPosition;
-            private set => this.SetProperty(ref this.bayChainTargetPosition, value);
-        }
 
         public bool BayIsShutterThreeSensors => this.MachineService.IsShutterThreeSensors;
 
@@ -146,12 +136,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanCloseShutter));
 
         public bool HasBayExternal => this.MachineService.HasBayExternal;
-
-        public double? HorizontalTargetPosition
-        {
-            get => this.horizontalTargetPosition;
-            private set => this.SetProperty(ref this.horizontalTargetPosition, value);
-        }
 
         public int? InputCellId
         {
@@ -344,6 +328,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isUseWeightControl, value);
         }
 
+        public string LabelMoveToLoadunit
+        {
+            get => this.labelMoveToLoadunit;
+            set => this.SetProperty(ref this.labelMoveToLoadunit, value);
+        }
+
         public ICommand LoadFromBayCommand => this.loadFromBayCommand
             ??
             (this.loadFromBayCommand = new DelegateCommand(
@@ -472,12 +462,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 async () => await this.UnloadToCellAsync(),
                 this.CanUnloadToCell));
 
-        public double? VerticalTargetPosition
-        {
-            get => this.verticalTargetPosition;
-            private set => this.SetProperty(ref this.verticalTargetPosition, value);
-        }
-
         #endregion
 
         #region Methods
@@ -605,11 +589,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     &&
                     this.MachineStatus.EmbarkedLoadingUnit != null
                     &&
-                    this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
-                    &&
                     this.sensorsService.Sensors.LuPresentInMachineSide
                     &&
-                    this.sensorsService.Sensors.LuPresentInOperatorSide;
+                    this.sensorsService.Sensors.LuPresentInOperatorSide
+                    &&
+                    this.loadFromCellPolicy?.IsAllowed == false
+                    &&
+                    this.unloadToCellPolicy?.IsAllowed == false;
             }
 
             return canMove;
@@ -893,11 +879,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsWaitingForResponse = true;
 
                 if (this.MachineStatus.EmbarkedLoadingUnit != null
-                    && this.MachineStatus.EmbarkedLoadingUnit.Id == this.SelectedLoadingUnit.Id
-                    )
+                    && this.MachineStatus.EmbarkedLoadingUnit.Cell is null)
                 {
                     await this.machineElevatorWebService.MoveToFreeCellAsync(
-                        this.SelectedLoadingUnit.Id,
+                        this.MachineStatus.EmbarkedLoadingUnit.Id,
                         performWeighting: this.isUseWeightControl,
                         computeElongation: true);
                 }
@@ -1109,7 +1094,15 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 }
                 else
                 {
-                    await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    if (!string.IsNullOrEmpty(this.MachineStatus.LogicalPositionId))
+                    {
+                        int cell = int.Parse(this.MachineStatus.LogicalPositionId);
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, cell, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    }
+                    else
+                    {
+                        await this.machineLoadingUnitsWebService.InsertLoadingUnitAsync(LoadingUnitLocation.LoadingUnit, null, this.MachineStatus.EmbarkedLoadingUnit.Id);
+                    }
                 }
 
                 this.IsBusyUnloadingToCell = true;

@@ -6,12 +6,13 @@ using Ferretto.VW.MAS.DataModels;
 using Ferretto.VW.MAS.DeviceManager.Providers.Interfaces;
 using Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States.Interfaces;
 using Ferretto.VW.MAS.Utils.FiniteStateMachines;
+using Ferretto.VW.MAS.Utils.FiniteStateMachines.Interfaces;
 using Ferretto.VW.MAS.Utils.Messages;
 using Microsoft.Extensions.Logging;
 
 namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.States
 {
-    internal class MoveLoadingUnitWaitPickConfirm : StateBase, IMoveLoadingUnitWaitPickConfirm
+    internal class MoveLoadingUnitWaitPickConfirm : StateBase, IMoveLoadingUnitWaitPickConfirm, IWaitState
     {
         #region Fields
 

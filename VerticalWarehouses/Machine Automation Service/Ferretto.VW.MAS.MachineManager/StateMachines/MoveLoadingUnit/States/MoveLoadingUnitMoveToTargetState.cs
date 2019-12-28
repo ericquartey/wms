@@ -179,10 +179,17 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 case MessageStatus.OperationUpdateData:
                     // check weight value
-                    if (this.measure && !this.ejectLoadUnit)
+                    if (this.measure
+                        && !this.ejectLoadUnit
+                        && notification.Source != MessageActor.MachineManager
+                        )
                     {
                         var check = this.loadingUnitsDataProvider.CheckWeight(this.mission.LoadingUnitId);
-                        if (check != MachineErrorCode.NoError)
+                        if (check == MachineErrorCode.NoError)
+                        {
+                            this.baysDataProvider.Light(this.mission.TargetBay, false);
+                        }
+                        else
                         {
                             // stop movement and  go back to bay
                             this.errorsProvider.RecordNew(check);

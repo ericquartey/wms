@@ -41,18 +41,15 @@
 
             <controls:CardSensorAxisVertical Grid.Row="2"
                                              Width="250"
-                                             Margin="0,0,15,5"
-                                             VerticalTargetPosition="{Binding VerticalTargetPosition, StringFormat={}{0:F2}}" />
+                                             Margin="0,0,15,5" />
 
             <controls:CardSensorAxisHorizontal Grid.Row="3"
                                                Width="250"
-                                               Margin="0,0,15,5"
-                                               HorizontalTargetPosition="{Binding HorizontalTargetPosition, StringFormat={}{0:F2}}" />
+                                               Margin="0,0,15,5" />
 
             <controls:CardSensorBay Grid.Row="4"
                                     Width="250"
-                                    Margin="0,0,15,5"
-                                    BayChainTargetPosition="{Binding BayChainTargetPosition, StringFormat={}{0:F2}}" />
+                                    Margin="0,0,15,5" />
 
             <controls:CardSensorShutter Grid.Row="5"
                                         Width="250"
@@ -145,7 +142,7 @@
                                             HorizontalAlignment="Left"
                                             VerticalAlignment="Top"
                                             Command="{Binding MoveToLoadingUnitHeightCommand}"
-                                            Content="{x:Static res:InstallationApp.GoToDrawer}"
+                                            Content="{Binding LabelMoveToLoadunit}"
                                             IsBusy="{Binding IsElevatorMovingToLoadingUnit}" />
 
                         <StackPanel Grid.Column="2"
@@ -684,6 +681,14 @@
                                 Grid.Column="3"
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal">
+                        <controls:PpcButton Width="60"
+                                            Margin="15,0,0,0"
+                                            HorizontalAlignment="Right"
+                                            BorderBrush="{DynamicResource FerrettoYellow}"
+                                            Command="{Binding LightCommand}"
+                                            Foreground="{StaticResource FerrettoPureWhite}"
+                                            KindMaterial="{Binding LightIcon}"
+                                            Visibility="{Binding IsMovementsGuided, Converter={StaticResource BTVC}}" />
                         <controls:PpcButton Width="60"
                                             Margin="15,0,0,0"
                                             HorizontalAlignment="Right"

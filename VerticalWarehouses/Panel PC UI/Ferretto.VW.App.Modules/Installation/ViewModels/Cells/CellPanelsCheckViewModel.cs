@@ -56,8 +56,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingUp;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveUpCommand;
@@ -200,10 +198,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isElevatorMovingUp, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -321,6 +319,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.goToCellHeightCommand?.RaiseCanExecuteChanged();
+            this.goToNextPanelCommand?.RaiseCanExecuteChanged();
+            this.goToPreviousPanelCommand?.RaiseCanExecuteChanged();
+            this.moveDownCommand?.RaiseCanExecuteChanged();
+            this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.stopCommand?.RaiseCanExecuteChanged();
         }
 
         protected override bool SetProperty<T>(ref T storage, T value, [CallerMemberName] string propertyName = null)
@@ -568,17 +579,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Displacement = this.currentHeight - this.initialPosition;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
-            this.goToCellHeightCommand?.RaiseCanExecuteChanged();
-            this.goToNextPanelCommand?.RaiseCanExecuteChanged();
-            this.goToPreviousPanelCommand?.RaiseCanExecuteChanged();
-            this.moveDownCommand?.RaiseCanExecuteChanged();
-            this.moveUpCommand?.RaiseCanExecuteChanged();
-            this.stopCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task Stop()

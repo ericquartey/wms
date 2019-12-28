@@ -26,6 +26,12 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
 
         #endregion
 
+        #region Properties
+
+        public BayNumber BayNumber { get; set; }
+
+        #endregion
+
         #region Methods
 
         [HttpGet("current")]
@@ -63,6 +69,15 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
         {
             this.errorsProvider.ResolveAll();
             return this.Ok();
+        }
+
+        [HttpPost("errorppc")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public ActionResult<MachineError> SetErrorPPC(MachineErrorCode errorCode)
+        {
+            return this.Ok(this.errorsProvider.RecordNew(errorCode, this.BayNumber));
         }
 
         #endregion

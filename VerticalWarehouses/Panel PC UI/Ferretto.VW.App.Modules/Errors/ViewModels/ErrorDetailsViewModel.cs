@@ -18,8 +18,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
 
         private string errorTime;
 
-        private bool isWaitingForResponse;
-
         private ICommand markAsResolvedCommand;
 
         #endregion
@@ -50,12 +48,6 @@ namespace Ferretto.VW.App.Modules.Errors.ViewModels
         {
             get => this.errorTime;
             set => this.SetProperty(ref this.errorTime, value);
-        }
-
-        public bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            set => this.SetProperty(ref this.isWaitingForResponse, value);
         }
 
         public ICommand MarkAsResolvedCommand =>

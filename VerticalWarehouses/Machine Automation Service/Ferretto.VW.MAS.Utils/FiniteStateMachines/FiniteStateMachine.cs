@@ -224,14 +224,14 @@ namespace Ferretto.VW.MAS.Utils.FiniteStateMachines
 
         public virtual void Start(CommandMessage commandMessage, IServiceProvider serviceProvider, CancellationToken cancellationToken)
         {
-            if (this.isStarted)
-            {
-                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
-            }
-
             if (commandMessage is null)
             {
                 throw new ArgumentNullException(nameof(commandMessage));
+            }
+
+            if (this.isStarted)
+            {
+                throw new InvalidOperationException($"The state machine {this.GetType().Name} was already started");
             }
 
             if (this.OnStart(commandMessage, cancellationToken))

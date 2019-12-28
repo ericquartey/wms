@@ -12,16 +12,21 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
     {
         #region Fields
 
+        private readonly IMachineErrorsService machineErrorsService;
+
         private readonly INavigationService navigationService;
 
         #endregion
 
         #region Constructors
 
-        public PresentationError(INavigationService navigationService)
+        public PresentationError(
+            INavigationService navigationService,
+            IMachineErrorsService machineErrorsService)
             : base(PresentationTypes.Error)
         {
             this.navigationService = navigationService ?? throw new ArgumentNullException(nameof(navigationService));
+            this.machineErrorsService = machineErrorsService ?? throw new ArgumentNullException(nameof(machineErrorsService));
         }
 
         #endregion
@@ -31,10 +36,10 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
         public override Task ExecuteAsync()
         {
             this.navigationService.Appear(
-                nameof(Utils.Modules.Errors),
-                Utils.Modules.Errors.ERRORDETAILSVIEW,
-                data: null,
-                trackCurrentView: true);
+            nameof(Utils.Modules.Errors),
+            this.machineErrorsService.ViewErrorActive,
+            data: null,
+            trackCurrentView: true);
 
             return Task.CompletedTask;
         }

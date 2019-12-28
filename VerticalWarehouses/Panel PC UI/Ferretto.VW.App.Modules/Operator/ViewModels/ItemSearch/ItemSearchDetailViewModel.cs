@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Drawing;
 using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Controls;
+using Ferretto.VW.App.Modules.Operator.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.Utils.Attributes;
 using Ferretto.VW.Utils.Enumerators;
@@ -10,9 +12,13 @@ using Ferretto.WMS.Data.WebAPI.Contracts;
 namespace Ferretto.VW.App.Operator.ViewModels
 {
     [Warning(WarningsArea.Picking)]
-    public class ItemSearchDetailViewModel : BaseOperatorViewModel
+    public class ItemSearchDetailViewModel : BaseOperatorViewModel, IOperationalContextViewModel
     {
         #region Fields
+
+        private readonly IBayManager bayManager;
+
+        private readonly IItemsWmsWebService itemsWmsWebService;
 
         private readonly IWmsImagesProvider wmsImagesProvider;
 
@@ -22,15 +28,22 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Constructors
 
-        public ItemSearchDetailViewModel(IWmsImagesProvider wmsImagesProvider)
+        public ItemSearchDetailViewModel(
+            IWmsImagesProvider wmsImagesProvider,
+            IItemsWmsWebService itemsWmsWebService,
+            IBayManager bayManager)
             : base(PresentationMode.Operator)
         {
             this.wmsImagesProvider = wmsImagesProvider ?? throw new ArgumentNullException(nameof(wmsImagesProvider));
+            this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
+            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
         }
 
         #endregion
 
         #region Properties
+
+        public string ActiveContextName => OperationalContext.ItemsSearch.ToString();
 
         public override EnableMask EnableMask => EnableMask.Any;
 
@@ -56,6 +69,40 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.IsBackNavigationAllowed = true;
 
             this.Item = this.Data as Item;
+        }
+
+        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
+        {
+            await base.OnBarcodeMatchedAsync(e);
+
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                switch (userAction)
+                {
+                    case UserAction.FilterItems:
+                        try
+                        {
+                            var item = await this.itemsWmsWebService.GetByBarcodeAsync(e.Barcode);
+                            this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            this.ShowNotification(ex);
+                        }
+
+                        break;
+
+                    case UserAction.PickItem:
+                        // TODO da definire con Danilo
+
+                        break;
+                }
+            }
         }
 
         #endregion

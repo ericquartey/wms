@@ -135,9 +135,8 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 async () => await this.StartToBayAsync(),
                 () => !this.IsExecutingProcedure &&
                       !this.IsWaitingForResponse &&
-                      (!string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode) ||
-                       !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBayCode))
-                ));
+                      (!string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBay?.Id.ToString()) ||
+                       !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionDownInBay?.Id.ToString()))));
 
         #endregion
 
@@ -169,32 +168,20 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
                 .ContinueWith((m) => this.RaiseCanExecuteChanged());
         }
 
-        public override void RaiseCanExecuteChanged()
-        {
-            base.RaiseCanExecuteChanged();
-
-            this.sendToBay1Command?.RaiseCanExecuteChanged();
-            this.sendToBay2Command?.RaiseCanExecuteChanged();
-            this.sendToBay3Command?.RaiseCanExecuteChanged();
-            this.startToBayCommand?.RaiseCanExecuteChanged();
-            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
-        }
-
         public async Task StartToBayAsync()
         {
             try
             {
-                var source = this.GetLoadingUnitSource(string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode));
-
+                var source = this.GetLoadingUnitSource(!(this.MachineStatus.LoadingUnitPositionUpInBay != null));
                 if (source == LoadingUnitLocation.NoLocation)
                 {
                     this.ShowNotification("Tipo scelta sorgente non valida", Services.Models.NotificationSeverity.Warning);
                     return;
                 }
 
-                var loadingUnit = !string.IsNullOrEmpty(this.MachineStatus.LoadingUnitPositionUpInBayCode) ?
-                                      this.MachineStatus.LoadingUnitPositionUpInBayCode :
-                                      this.MachineStatus.LoadingUnitPositionDownInBayCode;
+                var loadingUnit = this.MachineStatus.LoadingUnitPositionUpInBay != null ?
+                                  this.MachineStatus.LoadingUnitPositionUpInBay?.Id.ToString() :
+                                  this.MachineStatus.LoadingUnitPositionDownInBay?.Id.ToString();
                 int id = 0;
                 int.TryParse(loadingUnit, out id);
 
@@ -250,6 +237,17 @@ namespace Ferretto.VW.App.Modules.Installation.ViewModels
 
             this.isEjectLoadingUnitConfirmationEnabled = true;
 
+            this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.sendToBay1Command?.RaiseCanExecuteChanged();
+            this.sendToBay2Command?.RaiseCanExecuteChanged();
+            this.sendToBay3Command?.RaiseCanExecuteChanged();
+            this.startToBayCommand?.RaiseCanExecuteChanged();
             this.confirmEjectLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 

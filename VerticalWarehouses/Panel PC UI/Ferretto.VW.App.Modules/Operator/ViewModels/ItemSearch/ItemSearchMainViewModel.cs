@@ -55,8 +55,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private bool isSearching;
 
-        private bool isWaitingForResponse;
-
         private int maxKnownIndexSelection;
 
         private DelegateCommand requestItemPickCommand;
@@ -88,7 +86,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             this.wmsDataProvider = wmsDataProvider ?? throw new ArgumentNullException(nameof(wmsDataProvider));
             this.identityService = identityService ?? throw new ArgumentNullException(nameof(identityService));
-            this.itemsWmsWebService = itemsWmsWebService;
+            this.itemsWmsWebService = itemsWmsWebService ?? throw new ArgumentNullException(nameof(itemsWmsWebService));
             this.areasWmsWebService = areasWmsWebService ?? throw new ArgumentNullException(nameof(areasWmsWebService));
             this.barcodeReaderService = barcodeReaderService ?? throw new ArgumentNullException(nameof(barcodeReaderService));
             this.bayManager = bayManager ?? throw new ArgumentNullException(nameof(bayManager));
@@ -100,7 +98,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
-        public string ActiveContextName => this.isBusyLoadingNextPage ? null : "ItemsSearch";
+        public string ActiveContextName => this.isBusyLoadingNextPage ? null : OperationalContext.ItemsSearch.ToString();
 
         public double? AvailableQuantity
         {
@@ -141,10 +139,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
             set => this.SetProperty(ref this.isSearching, value, this.RaiseCanExecuteChanged);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value) && value)
                 {
@@ -346,18 +344,49 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             await base.OnBarcodeMatchedAsync(e);
 
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
             if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
             {
                 switch (userAction)
                 {
                     case UserAction.FilterItems:
-                        // this.itemsWmsWebService.b
+                        var itemBarcode = e.GetItemBarCode();
+                        if (itemBarcode != null)
+                        {
+                            try
+                            {
+                                var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                                this.SelectedItem = new ItemInfo(item, this.bayManager.Identity.Id);
+                                this.ShowItemDetails();
+                            }
+                            catch (Exception ex)
+                            {
+                                this.ShowNotification(ex);
+                            }
+                        }
+
                         break;
 
                     case UserAction.PickItem:
+                        // TODO da definire con Danilo
+
                         break;
                 }
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.requestItemPickCommand?.RaiseCanExecuteChanged();
+            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
+            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
+            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
         private void AdjustItemsAppearance()
@@ -419,14 +448,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 this.SelectedItem != null;
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.requestItemPickCommand?.RaiseCanExecuteChanged();
-            this.showItemDetailsCommand?.RaiseCanExecuteChanged();
-            this.selectPreviousItemCommand?.RaiseCanExecuteChanged();
-            this.selectNextItemCommand?.RaiseCanExecuteChanged();
         }
 
         private void SetCurrentIndex(int? itemId)

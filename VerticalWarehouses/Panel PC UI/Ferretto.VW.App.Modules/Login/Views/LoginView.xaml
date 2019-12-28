@@ -41,44 +41,43 @@
                 </Grid.ColumnDefinitions>
 
                 <Border Grid.Column="0"
-                        Background="{DynamicResource FerrettoDarkGray}"
-                        BorderBrush="{x:Null}"
+                        BorderBrush="{DynamicResource FerrettoDarkGray}"
                         BorderThickness="0"
                         CornerRadius="4,0,0,4">
+                    <Border.Background>
+                        <ImageBrush ImageSource="{DynamicResource LoginBackground}"
+                                    Opacity="0.7"
+                                    Stretch="UniformToFill" />
+                    </Border.Background>
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
                         </Grid.RowDefinitions>
 
-                        <Grid.Background>
-                            <ImageBrush ImageSource="{DynamicResource LoginBackground}"
-                                        Opacity="0.7"
-                                        Stretch="UniformToFill" />
-                        </Grid.Background>
-
-                        <StackPanel>
-                            <StackPanel.Background>
+                        <Border BorderBrush="{DynamicResource FerrettoDarkGray}"
+                                BorderThickness="0"
+                                CornerRadius="4,0,0,4">
+                            <Border.Background>
                                 <SolidColorBrush Opacity="0.5"
                                                  Color="Black" />
-                            </StackPanel.Background>
+                            </Border.Background>
+                            <StackPanel Margin="4">
+                                <TextBlock Margin="25,25,25,8"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                           Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}" />
 
-                            <TextBlock Grid.Row="1"
-                                       Margin="25,25,25,8"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="{Binding MachineIdentity.ModelName, FallbackValue=ModelName}" />
+                                <TextBlock Margin="25,0,25,25"
+                                           HorizontalAlignment="Left"
+                                           VerticalAlignment="Top"
+                                           FontSize="{DynamicResource FontSize_High}"
+                                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                                           Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
 
-                            <TextBlock Grid.Row="2"
-                                       Margin="25,0,25,25"
-                                       HorizontalAlignment="Left"
-                                       VerticalAlignment="Top"
-                                       FontSize="{DynamicResource FontSize_High}"
-                                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                                       Text="{Binding MachineIdentity.SerialNumber, FallbackValue=SerialNumber, StringFormat={x:Static res:VWApp.SerialNumber}}" />
-
-                        </StackPanel>
+                            </StackPanel>
+                        </Border>
                     </Grid>
                 </Border>
 

@@ -103,5 +103,7 @@
         ElevatorPosition,
 
         BayChainPosition,
+
+        BayLight
     }
 }

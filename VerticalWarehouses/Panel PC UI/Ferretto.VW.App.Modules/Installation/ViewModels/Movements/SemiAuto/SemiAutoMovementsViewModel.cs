@@ -48,8 +48,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isPopupOpen;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand keyboardCloseCommand;
 
         private DelegateCommand keyboardOpenCommand;
@@ -160,10 +158,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             set => this.SetProperty(ref this.isPopupOpen, value);
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            private set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -303,6 +301,58 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.IsMoving = false;
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.CanInputCellId =
+                !this.KeyboardOpened
+                &&
+                this.cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
+            this.CanInputHeight =
+                !this.KeyboardOpened
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
+            this.CanInputLoadingUnitId =
+                !this.KeyboardOpened
+                &&
+                this.loadingUnits != null
+                &&
+                this.cells != null
+                &&
+                !this.IsMoving
+                &&
+                !this.IsWaitingForResponse;
+
+            this.RefreshActionPoliciesAsync();
+
+            this.moveToHeightCommand?.RaiseCanExecuteChanged();
+            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
+            this.tuningBayCommand?.RaiseCanExecuteChanged();
+            this.tuningChainCommand?.RaiseCanExecuteChanged();
+
+            this.openShutterCommand?.RaiseCanExecuteChanged();
+            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
+            this.closedShutterCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
+            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
+            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
+            this.stopMovingCommand?.RaiseCanExecuteChanged();
+            this.resetCommand?.RaiseCanExecuteChanged();
+            this.setWeightControlCommand?.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         private bool CanResetCommand()
@@ -457,56 +507,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     InstallationApp.ProcedureWasStopped,
                     Services.Models.NotificationSeverity.Warning);
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.CanInputCellId =
-                !this.KeyboardOpened
-                &&
-                this.cells != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
-
-            this.CanInputHeight =
-                !this.KeyboardOpened
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
-
-            this.CanInputLoadingUnitId =
-                !this.KeyboardOpened
-                &&
-                this.loadingUnits != null
-                &&
-                this.cells != null
-                &&
-                !this.IsMoving
-                &&
-                !this.IsWaitingForResponse;
-
-            this.RefreshActionPoliciesAsync();
-
-            this.moveToHeightCommand?.RaiseCanExecuteChanged();
-            this.moveToLoadingUnitHeightCommand?.RaiseCanExecuteChanged();
-            this.tuningBayCommand?.RaiseCanExecuteChanged();
-            this.tuningChainCommand?.RaiseCanExecuteChanged();
-
-            this.openShutterCommand?.RaiseCanExecuteChanged();
-            this.intermediateShutterCommand?.RaiseCanExecuteChanged();
-            this.closedShutterCommand?.RaiseCanExecuteChanged();
-            this.moveCarouselDownCommand?.RaiseCanExecuteChanged();
-            this.moveCarouselUpCommand?.RaiseCanExecuteChanged();
-            this.selectBayPositionDownCommand?.RaiseCanExecuteChanged();
-            this.selectBayPositionUpCommand?.RaiseCanExecuteChanged();
-            this.stopMovingCommand?.RaiseCanExecuteChanged();
-            this.resetCommand?.RaiseCanExecuteChanged();
-            this.setWeightControlCommand?.RaiseCanExecuteChanged();
-
-            this.RaisePropertyChanged(nameof(this.EmbarkedLoadingUnit));
         }
 
         private async Task RefreshMachineInfoAsync()

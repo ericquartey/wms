@@ -57,8 +57,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMovingUp;
 
-        private bool isWaitingForResponse;
-
         private DelegateCommand moveDownCommand;
 
         private DelegateCommand moveToBayHeightCommand;
@@ -225,10 +223,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
-            set
+            protected set
             {
                 if (this.SetProperty(ref this.isWaitingForResponse, value))
                 {
@@ -356,6 +354,19 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.ShowNotification(ex);
             }
+        }
+
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.abortCommand?.RaiseCanExecuteChanged();
+            this.moveDownCommand?.RaiseCanExecuteChanged();
+            this.moveUpCommand?.RaiseCanExecuteChanged();
+            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
+            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
+            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
+            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private async Task AbortAsync()
@@ -626,17 +637,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             {
                 this.Displacement = this.CurrentHeight - this.InitialPosition;
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.abortCommand?.RaiseCanExecuteChanged();
-            this.moveDownCommand?.RaiseCanExecuteChanged();
-            this.moveUpCommand?.RaiseCanExecuteChanged();
-            this.moveToBayHeightCommand?.RaiseCanExecuteChanged();
-            this.applyCorrectionCommand?.RaiseCanExecuteChanged();
-            this.changeToUpperBayPositionCommand?.RaiseCanExecuteChanged();
-            this.changeToLowerBayPositionCommand?.RaiseCanExecuteChanged();
         }
 
         private void ToggleBayPositionDown()

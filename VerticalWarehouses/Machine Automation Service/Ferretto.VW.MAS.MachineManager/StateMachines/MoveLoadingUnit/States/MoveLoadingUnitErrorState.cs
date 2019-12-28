@@ -158,6 +158,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                                     && this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitDepositUnitState)
                                     )
                                 {
+                                    this.mission.FsmRestoreStateName = null;
                                     returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
                                 }
                                 else
@@ -221,6 +222,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case nameof(MoveLoadingUnitEndState):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
                     break;
 
@@ -231,24 +233,28 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case nameof(MoveLoadingUnitMoveToTargetState):
                     this.mission.RestoreConditions = true;
                     this.mission.FsmRestoreStateName = null;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
                     break;
 
                 case nameof(MoveLoadingUnitStartState):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitStartState>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitEjectConfirm):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitWaitEjectConfirm>();
                     break;
 
                 case nameof(MoveLoadingUnitWaitPickConfirm):
                     this.mission.FsmRestoreStateName = null;
                     this.mission.RestoreConditions = false;
+                    this.mission.NeedMovingBackward = false;
                     returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
                     break;
 
@@ -317,6 +323,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
                 this.mission.FsmRestoreStateName = null;
                 this.mission.RestoreConditions = false;
+                this.mission.NeedMovingBackward = false;
                 if (this.mission.WmsId.HasValue)
                 {
                     returnValue = this.GetState<IMoveLoadingUnitWaitPickConfirm>();
@@ -330,6 +337,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitBayChainState>();
             }
 
@@ -351,6 +359,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             {
                 this.mission.RestoreConditions = true;
                 this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
             }
             return returnValue;
@@ -387,6 +396,18 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 transaction.Commit();
             }
 
+            this.Message = new NotificationMessage(
+                            null,
+                            $"Load Unit position changed",
+                            MessageActor.Any,
+                            MessageActor.MachineManager,
+                            MessageType.Positioning,
+                            this.mission.TargetBay,
+                            this.mission.TargetBay,
+                            MessageStatus.OperationUpdateData);
+
+            this.mission.FsmRestoreStateName = null;
+            this.mission.NeedMovingBackward = false;
             if (bayShutter)
             {
                 returnValue = this.GetState<IMoveLoadingUnitCloseShutterState>();
@@ -419,6 +440,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
                 this.mission.RestoreConditions = true;
+                this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
 
                 return returnValue;
@@ -525,9 +548,32 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 && this.mission.LoadingUnitId > 0
                 )
             {
-                this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                try
+                {
+                    this.mission.DestinationCellId = this.cellsProvider.FindEmptyCell(this.mission.LoadingUnitId);
+                }
+                catch (InvalidOperationException)
+                {
+                    // cell not found: go back to bay
+                    this.errorsProvider.RecordNew(MachineErrorCode.WarehouseIsFull);
+                    this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                    this.mission.NeedMovingBackward = false;
+                    return this.GetState<IMoveLoadingUnitDepositUnitState>();
+                }
             }
 
+            this.Message = new NotificationMessage(
+                            null,
+                            $"Load Unit position changed",
+                            MessageActor.Any,
+                            MessageActor.MachineManager,
+                            MessageType.Positioning,
+                            this.mission.TargetBay,
+                            this.mission.TargetBay,
+                            MessageStatus.OperationUpdateData);
+
+            this.mission.FsmRestoreStateName = null;
+            this.mission.NeedMovingBackward = false;
             returnValue = this.GetState<IMoveLoadingUnitMoveToTargetState>();
             return returnValue;
         }
@@ -553,6 +599,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 this.Logger.LogDebug($"MoveLoadingUnitErrorState: Vertical position has changed {this.mission.FsmRestoreStateName} for mission {this.mission.Id}, wmsId {this.mission.WmsId}, loadUnit {this.mission.LoadingUnitId}");
 
                 this.mission.RestoreConditions = true;
+                this.mission.FsmRestoreStateName = null;
+                this.mission.NeedMovingBackward = false;
                 returnValue = this.GetState<IMoveLoadingUnitStartState>();
 
                 return returnValue;
@@ -630,6 +678,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
             this.isMovingBackward = false;
             this.isMovingForward = false;
             this.isMovingShutter = false;
+            this.mission.NeedMovingBackward = false;
             this.mission.RestoreConditions = true;
             if (this.mission.FsmRestoreStateName == nameof(MoveLoadingUnitLoadElevatorState))
             {

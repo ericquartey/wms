@@ -30,26 +30,28 @@ namespace Ferretto.VW.App
 
             // Get windows Product Type
             const string queryString = "SELECT ProductType FROM Win32_OperatingSystem";
-            var managementObjectSearcher = new ManagementObjectSearcher(queryString);
-            var productType = (from ManagementObject managementObject in managementObjectSearcher.Get()
-                               from PropertyData propertyData in managementObject.Properties
-                               where propertyData.Name == "ProductType"
-                               select (uint)propertyData.Value).First();
-
-            var panelPc = productType == 1 ? "Local\\PanelPc" : "Global\\PanelPc";
-
-            appMutex = new Mutex(true, panelPc, out var createdNew);
-            if (!createdNew)
+            using (var managementObjectSearcher = new ManagementObjectSearcher(queryString))
             {
-                var current = Process.GetCurrentProcess();
-                foreach (var process in Process.GetProcessesByName("Ferretto.VW.App"))
+                var productType = (from ManagementObject managementObject in managementObjectSearcher.Get()
+                                   from PropertyData propertyData in managementObject.Properties
+                                   where propertyData.Name == "ProductType"
+                                   select (uint)propertyData.Value).First();
+
+                var panelPc = productType == 1 ? "Local\\PanelPc" : "Global\\PanelPc";
+
+                appMutex = new Mutex(true, panelPc, out var createdNew);
+                if (!createdNew)
                 {
-                    if (process.Id != current.Id)
+                    var current = Process.GetCurrentProcess();
+                    foreach (var process in Process.GetProcessesByName("Ferretto.VW.App"))
                     {
-                        SetForegroundWindow(process.MainWindowHandle);
-                        logger.Info("*** Application already started ***");
-                        canStart = false;
-                        break;
+                        if (process.Id != current.Id)
+                        {
+                            SetForegroundWindow(process.MainWindowHandle);
+                            logger.Info("*** Application already started ***");
+                            canStart = false;
+                            break;
+                        }
                     }
                 }
             }

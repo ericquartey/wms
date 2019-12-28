@@ -255,81 +255,6 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             this.Start();
         }
 
-        private static void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)
-        {
-            System.Diagnostics.Debug.Assert(targetBayPositionId.HasValue || targetCellId.HasValue);
-
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
-
-            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnitOnBoard is null)
-            {
-                return;
-            }
-
-            if (loadingUnitOnBoard.Id != loadingUnitId)
-            {
-                throw new InvalidOperationException(
-                    $"The loading unit on board of the elevator (id={loadingUnitOnBoard.Id}) is not the same loading unit requested for deposit (id={loadingUnitId}).");
-            }
-
-            if (targetBayPositionId.HasValue)
-            {
-                using (var transaction = elevatorDataProvider.GetContextTransaction())
-                {
-                    baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
-                    loadingUnitProvider.SetHeight(loadingUnitOnBoard.Id, 0);
-                    transaction.Commit();
-                }
-            }
-            else if (targetCellId.HasValue)
-            {
-                cellsProvider.SetLoadingUnit(targetCellId.Value, loadingUnitOnBoard.Id);
-            }
-
-            elevatorDataProvider.SetLoadingUnit(null);
-        }
-
-        private static void UpdateLoadingUnitForPickup(int? sourceBayPositionId, int? sourceCellId, IServiceProvider serviceProvider)
-        {
-            System.Diagnostics.Debug.Assert(sourceBayPositionId.HasValue || sourceCellId.HasValue);
-
-            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
-            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
-            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
-
-            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
-            if (loadingUnitOnBoard != null)
-            {
-                throw new InvalidOperationException(
-                    $"A pickup was requested, but the elevator has already a loading unit (id={loadingUnitOnBoard.Id}) on board.");
-            }
-
-            using (var transaction = elevatorDataProvider.GetContextTransaction())
-            {
-                if (sourceBayPositionId.HasValue)
-                {
-                    var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
-
-                    elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
-
-                    baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
-                }
-                else if (sourceCellId.HasValue)
-                {
-                    var cell = cellsProvider.GetById(sourceCellId.Value);
-
-                    elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
-
-                    cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
-                }
-                transaction.Commit();
-            }
-        }
-
         private void PersistElevatorPosition(int? targetBayPositionId, int? targetCellId, double targetPosition)
         {
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
@@ -380,6 +305,55 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
             }
         }
 
+        private void UpdateLoadingUnitForDeposit(int loadingUnitId, int? targetBayPositionId, int? targetCellId, IServiceProvider serviceProvider)
+        {
+            System.Diagnostics.Debug.Assert(targetBayPositionId.HasValue || targetCellId.HasValue);
+
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            var loadingUnitProvider = serviceProvider.GetRequiredService<ILoadingUnitsDataProvider>();
+
+            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnitOnBoard is null)
+            {
+                return;
+            }
+
+            if (loadingUnitOnBoard.Id != loadingUnitId)
+            {
+                throw new InvalidOperationException(
+                    $"The loading unit on board of the elevator (id={loadingUnitOnBoard.Id}) is not the same loading unit requested for deposit (id={loadingUnitId}).");
+            }
+
+            if (targetBayPositionId.HasValue)
+            {
+                using (var transaction = elevatorDataProvider.GetContextTransaction())
+                {
+                    baysDataProvider.SetLoadingUnit(targetBayPositionId.Value, loadingUnitOnBoard.Id);
+                    loadingUnitProvider.SetHeight(loadingUnitOnBoard.Id, 0);
+                    transaction.Commit();
+                }
+            }
+            else if (targetCellId.HasValue)
+            {
+                cellsProvider.SetLoadingUnit(targetCellId.Value, loadingUnitOnBoard.Id);
+            }
+
+            elevatorDataProvider.SetLoadingUnit(null);
+
+            this.ParentStateMachine.PublishNotificationMessage(
+                    new NotificationMessage(
+                        null,
+                        $"Load Unit position changed",
+                        MessageActor.Any,
+                        MessageActor.DeviceManager,
+                        MessageType.Positioning,
+                        this.stateData.MachineData.RequestingBay,
+                        this.stateData.MachineData.RequestingBay,
+                        MessageStatus.OperationUpdateData));
+        }
+
         private void UpdateLoadingUnitForManualMovement()
         {
             using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
@@ -396,6 +370,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 var bayPosition = elevatorDataProvider.GetCurrentBayPosition();
                 var cell = elevatorDataProvider.GetCurrentCell();
 
+                bool isChanged = false;
                 using (var transaction = elevatorDataProvider.GetContextTransaction())
                 {
                     if (bayPosition != null)
@@ -412,6 +387,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit.Id);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, null);
+                                isChanged = true;
                             }
                         }
                         else if (loadingUnitOnElevator != null && bayPosition.LoadingUnit == null)
@@ -422,6 +398,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 elevatorDataProvider.SetLoadingUnit(null);
                                 baysDataProvider.SetLoadingUnit(bayPosition.Id, loadingUnitOnElevator.Id);
                                 loadingUnitProvider.SetHeight(loadingUnitOnElevator.Id, 0);
+                                isChanged = true;
                             }
                         }
                     }
@@ -434,6 +411,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit.Id);
                                 cellsProvider.SetLoadingUnit(cell.Id, null);
+                                isChanged = true;
                             }
                         }
                         else if (loadingUnitOnElevator != null && cell.LoadingUnit == null)
@@ -445,6 +423,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                                 {
                                     elevatorDataProvider.SetLoadingUnit(null);
                                     cellsProvider.SetLoadingUnit(cell.Id, loadingUnitOnElevator.Id);
+                                    isChanged = true;
                                 }
                                 else
                                 {
@@ -468,11 +447,78 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                             {
                                 baysDataProvider.SetLoadingUnit(destination.Id, origin.LoadingUnit.Id);
                                 baysDataProvider.SetLoadingUnit(origin.Id, null);
+                                isChanged = true;
                             }
                         }
                     }
                     transaction.Commit();
                 }
+                if (isChanged)
+                {
+                    this.ParentStateMachine.PublishNotificationMessage(
+                            new NotificationMessage(
+                                null,
+                                $"Load Unit position changed",
+                                MessageActor.Any,
+                                MessageActor.DeviceManager,
+                                MessageType.Positioning,
+                                this.stateData.MachineData.RequestingBay,
+                                this.stateData.MachineData.RequestingBay,
+                                MessageStatus.OperationUpdateData));
+                }
+            }
+        }
+
+        private void UpdateLoadingUnitForPickup(int? sourceBayPositionId, int? sourceCellId, IServiceProvider serviceProvider)
+        {
+            System.Diagnostics.Debug.Assert(sourceBayPositionId.HasValue || sourceCellId.HasValue);
+
+            var elevatorDataProvider = serviceProvider.GetRequiredService<IElevatorDataProvider>();
+            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+            var cellsProvider = serviceProvider.GetRequiredService<ICellsProvider>();
+
+            var loadingUnitOnBoard = elevatorDataProvider.GetLoadingUnitOnBoard();
+            if (loadingUnitOnBoard != null)
+            {
+                throw new InvalidOperationException(
+                    $"A pickup was requested, but the elevator has already a loading unit (id={loadingUnitOnBoard.Id}) on board.");
+            }
+
+            bool isChanged = false;
+            using (var transaction = elevatorDataProvider.GetContextTransaction())
+            {
+                if (sourceBayPositionId.HasValue)
+                {
+                    var bayPosition = baysDataProvider.GetPositionById(sourceBayPositionId.Value);
+
+                    elevatorDataProvider.SetLoadingUnit(bayPosition.LoadingUnit?.Id);
+
+                    baysDataProvider.SetLoadingUnit(sourceBayPositionId.Value, null);
+                    isChanged = true;
+                }
+                else if (sourceCellId.HasValue)
+                {
+                    var cell = cellsProvider.GetById(sourceCellId.Value);
+
+                    elevatorDataProvider.SetLoadingUnit(cell.LoadingUnit?.Id);
+
+                    cellsProvider.SetLoadingUnit(sourceCellId.Value, null);
+                    isChanged = true;
+                }
+                transaction.Commit();
+            }
+            if (isChanged)
+            {
+                this.ParentStateMachine.PublishNotificationMessage(
+                        new NotificationMessage(
+                            null,
+                            $"Load Unit position changed",
+                            MessageActor.Any,
+                            MessageActor.DeviceManager,
+                            MessageType.Positioning,
+                            this.stateData.MachineData.RequestingBay,
+                            this.stateData.MachineData.RequestingBay,
+                            MessageStatus.OperationUpdateData));
             }
         }
 
@@ -486,7 +532,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                     {
-                        UpdateLoadingUnitForPickup(
+                        this.UpdateLoadingUnitForPickup(
                             this.machineData.MessageData.SourceBayPositionId,
                             this.machineData.MessageData.SourceCellId,
                             scope.ServiceProvider);
@@ -498,7 +544,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Positioning
                 {
                     using (var scope = this.ParentStateMachine.ServiceScopeFactory.CreateScope())
                     {
-                        UpdateLoadingUnitForDeposit(
+                        this.UpdateLoadingUnitForDeposit(
                             this.machineData.MessageData.LoadingUnitId.Value,
                             this.machineData.MessageData.TargetBayPositionId,
                             this.machineData.MessageData.TargetCellId,

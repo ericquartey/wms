@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Ferretto.VW.App.Accessories;
+using System.Windows.Input;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.App.Services.Models;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
+using Prism.Commands;
 using Prism.Events;
 using Prism.Regions;
 
@@ -13,6 +15,8 @@ namespace Ferretto.VW.App.Controls
     public abstract class BaseMainViewModel : BaseNavigationViewModel, IActivationViewModel, IRegionMemberLifetime
     {
         #region Fields
+
+        protected bool isWaitingForResponse;
 
         private readonly IHealthProbeService healthProbeService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IHealthProbeService>();
 
@@ -24,10 +28,6 @@ namespace Ferretto.VW.App.Controls
 
         private readonly IMachineService machineService = CommonServiceLocator.ServiceLocator.Current.GetInstance<IMachineService>();
 
-        private readonly ISensorsService sensorsService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISensorsService>();
-
-        private readonly ISessionService sessionService = CommonServiceLocator.ServiceLocator.Current.GetInstance<ISessionService>();
-
         private SubscriptionToken barcodeMatchedToken;
 
         private SubscriptionToken bayChainPositionChangedToken;
@@ -37,6 +37,12 @@ namespace Ferretto.VW.App.Controls
         private SubscriptionToken homingChangesToken;
 
         private bool isEnabled;
+
+        private bool isKeyboardOpened;
+
+        private DelegateCommand keyboardCloseCommand;
+
+        private DelegateCommand keyboardOpenCommand;
 
         private SubscriptionToken machineModeChangedToken;
 
@@ -69,7 +75,29 @@ namespace Ferretto.VW.App.Controls
             set => this.SetProperty(ref this.isEnabled, value);
         }
 
+        public bool IsKeyboardOpened
+        {
+            get => this.isKeyboardOpened;
+            set => this.SetProperty(ref this.isKeyboardOpened, value, this.RaiseCanExecuteChanged);
+        }
+
+        public virtual bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set => this.SetProperty(ref this.isWaitingForResponse, value, this.RaiseCanExecuteChanged);
+        }
+
         public virtual bool KeepAlive => true;
+
+        public ICommand KeyboardCloseCommand =>
+                            this.keyboardCloseCommand
+            ??
+            (this.keyboardCloseCommand = new DelegateCommand(() => this.KeyboardClose()));
+
+        public ICommand KeyboardOpenCommand =>
+           this.keyboardOpenCommand
+           ??
+           (this.keyboardOpenCommand = new DelegateCommand(() => this.KeyboardOpen()));
 
         protected NLog.Logger Logger => this.logger;
 
@@ -104,6 +132,8 @@ namespace Ferretto.VW.App.Controls
         {
             base.Disappear();
 
+            this.IsWaitingForResponse = false;
+
             /*
              * Avoid unsubscribing in case of navigation to error page.
              * We may need to review this behaviour.
@@ -125,7 +155,11 @@ namespace Ferretto.VW.App.Controls
 
         public override async Task OnAppearedAsync()
         {
+            this.IsWaitingForResponse = false;
+
             this.UpdatePresentation();
+
+            await this.machineService.OnUpdateServiceAsync();
 
             this.InitializeSteps();
 
@@ -337,7 +371,23 @@ namespace Ferretto.VW.App.Controls
                 this.machineModeService.MachineMode,
                 this.healthProbeService.HealthStatus);
 
+            this.RaiseCanExecuteChanged();
+
             return Task.CompletedTask;
+        }
+
+        protected virtual void RaiseCanExecuteChanged()
+        {
+        }
+
+        private void KeyboardClose()
+        {
+            this.IsKeyboardOpened = false;
+        }
+
+        private void KeyboardOpen()
+        {
+            this.IsKeyboardOpened = true;
         }
 
         private void OnBayChainPositionChanged(BayChainPositionChangedEventArgs e)

@@ -48,6 +48,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isElevatorMoving;
 
+        private bool isLightActive;
+
         private bool isMovingElevatorBackwards;
 
         private bool isMovingElevatorDown;
@@ -59,6 +61,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private bool isShutterMovingDown;
 
         private bool isShutterMovingUp;
+
+        private DelegateCommand lightCommand;
+
+        private string lightIcon;
 
         private DelegateCommand moveCarouselCloseCommand;
 
@@ -168,6 +174,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isElevatorMoving, value, this.RaiseCanExecuteChanged);
         }
 
+        public bool IsLightActive
+        {
+            get => this.isLightActive;
+            private set => this.SetProperty(ref this.isLightActive, value);
+        }
+
         public bool IsMovingElevatorBackwards
         {
             get => this.isMovingElevatorBackwards;
@@ -202,6 +214,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             get => this.isShutterMovingUp;
             private set => this.SetProperty(ref this.isShutterMovingUp, value, this.RaiseCanExecuteChanged);
+        }
+
+        public ICommand LightCommand =>
+            this.lightCommand
+            ??
+            (this.lightCommand = new DelegateCommand(async () => await this.LightAsync()));
+
+        public string LightIcon
+        {
+            get => this.lightIcon;
+            private set => this.SetProperty(ref this.lightIcon, value);
         }
 
         public ICommand MoveCarouselCloseCommand =>
@@ -265,6 +288,20 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public async Task CloseCarouselAsync()
         {
             await this.StartMovementAsync(VerticalMovementDirection.Down);
+        }
+
+        public async Task LightAsync()
+        {
+            try
+            {
+                this.IsLightActive = !this.IsLightActive;
+                this.LightIcon = this.IsLightActive ? "LightbulbOnOutline" : "LightbulbOutline";
+                await this.machineBaysWebService.LightAsync(this.IsLightActive);
+            }
+            catch (System.Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
         }
 
         public async Task MoveElevatorBackwardsAsync()
@@ -630,10 +667,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.IsBusyUnloadingToBay = false;
             this.IsBusyUnloadingToCell = false;
             this.IsExecutingProcedure = false;
-
-            this.VerticalTargetPosition = null;
-            this.HorizontalTargetPosition = null;
-            this.BayChainTargetPosition = null;
         }
 
         private void WriteInfo(Axis? axisMovement)

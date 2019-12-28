@@ -115,6 +115,16 @@ namespace Ferretto.VW.MAS.AutomationService.Controllers
             return this.Accepted();
         }
 
+        [HttpPost("light")]
+        [ProducesResponseType(StatusCodes.Status202Accepted)]
+        [ProducesDefaultResponseType]
+        public IActionResult Light(bool enable)
+        {
+            this.baysDataProvider.Light(this.BayNumber, enable);
+
+            return this.Accepted();
+        }
+
         [HttpPost("height")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

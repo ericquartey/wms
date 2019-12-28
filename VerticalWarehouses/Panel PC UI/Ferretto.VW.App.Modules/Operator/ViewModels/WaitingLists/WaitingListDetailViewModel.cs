@@ -161,6 +161,15 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SelectListRow();
         }
 
+        protected override void RaiseCanExecuteChanged()
+        {
+            base.RaiseCanExecuteChanged();
+
+            this.upCommand?.RaiseCanExecuteChanged();
+            this.downCommand?.RaiseCanExecuteChanged();
+            this.listExecuteCommand?.RaiseCanExecuteChanged();
+        }
+
         private bool CanDown()
         {
             return
@@ -202,13 +211,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.ShowNotification(ex.ToString(), Services.Models.NotificationSeverity.Error);
             }
-        }
-
-        private void RaiseCanExecuteChanged()
-        {
-            this.upCommand?.RaiseCanExecuteChanged();
-            this.downCommand?.RaiseCanExecuteChanged();
-            this.listExecuteCommand?.RaiseCanExecuteChanged();
         }
 
         private void SelectListRow()

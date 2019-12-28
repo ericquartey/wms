@@ -41,8 +41,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool isExecutingProcedure;
 
-        private bool isWaitingForResponse;
-
         private SubscriptionToken positioningOperationChangedToken;
 
         private DelegateCommand stopCommand;
@@ -101,7 +99,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public bool IsWaitingForResponse
+        public override bool IsWaitingForResponse
         {
             get => this.isWaitingForResponse;
             protected set
@@ -201,7 +199,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        protected virtual void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             this.stopCommand?.RaiseCanExecuteChanged();
         }

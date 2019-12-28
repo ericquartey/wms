@@ -35,8 +35,11 @@ namespace Ferretto.VW.App.Controls.Controls
         public static readonly DependencyProperty KindFontAwesomeProperty =
             DependencyProperty.Register(nameof(KindFontAwesome), typeof(PackIconFontAwesomeKind?), typeof(PpcButton), new PropertyMetadata(null));
 
+        public static readonly DependencyProperty KindMaterialProperty =
+            DependencyProperty.Register(nameof(KindMaterial), typeof(PackIconMaterialKind?), typeof(PpcButton), new PropertyMetadata(null));
+
         public static readonly DependencyProperty KindProperty =
-            DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
+                    DependencyProperty.Register(nameof(Kind), typeof(PackIconMaterialLightKind?), typeof(PpcButton), new PropertyMetadata(null));
 
         public static readonly DependencyProperty PermissionProperty = DependencyProperty.Register(
             nameof(Permission), typeof(UserAccessLevel), typeof(PpcButton), new PropertyMetadata(UserAccessLevel.NoAccess, new PropertyChangedCallback(PermissionChanged)));
@@ -93,6 +96,10 @@ namespace Ferretto.VW.App.Controls.Controls
 
         public bool HasKind => !(this.Kind is null);
 
+        public bool HasKindFontAwesome => !(this.KindFontAwesome is null);
+
+        public bool HasKindMaterial => !(this.KindMaterial is null);
+
         public ImageSource ImageSource
         {
             get => (ImageSource)this.GetValue(ImageSourceProperty);
@@ -121,6 +128,12 @@ namespace Ferretto.VW.App.Controls.Controls
         {
             get => (PackIconFontAwesomeKind?)this.GetValue(KindFontAwesomeProperty);
             set => this.SetValue(KindFontAwesomeProperty, value);
+        }
+
+        public PackIconMaterialKind? KindMaterial
+        {
+            get => (PackIconMaterialKind?)this.GetValue(KindMaterialProperty);
+            set => this.SetValue(KindMaterialProperty, value);
         }
 
         protected bool NoAccess => this.sessionService.UserAccessLevel == UserAccessLevel.NoAccess;

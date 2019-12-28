@@ -89,7 +89,8 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
                     this.Show(PresentationTypes.MachineMode, true);
                     this.Show(PresentationTypes.MachineMarch, true);
                     this.Show(PresentationTypes.Error, this.machineErrorsService.ActiveError != null);
-                    //this.Show(PresentationTypes.Debug, true);
+                    // this.Show(PresentationTypes.Debug, true);
+
                     break;
 
                 case PresentationMode.Operator:

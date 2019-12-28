@@ -15,21 +15,27 @@ namespace Ferretto.VW.App.Services
 
         IEnumerable<Cell> Cells { get; }
 
+        bool HasBayExternal { get; }
+
+        bool HasCarousel { get; }
+
         bool HasShutter { get; }
 
         bool IsHoming { get; }
 
         bool IsShutterThreeSensors { get; }
-        
-        IEnumerable<LoadingUnit> LoadUnits { get; }
+
+        IEnumerable<LoadingUnit> Loadunits { get; }
 
         MachineStatus MachineStatus { get; }
-        bool HasCarousel { get;  }
-        bool HasBayExternal { get; }
+        MachineMode MachineMode { get; }
+        MachinePowerState MachinePower { get; }
 
         #endregion
 
         #region Methods
+
+        Task OnUpdateServiceAsync();
 
         void ServiceStart();
 

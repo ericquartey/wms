@@ -10,7 +10,7 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Operator.ViewModels
 {
-    public class ItemPickViewModel : BaseItemOperationMainViewModel
+    public class ItemPickViewModel : BaseItemOperationMainViewModel, IOperationalContextViewModel
     {
         #region Fields
 
@@ -35,8 +35,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Properties
 
+        public string ActiveContextName => OperationalContext.ItemPick.ToString();
+
         public ICommand EmptyOperationCommand =>
-            this.emptyOperationCommand
+                    this.emptyOperationCommand
             ??
             (this.emptyOperationCommand = new DelegateCommand(
                 async () => await this.PartiallyCompleteOnEmptyCompartmentAsync(),
@@ -60,7 +62,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.InputQuantity = this.MissionOperation.RequestedQuantity;
         }
 
-        public override void RaiseCanExecuteChanged()
+        protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
             this.emptyOperationCommand.RaiseCanExecuteChanged();
