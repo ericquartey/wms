@@ -76,14 +76,10 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override void Disappear()
         {
+            this.subscriptionToken?.Dispose();
+            this.subscriptionToken = null;
+
             base.Disappear();
-
-            if (this.subscriptionToken != null)
-            {
-                this.healthProbeService.HealthStatusChanged.Unsubscribe(this.subscriptionToken);
-
-                this.subscriptionToken = null;
-            }
         }
 
         public override async Task OnAppearedAsync()
@@ -92,11 +88,15 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
             await base.OnAppearedAsync();
 
-            this.subscriptionToken = this.healthProbeService.HealthStatusChanged
-                .Subscribe(
-                    async (e) => await this.OnHealthStatusChanged(e),
-                    ThreadOption.UIThread,
-                    false);
+            this.subscriptionToken = this.subscriptionToken
+                ??
+                this.healthProbeService.HealthStatusChanged
+                    .Subscribe(
+                        async (e) => await this.OnHealthStatusChangedAsync(e),
+                        ThreadOption.UIThread,
+                        false);
+
+            this.OnHealthStatusChangedAsync(null);
         }
 
         private async Task CheckFirewallStatusAsync()
@@ -136,7 +136,7 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
                 trackCurrentView: false);
         }
 
-        private async Task OnHealthStatusChanged(HealthStatusChangedEventArgs e)
+        private async Task OnHealthStatusChangedAsync(HealthStatusChangedEventArgs e)
         {
             await this.RetrieveMachineInfoAsync();
         }

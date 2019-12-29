@@ -22,7 +22,7 @@ namespace Ferretto.VW.Devices.BarcodeReader.Newland
 
         public void OnTimerTick(object state)
         {
-            this.BarcodeReceived?.Invoke(this, new BarcodeEventArgs("L123F"));
+            this.BarcodeReceived?.Invoke(this, new BarcodeEventArgs("L001F"));
         }
 
         public void Disconnect()

@@ -85,15 +85,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 switch (userAction)
                 {
                     case UserAction.FilterItems:
-                        try
-                        {
-                            var item = await this.itemsWmsWebService.GetByBarcodeAsync(e.Barcode);
-                            this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
-                        }
-                        catch (Exception ex)
-                        {
-                            this.ShowNotification(ex);
-                        }
+                        await this.ShowItemDetailsByBarcodeAsync(e);
 
                         break;
 
@@ -101,6 +93,23 @@ namespace Ferretto.VW.App.Operator.ViewModels
                         // TODO da definire con Danilo
 
                         break;
+                }
+            }
+        }
+
+        private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
+        {
+            var itemBarcode = e.GetItemBarCode();
+            if (itemBarcode != null)
+            {
+                try
+                {
+                    var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                    this.Item = new ItemInfo(item, this.bayManager.Identity.Id);
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
                 }
             }
         }
