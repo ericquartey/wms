@@ -162,6 +162,23 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public Mission GetByGuid(Guid id)
+        {
+            lock (this.dataContext)
+            {
+                var mission = this.dataContext.Missions
+                    .AsNoTracking()
+                    .SingleOrDefault(m => m.FsmId == id);
+
+                if (mission is null)
+                {
+                    throw new EntityNotFoundException(id.ToString());
+                }
+
+                return mission;
+            }
+        }
+
         public bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId)
         {
             lock (this.dataContext)

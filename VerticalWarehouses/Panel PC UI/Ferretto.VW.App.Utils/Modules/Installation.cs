@@ -12,6 +12,8 @@
 
         public const string COMUNICATIONWMS = "ComunicationWmsViewModel";
 
+        public const string DATETIME = "DateTimeViewModel";
+
         public const string INSTALLATORMENU = "InstallatorMenuViewModel";
 
         public const string LOADFIRSTDRAWER = "LoadFirstDrawerViewModel";

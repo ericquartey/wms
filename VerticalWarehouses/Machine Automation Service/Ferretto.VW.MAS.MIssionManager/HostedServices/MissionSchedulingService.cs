@@ -80,7 +80,7 @@ namespace Ferretto.VW.MAS.MissionManager
                 if (mission is null)
                 {
                     // no more missions are available for scheduling on this bay
-                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
+                    this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
                     return;
                 }
             }
@@ -127,14 +127,6 @@ namespace Ferretto.VW.MAS.MissionManager
                         return;
                     }
                 }
-                /******************** MOVE THIS PIECE OF CODE AFTER THE END OF THE MACHINE MISSION*/
-                // there are more operations for the same wms mission
-                var newOperation = newOperations.OrderBy(o => o.Priority).First();
-                this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", bayNumber, mission.WmsId.Value, newOperation.Id);
-
-                baysDataProvider.AssignWmsMission(bayNumber, mission, newOperation.Id);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, wmsMission.Id, newOperation.Id, activeMissions.Count());
-                /******************************/
             }
             else
             {
@@ -143,7 +135,7 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 missionsDataProvider.Complete(mission.Id);
                 baysDataProvider.ClearMission(bayNumber);
-                this.NotifyAssignedMissionOperationChanged(bayNumber, null, null, activeMissions.Count());
+                this.NotifyAssignedMissionOperationChanged(bayNumber, null, null);
 
                 // check if there are other missions for this LU in this bay
                 var nextMission = activeMissions.FirstOrDefault(m =>
@@ -157,14 +149,9 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 if (nextMission is null)
                 {
-                    // send back the LU
-
+                    // send back the loading unit to the cell
                     moveLoadingUnitProvider.ResumeMoveLoadUnit(mission.FsmId, loadingUnitSource, LoadingUnitLocation.Cell, bayNumber, null, MessageActor.MissionManager);
                 }
-                // else are there other missions for this LU and another bay?
-                //{
-                // update WmsId in the current machine mission and move to another bay
-                //}
                 else
                 {
                     // close current mission
@@ -296,15 +283,13 @@ namespace Ferretto.VW.MAS.MissionManager
         private void NotifyAssignedMissionOperationChanged(
             BayNumber bayNumber,
             int? missionId,
-            int? missionOperationId,
-            int pendingMissionsCount)
+            int? missionOperationId)
         {
             var data = new AssignedMissionOperationChangedMessageData
             {
                 BayNumber = bayNumber,
                 MissionId = missionId,
                 MissionOperationId = missionOperationId,
-                PendingMissionsCount = pendingMissionsCount,
             };
 
             var notificationMessage = new NotificationMessage(
@@ -330,6 +315,40 @@ namespace Ferretto.VW.MAS.MissionManager
             GetPersistedMissions(serviceProvider);
             this.dataLayerIsReady = true;
             await this.InvokeSchedulerAsync();
+        }
+
+        private async Task OnLoadingUnitMovedAsync(NotificationMessage message, IServiceProvider serviceProvider)
+        {
+            Contract.Requires(message != null);
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+            if (message.Data is MoveLoadingUnitMessageData luData)
+            {
+                var mission = missionsDataProvider.GetByGuid(luData.MissionId.Value);
+                if (!luData.DestinationCellId.HasValue)
+                // loading unit to bay mission
+                {
+                    if (mission.WmsId.HasValue)
+                    {
+                        var wmsMission = await this.missionsWmsWebService.GetByIdAsync(mission.WmsId.Value);
+                        var newOperations = wmsMission.Operations.Where(o => o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Completed && o.Status != WMS.Data.WebAPI.Contracts.MissionOperationStatus.Error);
+                        if (newOperations.Any())
+                        {
+                            var newOperation = newOperations.OrderBy(o => o.Priority).First();
+                            this.Logger.LogInformation("Bay {bayNumber}: WMS mission {missionId} has operation {operationId} to execute.", mission.TargetBay, mission.WmsId.Value, newOperation.Id);
+
+                            var baysDataProvider = serviceProvider.GetRequiredService<IBaysDataProvider>();
+                            baysDataProvider.AssignWmsMission(mission.TargetBay, mission, newOperation.Id);
+                            this.NotifyAssignedMissionOperationChanged(mission.TargetBay, wmsMission.Id, newOperation.Id);
+                        }
+                    }
+                }
+                else
+                // any other mission type
+                {
+                    missionsDataProvider.Complete(mission.Id);
+                }
+            }
         }
 
         private async Task OnMachineModeChangedAsync()

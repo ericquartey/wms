@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.MAS.DataModels;
 
@@ -26,6 +27,8 @@ namespace Ferretto.VW.MAS.DataLayer
         IEnumerable<Mission> GetAllExecutingMissions();
 
         IEnumerable<Mission> GetAllWmsMissions();
+
+        Mission GetByGuid(Guid missionId);
 
         bool IsMissionInWaitState(BayNumber bayNumber, int loadingUnitId);
 

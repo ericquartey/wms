@@ -67,6 +67,7 @@
     <None Remove="Views\CellsLoadingUnits\CellsLoadingUnitsMenuView.xaml" />
     <None Remove="Views\CellsLoadingUnits\CellsView.xaml" />
     <None Remove="Views\CellsLoadingUnits\LoadingUnitsView.xaml" />
+    <None Remove="Views\DateTime\DateTimeView.xaml" />
     <None Remove="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml" />
     <None Remove="Views\Movements\MovementsView.xaml" />
   </ItemGroup>
@@ -88,6 +89,9 @@
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="ViewsAndViewModels\SingleViews\UpdateView.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\DateTime\DateTimeView.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
     <Compile Update="Views\LoadingUnits\LoadingUnitFromBayToBayView.xaml.cs">

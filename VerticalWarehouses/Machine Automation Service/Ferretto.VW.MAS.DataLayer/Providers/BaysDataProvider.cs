@@ -314,6 +314,14 @@ namespace Ferretto.VW.MAS.DataLayer
             }
         }
 
+        public int GetAllCount()
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Bays.Count();
+            }
+        }
+
         public CarouselManualParameters GetAssistedMovementsCarousel(BayNumber bayNumber) => this.GetByNumber(bayNumber).Carousel.AssistedMovements;
 
         public ShutterManualParameters GetAssistedMovementsShutter(BayNumber bayNumber) => this.GetByNumber(bayNumber).Shutter.AssistedMovements;

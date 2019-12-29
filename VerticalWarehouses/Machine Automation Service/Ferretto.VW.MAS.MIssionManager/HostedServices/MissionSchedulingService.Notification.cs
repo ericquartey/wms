@@ -18,7 +18,9 @@ namespace Ferretto.VW.MAS.MissionManager
             return
                 notification.Destination is MessageActor.Any
                 ||
-                notification.Destination is MessageActor.MissionManager;
+                notification.Destination is MessageActor.MissionManager
+                ||
+                notification.Destination is MessageActor.AutomationService;
         }
 
         protected override async Task OnNotificationReceivedAsync(NotificationMessage message, IServiceProvider serviceProvider)
@@ -41,6 +43,10 @@ namespace Ferretto.VW.MAS.MissionManager
 
                 case MessageType.MachineMode:
                     await this.OnMachineModeChangedAsync();
+                    break;
+
+                case MessageType.MoveLoadingUnit when message.Status is MessageStatus.OperationEnd:
+                    await this.OnLoadingUnitMovedAsync(message, serviceProvider);
                     break;
 
                 case MessageType.DataLayerReady:

@@ -113,8 +113,8 @@ namespace Ferretto.VW.App.Modules.Operator
                 }
 
                 containerRegistry.ConfigureBarcodeReaderUiServices();
-                //  containerRegistry.ConfigureNewlandBarcodeReader(options);
-                containerRegistry.ConfigureMockBarcodeReader(options);
+                containerRegistry.ConfigureNewlandBarcodeReader(options);
+                //containerRegistry.ConfigureMockBarcodeReader(options);
             }
         }
 
