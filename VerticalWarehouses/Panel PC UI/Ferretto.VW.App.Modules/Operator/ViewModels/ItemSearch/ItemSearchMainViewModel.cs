@@ -354,20 +354,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 switch (userAction)
                 {
                     case UserAction.FilterItems:
-                        var itemBarcode = e.GetItemBarCode();
-                        if (itemBarcode != null)
-                        {
-                            try
-                            {
-                                var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
-                                this.SelectedItem = new ItemInfo(item, this.bayManager.Identity.Id);
-                                this.ShowItemDetails();
-                            }
-                            catch (Exception ex)
-                            {
-                                this.ShowNotification(ex);
-                            }
-                        }
+                        await this.ShowItemDetailsByBarcodeAsync(e);
 
                         break;
 
@@ -487,6 +474,24 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 Utils.Modules.Operator.ItemSearch.ITEM_DETAILS,
                 this.SelectedItem,
                 trackCurrentView: true);
+        }
+
+        private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
+        {
+            var itemBarcode = e.GetItemBarCode();
+            if (itemBarcode != null)
+            {
+                try
+                {
+                    var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
+                    this.SelectedItem = new ItemInfo(item, this.bayManager.Identity.Id);
+                    this.ShowItemDetails();
+                }
+                catch (Exception ex)
+                {
+                    this.ShowNotification(ex);
+                }
+            }
         }
 
         private async Task TriggerSearchAsync()

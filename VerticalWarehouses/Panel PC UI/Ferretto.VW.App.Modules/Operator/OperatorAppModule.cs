@@ -40,6 +40,8 @@ namespace Ferretto.VW.App.Modules.Operator
         public void OnInitialized(IContainerProvider containerProvider)
         {
             containerProvider.UseMachineAutomationHubs();
+
+            containerProvider.UseBarcodeReader();
         }
 
         public void RegisterTypes(IContainerRegistry containerRegistry)
@@ -110,7 +112,7 @@ namespace Ferretto.VW.App.Modules.Operator
                     options.BaudRate = baudRate.Value;
                 }
 
-                containerRegistry.UseBarcodeReader();
+                containerRegistry.ConfigureBarcodeReaderUiServices();
                 //  containerRegistry.ConfigureNewlandBarcodeReader(options);
                 containerRegistry.ConfigureMockBarcodeReader(options);
             }

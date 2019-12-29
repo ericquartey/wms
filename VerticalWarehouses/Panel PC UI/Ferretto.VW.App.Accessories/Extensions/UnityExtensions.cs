@@ -12,7 +12,7 @@ namespace Ferretto.VW.App.Accessories
     {
         #region Methods
 
-        public static IContainerRegistry UseBarcodeReader(
+        public static IContainerRegistry ConfigureBarcodeReaderUiServices(
             this IContainerRegistry containerRegistry)
         {
             if (containerRegistry is null)
@@ -23,6 +23,19 @@ namespace Ferretto.VW.App.Accessories
             containerRegistry.RegisterSingleton<IBarcodeReaderService, BarcodeReaderService>();
 
             return containerRegistry;
+        }
+
+        public static IContainerProvider UseBarcodeReader(
+            this IContainerProvider containerProvider)
+        {
+            if (containerProvider is null)
+            {
+                throw new ArgumentNullException(nameof(containerProvider));
+            }
+
+            _ = containerProvider.Resolve<IBarcodeReaderService>();
+
+            return containerProvider;
         }
 
         #endregion

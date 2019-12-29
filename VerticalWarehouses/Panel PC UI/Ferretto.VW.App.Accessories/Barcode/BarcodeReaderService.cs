@@ -137,8 +137,17 @@ namespace Ferretto.VW.App.Accessories
             {
                 System.Diagnostics.Debug.WriteLine($"Barcode {e.Barcode} matched rule: '{rule.ContextName}'");
 
-                // 3. publish event
+                var match = Regex.Match(e.Barcode, rule.Pattern);
+                System.Diagnostics.Debug.Assert(match.Success);
+
                 var eventArgs = new BarcodeMatchEventArgs(e.Barcode, rule.Action);
+                for (int i = 0; i < match.Groups.Count; i++)
+                {
+                    var group = match.Groups[i];
+                    eventArgs.Parameters.Add(group.Name, group.Value);
+                }
+
+                // 3. publish event
                 this.eventAggregator
                     .GetEvent<PubSubEvent<BarcodeMatchEventArgs>>()
                     .Publish(eventArgs);
