@@ -174,7 +174,7 @@
                                    VerticalAlignment="Center"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding CumulativePerformedCycles}" />
+                                   Text="{Binding PerformedCyclesThisSession}" />
                         <TextBlock Margin="4,0,4,4"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
