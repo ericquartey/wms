@@ -17,6 +17,7 @@
            TargetType="{x:Type ctrls:PpcSpinEdit}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
         <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+        <Setter Property="MinHeight" Value="60" />
 
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">

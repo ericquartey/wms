@@ -170,7 +170,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.CanExecuteCommand));
 
         public ICommand MenuMovementsCommand =>
-                                                                                                                            this.menuMovementsCommand
+            this.menuMovementsCommand
             ??
             (this.menuMovementsCommand = new DelegateCommand(
                 () => this.MovementsCommand(),
@@ -184,7 +184,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 this.CanExecuteCommand));
 
         public ICommand ViewStatusSensorsCommand =>
-                    this.viewStatusSensorsCommand
+            this.viewStatusSensorsCommand
             ??
             (this.viewStatusSensorsCommand = new DelegateCommand(
                 () => this.StatusSensorsCommand(),

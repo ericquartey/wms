@@ -31,6 +31,7 @@
                                        Grid.Column="2"
                                        Margin="4,0"
                                        HorizontalContentAlignment="Center"
+                                       Foreground="{DynamicResource PpcForeground}"
                                        MouseDoubleClick="OnKeyboardOpenHandler"
                                        Template="{TemplateBinding ActualEditorControlTemplate}"
                                        TouchEnter="OnKeyboardOpenHandler" />
@@ -123,7 +124,7 @@
                         <dxe:ButtonInfo.Content>
                             <Grid x:Name="Button_Min"
                                   Width="{Binding ElementName=Button_Add, Path=ActualWidth}">
-                                <TextBlock Margin="2,-10,2,0"
+                                <TextBlock Margin="2,-10,4,0"
                                            VerticalAlignment="Center"
                                            FontSize="50"
                                            FontWeight="Normal"
@@ -138,7 +139,7 @@
                                     TextBlock.FontSize="20">
                         <dxe:ButtonInfo.Content>
                             <Grid x:Name="Button_Add">
-                                <TextBlock Margin="2,-10,2,0"
+                                <TextBlock Margin="4,-10,2,0"
                                            VerticalAlignment="Center"
                                            FontSize="50"
                                            FontWeight="Normal"
