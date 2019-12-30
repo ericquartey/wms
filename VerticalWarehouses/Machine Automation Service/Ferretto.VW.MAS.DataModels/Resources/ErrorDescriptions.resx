@@ -271,7 +271,7 @@
     <value>SecurityBarrierWasTriggered</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>SecurityButtonWasTriggered</value>
+    <value>Un pulsante di emergenza è stato premuto</value>
   </data>
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
     <value>SecuritySensorWasTriggered</value>

@@ -160,7 +160,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DestinationBelowLowerBound.
+        ///   Looks up a localized string similar to Errore destinazione asse sotto livello minimo.
         /// </summary>
         public static string DestinationBelowLowerBound {
             get {
@@ -169,7 +169,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to DestinationOverUpperBound.
+        ///   Looks up a localized string similar to Errore destinazione asse sopra livello massimo.
         /// </summary>
         public static string DestinationOverUpperBound {
             get {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to InverterConnectionError.
+        ///   Looks up a localized string similar to Problema di connessione con inverter(s).
         /// </summary>
         public static string InverterConnectionError {
             get {
@@ -556,7 +556,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineModeNotValid.
+        ///   Looks up a localized string similar to Modo macchina errato.
         /// </summary>
         public static string MachineModeNotValid {
             get {
@@ -565,7 +565,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineWeightExceeded.
+        ///   Looks up a localized string similar to Limite peso macchina superato.
         /// </summary>
         public static string MachineWeightExceeded {
             get {
@@ -583,7 +583,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to NoError.
+        ///   Looks up a localized string similar to Nessun errore rilevato.
         /// </summary>
         public static string NoError {
             get {
@@ -592,7 +592,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecurityBarrierWasTriggered.
+        ///   Looks up a localized string similar to Una barriera di sicurezza è stata interrotta.
         /// </summary>
         public static string SecurityBarrierWasTriggered {
             get {
@@ -601,7 +601,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecurityButtonWasTriggered.
+        ///   Looks up a localized string similar to Un pulsante di emergenza è stato premuto.
         /// </summary>
         public static string SecurityButtonWasTriggered {
             get {
@@ -610,7 +610,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecuritySensorWasTriggered.
+        ///   Looks up a localized string similar to Uno o più sensori dei pannelli laterali è stato interrotto (aperto).
         /// </summary>
         public static string SecuritySensorWasTriggered {
             get {
@@ -637,15 +637,6 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
-        /// </summary>
-        public static string String1 {
-            get {
-                return ResourceManager.GetString("String1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to TopLevelBayEmpty.
         /// </summary>
         public static string TopLevelBayEmpty {
@@ -664,7 +655,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to WarehouseIsFull.
+        ///   Looks up a localized string similar to Il magazzino risulta pieno.
         /// </summary>
         public static string WarehouseIsFull {
             get {

@@ -601,7 +601,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to SecurityButtonWasTriggered.
+        ///   Looks up a localized string similar to Un pulsante di emergenza è stato premuto.
         /// </summary>
         public static string SecurityButtonWasTriggered {
             get {

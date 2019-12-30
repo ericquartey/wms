@@ -250,13 +250,13 @@
     <value>MachineManagerErrorLoadingUnitShutterOpen</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>DestinationBelowLowerBound</value>
+    <value>Errore destinazione asse sotto livello minimo</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
     <value>BayInvertersBusy</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>DestinationOverUpperBound</value>
+    <value>Errore destinazione asse sopra livello massimo</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
     <value>IoDeviceError</value>
@@ -265,16 +265,16 @@
     <value>MachineManagerErrorLoadingUnitPresentInCell</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>MachineModeNotValid</value>
+    <value>Modo macchina errato</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>SecurityBarrierWasTriggered</value>
+    <value>Una barriera di sicurezza è stata interrotta</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
-    <value>SecurityButtonWasTriggered</value>
+    <value>Un pulsante di emergenza è stato premuto</value>
   </data>
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>SecuritySensorWasTriggered</value>
+    <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto)</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
     <value>MachineManagerErrorLoadingUnitOtherBay</value>
@@ -298,16 +298,16 @@
     <value>AnotherMissionOfThisTypeIsActive</value>
   </data>
   <data name="NoError" xml:space="preserve">
-    <value>NoError</value>
+    <value>Nessun errore rilevato</value>
   </data>
   <data name="LoadingUnitWeightTooLow" xml:space="preserve">
     <value>LoadingUnitWeightTooLow</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>MachineWeightExceeded</value>
+    <value>Limite peso macchina superato</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>WarehouseIsFull</value>
+    <value>Il magazzino risulta pieno</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
     <value>Verificare l'id del cassetto sulla baia 1. Verificare che i sensori di presenza cassetto funzionino correttamente. Mettere la macchina in Automatico.</value>
@@ -321,11 +321,8 @@
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
     <value>Verificare l'id del cassetto sull'elevatore. Verificare che i sensori di presenza cassetto sull'elevatore funzionino correttamente. Mettere la macchina in Automatico.</value>
   </data>
-  <data name="String1" xml:space="preserve">
-    <value />
-  </data>
   <data name="InverterConnectionError" xml:space="preserve">
-    <value>InverterConnectionError</value>
+    <value>Problema di connessione con inverter(s)</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
     <value>IoDeviceConnectionError</value>
