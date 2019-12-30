@@ -93,7 +93,7 @@
                                         Content="Effettua il campionamento dei valori di corrente per l'acquisizione del peso"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}"
-                                        Visibility="Hidden" />
+                                        Visibility="Collapsed" />
 
                     <controls:PpcButton Title="Rodaggio cinghia"
                                         Margin="0,0,30,30"
