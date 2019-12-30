@@ -863,11 +863,6 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300001, 300001, "Nessun cassetto presente nella baia indicata", "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 300000, 300000, "Errore Machine Manager", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
@@ -893,17 +888,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300002, 300002, "Inconsistenza database posizione sorgente cassetto", "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata.", 1 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorDefinitions",
-                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 200011, 200011, "Parametro sconosciuto passato all'inverter", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200008, 200008, "Impossibile scrivere il parametro dell'inverter durante l'esecuzione", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 300001, 300001, "Nessun cassetto presente nella baia indicata", "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 200009, 200009, "I dati del dataset dell'inverter non corrispondono", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -933,12 +928,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200009, 200009, "I dati del dataset dell'inverter non corrispondono", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200002, 200002, "Dataset inverter non valido", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 200002, 200002, "Dataset inverter non valido", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+                values: new object[] { 200008, 200008, "Impossibile scrivere il parametro dell'inverter durante l'esecuzione", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 300002, 300002, "Inconsistenza database posizione sorgente cassetto", "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -948,7 +948,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300005, 300005, "Cassetto rilevato nella baia di estrazione", "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.", 1 });
+                values: new object[] { 300004, 300004, "Culla elevatore occupata", "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -983,12 +983,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300004, 300004, "Culla elevatore occupata", "Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.", 1 });
+                values: new object[] { 300013, 300013, "Errore cassetto in posizione inattesa", "Cassetto già presente in cella.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300013, 300013, "Errore cassetto in posizione inattesa", "Cassetto già presente in cella.", 1 });
+                values: new object[] { 300012, 300012, "Errore stato serranda", "Serranda non in posizione aperta. Verificare lo stato dei sensori.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1023,12 +1023,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 300012, 300012, "Errore stato serranda", "Serranda non in posizione aperta. Verificare lo stato dei sensori.", 1 });
+                values: new object[] { 300005, 300005, "Cassetto rilevato nella baia di estrazione", "Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
                 values: new object[] { 200001, 200001, "Parametro inverter non valido", "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.", 1 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorDefinitions",
+                columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
+                values: new object[] { 36, 36, "Magazzino pieno", "Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1118,7 +1123,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 35, 35, "Magazzino pieno", "Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.", 1 });
+                values: new object[] { 35, 35, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1133,57 +1138,57 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 34, 34, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.", 1 });
+                values: new object[] { 34, 34, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questa baia.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 33, 33, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questa baia.", 1 });
+                values: new object[] { 33, 33, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 32, 32, "Errore esecuzione missione", "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.", 1 });
+                values: new object[] { 32, 32, "Errore missione", "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 31, 31, "Errore missione", "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.", 1 });
+                values: new object[] { 31, 31, "Errore esecuzione comando", "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 30, 30, "Errore esecuzione comando", "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.", 1 });
+                values: new object[] { 30, 30, "Errore esecuzione comando", "La baia ha già un comando in esecuzione e non può accettarne un altro.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 29, 29, "Errore esecuzione comando", "La baia ha già un comando in esecuzione e non può accettarne un altro.", 1 });
+                values: new object[] { 29, 29, "Destinazione non valida", "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 28, 28, "Destinazione non valida", "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.", 1 });
+                values: new object[] { 28, 28, "Destinazione non valida", "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 27, 27, "Destinazione non valida", "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.", 1 });
+                values: new object[] { 27, 27, "Errore peso", "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 26, 26, "Errore peso", "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.", 1 });
+                values: new object[] { 26, 26, "Errore peso", "Peso cassetto inferiore al peso atteso.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 25, 25, "Errore peso", "Peso cassetto inferiore al peso atteso.", 1 });
+                values: new object[] { 25, 25, "Errore peso", "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 24, 24, "Errore peso", "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.", 1 });
+                values: new object[] { 24, 24, "Errore di connessione", "Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1218,7 +1223,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 28, 15, 7, 52, 111, DateTimeKind.Local).AddTicks(9479), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 28, 18, 6, 39, 983, DateTimeKind.Local).AddTicks(4912), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",
@@ -1398,7 +1403,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 300018, 0 });
+                values: new object[] { 36, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1408,7 +1413,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 33, 0 });
+                values: new object[] { 34, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1488,17 +1493,22 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 34, 0 });
-
-            migrationBuilder.InsertData(
-                table: "ErrorStatistics",
-                columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 16, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 17, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
                 values: new object[] { 18, 0 });
+
+            migrationBuilder.InsertData(
+                table: "ErrorStatistics",
+                columns: new[] { "Code", "TotalErrors" },
+                values: new object[] { 33, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1533,12 +1543,12 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 17, 0 });
+                values: new object[] { 26, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 26, 0 });
+                values: new object[] { 25, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
@@ -1573,7 +1583,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",
                 columns: new[] { "Code", "TotalErrors" },
-                values: new object[] { 25, 0 });
+                values: new object[] { 300018, 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorStatistics",

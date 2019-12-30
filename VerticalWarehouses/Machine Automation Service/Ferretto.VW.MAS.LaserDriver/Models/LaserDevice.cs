@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
+using Ferretto.VW.MAS.DataLayer;
 using Ferretto.VW.MAS.LaserDriver.StateMachines.MoveAndSwitchOn;
 using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOff;
 using Ferretto.VW.MAS.LaserDriver.StateMachines.SwitchOn;
@@ -23,6 +24,8 @@ namespace Ferretto.VW.MAS.LaserDriver
         #region Fields
 
         private readonly CancellationToken cancellationToken;
+
+        private readonly IErrorsProvider errorsProvider;
 
         private readonly IEventAggregator eventAggregator;
 
@@ -48,8 +51,15 @@ namespace Ferretto.VW.MAS.LaserDriver
 
         #region Constructors
 
-        public LaserDevice(BayNumber bayNumber, IPAddress ipAddress, int port,
-            ISocketTransport transport, IEventAggregator eventAggregator, ILogger logger, CancellationToken cancellationToken)
+        public LaserDevice(
+            BayNumber bayNumber,
+            IPAddress ipAddress,
+            int port,
+            ISocketTransport transport,
+            IEventAggregator eventAggregator,
+            IErrorsProvider errorsProvider,
+            ILogger logger,
+            CancellationToken cancellationToken)
         {
             this.BayNumber = bayNumber;
             this.IpAddress = ipAddress;
@@ -59,6 +69,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             this.socketTransport = transport;
             this.logger = logger;
             this.cancellationToken = cancellationToken;
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.eventAggregator = eventAggregator;
 
             this.laserReceiveTask = new Task(async () => await this.ReceiveLaserDataTaskFunction());
@@ -193,6 +204,7 @@ namespace Ferretto.VW.MAS.LaserDriver
             if (!this.socketTransport.IsConnected)
             {
                 this.logger.LogError($"3:Failed to connect to Laser {this.BayNumber}");
+                this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
             }
             else
             {
@@ -260,6 +272,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                     if (!this.socketTransport.IsConnected)
                     {
                         this.logger.LogError("3:Socket Transport failed to connect");
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
                         continue;
                     }
                     else
@@ -281,6 +294,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                     {
                         // connection error
                         this.logger.LogError($"4:Laser Driver message is null");
+                        this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
                         var ex = new Exception();
                         continue;
                     }
@@ -295,6 +309,7 @@ namespace Ferretto.VW.MAS.LaserDriver
                 {
                     // connection error
                     this.logger.LogError(ex, $"3:Exception: {ex.Message} while connecting to Laser {this.BayNumber} - ExceptionCode: {ex.ExceptionCode}; Inner exception: {ex.InnerException?.Message ?? string.Empty}");
+                    this.errorsProvider.RecordNew(DataModels.MachineErrorCode.LaserConnectionError, this.BayNumber);
                     continue;
                 }
                 catch (Exception ex)

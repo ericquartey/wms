@@ -2875,29 +2875,31 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         IoDeviceConnectionError = 23,
     
-        LoadingUnitWeightExceeded = 24,
+        LaserConnectionError = 24,
     
-        LoadingUnitWeightTooLow = 25,
+        LoadingUnitWeightExceeded = 25,
     
-        MachineWeightExceeded = 26,
+        LoadingUnitWeightTooLow = 26,
     
-        DestinationBelowLowerBound = 27,
+        MachineWeightExceeded = 27,
     
-        DestinationOverUpperBound = 28,
+        DestinationBelowLowerBound = 28,
     
-        BayInvertersBusy = 29,
+        DestinationOverUpperBound = 29,
     
-        IoDeviceError = 30,
+        BayInvertersBusy = 30,
     
-        MachineModeNotValid = 31,
+        IoDeviceError = 31,
     
-        AnotherMissionIsActiveForThisLoadUnit = 32,
+        MachineModeNotValid = 32,
     
-        AnotherMissionIsActiveForThisBay = 33,
+        AnotherMissionIsActiveForThisLoadUnit = 33,
     
-        AnotherMissionOfThisTypeIsActive = 34,
+        AnotherMissionIsActiveForThisBay = 34,
     
-        WarehouseIsFull = 35,
+        AnotherMissionOfThisTypeIsActive = 35,
+    
+        WarehouseIsFull = 36,
     
         InverterErrorBaseCode = 200000,
     
