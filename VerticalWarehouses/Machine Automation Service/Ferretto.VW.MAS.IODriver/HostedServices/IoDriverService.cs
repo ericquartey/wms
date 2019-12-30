@@ -175,8 +175,6 @@ namespace Ferretto.VW.MAS.IODriver
                     ? (IIoTransport)new IoTransportMock()
                     : new IoTransport(readTimeoutMilliseconds);
 
-                var isCarousel = this.baysDataProvider.GetByIoIndex(ioDevice.Index).Carousel != null;
-
                 this.ioDevices.Add(
                     ioDevice.Index,
                     new IoDevice(
@@ -187,7 +185,7 @@ namespace Ferretto.VW.MAS.IODriver
                         ioDevice.IpAddress,
                         ioDevice.TcpPort,
                         ioDevice.Index,
-                        isCarousel,
+                        this.baysDataProvider.GetByIoIndex(ioDevice.Index),
                         this.Logger,
                         this.CancellationToken,
                         this.env));
