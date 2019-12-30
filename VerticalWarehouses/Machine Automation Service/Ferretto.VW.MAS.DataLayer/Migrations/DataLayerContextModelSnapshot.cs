@@ -350,14 +350,14 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = -1,
                             Code = -1,
                             Description = "NoError",
-                            Reason = "Nessun errore rilevato",
+                            Reason = "Nessun errore rilevato.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 1,
                             Code = 1,
-                            Description = "Cassetto non caricato completamente.",
+                            Description = "Cassetto non caricato completamente",
                             Reason = "Il cassetto potrebbe essersi incastrato.",
                             Severity = 0
                         },
@@ -365,7 +365,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 2,
                             Code = 2,
-                            Description = "Condizioni per il posizionamento non soddisfatte.",
+                            Description = "Condizioni per il posizionamento non soddisfatte",
                             Reason = "Controllare che il nottolino sia a zero o che il cassetto sia completamente caricato a bordo elevatore.",
                             Severity = 0
                         },
@@ -373,7 +373,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 3,
                             Code = 3,
-                            Description = "Condizioni per la messa in marcia non soddisfatte.",
+                            Description = "Condizioni per la messa in marcia non soddisfatte",
                             Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
@@ -381,7 +381,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 4,
                             Code = 4,
-                            Description = "È scattata la funzione di sicurezza.",
+                            Description = "È scattata la funzione di sicurezza",
                             Reason = "Controllare che i funghi di emergenza siano disattivati e che tutti i sensori di sicurezza siano disattivi.",
                             Severity = 0
                         },
@@ -390,30 +390,30 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 5,
                             Code = 5,
                             Description = "Un pulsante di emergenza è stato premuto",
-                            Reason = "Un pulsante di emergenza è stato premuto",
+                            Reason = "Un pulsante (fungo) di emergenza è stato premuto. Verificare lo stato e riprovare.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 6,
                             Code = 6,
-                            Description = "SecurityBarrierWasTriggered",
-                            Reason = "Una barriera di sicurezza è stata interrotta",
+                            Description = "Una barriera di sicurezza è stata interrotta",
+                            Reason = "Una barriera di sicurezza è stata interrotta. Verificare lo stato delle fotocellule della barriera e ritentare.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 7,
                             Code = 7,
-                            Description = "SecuritySensorWasTriggered",
-                            Reason = "Uno o più sensori dei pannelli laterali è stato interrotto (aperto)",
+                            Description = "Uno o più sensori dei pannelli laterali è stato interrotto",
+                            Reason = "Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 8,
                             Code = 8,
-                            Description = "È stato rilevato un errore in uno degli inverter.",
+                            Description = "È stato rilevato un errore in uno degli inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 0
                         },
@@ -421,7 +421,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 9,
                             Code = 9,
-                            Description = "CradleNotCorrectlyLoadedDuringPickup",
+                            Description = "Inconsistenza sensori elevatore",
                             Reason = "Il cassetto sembra non essere completamente a bordo elevatore dopo la fase di carico.",
                             Severity = 0
                         },
@@ -429,7 +429,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 10,
                             Code = 10,
-                            Description = "CradleNotCorrectlyUnloadedDuringDeposit",
+                            Description = "Inconsistenza sensori elevatore",
                             Reason = "Il cassetto non sembra essere completamente fuori dall'elevatore dopo la fase di scarico.",
                             Severity = 0
                         },
@@ -437,47 +437,47 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 11,
                             Code = 11,
-                            Description = "ZeroSensorErrorAfterPickup",
-                            Reason = "ZeroSensorErrorAfterPickup",
+                            Description = "Inconsistenza stato sensori elevatore",
+                            Reason = "Inconsistenza stato sensori. I sensori di presenza su elevatore risultano non attivi dopo un'operazione di carico.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 12,
                             Code = 12,
-                            Description = "ZeroSensorErrorAfterDeposit",
-                            Reason = "ZeroSensorErrorAfterDeposit",
+                            Description = "Inconsistenza stato sensori elevatore",
+                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo dopo un'operazione di deposito.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 13,
                             Code = 13,
-                            Description = "InvalidPresenceSensors",
-                            Reason = "Sensori di presenza invalidi",
+                            Description = "Inconsistenza stato sensori elevatore",
+                            Reason = "Inconsistenza sensori di presenza a bordo elevatore.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 14,
                             Code = 14,
-                            Description = "MissingZeroSensorWithEmptyElevator",
-                            Reason = "MissingZeroSensorWithEmptyElevator",
+                            Description = "Inconsistenza stato sensori",
+                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta non attivo.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 15,
                             Code = 15,
-                            Description = "ZeroSensorActiveWithFullElevator",
-                            Reason = "ZeroSensorActiveWithFullElevator",
+                            Description = "Inconsistenza stato sensori elevatore",
+                            Reason = "Inconsistenza stato sensori. Il sensore di nottolino a zero risulta attivo in concomitanza con i sensori di presenza a bordo elevatore.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 16,
                             Code = 16,
-                            Description = "LoadUnitPresentOnEmptyElevator",
+                            Description = "Inconsistenza stato sensori",
                             Reason = "Presenza a bordo elevatore con elevatore logicamente scarico.",
                             Severity = 0
                         },
@@ -485,159 +485,159 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 17,
                             Code = 17,
-                            Description = "TopLevelBayOccupied",
-                            Reason = "Livello alto baia occupato",
+                            Description = "Errore esecuzione comando di deposito",
+                            Reason = "Livello alto baia occupato.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 18,
                             Code = 18,
-                            Description = "BottomLevelBayOccupied",
-                            Reason = "Livello basso baia occupato.",
+                            Description = "Errore esecuzione comando di deposito",
+                            Reason = "Livello baia bassa occupato.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 19,
                             Code = 19,
-                            Description = "TopLevelBayEmpty",
-                            Reason = "TopLevelBayEmpty",
+                            Description = "Errore esecuzione comando di prelievo",
+                            Reason = "Livello alto baia vuoto.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 20,
                             Code = 20,
-                            Description = "BottomLevelBayEmpty",
-                            Reason = "BottomLevelBayEmpty",
+                            Description = "Errore esecuzione comando di prelievo",
+                            Reason = "Livello baia bassa  vuoto.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 21,
                             Code = 21,
-                            Description = "SensorZeroBayNotActiveAtStart",
-                            Reason = "SensorZeroBayNotActiveAtStart",
+                            Description = "Inconsistenza stato sensori baia",
+                            Reason = "Inconsistenza stato sensori. Il sensore di zero della baia non risulta attivo.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 22,
                             Code = 22,
-                            Description = "InverterConnectionError",
-                            Reason = "Problema di connessione con inverter(s)",
+                            Description = "Errore di connessione",
+                            Reason = "Problema di connessione con inverter(s). Controllare lo stato delle connessioni ethernet.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 23,
                             Code = 23,
-                            Description = "IoDeviceConnectionError",
-                            Reason = "IoDeviceConnectionError",
+                            Description = "Errore di connessione",
+                            Reason = "Errore di connessione al dispositivo I/O. Controllare lo stato delle connessioni ethernet.",
                             Severity = 0
                         },
                         new
                         {
                             Id = 24,
                             Code = 24,
-                            Description = "Il peso massimo caricato sul cassetto è eccessivo.",
-                            Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
+                            Description = "Errore peso",
+                            Reason = "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 25,
                             Code = 25,
-                            Description = "LoadingUnitWeightTooLow",
-                            Reason = "LoadingUnitWeightTooLow",
+                            Description = "Errore peso",
+                            Reason = "Peso cassetto inferiore al peso atteso.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 26,
                             Code = 26,
-                            Description = "MachineWeightExceeded",
-                            Reason = "Limite peso macchina superato",
+                            Description = "Errore peso",
+                            Reason = "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 27,
                             Code = 27,
-                            Description = "DestinationBelowLowerBound",
-                            Reason = "Errore destinazione asse sotto livello minimo",
+                            Description = "Destinazione non valida",
+                            Reason = "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 28,
                             Code = 28,
-                            Description = "DestinationOverUpperBound",
-                            Reason = "Errore destinazione asse sopra livello massimo",
+                            Description = "Destinazione non valida",
+                            Reason = "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 29,
                             Code = 29,
-                            Description = "BayInvertersBusy",
-                            Reason = "BayInvertersBusy",
+                            Description = "Errore esecuzione comando",
+                            Reason = "La baia ha già un comando in esecuzione e non può accettarne un altro.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 30,
                             Code = 30,
-                            Description = "IoDeviceError",
-                            Reason = "IoDeviceError",
+                            Description = "Errore esecuzione comando",
+                            Reason = "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 31,
                             Code = 31,
-                            Description = "MachineModeNotValid",
-                            Reason = "Modo macchina errato",
+                            Description = "Errore missione",
+                            Reason = "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 32,
                             Code = 32,
-                            Description = "AnotherMissionIsActiveForThisLoadUnit",
-                            Reason = "AnotherMissionIsActiveForThisLoadUnit",
+                            Description = "Errore esecuzione missione",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 33,
                             Code = 33,
-                            Description = "AnotherMissionIsActiveForThisBay",
-                            Reason = "AnotherMissionIsActiveForThisBay",
+                            Description = "Errore esecuzione missione",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa baia.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 34,
                             Code = 34,
-                            Description = "AnotherMissionOfThisTypeIsActive",
-                            Reason = "AnotherMissionOfThisTypeIsActive",
+                            Description = "Errore esecuzione missione",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 35,
                             Code = 35,
-                            Description = "WarehouseIsFull",
-                            Reason = "Il magazzino risulta pieno",
+                            Description = "Magazzino pieno",
+                            Reason = "Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 200000,
                             Code = 200000,
-                            Description = "Errore inverter.",
+                            Description = "Errore generico inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -645,7 +645,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200001,
                             Code = 200001,
-                            Description = "Paramentro inverter non valido.",
+                            Description = "Parametro inverter non valido",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -653,7 +653,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200002,
                             Code = 200002,
-                            Description = "Dataset inverter non valido.",
+                            Description = "Dataset inverter non valido",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -661,7 +661,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200003,
                             Code = 200003,
-                            Description = "Parametro inverter è in sola scrittura.",
+                            Description = "Parametro inverter è in sola scrittura",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -669,7 +669,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200004,
                             Code = 200004,
-                            Description = "Parametro inverter è in sola lettura.",
+                            Description = "Parametro inverter è in sola lettura",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -677,7 +677,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200005,
                             Code = 200005,
-                            Description = "Errore lettura EEPROM dell'inverter.",
+                            Description = "Errore lettura EEPROM dell'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -685,7 +685,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200006,
                             Code = 200006,
-                            Description = "Errore scrittura EEPROM dell'inverter.",
+                            Description = "Errore scrittura EEPROM dell'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -693,7 +693,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200007,
                             Code = 200007,
-                            Description = "Errore checksum EEPROM dell'inverter.",
+                            Description = "Errore checksum EEPROM dell'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -701,7 +701,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200008,
                             Code = 200008,
-                            Description = "Impossibile scrivere il parametro dell'inverter durante l'esecuzione.",
+                            Description = "Impossibile scrivere il parametro dell'inverter durante l'esecuzione",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -709,7 +709,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200009,
                             Code = 200009,
-                            Description = "I dati del dataset dell'inverter non corrispondono.",
+                            Description = "I dati del dataset dell'inverter non corrispondono",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -717,7 +717,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200011,
                             Code = 200011,
-                            Description = "Parametro sconosciuto passato all'inverter.",
+                            Description = "Parametro sconosciuto passato all'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -725,7 +725,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200013,
                             Code = 200013,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
+                            Description = "Errore di sintassi del messaggio inviato all'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -733,7 +733,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200014,
                             Code = 200014,
-                            Description = "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.",
+                            Description = "Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -741,7 +741,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200020,
                             Code = 200020,
-                            Description = "Il nodo specificato non è disponibile.",
+                            Description = "Il nodo specificato non è disponibile",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -749,7 +749,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 200030,
                             Code = 200030,
-                            Description = "Errore di sintassi del messaggio inviato all'inverter.",
+                            Description = "Errore di sintassi del messaggio inviato all'inverter",
                             Reason = "Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.",
                             Severity = 1
                         },
@@ -766,7 +766,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300001,
                             Code = 300001,
                             Description = "Nessun cassetto presente nella baia indicata",
-                            Reason = "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente",
+                            Reason = "Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.",
                             Severity = 1
                         },
                         new
@@ -774,7 +774,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300002,
                             Code = 300002,
                             Description = "Inconsistenza database posizione sorgente cassetto",
-                            Reason = "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata",
+                            Reason = "Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata.",
                             Severity = 1
                         },
                         new
@@ -782,7 +782,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300003,
                             Code = 300003,
                             Description = "Inconsistenza database cella destinazione cassetto",
-                            Reason = "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata",
+                            Reason = "Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata.",
                             Severity = 1
                         },
                         new
@@ -814,7 +814,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300007,
                             Code = 300007,
                             Description = "Inconsistenza database cella sorgente cassetto",
-                            Reason = "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata",
+                            Reason = "Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata.",
                             Severity = 1
                         },
                         new
@@ -845,32 +845,32 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 300011,
                             Code = 300011,
-                            Description = "MachineManagerErrorLoadingUnitShutterOpen",
-                            Reason = "MachineManagerErrorLoadingUnitShutterOpen",
+                            Description = "Errore stato serranda",
+                            Reason = "Serranda non in posizione chiusa. Verificare lo stato dei sensori.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 300012,
                             Code = 300012,
-                            Description = "MachineManagerErrorLoadingUnitShutterClosed",
-                            Reason = "MachineManagerErrorLoadingUnitShutterClosed",
+                            Description = "Errore stato serranda",
+                            Reason = "Serranda non in posizione aperta. Verificare lo stato dei sensori.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 300013,
                             Code = 300013,
-                            Description = "MachineManagerErrorLoadingUnitPresentInCell",
-                            Reason = "MachineManagerErrorLoadingUnitPresentInCell",
+                            Description = "Errore cassetto in posizione inattesa",
+                            Reason = "Cassetto già presente in cella.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 300014,
                             Code = 300014,
-                            Description = "MachineManagerErrorLoadingUnitOtherBay",
-                            Reason = "MachineManagerErrorLoadingUnitOtherBay",
+                            Description = "Errore cassetto in posizione inattesa",
+                            Reason = "Cassetto già presente in un'altra baia.",
                             Severity = 1
                         },
                         new
@@ -878,7 +878,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 300015,
                             Code = 300015,
                             Description = "Cassetto non presente sull'Elevatore",
-                            Reason = "MachineManagerErrorLoadingUnitSourceElevator",
+                            Reason = "Impossibile determinare il cassetto a bordo elevatore.",
                             Severity = 1
                         },
                         new
@@ -1626,7 +1626,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 28, 12, 20, 40, 115, DateTimeKind.Local).AddTicks(6995),
+                            InstallationDate = new DateTime(2017, 2, 28, 15, 7, 52, 111, DateTimeKind.Local).AddTicks(9479),
                             ServiceStatus = 86
                         });
                 });

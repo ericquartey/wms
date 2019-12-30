@@ -217,6 +217,8 @@ namespace Ferretto.VW.MAS.InverterDriver
                 {
                     this.EvaluateReadMessage(message, messageCurrentStateMachine, serviceProvider);
                 }
+                this.writeEnableEvent.Set();
+                this.Logger.LogTrace($"writeEnableEvent unlocked");
             }
             catch (Exception ex)
             {
@@ -356,11 +358,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     }
 
                     var extractedMessages = GetMessagesWithHeaderLengthToEnqueue(ref this.receiveBuffer, 4, 1, 2);
-                    if (extractedMessages.Count > 0)
-                    {
-                        this.writeEnableEvent.Set();
-                        this.Logger.LogTrace($"writeEnableEvent unlocked");
-                    }
 
                     foreach (var extractedMessage in extractedMessages)
                     {
@@ -388,7 +385,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
                             if (Debugger.IsAttached
                                 &&
-                                this.inverterCommandQueue.Count > 20)
+                                this.inverterCommandQueue.Count > 200)
                             {
                                 Debugger.Break();
                             }

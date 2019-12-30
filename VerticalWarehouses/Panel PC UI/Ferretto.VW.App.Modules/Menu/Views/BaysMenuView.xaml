@@ -61,6 +61,7 @@
                                         Abbrevation="4.3.1"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayControlCommand}"
+                                        Content="Permette di verificare e correggere la quota delle varie posizioni sulle baie"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -70,6 +71,7 @@
                                         Abbrevation="4.3.2"
                                         BorderBrush="{DynamicResource FerrettoRed}"
                                         Command="{Binding BayHeightCommand}"
+                                        Content="Permette la regolazione della barriera di rilevamento altezza del cassetto"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -79,6 +81,7 @@
                                         Abbrevation="4.3.3"
                                         BorderBrush="{DynamicResource FerrettoOrange}"
                                         Command="{Binding TestShutterCommand}"
+                                        Content="Permette di effettuare una serie di test ripetitivi per la serranda"
                                         Kind="Account"
                                         Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
