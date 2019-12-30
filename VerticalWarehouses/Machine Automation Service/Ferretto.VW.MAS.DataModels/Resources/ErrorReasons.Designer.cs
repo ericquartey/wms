@@ -475,7 +475,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitOtherBay.
+        ///   Looks up a localized string similar to Cassetto già presente in un&apos;altra baia..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitOtherBay {
             get {
@@ -484,7 +484,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitPresentInCell.
+        ///   Looks up a localized string similar to Cassetto già presente in cella..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitPresentInCell {
             get {
@@ -502,7 +502,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to MachineManagerErrorLoadingUnitShutterOpen.
+        ///   Looks up a localized string similar to Serranda non in posizione chiusa. Verificare lo stato dei sensori..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitShutterOpen {
             get {

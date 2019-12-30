@@ -247,7 +247,7 @@
     <value>Serranda non in posizione aperta. Verificare lo stato dei sensori.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+    <value>Serranda non in posizione chiusa. Verificare lo stato dei sensori.</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
     <value>Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.</value>
@@ -262,7 +262,7 @@
     <value>Errore nella gestione del dispositivo I/O</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitPresentInCell</value>
+    <value>Cassetto già presente in cella.</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
     <value>La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.</value>
@@ -277,7 +277,7 @@
     <value>Uno o più sensori dei pannelli laterali è stato interrotto (aperto). Verificare che i pannelli della macchina siano correttamente posizionati e chiusi.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+    <value>Cassetto già presente in un'altra baia.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
     <value>Impossibile determinare il cassetto a bordo elevatore.</value>
