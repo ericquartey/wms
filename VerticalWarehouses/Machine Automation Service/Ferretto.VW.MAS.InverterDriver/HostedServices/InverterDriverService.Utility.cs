@@ -310,7 +310,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                         axis = Axis.BayChain;
                     }
 
-                    this.Logger.LogTrace($"ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
+                    this.Logger.LogTrace($"5a:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; value={message.IntPayload}; current={this.currentAxis}");
 
                     if ((axis == this.currentAxis || currentStateMachine == null || axis == Axis.BayChain) &&
                         (positioningInverter.UpdateInverterCurrentPosition(axis, message.IntPayload) || this.forceStatusPublish[(int)message.SystemIndex]))
@@ -334,6 +334,7 @@ namespace Ferretto.VW.MAS.InverterDriver
                             ? elevatorDataProvider.GetAxis(Orientation.Vertical).Offset
                             : elevatorDataProvider.GetAxis(Orientation.Horizontal).Offset;
                         currentAxisPosition += offset;
+                        this.Logger.LogTrace($"5b:ActualPositionShaft inverter={inverter.SystemIndex}; axis={axis}; currentAxisPosition={currentAxisPosition}");
 
                         var notificationData = new InverterStatusUpdateFieldMessageData(axis, inverter.Inputs, currentAxisPosition);
                         var msgNotification = new FieldNotificationMessage(

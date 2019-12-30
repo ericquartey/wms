@@ -292,7 +292,7 @@ namespace Ferretto.VW.Simulator.Services
 
                     this.ReplyToInverterMessage(client, message);
 
-                    //Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
+                    Thread.Sleep(DELAY_INVERTER_CLIENT * random.Next(1, 10));
                 }
             }
             else
@@ -397,11 +397,11 @@ namespace Ferretto.VW.Simulator.Services
                 Console.WriteLine($"HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
+                inverter.IsFault = true;
                 //if (Debugger.IsAttached)
                 //{
                 //    Debugger.Break();
                 //}
-                //inverter.IsFault = true;
             }
 
             var result = 0;
