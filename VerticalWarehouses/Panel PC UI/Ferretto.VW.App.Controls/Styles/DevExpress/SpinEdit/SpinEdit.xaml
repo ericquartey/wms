@@ -213,14 +213,14 @@
             <VisualStateManager.VisualStateGroups>
                 <VisualStateGroup x:Name="CommonStates">
                     <VisualState x:Name="Normal" />
-                    <VisualState x:Name="MouseOver">
+                    <!--<VisualState x:Name="MouseOver">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="HoverState"
                                              Storyboard.TargetProperty="Opacity"
                                              To="1"
                                              Duration="0" />
                         </Storyboard>
-                    </VisualState>
+                    </VisualState>-->
                     <VisualState x:Name="Pressed">
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="PressedState"
