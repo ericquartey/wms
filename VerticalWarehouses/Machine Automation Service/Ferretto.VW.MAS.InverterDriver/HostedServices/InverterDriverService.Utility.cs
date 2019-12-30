@@ -45,8 +45,6 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly object syncAxisTimer = new object();
 
-        private readonly object syncHeartBeatTimer = new object();
-
         private readonly object syncSensorTimer = new object();
 
         private readonly object syncStatusTimer = new object();
@@ -539,40 +537,23 @@ namespace Ferretto.VW.MAS.InverterDriver
             this.refreshTargetTable = true;
         }
 
-        private async Task<bool> ProcessInverterCommand()
+        private async Task<bool> ProcessInverterCommand(InverterMessage message)
         {
             var result = false;
 
-            if (this.inverterCommandQueue.Peek(out var message))
+            var inverterMessagePacket = message.IsWriteMessage ? message.ToBytes() : message.GetReadMessage();
+
+            this.roundTripStopwatch.Reset();
+            this.roundTripStopwatch.Start();
+
+            try
             {
+                result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
                 this.Logger.LogTrace($"1:ParameterId={message.ParameterId}:SendDelay{message.SendDelay}:Queue{this.inverterCommandQueue.Count}:inverterMessage={message}");
-
-                var inverterMessagePacket = message.IsWriteMessage ? message.ToBytes() : message.GetReadMessage();
-
-                this.roundTripStopwatch.Reset();
-                this.roundTripStopwatch.Start();
-
-                try
-                {
-                    result = await this.socketTransport.WriteAsync(inverterMessagePacket, message.SendDelay, this.CancellationToken) == inverterMessagePacket.Length;
-                }
-                catch (InverterDriverException ex)
-                {
-                    this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
-                }
-
-                if (result)
-                {
-                    this.inverterCommandQueue.Dequeue(out _);
-                }
-                else if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
             }
-            else if (Debugger.IsAttached)
+            catch (InverterDriverException ex)
             {
-                Debugger.Break();
+                this.Logger.LogError(ex, $"Exception {ex.Message}, InverterExceptionCode={ex.InverterDriverExceptionCode}");
             }
 
             return result;
@@ -979,11 +960,14 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private void ProcessReadCurrentError(IInverterStatusBase inverter)
         {
-            var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.CurrentError);
+            if (this.inverterCommandQueue.Count(x => x.ParameterId == InverterParameterId.CurrentError && x.SystemIndex == inverter.SystemIndex) < 1)
+            {
+                var inverterMessage = new InverterMessage(inverter.SystemIndex, InverterParameterId.CurrentError);
 
-            this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
+                this.Logger.LogTrace($"1:inverterMessage={inverterMessage}");
 
-            this.inverterCommandQueue.Enqueue(inverterMessage);
+                this.inverterCommandQueue.Enqueue(inverterMessage);
+            }
         }
 
         private void ProcessShutterPositioningMessage(FieldCommandMessage receivedMessage, IInverterStatusBase inverter)

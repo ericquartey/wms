@@ -26,6 +26,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
 
         private readonly IMachineControlProvider machineControlProvider;
 
+        private readonly IMachineModeVolatileDataProvider machineModeDataProvider;
+
         private readonly Dictionary<BayNumber, MessageStatus> stateMachineResponses;
 
         private BayNumber currentBay;
@@ -39,14 +41,16 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
         #region Constructors
 
         public ChangeRunningStateStartState(
-                    IBaysDataProvider baysDataProvider,
+            IBaysDataProvider baysDataProvider,
             IMachineControlProvider machineControlProvider,
+            IMachineModeVolatileDataProvider machineModeDataProvider,
             ILogger<StateBase> logger)
             : base(logger)
         {
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
 
             this.machineControlProvider = machineControlProvider ?? throw new ArgumentNullException(nameof(machineControlProvider));
+            this.machineModeDataProvider = machineModeDataProvider ?? throw new ArgumentNullException(nameof(machineModeDataProvider));
 
             this.stateMachineResponses = new Dictionary<BayNumber, MessageStatus>();
         }
@@ -80,6 +84,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.ChangeRunningState.
                     this.stopReason = messageData.StopReason;
                     var newMessageData = new StopMessageData(this.stopReason);
                     this.machineControlProvider.StopOperation(newMessageData, this.currentBay, MessageActor.MachineManager, commandMessage.RequestingBay);
+
+                    this.machineModeDataProvider.Mode = MachineMode.Manual;
+                    this.Logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
                 }
 
                 var notificationData = new ChangeRunningStateMessageData(

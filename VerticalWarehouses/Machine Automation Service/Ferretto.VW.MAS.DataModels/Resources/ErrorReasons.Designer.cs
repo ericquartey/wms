@@ -187,6 +187,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to InverterConnectionError.
+        /// </summary>
+        public static string InverterConnectionError {
+            get {
+                return ResourceManager.GetString("InverterConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Spegnere e riaccendere la macchina. Se il problema persiste, contattare l&apos;assistenza..
         /// </summary>
         public static string InverterErrorBaseCode {
@@ -318,6 +327,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         public static string InverterFaultStateDetected {
             get {
                 return ResourceManager.GetString("InverterFaultStateDetected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to IoDeviceConnectionError.
+        /// </summary>
+        public static string IoDeviceConnectionError {
+            get {
+                return ResourceManager.GetString("IoDeviceConnectionError", resourceCulture);
             }
         }
         
