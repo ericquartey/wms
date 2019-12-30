@@ -55,7 +55,7 @@
                                     Abbrevation="4.7.1"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuUsersCommand}"
-                                    Content="Gestione uteti locali"
+                                    Content="Gestione utenti locali"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -65,7 +65,7 @@
                                     Abbrevation="4.7.2"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuComunicationWmsCommand}"
-                                    Content="Impostazione dell'IP e PORTA del WMS"
+                                    Content="Impostazione dei parametri di comunicazione con il WMS"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -75,7 +75,7 @@
                                     Abbrevation="4.7.3"
                                     BorderBrush="{DynamicResource FerrettoRed}"
                                     Command="{Binding MenuParametersCommand}"
-                                    Content="Modifica, importazione, esportazione dei parametri macchina"
+                                    Content="Modifica, importazione ed esportazione dei parametri macchina"
                                     Kind="Account"
                                     Style="{DynamicResource PpcButtonMenuCardStyle}" />
 
@@ -103,7 +103,7 @@
             <views:InstallationNavigationFooterView Grid.Row="2"
                                                     HorizontalAlignment="Right" />
         </Grid>
-        
+
 
     </Grid>
 </ctrls:View>
