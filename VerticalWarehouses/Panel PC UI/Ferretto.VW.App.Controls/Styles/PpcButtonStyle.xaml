@@ -547,7 +547,9 @@
                                     </Grid>
                                 </Border>
 
-                                <TextBlock Margin="10,15,10,5"
+                                <TextBlock Margin="5,18,10,5"
+                                           Grid.Column="1"
+                                           HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            FontFamily="{TemplateBinding FontFamily}"
                                            FontSize="{TemplateBinding FontSize}"

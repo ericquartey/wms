@@ -37,6 +37,7 @@ namespace Ferretto.VW.MAS.MachineManager
 
             this.serviceScope = serviceScopeFactory.CreateScope();
 
+            this.isDataLayerReady = false;
             this.Logger.LogTrace("Mission manager initialized.");
         }
 

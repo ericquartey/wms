@@ -397,7 +397,7 @@ namespace Ferretto.VW.Simulator.Services
                 Console.WriteLine($"HeartBeat timeout {timeout}");
 
                 // TODO: enable heartbeat control
-                inverter.IsFault = true;
+                //inverter.IsFault = true;
                 //if (Debugger.IsAttached)
                 //{
                 //    Debugger.Break();

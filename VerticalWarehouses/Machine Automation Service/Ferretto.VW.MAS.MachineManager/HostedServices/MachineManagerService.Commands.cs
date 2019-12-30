@@ -45,6 +45,13 @@ namespace Ferretto.VW.MAS.MachineManager
                 return;
             }
 
+            if (!this.isDataLayerReady)
+            {
+                this.Logger.LogError($"Failed to start Change Running State machine mission: DataLayer is not ready!");
+                this.NotifyCommandError(command);
+                return;
+            }
+
             if (command.Data is ChangeRunningStateMessageData messageData)
             {
                 switch (messageData.CommandAction)
@@ -106,6 +113,13 @@ namespace Ferretto.VW.MAS.MachineManager
         {
             if (command is null)
             {
+                return;
+            }
+
+            if (!this.isDataLayerReady)
+            {
+                this.Logger.LogError($"Failed to start Move Loading Unit State machine mission: DataLayer is not ready!");
+                this.NotifyCommandError(command);
                 return;
             }
 
