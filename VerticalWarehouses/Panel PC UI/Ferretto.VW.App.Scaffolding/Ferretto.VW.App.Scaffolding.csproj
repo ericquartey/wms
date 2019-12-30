@@ -59,8 +59,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\ValidationRuleConverter.cs" />
     <Compile Include="Selectors\PropertyInfoDataTemplateSelector.cs" />
     <Compile Include="Services\MetadataService.cs" />
+    <Compile Include="ValidationRules\AttributeValidationRule.cs" />
+    <Compile Include="ValidationRules\CompositeDataAnnotationsValidationRule.cs" />
+    <Compile Include="ValidationRules\CompositeDataAnnotationValidator.cs" />
     <Page Include="Controls\IPAddressBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -109,7 +113,7 @@
   <ItemGroup>
     <Compile Include="Models\ScaffoldedEntity.cs" />
     <Compile Include="Models\ScaffoldedStructure.cs" />
-    <Compile Include="POC\Models\LoginModel.cs" />
+    <Compile Include="POC\Models\SimpleVertimagModel.cs" />
     <Compile Include="POC\Resources\Vertimag.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
