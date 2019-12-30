@@ -7,15 +7,6 @@ using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Scaffolding.Models
 {
-    public class LoginModel
-    {
-        [Display(Name = "Nome utente"), Editable(false)]
-        public string Username { get; set; } = "Username";
-
-        [Display(Name = "Parola chiave")]
-        public string Password { get; set; } = "Password";
-    }
-
     public class VertimagModel
     {
         [Editable(false)]
@@ -66,8 +57,11 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
     public class Inverter
     {
+        [Required]
         public System.Net.IPAddress IpAddress { get; set; }
 
+        [Required]
+        [Range(0, ushort.MaxValue)]
         public int TcpPort { get; set; }
     }
 

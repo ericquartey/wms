@@ -1,7 +1,5 @@
 ﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
@@ -34,4 +32,5 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             throw new NotSupportedException();
         }
     }
+
 }
