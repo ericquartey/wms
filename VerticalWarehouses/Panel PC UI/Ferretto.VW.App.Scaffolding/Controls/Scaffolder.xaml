@@ -193,17 +193,21 @@
                         </DataTemplate.Resources>
 
                         <TextBox Width="200" DataContext="{Binding}" IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}" Name="txtBox">
+                            <TextBox.Resources>
+                                <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=txtBox}" />
+                                <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=txtBox}" />
+                            </TextBox.Resources>
                             <TextBox.Text>
                                 <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
                                     <Binding Path="Property" />
                                     <Binding Path="Instance" />
                                     <MultiBinding.ValidationRules>
-                                        <validation:CompositeDataAnnotationsValidationRule ValidatesOnTargetUpdated="True">
-                                            <validation:CompositeDataAnnotationsValidationRule.CompositeValidator>
-                                                <validation:CompositeDataAnnotationValidator Value="{Binding Text, ElementName=txtBox}"
-                                                                                             Attributes="{Binding Path=., ElementName=txtBox, Converter={StaticResource ValidationRuleConverter}}" />
-                                            </validation:CompositeDataAnnotationsValidationRule.CompositeValidator>
-                                        </validation:CompositeDataAnnotationsValidationRule>
+                                        <validation:CompositeValidationRule ValidatesOnTargetUpdated="True">
+                                            <validation:CompositeValidationRule.CompositeValidator>
+                                                <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                                                                               Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
+                                            </validation:CompositeValidationRule.CompositeValidator>
+                                        </validation:CompositeValidationRule>
                                     </MultiBinding.ValidationRules>
                                 </MultiBinding>
                             </TextBox.Text>

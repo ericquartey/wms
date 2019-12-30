@@ -63,8 +63,9 @@
     <Compile Include="Selectors\PropertyInfoDataTemplateSelector.cs" />
     <Compile Include="Services\MetadataService.cs" />
     <Compile Include="ValidationRules\AttributeValidationRule.cs" />
-    <Compile Include="ValidationRules\CompositeDataAnnotationsValidationRule.cs" />
-    <Compile Include="ValidationRules\CompositeDataAnnotationValidator.cs" />
+    <Compile Include="ValidationRules\CompositeValidationRule.cs" />
+    <Compile Include="ValidationRules\CompositeValidator.cs" />
+    <Compile Include="ValidationRules\ValidationBridge.cs" />
     <Page Include="Controls\IPAddressBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
