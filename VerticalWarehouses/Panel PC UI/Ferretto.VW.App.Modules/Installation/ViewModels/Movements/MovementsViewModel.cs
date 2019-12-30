@@ -337,7 +337,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnMachineStatusChangedAsync(e);
 
-            if ((e.MachineStatus?.IsMovingLoadingUnit ?? false) && this.IsExecutingProcedure)
+            if ((e.MachineStatus?.IsMoving ?? false) && this.IsExecutingProcedure)
             {
                 this.IsExecutingProcedure = false;
             }

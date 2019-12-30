@@ -16,6 +16,8 @@
     <Style x:Key="PpcSpinEditStyle"
            TargetType="{x:Type ctrls:PpcSpinEdit}">
         <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+        <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
+        <Setter Property="MinHeight" Value="60" />
 
         <Style.Triggers>
             <Trigger Property="Validation.HasError" Value="True">
@@ -24,9 +26,11 @@
             </Trigger>
             <Trigger Property="IsEnabled" Value="true">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_Normal}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="BorderColor" Value="{DynamicResource VWAPP_PpcTextBox_BorderColor_TextBox_Disabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>
@@ -38,7 +42,7 @@
         <Setter Property="FontSize" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_FontSize}" />
         <Style.Triggers>
             <Trigger Property="IsEnabled" Value="false">
-                <Setter Property="Foreground" Value="{DynamicResource VWAPP_PpcTextBox_TextBlock_Foreground_Disabled}" />
+                <Setter Property="Foreground" Value="{DynamicResource PpcForeground}" />
             </Trigger>
         </Style.Triggers>
     </Style>

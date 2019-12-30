@@ -137,6 +137,21 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
                  notification.Status == MessageStatus.OperationRunningStop);
         }
 
+        public BayNumber GetBayByCell(int cellId)
+        {
+            var bayNumber = BayNumber.None;
+            var cell = this.cellsProvider.GetById(cellId);
+            if (cell != null)
+            {
+                var bay = this.baysDataProvider.GetByCell(cell);
+                if (bay != null)
+                {
+                    bayNumber = bay.Number;
+                }
+            }
+            return bayNumber;
+        }
+
         public double GetCurrentVerticalPosition()
         {
             return this.elevatorProvider.VerticalPosition;
@@ -411,19 +426,19 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers
         /// <param name="closeShutter"></param>
         /// <param name="sender"></param>
         /// <param name="requestingBay"></param>
-        public void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId)
+        public void PositionElevatorToPosition(double targetHeight, BayNumber shutterBay, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId)
         {
-            if (closeShutter)
+            if (shutterBay != BayNumber.None)
             {
                 try
                 {
-                    this.shutterProvider.MoveTo(ShutterPosition.Closed, requestingBay, sender);
+                    this.shutterProvider.MoveTo(ShutterPosition.Closed, shutterBay, sender);
                 }
                 catch (InvalidOperationException ex)
                 {
                     if (restore)
                     {
-                        this.shutterProvider.Move(ShutterMovementDirection.Down, requestingBay, sender);
+                        this.shutterProvider.Move(ShutterMovementDirection.Down, shutterBay, sender);
                     }
                     else
                     {

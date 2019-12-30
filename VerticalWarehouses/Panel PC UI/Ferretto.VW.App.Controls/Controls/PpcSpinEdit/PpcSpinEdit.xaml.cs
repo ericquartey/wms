@@ -19,12 +19,6 @@ namespace Ferretto.VW.App.Controls
             typeof(SolidColorBrush),
             typeof(PpcSpinEdit));
 
-        public static readonly DependencyProperty ButtonSizeProperty = DependencyProperty.Register(
-            nameof(ButtonSize),
-            typeof(double),
-            typeof(PpcSpinEdit),
-            new PropertyMetadata(60D, new PropertyChangedCallback(OnButtonSizeChanged)));
-
         public static readonly DependencyProperty HighlightedProperty = DependencyProperty.Register(
             nameof(Highlighted),
             typeof(bool),
@@ -116,12 +110,6 @@ namespace Ferretto.VW.App.Controls
         {
             get => (SolidColorBrush)this.GetValue(BorderColorProperty);
             set => this.SetValue(BorderColorProperty, value);
-        }
-
-        public double ButtonSize
-        {
-            get => (double)this.GetValue(ButtonSizeProperty);
-            set => this.SetValue(ButtonSizeProperty, value);
         }
 
         public object EditValue

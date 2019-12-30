@@ -19,6 +19,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         bool FilterNotifications(NotificationMessage notification, MessageActor destination);
 
+        BayNumber GetBayByCell(int cellId);
+
         double GetCurrentVerticalPosition();
 
         double? GetDestinationHeight(Mission moveData, out int? targetBayPositionId, out int? targetCellId);
@@ -47,7 +49,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Providers.Interfaces
 
         void OpenShutter(MessageActor sender, ShutterPosition openShutter, BayNumber requestingBay, bool restore);
 
-        void PositionElevatorToPosition(double targetHeight, bool closeShutter, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId);
+        void PositionElevatorToPosition(double targetHeight, BayNumber shutterBay, bool measure, MessageActor sender, BayNumber requestingBay, bool restore, int? targetBayPositionId, int? targetCellId);
 
         MessageStatus PositionElevatorToPositionStatus(NotificationMessage message);
 
