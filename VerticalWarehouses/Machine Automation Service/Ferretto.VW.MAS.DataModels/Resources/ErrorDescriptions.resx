@@ -321,4 +321,10 @@
   <data name="MachineManagerErrorLoadingUnitMissingOnElevator" xml:space="preserve">
     <value>Elevatore occupato con cassetto sconosciuto</value>
   </data>
+  <data name="InverterConnectionError" xml:space="preserve">
+    <value>InverterConnectionError</value>
+  </data>
+  <data name="IoDeviceConnectionError" xml:space="preserve">
+    <value>IoDeviceConnectionError</value>
+  </data>
 </root>

@@ -46,7 +46,7 @@ namespace Ferretto.VW.Simulator.Services
 
         private CancellationTokenSource cts = new CancellationTokenSource();
 
-        private int DELAY_HEARTBEAT = 600;
+        private int DELAY_HEARTBEAT = 800;
 
         private DateTime heartBeatTime;
 

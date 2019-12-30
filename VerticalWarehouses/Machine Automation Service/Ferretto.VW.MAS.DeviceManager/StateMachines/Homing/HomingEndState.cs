@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                         )
                     {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.AxisToCalibrate);
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.RequestedAxisToCalibrate);
                     }
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                         )
                     {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.AxisToCalibrate);
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.RequestedAxisToCalibrate);
                     }
                 }
             }

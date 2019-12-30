@@ -65,6 +65,8 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Models
 
         public int NumberOfExecutedSteps { get; set; }
 
+        public Axis RequestedAxisToCalibrate { get; set; }
+
         public BayNumber RequestingBay { get; set; }
 
         [Obsolete("Replace this reference with DI or ServiceProvider.")]
