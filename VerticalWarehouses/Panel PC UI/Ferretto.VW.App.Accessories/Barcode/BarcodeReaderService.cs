@@ -113,7 +113,7 @@ namespace Ferretto.VW.App.Accessories
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Unable to load barcode rules.");
-                this.NotifyError(ex);
+                //this.NotifyError(ex);
             }
         }
 
