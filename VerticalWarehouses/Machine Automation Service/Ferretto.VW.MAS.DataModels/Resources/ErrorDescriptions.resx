@@ -118,73 +118,73 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConditionsNotMetForPositioning" xml:space="preserve">
-    <value>Condizioni per il posizionamento non soddisfatte.</value>
+    <value>Condizioni per il posizionamento non soddisfatte</value>
   </data>
   <data name="ConditionsNotMetForRunning" xml:space="preserve">
-    <value>Condizioni per la messa in marcia non soddisfatte.</value>
+    <value>Condizioni per la messa in marcia non soddisfatte</value>
   </data>
   <data name="CradleNotCompletelyLoaded" xml:space="preserve">
-    <value>Cassetto non caricato completamente.</value>
+    <value>Cassetto non caricato completamente</value>
   </data>
   <data name="CradleNotCorrectlyLoadedDuringPickup" xml:space="preserve">
-    <value>CradleNotCorrectlyLoadedDuringPickup</value>
+    <value>Inconsistenza sensori elevatore</value>
   </data>
   <data name="CradleNotCorrectlyUnloadedDuringDeposit" xml:space="preserve">
-    <value>CradleNotCorrectlyUnloadedDuringDeposit</value>
+    <value>Inconsistenza sensori elevatore</value>
   </data>
   <data name="ZeroSensorErrorAfterDeposit" xml:space="preserve">
-    <value>ZeroSensorErrorAfterDeposit</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="ZeroSensorErrorAfterPickup" xml:space="preserve">
-    <value>ZeroSensorErrorAfterPickup</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="InverterErrorBaseCode" xml:space="preserve">
-    <value>Errore inverter.</value>
+    <value>Errore generico inverter</value>
   </data>
   <data name="InverterErrorCannotWriteParameterWhileRunning" xml:space="preserve">
-    <value>Impossibile scrivere il parametro dell'inverter durante l'esecuzione.</value>
+    <value>Impossibile scrivere il parametro dell'inverter durante l'esecuzione</value>
   </data>
   <data name="InverterErrorDatasetValuesAreDifferent" xml:space="preserve">
-    <value>I dati del dataset dell'inverter non corrispondono.</value>
+    <value>I dati del dataset dell'inverter non corrispondono</value>
   </data>
   <data name="InverterErrorEepromChecksumError" xml:space="preserve">
-    <value>Errore checksum EEPROM dell'inverter.</value>
+    <value>Errore checksum EEPROM dell'inverter</value>
   </data>
   <data name="InverterErrorEepromReadError" xml:space="preserve">
-    <value>Errore lettura EEPROM dell'inverter.</value>
+    <value>Errore lettura EEPROM dell'inverter</value>
   </data>
   <data name="InverterErrorEepromWriteError" xml:space="preserve">
-    <value>Errore scrittura EEPROM dell'inverter.</value>
+    <value>Errore scrittura EEPROM dell'inverter</value>
   </data>
   <data name="InverterErrorInvalidDataset" xml:space="preserve">
-    <value>Dataset inverter non valido.</value>
+    <value>Dataset inverter non valido</value>
   </data>
   <data name="InverterErrorInvalidParameter" xml:space="preserve">
-    <value>Paramentro inverter non valido.</value>
+    <value>Parametro inverter non valido</value>
   </data>
   <data name="InverterErrorNodeNotAvailable" xml:space="preserve">
-    <value>Il nodo specificato non è disponibile.</value>
+    <value>Il nodo specificato non è disponibile</value>
   </data>
   <data name="InverterErrorParameterIsReadOnly" xml:space="preserve">
-    <value>Parametro inverter è in sola lettura.</value>
+    <value>Parametro inverter è in sola lettura</value>
   </data>
   <data name="InverterErrorParameterIsWriteOnly" xml:space="preserve">
-    <value>Parametro inverter è in sola scrittura.</value>
+    <value>Parametro inverter è in sola scrittura</value>
   </data>
   <data name="InverterErrorSyntaxError" xml:space="preserve">
-    <value>Errore di sintassi del messaggio inviato all'inverter.</value>
+    <value>Errore di sintassi del messaggio inviato all'inverter</value>
   </data>
   <data name="InverterErrorUnknownParameter" xml:space="preserve">
-    <value>Parametro sconosciuto passato all'inverter.</value>
+    <value>Parametro sconosciuto passato all'inverter</value>
   </data>
   <data name="InverterErrorWrongPayloadLength" xml:space="preserve">
-    <value>Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio.</value>
+    <value>Incoerenza tra la lunghezza del messaggio all'inverter e il tipo di dato del messaggio</value>
   </data>
   <data name="InverterFaultStateDetected" xml:space="preserve">
-    <value>È stato rilevato un errore in uno degli inverter.</value>
+    <value>È stato rilevato un errore in uno degli inverter</value>
   </data>
   <data name="SecurityWasTriggered" xml:space="preserve">
-    <value>È scattata la funzione di sicurezza.</value>
+    <value>È scattata la funzione di sicurezza</value>
   </data>
   <data name="MachineManagerErrorBaseCode" xml:space="preserve">
     <value>Errore Machine Manager</value>
@@ -220,94 +220,94 @@
     <value>Inconsistenza database cella sorgente cassetto</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>BottomLevelBayOccupied</value>
+    <value>Errore esecuzione comando di deposito</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
-    <value>InvalidPresenceSensors</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="LoadUnitPresentOnEmptyElevator" xml:space="preserve">
-    <value>LoadUnitPresentOnEmptyElevator</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="MissingZeroSensorWithEmptyElevator" xml:space="preserve">
-    <value>MissingZeroSensorWithEmptyElevator</value>
+    <value>Inconsistenza stato sensori</value>
   </data>
   <data name="SensorZeroBayNotActiveAtStart" xml:space="preserve">
-    <value>SensorZeroBayNotActiveAtStart</value>
+    <value>Inconsistenza stato sensori baia</value>
   </data>
   <data name="TopLevelBayOccupied" xml:space="preserve">
-    <value>TopLevelBayOccupied</value>
+    <value>Errore esecuzione comando di deposito</value>
   </data>
   <data name="ZeroSensorActiveWithFullElevator" xml:space="preserve">
-    <value>ZeroSensorActiveWithFullElevator</value>
+    <value>Inconsistenza stato sensori elevatore</value>
   </data>
   <data name="LoadingUnitWeightExceeded" xml:space="preserve">
-    <value>Il peso massimo caricato sul cassetto è eccessivo.</value>
+    <value>Errore peso</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterClosed" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterClosed</value>
+    <value>Errore stato serranda</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitShutterOpen" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitShutterOpen</value>
+    <value>Errore stato serranda</value>
   </data>
   <data name="DestinationBelowLowerBound" xml:space="preserve">
-    <value>DestinationBelowLowerBound</value>
+    <value>Destinazione non valida</value>
   </data>
   <data name="BayInvertersBusy" xml:space="preserve">
-    <value>BayInvertersBusy</value>
+    <value>Errore esecuzione comando</value>
   </data>
   <data name="DestinationOverUpperBound" xml:space="preserve">
-    <value>DestinationOverUpperBound</value>
+    <value>Destinazione non valida</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>IoDeviceError</value>
+    <value>Errore esecuzione comando</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitPresentInCell</value>
+    <value>Errore cassetto in posizione inattesa</value>
   </data>
   <data name="MachineModeNotValid" xml:space="preserve">
-    <value>MachineModeNotValid</value>
+    <value>Errore missione</value>
   </data>
   <data name="SecurityBarrierWasTriggered" xml:space="preserve">
-    <value>SecurityBarrierWasTriggered</value>
+    <value>Una barriera di sicurezza è stata interrotta</value>
   </data>
   <data name="SecurityButtonWasTriggered" xml:space="preserve">
     <value>Un pulsante di emergenza è stato premuto</value>
   </data>
   <data name="SecuritySensorWasTriggered" xml:space="preserve">
-    <value>SecuritySensorWasTriggered</value>
+    <value>Uno o più sensori dei pannelli laterali è stato interrotto</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitOtherBay" xml:space="preserve">
-    <value>MachineManagerErrorLoadingUnitOtherBay</value>
+    <value>Errore cassetto in posizione inattesa</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceElevator" xml:space="preserve">
     <value>Cassetto non presente sull'Elevatore</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>BottomLevelBayEmpty</value>
+    <value>Errore esecuzione comando di prelievo</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
-    <value>TopLevelBayEmpty</value>
+    <value>Errore esecuzione comando di prelievo</value>
   </data>
   <data name="AnotherMissionIsActiveForThisBay" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisBay</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionIsActiveForThisLoadUnit" xml:space="preserve">
-    <value>AnotherMissionIsActiveForThisLoadUnit</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="AnotherMissionOfThisTypeIsActive" xml:space="preserve">
-    <value>AnotherMissionOfThisTypeIsActive</value>
+    <value>Errore esecuzione missione</value>
   </data>
   <data name="NoError" xml:space="preserve">
     <value>NoError</value>
   </data>
   <data name="LoadingUnitWeightTooLow" xml:space="preserve">
-    <value>LoadingUnitWeightTooLow</value>
+    <value>Errore peso</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
-    <value>MachineWeightExceeded</value>
+    <value>Errore peso</value>
   </data>
   <data name="WarehouseIsFull" xml:space="preserve">
-    <value>WarehouseIsFull</value>
+    <value>Magazzino pieno</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitMissingOnBay1" xml:space="preserve">
     <value>Baia 1 occupato con cassetto sconosciuto</value>
@@ -322,9 +322,9 @@
     <value>Elevatore occupato con cassetto sconosciuto</value>
   </data>
   <data name="InverterConnectionError" xml:space="preserve">
-    <value>InverterConnectionError</value>
+    <value>Errore di connessione</value>
   </data>
   <data name="IoDeviceConnectionError" xml:space="preserve">
-    <value>IoDeviceConnectionError</value>
+    <value>Errore di connessione</value>
   </data>
 </root>
