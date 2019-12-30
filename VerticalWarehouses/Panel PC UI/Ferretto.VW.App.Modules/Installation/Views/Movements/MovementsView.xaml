@@ -148,7 +148,8 @@
                         <StackPanel Grid.Column="2"
                                     Grid.ColumnSpan="3"
                                     Orientation="Horizontal">
-                            <ctrls:PpcSpinEdit Margin="5"
+                            <ctrls:PpcSpinEdit Height="60"
+                                               Margin="5"
                                                HorizontalAlignment="Left"
                                                VerticalAlignment="Center"
                                                EditValue="{Binding InputLoadingUnitId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -490,7 +491,7 @@
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
-                                           WidthNumber="200" />
+                                           WidthNumber="220" />
 
                         <ctrls:PpcSpinEdit Grid.Row="0"
                                            Grid.Column="1"
@@ -503,7 +504,7 @@
                                            KeyboardCloseCommand="{Binding KeyboardCloseCommand}"
                                            KeyboardOpenCommand="{Binding KeyboardOpenCommand}"
                                            LabelText=""
-                                           WidthNumber="200" />
+                                           WidthNumber="220" />
 
                         <controls:PpcButton Grid.Row="1"
                                             Grid.Column="0"

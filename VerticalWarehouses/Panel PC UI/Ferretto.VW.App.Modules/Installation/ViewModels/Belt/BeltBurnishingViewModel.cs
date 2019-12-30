@@ -443,7 +443,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
             if (message.Data?.MovementMode == MovementMode.BeltBurnishing)
             {
                 this.CumulativePerformedCycles = message.Data.ExecutedCycles;
-                this.CyclesPercent = (message.Data.ExecutedCycles / message.Data.RequiredCycles) * 100.0;
+                this.CyclesPercent = ((double)message.Data.ExecutedCycles / (double)message.Data.RequiredCycles) * 100.0;
             }
 
             if (message.Status == MessageStatus.OperationEnd &&

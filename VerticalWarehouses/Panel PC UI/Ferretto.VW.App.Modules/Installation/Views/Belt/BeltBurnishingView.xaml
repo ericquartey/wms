@@ -77,27 +77,27 @@
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
-                        <RowDefinition />
+                        <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-
-                    <TextBlock Margin="0,4,0,0"
-                               HorizontalAlignment="Center"
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{DynamicResource FontSize_Small}"
-                               Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
                                Text="Cicli totali completati" />
 
                     <TextBlock Grid.Row="1"
-                               Margin="0,4,0,0"
+                               Margin="4,0,4,4"
                                HorizontalAlignment="Center"
-                               VerticalAlignment="Top"
-                               FontSize="36"
-                               Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
                                Text="{Binding CumulativePerformedCycles}"
                                TextWrapping="Wrap" />
 
@@ -162,11 +162,12 @@
                     </Grid.ColumnDefinitions>
 
 
-                    <TextBlock Margin="0,4,0,0"
-                               HorizontalAlignment="Center"
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
                                VerticalAlignment="Center"
-                               FontSize="{DynamicResource FontSize_Small}"
-                               Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
                                Text="Cicli sessione" />
 
                     <StackPanel Grid.Row="1"
@@ -174,17 +175,23 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Top"
                                 Orientation="Horizontal">
-                        <TextBlock Margin="0"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding CumulativePerformedCycles}" />
-                        <TextBlock Margin="0"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="/" />
-                        <TextBlock Margin="0"
-                                   FontSize="36"
-                                   Style="{DynamicResource VWAPP_ViewTitleTextBlockStyle}"
+                        <TextBlock Margin="4,0,4,4"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   FontSize="{StaticResource FontSize_Very_High}"
+                                   Foreground="{DynamicResource PpcForeground}"
                                    Text="{Binding InputRequiredCycles}" />
                     </StackPanel>
 
