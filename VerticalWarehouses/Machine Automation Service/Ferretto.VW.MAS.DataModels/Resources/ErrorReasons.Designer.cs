@@ -97,7 +97,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Livello bassa baia vuoto..
+        ///   Looks up a localized string similar to Livello baia bassa  vuoto..
         /// </summary>
         public static string BottomLevelBayEmpty {
             get {
@@ -106,7 +106,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Livello basso baia occupato..
+        ///   Looks up a localized string similar to Livello baia bassa occupato..
         /// </summary>
         public static string BottomLevelBayOccupied {
             get {
@@ -340,7 +340,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Errore nella gestione del dispositivo I/O.
+        ///   Looks up a localized string similar to Errore nella gestione del dispositivo I/O o nell&apos;esecuzione di un comando..
         /// </summary>
         public static string IoDeviceError {
             get {
@@ -358,7 +358,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Peso cassetto inferiore al peso atteso.
+        ///   Looks up a localized string similar to Peso cassetto inferiore al peso atteso..
         /// </summary>
         public static string LoadingUnitWeightTooLow {
             get {
@@ -394,7 +394,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verificare che la cella destinazione del cassetto all&apos;interno del database sia correttamente configurata.
+        ///   Looks up a localized string similar to Verificare che la cella destinazione del cassetto all&apos;interno del database sia correttamente configurata..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitDestinationCell {
             get {
@@ -520,7 +520,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verificare che la cella sorgent del cassetto all&apos;interno del database sia correttamente configurata.
+        ///   Looks up a localized string similar to Verificare che la cella sorgent del cassetto all&apos;interno del database sia correttamente configurata..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitSourceCell {
             get {
@@ -529,7 +529,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Verificare che la posizione sorgente del cassetto all&apos;interno del database sia correttamente configurata.
+        ///   Looks up a localized string similar to Verificare che la posizione sorgente del cassetto all&apos;interno del database sia correttamente configurata..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitSourceDb {
             get {
@@ -547,7 +547,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.
+        ///   Looks up a localized string similar to Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente..
         /// </summary>
         public static string MachineManagerErrorNoLoadingUnitInSource {
             get {

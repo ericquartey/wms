@@ -190,16 +190,16 @@
     <value>Spegnere e riaccendere la macchina. Se il problema persiste, contattare l'assistenza.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitDestinationCell" xml:space="preserve">
-    <value>Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata</value>
+    <value>Verificare che la cella destinazione del cassetto all'interno del database sia correttamente configurata.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitElevator" xml:space="preserve">
     <value>Verificare che la culla elevatore sia vuota. Verificare il corretto funzionamento dei sensori di presenza cassetto sulla culla.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceDb" xml:space="preserve">
-    <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata</value>
+    <value>Verificare che la posizione sorgente del cassetto all'interno del database sia correttamente configurata.</value>
   </data>
   <data name="MachineManagerErrorNoLoadingUnitInSource" xml:space="preserve">
-    <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente</value>
+    <value>Assicurarsi che un cassetto sia presente in baia e che i sensori di presenza funzionino correttamente.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitNotRemoved" xml:space="preserve">
     <value>Se il cassetto è stato rimosso controllare i sensori di presenza cassetto in baia, altrimenti rimuovere il cassetto dalla baia.</value>
@@ -217,10 +217,10 @@
     <value>Verificare che il cassetto sia effettivamente presente nella baia sorgente. Verificare che i sensori di presenza cassetto in baia funzionino correttamente.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitSourceCell" xml:space="preserve">
-    <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata</value>
+    <value>Verificare che la cella sorgent del cassetto all'interno del database sia correttamente configurata.</value>
   </data>
   <data name="BottomLevelBayOccupied" xml:space="preserve">
-    <value>Livello basso baia occupato.</value>
+    <value>Livello baia bassa occupato.</value>
   </data>
   <data name="InvalidPresenceSensors" xml:space="preserve">
     <value>Inconsistenza sensori di presenza a bordo elevatore.</value>
@@ -259,7 +259,7 @@
     <value>Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.</value>
   </data>
   <data name="IoDeviceError" xml:space="preserve">
-    <value>Errore nella gestione del dispositivo I/O</value>
+    <value>Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.</value>
   </data>
   <data name="MachineManagerErrorLoadingUnitPresentInCell" xml:space="preserve">
     <value>Cassetto già presente in cella.</value>
@@ -283,7 +283,7 @@
     <value>Impossibile determinare il cassetto a bordo elevatore.</value>
   </data>
   <data name="BottomLevelBayEmpty" xml:space="preserve">
-    <value>Livello bassa baia vuoto.</value>
+    <value>Livello baia bassa  vuoto.</value>
   </data>
   <data name="TopLevelBayEmpty" xml:space="preserve">
     <value>Livello alto baia vuoto.</value>
@@ -301,7 +301,7 @@
     <value>Nessun errore rilevato.</value>
   </data>
   <data name="LoadingUnitWeightTooLow" xml:space="preserve">
-    <value>Peso cassetto inferiore al peso atteso</value>
+    <value>Peso cassetto inferiore al peso atteso.</value>
   </data>
   <data name="MachineWeightExceeded" xml:space="preserve">
     <value>Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.</value>
