@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Reflection;
@@ -22,7 +23,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
                     rules.Add(new ValidationRules.AttributeValidationRule(validationAttr, instance));
                 }
             }
-            return rules;
+            return new ObservableCollection<ValidationRule>(rules);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

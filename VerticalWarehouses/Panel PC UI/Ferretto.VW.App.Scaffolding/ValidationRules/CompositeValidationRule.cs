@@ -4,15 +4,15 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.ValidationRules
 {
-    public class CompositeDataAnnotationsValidationRule : ValidationRule
+    public class CompositeValidationRule : ValidationRule
     {
-        public CompositeDataAnnotationValidator CompositeValidator { get; set; }
+        public CompositeValidator CompositeValidator { get; set; }
 
         public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (this.CompositeValidator?.Attributes?.Count > 0)
+            if (this.CompositeValidator?.Rules?.Count > 0)
             {
-                foreach (var validator in this.CompositeValidator.Attributes)
+                foreach (var validator in this.CompositeValidator.Rules)
                 {
                     var result = validator.Validate(value, cultureInfo);
                     if (!result.IsValid)
