@@ -69,7 +69,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                     {
                         case MessageStatus.OperationStop:
                         case MessageStatus.OperationEnd:
-                            var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+                            var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
 
                             var notificationMessage = new NotificationMessage(
                                 notificationMessageData,
@@ -119,7 +119,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
             }
             else
             {
-                var notificationMessageData = new HomingMessageData(this.machineData.AxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
+                var notificationMessageData = new HomingMessageData(this.machineData.RequestedAxisToCalibrate, this.machineData.CalibrationType, this.machineData.LoadingUnitId, MessageVerbosity.Info);
 
                 var notificationMessage = new NotificationMessage(
                     notificationMessageData,
@@ -143,7 +143,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && this.machineData.MachineSensorStatus.IsDrawerCompletelyOffCradle
                         )
                     {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.RequestedAxisToCalibrate);
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(BayNumber.ElevatorBay, this.machineData.AxisToCalibrate);
                     }
                 }
                 else if (this.machineData.AxisToCalibrate == Axis.BayChain)
@@ -154,7 +154,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                         && !this.machineData.MachineSensorStatus.IsDrawerInBayBottom(this.machineData.TargetBay)
                         )
                     {
-                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.RequestedAxisToCalibrate);
+                        this.scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>().UpdateHomingMissions(this.machineData.RequestingBay, this.machineData.AxisToCalibrate);
                     }
                 }
             }
