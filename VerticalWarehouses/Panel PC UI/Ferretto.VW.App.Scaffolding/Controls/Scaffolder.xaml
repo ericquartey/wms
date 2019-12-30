@@ -1,0 +1,183 @@
+﻿<UserControl x:Class="Ferretto.VW.App.Scaffolding.Controls.Scaffolder"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:Ferretto.VW.App.Scaffolding.Controls"
+             xmlns:converters="clr-namespace:Ferretto.VW.App.Scaffolding.Converters"
+             xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
+        <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
+        <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
+        <converters:IsEnabledConverter x:Key="IsEnabledConverter" />
+        <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+        <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
+
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" 
+                    Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal"
+                    Visibility="{Binding Path=Count, Converter={StaticResource NullOrEmptyToVisibilityConverter}}">
+
+            <Button Margin="0,0,0,8" Click="Reset_Click">
+                <Button.Content>
+                    <Border Padding="5" BorderThickness="1">
+                        <TextBlock Text="Root" />
+                    </Border>
+                </Button.Content>
+            </Button>
+
+
+            <!-- breadcrumb -->
+            <ListBox ItemsSource="{Binding}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="0,0,0,8">
+                            <Button.Content>
+                                <Border Padding="5" BorderThickness="1">
+                                    <TextBlock Text="{Binding Category}" />
+                                </Border>
+                            </Button.Content>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </StackPanel>
+
+        <StackPanel Grid.Column="0" Grid.Row="1"
+                     DataContext="{Binding Path=Structures, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+
+            <Button Click="Reset_Click"
+                DataContext="{Binding Path=FocusStructure, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                Visibility="{Binding Converter={StaticResource NullOrEmptyToVisibilityConverter}}">
+                <Button.Content>
+                    <TextBlock Text="{Binding Category, StringFormat=annulla \{0\}}"></TextBlock>
+                </Button.Content>
+            </Button>
+
+            <!-- categories -->
+
+            <ItemsControl ItemsSource="{Binding}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Margin="0,0,0,8">
+                            <Button.Content>
+                                <Border Padding="5" BorderThickness="1">
+                                    <TextBlock Text="{Binding Category}" />
+                                </Border>
+                            </Button.Content>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:CallMethodAction TargetObject="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" MethodName="SelectCategory" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+            <!-- entities -->
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="cerca:" />
+                <TextBox Grid.Column="1" Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"></TextBox>
+            </Grid>
+            <ListView ItemsSource="{Binding}">
+                <ListView.Resources>
+                    <!-- password -->
+                    <DataTemplate x:Key="PasswordDataTemplate">
+                        <DataTemplate.Resources>
+                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                        </DataTemplate.Resources>
+                        <PasswordBox Width="200" IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}">
+                            <PasswordBox.Password>
+                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
+                                    <Binding Path="Property" />
+                                    <Binding Path="Instance" />
+                                </MultiBinding>
+                            </PasswordBox.Password>
+                        </PasswordBox>
+                    </DataTemplate>
+
+                    <!-- IP address -->
+                    <DataTemplate x:Key="IPAddressDataTemplate">
+                        <DataTemplate.Resources>
+                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                        </DataTemplate.Resources>
+                        <controls:IPAddressBox IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}">
+                            <controls:IPAddressBox.IPAddress>
+                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
+                                    <Binding Path="Property" />
+                                    <Binding Path="Instance" />
+                                </MultiBinding>
+                            </controls:IPAddressBox.IPAddress>
+                        </controls:IPAddressBox>
+                    </DataTemplate>
+
+                    <!-- string (default) -->
+                    <DataTemplate x:Key="StringDataTemplate">
+                        <DataTemplate.Resources>
+                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                        </DataTemplate.Resources>
+
+                        <TextBox Width="200" IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}">
+                            <TextBox.Text>
+                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
+                                    <Binding Path="Property" />
+                                    <Binding Path="Instance" />
+                                </MultiBinding>
+                            </TextBox.Text>
+                        </TextBox>
+                    </DataTemplate>
+
+                </ListView.Resources>
+                <ListView.View>
+                    <controls:AutoResizedGridView>
+                        <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />
+                        <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Path=Id}" />
+                        <GridViewColumn Header="Valore" CellTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}"/>
+                    </controls:AutoResizedGridView>
+                </ListView.View>
+            </ListView>
+
+        </StackPanel>
+    </Grid>
+</UserControl>
