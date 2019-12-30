@@ -858,7 +858,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { -1, -1, "NoError", "NoError", 0 });
+                values: new object[] { -1, -1, "NoError", "Nessun errore rilevato", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1083,17 +1083,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 7, 7, "SecuritySensorWasTriggered", "SecuritySensorWasTriggered", 0 });
+                values: new object[] { 7, 7, "SecuritySensorWasTriggered", "Uno o più sensori dei pannelli laterali è stato interrotto (aperto)", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 6, 6, "SecurityBarrierWasTriggered", "SecurityBarrierWasTriggered", 0 });
+                values: new object[] { 6, 6, "SecurityBarrierWasTriggered", "Una barriera di sicurezza è stata interrotta", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 5, 5, "SecurityButtonWasTriggered", "SecurityButtonWasTriggered", 0 });
+                values: new object[] { 5, 5, "Un pulsante di emergenza è stato premuto", "Un pulsante di emergenza è stato premuto", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1118,7 +1118,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 35, 35, "WarehouseIsFull", "WarehouseIsFull", 1 });
+                values: new object[] { 35, 35, "WarehouseIsFull", "Il magazzino risulta pieno", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1148,7 +1148,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 31, 31, "MachineModeNotValid", "MachineModeNotValid", 1 });
+                values: new object[] { 31, 31, "MachineModeNotValid", "Modo macchina errato", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1163,17 +1163,17 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 28, 28, "DestinationOverUpperBound", "DestinationOverUpperBound", 1 });
+                values: new object[] { 28, 28, "DestinationOverUpperBound", "Errore destinazione asse sopra livello massimo", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 27, 27, "DestinationBelowLowerBound", "DestinationBelowLowerBound", 1 });
+                values: new object[] { 27, 27, "DestinationBelowLowerBound", "Errore destinazione asse sotto livello minimo", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 26, 26, "MachineWeightExceeded", "MachineWeightExceeded", 1 });
+                values: new object[] { 26, 26, "MachineWeightExceeded", "Limite peso macchina superato", 1 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1193,7 +1193,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
                 columns: new[] { "Id", "Code", "Description", "Reason", "Severity" },
-                values: new object[] { 22, 22, "InverterConnectionError", "InverterConnectionError", 0 });
+                values: new object[] { 22, 22, "InverterConnectionError", "Problema di connessione con inverter(s)", 0 });
 
             migrationBuilder.InsertData(
                 table: "ErrorDefinitions",
@@ -1218,7 +1218,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
             migrationBuilder.InsertData(
                 table: "ServicingInfo",
                 columns: new[] { "Id", "InstallationDate", "LastServiceDate", "NextServiceDate", "ServiceStatus" },
-                values: new object[] { 1, new DateTime(2017, 2, 28, 10, 6, 41, 914, DateTimeKind.Local).AddTicks(9296), null, null, 86 });
+                values: new object[] { 1, new DateTime(2017, 2, 28, 12, 20, 40, 115, DateTimeKind.Local).AddTicks(6995), null, null, 86 });
 
             migrationBuilder.InsertData(
                 table: "SetupStatus",

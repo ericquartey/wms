@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191230090642_initialcreation")]
+    [Migration("20191230112040_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -352,7 +352,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = -1,
                             Code = -1,
                             Description = "NoError",
-                            Reason = "NoError",
+                            Reason = "Nessun errore rilevato",
                             Severity = 0
                         },
                         new
@@ -391,8 +391,8 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 5,
                             Code = 5,
-                            Description = "SecurityButtonWasTriggered",
-                            Reason = "SecurityButtonWasTriggered",
+                            Description = "Un pulsante di emergenza è stato premuto",
+                            Reason = "Un pulsante di emergenza è stato premuto",
                             Severity = 0
                         },
                         new
@@ -400,7 +400,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 6,
                             Code = 6,
                             Description = "SecurityBarrierWasTriggered",
-                            Reason = "SecurityBarrierWasTriggered",
+                            Reason = "Una barriera di sicurezza è stata interrotta",
                             Severity = 0
                         },
                         new
@@ -408,7 +408,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 7,
                             Code = 7,
                             Description = "SecuritySensorWasTriggered",
-                            Reason = "SecuritySensorWasTriggered",
+                            Reason = "Uno o più sensori dei pannelli laterali è stato interrotto (aperto)",
                             Severity = 0
                         },
                         new
@@ -528,7 +528,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 22,
                             Code = 22,
                             Description = "InverterConnectionError",
-                            Reason = "InverterConnectionError",
+                            Reason = "Problema di connessione con inverter(s)",
                             Severity = 0
                         },
                         new
@@ -560,7 +560,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 26,
                             Code = 26,
                             Description = "MachineWeightExceeded",
-                            Reason = "MachineWeightExceeded",
+                            Reason = "Limite peso macchina superato",
                             Severity = 1
                         },
                         new
@@ -568,7 +568,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 27,
                             Code = 27,
                             Description = "DestinationBelowLowerBound",
-                            Reason = "DestinationBelowLowerBound",
+                            Reason = "Errore destinazione asse sotto livello minimo",
                             Severity = 1
                         },
                         new
@@ -576,7 +576,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 28,
                             Code = 28,
                             Description = "DestinationOverUpperBound",
-                            Reason = "DestinationOverUpperBound",
+                            Reason = "Errore destinazione asse sopra livello massimo",
                             Severity = 1
                         },
                         new
@@ -600,7 +600,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 31,
                             Code = 31,
                             Description = "MachineModeNotValid",
-                            Reason = "MachineModeNotValid",
+                            Reason = "Modo macchina errato",
                             Severity = 1
                         },
                         new
@@ -632,7 +632,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 35,
                             Code = 35,
                             Description = "WarehouseIsFull",
-                            Reason = "WarehouseIsFull",
+                            Reason = "Il magazzino risulta pieno",
                             Severity = 1
                         },
                         new
@@ -1628,7 +1628,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 28, 10, 6, 41, 914, DateTimeKind.Local).AddTicks(9296),
+                            InstallationDate = new DateTime(2017, 2, 28, 12, 20, 40, 115, DateTimeKind.Local).AddTicks(6995),
                             ServiceStatus = 86
                         });
                 });

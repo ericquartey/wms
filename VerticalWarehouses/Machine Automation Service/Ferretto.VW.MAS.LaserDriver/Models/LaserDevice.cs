@@ -332,14 +332,15 @@ namespace Ferretto.VW.MAS.LaserDriver
                 {
                     try
                     {
+                        LaserFieldMessageData data = null;
                         if (this.laserCommandQueue.TryPeek(Timeout.Infinite, this.cancellationToken, out var message) && message != null)
                         {
                             this.logger.LogTrace($"1:message={message}: index {this.BayNumber}");
+
+                            data = message.Data as LaserFieldMessageData;
                         }
 
-                        var data = message.Data as LaserFieldMessageData;
-
-                        if (this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
+                        if (message != null && this.writeEnableEvent.Wait(Timeout.Infinite, this.cancellationToken))
                         {
                             if (this.socketTransport.IsConnected)
                             {
