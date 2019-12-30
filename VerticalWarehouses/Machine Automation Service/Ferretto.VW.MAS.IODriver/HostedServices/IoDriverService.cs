@@ -31,6 +31,8 @@ namespace Ferretto.VW.MAS.IODriver
 
         private readonly IHostingEnvironment env;
 
+        private readonly IErrorsProvider errorsProvider;
+
         private readonly Dictionary<DataModels.IoIndex, IIoDevice> ioDevices = new Dictionary<DataModels.IoIndex, IIoDevice>();
 
         private readonly IIoDevicesProvider ioDeviceService;
@@ -43,6 +45,7 @@ namespace Ferretto.VW.MAS.IODriver
             IEventAggregator eventAggregator,
             IDigitalDevicesDataProvider digitalDevicesDataProvider,
             IBaysDataProvider baysDataProvider,
+            IErrorsProvider errorsProvider,
             IIoDevicesProvider iIoDeviceService,
             ILogger<IoDriverService> logger,
             IConfiguration configuration,
@@ -54,6 +57,7 @@ namespace Ferretto.VW.MAS.IODriver
             this.digitalDevicesDataProvider = digitalDevicesDataProvider ?? throw new ArgumentNullException(nameof(digitalDevicesDataProvider));
             this.configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             this.baysDataProvider = baysDataProvider ?? throw new ArgumentNullException(nameof(baysDataProvider));
+            this.errorsProvider = errorsProvider ?? throw new ArgumentNullException(nameof(errorsProvider));
             this.env = env ?? throw new ArgumentNullException(nameof(env));
         }
 
@@ -178,6 +182,7 @@ namespace Ferretto.VW.MAS.IODriver
                     new IoDevice(
                         this.EventAggregator,
                         this.ioDeviceService,
+                        this.errorsProvider,
                         transport,
                         ioDevice.IpAddress,
                         ioDevice.TcpPort,

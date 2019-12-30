@@ -59,6 +59,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing
                 eventAggregator,
                 logger,
                 serviceScopeFactory);
+            this.machineData.RequestedAxisToCalibrate = axisToCalibrate;
         }
 
         #endregion

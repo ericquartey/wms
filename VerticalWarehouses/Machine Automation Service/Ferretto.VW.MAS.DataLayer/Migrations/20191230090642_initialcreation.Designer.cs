@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191227170624_initialcreation")]
+    [Migration("20191230090642_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -527,94 +527,110 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 22,
                             Code = 22,
+                            Description = "InverterConnectionError",
+                            Reason = "InverterConnectionError",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Code = 23,
+                            Description = "IoDeviceConnectionError",
+                            Reason = "IoDeviceConnectionError",
+                            Severity = 0
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Code = 24,
                             Description = "Il peso massimo caricato sul cassetto è eccessivo.",
                             Reason = "Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 23,
-                            Code = 23,
+                            Id = 25,
+                            Code = 25,
                             Description = "LoadingUnitWeightTooLow",
                             Reason = "LoadingUnitWeightTooLow",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 24,
-                            Code = 24,
+                            Id = 26,
+                            Code = 26,
                             Description = "MachineWeightExceeded",
                             Reason = "MachineWeightExceeded",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 25,
-                            Code = 25,
+                            Id = 27,
+                            Code = 27,
                             Description = "DestinationBelowLowerBound",
                             Reason = "DestinationBelowLowerBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 26,
-                            Code = 26,
+                            Id = 28,
+                            Code = 28,
                             Description = "DestinationOverUpperBound",
                             Reason = "DestinationOverUpperBound",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 27,
-                            Code = 27,
+                            Id = 29,
+                            Code = 29,
                             Description = "BayInvertersBusy",
                             Reason = "BayInvertersBusy",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 28,
-                            Code = 28,
+                            Id = 30,
+                            Code = 30,
                             Description = "IoDeviceError",
                             Reason = "IoDeviceError",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 29,
-                            Code = 29,
+                            Id = 31,
+                            Code = 31,
                             Description = "MachineModeNotValid",
                             Reason = "MachineModeNotValid",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 30,
-                            Code = 30,
+                            Id = 32,
+                            Code = 32,
                             Description = "AnotherMissionIsActiveForThisLoadUnit",
                             Reason = "AnotherMissionIsActiveForThisLoadUnit",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 31,
-                            Code = 31,
+                            Id = 33,
+                            Code = 33,
                             Description = "AnotherMissionIsActiveForThisBay",
                             Reason = "AnotherMissionIsActiveForThisBay",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 32,
-                            Code = 32,
+                            Id = 34,
+                            Code = 34,
                             Description = "AnotherMissionOfThisTypeIsActive",
                             Reason = "AnotherMissionOfThisTypeIsActive",
                             Severity = 1
                         },
                         new
                         {
-                            Id = 33,
-                            Code = 33,
+                            Id = 35,
+                            Code = 35,
                             Description = "WarehouseIsFull",
                             Reason = "WarehouseIsFull",
                             Severity = 1
@@ -1075,6 +1091,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 33,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 34,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 35,
                             TotalErrors = 0
                         },
                         new
@@ -1602,7 +1628,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 27, 18, 6, 23, 389, DateTimeKind.Local).AddTicks(8518),
+                            InstallationDate = new DateTime(2017, 2, 28, 10, 6, 41, 914, DateTimeKind.Local).AddTicks(9296),
                             ServiceStatus = 86
                         });
                 });
