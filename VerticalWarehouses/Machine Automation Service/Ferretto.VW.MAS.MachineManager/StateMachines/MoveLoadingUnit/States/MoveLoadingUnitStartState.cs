@@ -107,6 +107,15 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                         throw new StateMachineException(description, commandMessage, MessageActor.MachineManager);
                     }
 
+                    if (targetCellId != null)
+                    {
+                        var bay = this.loadingUnitMovementProvider.GetBayByCell(targetCellId.Value);
+                        if (bay != BayNumber.None)
+                        {
+                            this.closeShutter = bay;
+                        }
+                    }
+
                     this.loadingUnitMovementProvider.PositionElevatorToPosition(sourceHeight.Value,
                         this.closeShutter,
                         measure: false,
