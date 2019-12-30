@@ -39,6 +39,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
         Bay GetByBayPositionId(int id);
 
+        Bay GetByCell(Cell cell);
+
         /// <summary>
         /// Gets the bay identified by the given identifier.
         /// </summary>
