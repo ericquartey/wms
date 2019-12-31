@@ -38,6 +38,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
         [Editable(false)]
         public BayNumber Number { get; set; }
 
+        [Range(0,double.PositiveInfinity, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.RangeMin))]
+        [DefaultValue(10, "mm")]
         public double ChainOffset { get; set; }
     }
 
@@ -47,9 +49,12 @@ namespace Ferretto.VW.App.Scaffolding.Models
 
         public IoIndex Index { get; set; }
 
+        [Required]
         public System.Net.IPAddress IpAddress { get; set; }
 
-        [Range(System.Net.IPEndPoint.MinPort, System.Net.IPEndPoint.MaxPort)]
+        [Required(ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Required))]
+        [Range(System.Net.IPEndPoint.MinPort, System.Net.IPEndPoint.MaxPort, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Range))]
+        [DefaultValue(5001)]
         public int TcpPort { get; set; }
 
         #endregion
@@ -67,7 +72,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
             public System.Net.IPAddress IpAddress;
 
             [Required(ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Required))]
-            [Range(0, ushort.MaxValue, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Range))]
+            [Range(System.Net.IPEndPoint.MinPort, System.Net.IPEndPoint.MaxPort, ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Range))]
+            [DefaultValue(5000)]
             public int TcpPort;
         }
     }
@@ -76,6 +82,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
     {
         BayOne = 1, BayTwo = 2
     }
+
     public enum IoIndex : byte
     {
         IoDevice1 = 0x00,

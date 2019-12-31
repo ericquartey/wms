@@ -1,13 +1,14 @@
 ﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 
 namespace Ferretto.VW.App.Scaffolding.Models
 {
     public class ScaffoldedEntity
     {
-        internal ScaffoldedEntity(PropertyInfo property, object owner, IEnumerable<Attribute> metadata, int id): this(property, owner, metadata, id, property.DisplayName())
+        internal ScaffoldedEntity(PropertyInfo property, object owner, IEnumerable<Attribute> metadata, int id): this(property, owner, metadata, id, property.DisplayName(metadata))
         {
         }
 
@@ -54,6 +55,7 @@ namespace Ferretto.VW.App.Scaffolding.Models
         /// <summary>
         /// Gets the descriptive caption for the property.
         /// </summary>
+        /// <remarks>Overrides the one retrieved from the <see cref="Metadata"/> when not empty.</remarks>
         public string Caption
         {
             get; 

@@ -17,6 +17,7 @@
         <converters:IsEnabledConverter x:Key="IsEnabledConverter" />
         <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
+        <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
         <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
 
         <!-- styles -->
@@ -222,6 +223,34 @@
                         <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />
                         <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Path=Id}" />
                         <GridViewColumn Header="Valore" CellTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}"/>
+                        <GridViewColumn Header="Default" Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Min" Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Min}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="Max" Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Max}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
+                        <GridViewColumn Header="U.m." Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Converter={StaticResource DefaultValueConverter}, ConverterParameter=Unit}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </controls:AutoResizedGridView>
                 </ListView.View>
             </ListView>

@@ -1,9 +1,6 @@
 ﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,18 +15,12 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             if (value is Models.ScaffoldedEntity entity)
             {
-                var display = entity.Metadata?.OfType<DisplayAttribute>().FirstOrDefault();
-                if (display != null)
-                {
-                    return display.GetName();
-                }
-
-                value = entity.Property;
+                return entity.DisplayName();
             }
 
             if (value is PropertyInfo prop)
             {
-                return prop.DisplayName();
+                return prop.Name;
             }
 
             return System.Convert.ToString(value, culture);
