@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Data;
 
@@ -12,13 +14,13 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             if (value is Models.ScaffoldedEntity entity)
             {
-                // detour to the 'PropertyInfo'
-                value = entity.Property;
+                // detour to the 'Metadata'
+                value = entity.Metadata;
             }
-            
-            if (value is PropertyInfo prop)
+
+            if (value is IEnumerable<Attribute> metadata)
             {
-                var editable = prop.GetCustomAttribute<EditableAttribute>();
+                var editable = metadata.OfType<EditableAttribute>().FirstOrDefault();
                 if (editable != null)
                 {
                     return !editable.AllowEdit;

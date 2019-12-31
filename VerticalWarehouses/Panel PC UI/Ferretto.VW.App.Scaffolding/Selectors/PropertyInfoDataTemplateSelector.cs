@@ -14,17 +14,13 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
     {
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            if (container is FrameworkElement element)
+            if (container is FrameworkElement element && item is Models.ScaffoldedEntity entity)
             {
-                PropertyInfo pinfo = item as PropertyInfo;
-                if (pinfo == null && item is Models.ScaffoldedEntity entity)
-                {
-                    pinfo = entity.Property;
-                }
+                var metadata = entity.Metadata;
 
                 string resourceKey = default;
 
-                UIHintAttribute uiHint = pinfo.GetCustomAttribute<UIHintAttribute>();
+                UIHintAttribute uiHint = metadata.OfType<UIHintAttribute>().FirstOrDefault();
                 if (uiHint != null)
                 {
                     // TODO: custom stuff
@@ -33,8 +29,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                 // try with datatype
                 if (string.IsNullOrEmpty(resourceKey))
                 {
-
-                    DataTypeAttribute dataType = pinfo.GetCustomAttribute<DataTypeAttribute>();
+                    DataTypeAttribute dataType = metadata.OfType<DataTypeAttribute>().FirstOrDefault();
                     if (dataType != null)
                     {
                         switch (dataType.DataType)
@@ -52,8 +47,7 @@ namespace Ferretto.VW.App.Scaffolding.Selectors
                 // try with very type
                 if (string.IsNullOrEmpty(resourceKey))
                 {
-                    Type type = pinfo.PropertyType;
-
+                    Type type = entity.Property.PropertyType;
                     if (type == typeof(System.Net.IPAddress))
                     {
                         resourceKey = "IPAddressDataTemplate";

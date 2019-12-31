@@ -21,6 +21,7 @@ namespace Ferretto.VW.MAS.DataLayer.Configurations
             builder
                 .Ignore(l => l.Code)
                 .Ignore(l => l.NetWeight);
+
         }
 
         #endregion
