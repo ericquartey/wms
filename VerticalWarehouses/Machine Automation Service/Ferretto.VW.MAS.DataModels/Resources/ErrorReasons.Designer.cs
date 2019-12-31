@@ -349,6 +349,15 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet..
+        /// </summary>
+        public static string LaserConnectionError {
+            get {
+                return ResourceManager.GetString("LaserConnectionError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso..
         /// </summary>
         public static string LoadingUnitWeightExceeded {

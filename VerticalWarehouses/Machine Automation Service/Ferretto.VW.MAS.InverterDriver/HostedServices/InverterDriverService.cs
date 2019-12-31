@@ -223,6 +223,7 @@ namespace Ferretto.VW.MAS.InverterDriver
             catch (Exception ex)
             {
                 this.Logger.LogError($"Exception while parsing Inverter raw message bytes {BitConverter.ToString(messageBytes)}", ex);
+                serviceProvider.GetRequiredService<IErrorsProvider>().RecordNew(DataModels.MachineErrorCode.InverterConnectionError, BayNumber.BayOne);
 
                 this.SendOperationErrorMessage(InverterIndex.None, new InverterExceptionFieldMessageData(ex, $"Exception {ex.Message} while parsing Inverter raw message bytes", 0), FieldMessageType.InverterException);
 

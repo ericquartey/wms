@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ferretto.VW.MAS.DataLayer.Migrations
 {
     [DbContext(typeof(DataLayerContext))]
-    [Migration("20191230140752_initialcreation")]
+    [Migration("20191230170640_initialcreation")]
     partial class initialcreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -543,16 +543,16 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         {
                             Id = 24,
                             Code = 24,
-                            Description = "Errore peso",
-                            Reason = "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
-                            Severity = 1
+                            Description = "Errore di connessione",
+                            Reason = "Errore di connessione con il laser. Controllare lo stato delle connessioni ethernet.",
+                            Severity = 0
                         },
                         new
                         {
                             Id = 25,
                             Code = 25,
                             Description = "Errore peso",
-                            Reason = "Peso cassetto inferiore al peso atteso.",
+                            Reason = "Il peso del cassetto supera il valore massimo accettato. Scaricare il cassetto in baia e rimuovere il peso in eccesso.",
                             Severity = 1
                         },
                         new
@@ -560,15 +560,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 26,
                             Code = 26,
                             Description = "Errore peso",
-                            Reason = "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.",
+                            Reason = "Peso cassetto inferiore al peso atteso.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 27,
                             Code = 27,
-                            Description = "Destinazione non valida",
-                            Reason = "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.",
+                            Description = "Errore peso",
+                            Reason = "Limite peso macchina totale superato. Verificare lo stato di carico della macchina e dei suoi cassetti.",
                             Severity = 1
                         },
                         new
@@ -576,15 +576,15 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 28,
                             Code = 28,
                             Description = "Destinazione non valida",
-                            Reason = "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.",
+                            Reason = "Errore destinazione asse sotto livello minimo. Verificare i parametri della macchina.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 29,
                             Code = 29,
-                            Description = "Errore esecuzione comando",
-                            Reason = "La baia ha già un comando in esecuzione e non può accettarne un altro.",
+                            Description = "Destinazione non valida",
+                            Reason = "Errore destinazione asse sopra livello massimo. Verificare i parametri della macchina.",
                             Severity = 1
                         },
                         new
@@ -592,23 +592,23 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 30,
                             Code = 30,
                             Description = "Errore esecuzione comando",
-                            Reason = "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.",
+                            Reason = "La baia ha già un comando in esecuzione e non può accettarne un altro.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 31,
                             Code = 31,
-                            Description = "Errore missione",
-                            Reason = "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.",
+                            Description = "Errore esecuzione comando",
+                            Reason = "Errore nella gestione del dispositivo I/O o nell'esecuzione di un comando.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 32,
                             Code = 32,
-                            Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.",
+                            Description = "Errore missione",
+                            Reason = "La macchina non è in grado di accettare la missione richiesta a causa del modo macchina non valido.",
                             Severity = 1
                         },
                         new
@@ -616,7 +616,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 33,
                             Code = 33,
                             Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa baia.",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questo cassetto.",
                             Severity = 1
                         },
                         new
@@ -624,13 +624,21 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                             Id = 34,
                             Code = 34,
                             Description = "Errore esecuzione missione",
-                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa baia.",
                             Severity = 1
                         },
                         new
                         {
                             Id = 35,
                             Code = 35,
+                            Description = "Errore esecuzione missione",
+                            Reason = "E' stato rilevato che esiste già una missione in esecuzione per questa tipologia di missione.",
+                            Severity = 1
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Code = 36,
                             Description = "Magazzino pieno",
                             Reason = "Il magazzino risulta pieno e non è possibile determinare una cella libera per il cassetto selezionato.",
                             Severity = 1
@@ -1101,6 +1109,11 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Code = 35,
+                            TotalErrors = 0
+                        },
+                        new
+                        {
+                            Code = 36,
                             TotalErrors = 0
                         },
                         new
@@ -1628,7 +1641,7 @@ namespace Ferretto.VW.MAS.DataLayer.Migrations
                         new
                         {
                             Id = 1,
-                            InstallationDate = new DateTime(2017, 2, 28, 15, 7, 52, 111, DateTimeKind.Local).AddTicks(9479),
+                            InstallationDate = new DateTime(2017, 2, 28, 18, 6, 39, 983, DateTimeKind.Local).AddTicks(4912),
                             ServiceStatus = 86
                         });
                 });
