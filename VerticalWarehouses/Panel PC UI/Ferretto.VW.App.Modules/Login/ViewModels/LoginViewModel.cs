@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Login.Models;
@@ -190,8 +191,6 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
-            base.RaiseCanExecuteChanged();
-
             this.loginCommand?.RaiseCanExecuteChanged();
         }
 

@@ -218,6 +218,7 @@ namespace Ferretto.VW.App.Services
 
         public void ClearNotifications()
         {
+            this.notification = null;
             this.eventAggregator
                 .GetEvent<PresentationNotificationPubSubEvent>()
                 .Publish(new PresentationNotificationMessage(true));

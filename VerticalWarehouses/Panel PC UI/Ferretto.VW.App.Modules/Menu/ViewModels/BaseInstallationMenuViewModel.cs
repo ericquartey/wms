@@ -287,8 +287,6 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         private void MenuCommand(Menu menu)
         {
-            this.ClearNotifications();
-
             this.Logger.Trace($"MenuCommand({menu})");
 
             this.IsWaitingForResponse = true;

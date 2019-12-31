@@ -120,9 +120,7 @@ namespace Ferretto.VW.App.Controls
 
         public void ClearNotifications()
         {
-            this.EventAggregator
-                .GetEvent<PresentationNotificationPubSubEvent>()
-                .Publish(new PresentationNotificationMessage(true));
+            this.MachineService?.ClearNotifications();
         }
 
         public override void Disappear()

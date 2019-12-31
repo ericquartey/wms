@@ -33,11 +33,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
 
-        private double? currentPosition;
-
         private decimal? currentResolution;
-
-        private SubscriptionToken elevatorPositionChangedToken;
 
         private bool isExecutingProcedure;
 
@@ -69,12 +65,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         #endregion
 
         #region Properties
-
-        public double? CurrentPosition
-        {
-            get => this.currentPosition;
-            protected set => this.SetProperty(ref this.currentPosition, value);
-        }
 
         public decimal? CurrentResolution
         {
@@ -165,17 +155,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            this.elevatorPositionChangedToken = this.elevatorPositionChangedToken
-              ??
-              this.EventAggregator
-                  .GetEvent<PubSubEvent<ElevatorPositionChangedEventArgs>>()
-                  .Subscribe(
-                      this.OnElevatorPositionChanged,
-                      ThreadOption.UIThread,
-                      false);
-
-            this.CurrentPosition = this.machineElevatorService?.Position?.Vertical;
-
             await this.RetrieveProcedureParametersAsync();
         }
 
@@ -234,11 +213,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                     nameof(Utils.Modules.Installation),
                     VW.App.Resources.InstallationApp.Step3,
                     trackCurrentView: false));
-        }
-
-        private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
-        {
-            this.CurrentPosition = e.VerticalPosition;
         }
 
         private async Task RetrieveProcedureParametersAsync()

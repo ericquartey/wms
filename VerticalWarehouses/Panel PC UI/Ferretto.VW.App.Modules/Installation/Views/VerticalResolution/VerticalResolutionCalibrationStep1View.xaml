@@ -3,48 +3,209 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
+            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Installation.ViewModels"
             xmlns:views="clr-namespace:Ferretto.VW.App.Installation.Views"
-            prism:ViewModelLocator.AutoWireViewModel="True">
-    <Grid Margin="130,30,0,0">
+            d:DataContext="{d:DesignInstance Type=viewmodels:VerticalResolutionCalibrationStep1ViewModel,
+                                             IsDesignTimeCreatable=False}"
+            d:DesignHeight="768"
+            d:DesignWidth="1024"
+            prism:ViewModelLocator.AutoWireViewModel="True"
+            mc:Ignorable="d">
+
+    <Grid Margin="15,0,0,0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="90" />
-            <RowDefinition />
-            <RowDefinition />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
+            <ColumnDefinition />
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.ColumnSpan="3"
-                   HorizontalAlignment="Left"
+        <StackPanel Grid.ColumnSpan="4"
+                    Orientation="Horizontal">
+            <TextBlock Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="4.2.2" />
+            <TextBlock Grid.ColumnSpan="2"
+                       Margin="0,10,15,10"
+                       VerticalAlignment="Top"
+                       Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                       Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+        </StackPanel>
+
+        <TextBlock Grid.Row="1"
+                   Grid.ColumnSpan="4"
+                   Height="Auto"
+                   Margin="0,0,15,0"
                    VerticalAlignment="Top"
-                   Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                   Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
+                   FontSize="{DynamicResource FontSize_Small}"
+                   Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
+                   Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}"
+                   TextWrapping="Wrap" />
 
-        <views:VerticalResolutionCalibrationNavigationView Grid.Row="1"
-                                                           VerticalAlignment="Top" />
+        <controls:CardSensorAxisVertical Grid.Row="2"
+                                         Grid.Column="0"
+                                         Height="90"
+                                         Margin="0,30,15,0" />
 
-        <controls:PpcLabeledText Grid.Row="2"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentResolution, StringFormat={}{0:F6}}"
-                                 LabelText="{x:Static res:InstallationApp.CurrentResolution}" />
+        <controls:CardSensorAxisHorizontal Grid.Row="2"
+                                           Grid.Column="1"
+                                           Height="90"
+                                           Margin="0,30,15,0" />
 
-        <controls:PpcLabeledText Grid.Row="2"
+        <Border Grid.Row="2"
+                Grid.Column="2"
+                Margin="0,30,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="{x:Static res:InstallationApp.CurrentResolution}" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="{Binding CurrentResolution, Mode=OneWay, StringFormat={}{0:F6}}"
+                               TextWrapping="Wrap" />
+
+                </Grid>
+            </Border>
+        </Border>
+
+        <Border Grid.Row="2"
+                Grid.Column="3"
+                Margin="0,30,15,0"
+                Background="{DynamicResource PpcBackground}">
+            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
+                    BorderThickness="{DynamicResource PpcBorderThickness}">
+
+                <Grid Grid.Column="8"
+                      Grid.ColumnSpan="4">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Margin="8,4"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Normal}"
+                               FontWeight="Normal"
+                               Foreground="{DynamicResource FerrettoLightGray}"
+                               Text="Misurazione" />
+
+                    <TextBlock Grid.Row="1"
+                               Margin="4,0,4,4"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               FontSize="{StaticResource FontSize_Very_High}"
+                               Foreground="{DynamicResource PpcForeground}"
+                               Text="1 / 2"
+                               TextWrapping="Wrap" />
+
+                </Grid>
+
+            </Border>
+        </Border>
+
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="1"
+                           Height="90"
+                           Margin="0,30,15,0"
+                           VerticalAlignment="Center"
+                           LabelText="Quota destinazione" />
+
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="2"
+                           Height="90"
+                           Margin="0,30,15,0"
+                           VerticalAlignment="Center"
+                           LabelText="Quota misurata" />
+
+
+
+
+        <StackPanel Grid.Row="4"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+
+
+            <controls:PpcButton Grid.Row="0"
+                                Grid.Column="2"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+
+            <controls:PpcButton Grid.Row="2"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+        </StackPanel>
+
+
+
+
+
+        <!--<controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
                                  LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
 
-        <controls:PpcTextBox Grid.Row="3"
+        <controls:PpcTextBox Grid.Row="5"
                              HorizontalAlignment="Left"
                              VerticalAlignment="Top"
                              InputScope="Number"
@@ -52,19 +213,19 @@
                              IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
                              LabelText="{x:Static res:InstallationApp.InitialPosition}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="6"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StopCommand}"
                             Content="{x:Static res:InstallationApp.Stop}" />
 
-        <controls:PpcButton Grid.Row="4"
+        <controls:PpcButton Grid.Row="6"
                             Grid.Column="1"
                             HorizontalAlignment="Left"
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
                             Content="{x:Static res:InstallationApp.Start}"
-                            IsBusy="{Binding IsExecutingProcedure}" />
+                            IsBusy="{Binding IsExecutingProcedure}" />-->
 
     </Grid>
 </ctrls:View>

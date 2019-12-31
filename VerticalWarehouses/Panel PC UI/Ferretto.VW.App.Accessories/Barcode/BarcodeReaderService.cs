@@ -25,7 +25,7 @@ namespace Ferretto.VW.App.Accessories
 
         private readonly IBarcodeReader reader;
 
-        private IEnumerable<BarcodeRule> ruleSet;
+        private readonly IEnumerable<BarcodeRule> ruleSet;
 
         #endregion
 
@@ -106,15 +106,15 @@ namespace Ferretto.VW.App.Accessories
                 return;
             }
 
-            try
-            {
-                this.ruleSet = await this.barcodesWmsWebService.GetAllAsync();
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Unable to load barcode rules.");
-                //this.NotifyError(ex);
-            }
+            //try
+            //{
+            //    this.ruleSet = await this.barcodesWmsWebService.GetAllAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Diagnostics.Debug.WriteLine($"Unable to load barcode rules.");
+            //    this.NotifyError(ex);
+            //}
         }
 
         private void NotifyError(Exception ex)

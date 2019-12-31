@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,11 +23,13 @@ namespace Ferretto.VW.App.Controls.Controls
     {
         #region Fields
 
-        public static readonly DependencyProperty TextBadgeProperty = DependencyProperty.Register(
-            nameof(TextBadge),
-            typeof(string),
-            typeof(PpcBadge),
-            new PropertyMetadata(string.Empty, new PropertyChangedCallback(OnLabelTextChanged)));
+        public static readonly DependencyProperty BayNumberProperty =
+            DependencyProperty.Register(nameof(BayNumber), typeof(int), typeof(PpcBadge),
+                new PropertyMetadata(0, new PropertyChangedCallback(BayNumberChanged)));
+
+        public static readonly DependencyProperty TextBadgeProperty =
+                    DependencyProperty.Register(nameof(TextBadge), typeof(string), typeof(PpcBadge),
+                new PropertyMetadata(string.Empty, new PropertyChangedCallback(TextBadgeChanged)));
 
         #endregion
 
@@ -35,11 +38,22 @@ namespace Ferretto.VW.App.Controls.Controls
         public PpcBadge()
         {
             this.InitializeComponent();
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                return;
+            }
         }
 
         #endregion
 
         #region Properties
+
+        public int BayNumber
+        {
+            get => (int)this.GetValue(BayNumberProperty);
+            set => this.SetValue(BayNumberProperty, value);
+        }
 
         public string TextBadge
         {
@@ -51,14 +65,12 @@ namespace Ferretto.VW.App.Controls.Controls
 
         #region Methods
 
-        private static void OnLabelTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void BayNumberChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is PpcBadge control)
             {
-                control.PpcBadge_TextBlock.Text = e.NewValue as string;
-                if (control.PpcBadge_TextBlock.Text == string.Format(App.Resources.VWApp.BayNumber, 0)
-                    ||
-                    control.Visibility != Visibility.Visible)
+                if (control.Visibility != Visibility.Visible ||
+                    control.BayNumber.Equals(0))
                 {
                     control.Visibility = Visibility.Collapsed;
                 }
@@ -66,6 +78,14 @@ namespace Ferretto.VW.App.Controls.Controls
                 {
                     control.Visibility = Visibility.Visible;
                 }
+            }
+        }
+
+        private static void TextBadgeChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is PpcBadge control)
+            {
+                control.PpcBadge_TextBlock.Text = e.NewValue as string;
             }
         }
 

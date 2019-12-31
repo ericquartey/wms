@@ -176,23 +176,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public int? PerformedCyclesThisSession
         {
             get => this.completedCyclesThisSession;
@@ -378,8 +361,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         protected override async Task OnMachinePowerChangedAsync(MachinePowerChangedEventArgs e)
         {
             await base.OnMachinePowerChangedAsync(e);
-
-            this.ClearNotifications();
 
             if (e.MachinePowerState == MachinePowerState.Unpowered)
             {
