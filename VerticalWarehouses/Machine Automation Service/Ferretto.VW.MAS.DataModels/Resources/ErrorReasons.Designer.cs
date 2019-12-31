@@ -511,7 +511,7 @@ namespace Ferretto.VW.MAS.DataModels.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Serranda non in posizione chiusa. Verificare lo stato dei sensori..
+        ///   Looks up a localized string similar to Serranda non in posizione chiusa nè aperta. Verificare lo stato dei sensori..
         /// </summary>
         public static string MachineManagerErrorLoadingUnitShutterOpen {
             get {

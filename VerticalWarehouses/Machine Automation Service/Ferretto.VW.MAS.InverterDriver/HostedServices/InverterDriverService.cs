@@ -366,11 +366,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                                 {
                                     this.writeEnableEvent.Set();
                                     this.Logger.LogTrace($"writeEnableEvent unlocked");
-
-                                    if (Debugger.IsAttached)
-                                    {
-                                        Debugger.Break();
-                                    }
                                 }
                             }
                             else
