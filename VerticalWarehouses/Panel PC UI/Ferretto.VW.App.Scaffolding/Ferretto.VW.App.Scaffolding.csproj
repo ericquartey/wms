@@ -8,8 +8,9 @@
     <StartupObject>Ferretto.VW.App.Scaffolding.App</StartupObject>
     <RunPostBuildEvent>Always</RunPostBuildEvent>
     <ApplicationIcon>favicon.ico</ApplicationIcon>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
-
+  
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <DefineConstants>DEBUG;TRACE</DefineConstants>
   </PropertyGroup>
@@ -69,6 +70,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Controls\PropertyEditor.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="App.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -79,6 +84,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Controls\PropertyEditor.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="POC\Resources\ErrorMessages.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
