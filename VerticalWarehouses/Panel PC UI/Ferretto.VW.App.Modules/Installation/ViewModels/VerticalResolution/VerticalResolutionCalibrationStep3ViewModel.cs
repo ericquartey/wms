@@ -217,7 +217,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.Disappear();
 
-            this.CurrentPosition = null;
             this.CurrentResolution = null;
             this.FinalPosition = null;
             this.InitialPosition = null;

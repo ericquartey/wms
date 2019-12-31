@@ -31,6 +31,8 @@ namespace Ferretto.VW.App.Services
         MachineMode MachineMode { get; }
         MachinePowerState MachinePower { get; }
 
+        void ClearNotifications();
+
         #endregion
 
         #region Methods
