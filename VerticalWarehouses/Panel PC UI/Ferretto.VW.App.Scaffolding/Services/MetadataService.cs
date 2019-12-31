@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Ferretto.VW.App.Scaffolding.Services
@@ -21,11 +22,17 @@ namespace Ferretto.VW.App.Scaffolding.Services
         {
             private int idSeed = 0;
 
-            private  PropertyInfo[] GetPropertyInfos(Type type)
-            => (type ?? throw new ArgumentNullException(nameof(type)))
-            .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty);
+            private static MemberInfo[] GetMemberInfos(Type type)
+            {
+                var props = (type ?? throw new ArgumentNullException(nameof(type)))
+                    .GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
+                    .Cast<MemberInfo>();
+                var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.GetProperty)
+                    .Cast<MemberInfo>();
+                return fields.Union(props).ToArray();
+            }
 
-            private  string GetDisplayName(PropertyInfo prop)
+            private string GetDisplayName(MemberInfo prop)
             {
                 if (prop.TryGetCustomAttribute<DisplayAttribute>(out var displayAttribute))
                 {
@@ -34,7 +41,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return prop.Name;
             }
 
-            private  string GetCategoryName(PropertyInfo prop, object instance)
+            private string GetCategoryName(MemberInfo prop, object instance)
             {
                 if (prop.TryGetCustomAttribute<CategoryAttribute>(out var category))
                 {
@@ -44,13 +51,15 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
                         if (subPropInfo != null)
                         {
-                            return GetUnderlyingType(subPropInfo.GetValue(prop.GetValue(instance)));
+                            object subValue = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).GetValue(instance) : ((PropertyInfo)prop).GetValue(instance); 
+                            return GetUnderlyingType(subPropInfo.GetValue(subValue));
                         }
                         // Ok, does then the owning type contain a 'PropertyReference'-named property?
                         return GetUnderlyingType(instance.GetType().GetProperty(p.PropertyReference).GetValue(instance));
                     }).ToArray();
 
-                    return string.Format(category.Category(), categoryProperties);
+                    IFormatProvider culture = Thread.CurrentThread.CurrentUICulture;
+                    return string.Format(culture, category.Category(), categoryProperties);
                 }
                 return this.GetDisplayName(prop);
             }
@@ -58,7 +67,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
             /// <summary>
             /// Overload method for ARRAYS.
             /// </summary>
-            private  string GetCategoryName(Type itemtype, string format, object item, params string[] propertyReferences)
+            private string GetCategoryName(Type itemtype, string format, object item, params string[] propertyReferences)
             {
                 if (!(propertyReferences?.Length > 0))
                 {
@@ -68,8 +77,11 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 {
                     var subPropInfo = itemtype.GetProperty(p);
                     return subPropInfo.GetValue(item);
+
                 }).ToArray();
-                return string.Format(format, categoryProperties);
+
+                IFormatProvider culture = Thread.CurrentThread.CurrentUICulture;
+                return string.Format(culture, format, categoryProperties);
             }
 
             private static bool IsSimpleType(Type type)
@@ -88,7 +100,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return obj;
             }
 
-            public  Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
+            public Models.ScaffoldedStructure ScaffoldTypeInternal(Type type, object instance, ScaffoldedStructureInternal branch, ScaffoldedStructureInternal root = default, bool unfoldingBranch = false)
             {
                 root = root ?? branch;
                 if (instance != null && instance.GetType() != type)
@@ -98,10 +110,10 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 var modelType = type.GetCustomAttribute<MetadataTypeAttribute>()?.MetadataClassType ?? type;
                 Dictionary<string, List<Type>> dict = new Dictionary<string, List<Type>>();
 
-                foreach (var prop in this.GetPropertyInfos(modelType))
+                foreach (var prop in GetMemberInfos(modelType))
                 {
                     PropertyInfo actualProp = type.GetProperty(prop.Name);
-                    Type propertyType = prop.PropertyType;
+                    Type propertyType = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).FieldType : ((PropertyInfo)prop).PropertyType;
                     ScaffoldedStructureInternal target = branch;
 
                     // skip non-scaffoldable
@@ -121,8 +133,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     // categorization?
                     bool hasCategory = prop.TryGetCustomAttribute<CategoryAttribute>(out var categoryAttr);
                     var categoryParameters = prop.GetCustomAttributes<CategoryParameterAttribute>();
-                    bool hasCategoryParameters = categoryParameters.Count() > 0;
-                    bool isSimpleType = IsSimpleType(prop.PropertyType);
+                    bool hasCategoryParameters = categoryParameters.Any();
+                    bool isSimpleType = IsSimpleType(propertyType);
 
                     #region  array? (must have Category AND CategoryParameter attributes)
                     // flattening
@@ -163,7 +175,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                                     Parent = target
                                 };
                                 target.Children.Add(newBranch);
-                                this.ScaffoldTypeInternal(elementType, item, newBranch,  root);
+                                this.ScaffoldTypeInternal(elementType, item, newBranch, root);
                             }
                         }
                         // continue;
@@ -194,7 +206,8 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             target.Entities.Add(new ScaffoldedEntityInternal
                             {
                                 Instance = instance,
-                                Property = prop,
+                                Property = actualProp,
+                                Metadata = prop.GetCustomAttributes<Attribute>(),
                                 Id = ++this.idSeed
                             });
                         }
@@ -220,7 +233,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
 
         private static Models.ScaffoldedEntity Publish(this ScaffoldedEntityInternal entity)
-            => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Id);
+            => new Models.ScaffoldedEntity(entity.Property, entity.Instance, entity.Metadata, entity.Id);
 
         private static Models.ScaffoldedStructure Publish(this ScaffoldedStructureInternal tree)
         {
@@ -231,9 +244,9 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
         #region PUBLIC
 
-        public static bool TryGetCustomAttribute<T>(this PropertyInfo property, out T attribute) where T : Attribute
+        public static bool TryGetCustomAttribute<T>(this MemberInfo member, out T attribute) where T : Attribute
         {
-            attribute = (property ?? throw new ArgumentNullException(nameof(property))).GetCustomAttribute<T>();
+            attribute = (member ?? throw new ArgumentNullException(nameof(member))).GetCustomAttribute<T>();
             return attribute != null;
         }
 
@@ -255,6 +268,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
 
     internal class ScaffoldedEntityInternal
     {
+        public IEnumerable<Attribute> Metadata { get; set; }
         public PropertyInfo Property { get; set; }
         public object Instance { get; set; }
         public int Id { get; set; }

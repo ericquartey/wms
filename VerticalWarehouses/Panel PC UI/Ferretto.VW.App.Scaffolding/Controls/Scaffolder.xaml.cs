@@ -107,7 +107,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             object model = e.NewValue;
             if (model != null)
             {
-                var tree = ctrl._root = ctrl.FocusStructure = model.Scaffold();
+                ctrl._root = ctrl.FocusStructure = model.Scaffold();
             }
             else
             {
@@ -145,11 +145,11 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                         }
                         return i.Tags.Any(t => t.ToLowerInvariant().Contains(searchText.ToLowerInvariant()));
                     })
-                    .Select(i => new Models.ScaffoldedEntity(i.Entity.Property, i.Entity.Instance, i.Id, i.FullCategory));
+                    .Select(i => new Models.ScaffoldedEntity(i.Entity.Property, i.Entity.Instance, i.Entity.Metadata, i.Id, i.FullCategory));
 
                 // exec
                 this.Breadcrumb.Clear();
-                this.FocusStructure = new Models.ScaffoldedStructure(searchText, query, new Models.ScaffoldedStructure[0]);
+                this.FocusStructure = new Models.ScaffoldedStructure(searchText, query, Array.Empty<Models.ScaffoldedStructure>());
             }
             else
             {
@@ -172,8 +172,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnFocusStructureChanged(DependencyPropertyChangedEventArgs e)
         {
             Models.ScaffoldedStructure current = e.NewValue as Models.ScaffoldedStructure;
-            this.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? new Models.ScaffoldedEntity[0]);
-            this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? new Models.ScaffoldedStructure[0]);
+            this.Entities = new ObservableCollection<Models.ScaffoldedEntity>(current?.Entities.AsEnumerable() ?? Array.Empty<Models.ScaffoldedEntity>());
+            this.Structures = new ObservableCollection<Models.ScaffoldedStructure>(current?.Children.AsEnumerable() ?? Array.Empty<Models.ScaffoldedStructure>());
 
             // breadcrumb
             if (current == this._root)

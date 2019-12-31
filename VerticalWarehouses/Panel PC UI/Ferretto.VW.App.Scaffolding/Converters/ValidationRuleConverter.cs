@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,11 +17,17 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             var rules = new List<ValidationRule>();
             if (value is Models.ScaffoldedEntity entity)
             {
-                var prop = entity.Property;
+                var metadata = entity.Metadata;
                 var instance = entity.Instance;
-                foreach (var validationAttr in prop.GetCustomAttributes<ValidationAttribute>())
+                if (metadata != null)
                 {
-                    rules.Add(new ValidationRules.AttributeValidationRule(validationAttr, instance));
+                    foreach (var attr in metadata)
+                    {
+                        if (attr is ValidationAttribute validationAttr)
+                        {
+                            rules.Add(new ValidationRules.AttributeValidationRule(validationAttr, instance));
+                        }
+                    }
                 }
             }
             return new ObservableCollection<ValidationRule>(rules);
