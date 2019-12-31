@@ -70,6 +70,15 @@ namespace Ferretto.VW.App.Scaffolding.POC.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Il valore di {0} non può essere inferiore a {1}.
+        /// </summary>
+        internal static string RangeMin {
+            get {
+                return ResourceManager.GetString("RangeMin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Il campo {0} è obbligatorio.
         /// </summary>
         internal static string Required {

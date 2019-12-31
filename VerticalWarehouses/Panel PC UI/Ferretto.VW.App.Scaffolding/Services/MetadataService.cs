@@ -32,7 +32,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return fields.Union(props).ToArray();
             }
 
-            private string GetDisplayName(MemberInfo prop)
+            private static string GetDisplayName(MemberInfo prop)
             {
                 if (prop.TryGetCustomAttribute<DisplayAttribute>(out var displayAttribute))
                 {
@@ -41,17 +41,17 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 return prop.Name;
             }
 
-            private string GetCategoryName(MemberInfo prop, object instance)
+            private static string GetCategoryName(MemberInfo member, object instance)
             {
-                if (prop.TryGetCustomAttribute<CategoryAttribute>(out var category))
+                if (member.TryGetCustomAttribute<CategoryAttribute>(out var category))
                 {
-                    object[] categoryProperties = prop.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
+                    object[] categoryProperties = member.GetCustomAttributes<CategoryParameterAttribute>().Select(p =>
                     {
                         // Does the very type on the property contain a 'PropertyReference'-named property?
                         var subPropInfo = p.GetType().GetProperty(p.PropertyReference);
                         if (subPropInfo != null)
                         {
-                            object subValue = prop.MemberType == MemberTypes.Field ? ((FieldInfo)prop).GetValue(instance) : ((PropertyInfo)prop).GetValue(instance); 
+                            object subValue = member.MemberType == MemberTypes.Field ? ((FieldInfo)member).GetValue(instance) : ((PropertyInfo)member).GetValue(instance); 
                             return GetUnderlyingType(subPropInfo.GetValue(subValue));
                         }
                         // Ok, does then the owning type contain a 'PropertyReference'-named property?
@@ -61,13 +61,13 @@ namespace Ferretto.VW.App.Scaffolding.Services
                     IFormatProvider culture = Thread.CurrentThread.CurrentUICulture;
                     return string.Format(culture, category.Category(), categoryProperties);
                 }
-                return this.GetDisplayName(prop);
+                return GetDisplayName(member);
             }
 
             /// <summary>
             /// Overload method for ARRAYS.
             /// </summary>
-            private string GetCategoryName(Type itemtype, string format, object item, params string[] propertyReferences)
+            private static string GetCategoryName(Type itemtype, string format, object item, params string[] propertyReferences)
             {
                 if (!(propertyReferences?.Length > 0))
                 {
@@ -76,7 +76,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                 object[] categoryProperties = propertyReferences.Select(p =>
                 {
                     var subPropInfo = itemtype.GetProperty(p);
-                    return subPropInfo.GetValue(item);
+                    return GetUnderlyingType(subPropInfo.GetValue(item));
 
                 }).ToArray();
 
@@ -163,7 +163,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                             string[] propertyReferences = categoryParameters.Select(c => c.PropertyReference).ToArray();
                             foreach (var item in collection)
                             {
-                                string categoryName = this.GetCategoryName(elementType, format, item, propertyReferences);
+                                string categoryName = GetCategoryName(elementType, format, item, propertyReferences);
                                 var newBranch = target.Children.FirstOrDefault(b => b.Category == categoryName);
                                 if (newBranch != null)
                                 {
@@ -187,7 +187,7 @@ namespace Ferretto.VW.App.Scaffolding.Services
                         // find or create category branch
                         if (hasCategory)
                         {
-                            string categoryName = this.GetCategoryName(prop, instance);
+                            string categoryName = GetCategoryName(prop, instance);
                             var tget = target.Children.FirstOrDefault(c => c.Category == categoryName);
                             if (tget == null)
                             {

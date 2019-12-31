@@ -80,10 +80,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
                 this._elasticDataTable.Add(new ScaffoldedEntityDataTableItem
                 {
                     Entity = entity,
-                    FullCategory = string.Concat(category, CATEGORY_SEPARATOR, entity.Property.DisplayName()).Trim(),
+                    FullCategory = string.Concat(category, CATEGORY_SEPARATOR, entity.DisplayName()).Trim(),
                     Id = entity.Id,
                     OriginalValue = entity.Property.GetValue(entity.Instance),
-                    Tags = new[] { entity.Property.DisplayName(), category }.Union(entity.Property.GetCustomAttributes<TagAttribute>().Select(t => t.Tag())).Where(t => !string.IsNullOrEmpty(t))
+                    Tags = new[] { entity.DisplayName(), category }.Union(entity.Metadata.OfType<TagAttribute>().Select(t => t.Tag())).Where(t => !string.IsNullOrEmpty(t))
                 });
             }
             foreach (var child in branch.Children)
@@ -149,7 +149,7 @@ namespace Ferretto.VW.App.Scaffolding.Controls
 
                 // exec
                 this.Breadcrumb.Clear();
-                this.FocusStructure = new Models.ScaffoldedStructure(searchText, query, Array.Empty<Models.ScaffoldedStructure>());
+                this.FocusStructure = new Models.ScaffoldedStructure($"\"{searchText}\"", query, Array.Empty<Models.ScaffoldedStructure>());
             }
             else
             {
