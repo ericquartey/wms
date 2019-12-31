@@ -10,8 +10,12 @@
 
         Test,
 
+        Compact,
+
         SwitchingToAutomatic,
 
         SwitchingToManual,
+
+        SwitchingToCompact
     }
 }

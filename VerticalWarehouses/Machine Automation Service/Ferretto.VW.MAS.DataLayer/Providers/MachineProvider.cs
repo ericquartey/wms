@@ -291,13 +291,30 @@ namespace Ferretto.VW.MAS.DataLayer
             dataContext.SaveChanges();
         }
 
-        public void UpdateStatistics(MachineStatistics statistics)
+        public void UpdateWeightStatistics(DataLayerContext dataContext)
         {
-            lock (this.dataContext)
+            var machineStat = dataContext.MachineStatistics.FirstOrDefault();
+            machineStat.TotalWeightFront = 0;
+            machineStat.TotalWeightBack = 0;
+            var loadingUnits = dataContext.LoadingUnits
+                .Include(i => i.Cell)
+                .ToList();
+            loadingUnits.ForEach((l) =>
             {
-                this.dataContext.MachineStatistics.Update(statistics);
-                this.dataContext.SaveChanges();
+                if (l.Cell != null)
+                {
+                    if (l.Cell.Side == WarehouseSide.Front)
+                    {
+                        machineStat.TotalWeightFront += l.GrossWeight;
+                    }
+                    else
+                    {
+                        machineStat.TotalWeightBack += l.GrossWeight;
+                    }
+                }
             }
+            );
+            dataContext.SaveChanges();
         }
 
         private void DeleteBays(IEnumerable<Bay> bays)

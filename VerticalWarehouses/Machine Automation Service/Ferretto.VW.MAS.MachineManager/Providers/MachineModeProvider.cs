@@ -57,6 +57,11 @@ namespace Ferretto.VW.MAS.MachineManager.Providers
                     this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
                     break;
 
+                case MachineMode.Compact:
+                    this.machineModeDataProvider.Mode = MachineMode.SwitchingToCompact;
+                    this.logger.LogInformation($"Machine status switched to {this.machineModeDataProvider.Mode}");
+                    break;
+
                 default:
                     throw new ArgumentException($"The requested machine mode '{machineMode}' cannot be handled.", nameof(machineMode));
             }

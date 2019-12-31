@@ -18,8 +18,6 @@ namespace Ferretto.VW.MAS.InverterDriver
     {
         #region Fields
 
-        private readonly Stopwatch readStopwatch = new Stopwatch();
-
         /// <summary>
         /// The timeout for read operations on the socket.
         /// </summary>
@@ -29,8 +27,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         private readonly int readTimeoutMilliseconds;
 
         private readonly byte[] receiveBuffer = new byte[1024];
-
-        private readonly Stopwatch roundTripStopwatch = new Stopwatch();
 
         private IPAddress inverterAddress;
 
@@ -56,10 +52,6 @@ namespace Ferretto.VW.MAS.InverterDriver
         #region Properties
 
         public bool IsConnected => this.transportClient?.Connected ?? false;
-
-        public InverterDiagnosticsData ReadWaitTimeData { get; } = new InverterDiagnosticsData();
-
-        public InverterDiagnosticsData WriteRoundtripTimeData { get; } = new InverterDiagnosticsData();
 
         #endregion
 
@@ -187,17 +179,9 @@ namespace Ferretto.VW.MAS.InverterDriver
             byte[] receivedData;
             try
             {
-                this.readStopwatch.Reset();
-                this.readStopwatch.Start();
-
                 if (this.transportClient.Client?.Poll(this.readTimeoutMilliseconds * 1000, SelectMode.SelectRead) ?? false)
                 {
                     var readBytes = await this.transportStream?.ReadAsync(this.receiveBuffer, 0, this.receiveBuffer?.Length ?? 0, stoppingToken);
-
-                    this.readStopwatch.Stop();
-                    this.roundTripStopwatch.Stop();
-                    this.ReadWaitTimeData.AddValue(this.readStopwatch.ElapsedTicks);
-                    this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
 
                     if (readBytes > 0)
                     {
@@ -281,8 +265,6 @@ namespace Ferretto.VW.MAS.InverterDriver
             {
                 if (delay > 0)
                 {
-                    this.roundTripStopwatch.Reset();
-                    this.roundTripStopwatch.Start();
                     await Task.Delay(delay, stoppingToken);
                 }
 
