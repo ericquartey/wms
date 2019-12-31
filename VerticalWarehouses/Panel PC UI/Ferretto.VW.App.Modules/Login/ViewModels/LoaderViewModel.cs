@@ -70,6 +70,8 @@ namespace Ferretto.VW.App.Modules.Login.ViewModels
 
         public override EnableMask EnableMask => EnableMask.Any;
 
+        public override bool KeepAlive => false;
+
         #endregion
 
         #region Methods

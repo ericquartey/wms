@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Modules.Installation.Models;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.CommonUtils.Enumerations;
@@ -15,15 +16,27 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal sealed class VerticalResolutionCalibrationStep1ViewModel : BaseVerticalResolutionCalibrationViewModel, IDataErrorInfo
+    internal class VerticalResolutionCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
+
+        private readonly IEventAggregator eventAggregator;
+
+        private readonly IHealthProbeService healthProbeService;
+
+        private readonly IMachineElevatorService machineElevatorService;
 
         private readonly IMachineElevatorWebService machineElevatorWebService;
 
         private readonly IMachineSensorsWebService machineSensorsWebService;
 
+        private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
+
+        private decimal? currentResolution;
+
         private double? inputInitialPosition;
+
+        private bool isExecutingProcedure;
 
         private bool isLoadingUnitOnBoard;
 
@@ -35,23 +48,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private bool? luPresentInOperatorSide;
 
+        private SubscriptionToken positioningOperationChangedToken;
+
         private SubscriptionToken sensorsToken;
 
         private DelegateCommand startCommand;
+
+        private DelegateCommand stopCommand;
 
         #endregion
 
         #region Constructors
 
-        public VerticalResolutionCalibrationStep1ViewModel(
+        public VerticalResolutionCalibrationViewModel(
             IEventAggregator eventAggregator,
             IMachineElevatorWebService machineElevatorWebService,
             IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService,
             IMachineSensorsWebService machineSensorsWebService,
             IHealthProbeService healthProbeService,
             IMachineElevatorService machineElevatorService)
-            : base(eventAggregator, machineElevatorWebService, resolutionCalibrationWebService, machineElevatorService, healthProbeService)
+          : base(PresentationMode.Installer)
         {
+            this.eventAggregator = eventAggregator ?? throw new ArgumentNullException(nameof(eventAggregator));
+            this.machineElevatorService = machineElevatorService ?? throw new ArgumentNullException(nameof(machineElevatorService));
+            this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
+            this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
+            this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
+
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
         }
@@ -60,6 +83,12 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         #region Properties
 
+        public decimal? CurrentResolution
+        {
+            get => this.currentResolution;
+            protected set => this.SetProperty(ref this.currentResolution, value);
+        }
+
         public string Error => string.Join(
             Environment.NewLine,
             this[nameof(this.InputInitialPosition)]);
@@ -67,13 +96,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
         public double? InputInitialPosition
         {
             get => this.inputInitialPosition;
-            set
-            {
-                if (this.SetProperty(ref this.inputInitialPosition, value))
-                {
-                    this.RaiseCanExecuteChanged();
-                }
-            }
+            set => this.SetProperty(ref this.inputInitialPosition, value, this.RaiseCanExecuteChanged);
+        }
+
+        public bool IsExecutingProcedure
+        {
+            get => this.isExecutingProcedure;
+            protected set => this.SetProperty(ref this.isExecutingProcedure, value, this.RaiseCanExecuteChanged);
         }
 
         public bool IsLoadingUnitOnBoard
@@ -82,12 +111,46 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isLoadingUnitOnBoard, value);
         }
 
+        public override bool IsWaitingForResponse
+        {
+            get => this.isWaitingForResponse;
+            protected set
+            {
+                if (this.SetProperty(ref this.isWaitingForResponse, value))
+                {
+                    if (this.isWaitingForResponse)
+                    {
+                        this.ClearNotifications();
+                    }
+
+                    this.RaiseCanExecuteChanged();
+                }
+            }
+        }
+
+        public IMachineElevatorWebService MachineElevatorWebService { get; }
+
+        public IMachineVerticalResolutionCalibrationProcedureWebService ResolutionCalibrationService => this.resolutionCalibrationWebService;
+
         public ICommand StartCommand =>
             this.startCommand
             ??
             (this.startCommand = new DelegateCommand(
                 async () => await this.StartAsync(),
                 this.CanStart));
+
+        public ICommand StopCommand =>
+                    this.stopCommand
+            ??
+            (this.stopCommand = new DelegateCommand(
+                async () => await this.StopAsync(),
+                this.CanStop));
+
+        internal IEventAggregator EventAggregator => this.eventAggregator;
+
+        internal IHealthProbeService HealthProbeService => this.healthProbeService;
+
+        protected VerticalResolutionCalibrationProcedure ProcedureParameters { get; private set; }
 
         #endregion
 
@@ -152,6 +215,17 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
+            this.positioningOperationChangedToken = this.positioningOperationChangedToken
+                ??
+                this.EventAggregator
+                    .GetEvent<NotificationEventUI<PositioningMessageData>>()
+                    .Subscribe(
+                        this.OnPositioningOperationChanged,
+                        ThreadOption.UIThread,
+                        false);
+
+            await this.RetrieveProcedureParametersAsync();
+
             await this.GetParametersAsync();
 
             this.sensorsToken = this.sensorsToken ??
@@ -163,19 +237,33 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         false,
                         (m) =>
                         {
-                            var res = !this.luPresentInOperatorSide.HasValue ||
-                                      !this.luPresentInMachineSide.HasValue ||
-                                      (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
-                                      (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
-                            this.luPresentInOperatorSide = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-                            this.luPresentInMachineSide = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-                            return res;
+                            return !this.luPresentInOperatorSide.HasValue ||
+                                   !this.luPresentInMachineSide.HasValue ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInOperatorSide] != this.luPresentInOperatorSide.Value) ||
+                                   (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
                         });
+
+            this.IsBackNavigationAllowed = true;
         }
 
-        protected override void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
+        protected void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
         {
-            base.OnPositioningOperationChanged(message);
+            if (message.IsErrored())
+            {
+                this.ShowNotification(
+                    VW.App.Resources.InstallationApp.ProcedureWasStopped,
+                    Services.Models.NotificationSeverity.Warning);
+            }
+
+            if (message.Data?.AxisMovement != CommonUtils.Messages.Enumerations.Axis.Vertical)
+            {
+                return;
+            }
+
+            if (message.IsNotRunning())
+            {
+                this.IsExecutingProcedure = false;
+            }
 
             if (message.Status == MessageStatus.OperationEnd)
             {
@@ -188,6 +276,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             base.RaiseCanExecuteChanged();
 
+            this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();
         }
 
@@ -199,6 +288,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 !this.IsWaitingForResponse
                 &&
                 string.IsNullOrWhiteSpace(this.Error);
+        }
+
+        private bool CanStop()
+        {
+            return
+                this.IsExecutingProcedure
+                &&
+                !this.IsWaitingForResponse;
         }
 
         private async Task GetSensorsAndLoadingUnitOnBoardAsync()
@@ -225,7 +322,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1))
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION))
             {
                 var wizardData = new VerticalResolutionWizardData
                 {
@@ -236,7 +333,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
+                    Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION,
                     wizardData,
                     trackCurrentView: false);
             }
@@ -244,6 +341,26 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
         {
+            this.luPresentInOperatorSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+            this.luPresentInMachineSide = message?.Data.SensorsStates[(int)IOMachineSensors.RunningState];
+        }
+
+        private async Task RetrieveProcedureParametersAsync()
+        {
+            try
+            {
+                this.IsWaitingForResponse = true;
+
+                this.ProcedureParameters = await this.resolutionCalibrationWebService.GetParametersAsync();
+            }
+            catch (Exception ex)
+            {
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
         }
 
         private void SetIsLoadingUnitOnBord(Sensors sensors)
@@ -254,7 +371,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private void ShowSteps()
         {
             this.ShowPrevStep(true, false);
-            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION);
             this.ShowAbortStep(true, true);
         }
 
@@ -273,6 +390,24 @@ namespace Ferretto.VW.App.Installation.ViewModels
             catch (Exception ex)
             {
                 this.IsExecutingProcedure = false;
+                this.ShowNotification(ex);
+            }
+            finally
+            {
+                this.IsWaitingForResponse = false;
+            }
+        }
+
+        private async Task StopAsync()
+        {
+            this.IsWaitingForResponse = true;
+
+            try
+            {
+                await this.MachineElevatorWebService.StopAsync();
+            }
+            catch (Exception ex)
+            {
                 this.ShowNotification(ex);
             }
             finally

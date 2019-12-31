@@ -207,14 +207,14 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void NavigateToNextStep()
         {
-            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2))
+            if (this.NavigationService.IsActiveView(nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION))
             {
                 this.wizardData.FinalPosition = this.InputFinalPosition.Value;
                 this.wizardData.MeasuredInitialPosition = this.InputMeasuredInitialPosition.Value;
 
                 this.NavigationService.Appear(
                     nameof(Utils.Modules.Installation),
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
+                    Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION,
                     this.wizardData,
                     trackCurrentView: false);
             }
@@ -234,8 +234,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ShowSteps()
         {
-            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP1);
-            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP3);
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION);
+            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION);
             this.ShowAbortStep(true, true);
         }
 
