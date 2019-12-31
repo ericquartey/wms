@@ -131,7 +131,7 @@
                 <TextBlock VerticalAlignment="Top"
                            FontSize="24"
                            Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
-                           Text="Misurazione 1 / 2"
+                           Text="Misurazione 2 / 2"
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="2"
@@ -177,7 +177,7 @@
                                    Margin="0,0,15,0"
                                    EditValue="100"
                                    IsEnabled="False"
-                                   LabelText="Nuova risolizione" />
+                                   LabelText="Nuova risoluzione" />
 
                 <controls:PpcButton Grid.Row="3"
                                     Content="Salva" />

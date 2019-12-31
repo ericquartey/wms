@@ -143,6 +143,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void InitializeSteps()
         {
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
             this.ShowPrevStep(false, false);
             this.ShowNextStep(false, false);
             this.ShowAbortStep(false, false);
