@@ -188,6 +188,8 @@ namespace Ferretto.VW.MAS.DataLayer
 
             context.Delete(loadingUnits, (e) => e.Id);
             loadingUnits.ForEach((l) => context.AddOrUpdate(l, (e) => e.Id));
+
+            this.machineProvider.UpdateWeightStatistics(context);
         }
 
         public void Insert(int loadingUnitsId)
