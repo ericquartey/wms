@@ -35,15 +35,7 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private const int SENSOR_STATUS_UPDATE_INTERVAL = 500;
 
-        private readonly Stopwatch axisIntervalStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData AxisIntervalTimeData = new InverterDiagnosticsData();
-
         private readonly Timer[] axisPositionUpdateTimer;
-
-        private readonly Stopwatch axisStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData AxisTimeData = new InverterDiagnosticsData();
 
         private readonly Dictionary<InverterIndex, IInverterStateMachine> currentStateMachines = new Dictionary<InverterIndex, IInverterStateMachine>();
 
@@ -57,31 +49,11 @@ namespace Ferretto.VW.MAS.InverterDriver
 
         private readonly Task inverterSendTask;
 
-        private readonly Stopwatch readSpeedStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData ReadSpeedTimeData = new InverterDiagnosticsData();
-
-        private readonly Stopwatch readWaitStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData ReadWaitTimeData = new InverterDiagnosticsData();
-
-        private readonly Stopwatch roundTripStopwatch = new Stopwatch();
-
-        private readonly Stopwatch sensorIntervalStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData SensorIntervalTimeData = new InverterDiagnosticsData();
-
-        private readonly Stopwatch sensorStopwatch = new Stopwatch();
-
-        private readonly InverterDiagnosticsData SensorTimeData = new InverterDiagnosticsData();
-
         private readonly ISocketTransport socketTransport;
 
         private readonly Timer[] statusWordUpdateTimer;
 
         private readonly ManualResetEventSlim writeEnableEvent = new ManualResetEventSlim(true);
-
-        private readonly InverterDiagnosticsData WriteRoundtripTimeData = new InverterDiagnosticsData();
 
         private Axis currentAxis;
 
@@ -284,9 +256,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                     byte[] inverterData;
                     try
                     {
-                        this.readWaitStopwatch.Reset();
-                        this.readWaitStopwatch.Start();
-
                         inverterData = await this.socketTransport.ReadAsync(this.CancellationToken);
                         if (inverterData == null || inverterData.Length == 0)
                         {
@@ -298,15 +267,6 @@ namespace Ferretto.VW.MAS.InverterDriver
                         }
 
                         this.receiveBuffer = this.receiveBuffer.AppendArrays(inverterData, inverterData.Length);
-
-                        this.readWaitStopwatch.Stop();
-                        this.roundTripStopwatch.Stop();
-                        this.readSpeedStopwatch.Stop();
-                        this.ReadSpeedTimeData.AddValue(this.readSpeedStopwatch.ElapsedTicks);
-                        this.readSpeedStopwatch.Reset();
-                        this.readSpeedStopwatch.Start();
-                        this.ReadWaitTimeData.AddValue(this.readWaitStopwatch.ElapsedTicks);
-                        this.WriteRoundtripTimeData.AddValue(this.roundTripStopwatch.ElapsedTicks);
                     }
                     catch (Exception ex) when (ex is OperationCanceledException || ex is ThreadAbortException)
                     {
