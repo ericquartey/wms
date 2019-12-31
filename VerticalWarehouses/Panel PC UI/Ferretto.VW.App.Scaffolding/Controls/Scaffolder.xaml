@@ -37,7 +37,7 @@
                            Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
                             </TextBlock>
 
-                            <Border BorderBrush="Green" BorderThickness="3">
+                            <Border BorderBrush="Red" BorderThickness="1">
                                 <AdornedElementPlaceholder Name="MyAdorner" />
                             </Border>
 
@@ -152,7 +152,7 @@
                     <ColumnDefinition />
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="cerca:" />
-                <TextBox Grid.Column="1" Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"></TextBox>
+                <TextBox Grid.Column="1" Text="{Binding Path=SearchText, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, UpdateSourceTrigger=PropertyChanged, Delay=500}"></TextBox>
             </Grid>
             <ListView ItemsSource="{Binding}">
                 <ListView.Resources>

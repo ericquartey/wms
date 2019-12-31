@@ -60,8 +60,8 @@ namespace Ferretto.VW.App.Scaffolding.Models
         [Required]
         public System.Net.IPAddress IpAddress { get; set; }
 
-        [Required]
-        [Range(0, ushort.MaxValue)]
+        [Required(ErrorMessageResourceType = typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName = nameof(POC.Resources.ErrorMessages.Required))]
+        [Range(0, ushort.MaxValue, ErrorMessageResourceType =typeof(POC.Resources.ErrorMessages), ErrorMessageResourceName =nameof(POC.Resources.ErrorMessages.Range))]
         public int TcpPort { get; set; }
     }
 
