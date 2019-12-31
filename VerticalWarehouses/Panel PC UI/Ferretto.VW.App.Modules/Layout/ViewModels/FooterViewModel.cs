@@ -57,6 +57,14 @@ namespace Ferretto.VW.App.Modules.Layout.ViewModels
         {
             base.InitializeData();
 
+            var prevStep = this.GetInstance<PresentationSinglePageStep>();
+            prevStep.Type = PresentationTypes.PrevStep;
+            this.States.Add(prevStep);
+
+            var nextStep = this.GetInstance<PresentationSinglePageStep>();
+            nextStep.Type = PresentationTypes.NextStep;
+            this.States.Add(nextStep);
+
             var prev = this.GetInstance<PresentationNavigationStep>();
             prev.Type = PresentationTypes.Prev;
             this.States.Add(prev);

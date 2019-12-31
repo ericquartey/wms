@@ -16,7 +16,18 @@ using Prism.Events;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    internal class VerticalResolutionCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
+    public enum CalibrationStep
+    {
+        PositionMeter,
+
+        FirstMisuration,
+
+        LastMisuration,
+
+        Confirm
+    }
+
+    public class VerticalResolutionCalibrationViewModel : BaseMainViewModel, IDataErrorInfo
     {
         #region Fields
 
@@ -33,6 +44,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private readonly IMachineVerticalResolutionCalibrationProcedureWebService resolutionCalibrationWebService;
 
         private decimal? currentResolution;
+
+        private CalibrationStep currentStep;
 
         private double? inputInitialPosition;
 
@@ -53,6 +66,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
         private SubscriptionToken sensorsToken;
 
         private DelegateCommand startCommand;
+
+        private SubscriptionToken stepChangedToken;
 
         private DelegateCommand stopCommand;
 
@@ -77,6 +92,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
             this.machineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.machineSensorsWebService = machineSensorsWebService ?? throw new ArgumentNullException(nameof(machineSensorsWebService));
+
+            this.currentStep = CalibrationStep.PositionMeter;
         }
 
         #endregion
@@ -89,9 +106,23 @@ namespace Ferretto.VW.App.Installation.ViewModels
             protected set => this.SetProperty(ref this.currentResolution, value);
         }
 
+        public CalibrationStep CurrentStep
+        {
+            get => this.currentStep;
+            protected set => this.SetProperty(ref this.currentStep, value);
+        }
+
         public string Error => string.Join(
             Environment.NewLine,
             this[nameof(this.InputInitialPosition)]);
+
+        public bool HasStepConfirm => this.currentStep is CalibrationStep.Confirm;
+
+        public bool HasStepFirstMisuration => this.currentStep is CalibrationStep.FirstMisuration;
+
+        public bool HasStepLastMisuration => this.currentStep is CalibrationStep.LastMisuration;
+
+        public bool HasStepPositionMeter => this.currentStep is CalibrationStep.PositionMeter;
 
         public double? InputInitialPosition
         {
@@ -111,23 +142,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             private set => this.SetProperty(ref this.isLoadingUnitOnBoard, value);
         }
 
-        public override bool IsWaitingForResponse
-        {
-            get => this.isWaitingForResponse;
-            protected set
-            {
-                if (this.SetProperty(ref this.isWaitingForResponse, value))
-                {
-                    if (this.isWaitingForResponse)
-                    {
-                        this.ClearNotifications();
-                    }
-
-                    this.RaiseCanExecuteChanged();
-                }
-            }
-        }
-
         public IMachineElevatorWebService MachineElevatorWebService { get; }
 
         public IMachineVerticalResolutionCalibrationProcedureWebService ResolutionCalibrationService => this.resolutionCalibrationWebService;
@@ -140,7 +154,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.CanStart));
 
         public ICommand StopCommand =>
-                    this.stopCommand
+            this.stopCommand
             ??
             (this.stopCommand = new DelegateCommand(
                 async () => await this.StopAsync(),
@@ -215,6 +229,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
         {
             await base.OnAppearedAsync();
 
+            await this.RetrieveProcedureParametersAsync();
+
+            await this.GetParametersAsync();
+
             this.positioningOperationChangedToken = this.positioningOperationChangedToken
                 ??
                 this.EventAggregator
@@ -224,9 +242,13 @@ namespace Ferretto.VW.App.Installation.ViewModels
                         ThreadOption.UIThread,
                         false);
 
-            await this.RetrieveProcedureParametersAsync();
-
-            await this.GetParametersAsync();
+            this.stepChangedToken = this.stepChangedToken
+                ?? this.EventAggregator
+                    .GetEvent<StepChangedPubSubEvent>()
+                    .Subscribe(
+                        async (m) => await this.OnStepChangedAsync(m),
+                        ThreadOption.UIThread,
+                        false);
 
             this.sensorsToken = this.sensorsToken ??
                 this.EventAggregator
@@ -243,7 +265,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
                                    (m.Data.SensorsStates[(int)IOMachineSensors.LuPresentInMachineSide] != this.luPresentInMachineSide.Value);
                         });
 
-            this.IsBackNavigationAllowed = true;
+            this.IsBackNavigationAllowed = false;
         }
 
         protected void OnPositioningOperationChanged(NotificationMessageUI<PositioningMessageData> message)
@@ -272,9 +294,67 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        protected Task OnStepChangedAsync(StepChangedMessage e)
+        {
+            switch (this.CurrentStep)
+            {
+                case CalibrationStep.PositionMeter:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CalibrationStep.FirstMisuration;
+                    }
+
+                    break;
+
+                case CalibrationStep.FirstMisuration:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CalibrationStep.LastMisuration;
+                    }
+                    else
+                    {
+                        this.CurrentStep = CalibrationStep.PositionMeter;
+                    }
+
+                    break;
+
+                case CalibrationStep.LastMisuration:
+                    if (e.Next)
+                    {
+                        this.CurrentStep = CalibrationStep.Confirm;
+                    }
+                    else
+                    {
+                        this.CurrentStep = CalibrationStep.FirstMisuration;
+                    }
+
+                    break;
+
+                case CalibrationStep.Confirm:
+                    if (!e.Next)
+                    {
+                        this.CurrentStep = CalibrationStep.LastMisuration;
+                    }
+
+                    break;
+
+                default:
+                    break;
+            }
+
+            this.RaiseCanExecuteChanged();
+
+            return Task.CompletedTask;
+        }
+
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
+
+            this.RaisePropertyChanged(nameof(this.HasStepPositionMeter));
+            this.RaisePropertyChanged(nameof(this.HasStepFirstMisuration));
+            this.RaisePropertyChanged(nameof(this.HasStepLastMisuration));
+            this.RaisePropertyChanged(nameof(this.HasStepConfirm));
 
             this.stopCommand?.RaiseCanExecuteChanged();
             this.startCommand?.RaiseCanExecuteChanged();
@@ -370,8 +450,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ShowSteps()
         {
-            this.ShowPrevStep(true, false);
-            this.ShowNextStep(true, this.isOperationCompleted, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION);
+            this.ShowPrevStepSinglePage(true, true);
+            this.ShowNextStepSinglePage(true, true);
             this.ShowAbortStep(true, true);
         }
 

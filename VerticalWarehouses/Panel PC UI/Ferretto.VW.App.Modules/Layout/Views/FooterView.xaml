@@ -237,6 +237,25 @@
                     Orientation="Horizontal">
 
             <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.PrevStep}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcPrev}" />
+            </ctrls:PpcControl>
+
+            <ctrls:PpcControl Width="100"
+                              PresentationType="{x:Static enums:PresentationTypes.NextStep}"
+                              Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
+                <ctrls:PpcControl.Resources />
+                <controls:PpcButton Margin="15,0,0,0"
+                                    VerticalAlignment="Center"
+                                    Command="{Binding ExecuteCommand}"
+                                    Style="{StaticResource PpcNext}" />
+            </ctrls:PpcControl>
+
+            <ctrls:PpcControl Width="100"
                               PresentationType="{x:Static enums:PresentationTypes.Prev}"
                               Visibility="{Binding IsVisible, Converter={StaticResource BTVC}}">
                 <controls:PpcButton Margin="15,0,0,0"

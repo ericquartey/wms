@@ -4,31 +4,209 @@
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+            xmlns:local="clr-namespace:Ferretto.VW.App.Installation.Views"
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
             xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Installation.ViewModels"
-            d:DataContext="{d:DesignInstance Type=viewmodels:VerticalResolutionCalibrationStep1ViewModel,
-                                             IsDesignTimeCreatable=False}"
-            d:DesignHeight="768"
+            d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
             mc:Ignorable="d">
 
-    <Grid Margin="15,0,0,0">
+    <ctrls:View.Resources>
+        <Style x:Key="BorderTimeLine"
+               TargetType="{x:Type Border}">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="BorderThickness" Value="2.5" />
+            <Setter Property="CornerRadius" Value="2" />
+        </Style>
+        <Style x:Key="BorderTimeLineCirle"
+               TargetType="{x:Type Border}">
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Background" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
+            <Setter Property="BorderThickness" Value="{DynamicResource PpcBorderThickness}" />
+            <Setter Property="CornerRadius" Value="20" />
+        </Style>
+        <Style x:Key="BorderTimeLineCirleTextBlock"
+               TargetType="{x:Type TextBlock}">
+            <Setter Property="Margin" Value="-1,-1,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="{StaticResource FontSize_High}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Foreground" Value="{DynamicResource FerrettoLightGray}" />
+        </Style>
+        <Style x:Key="BorderTimeLinePath"
+               TargetType="{x:Type Path}">
+            <Setter Property="Width" Value="26" />
+            <Setter Property="Height" Value="26" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Data" Value="M18,5L0,11 18,17" />
+            <Setter Property="Fill" Value="{DynamicResource PpcBackground}" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
+            <Setter Property="StrokeThickness" Value="1.5" />
+        </Style>
+
+        <DataTemplate x:Key="DataTemplatePositionMeter">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Posizionare l'elevatore ad una altezza tale che permetta di attaccare il metro."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="1"
+                                    VerticalAlignment="Top"
+                                    Content="Vai a quota" />
+
+                <TextBlock Grid.Row="2"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Procedere alla rimozione di uno dei carter laterali e al posizionamento del metro. Competare ripozisionando il carter e ripristinare lo stato di marcia."
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Content="Avanti" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateFirstMisuration">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Misurazione 1 / 2"
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    VerticalAlignment="Top"
+                                    Content="Vai a quota" />
+
+                <StackPanel Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <ctrls:PpcSpinEdit Width="250"
+                                       Height="90"
+                                       Margin="0,0,15,0"
+                                       LabelText="Quota di destinazione" />
+
+                    <ctrls:PpcSpinEdit Width="250"
+                                       Height="90"
+                                       Margin="0,0,15,0"
+                                       LabelText="Quota misurata" />
+                </StackPanel>
+                <controls:PpcButton Grid.Row="3"
+                                    Content="Avanti" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateLastMisuration">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Misurazione 1 / 2"
+                           TextWrapping="Wrap" />
+
+                <controls:PpcButton Grid.Row="2"
+                                    VerticalAlignment="Top"
+                                    Content="Vai a quota" />
+
+                <StackPanel Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Orientation="Horizontal">
+                    <ctrls:PpcSpinEdit Width="250"
+                                       Height="90"
+                                       Margin="0,0,15,0"
+                                       LabelText="Quota di destinazione" />
+
+                    <ctrls:PpcSpinEdit Width="250"
+                                       Height="90"
+                                       Margin="0,0,15,0"
+                                       LabelText="Quota misurata" />
+                </StackPanel>
+                <controls:PpcButton Grid.Row="3"
+                                    Content="Avanti" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DataTemplateConfirm">
+            <Grid Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock VerticalAlignment="Top"
+                           FontSize="24"
+                           Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
+                           Text="Conferma misurazione rilevata"
+                           TextWrapping="Wrap" />
+
+                <ctrls:PpcSpinEdit Grid.Row="1"
+                                   Width="250"
+                                   Height="90"
+                                   Margin="0,0,15,0"
+                                   EditValue="100"
+                                   IsEnabled="False"
+                                   LabelText="Nuova risolizione" />
+
+                <controls:PpcButton Grid.Row="3"
+                                    Content="Salva" />
+            </Grid>
+        </DataTemplate>
+        <local:CalibrationStepTemplateSelector x:Key="selector"
+                                               EnumConfirm="{StaticResource DataTemplateConfirm}"
+                                               EnumFirstMisuration="{StaticResource DataTemplateFirstMisuration}"
+                                               EnumLastMisuration="{StaticResource DataTemplateLastMisuration}"
+                                               EnumPositionMeter="{StaticResource DataTemplatePositionMeter}" />
+
+    </ctrls:View.Resources>
+
+    <Grid Margin="15,0,0,0"
+          UseLayoutRounding="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
             <ColumnDefinition />
             <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.ColumnSpan="4"
@@ -55,18 +233,21 @@
                    TextWrapping="Wrap" />
 
         <controls:CardSensorAxisVertical Grid.Row="2"
-                                         Grid.Column="0"
+                                         Grid.Column="3"
+                                         Width="230"
                                          Height="90"
-                                         Margin="0,30,15,0" />
+                                         Margin="0,15,15,0" />
 
-        <controls:CardSensorAxisHorizontal Grid.Row="2"
-                                           Grid.Column="1"
+        <controls:CardSensorAxisHorizontal Grid.Row="3"
+                                           Grid.Column="3"
+                                           Width="230"
                                            Height="90"
-                                           Margin="0,30,15,0" />
+                                           Margin="0,15,15,0" />
 
-        <Border Grid.Row="2"
-                Grid.Column="2"
-                Margin="0,30,15,0"
+        <Border Grid.Row="4"
+                Grid.Column="3"
+                Height="90"
+                Margin="0,15,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
@@ -104,10 +285,13 @@
             </Border>
         </Border>
 
-        <Border Grid.Row="2"
+        <Border Grid.Row="5"
                 Grid.Column="3"
-                Margin="0,30,15,0"
-                Background="{DynamicResource PpcBackground}">
+                Height="90"
+                Margin="0,15,15,0"
+                VerticalAlignment="Top"
+                Background="{DynamicResource PpcBackground}"
+                Visibility="Collapsed">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
                     BorderThickness="{DynamicResource PpcBorderThickness}">
 
@@ -145,86 +329,89 @@
             </Border>
         </Border>
 
+        <Grid Grid.Row="2"
+              Grid.RowSpan="4"
+              Grid.ColumnSpan="3"
+              Margin="5,15,15,0">
 
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="1"
-                           Height="90"
-                           Margin="0,30,15,0"
-                           VerticalAlignment="Center"
-                           LabelText="Quota destinazione" />
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="42" />
+                <ColumnDefinition Width="17" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="1" />
+            </Grid.RowDefinitions>
 
-        <ctrls:PpcSpinEdit Grid.Row="3"
-                           Grid.Column="2"
-                           Height="90"
-                           Margin="0,30,15,0"
-                           VerticalAlignment="Center"
-                           LabelText="Quota misurata" />
+            <Border Grid.Row="0"
+                    Grid.RowSpan="6"
+                    Grid.Column="2"
+                    Grid.ColumnSpan="2"
+                    Margin="8,0,0,0"
+                    Background="{StaticResource PpcBackground}"
+                    BorderBrush="{StaticResource PpcBorderBrush}"
+                    BorderThickness="{StaticResource PpcBorderThickness}"
+                    CornerRadius="2,0,0,2">
+                <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
+                                ContentTemplateSelector="{StaticResource selector}" />
+            </Border>
 
+            <Border Grid.Row="0"
+                    Grid.RowSpan="6"
+                    Style="{DynamicResource BorderTimeLine}" />
 
+            <Grid Grid.Row="1">
+                <Border Background="{DynamicResource FerrettoBlue}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="1" />
+            </Grid>
+            <Path Grid.Row="1"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
+            <Grid Grid.Row="2">
+                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="2" />
+            </Grid>
+            <Path Grid.Row="2"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepFirstMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
-        <StackPanel Grid.Row="4"
-                    Grid.ColumnSpan="3"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Orientation="Horizontal">
+            <Grid Grid.Row="3">
+                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="3" />
+            </Grid>
+            <Path Grid.Row="3"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepLastMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
-
-            <controls:PpcButton Grid.Row="0"
-                                Grid.Column="2"
-                                Command="{Binding StopCommand}"
-                                Content="{x:Static res:InstallationApp.Stop}" />
-
-            <controls:PpcButton Grid.Row="1"
-                                Grid.Column="2"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
-                                IsBusy="{Binding IsExecutingProcedure}" />
-
-            <controls:PpcButton Grid.Row="2"
-                                Grid.Column="2"
-                                HorizontalAlignment="Left"
-                                VerticalAlignment="Top"
-                                Command="{Binding StartCommand}"
-                                Content="{x:Static res:InstallationApp.Start}"
-                                IsBusy="{Binding IsExecutingProcedure}" />
-        </StackPanel>
-
-
-
-
-
-        <!--<controls:PpcLabeledText Grid.Row="4"
-                                 Grid.Column="1"
-                                 HorizontalAlignment="Left"
-                                 VerticalAlignment="Top"
-                                 ContentText="{Binding CurrentPosition, StringFormat={}{0:F1}}"
-                                 LabelText="{x:Static res:InstallationApp.ElevatorVerticalPosition}" />
-
-        <controls:PpcTextBox Grid.Row="5"
-                             HorizontalAlignment="Left"
-                             VerticalAlignment="Top"
-                             InputScope="Number"
-                             InputText="{Binding InputInitialPosition, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                             IsEnabled="{Binding IsExecutingProcedure, Converter={StaticResource BNC}}"
-                             LabelText="{x:Static res:InstallationApp.InitialPosition}" />
-
-        <controls:PpcButton Grid.Row="6"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StopCommand}"
-                            Content="{x:Static res:InstallationApp.Stop}" />
-
-        <controls:PpcButton Grid.Row="6"
-                            Grid.Column="1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Top"
-                            Command="{Binding StartCommand}"
-                            Content="{x:Static res:InstallationApp.Start}"
-                            IsBusy="{Binding IsExecutingProcedure}" />-->
+            <Grid Grid.Row="4">
+                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
+                           Text="4" />
+            </Grid>
+            <Path Grid.Row="4"
+                  Grid.Column="1"
+                  Grid.ColumnSpan="2"
+                  Style="{DynamicResource BorderTimeLinePath}"
+                  Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}" />
+        </Grid>
 
     </Grid>
 </ctrls:View>

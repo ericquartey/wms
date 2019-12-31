@@ -30,6 +30,10 @@
 
         Next,
 
+        PrevStep,
+
+        NextStep,
+
         Abort
     }
 }
