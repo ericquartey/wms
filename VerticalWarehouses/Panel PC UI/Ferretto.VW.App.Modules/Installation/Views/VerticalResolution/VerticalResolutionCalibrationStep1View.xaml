@@ -21,9 +21,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -148,13 +147,58 @@
         </Border>
 
 
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="1"
+                           Height="90"
+                           Margin="0,30,15,0"
+                           VerticalAlignment="Center"
+                           LabelText="Quota destinazione" />
+
+
+        <ctrls:PpcSpinEdit Grid.Row="3"
+                           Grid.Column="2"
+                           Height="90"
+                           Margin="0,30,15,0"
+                           VerticalAlignment="Center"
+                           LabelText="Quota misurata" />
+
+
+
+
+        <StackPanel Grid.Row="4"
+                    Grid.ColumnSpan="3"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Orientation="Horizontal">
+
+
+            <controls:PpcButton Grid.Row="0"
+                                Grid.Column="2"
+                                Command="{Binding StopCommand}"
+                                Content="{x:Static res:InstallationApp.Stop}" />
+
+            <controls:PpcButton Grid.Row="1"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+
+            <controls:PpcButton Grid.Row="2"
+                                Grid.Column="2"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                Command="{Binding StartCommand}"
+                                Content="{x:Static res:InstallationApp.Start}"
+                                IsBusy="{Binding IsExecutingProcedure}" />
+        </StackPanel>
 
 
 
 
 
-
-        <controls:PpcLabeledText Grid.Row="4"
+        <!--<controls:PpcLabeledText Grid.Row="4"
                                  Grid.Column="1"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
@@ -181,7 +225,7 @@
                             VerticalAlignment="Top"
                             Command="{Binding StartCommand}"
                             Content="{x:Static res:InstallationApp.Start}"
-                            IsBusy="{Binding IsExecutingProcedure}" />
+                            IsBusy="{Binding IsExecutingProcedure}" />-->
 
     </Grid>
 </ctrls:View>

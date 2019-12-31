@@ -101,18 +101,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Validation.HasError" Value="True">
                             <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
                         </Trigger>
-                        <!--
-                        <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
-                        </Trigger>
-                        -->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
 

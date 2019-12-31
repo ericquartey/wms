@@ -28,11 +28,7 @@ namespace Ferretto.VW.App.Services
 
         private readonly IMachinePowerWebService machinePowerWebService;
 
-        private readonly SubscriptionToken sensorsToken;
-
         private bool isDisposed;
-
-        private bool? runningState;
 
         #endregion
 
@@ -68,20 +64,6 @@ namespace Ferretto.VW.App.Services
                     ThreadOption.UIThread,
                     false);
 
-            this.sensorsToken = this.eventAggregator
-                    .GetEvent<NotificationEventUI<SensorsChangedMessageData>>()
-                    .Subscribe(
-                        async (m) => await this.OnSensorsChangedAsync(m),
-                        ThreadOption.UIThread,
-                        false,
-                        (m) =>
-                        {
-                            var res = !this.runningState.HasValue ||
-                                      (m.Data.SensorsStates[(int)IOMachineSensors.RunningState] != this.runningState.Value);
-                            this.runningState = m.Data.SensorsStates[(int)IOMachineSensors.RunningState];
-                            return res;
-                        });
-
             this.GetMachineStatusAsync().ConfigureAwait(false);
         }
 
@@ -107,16 +89,26 @@ namespace Ferretto.VW.App.Services
         {
             try
             {
-                this.MachinePower = await this.machinePowerWebService.GetAsync();
-                this.MachineMode = await this.machineModeWebService.GetAsync();
+                var machinePower = await this.machinePowerWebService.GetAsync();
+                var machineMode = await this.machineModeWebService.GetAsync();
 
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
-                    .Publish(new MachineModeChangedEventArgs(this.MachineMode));
+                if (this.MachinePower != machinePower)
+                {
+                    this.MachinePower = machinePower;
 
-                this.eventAggregator
-                    .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
-                    .Publish(new MachinePowerChangedEventArgs(this.MachinePower));
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<MachinePowerChangedEventArgs>>()
+                        .Publish(new MachinePowerChangedEventArgs(this.MachinePower));
+                }
+
+                if (this.MachineMode != machineMode)
+                {
+                    this.MachineMode = machineMode;
+
+                    this.eventAggregator
+                        .GetEvent<PubSubEvent<MachineModeChangedEventArgs>>()
+                        .Publish(new MachineModeChangedEventArgs(this.MachineMode));
+                }
             }
             catch
             {
@@ -211,11 +203,6 @@ namespace Ferretto.VW.App.Services
             this.logger.Debug($"Machine power state changed to '{e.MachinePowerState}'.");
 
             this.MachinePower = e.MachinePowerState;
-        }
-
-        private async Task OnSensorsChangedAsync(NotificationMessageUI<SensorsChangedMessageData> message)
-        {
-            await this.GetMachineStatusAsync();
         }
 
         private void ShowError(Exception ex)
