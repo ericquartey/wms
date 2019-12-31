@@ -330,6 +330,10 @@ namespace Ferretto.VW.App.Controls
             }
 
             var bindingExpression = BindingOperations.GetBindingExpression(this, PpcSpinEdit.EditValueProperty);
+            if (bindingExpression is null)
+            {
+                return;
+            }
 
             var dataContextType = this.DataContext.GetType();
             var path = bindingExpression.ParentBinding.Path.Path;
