@@ -58,8 +58,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.MachineElevatorWebService = machineElevatorWebService ?? throw new ArgumentNullException(nameof(machineElevatorWebService));
             this.resolutionCalibrationWebService = resolutionCalibrationWebService ?? throw new ArgumentNullException(nameof(resolutionCalibrationWebService));
             this.healthProbeService = healthProbeService ?? throw new ArgumentNullException(nameof(healthProbeService));
-
-            this.InitializeNavigationMenu();
         }
 
         #endregion
@@ -189,30 +187,6 @@ namespace Ferretto.VW.App.Installation.ViewModels
                 this.IsExecutingProcedure
                 &&
                 !this.IsWaitingForResponse;
-        }
-
-        private void InitializeNavigationMenu()
-        {
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP1,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step1,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP2,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step2,
-                    trackCurrentView: false));
-
-            this.menuItems.Add(
-                new NavigationMenuItem(
-                    Utils.Modules.Installation.VerticalResolutionCalibration.STEP3,
-                    nameof(Utils.Modules.Installation),
-                    VW.App.Resources.InstallationApp.Step3,
-                    trackCurrentView: false));
         }
 
         private async Task RetrieveProcedureParametersAsync()

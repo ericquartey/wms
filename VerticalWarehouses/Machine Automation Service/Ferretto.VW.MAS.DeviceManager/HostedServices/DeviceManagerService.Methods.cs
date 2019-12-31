@@ -257,7 +257,7 @@ namespace Ferretto.VW.MAS.DeviceManager
             }
             else
             {
-                data.IsOneKMachine = machineProvider.IsOneTonMachine();
+                data.IsOneTonMachine = machineProvider.IsOneTonMachine();
                 data.IsStartedOnBoard = machineResourcesProvider.IsDrawerCompletelyOnCradle;
 
                 currentStateMachine = new PositioningStateMachine(

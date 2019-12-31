@@ -10,7 +10,9 @@ namespace Ferretto.VW.MAS.DataLayer
 
         bool CanFitLoadingUnit(int cellId, int loadingUnitId);
 
-        int FindEmptyCell(int loadingUnitId);
+        int FindDownCell(LoadingUnit loadingUnit);
+
+        int FindEmptyCell(int loadingUnitId, bool isCompacting = false);
 
         IEnumerable<Cell> GetAll();
 

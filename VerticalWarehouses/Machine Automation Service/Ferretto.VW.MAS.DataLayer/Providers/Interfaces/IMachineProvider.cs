@@ -34,7 +34,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         void Update(Machine machine, DataLayerContext context);
 
-        void UpdateStatistics(MachineStatistics statistics);
+        public void UpdateWeightStatistics(DataLayerContext dataContext);
 
         #endregion
     }

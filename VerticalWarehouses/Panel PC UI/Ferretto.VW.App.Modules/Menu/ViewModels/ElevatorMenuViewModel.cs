@@ -160,7 +160,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
                 case Menu.VerticalResolutionCalibration:
                     this.NavigationService.Appear(
                        nameof(Utils.Modules.Installation),
-                       Utils.Modules.Installation.VerticalResolutionCalibration.STEP1,
+                       Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION,
                        data: null,
                        trackCurrentView: true);
                     break;

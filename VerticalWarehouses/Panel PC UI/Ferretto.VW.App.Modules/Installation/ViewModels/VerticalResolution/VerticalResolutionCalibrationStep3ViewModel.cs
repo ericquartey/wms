@@ -411,7 +411,7 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         private void ShowSteps()
         {
-            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VerticalResolutionCalibration.STEP2);
+            this.ShowPrevStep(true, true, nameof(Utils.Modules.Installation), Utils.Modules.Installation.VERTICALRESOLUTIONCALIBRATION);
             this.ShowNextStep(true, false);
             this.ShowAbortStep(true, true);
         }

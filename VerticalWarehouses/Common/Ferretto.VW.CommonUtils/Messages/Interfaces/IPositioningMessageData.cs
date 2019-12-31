@@ -21,7 +21,7 @@ namespace Ferretto.VW.CommonUtils.Messages.Interfaces
 
         double FeedRate { get; set; }
 
-        bool IsOneKMachine { get; set; }
+        bool IsOneTonMachine { get; set; }
 
         bool IsStartedOnBoard { get; set; }
 

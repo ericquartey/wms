@@ -16,7 +16,7 @@ namespace Ferretto.VW.MAS.DeviceManager.Homing.Interfaces
 
         InverterIndex InverterIndexOld { get; set; }
 
-        bool IsOneKMachine { get; }
+        bool IsOneTonMachine { get; }
 
         int? LoadingUnitId { get; }
 

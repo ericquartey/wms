@@ -7,6 +7,7 @@ using Ferretto.VW.CommonUtils.Messages.Data;
 using Ferretto.VW.CommonUtils.Messages.Enumerations;
 using Ferretto.VW.CommonUtils.Messages.Interfaces;
 using Ferretto.VW.MAS.DataLayer;
+using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -201,6 +202,11 @@ namespace Ferretto.VW.MAS.AutomationService
 
         private void OnMoveLoadingUnit(NotificationMessage receivedMessage)
         {
+            if (receivedMessage.Status == MessageStatus.OperationEnd)
+            {
+                receivedMessage.Destination = MessageActor.MissionManager;
+                this.EventAggregator.GetEvent<NotificationEvent>().Publish(receivedMessage);
+            }
             var messageToUi = NotificationMessageUiFactory.FromNotificationMessage(receivedMessage);
             this.installationHub.Clients.All.MoveLoadingUnit(messageToUi);
         }

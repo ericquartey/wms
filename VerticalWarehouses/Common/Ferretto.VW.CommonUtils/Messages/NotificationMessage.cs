@@ -67,5 +67,14 @@ namespace Ferretto.VW.CommonUtils.Messages
         public MessageVerbosity Verbosity { get; } = MessageVerbosity.Info;
 
         #endregion
+
+        #region Methods
+
+        public override string ToString()
+        {
+            return this.Type.ToString();
+        }
+
+        #endregion
     }
 }
