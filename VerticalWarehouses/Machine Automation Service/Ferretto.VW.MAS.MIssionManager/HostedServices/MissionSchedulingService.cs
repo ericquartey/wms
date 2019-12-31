@@ -50,6 +50,16 @@ namespace Ferretto.VW.MAS.MissionManager
 
         #region Methods
 
+        public async Task ScheduleCompactingMissionsAsync(IServiceProvider serviceProvider)
+        {
+            var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
+
+            if (!missionsDataProvider.GetAllActiveMissions().Any())
+            {
+                serviceProvider.GetRequiredService<IMissionSchedulingProvider>().QueueLoadingUnitCompactingMission(serviceProvider);
+            }
+        }
+
         public async Task ScheduleMissionsOnBayAsync(BayNumber bayNumber, IServiceProvider serviceProvider, bool restore = false)
         {
             var missionsDataProvider = serviceProvider.GetRequiredService<IMissionsDataProvider>();
@@ -84,6 +94,7 @@ namespace Ferretto.VW.MAS.MissionManager
                     return;
                 }
             }
+
             if (!this.configuration.IsWmsEnabled())
             {
                 this.Logger.LogTrace("Cannot perform mission scheduling, because WMS is not enabled.");
@@ -223,72 +234,99 @@ namespace Ferretto.VW.MAS.MissionManager
                 var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
                 var bayProvider = scope.ServiceProvider.GetRequiredService<IBaysDataProvider>();
 
-                if (modeProvider.GetCurrent() is MachineMode.SwitchingToAutomatic)
+                switch (modeProvider.GetCurrent())
                 {
-                    var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
-                    var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
-
-                    if (machineProvider.IsHomingExecuted)
-                    {
-                        machineModeDataProvider.Mode = MachineMode.Automatic;
-                        this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
-                    }
-                    else
-                    {
-                        var bays = bayProvider.GetAll();
-                        if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
+                    case MachineMode.SwitchingToAutomatic:
                         {
-                            var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
-                            IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
+                            var machineProvider = scope.ServiceProvider.GetRequiredService<IMachineProvider>();
+                            var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
 
-                            this.EventAggregator
-                                .GetEvent<CommandEvent>()
-                                .Publish(
-                                    new CommandMessage(
-                                        homingData,
-                                        "Execute Homing Command",
-                                        MessageActor.DeviceManager,
-                                        MessageActor.MissionManager,
-                                        MessageType.Homing,
-                                        bayNumber));
-                        }
-                        else
-                        {
-                            IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
-
-                            this.EventAggregator
-                                .GetEvent<CommandEvent>()
-                                .Publish(
-                                    new CommandMessage(
-                                        homingData,
-                                        "Execute Homing Command",
-                                        MessageActor.DeviceManager,
-                                        MessageActor.MissionManager,
-                                        MessageType.Homing,
-                                        BayNumber.BayOne));
-                        }
-                    }
-                }
-                else if (modeProvider.GetCurrent() is MachineMode.Automatic)
-                {
-                    foreach (var bay in bayProvider.GetAll())
-                    {
-                        try
-                        {
-                            if (bay.IsActive)
+                            if (machineProvider.IsHomingExecuted)
                             {
-                                await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                                machineModeDataProvider.Mode = MachineMode.Automatic;
+                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                            }
+                            else
+                            {
+                                var bays = bayProvider.GetAll();
+                                if (bays.Any(x => x.Carousel != null && !x.Carousel.IsHomingExecuted))
+                                {
+                                    var bayNumber = bays.First(x => x.Carousel != null && !x.Carousel.IsHomingExecuted).Number;
+                                    IHomingMessageData homingData = new HomingMessageData(Axis.BayChain, Calibration.FindSensor, null);
+
+                                    this.EventAggregator
+                                        .GetEvent<CommandEvent>()
+                                        .Publish(
+                                            new CommandMessage(
+                                                homingData,
+                                                "Execute Homing Command",
+                                                MessageActor.DeviceManager,
+                                                MessageActor.MissionManager,
+                                                MessageType.Homing,
+                                                bayNumber));
+                                }
+                                else
+                                {
+                                    IHomingMessageData homingData = new HomingMessageData(Axis.HorizontalAndVertical, Calibration.FindSensor, null);
+
+                                    this.EventAggregator
+                                        .GetEvent<CommandEvent>()
+                                        .Publish(
+                                            new CommandMessage(
+                                                homingData,
+                                                "Execute Homing Command",
+                                                MessageActor.DeviceManager,
+                                                MessageActor.MissionManager,
+                                                MessageType.Homing,
+                                                BayNumber.BayOne));
+                                }
                             }
                         }
-                        catch (Exception ex)
+                        break;
+
+                    case MachineMode.Automatic:
                         {
-                            this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                            foreach (var bay in bayProvider.GetAll())
+                            {
+                                try
+                                {
+                                    if (bay.IsActive)
+                                    {
+                                        await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider, true);
+                                    }
+                                }
+                                catch (Exception ex)
+                                {
+                                    this.Logger.LogError(ex, "Failed to schedule missions on bay {number}.", bay.Number);
+                                }
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    this.Logger.LogDebug("Cannot perform mission scheduling, because machine is not in automatic mode.");
+                        break;
+
+                    case MachineMode.SwitchingToCompact:
+                        {
+                            var missionsDataProvider = scope.ServiceProvider.GetRequiredService<IMissionsDataProvider>();
+
+                            if (!missionsDataProvider.GetAllActiveMissions().Any())
+                            {
+                                var machineModeDataProvider = scope.ServiceProvider.GetRequiredService<IMachineModeVolatileDataProvider>();
+                                machineModeDataProvider.Mode = MachineMode.Compact;
+                                this.Logger.LogInformation($"Machine status switched to {machineModeDataProvider.Mode}");
+                            }
+                        }
+                        break;
+
+                    case MachineMode.Compact:
+                        {
+                            await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
+                        }
+                        break;
+
+                    default:
+                        {
+                            this.Logger.LogDebug("Cannot perform mission scheduling, because machine is not in automatic mode.");
+                        }
+                        break;
                 }
             }
         }

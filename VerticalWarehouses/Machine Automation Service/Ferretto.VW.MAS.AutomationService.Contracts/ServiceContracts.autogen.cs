@@ -1331,6 +1331,8 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Test = 5,
     
+        Compact = 6,
+    
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.0.28.0 (Newtonsoft.Json v11.0.0.0)")]
@@ -3321,9 +3323,13 @@ namespace Ferretto.VW.MAS.AutomationService.Contracts
     
         Test = 3,
     
-        SwitchingToAutomatic = 4,
+        Compact = 4,
     
-        SwitchingToManual = 5,
+        SwitchingToAutomatic = 5,
+    
+        SwitchingToManual = 6,
+    
+        SwitchingToCompact = 7,
     
     }
     

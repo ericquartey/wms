@@ -77,13 +77,68 @@ namespace Ferretto.VW.MAS.DataLayer
             return !cellsInRange.Any(c => c.Status == CellStatus.Occupied || c.IsUnusable);
         }
 
-        public int FindEmptyCell(int loadingUnitId)
+        public int FindDownCell(LoadingUnit loadingUnit)
+        {
+            if (loadingUnit.Cell is null)
+            {
+                this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnit.Id} not in cell! ");
+                throw new EntityNotFoundException();
+            }
+            var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
+
+            // load all cells below load unit
+            var cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
+                         && x.Position < verticalAxis.UpperBound
+                         && x.Side == loadingUnit.Cell.Side
+                         && x.Position < loadingUnit.Cell.Position)
+                .OrderByDescending(o => o.Position)
+                .ToList();
+            int cellId = -1;
+            foreach (var cell in cells)
+            {
+                if (cell.IsUnusable
+                    || cell.IsDeactivated
+                    || cell.Status == CellStatus.Occupied
+                    )
+                {
+                    break;
+                }
+                cellId = cell.Id;
+            }
+            if (cellId < 0)
+            {
+                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+            }
+            return cellId;
+        }
+
+        /// <summary>
+        /// Try to find an empty cell for the LoadUnit passed.
+        /// Store-in logic:
+        ///     . LU weight must not exceed total machine weight (this should be already controlled by weight check)
+        ///     . if LU height is not defined (conventionally: zero) set max height
+        ///     . try to select side with less weight
+        ///     . for each free cell measure available space:
+        ///         select only cells with enough space and sort by priority
+        ///     . the priority field corresponds to the position, but it can be used to sort cells starting from bay positions, if bays are at a high level
+        /// if it does not find a cell it throws an exception
+        /// </summary>
+        /// <param name="loadingUnitId"></param>
+        /// <param name="isCompacting">The side is fixed</param>
+        /// <returns>the preferred cellId that fits the LoadUnit</returns>
+        public int FindEmptyCell(int loadingUnitId, bool isCompacting = false)
         {
             var loadingUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
+                .Include(i => i.Cell)
                 .SingleOrDefault(l => l.Id == loadingUnitId);
             if (loadingUnit is null)
             {
+                throw new EntityNotFoundException(loadingUnitId);
+            }
+            if (isCompacting && loadingUnit.Cell is null)
+            {
+                this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnitId} not in cell! ");
                 throw new EntityNotFoundException(loadingUnitId);
             }
             var machineStatistics = this.machineProvider.GetStatistics();
@@ -91,7 +146,20 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException();
             }
-            WarehouseSide preferredSide = WarehouseSide.NotSpecified;
+            var machine = this.machineProvider.Get();
+            if (machine is null)
+            {
+                throw new EntityNotFoundException();
+            }
+            if (machineStatistics.TotalWeightFront + machineStatistics.TotalWeightBack + loadingUnit.GrossWeight > machine.MaxGrossWeight)
+            {
+                this.logger.LogError($"FindEmptyCell: total weight exceeded for LU {loadingUnitId}; weight {loadingUnit.GrossWeight}; " +
+                    $"TotalWeightFront {machineStatistics.TotalWeightFront}; " +
+                    $"TotalWeightBack {machineStatistics.TotalWeightBack}; " +
+                    $"MaxGrossWeight {machine.MaxGrossWeight} ");
+                throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
+            }
+            var preferredSide = WarehouseSide.NotSpecified;
             if (machineStatistics.TotalWeightFront + loadingUnit.GrossWeight < machineStatistics.TotalWeightBack)
             {
                 preferredSide = WarehouseSide.Front;
@@ -102,7 +170,6 @@ namespace Ferretto.VW.MAS.DataLayer
             }
             if (loadingUnit.Height == 0)
             {
-                var machine = this.machineProvider.Get();
                 if (machine.LoadUnitMaxHeight == 0)
                 {
                     throw new InvalidOperationException("LoadUnitMaxHeight is not valid");
@@ -115,9 +182,10 @@ namespace Ferretto.VW.MAS.DataLayer
                 var verticalAxis = this.elevatorDataProvider.GetAxis(Orientation.Vertical);
 
                 // load all cells
-                var cells = this.GetAll()
-                    .Where(x => x.Position >= verticalAxis.LowerBound
-                             && x.Position < verticalAxis.UpperBound)
+                var cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
+                             && x.Position < verticalAxis.UpperBound
+                             && (!isCompacting || x.Side == loadingUnit.Cell.Side)
+                             && (!isCompacting || x.Position < loadingUnit.Cell.Position))
                     .OrderBy(o => o.Position)
                     .ToList();
                 // for each available cell we check if there is space for the requested height
@@ -151,22 +219,15 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (!availableCell.Any())
                 {
-                    this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; ");
+                    if (!isCompacting)
+                    {
+                        this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; ");
+                    }
                     throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
 
-                // select shortest available space, but only when vertimag is full enough, we don't want to start from the top
-                int cellId = 0;
-                if (availableCell.Count > cells.Count / 3)
-                {
-                    // empty vertimag: start from lower cells
-                    cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
-                }
-                else
-                {
-                    // vertimag partially full: optimize space
-                    cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(c => c.Height).ThenBy(t => t.Cell.Priority).First().Cell.Id;
-                }
+                // start from lower cells
+                var cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
                 this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; available cells {availableCell.Count}; preferredSide {preferredSide}");
                 return cellId;
             }
@@ -178,6 +239,17 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 return this.dataContext.Cells
                     .Include(c => c.Panel)
+                    .ToArray();
+            }
+        }
+
+        public IEnumerable<Cell> GetAll(Func<Cell, bool> predicate)
+        {
+            lock (this.dataContext)
+            {
+                return this.dataContext.Cells
+                    .Include(c => c.Panel)
+                    .Where(predicate)
                     .ToArray();
             }
         }
