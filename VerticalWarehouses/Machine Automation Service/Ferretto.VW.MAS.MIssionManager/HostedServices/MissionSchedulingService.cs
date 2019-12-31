@@ -407,7 +407,16 @@ namespace Ferretto.VW.MAS.MissionManager
                     // close operation and schedule next
                     baysDataProvider.ClearMission(bay.Number);
 
-                    await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
+                    var modeProvider = scope.ServiceProvider.GetRequiredService<IMachineModeProvider>();
+
+                    if (modeProvider.GetCurrent() == MachineMode.Automatic)
+                    {
+                        await this.ScheduleMissionsOnBayAsync(bay.Number, scope.ServiceProvider);
+                    }
+                    else if (modeProvider.GetCurrent() == MachineMode.Compact)
+                    {
+                        await this.ScheduleCompactingMissionsAsync(scope.ServiceProvider);
+                    }
                 }
             }
         }
