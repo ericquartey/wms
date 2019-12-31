@@ -35,6 +35,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <ProgressBar Grid.ColumnSpan="2"
+                                             Margin="0"
                                              HorizontalAlignment="Stretch"
                                              VerticalAlignment="Stretch"
                                              Background="{TemplateBinding Background}"
@@ -170,17 +171,8 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="Validation.HasError" Value="True">
                             <Setter Property="ToolTipService.ShowOnDisabled" Value="True" />
-                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}" />
+                            <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)/ErrorContent}" />
                         </Trigger>
-                        <!--
-                        <Trigger Property="IsActive" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter TargetName="PpcButton_Border" Property="BorderThickness" Value="{DynamicResource PpcButtonBorderThicknessActive}" />
-                            <Setter TargetName="PpcButton_Grid" Property="Margin" Value="0" />
-                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
 
@@ -220,7 +212,7 @@
     <Style x:Key="PpcHeaderButtonStyle"
            BasedOn="{StaticResource {x:Type controls:PpcButton}}"
            TargetType="{x:Type controls:PpcButton}">
-        <Setter Property="BorderThickness" Value="0,0,0,10" />
+        <Setter Property="BorderThickness" Value="0,0,0,8" />
         <Setter Property="BorderBrush" Value="{DynamicResource FerrettoLightGray}" />
         <Setter Property="Width" Value="100" />
         <Setter Property="Height" Value="60" />
@@ -547,8 +539,8 @@
                                     </Grid>
                                 </Border>
 
-                                <TextBlock Margin="5,18,10,5"
-                                           Grid.Column="1"
+                                <TextBlock Grid.Column="1"
+                                           Margin="5,18,10,5"
                                            HorizontalAlignment="Left"
                                            VerticalAlignment="Top"
                                            FontFamily="{TemplateBinding FontFamily}"

@@ -34,7 +34,7 @@
                                 Margin="5" 
                                 FontSize="12pt"
                                 Text="{Binding ElementName=MyAdorner, 
-                           Path=AdornedElement.(Validation.Errors)[0].ErrorContent}">
+                           Path=AdornedElement.(Validation.Errors)/ErrorContent}">
                             </TextBlock>
 
                             <Border BorderBrush="Red" BorderThickness="1">
@@ -49,7 +49,7 @@
                 <Trigger Property="Validation.HasError" Value="true">
                     <Setter Property="ToolTip"
                         Value="{Binding RelativeSource={RelativeSource Self}, 
-                   Path=(Validation.Errors)[0].ErrorContent}"/>
+                   Path=(Validation.Errors)/ErrorContent}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
