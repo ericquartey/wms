@@ -1,22 +1,29 @@
 ﻿using Ferretto.VW.App.Scaffolding.DataAnnotations;
+using System;
+using System.Collections.Generic;
 using System.Reflection;
-using System.Windows;
 
 namespace Ferretto.VW.App.Scaffolding.Models
 {
     public class ScaffoldedEntity
     {
-        internal ScaffoldedEntity(PropertyInfo property, object owner, int id): this(property, owner, id, property.DisplayName())
+        internal ScaffoldedEntity(PropertyInfo property, object owner, IEnumerable<Attribute> metadata, int id): this(property, owner, metadata, id, property.DisplayName())
         {
         }
 
-        internal ScaffoldedEntity(PropertyInfo property, object owner, int id, string caption)
+        internal ScaffoldedEntity(PropertyInfo property, object owner, IEnumerable<Attribute> metadata, int id, string caption)
         {
             this.Property = property;
             this.Instance = owner;
             this.Id = id;
             this.Caption = caption;
+            this.Metadata = metadata;
         }
+
+        /// <summary>
+        /// Gets the metadata <see cref="Property"/> relevant metadata.
+        /// </summary>
+        public IEnumerable<Attribute> Metadata { get; }
 
         /// <summary>
         /// Gets or sets the editable property reference.

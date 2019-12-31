@@ -30,7 +30,7 @@ namespace Ferretto.VW.App.Scaffolding.Converters
         {
             if (this._pinfo != null && this._entity != null)
             {
-                this._pinfo.SetValue(this._entity, System.Convert.ChangeType(value, this._pinfo.PropertyType));
+                this._pinfo.SetValue(this._entity, System.Convert.ChangeType(value, this._pinfo.PropertyType, culture));
             }
             return new[] { this._pinfo, this._entity };
         }
