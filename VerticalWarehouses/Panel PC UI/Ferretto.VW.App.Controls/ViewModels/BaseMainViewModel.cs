@@ -143,6 +143,8 @@ namespace Ferretto.VW.App.Controls
 
         public virtual void InitializeSteps()
         {
+            this.ShowPrevStepSinglePage(false, false);
+            this.ShowNextStepSinglePage(false, false);
             this.ShowPrevStep(false, false);
             this.ShowNextStep(false, false);
             this.ShowAbortStep(false, false);
@@ -246,6 +248,11 @@ namespace Ferretto.VW.App.Controls
             this.ShowStep(PresentationTypes.Next, isEnabled, isVisible, moduleName, viewName);
         }
 
+        public void ShowNextStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.NextStep, isVisible, isEnabled, moduleName, viewName);
+        }
+
         public void ShowNotification(string message, NotificationSeverity severity = NotificationSeverity.Info)
         {
             if (this.IsVisible)
@@ -276,6 +283,11 @@ namespace Ferretto.VW.App.Controls
         public void ShowPrevStep(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
         {
             this.ShowStep(PresentationTypes.Prev, isVisible, isEnabled, moduleName, viewName);
+        }
+
+        public void ShowPrevStepSinglePage(bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
+        {
+            this.ShowStep(PresentationTypes.PrevStep, isVisible, isEnabled, moduleName, viewName);
         }
 
         public void ShowStep(PresentationTypes presentationType, bool isVisible, bool isEnabled, string moduleName = null, string viewName = null)
