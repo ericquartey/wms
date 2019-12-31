@@ -228,7 +228,14 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // start from lower cells
                 var cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
-                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; Height {loadingUnit.Height}; total cells {cells.Count}; available cells {availableCell.Count}; preferredSide {preferredSide}");
+                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
+                    $"Height {loadingUnit.Height}; " +
+                    $"Weight {loadingUnit.GrossWeight}; " +
+                    $"preferredSide {preferredSide}; " +
+                    $"total cells {cells.Count}; " +
+                    $"available cells {availableCell.Count}; " +
+                    $"TotalWeightFront {machineStatistics.TotalWeightFront}; " +
+                    $"TotalWeightBack {machineStatistics.TotalWeightBack}");
                 return cellId;
             }
         }

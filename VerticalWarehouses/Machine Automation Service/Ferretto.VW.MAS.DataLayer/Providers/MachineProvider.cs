@@ -178,7 +178,7 @@ namespace Ferretto.VW.MAS.DataLayer
         {
             lock (this.dataContext)
             {
-                return this.dataContext.MachineStatistics.FirstOrDefault();
+                return this.dataContext.MachineStatistics.AsNoTracking().FirstOrDefault();
             }
         }
 

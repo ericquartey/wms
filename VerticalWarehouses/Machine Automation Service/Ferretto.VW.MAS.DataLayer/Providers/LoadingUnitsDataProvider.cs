@@ -202,7 +202,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     Id = loadingUnitsId,
                     Tare = machine.LoadUnitTare,
                     MaxNetWeight = machine.LoadUnitMaxNetWeight,
-                    Height = machine.LoadUnitMaxHeight
+                    Height = 0
                 };
 
                 this.dataContext.LoadingUnits.Add(loadingUnits);
