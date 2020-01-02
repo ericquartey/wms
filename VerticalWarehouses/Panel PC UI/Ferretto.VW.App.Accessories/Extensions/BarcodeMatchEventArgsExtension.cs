@@ -4,7 +4,7 @@
     {
         #region Methods
 
-        public static string GetItemBarCode(this BarcodeMatchEventArgs eventArgs)
+        public static string GetItemBarCode(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
             {
@@ -19,7 +19,7 @@
             return null;
         }
 
-        public static string GetItemId(this BarcodeMatchEventArgs eventArgs)
+        public static string GetItemId(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
             {
@@ -34,7 +34,7 @@
             return null;
         }
 
-        public static int? GetListId(this BarcodeMatchEventArgs eventArgs)
+        public static int? GetListId(this UserActionEventArgs eventArgs)
         {
             if (eventArgs is null)
             {

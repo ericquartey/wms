@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Ferretto.VW.App.Accessories;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Commands;
@@ -45,6 +46,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
         #endregion
 
         #region Methods
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
+        }
 
         public override void OnMisionOperationRetrieved()
         {

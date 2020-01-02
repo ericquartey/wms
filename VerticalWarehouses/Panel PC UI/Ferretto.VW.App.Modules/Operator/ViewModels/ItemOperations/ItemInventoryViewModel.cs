@@ -1,4 +1,6 @@
-﻿using Ferretto.VW.App.Controls.Interfaces;
+﻿using System.Threading.Tasks;
+using Ferretto.VW.App.Accessories;
+using Ferretto.VW.App.Controls.Interfaces;
 using Ferretto.VW.App.Services;
 using Ferretto.WMS.Data.WebAPI.Contracts;
 using Prism.Events;
@@ -42,6 +44,10 @@ namespace Ferretto.VW.App.Operator.ViewModels
                this.InputQuantity.HasValue
                &&
                this.InputQuantity.Value >= 0;
+        }
+
+        public async Task CommandUserActionAsync(UserActionEventArgs userAction)
+        {
         }
 
         protected override void ShowOperationDetails()

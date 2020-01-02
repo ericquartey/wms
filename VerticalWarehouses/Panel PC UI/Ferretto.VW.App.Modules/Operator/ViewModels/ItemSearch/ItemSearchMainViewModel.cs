@@ -208,6 +208,30 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         #region Methods
 
+        public async Task CommandUserActionAsync(UserActionEventArgs e)
+        {
+            if (e is null)
+            {
+                throw new ArgumentNullException(nameof(e));
+            }
+
+            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
+            {
+                switch (userAction)
+                {
+                    case UserAction.FilterItems:
+                        await this.ShowItemDetailsByBarcodeAsync(e);
+
+                        break;
+
+                    case UserAction.PickItem:
+                        // TODO da definire con Danilo
+
+                        break;
+                }
+            }
+        }
+
         public override async Task OnAppearedAsync()
         {
             await base.OnAppearedAsync();
@@ -340,32 +364,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             this.SetSelectedItem();
         }
 
-        protected override async Task OnBarcodeMatchedAsync(BarcodeMatchEventArgs e)
-        {
-            await base.OnBarcodeMatchedAsync(e);
-
-            if (e is null)
-            {
-                throw new ArgumentNullException(nameof(e));
-            }
-
-            if (Enum.TryParse<UserAction>(e.UserAction, out var userAction))
-            {
-                switch (userAction)
-                {
-                    case UserAction.FilterItems:
-                        await this.ShowItemDetailsByBarcodeAsync(e);
-
-                        break;
-
-                    case UserAction.PickItem:
-                        // TODO da definire con Danilo
-
-                        break;
-                }
-            }
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
             base.RaiseCanExecuteChanged();
@@ -476,7 +474,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 trackCurrentView: true);
         }
 
-        private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
+        private async Task ShowItemDetailsByBarcodeAsync(UserActionEventArgs e)
         {
             var itemBarcode = e.GetItemId();
             if (itemBarcode != null)
@@ -485,7 +483,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 {
                     // TODO when implemented GetByBarcodeAsync skip this
                     this.SearchItem = itemBarcode;
-                    //var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);                    
+                    //var item = await this.itemsWmsWebService.GetByBarcodeAsync(itemBarcode);
                 }
                 catch (Exception ex)
                 {
