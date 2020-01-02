@@ -11,7 +11,7 @@ using Prism.Commands;
 
 namespace Ferretto.VW.App.Installation.ViewModels
 {
-    [Warning(WarningsArea.Installation)]
+    [Warning(WarningsArea.MovementsView)]
     internal sealed class ManualMovementsViewModel : BaseMainViewModel
     {
         #region Fields

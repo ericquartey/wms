@@ -2,6 +2,7 @@
             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
             xmlns:controls="clr-namespace:Ferretto.VW.App.Controls.Controls;assembly=Ferretto.VW.App.Controls"
+            xmlns:convertes="clr-namespace:Ferretto.VW.App.Controls.Converters;assembly=Ferretto.VW.App.Controls"
             xmlns:ctrls="clr-namespace:Ferretto.VW.App.Controls;assembly=Ferretto.VW.App.Controls"
             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
             xmlns:local="clr-namespace:Ferretto.VW.App.Installation.Views"
@@ -15,6 +16,12 @@
             mc:Ignorable="d">
 
     <ctrls:View.Resources>
+        <!--#region Converters-->
+        <convertes:BoolToBrushConverter x:Key="BoolToBrushConverter"
+                                        FalseColor="{StaticResource PpcBackground}"
+                                        TrueColor="{StaticResource FerrettoBlue}" />
+        <!--#endregion-->
+        <!--#region Styles-->
         <Style x:Key="BorderTimeLine"
                TargetType="{x:Type Border}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -51,7 +58,8 @@
             <Setter Property="Stroke" Value="{DynamicResource PpcBorderBrush}" />
             <Setter Property="StrokeThickness" Value="1.5" />
         </Style>
-
+        <!--#endregion-->
+        <!--#region DataTemplate Body-->
         <DataTemplate x:Key="DataTemplatePositionMeter">
             <Grid Margin="20">
                 <Grid.RowDefinitions>
@@ -188,7 +196,7 @@
                                                EnumFirstMisuration="{StaticResource DataTemplateFirstMisuration}"
                                                EnumLastMisuration="{StaticResource DataTemplateLastMisuration}"
                                                EnumPositionMeter="{StaticResource DataTemplatePositionMeter}" />
-
+        <!--#endregion-->
     </ctrls:View.Resources>
 
     <Grid Margin="15,0,0,0"
@@ -201,14 +209,13 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition />
             <ColumnDefinition />
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
+        <!--#region Title-->
         <StackPanel Grid.ColumnSpan="4"
                     Orientation="Horizontal">
             <TextBlock Margin="0,10,15,10"
@@ -221,7 +228,9 @@
                        Style="{StaticResource VWAPP_ViewTitleTextBlockStyle}"
                        Text="{x:Static res:InstallationApp.VerticalResolutionCalibration}" />
         </StackPanel>
+        <!--#endregion-->
 
+        <!--#region Description-->
         <TextBlock Grid.Row="1"
                    Grid.ColumnSpan="4"
                    Height="Auto"
@@ -231,19 +240,19 @@
                    Style="{DynamicResource VWAPP_ViewTitleSmallTextBlockStyle}"
                    Text="{x:Static res:HelpDescriptions.ResolutionCalibrationFunctionDescription}"
                    TextWrapping="Wrap" />
+        <!--#endregion-->
 
+        <!--#region Tails-->
         <controls:CardSensorAxisVertical Grid.Row="2"
                                          Grid.Column="3"
                                          Width="230"
                                          Height="90"
                                          Margin="0,15,15,0" />
-
         <controls:CardSensorAxisHorizontal Grid.Row="3"
                                            Grid.Column="3"
                                            Width="230"
                                            Height="90"
                                            Margin="0,15,15,0" />
-
         <Border Grid.Row="4"
                 Grid.Column="3"
                 Height="90"
@@ -284,7 +293,6 @@
                 </Grid>
             </Border>
         </Border>
-
         <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="90"
@@ -328,7 +336,9 @@
 
             </Border>
         </Border>
+        <!--#endregion-->
 
+        <!--#region Wizard-->
         <Grid Grid.Row="2"
               Grid.RowSpan="4"
               Grid.ColumnSpan="3"
@@ -349,7 +359,7 @@
                 <RowDefinition Height="4*" />
                 <RowDefinition Height="1" />
             </Grid.RowDefinitions>
-
+            <!--#region Body-->
             <Border Grid.Row="0"
                     Grid.RowSpan="6"
                     Grid.Column="2"
@@ -362,13 +372,14 @@
                 <ContentControl Content="{Binding CurrentStep, Mode=OneWay}"
                                 ContentTemplateSelector="{StaticResource selector}" />
             </Border>
-
+            <!--#endregion-->
+            <!--#region TimeLine-->
             <Border Grid.Row="0"
                     Grid.RowSpan="6"
                     Style="{DynamicResource BorderTimeLine}" />
 
             <Grid Grid.Row="1">
-                <Border Background="{DynamicResource FerrettoBlue}"
+                <Border Background="{Binding HasStepPositionMeter, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
                         Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="1" />
@@ -380,7 +391,8 @@
                   Visibility="{Binding HasStepPositionMeter, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="2">
-                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <Border Background="{Binding HasStepFirstMisuration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="2" />
             </Grid>
@@ -391,7 +403,8 @@
                   Visibility="{Binding HasStepFirstMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="3">
-                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <Border Background="{Binding HasStepLastMisuration, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="3" />
             </Grid>
@@ -402,7 +415,8 @@
                   Visibility="{Binding HasStepLastMisuration, Converter={StaticResource BTVC}, Mode=OneWay}" />
 
             <Grid Grid.Row="4">
-                <Border Style="{DynamicResource BorderTimeLineCirle}" />
+                <Border Background="{Binding HasStepConfirm, Converter={StaticResource BoolToBrushConverter}, Mode=OneWay}"
+                        Style="{DynamicResource BorderTimeLineCirle}" />
                 <TextBlock Style="{DynamicResource BorderTimeLineCirleTextBlock}"
                            Text="4" />
             </Grid>
@@ -411,7 +425,8 @@
                   Grid.ColumnSpan="2"
                   Style="{DynamicResource BorderTimeLinePath}"
                   Visibility="{Binding HasStepConfirm, Converter={StaticResource BTVC}, Mode=OneWay}" />
+            <!--#endregion-->
         </Grid>
-
+        <!--#endregion-->
     </Grid>
 </ctrls:View>
