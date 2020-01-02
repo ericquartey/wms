@@ -99,7 +99,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
 
         private async Task ShowItemDetailsByBarcodeAsync(BarcodeMatchEventArgs e)
         {
-            var itemBarcode = e.GetItemBarCode();
+            var itemBarcode = e.GetItemId();
             if (itemBarcode != null)
             {
                 try
