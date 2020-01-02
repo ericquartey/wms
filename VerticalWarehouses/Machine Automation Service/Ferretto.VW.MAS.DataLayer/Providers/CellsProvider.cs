@@ -233,7 +233,7 @@ namespace Ferretto.VW.MAS.DataLayer
                     }
                     else
                     {
-                        this.logger.LogDebug($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
+                        this.logger.LogTrace($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
                     }
                     throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
