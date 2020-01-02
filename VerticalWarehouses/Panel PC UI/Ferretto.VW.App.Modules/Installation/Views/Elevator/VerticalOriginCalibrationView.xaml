@@ -190,7 +190,7 @@
                                    VerticalAlignment="Top"
                                    FontSize="{StaticResource FontSize_Very_High}"
                                    Foreground="{DynamicResource PpcForeground}"
-                                   Text="{Binding Offset}"
+                                   Text="{Binding Offset, StringFormat={}{0:F2}}"
                                    TextWrapping="Wrap" />
 
                         <Border Grid.RowSpan="2"

@@ -124,6 +124,15 @@ namespace Ferretto.VW.App.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Are you sure you want to power up the machine?.
+        /// </summary>
+        public static string ConfirmMachineRun {
+            get {
+                return ResourceManager.GetString("ConfirmMachineRun", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Creation Date.
         /// </summary>
         public static string CreationDate {
@@ -273,6 +282,15 @@ namespace Ferretto.VW.App.Resources {
         public static string MachineOn {
             get {
                 return ResourceManager.GetString("MachineOn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Run.
+        /// </summary>
+        public static string MachineRun {
+            get {
+                return ResourceManager.GetString("MachineRun", resourceCulture);
             }
         }
         
