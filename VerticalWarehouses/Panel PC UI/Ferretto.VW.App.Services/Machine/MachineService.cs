@@ -902,7 +902,7 @@ namespace Ferretto.VW.App.Services
             {
                 switch (this.GetWarningAreaAttribute())
                 {
-                    case WarningsArea.Installation:
+                    case WarningsArea.MovementsView:
                         if (this.machineModeService.MachinePower != MachinePowerState.Powered)
                         {
                             this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
@@ -918,6 +918,21 @@ namespace Ferretto.VW.App.Services
                         else if (string.IsNullOrEmpty(this.MachineStatus.ElevatorLogicalPosition))
                         {
                             this.ShowNotification("Posizione elevatore sconosciuta.", NotificationSeverity.Low);
+                        }
+                        else
+                        {
+                            this.ClearNotifications();
+                        }
+                        break;
+
+                    case WarningsArea.Installation:
+                        if (this.machineModeService.MachinePower != MachinePowerState.Powered)
+                        {
+                            this.ShowNotification("Manca marcia.", NotificationSeverity.Warning);
+                        }
+                        else if (!this.IsHoming)
+                        {
+                            this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
                         else
                         {
