@@ -28,6 +28,8 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             this.InitializeComponent();
         }
 
+        #region Dependency Properties
+
         public static readonly DependencyProperty EntityProperty
             = DependencyProperty.Register("Entity", typeof(Models.ScaffoldedEntity), typeof(PropertyEditor), new PropertyMetadata(OnEntityPropertyChanged));
 
@@ -39,6 +41,10 @@ namespace Ferretto.VW.App.Scaffolding.Controls
         private void OnEntityChanged(DependencyPropertyChangedEventArgs e)
         {
             var entity = (Models.ScaffoldedEntity)e.NewValue;
+            if (entity == null)
+            {
+                return;
+            }
             this.OriginalValue = entity.Property.GetValue(entity.Instance);
             var type = entity.Property.PropertyType;
             if (type.IsValueType)
@@ -115,5 +121,32 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             set => this.SetValue(IsValidProperty, value);
         }
 
+        #endregion
+
+        #region Events + Handlers
+
+        public event EventHandler<CommitEventArgs> Commit;
+
+        protected void OnCommit(CommitEventArgs e)
+        {
+            this.Commit?.Invoke(this, e);
+        }
+
+        private void Cancel_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnCommit(new CommitEventArgs(this.OriginalValue));
+        }
+
+        private void Confirm_Click(object sender, RoutedEventArgs e)
+        {
+            this.OnCommit(new CommitEventArgs(this.Value));
+        }
+
+        private void CompositeValidationRule_Validated(object sender, ValidationRules.ValidationEventArgs e)
+        {
+            this.IsValid = e.IsValid;
+        }
+
+        #endregion
     }
 }

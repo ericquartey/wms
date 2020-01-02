@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
-    public class IsEnabledConverter : IValueConverter
+    public class IsEditableConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

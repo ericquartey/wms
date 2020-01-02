@@ -9,91 +9,128 @@
              xmlns:interactivity="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             Name="editor"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
         <converters:MultiBooleanConverter x:Key="MultiBooleanConverter" />
         <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
         <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
-        <converters:IsEnabledConverter x:Key="IsEnabledConverter" />
-        <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+        <converters:IsEditableConverter x:Key="IsEditableConverter" />
+        <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
 
         <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
-    </UserControl.Resources>
-    <Grid Background="#55000000" DataContext="{Binding Entity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
-        <Grid VerticalAlignment="Center" HorizontalAlignment="Center" Background="#fff">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
 
-            <TextBlock Text="{Binding Converter={StaticResource DisplayNameConverter}}"></TextBlock>
+        <!-- styles -->
+        <Style TargetType="ListViewItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+        </Style>
+        <Style TargetType="{x:Type TextBox}">
+            <Setter Property="Validation.ErrorTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <DockPanel LastChildFill="True">
 
-            <StackPanel Orientation="Horizontal" Grid.Row="2">
-                <Button Content="Save">
-                    <Button.IsEnabled>
-                        <MultiBinding Converter="{StaticResource MultiBooleanConverter}">
-                            <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
-                            <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
-                        </MultiBinding>
-                    </Button.IsEnabled>
-                </Button>
-                <Button Content="Cancel" />
-            </StackPanel>
+                            <TextBlock DockPanel.Dock="Right"
+                                Foreground="Red"
+                                Margin="5" 
+                                FontSize="12pt"
+                                Text="{Binding ElementName=MyAdorner, 
+                           Path=AdornedElement.(Validation.Errors)/ErrorContent}">
+                            </TextBlock>
 
-            <ContentControl Grid.Row="1" ContentTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}">
-                <ContentControl.Resources>
+                            <Border BorderBrush="Red" BorderThickness="1">
+                                <AdornedElementPlaceholder Name="MyAdorner" />
+                            </Border>
 
-                    <!-- IP address -->
-                    <DataTemplate x:Key="IPAddressDataTemplate">
-                        <DataTemplate.Resources>
-                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                        </DataTemplate.Resources>
-                        <controls:IPAddressBox IsEnabled="{Binding Path=.,Converter={StaticResource IsEnabledConverter}}">
-                            <controls:IPAddressBox.IPAddress>
-                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                                </MultiBinding>
-                            </controls:IPAddressBox.IPAddress>
-                        </controls:IPAddressBox>
-                    </DataTemplate>
+                        </DockPanel>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={RelativeSource Self}, 
+                        Path=(Validation.Errors)/ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
 
-                    <!-- string (default) -->
-                    <DataTemplate x:Key="StringDataTemplate">
-                        <DataTemplate.Resources>
-                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                        </DataTemplate.Resources>
+        <!-- content templates: -->
+        <!-- IP address -->
+        <DataTemplate x:Key="IPAddressDataTemplate">
+            <DataTemplate.Resources>
+                <converters:TwoWayConverter x:Key="TwoWayConverter" />
+            </DataTemplate.Resources>
+            <controls:IPAddressBox IsEnabled="{Binding Path=., Converter={StaticResource IsEditableConverter}}"
+                                   IPAddress="{Binding Path=Value, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Mode=TwoWay}" />
+        </DataTemplate>
 
-                        <TextBox Width="200" DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEnabledConverter}}" Name="txtBox">
-                            <TextBox.Resources>
-                                <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=txtBox}" />
-                                <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=txtBox}" />
-                            </TextBox.Resources>
-                            <TextBox.Text>
-                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                                    <MultiBinding.ValidationRules>
-                                        <validation:CompositeValidationRule ValidatesOnTargetUpdated="True">
-                                            <validation:CompositeValidationRule.CompositeValidator>
-                                                <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
-                                                                               Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                            </validation:CompositeValidationRule.CompositeValidator>
-                                        </validation:CompositeValidationRule>
-                                    </MultiBinding.ValidationRules>
-                                </MultiBinding>
+        <!-- string (default) -->
+        <DataTemplate x:Key="StringDataTemplate">
+            <DataTemplate.Resources>
+                <converters:TwoWayConverter x:Key="TwoWayConverter" />
+            </DataTemplate.Resources>
+
+            <TextBox DataContext="{Binding}" IsEnabled="{Binding Path=.,Converter={StaticResource IsEditableConverter}}" Name="field">
+                <TextBox.Resources>
+                    <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=field}" />
+                    <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=field}" />
+                </TextBox.Resources>
+                <TextBox.Text>
+                    <Binding Path="Value" UpdateSourceTrigger="PropertyChanged" RelativeSource="{RelativeSource Mode=FindAncestor,AncestorType=UserControl}" Mode="TwoWay">
+                            <Binding.ValidationRules>
+                                <validation:CompositeValidationRule ValidatesOnTargetUpdated="True" Validated="CompositeValidationRule_Validated">
+                                    <validation:CompositeValidationRule.CompositeValidator>
+                                        <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
+                                                                   Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
+                                    </validation:CompositeValidationRule.CompositeValidator>
+                                </validation:CompositeValidationRule>
+                            </Binding.ValidationRules>
+                            </Binding>
                             </TextBox.Text>
-                        </TextBox>
-                    </DataTemplate>
+            </TextBox>
+        </DataTemplate>
 
-                </ContentControl.Resources>
-            </ContentControl>
-            
-        </Grid>
+    </UserControl.Resources>
+
+
+    <!-- layout -->
+    <Grid Background="#55000000" DataContext="{Binding Entity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+        <Border MinWidth="500" Padding="10" Background="#fff" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!-- header -->
+                <TextBlock Text="{Binding Converter={StaticResource DisplayNameConverter}}"></TextBlock>
+
+                <!-- footer -->
+                <StackPanel Orientation="Horizontal" Grid.Row="2">
+                    <Button Content="Save" Click="Confirm_Click">
+                        <Button.IsEnabled>
+                            <MultiBinding Converter="{StaticResource MultiBooleanConverter}">
+                                <Binding Path="IsValid" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                                <Binding Path="IsDirty" RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType=UserControl}" />
+                            </MultiBinding>
+                        </Button.IsEnabled>
+                    </Button>
+                    <Button Content="Cancel" Click="Cancel_Click"/>
+                </StackPanel>
+
+                <!-- body -->
+                <ContentControl Grid.Row="1"
+                                Content="{Binding}"
+                                ContentTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}" Margin="0,10">
+                </ContentControl>
+
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>
