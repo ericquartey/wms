@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommonServiceLocator;
 using Ferretto.VW.App.Controls;
 using Ferretto.VW.App.Controls.Interfaces;
+using Ferretto.VW.App.Resources;
 using Ferretto.VW.App.Services;
 using Ferretto.VW.MAS.AutomationService.Contracts;
 using Ferretto.VW.MAS.AutomationService.Contracts.Hubs;
@@ -95,7 +96,7 @@ namespace Ferretto.VW.App.Modules.Layout.Presentation
             else
             {
                 var dialogService = ServiceLocator.Current.GetInstance<IDialogService>();
-                var messageBoxResult = dialogService.ShowMessage("Confirmation operation?", "March", DialogType.Question, DialogButtons.YesNo);
+                var messageBoxResult = dialogService.ShowMessage(General.ConfirmMachineRun, General.MachineRun, DialogType.Question, DialogButtons.YesNo);
                 if (messageBoxResult == DialogResult.Yes)
                 {
                     await this.machineModeService.PowerOnAsync();
