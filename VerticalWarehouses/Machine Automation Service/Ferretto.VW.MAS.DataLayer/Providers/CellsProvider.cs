@@ -109,7 +109,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
             }
-            this.logger.LogError($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
+            this.logger.LogInformation($"FindDownCell: found Cell {cellId} for LU {loadingUnit.Id}; from cell {loadingUnit.Cell.Id}");
             return cellId;
         }
 
@@ -223,7 +223,7 @@ namespace Ferretto.VW.MAS.DataLayer
                 {
                     if (isCompacting)
                     {
-                        this.logger.LogDebug($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
+                        this.logger.LogTrace($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
                     }
                     else
                     {
@@ -234,7 +234,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 // start from lower cells
                 var cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
-                this.logger.LogDebug($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
+                this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
                     $"Height {loadingUnit.Height:0.00}; " +
                     $"Weight {loadingUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
@@ -387,10 +387,10 @@ namespace Ferretto.VW.MAS.DataLayer
                             throw new InvalidOperationException(Resources.Cells.TheCellUnexpectedlyContainsAnotherLoadingUnit);
                         }
 
-                        //if (occupiedCell.Status != CellStatus.Occupied)
-                        //{
-                        //    throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
-                        //}
+                        if (occupiedCell.Status != CellStatus.Occupied)
+                        {
+                            throw new InvalidOperationException(Resources.Cells.TheCellIsUnexpectedlyFree);
+                        }
 
                         occupiedCell.Status = CellStatus.Free;
                         occupiedCell.LoadingUnit = null;
