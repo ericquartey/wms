@@ -324,7 +324,6 @@ namespace Ferretto.VW.App.Operator.ViewModels
             {
                 this.IsSearching = false;
                 this.IsBusyLoadingNextPage = false;
-                this.RaisePropertyChanged(nameof(this.Items));
             }
 
             this.RaisePropertyChanged(nameof(this.Items));
@@ -378,12 +377,12 @@ namespace Ferretto.VW.App.Operator.ViewModels
         {
             if (this.maxKnownIndexSelection == 0)
             {
-                this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize);
+                this.maxKnownIndexSelection = Math.Min(this.items.Count, ItemsVisiblePageSize) - 1;
             }
 
             if (this.maxKnownIndexSelection >= ItemsVisiblePageSize
                 &&
-                this.Items.Count > this.maxKnownIndexSelection)
+                this.Items.Count >= this.maxKnownIndexSelection)
             {
                 this.SelectedItem = this.items?.ElementAt(this.maxKnownIndexSelection);
             }
@@ -458,11 +457,7 @@ namespace Ferretto.VW.App.Operator.ViewModels
                 return;
             }
 
-            var elemSelected = this.items.ElementAt(this.currentItemIndex);
-            if (elemSelected?.Id != this.SelectedItem?.Id)
-            {
-                this.SelectedItem = elemSelected;
-            }
+            this.SelectedItem = this.items.ElementAt(this.currentItemIndex);
         }
 
         private void ShowItemDetails()
