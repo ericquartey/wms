@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
 
 namespace Ferretto.VW.MAS.DataLayer
@@ -12,7 +13,7 @@ namespace Ferretto.VW.MAS.DataLayer
 
         int FindDownCell(LoadingUnit loadingUnit);
 
-        int FindEmptyCell(int loadingUnitId, bool isCompacting = false);
+        int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting);
 
         IEnumerable<Cell> GetAll();
 

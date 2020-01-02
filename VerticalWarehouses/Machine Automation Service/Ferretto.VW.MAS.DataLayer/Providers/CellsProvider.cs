@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ferretto.VW.MAS.DataModels;
+using Ferretto.VW.MAS.Utils.Enumerations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Cell = Ferretto.VW.MAS.DataModels.Cell;
@@ -125,9 +126,12 @@ namespace Ferretto.VW.MAS.DataLayer
         /// if it does not find a cell it throws an exception
         /// </summary>
         /// <param name="loadingUnitId"></param>
-        /// <param name="isCompacting">The side is fixed</param>
+        /// <param name="compactingType">
+        ///     ExactMatchCompacting: The side is fixed and the space is not more than load unit height
+        ///     AnySpaceCompacting: The side is fixed
+        ///     </param>
         /// <returns>the preferred cellId that fits the LoadUnit</returns>
-        public int FindEmptyCell(int loadingUnitId, bool isCompacting = false)
+        public int FindEmptyCell(int loadingUnitId, CompactingType compactingType = CompactingType.NoCompacting)
         {
             var loadingUnit = this.dataContext.LoadingUnits
                 .AsNoTracking()
@@ -138,7 +142,7 @@ namespace Ferretto.VW.MAS.DataLayer
             {
                 throw new EntityNotFoundException(loadingUnitId);
             }
-            if (isCompacting && loadingUnit.Cell is null)
+            if (compactingType != CompactingType.NoCompacting && loadingUnit.Cell is null)
             {
                 this.logger.LogError($"FindEmptyCell for compacting: LU {loadingUnitId} not in cell! ");
                 throw new EntityNotFoundException(loadingUnitId);
@@ -186,8 +190,8 @@ namespace Ferretto.VW.MAS.DataLayer
                 // load all cells
                 var cells = this.GetAll(x => x.Position >= verticalAxis.LowerBound
                              && x.Position < verticalAxis.UpperBound
-                             && (!isCompacting || x.Side == loadingUnit.Cell.Side)
-                             && (!isCompacting || x.Position < loadingUnit.Cell.Position))
+                             && (compactingType == CompactingType.NoCompacting || x.Side == loadingUnit.Cell.Side)
+                             && (compactingType == CompactingType.NoCompacting || x.Position < loadingUnit.Cell.Position))
                     .OrderBy(o => o.Position)
                     .ToList();
                 // for each available cell we check if there is space for the requested height
@@ -212,7 +216,9 @@ namespace Ferretto.VW.MAS.DataLayer
                         var availableSpace = lastCellPosition - cellsFollowing.First().Position + CellHeight;
 
                         // check if load unit fits in available space
-                        if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance)
+                        if (availableSpace >= loadingUnit.Height + VerticalPositionTolerance
+                            && (compactingType != CompactingType.ExactMatchCompacting || availableSpace < loadingUnit.Height + (2 * VerticalPositionTolerance))
+                            )
                         {
                             availableCell.Add(new AvailableCell(cell, availableSpace));
                         }
@@ -221,25 +227,27 @@ namespace Ferretto.VW.MAS.DataLayer
 
                 if (!availableCell.Any())
                 {
-                    if (isCompacting)
+                    if (compactingType == CompactingType.NoCompacting)
                     {
-                        this.logger.LogTrace($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
+                        this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
                     }
                     else
                     {
-                        this.logger.LogError($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; total cells {cells.Count}; ");
+                        this.logger.LogDebug($"FindEmptyCell: cell not found for LU {loadingUnitId}; Height {loadingUnit.Height:0.00}; side {loadingUnit.Cell.Side}; position {loadingUnit.Cell.Position}; total cells {cells.Count}; ");
                     }
                     throw new InvalidOperationException(Resources.Cells.NoEmptyCellsAvailable);
                 }
 
                 // start from lower cells
-                var cellId = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First().Cell.Id;
+                var foundCell = availableCell.OrderBy(o => (preferredSide != WarehouseSide.NotSpecified && o.Cell.Side == preferredSide) ? 0 : 1).ThenBy(t => t.Cell.Priority).First();
+                var cellId = foundCell.Cell.Id;
                 this.logger.LogInformation($"FindEmptyCell: found Cell {cellId} for LU {loadingUnitId}; " +
                     $"Height {loadingUnit.Height:0.00}; " +
                     $"Weight {loadingUnit.GrossWeight:0.00}; " +
                     $"preferredSide {preferredSide}; " +
                     $"total cells {cells.Count}; " +
                     $"available cells {availableCell.Count}; " +
+                    $"available space {foundCell.Height}; " +
                     $"TotalWeightFront {machineStatistics.TotalWeightFront:0.00}; " +
                     $"TotalWeightBack {machineStatistics.TotalWeightBack:0.00}");
                 return cellId;

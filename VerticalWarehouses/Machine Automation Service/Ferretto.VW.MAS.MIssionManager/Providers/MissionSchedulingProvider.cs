@@ -11,6 +11,7 @@ using Ferretto.VW.MAS.Utils.Events;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
 using Prism.Events;
+using Ferretto.VW.MAS.Utils.Enumerations;
 
 namespace Ferretto.VW.MAS.MissionManager
 {
@@ -108,8 +109,10 @@ namespace Ferretto.VW.MAS.MissionManager
             var loadUnits = this.loadingUnitsDataProvider.GetAll().Where(x => x.Cell != null);
             int? cellId;
             int? loadUnitId;
-            // first we try to find a lower place for each load unit
-            if (this.CompactFindEmptyCell(loadUnits, out loadUnitId, out cellId)
+            // first we try to find a lower place for each load unit, matching exactly the height
+            if (this.CompactFindEmptyCell(loadUnits, CompactingType.ExactMatchCompacting, out loadUnitId, out cellId)
+                // then we try to find a lower place for each load unit
+                || this.CompactFindEmptyCell(loadUnits, CompactingType.AnySpaceCompacting, out loadUnitId, out cellId)
                 // then we try to shift down the load units
                 || this.CompactDownCell(loadUnits, out loadUnitId, out cellId)
                 )
@@ -135,6 +138,7 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 return false;
             }
+            this.logger.LogDebug("Compacting down cells");
             foreach (var loadUnit in loadUnits.OrderBy(o => o.Cell.Position))
             {
                 try
@@ -151,7 +155,7 @@ namespace Ferretto.VW.MAS.MissionManager
             return false;
         }
 
-        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, out int? loadUnitId, out int? cellId)
+        private bool CompactFindEmptyCell(IEnumerable<LoadingUnit> loadUnits, CompactingType compactingType, out int? loadUnitId, out int? cellId)
         {
             loadUnitId = null;
             cellId = null;
@@ -159,11 +163,12 @@ namespace Ferretto.VW.MAS.MissionManager
             {
                 return false;
             }
+            this.logger.LogDebug($"Compacting empty cells {compactingType}");
             foreach (var loadUnit in loadUnits.OrderByDescending(o => o.Cell.Position))
             {
                 try
                 {
-                    cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, isCompacting: true);
+                    cellId = this.cellsProvider.FindEmptyCell(loadUnit.Id, compactingType);
                     loadUnitId = loadUnit.Id;
                     return true;
                 }
