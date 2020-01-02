@@ -123,7 +123,9 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota di destinazione" />
+                                    Command="{Binding StartCommand}"
+                                    Content="Vai a quota di destinazione"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
@@ -131,6 +133,7 @@
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
+                                       EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        LabelText="Quota di destinazione" />
 
                     <ctrls:PpcSpinEdit Width="250"
@@ -139,7 +142,8 @@
                                        LabelText="Quota misurata" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Avanti" />
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
@@ -161,7 +165,9 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota" />
+                                    Command="{Binding StartCommand}"
+                                    Content="Vai a quota"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
@@ -169,6 +175,7 @@
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
+                                       EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        LabelText="Quota di destinazione" />
 
                     <ctrls:PpcSpinEdit Width="250"
@@ -177,7 +184,8 @@
                                        LabelText="Quota misurata" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Avanti" />
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
@@ -206,7 +214,8 @@
                                    LabelText="Nuova risoluzione" />
 
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Salva" />
+                                    Content="Salva"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
@@ -267,20 +276,24 @@
                                          Grid.Column="3"
                                          Width="230"
                                          Height="90"
+                                         MinHeight="90"
                                          Margin="0,15,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="3"
                                            Grid.Column="3"
                                            Width="230"
                                            Height="90"
+                                           MinHeight="90"
                                            Margin="0,15,15,0" />
         <controls:CardSensorDrawer Grid.Row="4"
-                                Grid.Column="3"
-                                Width="230"
-                                Height="90"
-                                Margin="0,15,15,0" />
+                                   Grid.Column="3"
+                                   Width="230"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
         <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="90"
+                MinHeight="90"
                 Margin="0,15,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"

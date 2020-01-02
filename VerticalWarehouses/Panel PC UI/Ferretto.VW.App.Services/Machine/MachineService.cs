@@ -932,7 +932,8 @@ namespace Ferretto.VW.App.Services
                         {
                             this.ShowNotification("Homing non eseguito.", NotificationSeverity.Error);
                         }
-                        else if (view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase))
+                        else if (view.Equals("VerticalResolutionCalibrationView", StringComparison.InvariantCultureIgnoreCase) &&
+                                 this.sensorsService.IsLoadingUnitOnElevator)
                         {
                             this.ShowNotification("Presenza cassetto sull'elevatore.", NotificationSeverity.Warning);
                         }
