@@ -230,6 +230,15 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             set => this.SetValue(BreadcrumbProperty, value);
         }
 
+        public static readonly DependencyProperty EditingEntityProperty
+            = DependencyProperty.Register("EditingEntity", typeof(Models.ScaffoldedEntity), typeof(Scaffolder));
+
+        public Models.ScaffoldedEntity EditingEntity
+        {
+            get => (Models.ScaffoldedEntity)this.GetValue(EditingEntityProperty);
+            set => this.SetValue(EditingEntityProperty, value);
+        }
+
         #endregion 
 
         public void SelectCategory(object sender, EventArgs e)
@@ -250,5 +259,28 @@ namespace Ferretto.VW.App.Scaffolding.Controls
             }
         }
 
+        private void Edit_Click(object sender, RoutedEventArgs e)
+        {
+            this.EditingEntity = ((Button)sender).DataContext as Models.ScaffoldedEntity;
+        }
+
+        private void Editor_Commit(object sender, CommitEventArgs e)
+        {
+            var entity = this.EditingEntity;
+            if (entity != null)
+            {
+                object value = entity.Property.GetValue(entity.Instance);
+                if (value != e.Value)
+                {
+                    entity.Property.SetValue(entity.Instance, Convert.ChangeType(e.Value, entity.Property.PropertyType, System.Globalization.CultureInfo.CurrentCulture));
+                    // trigger property change
+                    CollectionViewSource.GetDefaultView(this.Entities).Refresh();
+                    // TODO: trigger save
+                }
+            }
+
+            // reset the editing entity
+            this.EditingEntity = null;
+        }
     }
 }

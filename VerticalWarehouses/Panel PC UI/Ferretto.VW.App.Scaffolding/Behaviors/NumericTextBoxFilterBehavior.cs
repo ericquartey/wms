@@ -41,7 +41,7 @@ namespace Ferretto.VW.App.Scaffolding.Behaviors
                     styles = System.Globalization.NumberStyles.AllowDecimalPoint | System.Globalization.NumberStyles.AllowLeadingSign;
                 }
 
-                if (!double.TryParse(text, styles, System.Threading.Thread.CurrentThread.CurrentUICulture, out double value))
+                if (!double.TryParse(text, styles, System.Globalization.CultureInfo.CurrentCulture, out var value))
                 {
                     return false;
                 }

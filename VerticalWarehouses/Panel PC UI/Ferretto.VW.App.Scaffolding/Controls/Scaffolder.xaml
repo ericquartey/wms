@@ -8,52 +8,17 @@
              xmlns:selectors="clr-namespace:Ferretto.VW.App.Scaffolding.Selectors"
              xmlns:validation="clr-namespace:Ferretto.VW.App.Scaffolding.ValidationRules"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:icons="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converters:DisplayNameConverter x:Key="DisplayNameConverter" />
         <converters:ScaffoldTypeConverter x:Key="ScaffoldTypeConverter" />
         <converters:IsReadOnlyConverter x:Key="IsReadOnlyConverter" />
-        <converters:IsEnabledConverter x:Key="IsEnabledConverter" />
-        <converters:NullOrEmptyToVisibilityConverter x:Key="NullOrEmptyToVisibilityConverter" />
+        <converters:IsEditableConverter x:Key="IsEnabledConverter" />
+        <converters:TruthyToVisibilityConverter x:Key="TruthyToVisibilityConverter" />
         <converters:ValidationRuleConverter x:Key="ValidationRuleConverter" />
         <converters:DefaultValueConverter x:Key="DefaultValueConverter" />
-        <selectors:PropertyInfoDataTemplateSelector x:Key="PropertyInfoDataTemplateSelector" />
-
-        <!-- styles -->
-        <Style TargetType="ListViewItem">
-            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        </Style>
-        <Style TargetType="{x:Type TextBox}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <DockPanel LastChildFill="True">
-
-                            <TextBlock DockPanel.Dock="Right"
-                                Foreground="Red"
-                                Margin="5" 
-                                FontSize="12pt"
-                                Text="{Binding ElementName=MyAdorner, 
-                           Path=AdornedElement.(Validation.Errors)/ErrorContent}">
-                            </TextBlock>
-
-                            <Border BorderBrush="Red" BorderThickness="1">
-                                <AdornedElementPlaceholder Name="MyAdorner" />
-                            </Border>
-
-                        </DockPanel>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="true">
-                    <Setter Property="ToolTip"
-                        Value="{Binding RelativeSource={RelativeSource Self}, 
-                   Path=(Validation.Errors)/ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
 
     </UserControl.Resources>
     <Grid>
@@ -68,7 +33,7 @@
 
         <StackPanel DataContext="{Binding Path=Breadcrumb, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}" 
                     Grid.Row="0" Grid.ColumnSpan="2" Orientation="Horizontal"
-                    Visibility="{Binding Path=Count, Converter={StaticResource NullOrEmptyToVisibilityConverter}}">
+                    Visibility="{Binding Path=Count, Converter={StaticResource TruthyToVisibilityConverter}}">
 
             <Button Margin="0,0,0,8" Click="Reset_Click">
                 <Button.Content>
@@ -110,7 +75,7 @@
 
             <Button Click="Reset_Click"
                 DataContext="{Binding Path=FocusStructure, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
-                Visibility="{Binding Converter={StaticResource NullOrEmptyToVisibilityConverter}}">
+                Visibility="{Binding Converter={StaticResource TruthyToVisibilityConverter}}">
                 <Button.Content>
                     <TextBlock Text="{Binding Category, StringFormat=annulla \{0\}}"></TextBlock>
                 </Button.Content>
@@ -144,7 +109,8 @@
 
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1" DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
+        <StackPanel HorizontalAlignment="Stretch" Grid.Column="1" Grid.Row="1"
+                    DataContext="{Binding Path=Entities, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}">
 
             <!-- search box -->
             <Grid>
@@ -158,71 +124,26 @@
 
             <!-- entities -->
             <ListView ItemsSource="{Binding}">
-                <ListView.Resources>
-                    <!-- password -->
-                    <DataTemplate x:Key="PasswordDataTemplate">
-                        <DataTemplate.Resources>
-                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                        </DataTemplate.Resources>
-                        <PasswordBox Width="200" IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}">
-                            <PasswordBox.Password>
-                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                                </MultiBinding>
-                            </PasswordBox.Password>
-                        </PasswordBox>
-                    </DataTemplate>
-
-                    <!-- IP address -->
-                    <DataTemplate x:Key="IPAddressDataTemplate">
-                        <DataTemplate.Resources>
-                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                        </DataTemplate.Resources>
-                        <controls:IPAddressBox IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}">
-                            <controls:IPAddressBox.IPAddress>
-                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                                </MultiBinding>
-                            </controls:IPAddressBox.IPAddress>
-                        </controls:IPAddressBox>
-                    </DataTemplate>
-
-                    <!-- string (default) -->
-                    <DataTemplate x:Key="StringDataTemplate">
-                        <DataTemplate.Resources>
-                            <converters:TwoWayConverter x:Key="TwoWayConverter" />
-                        </DataTemplate.Resources>
-
-                        <TextBox Width="200" DataContext="{Binding}" IsEnabled="{Binding Path=Property,Converter={StaticResource IsEnabledConverter}}" Name="txtBox">
-                            <TextBox.Resources>
-                                <validation:BindingProxy x:Key="valueBridge" Data="{Binding Path=Text, ElementName=txtBox}" />
-                                <validation:BindingProxy x:Key="entityBridge" Data="{Binding Path=DataContext, ElementName=txtBox}" />
-                            </TextBox.Resources>
-                            <TextBox.Text>
-                                <MultiBinding Converter="{StaticResource TwoWayConverter}" Mode="TwoWay">
-                                    <Binding Path="Property" />
-                                    <Binding Path="Instance" />
-                                    <MultiBinding.ValidationRules>
-                                        <validation:CompositeValidationRule ValidatesOnTargetUpdated="True">
-                                            <validation:CompositeValidationRule.CompositeValidator>
-                                                <validation:CompositeValidator Value="{Binding Data, Source={StaticResource valueBridge}}"
-                                                                               Rules="{Binding Data, Source={StaticResource entityBridge}, Converter={StaticResource ValidationRuleConverter}}" />
-                                            </validation:CompositeValidationRule.CompositeValidator>
-                                        </validation:CompositeValidationRule>
-                                    </MultiBinding.ValidationRules>
-                                </MultiBinding>
-                            </TextBox.Text>
-                        </TextBox>
-                    </DataTemplate>
-
-                </ListView.Resources>
                 <ListView.View>
                     <controls:AutoResizedGridView>
                         <GridViewColumn Header="Nome" Width="Auto" DisplayMemberBinding="{Binding Path=Caption}" />
                         <GridViewColumn Header="Id" Width="Auto" DisplayMemberBinding="{Binding Path=Id}" />
-                        <GridViewColumn Header="Valore" CellTemplateSelector="{StaticResource PropertyInfoDataTemplateSelector}"/>
+                        <GridViewColumn Header="Value">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <DataTemplate.Resources>
+                                        <converters:TwoWayConverter x:Key="TwoWayConverter" />
+                                    </DataTemplate.Resources>
+                                    <TextBlock>
+                                        <TextBlock.Text>
+                                            <MultiBinding Converter="{StaticResource TwoWayConverter}">
+                                                <Binding Path="Property" />
+                                                <Binding Path="Instance" />
+                                            </MultiBinding>
+                                        </TextBlock.Text></TextBlock>
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                         <GridViewColumn Header="Default" Width="Auto">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -251,10 +172,25 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                         </GridViewColumn>
+                        <GridViewColumn Width="Auto">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="{icons:FontAwesome Kind=EditRegular}" Click="Edit_Click" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                        </GridViewColumn>
                     </controls:AutoResizedGridView>
                 </ListView.View>
             </ListView>
 
         </StackPanel>
+
+
+        <controls:PropertyEditor x:Name="editor" Grid.ColumnSpan="2" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                                 Entity="{Binding Path=EditingEntity, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}}"
+                                 Visibility="{Binding Path=Entity, RelativeSource={RelativeSource Mode=Self}, Converter={StaticResource TruthyToVisibilityConverter}}"
+                                 Commit="Editor_Commit">            
+        </controls:PropertyEditor>
+
     </Grid>
 </UserControl>

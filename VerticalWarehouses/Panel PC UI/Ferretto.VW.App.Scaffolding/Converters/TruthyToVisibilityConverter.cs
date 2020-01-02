@@ -5,7 +5,10 @@ using System.Windows;
 
 namespace Ferretto.VW.App.Scaffolding.Converters
 {
-    public class NullOrEmptyToVisibilityConverter : IValueConverter
+    /// <summary>
+    /// Assumes true or false based on javascript-like truthiness and translates it into <see cref="Visibility"/>. Should be convenient enough.
+    /// </summary>
+    public class TruthyToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -22,6 +25,11 @@ namespace Ferretto.VW.App.Scaffolding.Converters
             if (value is int count)
             {
                 return count == default ? Visibility.Collapsed : Visibility.Visible;
+            }
+
+            if (value is bool boolean)
+            {
+                return boolean ? Visibility.Visible : Visibility.Collapsed;
             }
 
             return value == null ? Visibility.Collapsed : Visibility.Visible;

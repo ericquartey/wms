@@ -4,24 +4,29 @@ using System.Windows.Controls;
 
 namespace Ferretto.VW.App.Scaffolding.ValidationRules
 {
-    public class CompositeValidationRule : ValidationRule
+
+    public class CompositeValidationRule : NotifyValidationRule
     {
         public CompositeValidator CompositeValidator { get; set; }
 
         public override System.Windows.Controls.ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
-            if (this.CompositeValidator?.Rules?.Count > 0)
+            var compositeValidator = this.CompositeValidator;
+            if (compositeValidator?.Rules?.Count > 0)
             {
-                foreach (var validator in this.CompositeValidator.Rules)
+                foreach (var validator in compositeValidator.Rules)
                 {
                     var result = validator.Validate(value, cultureInfo);
                     if (!result.IsValid)
                     {
+                        this.OnValidated(new ValidationEventArgs(false));
                         return result;
                     }
                 }
             }
+            this.OnValidated(new ValidationEventArgs(true));
             return new System.Windows.Controls.ValidationResult(true, default);
         }
+
     }
 }
