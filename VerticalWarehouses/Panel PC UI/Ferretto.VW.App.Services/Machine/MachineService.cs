@@ -712,9 +712,9 @@ namespace Ferretto.VW.App.Services
                             break;
                         }
                 }
-
-                this.WarningsManagement(this.GetActiveView());
             }
+
+            this.WarningsManagement(this.GetActiveView());
         }
 
         private void OnElevatorPositionChanged(ElevatorPositionChangedEventArgs e)
