@@ -82,7 +82,7 @@ namespace Ferretto.VW.App.Menu.ViewModels
             ??
             (this.verticalOriginCalibration = new DelegateCommand(
                 () => this.ExecuteCommand(Menu.VerticalOriginCalibration),
-                this.CanExecuteCommand));
+                () => !this.IsWaitingForResponse));
 
         public ICommand VerticalResolutionCalibrationCommand =>
             this.verticalResolutionCalibration
@@ -108,6 +108,12 @@ namespace Ferretto.VW.App.Menu.ViewModels
         #endregion
 
         #region Methods
+
+        internal override bool CanExecuteCommand()
+        {
+            return base.CanExecuteCommand() &&
+                  this.MachineService.IsHoming;
+        }
 
         protected override void RaiseCanExecuteChanged()
         {
