@@ -163,9 +163,7 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                 case MessageStatus.OperationRunningStop:
                     if (this.ejectLoadUnit)
                     {
-                        this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
-                        this.missionsDataProvider.Update(this.mission);
-                        returnValue = this.GetState<IMoveLoadingUnitDepositUnitState>();
+                        this.UpdateResponseList(notificationStatus, notification.Type);
                     }
                     else
                     {
@@ -194,6 +192,8 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
                             // stop movement and  go back to bay
                             this.errorsProvider.RecordNew(check);
                             this.ejectLoadUnit = true;
+                            this.mission.LoadingUnitDestination = this.mission.LoadingUnitSource;
+                            this.missionsDataProvider.Update(this.mission);
                             var newMessageData = new StopMessageData(StopRequestReason.Stop);
                             this.loadingUnitMovementProvider.StopOperation(newMessageData, notification.RequestingBay, MessageActor.MachineManager, notification.RequestingBay);
                         }
@@ -204,7 +204,9 @@ namespace Ferretto.VW.MAS.MachineManager.FiniteStateMachines.MoveLoadingUnit.Sta
 
             if ((this.closeShutter != BayNumber.None && this.stateMachineResponses.Count == 2) || (this.closeShutter == BayNumber.None && this.stateMachineResponses.Count == 1))
             {
-                if (this.mission.LoadingUnitDestination == LoadingUnitLocation.Elevator)
+                if (this.mission.LoadingUnitDestination == LoadingUnitLocation.Elevator
+                    && !this.ejectLoadUnit
+                    )
                 {
                     returnValue = this.GetState<IMoveLoadingUnitEndState>();
                 }

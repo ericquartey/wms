@@ -178,6 +178,8 @@ namespace Ferretto.VW.App.Installation.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.stopCommand?.RaiseCanExecuteChanged();
         }
 

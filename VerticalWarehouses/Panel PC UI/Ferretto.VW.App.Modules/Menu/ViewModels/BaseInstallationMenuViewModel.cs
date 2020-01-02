@@ -268,6 +268,8 @@ namespace Ferretto.VW.App.Menu.ViewModels
 
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.menuAccessoriesCommand?.RaiseCanExecuteChanged();
             this.menuBaysCommand?.RaiseCanExecuteChanged();
             this.menuCellsCommand?.RaiseCanExecuteChanged();

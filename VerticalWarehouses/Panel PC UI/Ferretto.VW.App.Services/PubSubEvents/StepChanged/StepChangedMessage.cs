@@ -10,11 +10,14 @@ namespace Ferretto.VW.App.Services
         public StepChangedMessage(bool next)
         {
             this.Next = next;
+            this.Back = !next;
         }
 
         #endregion
 
         #region Properties
+
+        public bool Back { get; }
 
         public bool Next { get; }
 

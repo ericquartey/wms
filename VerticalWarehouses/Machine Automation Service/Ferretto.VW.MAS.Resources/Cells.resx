@@ -126,8 +126,8 @@
   <data name="TheCellUnexpectedlyContainsAnotherLoadingUnit" xml:space="preserve">
     <value>The cell unexpectedly contains another loading unit.</value>
   </data>
-  <data name="TheLoadingCannotBePlacedOppositeADeactivatedCell" xml:space="preserve">
-    <value>The loading unit cannot be placed opposite a deactivated cell.</value>
+  <data name="TheLoadingCannotBePlacedOppositeAnUnusableCell" xml:space="preserve">
+    <value>The loading unit cannot be placed opposite an unusable cell.</value>
   </data>
   <data name="TheLoadingUnitIsAlreadyLocatedInAnotherCell" xml:space="preserve">
     <value>The loading unit is already located in another cell.</value>

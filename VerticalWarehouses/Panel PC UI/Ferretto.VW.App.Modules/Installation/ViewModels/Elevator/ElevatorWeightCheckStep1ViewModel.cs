@@ -105,6 +105,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             }
         }
 
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
+        }
+
         public override async Task OnAppearedAsync()
         {
             this.InputLoadingUnitId = null;
@@ -117,13 +122,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.checkLoadingUnitCommand?.RaiseCanExecuteChanged();
         }
 

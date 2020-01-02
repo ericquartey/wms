@@ -9,7 +9,6 @@
             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
             xmlns:prism="http://prismlibrary.com/"
             xmlns:res="clr-namespace:Ferretto.VW.App.Resources;assembly=Ferretto.VW.App.Resources"
-            xmlns:viewmodels="clr-namespace:Ferretto.VW.App.Modules.Installation.ViewModels"
             d:DesignHeight="700"
             d:DesignWidth="1024"
             prism:ViewModelLocator.AutoWireViewModel="True"
@@ -21,7 +20,17 @@
                                         FalseColor="{StaticResource PpcBackground}"
                                         TrueColor="{StaticResource FerrettoBlue}" />
         <!--#endregion-->
+
         <!--#region Styles-->
+        <Style x:Key="WizardIntoButton"
+               BasedOn="{StaticResource {x:Type controls:PpcButton}}"
+               TargetType="{x:Type controls:PpcButton}">
+            <Style.Triggers>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="BorderBrush" Value="{DynamicResource PpcBorderBrush}" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
         <Style x:Key="BorderTimeLine"
                TargetType="{x:Type Border}">
             <Setter Property="HorizontalAlignment" Value="Center" />
@@ -59,9 +68,11 @@
             <Setter Property="StrokeThickness" Value="1.5" />
         </Style>
         <!--#endregion-->
+
         <!--#region DataTemplate Body-->
         <DataTemplate x:Key="DataTemplatePositionMeter">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -77,7 +88,9 @@
 
                 <controls:PpcButton Grid.Row="1"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota" />
+                                    Command="{Binding MoveToBayPositionCommand}"
+                                    Content="Vai a baia"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <TextBlock Grid.Row="2"
                            FontSize="24"
@@ -86,12 +99,15 @@
                            TextWrapping="Wrap" />
 
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Avanti" />
+                                    Command="{Binding MoveToFirstMisurationCommand}"
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateFirstMisuration">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -107,7 +123,9 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota" />
+                                    Command="{Binding StartCommand}"
+                                    Content="Vai a quota di destinazione"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
@@ -115,6 +133,7 @@
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
+                                       EditValue="{Binding DestinationPosition1, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        LabelText="Quota di destinazione" />
 
                     <ctrls:PpcSpinEdit Width="250"
@@ -123,12 +142,14 @@
                                        LabelText="Quota misurata" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Avanti" />
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateLastMisuration">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -144,7 +165,9 @@
 
                 <controls:PpcButton Grid.Row="2"
                                     VerticalAlignment="Top"
-                                    Content="Vai a quota" />
+                                    Command="{Binding StartCommand}"
+                                    Content="Vai a quota"
+                                    Style="{StaticResource WizardIntoButton}" />
 
                 <StackPanel Grid.Row="1"
                             HorizontalAlignment="Center"
@@ -152,6 +175,7 @@
                     <ctrls:PpcSpinEdit Width="250"
                                        Height="90"
                                        Margin="0,0,15,0"
+                                       EditValue="{Binding DestinationPosition2, Mode=TwoWay, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}"
                                        LabelText="Quota di destinazione" />
 
                     <ctrls:PpcSpinEdit Width="250"
@@ -160,12 +184,14 @@
                                        LabelText="Quota misurata" />
                 </StackPanel>
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Avanti" />
+                                    Content="Avanti"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="DataTemplateConfirm">
-            <Grid Margin="20">
+            <Grid Margin="20"
+                  DataContext="{Binding Path=DataContext, RelativeSource={RelativeSource AncestorType={x:Type ctrls:View}}}">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -188,9 +214,11 @@
                                    LabelText="Nuova risoluzione" />
 
                 <controls:PpcButton Grid.Row="3"
-                                    Content="Salva" />
+                                    Content="Salva"
+                                    Style="{StaticResource WizardIntoButton}" />
             </Grid>
         </DataTemplate>
+
         <local:CalibrationStepTemplateSelector x:Key="selector"
                                                EnumConfirm="{StaticResource DataTemplateConfirm}"
                                                EnumFirstMisuration="{StaticResource DataTemplateFirstMisuration}"
@@ -202,6 +230,7 @@
     <Grid Margin="15,0,0,0"
           UseLayoutRounding="True">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -247,15 +276,24 @@
                                          Grid.Column="3"
                                          Width="230"
                                          Height="90"
+                                         MinHeight="90"
                                          Margin="0,15,15,0" />
         <controls:CardSensorAxisHorizontal Grid.Row="3"
                                            Grid.Column="3"
                                            Width="230"
                                            Height="90"
+                                           MinHeight="90"
                                            Margin="0,15,15,0" />
-        <Border Grid.Row="4"
+        <controls:CardSensorDrawer Grid.Row="4"
+                                   Grid.Column="3"
+                                   Width="230"
+                                   Height="90"
+                                   MinHeight="90"
+                                   Margin="0,15,15,0" />
+        <Border Grid.Row="5"
                 Grid.Column="3"
                 Height="90"
+                MinHeight="90"
                 Margin="0,15,15,0"
                 Background="{DynamicResource PpcBackground}">
             <Border BorderBrush="{DynamicResource PpcBorderBrush}"
@@ -293,54 +331,20 @@
                 </Grid>
             </Border>
         </Border>
-        <Border Grid.Row="5"
-                Grid.Column="3"
-                Height="90"
-                Margin="0,15,15,0"
-                VerticalAlignment="Top"
-                Background="{DynamicResource PpcBackground}"
-                Visibility="Collapsed">
-            <Border BorderBrush="{DynamicResource PpcBorderBrush}"
-                    BorderThickness="{DynamicResource PpcBorderThickness}">
 
-                <Grid Grid.Column="8"
-                      Grid.ColumnSpan="4">
-
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <TextBlock Margin="8,4"
-                               HorizontalAlignment="Left"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Normal}"
-                               FontWeight="Normal"
-                               Foreground="{DynamicResource FerrettoLightGray}"
-                               Text="Misurazione" />
-
-                    <TextBlock Grid.Row="1"
-                               Margin="4,0,4,4"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               FontSize="{StaticResource FontSize_Very_High}"
-                               Foreground="{DynamicResource PpcForeground}"
-                               Text="1 / 2"
-                               TextWrapping="Wrap" />
-
-                </Grid>
-
-            </Border>
-        </Border>
+        <controls:PpcButton Grid.Row="6"
+                            Grid.Column="3"
+                            Margin="0,0,15,0"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Command="{Binding StopCommand}"
+                            Content="{x:Static res:InstallationApp.Stop}"
+                            Style="{StaticResource WizardIntoButton}" />
         <!--#endregion-->
 
         <!--#region Wizard-->
         <Grid Grid.Row="2"
-              Grid.RowSpan="4"
+              Grid.RowSpan="5"
               Grid.ColumnSpan="3"
               Margin="5,15,15,0">
 

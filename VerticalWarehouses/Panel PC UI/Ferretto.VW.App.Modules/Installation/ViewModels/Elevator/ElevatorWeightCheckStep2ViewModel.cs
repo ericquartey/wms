@@ -206,6 +206,11 @@ namespace Ferretto.VW.App.Installation.ViewModels
             */
         }
 
+        public override void InitializeSteps()
+        {
+            this.ShowSteps();
+        }
+
         public override void OnNavigatedTo(NavigationContext navigationContext)
         {
             base.OnNavigatedTo(navigationContext);
@@ -236,13 +241,10 @@ namespace Ferretto.VW.App.Installation.ViewModels
             this.RaiseCanExecuteChanged();
         }
 
-        public override void InitializeSteps()
-        {
-            this.ShowSteps();
-        }
-
         protected override void RaiseCanExecuteChanged()
         {
+            base.RaiseCanExecuteChanged();
+
             this.startWeightCheckCommand?.RaiseCanExecuteChanged();
             this.stopWeightCheckCommand?.RaiseCanExecuteChanged();
         }
